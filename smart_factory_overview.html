@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스마트팩토리 프로젝트 — 전체 조망 (Team Overview)</title>
+<style>
+  :root{
+    --bg:#E9ECEE;
+    --panel:#FFFFFF;
+    --panel-edge:#D4D9DD;
+    --ink:#1B2430;
+    --ink-soft:#5A6673;
+    --amber:#E8720C;   /* 로보틱스/시뮬 */
+    --machine:#1F7A4D; /* AI 파이프라인 */
+    --steel:#33506B;   /* 백엔드/서비스 */
+    --slate:#8A96A3;   /* 인프라/공통 */
+    --grid:#DDE2E6;
+    --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important;animation:none!important}}
+  body{
+    background:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:32px 32px;
+    color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:15px;
+  }
+  a{color:var(--steel)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+  header{border-bottom:3px solid var(--ink);background:var(--panel)}
+  .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
+  .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
+  .doc-eyebrow b{color:var(--amber);font-weight:600}
+  h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
+  h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
+  .meta b{color:var(--ink);font-weight:600}
+
+  nav{position:sticky;top:0;z-index:50;background:var(--ink);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav .wrap{display:flex;gap:2px;padding:0 20px}
+  nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
+  nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--amber);outline:none}
+  nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
+  nav a.nav-cross{margin-left:auto;color:var(--amber);font-weight:700}
+
+  main{padding:44px 0 80px}
+  section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
+  .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
+  h2{font-size:20px;font-weight:800;letter-spacing:-.01em}
+  .sec-body{padding:16px 26px 26px}
+  h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+  h3::before{content:"";width:8px;height:8px;background:var(--amber)}
+  p{margin-bottom:10px}
+  .lead{font-size:15.5px}
+  .soft{color:var(--ink-soft)}
+  .tagline{font-size:16px;font-weight:600;background:var(--ink);color:#fff;padding:16px 20px;margin:14px 0;border-left:6px solid var(--amber)}
+  .tagline small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#9AA7B4;margin-bottom:6px;font-weight:400}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
+  td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .num{font-family:var(--mono)}
+
+  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px}
+  .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)} .c-slate{color:var(--slate)}
+
+  ul.rules{list-style:none;margin:10px 0}
+  ul.rules li{padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--grid);font-size:13.5px}
+  ul.rules li:last-child{border-bottom:none}
+  ul.rules li::before{content:"▸";position:absolute;left:6px;color:var(--amber);font-weight:700}
+
+  /* 시스템 파노라마 스택 */
+  .stack{margin:18px 0;border:1px solid var(--panel-edge)}
+  .layer{display:grid;grid-template-columns:170px 1fr 120px;border-bottom:1px solid var(--panel-edge)}
+  .layer:last-child{border-bottom:none}
+  .layer .tag{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.04em;padding:14px;background:#F2F4F6;border-right:1px solid var(--panel-edge);display:flex;flex-direction:column;gap:2px;justify-content:center}
+  .layer .tag small{font-weight:400;color:var(--ink-soft);font-size:10px}
+  .layer .desc{padding:13px 18px;font-size:13.5px}
+  .layer .desc .proto{font-family:var(--mono);font-size:11px;color:var(--steel);margin-top:4px;display:block}
+  .layer .owner{font-family:var(--mono);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border-left:1px dashed var(--panel-edge);letter-spacing:.04em;text-align:center;padding:6px}
+  .flowdown{text-align:center;font-family:var(--mono);font-size:10px;color:var(--ink-soft);letter-spacing:.2em;padding:3px 0;background:#F5F7F8;border-bottom:1px solid var(--panel-edge)}
+
+  /* 팀 카드 */
+  .team{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:14px 0}
+  .member{border:1px solid var(--panel-edge);border-top:4px solid var(--slate);padding:16px 18px}
+  .member.m-robot{border-top-color:var(--amber)}
+  .member.m-ai{border-top-color:var(--machine)}
+  .member.m-be{border-top-color:var(--steel)}
+  .member h4{font-size:14.5px;font-weight:800}
+  .member .role-tag{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-soft);margin-bottom:6px;display:block}
+  .member ul{list-style:none;font-size:12.5px;margin-top:8px}
+  .member li{padding:4px 0 4px 16px;position:relative;border-bottom:1px dashed var(--grid)}
+  .member li:last-child{border-bottom:none}
+  .member li::before{content:"·";position:absolute;left:4px;font-weight:700}
+  .member .note{font-size:11.5px;color:var(--ink-soft);margin-top:8px;padding-top:8px;border-top:1px solid var(--grid)}
+
+  /* 계약 허브 */
+  .hub{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;margin:16px 0}
+  .hub .contracts{border:2px solid var(--ink);padding:14px 16px;text-align:center;background:#F5F7F8}
+  .hub .contracts h4{font-family:var(--mono);font-size:11px;letter-spacing:.1em;margin-bottom:8px}
+  .hub .contracts div{font-family:var(--mono);font-size:11px;padding:5px 8px;background:var(--panel);border:1px solid var(--panel-edge);margin:4px 0}
+  .hub .side{display:grid;gap:8px}
+  .hub .side div{font-size:12.5px;padding:9px 12px;border:1px solid var(--panel-edge);background:var(--panel)}
+  .hub .side b{display:block;font-size:12px}
+  .hub .side small{color:var(--ink-soft);font-size:11px}
+
+  /* 통합 캘린더 */
+  .milestones{display:grid;gap:0;margin:14px 0;border-left:3px solid var(--ink)}
+  .ms{position:relative;padding:12px 18px 12px 28px;border-bottom:1px dashed var(--grid)}
+  .ms:last-child{border-bottom:none}
+  .ms::before{content:"";position:absolute;left:-8px;top:18px;width:13px;height:13px;background:var(--panel);border:3px solid var(--machine)}
+  .ms .ms-tag{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--machine);letter-spacing:.08em}
+  .ms h4{font-size:14px;font-weight:700;margin:2px 0 2px}
+  .ms p{font-size:12.5px;color:var(--ink-soft);margin:0}
+
+  footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+
+  @media (max-width:820px){
+    .titleblock{grid-template-columns:1fr}
+    .meta{border-left:none;padding-left:0;text-align:left}
+    .layer{grid-template-columns:1fr}
+    .layer .tag{flex-direction:row;gap:8px;border-right:none;border-bottom:1px solid var(--panel-edge);padding:9px 14px}
+    .layer .owner{border-left:none;border-top:1px dashed var(--panel-edge);justify-content:flex-start;padding:8px 18px}
+    .hub{grid-template-columns:1fr}
+    body{font-size:14px}
+    .sec-head,.sec-body{padding-left:16px;padding-right:16px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap titleblock">
+    <div>
+      <div class="doc-eyebrow">TEAM OVERVIEW · REV A · <b>SIM-FIRST SMART FACTORY</b> · 6-MEMBER PROJECT</div>
+      <h1>스마트팩토리 프로젝트 — 전체 조망
+        <span class="sub">시뮬레이션 공장을 물리 레이어로 삼는 완전한 스마트팩토리 서비스 — 팀 전체의 그림과 협업 규칙</span>
+      </h1>
+    </div>
+    <div class="meta">
+      TEAM · <b>6명 (PM 별도 지정)</b><br>
+      PARTS · <b>로보틱스 2 · AI 2 · 백엔드 2</b><br>
+      FRONTEND · <b>AI 에이전트 + 발주 오너</b><br>
+      INFRA · <b>조율자 겸임 + 파트별 분담</b>
+    </div>
+  </div>
+</header>
+
+<nav aria-label="섹션 이동">
+  <div class="wrap">
+    <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a href="#o1">01 비전·서비스</a>
+    <a href="#o2">02 시스템 파노라마</a>
+    <a href="#o3">03 팀 구성·오너십</a>
+    <a href="#o4">04 데이터 계약</a>
+    <a href="#o5">05 통합 캘린더</a>
+    <a href="#o6">06 협업 규칙</a>
+    <a class="nav-cross" href="smart_factory_plan.html">PROJECT PLAN ↗</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ── 01 비전·서비스 ── -->
+<section id="o1">
+  <div class="sec-head"><span class="sec-no">SEC 01</span><h2>비전과 서비스 정의</h2></div>
+  <div class="sec-body">
+    <div class="tagline"><small>WHAT WE BUILD</small>매니퓰레이션 생산라인 + 운송 AMR 시뮬레이션 공장 위에, 산업 표준 데이터 플로우·AI QA·운영 관제 웹 서비스까지 통합한 스마트팩토리 솔루션</div>
+    <p class="lead">단순 로봇 데모가 아니라 <b>운영자가 실제로 쓰는 서비스</b>가 최종 산출물. 물리 세계만 시뮬레이션일 뿐, 데이터 플로우·백엔드·서비스는 실제 스마트팩토리와 동일한 구조로 구축한다.</p>
+    <h3>서비스: 공장 운영 관제 포털 (Operations Center) + PWA</h3>
+    <table>
+      <tr><th style="width:140px">영역</th><th>내용</th></tr>
+      <tr><td><b>관제 Operations</b></td><td><b>실시간 공장 맵 (킬러 화면)</b> — AMR 위치/궤적, VDA 5050 order의 node/edge 시각화 + 점진적 엣지 릴리스, 설비 온라인/오프라인(Sparkplug B BIRTH/DEATH), Andon 알림 스트림. 여유 시 Three.js 3D 뷰</td></tr>
+      <tr><td><b>운영 Production</b></td><td>작업지시 라이프사이클, 배차 현황(의사결정 로그 노출), 스테이션별 큐 상태</td></tr>
+      <tr><td><b>품질 Quality</b></td><td>결함 이미지 + AI 판정 + 승인/오버라이드 (human-in-the-loop) → 오버라이드를 재학습 데이터로 축적</td></tr>
+      <tr><td><b>분석 Analytics</b></td><td>OEE(가용성×성능×품질) 대시보드, 시프트 리포트, 병목 분석</td></tr>
+    </table>
+    <ul class="rules">
+      <li>사용자 시나리오 = 시연 시나리오: 로그인 → 작업지시 등록 → 맵에서 AMR 배차·이동 관찰 → 불량 Andon 수신 → AI 판정 확인·오버라이드 → 실적 리포트</li>
+      <li>Grafana는 엔지니어용 내부 관측 도구로 분리 — 서비스는 "데이터를 본다"가 아니라 <b>"공장을 운영한다"</b></li>
+      <li>모바일은 네이티브 앱 대신 <b>PWA</b>(반응형 + 웹 푸시 불량 알림)로 충족</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── 02 시스템 파노라마 ── -->
+<section id="o2">
+  <div class="sec-head"><span class="sec-no">SEC 02</span><h2>시스템 파노라마 — 레이어 × 오너</h2></div>
+  <div class="sec-body">
+    <div class="stack">
+      <div class="layer"><div class="tag">서비스<small>React SPA · PWA</small></div><div class="desc">운영 관제 포털 — REST(작업지시/실적/QA) + <b>MQTT-over-WebSocket</b>(실시간 텔레메트리 직접 구독)</div><div class="owner c-steel">AI 에이전트<br>+발주 오너(BE)</div></div>
+      <div class="flowdown">▼ ▲</div>
+      <div class="layer"><div class="tag">L3 · MES<small>Spring Boot</small></div><div class="desc">MES-lite: 작업지시 → 스테이션 할당 → AMR 배차 → 실적 집계 + SimPy 물류 오케스트레이터</div><div class="owner c-steel">백엔드 2</div></div>
+      <div class="flowdown">▼ ▲</div>
+      <div class="layer"><div class="tag">데이터 인프라</div><div class="desc">EMQX → TimescaleDB(시계열) + PostgreSQL(트랜잭션)<span class="proto">설비 = Sparkplug B&nbsp;&nbsp;|&nbsp;&nbsp;AMR = VDA 5050</span></div><div class="owner c-slate">조율자<br>+파트별 분담</div></div>
+      <div class="flowdown">▼ ▲</div>
+      <div class="layer"><div class="tag">AI QA</div><div class="desc">Replicator 합성 결함 → 검출 모델 학습 → ONNX 서빙 → 판정 → 불량품 리젝트 운송 (폐루프)</div><div class="owner c-green">AI 2</div></div>
+      <div class="flowdown">▼ ▲</div>
+      <div class="layer"><div class="tag">로봇 제어<small>ROS2</small></div><div class="desc">Nav2 + EKF(주행) · MoveIt2(매니퓰레이션) · behavior tree 오케스트레이션 · ros2_control</div><div class="owner c-amber">로보틱스 2</div></div>
+      <div class="flowdown">▼ ▲</div>
+      <div class="layer"><div class="tag">L0~2 · 물리<small>Gazebo → Isaac Sim</small></div><div class="desc">가상 공장: 생산 셀(매니퓰레이터 2~3 + 컨베이어) + 옴니휠 AMR 2대 + 검사 스테이션 — 개발은 Gazebo, 본 무대는 Isaac</div><div class="owner c-amber">로보틱스 2</div></div>
+    </div>
+    <p class="soft">오너 색상: <span class="chip c-amber">로보틱스</span> <span class="chip c-green">AI 파이프라인</span> <span class="chip c-steel">백엔드·서비스</span> <span class="chip c-slate">인프라(공통)</span></p>
+  </div>
+</section>
+<!-- ── 03 팀 구성 ── -->
+<section id="o3">
+  <div class="sec-head"><span class="sec-no">SEC 03</span><h2>팀 구성과 오너십 (6명)</h2></div>
+  <div class="sec-body">
+    <div class="team">
+      <div class="member m-robot">
+        <span class="role-tag">ROBOTICS · TECH LEAD</span>
+        <h4>기술 리드 (본인)</h4>
+        <ul>
+          <li>로보틱스 스택 주 구현: URDF/ros2_control, Nav2+MoveIt2, behavior tree, Isaac 포팅, Isaac Lab RL</li>
+          <li>아키텍처 전체 + <b>데이터 계약 설계·승인</b> (토픽 스키마/OpenAPI)</li>
+          <li>인프라 조율자 겸임 (셀프서비스 환경 구축이 1순위 산출물)</li>
+        </ul>
+        <div class="note">시간 확보: 월드·에셋·레퍼런스 설정은 오픈소스 기성품 사용. 단 통합부(ros2_control·MoveIt2·Isaac 정합)는 절대 아끼지 않음 — 주력 깊이의 본체</div>
+      </div>
+      <div class="member m-robot">
+        <span class="role-tag">ROBOTICS · PM</span>
+        <h4>PM + 로보틱스 보조</h4>
+        <ul>
+          <li>일정·리소스·범위 조정, 스크럼, 발표 주관</li>
+          <li>mock publisher 구현/유지보수 (전 파트의 개발 기반)</li>
+          <li>Gazebo 월드/에셋 제작, 시나리오 정의, 파라미터 튜닝 보조, 통합 테스트 주관</li>
+        </ul>
+        <div class="note">중단·재개가 쉬운 과업 위주 배치 — 크리티컬 패스(Nav2·MoveIt2·Isaac)는 PM 일정에 걸지 않음</div>
+      </div>
+      <div class="member m-ai">
+        <span class="role-tag">AI · DATA TRACK</span>
+        <h4>AI — 데이터 생성 트랙</h4>
+        <ul>
+          <li>Replicator 씬/도메인 랜덤화 설계 (합성 결함: 스크래치·오조립·결품)</li>
+          <li>Phase 0부터 Isaac 학습 시작 (진입 장벽 선흡수)</li>
+        </ul>
+        <div class="note">발표 핵심 슬라이드: "공개 데이터 베이스라인 vs 합성 데이터 학습" 정량 비교</div>
+      </div>
+      <div class="member m-ai">
+        <span class="role-tag">AI · MODEL TRACK</span>
+        <h4>AI — 모델/서빙 트랙</h4>
+        <ul>
+          <li>QA 모델 선정(YOLO/PatchCore·PaDiM) + ONNX 추론 서비스</li>
+          <li>오버라이드 → 재학습 데이터 축적 루프 (MLOps 서사)</li>
+          <li>Phase 0~1: 공개 결함 데이터셋(MVTec AD 등)으로 베이스라인 선구축</li>
+        </ul>
+      </div>
+      <div class="member m-be">
+        <span class="role-tag">BACKEND · CORE</span>
+        <h4>백엔드 — 코어</h4>
+        <ul>
+          <li>Spring MES-lite: 작업지시/실적/QA 판정 API, 배차 로직, DB 스키마</li>
+          <li>인프라 정형 업무 인수 (CI 유지보수, EC2 배포 표준)</li>
+        </ul>
+      </div>
+      <div class="member m-be">
+        <span class="role-tag">BACKEND · FRONT OWNER</span>
+        <h4>백엔드 — 프론트 발주 오너</h4>
+        <ul>
+          <li>프론트는 <b>AI 에이전트에게 발주</b>: 스펙 작성 → 결과 검수 → API 연동 → 버그 재현·재발주</li>
+          <li>운영·품질·분석 화면은 에이전트 산출물 위주 (조립형)</li>
+          <li><b>관제 맵만 예외</b>: MQTT-WS + Canvas 실시간 렌더링은 사람이 구조 설계 후 에이전트가 살 붙임</li>
+        </ul>
+        <div class="note">"프론트 전담 0명"은 성립, "프론트 오너 0명"은 불성립 — 검수 없는 에이전트 코드는 데모 직전 수정 불가 리스크</div>
+      </div>
+    </div>
+    <h3>거버넌스 — 2-키 구조</h3>
+    <ul class="rules">
+      <li><b>기술 리드</b>: 데이터 계약·아키텍처 결정의 승인권 (기술 타당성 판단)</li>
+      <li><b>PM</b>: 일정·리소스·범위 조정의 승인권 (일정 영향 판단)</li>
+      <li>계약 변경 요청 = 두 키 모두 통과해야 반영. "필드 하나만 추가"로 계약이 조용히 부식되는 것을 차단</li>
+      <li>버스 팩터 완화: 주요 결정은 ADR로 짧게 기록 (Decision Log 운영과 동일 습관)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── 04 데이터 계약 ── -->
+<section id="o4">
+  <div class="sec-head"><span class="sec-no">SEC 04</span><h2>데이터 계약 — 파트를 병렬로 달리게 하는 장치</h2></div>
+  <div class="sec-body">
+    <p class="lead">4개 파트가 서로를 기다리지 않는 유일한 방법: <b>1~2주차에 인터페이스 계약을 동결</b>하고, 각 파트는 계약만 보고 개발한다.</p>
+    <div class="hub">
+      <div class="side">
+        <div><b class="c-amber">로보틱스 → 발행</b><small>AMR state·설비 텔레메트리·QA 요청 이벤트</small></div>
+        <div><b class="c-green">AI → 소비/발행</b><small>검사 이미지 소비 → 판정 결과 발행</small></div>
+      </div>
+      <div class="contracts">
+        <h4>FROZEN CONTRACTS v1.0</h4>
+        <div>VDA 5050 — order / state / connection</div>
+        <div>Sparkplug B — NBIRTH / NDATA 네임스페이스</div>
+        <div>OpenAPI — 작업지시 / 실적 / QA 판정 REST</div>
+      </div>
+      <div class="side">
+        <div><b class="c-steel">백엔드 → order 발행</b><small>MES가 마스터 컨트롤 역할</small></div>
+        <div><b class="c-steel">서비스 → 구독</b><small>웹 맵이 표준 토픽 직접 구독 (전용 API 불필요)</small></div>
+      </div>
+    </div>
+    <h3>Mock Publisher — 시뮬레이터 이전의 시뮬레이터</h3>
+    <ul class="rules">
+      <li>SimPy 기반 가짜 공장이 <b>표준 토픽 스키마 그대로</b> 가상 AMR/설비 이벤트를 발행 (로보틱스 파트 1순위 납품물, PM 팀원 담당)</li>
+      <li>백엔드·AI·프론트는 실물 로봇 완성 전부터 "움직이는 데이터"로 개발 시작</li>
+      <li>Gazebo → Isaac으로 소스가 교체되어도 <b>소비자 코드는 한 줄도 변경 없음</b> — 표준 준수의 가치를 팀 개발 속도로 증명</li>
+    </ul>
+    <h3>인프라 셀프서비스</h3>
+    <ul class="rules">
+      <li><code class="num">docker compose up</code> 한 번으로 전 스택(EMQX + TimescaleDB + PostgreSQL + mock publisher) 로컬 기동 — 1~2주차 구축</li>
+      <li>인프라 요청은 이슈로만 접수, 하루 한 타임 일괄 처리 (긴급 기준: 데모 임박·전원 블로킹만 예외)</li>
+      <li>각 파트는 자기 서비스의 컨테이너/CI 파이프라인을 직접 소유 — "인프라 분담"의 실제 정의</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── 05 통합 캘린더 ── -->
+<section id="o5">
+  <div class="sec-head"><span class="sec-no">SEC 05</span><h2>통합 캘린더 — 빅뱅 금지</h2></div>
+  <div class="sec-body">
+    <div class="milestones">
+      <div class="ms"><span class="ms-tag">WEEK 1~2</span><h4>계약 동결 + 셀프서비스 환경</h4><p>토픽 스키마·OpenAPI v1.0 확정 · docker compose 전 스택 · mock publisher 가동</p></div>
+      <div class="ms"><span class="ms-tag">WEEK 2~3</span><h4>통합 #1 — mock → 웹 맵</h4><p>가짜 AMR이 웹 관제 맵에서 움직임 · 백엔드 order 발행 → mock 반응 확인</p></div>
+      <div class="ms"><span class="ms-tag">PHASE 1 말</span><h4>통합 #2 — Gazebo → 전체</h4><p>실제 ROS2 스택(Nav2+MoveIt2)이 mock을 대체 · 주행→도킹→픽앤플레이스가 웹에서 관찰됨</p></div>
+      <div class="ms"><span class="ms-tag">PHASE 2</span><h4>통합 #3 — Isaac → 전체 (수직 슬라이스 완성)</h4><p>Isaac 셀 1 + AMR 1 라이브 · Replicator→QA 모델→오버라이드 폐루프 · 이 시점부터 "시연 가능한 서비스" 상시 유지</p></div>
+      <div class="ms"><span class="ms-tag">PHASE 3~4</span><h4>격주 통합 — 수평 확장</h4><p>셀/AMR 추가(하이브리드) · RL 태스크 · OEE 분석 · Jenkins headless 시뮬 회귀 CI</p></div>
+    </div>
+    <p class="soft">원칙: 통합 #3 이후에는 어떤 순간에도 데모가 가능한 상태(main 브랜치 = 시연 가능)를 유지한다. 기능 추가보다 이 상태 유지가 우선.</p>
+  </div>
+</section>
+
+<!-- ── 06 협업 규칙 ── -->
+<section id="o6">
+  <div class="sec-head"><span class="sec-no">SEC 06</span><h2>협업 규칙 요약</h2></div>
+  <div class="sec-body">
+    <table>
+      <tr><th style="width:180px">규칙</th><th>내용</th></tr>
+      <tr><td><b>계약 우선</b></td><td>파트 간 소통은 동결된 계약(스키마/API)이 기준. 변경은 2-키(기술 리드 + PM) 승인</td></tr>
+      <tr><td><b>mock 우선</b></td><td>어떤 파트도 다른 파트의 완성을 기다리지 않는다 — mock publisher가 대역</td></tr>
+      <tr><td><b>오너십 명시</b></td><td>모든 컴포넌트에 오너 1인. "전원 분담" 영역(인프라)도 조율자 1인 + 파트별 배포 책임으로 분해</td></tr>
+      <tr><td><b>AI 에이전트 운용</b></td><td>프론트는 에이전트 산출물 허용, 단 발주 오너가 스펙·검수·연동 책임. 검수 없는 머지 금지</td></tr>
+      <tr><td><b>기성품 우선</b></td><td>월드·에셋·레퍼런스 설정·컴포넌트 라이브러리는 가져다 쓴다. 직접 만드는 것은 각 파트의 차별화 지점뿐</td></tr>
+      <tr><td><b>기록 습관</b></td><td>주요 결정은 ADR/Decision Log로. 버스 팩터 1 완화 + 발표 자료의 원천</td></tr>
+    </table>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">SIM-FIRST SMART FACTORY · TEAM OVERVIEW REV A — 개인 실행 계획은 <a href="smart_factory_plan.html">PROJECT PLAN</a> 참조</div>
+</footer>
+
+</body>
+</html>

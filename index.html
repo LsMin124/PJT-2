@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>시뮬레이션 기반 통합 스마트팩토리 솔루션 — 프로젝트 계획서</title>
+<title>SIM-FIRST SMART FACTORY — 문서 인덱스</title>
 <style>
   :root{
     --bg:#E9ECEE;          /* 공장 패널 그레이 */
@@ -11,27 +11,24 @@
     --panel-edge:#D4D9DD;
     --ink:#1B2430;
     --ink-soft:#5A6673;
-    --amber:#E8720C;       /* 산업 안전 주황 — 주력/강조 */
-    --machine:#1F7A4D;     /* 설비 상태 그린 — 결정/확정 */
-    --steel:#33506B;       /* 강판 블루 — 데이터/표준 */
+    --amber:#E8720C;       /* 산업 안전 주황 */
+    --machine:#1F7A4D;     /* 설비 상태 그린 */
+    --steel:#33506B;       /* 강판 블루 */
     --grid:#DDE2E6;
     --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
     --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important;animation:none!important}}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
   body{
     background:var(--bg);
     background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
     background-size:32px 32px;
-    color:var(--ink);
-    font-family:var(--sans);
-    line-height:1.65;
-    font-size:15px;
+    color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:15px;
+    min-height:100vh;display:flex;flex-direction:column;
   }
   a{color:var(--steel)}
-  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px;width:100%}
 
   /* ── 헤더: 도면 표제란 스타일 ── */
   header{border-bottom:3px solid var(--ink);background:var(--panel)}
@@ -43,138 +40,51 @@
   .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
   .meta b{color:var(--ink);font-weight:600}
 
-  /* ── 상단 고정 내비: 설비 태그 리스트 ── */
-  nav{position:sticky;top:0;z-index:50;background:var(--ink);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
-  nav::-webkit-scrollbar{display:none}
-  nav .wrap{display:flex;gap:2px;padding:0 20px}
-  nav a{
-    font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;
-    padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s
-  }
-  nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--amber);outline:none}
+  main{flex:1;padding:46px 0 80px}
 
-  /* ── 섹션 공통 ── */
-  main{padding:44px 0 80px}
-  section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
-  .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
-  .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
-  h2{font-size:20px;font-weight:800;letter-spacing:-.01em}
-  .sec-body{padding:16px 26px 26px}
-  h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
-  h3::before{content:"";width:8px;height:8px;background:var(--amber)}
-  p{color:var(--ink);margin-bottom:10px}
-  .lead{font-size:15.5px}
-  .soft{color:var(--ink-soft)}
   .tagline{
-    font-size:16px;font-weight:600;background:var(--ink);color:#fff;padding:16px 20px;margin:14px 0;
+    font-size:15px;font-weight:600;background:var(--ink);color:#fff;padding:16px 20px;margin:0 0 26px;
     border-left:6px solid var(--amber)
   }
   .tagline small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#9AA7B4;margin-bottom:6px;font-weight:400}
+  .tagline b{color:var(--amber)}
 
-  /* ── 표 ── */
-  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
-  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
-  td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top}
-  tr:last-child td{border-bottom:none}
-  td b{font-weight:700}
-  .num{font-family:var(--mono)}
-
-  /* ── 칩/뱃지 ── */
-  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px}
-  .chip.amber{color:var(--amber)}
-  .chip.green{color:var(--machine)}
-  .chip.steel{color:var(--steel)}
-
-  /* ── ISA-95 아키텍처 스택 (시그니처) ── */
-  .stack{margin:18px 0;border:1px solid var(--panel-edge)}
-  .layer{display:grid;grid-template-columns:150px 1fr;border-bottom:1px solid var(--panel-edge);transition:background .15s}
-  .layer:last-child{border-bottom:none}
-  .layer:hover{background:#FDF4EC}
-  .layer .tag{
-    font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;padding:16px 14px;
-    background:#F2F4F6;border-right:1px solid var(--panel-edge);display:flex;flex-direction:column;gap:2px;justify-content:center
+  /* ── 문서 카드: 도면 목록표 ── */
+  .register-label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:12px}
+  .docs{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  a.doc{
+    --accent:var(--steel);
+    display:flex;flex-direction:column;text-decoration:none;color:var(--ink);
+    background:var(--panel);border:1px solid var(--panel-edge);border-top:4px solid var(--accent);
+    padding:22px 24px 18px;
+    transition:transform .15s,box-shadow .15s,border-color .15s;
   }
-  .layer .tag small{font-weight:400;color:var(--ink-soft);font-size:10px}
-  .layer .desc{padding:14px 18px;font-size:13.5px}
-  .layer .desc b{font-weight:700}
-  .layer .desc .proto{font-family:var(--mono);font-size:11px;color:var(--steel);margin-top:4px;display:block}
-  .layer.l-hi .tag{background:var(--ink);color:#fff;border-right-color:var(--ink)}
-  .flowdown{text-align:center;font-family:var(--mono);font-size:10px;color:var(--ink-soft);letter-spacing:.2em;padding:4px 0;background:#F5F7F8;border-bottom:1px solid var(--panel-edge)}
-
-  /* ── 배분 바 ── */
-  .alloc{display:flex;height:44px;margin:16px 0 6px;font-family:var(--mono);font-size:12px;font-weight:700;color:#fff}
-  .alloc div{display:flex;align-items:center;justify-content:center;gap:6px}
-  .alloc .a50{flex:5;background:var(--amber)}
-  .alloc .a30{flex:3;background:var(--steel)}
-  .alloc .a20{flex:2;background:#8A96A3}
-  .alloc-cap{display:flex;font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);margin-bottom:14px}
-  .alloc-cap div{text-align:center}
-  .alloc-cap .a50{flex:5}.alloc-cap .a30{flex:3}.alloc-cap .a20{flex:2}
-
-  /* ── 로드맵 레일 ── */
-  .phases{display:grid;gap:0;margin:14px 0;border-left:3px solid var(--ink)}
-  .phase{position:relative;padding:14px 18px 14px 28px;border-bottom:1px dashed var(--grid)}
-  .phase:last-child{border-bottom:none}
-  .phase::before{content:"";position:absolute;left:-8px;top:20px;width:13px;height:13px;background:var(--panel);border:3px solid var(--amber)}
-  .phase.opt::before{border-color:#8A96A3}
-  .phase .ph-tag{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--amber);letter-spacing:.08em}
-  .phase.opt .ph-tag{color:#8A96A3}
-  .phase h4{font-size:14.5px;font-weight:700;margin:2px 0 4px}
-  .phase p{font-size:13px;color:var(--ink-soft);margin:0}
-
-  /* ── 대비 카드 (SimPy vs Isaac) ── */
-  .versus{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
-  .vcard{border:1px solid var(--panel-edge);padding:16px 18px}
-  .vcard h4{font-family:var(--mono);font-size:12px;letter-spacing:.06em;margin-bottom:8px}
-  .vcard.des h4{color:var(--steel)}
-  .vcard.phy h4{color:var(--amber)}
-  .vcard ul{list-style:none;font-size:13px}
-  .vcard li{padding:5px 0;border-bottom:1px dashed var(--grid)}
-  .vcard li:last-child{border-bottom:none}
-  .vcard li b{font-weight:700}
-
-  /* ── 패턴 단계 ── */
-  .patterns{counter-reset:pat;display:grid;gap:12px;margin:14px 0}
-  .pat{border:1px solid var(--panel-edge);padding:14px 18px 14px 58px;position:relative}
-  .pat::before{
-    counter-increment:pat;content:counter(pat);position:absolute;left:14px;top:14px;
-    width:30px;height:30px;display:flex;align-items:center;justify-content:center;
-    background:var(--ink);color:#fff;font-family:var(--mono);font-weight:700;font-size:14px
-  }
-  .pat h4{font-size:14px;font-weight:700}
-  .pat h4 small{font-family:var(--mono);font-size:10.5px;color:var(--amber);font-weight:600;letter-spacing:.06em;margin-left:8px}
-  .pat p{font-size:13px;color:var(--ink-soft);margin:4px 0 0}
-  .promote{text-align:center;font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);letter-spacing:.15em}
-
-  /* ── 원칙/체크 리스트 ── */
-  ul.rules{list-style:none;margin:10px 0}
-  ul.rules li{padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--grid);font-size:13.5px}
-  ul.rules li:last-child{border-bottom:none}
-  ul.rules li::before{content:"▸";position:absolute;left:6px;color:var(--amber);font-weight:700}
-  ul.rules li b{font-weight:700}
-
-  /* ── Decision Log ── */
-  .dlog{counter-reset:dec;display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;margin:12px 0}
-  .dlog div{
-    counter-increment:dec;position:relative;padding:9px 12px 9px 44px;background:#F5F7F8;
-    border-left:3px solid var(--machine);font-size:13px
-  }
-  .dlog div::before{
-    content:counter(dec,decimal-leading-zero);position:absolute;left:10px;top:9px;
-    font-family:var(--mono);font-size:11px;font-weight:700;color:var(--machine)
-  }
+  a.doc.d-team{--accent:var(--amber)}
+  a.doc.d-plan{--accent:var(--steel)}
+  a.doc:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(27,36,48,.14);border-color:var(--accent)}
+  a.doc:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  .doc-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+  .doc-no{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--accent)}
+  .aud{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--ink-soft);border:1px solid var(--panel-edge);padding:2px 8px}
+  a.doc h2{font-size:20px;font-weight:800;letter-spacing:-.01em;margin-bottom:2px}
+  a.doc h2 .en{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-soft);letter-spacing:.08em;margin-left:8px}
+  a.doc>p{font-size:13.5px;color:var(--ink-soft);margin:6px 0 4px}
+  .toc{display:grid;grid-template-columns:1fr 1fr;gap:3px 18px;margin:14px 0 4px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+  .toc span b{color:var(--accent);font-weight:700;margin-right:7px}
+  .doc-foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--grid);display:flex;justify-content:space-between;align-items:center}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;color:var(--accent)}
+  .open{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--accent);white-space:nowrap}
+  .open::after{content:"→";margin-left:6px;display:inline-block;transition:transform .15s}
+  a.doc:hover .open::after{transform:translateX(4px)}
 
   footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
 
-  @media (max-width:760px){
+  @media (max-width:820px){
     .titleblock{grid-template-columns:1fr}
     .meta{border-left:none;padding-left:0;text-align:left}
-    .layer{grid-template-columns:1fr}
-    .layer .tag{flex-direction:row;gap:8px;border-right:none;border-bottom:1px solid var(--panel-edge);padding:9px 14px}
-    .versus{grid-template-columns:1fr}
-    .dlog{grid-template-columns:1fr}
+    .docs{grid-template-columns:1fr}
     body{font-size:14px}
-    .sec-head,.sec-body{padding-left:16px;padding-right:16px}
   }
 </style>
 </head>
@@ -183,311 +93,77 @@
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow">PROJECT PLAN · REV A · <b>SIM-FIRST SMART FACTORY</b> · 2026-08</div>
+      <div class="doc-eyebrow">DOCUMENT REGISTER · <b>SIM-FIRST SMART FACTORY</b> · 2026-08</div>
       <h1>시뮬레이션 기반 통합 스마트팩토리 솔루션
-        <span class="sub">매니퓰레이션 생산라인 + 운송 AMR + 산업 데이터 플로우 + AI QA — 물리 레이어가 시뮬레이션인 제조 IT/OT 통합 시스템</span>
+        <span class="sub">매니퓰레이션 생산라인 + 운송 AMR + 산업 데이터 플로우 + AI QA — 프로젝트 문서 인덱스</span>
       </h1>
     </div>
     <div class="meta">
-      TARGET · <b>제조/설비 SW R&amp;D</b><br>
-      RIG · <b>RTX 5080 / Ubuntu 22.04</b><br>
+      TEAM · <b>6명 · 7주</b><br>
+      PARTS · <b>로보틱스 2 · AI 2 · 백엔드 2</b><br>
       STACK · <b>ROS2 · Isaac · SimPy · Spring</b><br>
       STATUS · <b>PLANNING</b>
     </div>
   </div>
 </header>
 
-<nav aria-label="섹션 이동">
-  <div class="wrap">
-    <a href="#s1">01 정체성</a>
-    <a href="#s2">02 시뮬레이터·장비</a>
-    <a href="#s3">03 아키텍처</a>
-    <a href="#s4">04 SimPy×Isaac</a>
-    <a href="#s5">05 역량 배분</a>
-    <a href="#s6">06 로드맵</a>
-    <a href="#s7">07 Sim-to-Real</a>
-    <a href="#s8">08 이론 학습</a>
-    <a href="#s9">09 Decision Log</a>
-  </div>
-</nav>
-
 <main class="wrap">
-<!-- ── 01 정체성 ── -->
-<section id="s1">
-  <div class="sec-head"><span class="sec-no">SEC 01</span><h2>프로젝트 정체성과 목표</h2></div>
-  <div class="sec-body">
-    <div class="tagline"><small>ONE-LINE DEFINITION</small>"멀티로봇 시뮬레이션 기반 생산 셀을 구축하고 ISA-95 계층으로 MES까지 통합한 스마트팩토리 솔루션"</div>
-    <p class="lead">"로봇 프로젝트에 백엔드를 붙인 것"이 아니라 <b>제조 IT/OT 통합 시스템에서 물리 레이어를 시뮬레이션으로 구현한 것</b>. 타겟 직무는 삼성 생산기술연구소·SEMES·LG 생산기술원·현대위아 등 제조/설비 SW R&amp;D.</p>
-    <h3>전략적 배경</h3>
-    <ul class="rules">
-      <li>하드웨어 없이 <b>시뮬레이션 온리</b>로 기술 스택 완성 — 실기체 경험은 도도 프로젝트가 이미 커버, 반복 증명 불필요</li>
-      <li>실기체(sim-to-real)는 <b>사이드로 열어두되</b> 시뮬 단계 완성 후 전이</li>
-      <li>포트폴리오 상호보완: 도도(실기체·비전·엣지) + 본 프로젝트(시뮬·제어·산업 통합)</li>
-      <li><b>어느 단계에서 멈춰도 완결</b>되도록 단계 설계 — 리스크 통제</li>
-    </ul>
+
+  <div class="tagline"><small>READING ORDER</small>처음 합류한 팀원은 <b>01 전체 조망</b>(그림·오너십·협업 규칙) → <b>02 실행 계획서</b>(기술 상세·결정 근거) 순서로. 파트 간 계약·일정의 기준은 항상 01.</div>
+
+  <div class="register-label">Documents · 2 Active</div>
+  <div class="docs">
+
+    <a class="doc d-team" href="smart_factory_overview.html">
+      <div class="doc-top">
+        <span class="doc-no">DOC 01 · TEAM-OVERVIEW · REV A</span>
+        <span class="aud">FOR 전체 팀원</span>
+      </div>
+      <h2>전체 조망<span class="en">TEAM OVERVIEW</span></h2>
+      <p>무엇을 만들고(관제 포털 서비스), 누가 무엇을 소유하며(파트·오너십), 6명이 서로 기다리지 않고 병렬로 달리는 방법(데이터 계약·mock·통합 캘린더)을 담은 팀 공유 상위 문서.</p>
+      <div class="toc">
+        <span><b>01</b>비전·서비스</span>
+        <span><b>02</b>시스템 파노라마</span>
+        <span><b>03</b>팀 구성·오너십</span>
+        <span><b>04</b>데이터 계약</span>
+        <span><b>05</b>통합 캘린더</span>
+        <span><b>06</b>협업 규칙</span>
+      </div>
+      <div class="doc-foot">
+        <span class="chips"><span class="chip">6 MEMBERS</span><span class="chip">7 WEEKS</span><span class="chip">CONTRACT-FIRST</span></span>
+        <span class="open">열람</span>
+      </div>
+    </a>
+
+    <a class="doc d-plan" href="smart_factory_plan.html">
+      <div class="doc-top">
+        <span class="doc-no">DOC 02 · PROJECT-PLAN · REV A</span>
+        <span class="aud">FOR 로보틱스 · 아키텍처</span>
+      </div>
+      <h2>실행 계획서<span class="en">PROJECT PLAN</span></h2>
+      <p>시뮬레이터 선택과 하드웨어 환경, ISA-95 아키텍처, SimPy×Isaac 정합 패턴, 단계별 로드맵과 Sim-to-Real 사이드 트랙까지 — 기술 실행의 상세와 결정 근거(Decision Log).</p>
+      <div class="toc">
+        <span><b>01</b>정체성</span>
+        <span><b>02</b>시뮬레이터·장비</span>
+        <span><b>03</b>아키텍처</span>
+        <span><b>04</b>SimPy×Isaac</span>
+        <span><b>05</b>역량 배분</span>
+        <span><b>06</b>로드맵</span>
+        <span><b>07</b>Sim-to-Real</span>
+        <span><b>08</b>이론 학습</span>
+        <span><b>09</b>Decision Log</span>
+      </div>
+      <div class="doc-foot">
+        <span class="chips"><span class="chip">ISA-95</span><span class="chip">ROS2 · ISAAC</span><span class="chip">VDA 5050</span></span>
+        <span class="open">열람</span>
+      </div>
+    </a>
+
   </div>
-</section>
-
-<!-- ── 02 시뮬레이터·장비 ── -->
-<section id="s2">
-  <div class="sec-head"><span class="sec-no">SEC 02</span><h2>시뮬레이터 선택과 하드웨어 환경</h2></div>
-  <div class="sec-body">
-    <h3>시뮬레이터 역할 정의</h3>
-    <table>
-      <tr><th style="width:110px">도구</th><th>계층</th><th>본 프로젝트에서의 역할</th></tr>
-      <tr><td><b>Isaac Sim</b></td><td>연속시간 물리 시뮬레이터 (Omniverse)</td><td>생산 셀·AMR 물리/센서 시뮬레이션, Replicator 합성 데이터</td></tr>
-      <tr><td><b>Isaac Lab</b></td><td>Isaac Sim 위의 RL 프레임워크 (GPU 병렬화)</td><td>매니퓰레이션 RL 태스크 1개 완주 (심화 챕터)</td></tr>
-      <tr><td><b>Gazebo</b></td><td>ROS2 네이티브 시뮬레이터</td><td>ROS2 스택(Nav2/MoveIt2) 개발 주 무대, 저비용 반복</td></tr>
-      <tr><td><b>SimPy</b></td><td>이산사건 시뮬레이션 (DES)</td><td>공장 물류/스케줄링 레이어, AMR 배차 두뇌</td></tr>
-    </table>
-    <ul class="rules">
-      <li>매니퓰레이션은 <b>MoveIt2 기반 고전 접근</b>(모션 플래닝 + IK)이 산업 표준 — Gazebo로 충분, RL은 심화</li>
-      <li>취업시장 우선순위: <span class="chip amber">ROS2 절대 코어</span> &gt; <span class="chip steel">Gazebo 기본기</span> &gt; <span class="chip green">Isaac 희소성 차별화</span></li>
-    </ul>
-    <h3>하드웨어 환경 (확정)</h3>
-    <table>
-      <tr><th>머신</th><th>사양</th><th>OS</th><th>역할</th></tr>
-      <tr><td><b>메인 워크스테이션</b></td><td class="num">RTX 5080 16GB · RAM 32GB</td><td>Ubuntu 22.04</td><td>ROS2/Gazebo/Isaac Sim·Lab/RL 학습 전담 — Isaac Sim 5.x "Good" 등급, 클라우드 불필요</td></tr>
-      <tr><td><b>데일리 PC</b></td><td class="num">RTX 5060 Ti 16GB · RAM 32GB</td><td>Windows</td><td>원격 개발 클라이언트 (VS Code Remote-SSH + Tailscale), TensorBoard/Grafana/WebRTC 모니터링</td></tr>
-    </table>
-    <ul class="rules">
-      <li><b>50시리즈(Blackwell)는 Isaac Sim 5.x 전용</b> — 4.x 드라이버/CUDA 비호환. <span class="chip green">Isaac Sim 5.x</span><span class="chip green">Isaac Lab main</span><span class="chip green">Python 3.11</span> 버전 고정</li>
-      <li>Python 환경 격리 필수: ROS2 Humble(3.10) vs Isaac Lab(3.11) — conda/venv 분리</li>
-      <li>드라이버 최신 production branch (580.65.06+), SSD 여유 100GB+</li>
-      <li>학습은 <b>--headless 습관화</b>, 렌더 카메라는 검사 스테이션 위주로 VRAM 예산 관리</li>
-      <li>RAM 64GB 증설은 옵션 — Replicator 대량 생성/대형 씬 병목 체감 시 5080 우선</li>
-    </ul>
-  </div>
-</section>
-
-<!-- ── 03 아키텍처 ── -->
-<section id="s3">
-  <div class="sec-head"><span class="sec-no">SEC 03</span><h2>시스템 아키텍처 — ISA-95 계층</h2></div>
-  <div class="sec-body">
-    <div class="stack">
-      <div class="layer"><div class="tag">관제/분석</div><div class="desc"><b>Grafana 대시보드</b> — 설비 가동률 · 사이클 타임 · AMR 위치/배터리 · 불량률</div></div>
-      <div class="flowdown">▼ ▲</div>
-      <div class="layer l-hi"><div class="tag">L3 · MES<small>Spring Boot</small></div><div class="desc"><b>MES-lite</b>: 작업지시 생성 → 스테이션 할당 → AMR 배차 → 실적 집계<br>+ <b>SimPy 물류 오케스트레이터</b> (배차 두뇌)</div></div>
-      <div class="flowdown">▼ ▲</div>
-      <div class="layer"><div class="tag">데이터 인프라</div><div class="desc">EMQX/Mosquitto → TimescaleDB(시계열) + PostgreSQL(작업지시/실적)<span class="proto">설비 텔레메트리 = Sparkplug B&nbsp;&nbsp;|&nbsp;&nbsp;AMR 운송 = VDA 5050</span></div></div>
-      <div class="flowdown">▼ ▲</div>
-      <div class="layer"><div class="tag">엣지</div><div class="desc">ROS2 노드 ↔ MQTT 브리지</div></div>
-      <div class="flowdown">▼ ▲</div>
-      <div class="layer"><div class="tag">L0~2 · 물리<small>Isaac Sim</small></div><div class="desc"><b>가상 공장</b>: 생산 셀(매니퓰레이터 스테이션 2~3 + 컨베이어) + 운송 AMR(옴니휠) 2대 + 검사 스테이션(카메라)</div></div>
-      <div class="flowdown">▼ ▲</div>
-      <div class="layer"><div class="tag">AI QA</div><div class="desc">Replicator 합성 결함 데이터 → 결함검출 모델(ONNX) → 판정 → MES 회신 → 불량품 AMR 리젝트 라인 운송 <b>(폐루프)</b></div></div>
-    </div>
-
-    <h3>산업 표준 배치 — 부주력 축의 두 기둥</h3>
-    <table>
-      <tr><th style="width:130px">표준</th><th>용도</th><th>핵심 내용</th></tr>
-      <tr><td><b>Sparkplug B</b></td><td>설비 텔레메트리</td><td>NBIRTH/NDATA 네임스페이스, 디바이스 상태 모델</td></tr>
-      <tr><td><b>VDA 5050</b></td><td>AMR 플릿 통신<br><span class="soft num" style="font-size:11px">VDA/VDMA 표준</span></td><td>마스터 컨트롤이 <code class="num">order</code>(node/edge 그래프 + 점진적 엣지 릴리스로 교통 제어) 발행 → AMR이 <code class="num">state</code> 보고. 3.0.0(2026.3): 자유주행 경로 공유·존 개념. MES-lite = 마스터 컨트롤 역할. 재료: 공식 JSON 스키마, OTTO 오픈소스 커넥터, ROS2 vda5050_connector</td></tr>
-      <tr><td class="soft">주변 표준<br>(면접 지도)</td><td class="soft">안전·상호운용</td><td class="soft">ISO 3691-4 / ANSI R15.08 (안전), MassRobotics Interop (채택 열세), SEMI E84 등 반도체 AMHS 별도 체계 (SEMES 대비)</td></tr>
-    </table>
-
-    <h3>AI QA — Replicator가 킬러 무브인 이유</h3>
-    <ul class="rules">
-      <li>현장 결함 검출의 난제 = <b>불량 샘플 희소성</b> → 합성 데이터가 실제 산업 트렌드</li>
-      <li>파이프라인: Replicator 결함 랜덤 생성(스크래치·오조립·결품) → YOLO/이상탐지(PatchCore·PaDiM) 학습 → ONNX 서비스화 → 시뮬 검사 카메라 실시간 적용</li>
-      <li>서사 연결: 도도의 OCR 도메인 일반화 실패 경험에 대한 해답 → <b>두 프로젝트가 하나의 스토리</b></li>
-    </ul>
-  </div>
-</section>
-<!-- ── 04 SimPy × Isaac ── -->
-<section id="s4">
-  <div class="sec-head"><span class="sec-no">SEC 04</span><h2>SimPy × Isaac Sim 정합성과 통합</h2></div>
-  <div class="sec-body">
-    <h3>근본적 차이 — 시간 패러다임</h3>
-    <div class="versus">
-      <div class="vcard des">
-        <h4>SimPy — 이산사건(DES)</h4>
-        <ul>
-          <li><b>시간</b>: 사건→사건 점프, 사이 구간 미계산</li>
-          <li><b>속도</b>: 하루치를 수 초에, Monte Carlo 수천 회</li>
-          <li><b>관심사</b>: 흐름과 자원 — 처리량·병목·대기열</li>
-        </ul>
-      </div>
-      <div class="vcard phy">
-        <h4>Isaac Sim — 연속시간 물리</h4>
-        <ul>
-          <li><b>시간</b>: 고정 타임스텝(1/60s 등) 연속 적분</li>
-          <li><b>속도</b>: 실시간 ~ 수 배속</li>
-          <li><b>관심사</b>: 운동과 상호작용 — 파지·충돌·센서</li>
-        </ul>
-      </div>
-    </div>
-    <p class="soft">→ 하나의 시계로 강결합 금지: DES의 장점(초고속·통계 반복)이 물리 속도에 묶여 소멸.</p>
-
-    <h3>정합 패턴 3단계 — 점진 승격 구조</h3>
-    <div class="patterns">
-      <div class="pat">
-        <h4>캘리브레이션 결합 <small>OFFLINE · 우선</small></h4>
-        <p>Isaac에서 단위 작업 반복 측정(픽앤플레이스 200회 → 평균 12.3s, σ=1.8s, 실패율 4%) → SimPy 공정 파라미터로 주입. 실행 완전 분리·단방향. "물리적 근거를 가진 공장 모델" — 산업 디지털 트윈 표준 구조. what-if 실험 자유(AMR 3대 vs 4대, 배차 A vs B).</p>
-      </div>
-      <div class="promote">▼ 승격</div>
-      <div class="pat">
-        <h4>계획-실행 분리 <small>ONLINE · 데모 핵심</small></h4>
-        <p>SimPy = 실시간 페이싱되는 오케스트레이터(작업 도착·큐·배차 결정). 명령은 MQTT(VDA 5050 order) → Isaac 물리 실행 → 완료 이벤트 회신 → 다음 사건 트리거. 내부 예상 소요시간은 버리고 외부 완료 이벤트 대기 → 사실상 이벤트 기반 잡 스케줄러화.</p>
-      </div>
-      <div class="promote">▼ 승격</div>
-      <div class="pat">
-        <h4>하이브리드 <small>FINAL FORM</small></h4>
-        <p>Isaac에 있는 셀 = 패턴 2 실제 실행, 나머지 셀 = 패턴 1 분포로 가상 처리. <b>물리 셀 + 통계 셀 공존</b> = VRAM 예산 해법이자 브라운필드 공장 디지털 트윈과 구조 동일. 실기체 편입 시 "실물 셀 1개 추가"로 자연 확장.</p>
-      </div>
-    </div>
-
-    <h3>정합성 설계 원칙</h3>
-    <ul class="rules">
-      <li><b>시간 권위 단일화</b> — 라이브 통합에서는 벽시계(Isaac 실시간)가 권위, SimPy가 추종</li>
-      <li><b>경계는 이산 사건만</b> — 오더 발행/완료/실패만 교환. 연속 상태(관절각·좌표)는 Sparkplug B로 DB/Grafana에만</li>
-      <li><b>실패 의미론 통일</b> — Isaac 파지 실패 = SimPy에서 재시도/불량 분기 동일 정의</li>
-      <li><b>결정론 포기 + 전 사건 타임스탬프 로깅</b>으로 사후 재구성 확보</li>
-    </ul>
-  </div>
-</section>
-
-<!-- ── 05 역량 배분 ── -->
-<section id="s5">
-  <div class="sec-head"><span class="sec-no">SEC 05</span><h2>역량 집중 배분 — 50 / 30 / 20</h2></div>
-  <div class="sec-body">
-    <div class="alloc">
-      <div class="a50">50% 로봇/시뮬</div>
-      <div class="a30">30% 산업 통합</div>
-      <div class="a20">20% 기타</div>
-    </div>
-    <div class="alloc-cap">
-      <div class="a50">주력 — 희소성 최대·기계공학 이점</div>
-      <div class="a30">부주력 — 설계 문서가 산출물</div>
-      <div class="a20">동작 수준</div>
-    </div>
-    <table>
-      <tr><th style="width:90px">배분</th><th>내용</th><th>깊이 기준</th></tr>
-      <tr><td><b class="num" style="color:var(--amber)">50%</b></td><td>ros2_control 하드웨어 인터페이스, Nav2+MoveIt2 통합, behavior tree 오케스트레이션, Isaac 포팅, Isaac Lab 태스크 1개</td><td>컨트롤러 체인·DDS QoS·물리 파라미터 선택 근거를 면접에서 방어 가능한 수준</td></tr>
-      <tr><td><b class="num" style="color:var(--steel)">30%</b></td><td>Sparkplug B 네임스페이스 설계, ROS2↔MQTT 브리지, VDA 5050 배차, MES↔로봇 명령 계약(스키마)</td><td>코드보다 설계 문서가 산출물 — "왜 이 표준인가" 설명</td></tr>
-      <tr><td><b class="num" style="color:#8A96A3">20%</b></td><td>Spring MES-lite, DB, Grafana, QA 모델</td><td>템플릿·기존 코드 재활용. "전체가 연결됨"이 목적</td></tr>
-    </table>
-    <h3>판단 근거 (희소성 × 유니크함)</h3>
-    <ul class="rules">
-      <li>Spring/DB/Grafana: SSAFY 전원 보유 역량 → <b>차별화 없음</b>, 동작 수준으로</li>
-      <li>AI QA는 모델 자체보다 <b>Replicator 데이터 생성 파이프라인</b>에 무게</li>
-      <li>ROS2/Isaac: 제대로 다루는 신입 최희소 + <b>기계공학 베이스가 이점으로 작동하는 유일 레이어</b></li>
-      <li>산업 표준(ISA-95/Sparkplug B/VDA 5050): 난이도 중간, 아는 신입 거의 없음 → <b>가성비 최고</b></li>
-      <li>힘 빼기 = 안 만들어도 되는 건 안 만들기. 주력 영역은 남의 코드도 해부 후 재구성 (STS3215 프로토콜 레벨까지)</li>
-    </ul>
-  </div>
-</section>
-
-<!-- ── 06 로드맵 ── -->
-<section id="s6">
-  <div class="sec-head"><span class="sec-no">SEC 06</span><h2>단계별 로드맵</h2></div>
-  <div class="sec-body">
-    <div class="tagline"><small>PRINCIPLE</small>수직 슬라이스 우선 — "스테이션 1개 + AMR 1대 + 데이터 경로 끝까지"를 최소 구성으로 먼저 관통, 이후 수평 확장. 통합 리스크를 앞에서 흡수.</div>
-    <div class="phases">
-      <div class="phase">
-        <span class="ph-tag">PHASE 0</span><h4>데이터 백본 (Isaac 없이 시작, 5060 Ti 가능)</h4>
-        <p>SimPy 물류 모델(가짜 분포) + Spring MES-lite + MQTT 브로커 + TimescaleDB/PostgreSQL + Grafana · VDA 5050/Sparkplug B 스키마 설계</p>
-      </div>
-      <div class="phase">
-        <span class="ph-tag">PHASE 1</span><h4>ROS2 코어 (Gazebo)</h4>
-        <p>LeKiwi+SO-101 통합 URDF · ros2_control(베이스 velocity/팔 position) · Nav2 + EKF + MoveIt2 · behavior tree로 주행→도킹→픽앤플레이스</p>
-      </div>
-      <div class="phase">
-        <span class="ph-tag">PHASE 2</span><h4>Isaac Sim 포팅 + 수직 슬라이스 완성</h4>
-        <p>USD 변환·ROS2 브리지로 노드 재사용 · 셀 1 + AMR 1 라이브 접속(패턴 2) · Replicator 결함 데이터 → QA 모델 → 폐루프</p>
-      </div>
-      <div class="phase">
-        <span class="ph-tag">PHASE 3</span><h4>Isaac Lab RL</h4>
-        <p>파지(또는 도킹 정렬) 1태스크: 환경 정의 → 도메인 랜덤화 → PPO → 평가 · STS3215 실측 스펙 반영 · 검증 서사 = sim-to-sim 전이 + 랜덤화 민감도 분석 · 소규모(64~128 env) 검증 → 야간 대규모(2048+) 본 학습</p>
-      </div>
-      <div class="phase">
-        <span class="ph-tag">PHASE 4</span><h4>수평 확장 + 시뮬 CI</h4>
-        <p>셀/AMR 추가(하이브리드) · 배차 알고리즘 비교(consistent hashing/Power of Two Choices) · Jenkins headless 회귀 CI: 표준 시나리오 자동 실행 → 사이클 타임/성공률 리포트</p>
-      </div>
-      <div class="phase opt">
-        <span class="ph-tag">PHASE 5 · 선택</span><h4>Sim-to-Real 사이드</h4>
-        <p>SO-101 + LeKiwi 실기체를 "실물 셀 1개"로 편입 → 하이브리드 디지털 트윈 완성형</p>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- ── 07 Sim-to-Real ── -->
-<section id="s7">
-  <div class="sec-head"><span class="sec-no">SEC 07</span><h2>Sim-to-Real 사이드 트랙 — 하드웨어 계획</h2></div>
-  <div class="sec-body">
-    <h3>플랫폼 확정: SO-101 (팔) + LeKiwi (베이스)</h3>
-    <ul class="rules">
-      <li><b>SO-101</b>: LeRobot 생태계 표준 오픈소스 6DOF 매니퓰레이터</li>
-      <li><b>LeKiwi</b> (UIUC SIGRobotics): SO-101을 싣도록 설계된 3륜 옴니휠(키위 드라이브) 홀로노믹 베이스</li>
-      <li>결정 근거: 팔·베이스가 <b>같은 STS3215 + 같은 컨트롤 보드 + 같은 SDK</b>로 통합, ros2_control 커뮤니티 구현체·Isaac 에셋 양쪽 존재, 기존 옴니휠 AMR 구상과 정합</li>
-    </ul>
-    <h3>구매 리스트 <span class="chip green">텔레옵/모방학습 제외 → 리더 암 불필요</span></h3>
-    <table>
-      <tr><th>품목</th><th style="width:150px">수량</th><th>비고</th></tr>
-      <tr><td><b>STS3215 서보 1/345 기어</b></td><td class="num">팔 6 + 바퀴 3 = 9 (+예비 1~2)</td><td><b>전체 12V 통일 권장</b> — 베이스 주행 부하 + 팔 토크 여유, 전원 계통 단순화</td></tr>
-      <tr><td>모터 컨트롤 보드 (Waveshare USB 시리얼 버스)</td><td class="num">1~2</td><td></td></tr>
-      <tr><td>4인치 옴니휠 (VEX 스타일)</td><td class="num">3</td><td>+ STS3215 어댑터 허브 프린팅</td></tr>
-      <tr><td>12V 리튬이온 배터리 + 12V→5V 벅 컨버터</td><td class="num">각 1</td><td></td></tr>
-      <tr><td>3D 프린팅 파츠</td><td>팔로워 프레임 + LeKiwi 섀시</td><td>리더 전용 파츠(Handle/Wrist_Roll) 출력 제외</td></tr>
-      <tr><td>Raspberry Pi 5</td><td class="num">1</td><td>도도 이후 재활용</td></tr>
-    </table>
-    <h3>운용 원칙</h3>
-    <ul class="rules">
-      <li><b>구매 트리거</b>: Isaac Lab 정책이 랜덤화 폭 확대에도 안정 성공률(80%+) 유지 시점 = 주문 시점 (배송/조립 2~4주 감안해 선주문)</li>
-      <li>시뮬 단계부터 <b>실기체 URDF(LeKiwi+SO-101) 기준으로 모델 고정</b> → 전이 시 "모델 그대로, 갭 파라미터만 보정"</li>
-      <li>배포 구조: Isaac Lab 정책 → ONNX → 관측(관절 상태) → 추론 → 관절 명령 루프 (도도 ONNX 파이프라인과 동일 패턴)</li>
-      <li>알려진 이슈: 팔 전방 신전 자세에서 STS3215 과부하 사망 사례 (지지 블록·P게인 튜닝·고전류 배터리로 해결) — RL 정책은 이런 자세를 서슴없이 취함</li>
-      <li><b>갭 분석 기록이 곧 포트폴리오</b>: 랜덤화 항목별(마찰·질량·액추에이터 지연·관측 노이즈) 성공률 변화, 시뮬 vs 실기체 갭, 서보 백래시·통신 지연 영향, 실물 응답 특성(계단 명령 정착 시간) 측정 → 시뮬 파라미터 반영 과정</li>
-    </ul>
-  </div>
-</section>
-
-<!-- ── 08 이론 학습 ── -->
-<section id="s8">
-  <div class="sec-head"><span class="sec-no">SEC 08</span><h2>이론 학습 전략 — Just-in-Time</h2></div>
-  <div class="sec-body">
-    <p class="lead">원칙: 교과서 정주행(현대제어·라그랑주 동역학 등)은 오버. <b>프로젝트 단계가 이론을 소환하는 시점에 최소 구현으로 학습</b>. 별도 트랙 없음.</p>
-    <table>
-      <tr><th>프로젝트 단계</th><th>소환되는 이론</th><th>최소 구현 과제</th></tr>
-      <tr><td>옴니휠 베이스 제어</td><td>기구학 — 키위 드라이브 역기구학, 홀로노믹/자코비안</td><td>3륜 속도↔(vx,vy,ω) 변환 행렬 직접 유도 + numpy 검증 <span class="num soft">~1일</span></td></tr>
-      <tr><td>ros2_control 튜닝</td><td>제어공학 — PID</td><td>1차/2차 시스템 Python PID 시뮬, 게인별 응답 관찰 <span class="num soft">~2-3일</span> <span class="chip amber">유일한 선행 학습</span></td></tr>
-      <tr><td>MoveIt2 매니퓰레이션</td><td>로봇공학 — FK/IK, DH, 특이점</td><td>SO-101 URDF 순기구학 numpy 계산</td></tr>
-      <tr><td>EKF 센서 퓨전</td><td>상태추정 — 칼만 필터</td><td>1차원 칼만 필터 직접 구현 <span class="num soft">~반나절</span></td></tr>
-      <tr><td>Isaac Lab RL</td><td>동역학 맛보기</td><td>랜덤화 실험으로 체감 (깊이 불요)</td></tr>
-    </table>
-    <ul class="rules">
-      <li>운용 리듬: "이번 주 작업에 등장한 이론 하나를 <b>주말에 최소 구현으로 정리</b>" → 산출물이 그대로 설계 근거 문서/기술 블로그</li>
-      <li>효과: "기계 출신인데 SW 하는 사람" → <b>"로봇공학을 실제로 하는 사람"</b>으로 읽히게 하는 재료</li>
-      <li>Modern Robotics 등은 정독이 아닌 사전(해당 챕터만) 용도</li>
-    </ul>
-  </div>
-</section>
-
-<!-- ── 09 Decision Log ── -->
-<section id="s9">
-  <div class="sec-head"><span class="sec-no">SEC 09</span><h2>핵심 결정 사항 — Decision Log</h2></div>
-  <div class="sec-body">
-    <div class="dlog">
-      <div>프로젝트 정체성 = 시뮬 기반 제조 IT/OT 통합 시스템 (로봇 단독 프로젝트 아님)</div>
-      <div>매니퓰레이션 = MoveIt2 고전 접근이 본체, RL은 심화 챕터</div>
-      <div>시뮬레이터 = Gazebo(개발 무대) + Isaac Sim(합성 데이터·물리 셀) + Isaac Lab(RL 1태스크) + SimPy(물류 DES)</div>
-      <div>버전 고정 = Isaac Sim 5.x / Isaac Lab main / Python 3.11 (Blackwell 제약)</div>
-      <div>머신 역할 = 5080 Ubuntu 전담 워크스테이션, 5060 Ti Windows는 원격 클라이언트 (데일리 보존)</div>
-      <div>산업 표준 = 설비 텔레메트리 Sparkplug B / AMR 운송 VDA 5050</div>
-      <div>SimPy×Isaac 통합 = 캘리브레이션 → 라이브(계획-실행 분리) → 하이브리드 점진 승격</div>
-      <div>역량 배분 = 로봇/시뮬 50 / 산업 통합 30 / 기타 20</div>
-      <div>개발 순서 = 수직 슬라이스 우선, 데이터 백본 먼저 (Phase 0)</div>
-      <div>실기체 = SO-101+LeKiwi, STS3215 1/345 ×9(+예비), 12V 통일, 리더 암 불필요, 구매 트리거는 RL 정책 안정화 시점</div>
-      <div>URDF는 처음부터 실기체(LeKiwi+SO-101) 기준으로 고정</div>
-      <div>이론 학습 = just-in-time, 선행은 Python PID 시뮬 2~3일만</div>
-    </div>
-  </div>
-</section>
-
 </main>
 
 <footer>
-  <div class="wrap">SIM-FIRST SMART FACTORY · PROJECT PLAN REV A · 2026-08 — 계획 변경 시 Decision Log에 이력 추가</div>
+  <div class="wrap">SIM-FIRST SMART FACTORY · DOCUMENT REGISTER — 새 문서 추가 시 이 인덱스에 등록</div>
 </footer>
 
 </body>
