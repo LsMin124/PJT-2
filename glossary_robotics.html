@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>용어사전 A — 로보틱스 · 시뮬레이션</title>
+<style>
+  :root{
+    --bg:#E9ECEE;--panel:#FFFFFF;--panel-edge:#D4D9DD;--ink:#1B2430;--ink-soft:#5A6673;
+    --amber:#E8720C;--machine:#1F7A4D;--steel:#33506B;--grid:#DDE2E6;
+    --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important}}
+  body{
+    background:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:32px 32px;
+    color:var(--ink);font-family:var(--sans);line-height:1.7;font-size:15px;
+  }
+  a{color:var(--steel)}
+  .wrap{max-width:980px;margin:0 auto;padding:0 20px}
+  header{border-bottom:3px solid var(--ink);background:var(--panel)}
+  .titleblock{padding:30px 0 22px}
+  .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:8px}
+  .doc-eyebrow b{color:var(--amber);font-weight:600}
+  h1{font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-.02em}
+  h1 .sub{display:block;font-size:.55em;font-weight:500;color:var(--ink-soft);margin-top:6px}
+  nav{position:sticky;top:0;z-index:50;background:var(--ink);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav .wrap{display:flex;gap:2px;padding:0 20px}
+  nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
+  nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--amber);outline:none}
+  nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
+  nav a.here{color:#fff;border-bottom-color:var(--amber)}
+  main{padding:36px 0 80px}
+  .toc-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px}
+  .toc-chips a{font-family:var(--mono);font-size:11px;text-decoration:none;color:var(--steel);border:1px solid var(--panel-edge);background:var(--panel);padding:4px 10px}
+  .toc-chips a:hover{border-color:var(--amber);color:var(--amber)}
+  section.term{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:26px;padding:22px 26px;scroll-margin-top:56px}
+  .term h2{font-size:19px;font-weight:800;letter-spacing:-.01em}
+  .term h2 .en{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-soft);letter-spacing:.06em;margin-left:10px}
+  p.def{font-size:14px;font-weight:600;border-left:4px solid var(--amber);padding:9px 14px;background:#FDF4EC;margin:12px 0}
+  .term p{font-size:13.5px;margin:8px 0}
+  figure{margin:16px 0;border:1px solid var(--panel-edge);background:#FBFCFC;padding:14px}
+  figure svg{display:block;width:100%;height:auto}
+  figcaption{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);margin-top:8px;letter-spacing:.05em}
+  .ctx{margin-top:12px;padding:10px 14px;background:#F5F7F8;border-left:3px solid var(--machine);font-size:13px}
+  .ctx b{color:var(--machine)}
+  code{font-family:var(--mono);font-size:12px;background:#F2F4F6;padding:1px 5px}
+  footer{border-top:3px solid var(--ink);padding:18px 0 44px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+  @media (max-width:760px){body{font-size:14px} section.term{padding:16px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap titleblock">
+    <div class="doc-eyebrow">REFERENCE A · <b>용어사전 — 로보틱스 · 시뮬레이션</b> · SIM-FIRST SMART FACTORY</div>
+    <h1>로보틱스 · 시뮬레이션 용어
+      <span class="sub">로봇을 처음 다루는 팀원을 위한 설명 — 계획서·오버뷰 본문에서 하이퍼링크로 연결됨</span>
+    </h1>
+  </div>
+</header>
+
+<nav aria-label="문서 이동">
+  <div class="wrap">
+    <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a class="here" href="glossary_robotics.html">REF A · 로보틱스·시뮬레이션</a>
+    <a href="glossary_industrial.html">REF B · 스마트팩토리·표준</a>
+    <a href="glossary_ai_data.html">REF C · AI·데이터·서비스</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<div class="toc-chips">
+  <a href="#ros2">ROS 2</a><a href="#urdf">URDF</a><a href="#ros2control">ros2_control</a><a href="#pid">PID</a>
+  <a href="#nav2">Nav2</a><a href="#ekf">칼만 필터·EKF</a><a href="#moveit2">MoveIt2 · FK/IK</a><a href="#bt">Behavior Tree</a>
+  <a href="#omni">홀로노믹·옴니휠</a><a href="#gazebo">Gazebo</a><a href="#isaac">Isaac Sim · USD</a>
+  <a href="#replicator">Replicator</a><a href="#isaaclab">Isaac Lab · 강화학습</a><a href="#sim2real">Sim-to-Real</a>
+</div>
+
+<section class="term" id="ros2">
+  <h2>ROS 2<span class="en">Robot Operating System 2</span></h2>
+  <p class="def">로봇 소프트웨어의 사실상 표준 프레임워크. OS가 아니라, 로봇의 각 기능을 독립 프로그램(노드)으로 쪼개고 그들 사이의 통신을 표준화한 미들웨어다.</p>
+  <figure>
+    <svg viewBox="0 0 720 170" role="img" aria-label="ROS 2 노드와 토픽 구조">
+      <rect x="20" y="30" width="150" height="44" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <text x="95" y="56" text-anchor="middle" font-family="monospace" font-size="12" fill="#1B2430">카메라 노드</text>
+      <rect x="20" y="100" width="150" height="44" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <text x="95" y="126" text-anchor="middle" font-family="monospace" font-size="12" fill="#1B2430">라이다 노드</text>
+      <rect x="285" y="30" width="130" height="30" rx="15" fill="#E8720C"/>
+      <text x="350" y="50" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">/image 토픽</text>
+      <rect x="285" y="107" width="130" height="30" rx="15" fill="#E8720C"/>
+      <text x="350" y="127" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">/scan 토픽</text>
+      <rect x="530" y="62" width="170" height="50" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <text x="615" y="83" text-anchor="middle" font-family="monospace" font-size="12" fill="#1B2430">주행 판단 노드</text>
+      <text x="615" y="100" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">구독해서 사용</text>
+      <line x1="170" y1="52" x2="283" y2="46" stroke="#5A6673" stroke-width="1.5" marker-end="url(#ar)"/>
+      <line x1="170" y1="122" x2="283" y2="122" stroke="#5A6673" stroke-width="1.5" marker-end="url(#ar)"/>
+      <line x1="415" y1="48" x2="528" y2="76" stroke="#5A6673" stroke-width="1.5" marker-end="url(#ar)"/>
+      <line x1="415" y1="122" x2="528" y2="98" stroke="#5A6673" stroke-width="1.5" marker-end="url(#ar)"/>
+      <text x="225" y="35" font-family="monospace" font-size="10" fill="#5A6673">발행(publish)</text>
+      <text x="450" y="150" font-family="monospace" font-size="10" fill="#5A6673">구독(subscribe)</text>
+      <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#5A6673" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>노드들은 서로를 직접 모르고, 이름 붙은 토픽에 데이터를 발행/구독한다 — 웹의 메시지 큐(Kafka/MQTT)와 같은 발상</figcaption>
+  </figure>
+  <p>백엔드로 비유하면 <b>마이크로서비스 아키텍처</b>다. 카메라 처리, 경로 계획, 모터 제어가 각각 독립 노드(프로세스)이고, 토픽이라는 이름 붙은 채널로 메시지를 주고받는다. 통신 계층에는 DDS라는 산업용 프로토콜을 쓰며, QoS(신뢰성·버퍼 정책) 설정이 가능하다. 센서 데이터처럼 "최신 값만 중요"한 것과 명령처럼 "유실되면 안 되는" 것을 다르게 설정한다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 로봇 제어 전체(주행·팔·오케스트레이션)가 ROS 2 노드로 구성된다. 버전은 Humble. 웹 파트가 REST API 계약으로 협업하듯, 로보틱스 파트는 토픽 이름·메시지 타입이 계약이다.</div>
+</section>
+
+<section class="term" id="urdf">
+  <h2>URDF<span class="en">Unified Robot Description Format</span></h2>
+  <p class="def">로봇의 뼈대를 기술하는 XML 파일. 어떤 부품(링크)이 어떤 관절(조인트)로 연결되고, 길이·질량·관절 회전 범위가 얼마인지를 담는다.</p>
+  <p>HTML이 웹 페이지의 구조를 기술하듯, URDF는 로봇의 물리적 구조를 기술한다. 시뮬레이터는 이 파일을 읽어 3D 로봇을 만들고, 모션 플래너는 이 파일로 "팔이 어디까지 닿는지"를 계산한다. 하나의 URDF를 Gazebo·Isaac·MoveIt2가 공유하므로, <b>URDF가 틀리면 모든 게 틀린다</b> — 시뮬과 실물의 차이를 줄이는 첫 단추다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — AMR(옴니휠 베이스 LeKiwi) + 로봇팔(SO-101)의 통합 URDF를 처음부터 실기체 치수 기준으로 고정한다. 나중에 실물을 도입해도 모델 교체가 없도록.</div>
+</section>
+
+<section class="term" id="ros2control">
+  <h2>ros2_control<span class="en">하드웨어 추상화 · 제어 프레임워크</span></h2>
+  <p class="def">"관절을 이 각도로/이 속도로 움직여라"라는 명령을 실제 대상(시뮬레이터든 실물 모터든)에 전달하는 표준 계층. 제어 코드와 하드웨어를 분리한다.</p>
+  <figure>
+    <svg viewBox="0 0 720 130" role="img" aria-label="ros2_control 계층 구조">
+      <rect x="20" y="40" width="190" height="50" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <text x="115" y="61" text-anchor="middle" font-family="monospace" font-size="12" fill="#1B2430">컨트롤러</text>
+      <text x="115" y="78" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">궤적 추종 · PID</text>
+      <rect x="270" y="40" width="190" height="50" fill="#1B2430"/>
+      <text x="365" y="61" text-anchor="middle" font-family="monospace" font-size="12" fill="#fff">하드웨어 인터페이스</text>
+      <text x="365" y="78" text-anchor="middle" font-family="monospace" font-size="10" fill="#9AA7B4">표준 추상화 계층</text>
+      <rect x="520" y="14" width="180" height="42" fill="#FDF4EC" stroke="#E8720C" stroke-width="2"/>
+      <text x="610" y="40" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8720C">시뮬레이터 (Gazebo/Isaac)</text>
+      <rect x="520" y="74" width="180" height="42" fill="#F5F7F8" stroke="#5A6673" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="610" y="100" text-anchor="middle" font-family="monospace" font-size="11" fill="#5A6673">실물 서보 (STS3215)</text>
+      <line x1="210" y1="65" x2="268" y2="65" stroke="#5A6673" stroke-width="1.5" marker-end="url(#ar2)"/>
+      <line x1="460" y1="55" x2="518" y2="38" stroke="#5A6673" stroke-width="1.5" marker-end="url(#ar2)"/>
+      <line x1="460" y1="75" x2="518" y2="92" stroke="#5A6673" stroke-width="1.5" marker-end="url(#ar2)"/>
+      <defs><marker id="ar2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#5A6673" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>제어 코드는 동일, 인터페이스 뒤의 대상만 교체 — 시뮬→실물 전환이 "설정 변경"이 되는 이유</figcaption>
+  </figure>
+  <p>웹으로 비유하면 ORM이다. 비즈니스 로직(컨트롤러)은 표준 인터페이스만 바라보고, 그 뒤가 PostgreSQL이든 MySQL이든(시뮬이든 실물이든) 몰라도 된다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 베이스는 속도(velocity) 제어, 팔은 위치(position) 제어 인터페이스를 쓴다. Phase 5에서 실기체를 편입할 때 이 계층 덕에 상위 코드를 재사용한다.</div>
+</section>
+
+<section class="term" id="pid">
+  <h2>PID 제어<span class="en">Proportional–Integral–Derivative</span></h2>
+  <p class="def">목표값과 현재값의 차이(오차)를 보고 출력을 조절하는 가장 기본적인 피드백 제어. 오차에 비례(P)하고, 누적 오차를 보정(I)하고, 변화 속도를 억제(D)한다.</p>
+  <p>에어컨 온도 조절과 같은 원리다. P만 크면 목표를 지나쳐 진동하고, I가 없으면 목표에 조금 못 미친 채 머물고, D는 급격한 출렁임을 눌러준다. 이 세 게인(gain)을 튜닝하는 것이 모터 제어의 기본기다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — ros2_control의 관절 컨트롤러 튜닝에 등장한다. 이론 학습 트랙의 유일한 선행 과제(Python으로 1·2차 시스템 응답 시뮬레이션, 2~3일)이기도 하다.</div>
+</section>
+
+<section class="term" id="nav2">
+  <h2>Nav2<span class="en">Navigation 2 — 자율주행 스택</span></h2>
+  <p class="def">ROS 2의 표준 자율주행 패키지 묶음. "지도 위 A에서 B로 가라"를 주면 경로 계획, 장애물 회피, 속도 명령 생성까지 알아서 처리한다.</p>
+  <figure>
+    <svg viewBox="0 0 720 110" role="img" aria-label="Nav2 파이프라인">
+      <rect x="10" y="30" width="120" height="46" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <text x="70" y="50" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">지도</text>
+      <text x="70" y="66" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">SLAM/저장맵</text>
+      <rect x="160" y="30" width="120" height="46" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <text x="220" y="50" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">위치 추정</text>
+      <text x="220" y="66" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">AMCL·EKF</text>
+      <rect x="310" y="30" width="120" height="46" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <text x="370" y="50" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">전역 경로</text>
+      <text x="370" y="66" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">플래너</text>
+      <rect x="460" y="30" width="120" height="46" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <text x="520" y="50" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">지역 제어</text>
+      <text x="520" y="66" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">실시간 회피</text>
+      <rect x="610" y="30" width="100" height="46" fill="#E8720C"/>
+      <text x="660" y="50" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">속도 명령</text>
+      <text x="660" y="66" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#FDF4EC">cmd_vel</text>
+      <line x1="130" y1="53" x2="158" y2="53" stroke="#5A6673" stroke-width="1.5" marker-end="url(#ar3)"/>
+      <line x1="280" y1="53" x2="308" y2="53" stroke="#5A6673" stroke-width="1.5" marker-end="url(#ar3)"/>
+      <line x1="430" y1="53" x2="458" y2="53" stroke="#5A6673" stroke-width="1.5" marker-end="url(#ar3)"/>
+      <line x1="580" y1="53" x2="608" y2="53" stroke="#5A6673" stroke-width="1.5" marker-end="url(#ar3)"/>
+      <defs><marker id="ar3" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#5A6673" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>내비게이션 파이프라인 — 각 단계가 교체 가능한 플러그인 구조</figcaption>
+  </figure>
+  <p>자동차 내비게이션 + 운전기사를 합친 것으로 생각하면 된다. 전역 플래너가 "어느 길로 갈지"를 정하고(내비), 지역 컨트롤러가 "지금 당장 핸들·액셀을 어떻게"를 정한다(운전기사). 도중에 장애물이 나타나면 지역 단계에서 실시간으로 피한다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — AMR의 스테이션 간 이동을 담당한다. MES가 발행한 VDA 5050 order를 커넥터가 Nav2 목표 지점으로 변환한다.</div>
+</section>
+
+<section class="term" id="ekf">
+  <h2>칼만 필터 · EKF<span class="en">Extended Kalman Filter — 센서 융합</span></h2>
+  <p class="def">여러 부정확한 센서를 수학적으로 합쳐, 각각보다 정확한 하나의 추정값을 만드는 알고리즘. "로봇이 지금 어디 있는가"를 아는 핵심 도구.</p>
+  <figure>
+    <svg viewBox="0 0 720 150" role="img" aria-label="EKF 센서 융합">
+      <rect x="20" y="18" width="200" height="44" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <text x="120" y="37" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">휠 오도메트리</text>
+      <text x="120" y="53" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">부드럽지만 오차 누적(드리프트)</text>
+      <rect x="20" y="88" width="200" height="44" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <text x="120" y="107" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">IMU · 라이다</text>
+      <text x="120" y="123" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">드리프트 없지만 순간 노이즈</text>
+      <rect x="310" y="50" width="130" height="52" fill="#1B2430"/>
+      <text x="375" y="81" text-anchor="middle" font-family="monospace" font-size="13" fill="#fff">EKF 융합</text>
+      <ellipse cx="590" cy="76" rx="90" ry="34" fill="#FDF4EC" stroke="#E8720C" stroke-width="2"/>
+      <circle cx="590" cy="76" r="5" fill="#E8720C"/>
+      <text x="590" y="130" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#5A6673">더 정확한 위치 + 불확실성까지 추정</text>
+      <line x1="220" y1="40" x2="308" y2="65" stroke="#5A6673" stroke-width="1.5" marker-end="url(#ar4)"/>
+      <line x1="220" y1="110" x2="308" y2="88" stroke="#5A6673" stroke-width="1.5" marker-end="url(#ar4)"/>
+      <line x1="440" y1="76" x2="496" y2="76" stroke="#5A6673" stroke-width="1.5" marker-end="url(#ar4)"/>
+      <defs><marker id="ar4" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#5A6673" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>단점이 다른 센서들을 확률적으로 가중 평균 — 각 센서를 얼마나 믿을지가 수학적으로 결정된다</figcaption>
+  </figure>
+  <p>바퀴 회전수로 위치를 적분하면 부드럽지만 오차가 계속 쌓이고, 라이다 매칭은 오차가 안 쌓이지만 순간순간 튄다. 칼만 필터는 "예측(모델) → 측정(센서) → 보정"을 반복하며 둘의 장점만 취한다. EKF는 로봇처럼 비선형인 시스템으로 확장한 버전이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — AMR 위치 추정에 사용(robot_localization 패키지). 이론 학습 트랙에서 1차원 칼만 필터를 직접 구현해 원리를 잡는다(반나절).</div>
+</section>
+
+<section class="term" id="moveit2">
+  <h2>MoveIt2 · FK/IK<span class="en">모션 플래닝 · 기구학</span></h2>
+  <p class="def">MoveIt2는 로봇팔의 표준 모션 플래닝 프레임워크. "저 물체를 집어라"를 주면 충돌 없는 관절 궤적을 계산한다. 그 밑바탕 수학이 FK/IK(순기구학/역기구학)다.</p>
+  <figure>
+    <svg viewBox="0 0 720 200" role="img" aria-label="순기구학과 역기구학">
+      <text x="180" y="26" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#33506B">FK 순기구학</text>
+      <text x="180" y="44" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">관절 각도 → 손끝 위치</text>
+      <circle cx="110" cy="160" r="10" fill="#1B2430"/>
+      <line x1="110" y1="160" x2="180" y2="95" stroke="#1B2430" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="180" cy="95" r="7" fill="#E8720C"/>
+      <line x1="180" y1="95" x2="265" y2="75" stroke="#1B2430" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="265" cy="75" r="6" fill="#33506B"/>
+      <text x="120" y="130" font-family="monospace" font-size="11" fill="#E8720C">θ1</text>
+      <text x="196" y="80" font-family="monospace" font-size="11" fill="#E8720C">θ2</text>
+      <text x="278" y="70" font-family="monospace" font-size="10.5" fill="#33506B">(x, y)</text>
+      <line x1="360" y1="50" x2="360" y2="185" stroke="#D4D9DD" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="540" y="26" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#E8720C">IK 역기구학</text>
+      <text x="540" y="44" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">목표 위치 → 필요한 관절 각도</text>
+      <path d="M628 78 l6 12 13 2 -9 9 2 13 -12 -6 -12 6 2 -13 -9 -9 13 -2 z" fill="#E8720C"/>
+      <text x="628" y="130" text-anchor="middle" font-family="monospace" font-size="10" fill="#E8720C">목표 지점</text>
+      <circle cx="470" cy="160" r="10" fill="#1B2430"/>
+      <line x1="470" y1="160" x2="540" y2="100" stroke="#5A6673" stroke-width="5" stroke-dasharray="6 4" stroke-linecap="round"/>
+      <line x1="540" y1="100" x2="620" y2="88" stroke="#5A6673" stroke-width="4" stroke-dasharray="6 4" stroke-linecap="round"/>
+      <text x="480" y="118" font-family="monospace" font-size="11" fill="#5A6673">θ1=? θ2=?</text>
+    </svg>
+    <figcaption>FK는 계산이 한 방향으로 정해지지만, IK는 해가 여러 개거나 없을 수도 있어 더 어렵다</figcaption>
+  </figure>
+  <p>MoveIt2는 IK 풀이에 더해 <b>충돌 회피 경로 탐색</b>까지 한다. "팔이 컨베이어에 부딪히지 않으면서 물체까지 도달하는 관절 움직임의 순서"를 샘플링 기반 알고리즘으로 찾는 것. 산업 현장 매니퓰레이션의 표준 접근이며, 강화학습 없이도 픽앤플레이스(집어서 옮기기)는 이 방식으로 충분하다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 생산 셀의 부품 픽앤플레이스를 담당한다. RL(Isaac Lab)은 심화 챕터이고 본체는 MoveIt2 고전 접근이다.</div>
+</section>
+
+<section class="term" id="bt">
+  <h2>Behavior Tree<span class="en">행동 트리 — 작업 오케스트레이션</span></h2>
+  <p class="def">로봇의 작업 순서와 실패 대응을 트리 구조로 짜는 방식. "이동해라, 성공하면 도킹해라, 실패하면 재시도해라" 같은 흐름을 코드가 아닌 트리로 선언한다.</p>
+  <figure>
+    <svg viewBox="0 0 720 190" role="img" aria-label="행동 트리 예시">
+      <rect x="300" y="15" width="120" height="36" fill="#1B2430"/>
+      <text x="360" y="38" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">순차 Sequence</text>
+      <rect x="40" y="120" width="130" height="40" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <text x="105" y="145" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1B2430">배터리 확인</text>
+      <rect x="210" y="120" width="130" height="40" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <text x="275" y="145" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1B2430">이동 (Nav2)</text>
+      <rect x="380" y="120" width="130" height="40" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <text x="445" y="145" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1B2430">정밀 도킹</text>
+      <rect x="550" y="120" width="140" height="40" fill="#FDF4EC" stroke="#E8720C" stroke-width="2"/>
+      <text x="620" y="139" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#E8720C">파지 (MoveIt2)</text>
+      <text x="620" y="153" text-anchor="middle" font-family="monospace" font-size="9" fill="#5A6673">실패 시 2회 재시도</text>
+      <line x1="330" y1="51" x2="110" y2="118" stroke="#5A6673" stroke-width="1.5"/>
+      <line x1="345" y1="51" x2="278" y2="118" stroke="#5A6673" stroke-width="1.5"/>
+      <line x1="375" y1="51" x2="443" y2="118" stroke="#5A6673" stroke-width="1.5"/>
+      <line x1="395" y1="51" x2="612" y2="118" stroke="#5A6673" stroke-width="1.5"/>
+      <text x="360" y="90" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">왼쪽부터 순서대로 실행, 하나라도 실패하면 중단·보고</text>
+    </svg>
+    <figcaption>if-else 스파게티 대신 트리 — 실패 처리·재시도·우선순위가 구조적으로 표현된다</figcaption>
+  </figure>
+  <p>프론트엔드의 상태 관리에 비유하면, 복잡한 로봇 작업의 "상태 머신을 사람이 읽을 수 있는 형태"로 만든 것이다. 게임 AI에서 출발해 로봇 업계 표준이 됐고, Nav2 내부도 행동 트리로 돌아간다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — "주행 → 도킹 → 픽앤플레이스 → 복귀"라는 AMR의 한 사이클 전체를 행동 트리로 오케스트레이션한다.</div>
+</section>
+
+<section class="term" id="omni">
+  <h2>홀로노믹 · 옴니휠<span class="en">Holonomic Drive · Omni Wheel</span></h2>
+  <p class="def">전후진뿐 아니라 옆으로 게걸음, 제자리 회전까지 — 평면의 모든 방향으로 즉시 움직일 수 있는 구동 방식. 바퀴 둘레에 작은 롤러가 달린 옴니휠로 구현한다.</p>
+  <figure>
+    <svg viewBox="0 0 720 210" role="img" aria-label="키위 드라이브 구조">
+      <circle cx="240" cy="105" r="80" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <rect x="220" y="12" width="40" height="16" fill="#1B2430"/>
+      <rect x="152" y="148" width="40" height="16" fill="#1B2430" transform="rotate(60 172 156)"/>
+      <rect x="288" y="148" width="40" height="16" fill="#1B2430" transform="rotate(-60 308 156)"/>
+      <text x="240" y="110" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">3륜 120°</text>
+      <text x="240" y="126" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">키위 드라이브</text>
+      <line x1="420" y1="105" x2="500" y2="105" stroke="#E8720C" stroke-width="2.5" marker-end="url(#ar5)"/>
+      <text x="455" y="95" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8720C">vx 전후</text>
+      <line x1="440" y1="145" x2="440" y2="65" stroke="#33506B" stroke-width="2.5" marker-end="url(#ar5)"/>
+      <text x="485" y="140" text-anchor="middle" font-family="monospace" font-size="11" fill="#33506B">vy 좌우</text>
+      <path d="M560 75 a34 34 0 1 1 -24 58" fill="none" stroke="#1F7A4D" stroke-width="2.5" marker-end="url(#ar5)"/>
+      <text x="570" y="160" text-anchor="middle" font-family="monospace" font-size="11" fill="#1F7A4D">ω 회전</text>
+      <text x="500" y="196" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#5A6673">세 바퀴 속도 ↔ (vx, vy, ω) — 3×3 행렬 변환</text>
+      <defs><marker id="ar5" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#5A6673" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>바퀴 3개를 120° 간격으로 배치한 키위 드라이브 — 좁은 공장 통로에서 방향 전환 없이 어느 쪽으로든 이동</figcaption>
+  </figure>
+  <p>자동차는 옆으로 못 움직인다(비홀로노믹 — 평행주차가 어려운 이유). 옴니휠 로봇은 세 바퀴의 회전 속도 조합만으로 원하는 평면 속도 (vx, vy, ω)를 만들 수 있고, 이 변환이 3×3 행렬 하나로 표현된다. 이론 학습 트랙에서 이 행렬을 직접 유도한다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 운송 AMR의 베이스(LeKiwi)가 3륜 키위 드라이브다. 좁은 셀 사이 정밀 도킹에 유리하다.</div>
+</section>
+
+<section class="term" id="gazebo">
+  <h2>Gazebo<span class="en">ROS 네이티브 물리 시뮬레이터</span></h2>
+  <p class="def">ROS 2와 가장 잘 붙는 오픈소스 로봇 시뮬레이터. 가볍고 빨라서 로봇 소프트웨어 개발의 "로컬 개발 서버" 역할을 한다.</p>
+  <p>물리 엔진 위에서 URDF 로봇을 움직이고 가상 센서(라이다·카메라·IMU)를 흉내 낸다. 그래픽 품질과 물리 정밀도는 Isaac Sim보다 낮지만, 켜는 데 몇 초면 되고 저사양에서도 돌아 <b>반복 개발 속도</b>가 압도적으로 좋다. 웹 개발로 치면 Gazebo는 로컬 dev 서버, Isaac은 스테이징 환경이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — Phase 1의 주 무대. Nav2·MoveIt2·행동 트리를 모두 Gazebo에서 개발·검증한 뒤 Isaac으로 포팅한다.</div>
+</section>
+
+<section class="term" id="isaac">
+  <h2>Isaac Sim · USD<span class="en">NVIDIA Omniverse 물리 시뮬레이터</span></h2>
+  <p class="def">NVIDIA의 고정밀 로봇 시뮬레이터. 사실적인 렌더링(RTX 레이트레이싱)과 정밀한 물리를 제공하며, 합성 데이터 생성과 GPU 병렬 강화학습의 기반이 된다.</p>
+  <p>씬(장면) 기술에는 픽사가 만든 3D 표준 포맷 <b>USD</b>(Universal Scene Description)를 쓴다 — 3D 세계의 HTML이라고 생각하면 된다. Gazebo 대비 진입 장벽과 하드웨어 요구(RTX GPU 필수)가 높지만, "카메라에 실제처럼 찍히는" 수준의 렌더링이 필요한 AI 데이터 생성에서는 대체재가 없다. 50시리즈(Blackwell) GPU는 Isaac Sim 5.x만 지원하는 버전 제약이 있다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 본 무대. 생산 셀·AMR·검사 스테이션의 최종 시뮬레이션 환경이자, Replicator 합성 데이터와 Isaac Lab RL의 기반. RTX 5080 워크스테이션에서 구동한다.</div>
+</section>
+
+<section class="term" id="replicator">
+  <h2>Replicator · 도메인 랜덤화<span class="en">합성 데이터 생성 · Domain Randomization</span></h2>
+  <p class="def">Isaac Sim 안에서 조명·텍스처·물체 배치·결함을 프로그램으로 무작위로 바꿔가며, 라벨이 자동으로 붙은 학습 이미지를 대량 생성하는 도구와 기법.</p>
+  <figure>
+    <svg viewBox="0 0 720 150" role="img" aria-label="도메인 랜덤화 개념">
+      <rect x="15" y="30" width="150" height="90" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <circle cx="90" cy="70" r="20" fill="#33506B"/><rect x="55" y="98" width="70" height="8" fill="#D4D9DD"/>
+      <text x="90" y="140" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">조명 A · 정상</text>
+      <rect x="195" y="30" width="150" height="90" fill="#E9ECEE" stroke="#1B2430" stroke-width="2"/>
+      <circle cx="270" cy="80" r="20" fill="#33506B"/><line x1="258" y1="70" x2="285" y2="92" stroke="#E8720C" stroke-width="3"/>
+      <text x="270" y="140" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">조명 B · 스크래치</text>
+      <rect x="375" y="30" width="150" height="90" fill="#FDF4EC" stroke="#1B2430" stroke-width="2"/>
+      <circle cx="435" cy="65" r="20" fill="#33506B"/><circle cx="480" cy="95" r="12" fill="none" stroke="#E8720C" stroke-width="2" stroke-dasharray="3 2"/>
+      <text x="450" y="140" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">각도 변경 · 결품</text>
+      <line x1="540" y1="75" x2="580" y2="75" stroke="#5A6673" stroke-width="1.5" marker-end="url(#ar6)"/>
+      <rect x="588" y="45" width="120" height="60" fill="#1F7A4D"/>
+      <text x="648" y="72" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">라벨 자동 부여</text>
+      <text x="648" y="90" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#D9EFE3">학습 데이터셋</text>
+      <defs><marker id="ar6" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#5A6673" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>수천 가지 변형을 자동 생성 — 사람이 라벨링할 필요가 없고, 희귀한 불량 샘플도 원하는 만큼 만든다</figcaption>
+  </figure>
+  <p>실제 공장에서 불량품 사진은 구하기 어렵다(불량이 드물어야 정상이니까). 합성 데이터는 이 희소성 문제의 산업계 해답이다. 도메인 랜덤화는 "시뮬 이미지가 실제와 조금 달라도, 변형을 충분히 다양하게 주면 모델이 본질만 배운다"는 기법으로, 시뮬로 학습한 모델이 실제에서도 작동하게 만드는 핵심이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 스크래치·오조립·결품 결함을 Replicator로 생성해 QA 모델을 학습시킨다. AI 파트의 핵심 차별화 지점.</div>
+</section>
+
+<section class="term" id="isaaclab">
+  <h2>Isaac Lab · 강화학습<span class="en">Reinforcement Learning · PPO</span></h2>
+  <p class="def">Isaac Sim 위에서 로봇 강화학습을 돌리는 프레임워크. 수천 개의 가상 환경을 GPU에서 동시에 돌려, 로봇이 시행착오로 기술을 익히는 속도를 극단적으로 높인다.</p>
+  <figure>
+    <svg viewBox="0 0 720 160" role="img" aria-label="강화학습 루프">
+      <rect x="60" y="55" width="180" height="56" fill="#1B2430"/>
+      <text x="150" y="80" text-anchor="middle" font-family="monospace" font-size="12" fill="#fff">에이전트 (정책)</text>
+      <text x="150" y="98" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#9AA7B4">신경망 — 무엇을 할지 결정</text>
+      <rect x="470" y="40" width="190" height="40" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <rect x="478" y="48" width="190" height="40" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <rect x="486" y="56" width="190" height="40" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <text x="581" y="81" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">환경 ×4096 병렬</text>
+      <path d="M240 65 C 330 25, 400 25, 468 55" fill="none" stroke="#E8720C" stroke-width="2" marker-end="url(#ar7)"/>
+      <text x="355" y="30" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#E8720C">행동 (관절 명령)</text>
+      <path d="M486 100 C 400 140, 330 140, 242 105" fill="none" stroke="#1F7A4D" stroke-width="2" marker-end="url(#ar7)"/>
+      <text x="360" y="148" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1F7A4D">보상 + 관측 (성공했나? 지금 상태는?)</text>
+      <defs><marker id="ar7" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#5A6673" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>행동 → 보상 루프를 수백만 번 반복 — GPU 병렬화로 며칠 걸릴 학습을 몇 시간으로 압축</figcaption>
+  </figure>
+  <p>지도학습이 "정답지를 보고 배우기"라면 강화학습은 "게임을 반복 플레이하며 점수 높이는 법 배우기"다. PPO는 그중 가장 널리 쓰이는 학습 알고리즘. 명시적으로 프로그래밍하기 어려운 기술(미끄러운 물체 파지, 정밀 도킹의 마지막 몇 cm)에 유효하다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 심화 챕터로 파지(또는 도킹 정렬) 태스크 1개를 완주한다. 본체는 MoveIt2 고전 접근이고, RL은 그 위의 차별화 요소다.</div>
+</section>
+
+<section class="term" id="sim2real">
+  <h2>Sim-to-Real<span class="en">시뮬레이션 → 실물 전이</span></h2>
+  <p class="def">시뮬레이션에서 개발·학습한 소프트웨어를 실물 로봇에 옮기는 것, 그리고 그때 발생하는 차이(reality gap)를 다루는 기법 전반.</p>
+  <p>시뮬은 마찰·모터 지연·센서 노이즈를 완벽히 재현하지 못하므로, 시뮬에서 완벽하던 동작이 실물에서는 실패할 수 있다. 대응책은 ① 도메인 랜덤화(시뮬을 일부러 다양하게 흔들어 강건하게 학습) ② 시스템 식별(실물을 측정해 시뮬 파라미터를 보정) ③ 표준화된 추상화 계층(ros2_control)으로 코드 재사용. 갭을 측정하고 줄여가는 기록 자체가 값진 산출물이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — Phase 5 선택 트랙. RL 정책이 랜덤화 폭을 넓혀도 안정 성공률을 유지하는 시점이 실기체 구매 트리거다. 항목별(마찰·질량·지연·노이즈) 민감도 분석이 핵심 산출물.</div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">SIM-FIRST SMART FACTORY · REFERENCE A — <a href="glossary_industrial.html">B 스마트팩토리·표준</a> · <a href="glossary_ai_data.html">C AI·데이터·서비스</a> · <a href="index.html">문서 인덱스</a></div>
+</footer>
+
+</body>
+</html>

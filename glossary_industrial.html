@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>용어사전 B — 스마트팩토리 · 산업 표준</title>
+<style>
+  :root{
+    --bg:#E9ECEE;--panel:#FFFFFF;--panel-edge:#D4D9DD;--ink:#1B2430;--ink-soft:#5A6673;
+    --amber:#E8720C;--machine:#1F7A4D;--steel:#33506B;--grid:#DDE2E6;
+    --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important}}
+  body{
+    background:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:32px 32px;
+    color:var(--ink);font-family:var(--sans);line-height:1.7;font-size:15px;
+  }
+  a{color:var(--steel)}
+  .wrap{max-width:980px;margin:0 auto;padding:0 20px}
+  header{border-bottom:3px solid var(--ink);background:var(--panel)}
+  .titleblock{padding:30px 0 22px}
+  .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:8px}
+  .doc-eyebrow b{color:var(--amber);font-weight:600}
+  h1{font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-.02em}
+  h1 .sub{display:block;font-size:.55em;font-weight:500;color:var(--ink-soft);margin-top:6px}
+  nav{position:sticky;top:0;z-index:50;background:var(--ink);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav .wrap{display:flex;gap:2px;padding:0 20px}
+  nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
+  nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--amber);outline:none}
+  nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
+  nav a.here{color:#fff;border-bottom-color:var(--amber)}
+  main{padding:36px 0 80px}
+  .toc-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px}
+  .toc-chips a{font-family:var(--mono);font-size:11px;text-decoration:none;color:var(--steel);border:1px solid var(--panel-edge);background:var(--panel);padding:4px 10px}
+  .toc-chips a:hover{border-color:var(--amber);color:var(--amber)}
+  section.term{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:26px;padding:22px 26px;scroll-margin-top:56px}
+  .term h2{font-size:19px;font-weight:800;letter-spacing:-.01em}
+  .term h2 .en{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-soft);letter-spacing:.06em;margin-left:10px}
+  p.def{font-size:14px;font-weight:600;border-left:4px solid var(--amber);padding:9px 14px;background:#FDF4EC;margin:12px 0}
+  .term p{font-size:13.5px;margin:8px 0}
+  figure{margin:16px 0;border:1px solid var(--panel-edge);background:#FBFCFC;padding:14px}
+  figure svg{display:block;width:100%;height:auto}
+  figcaption{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);margin-top:8px;letter-spacing:.05em}
+  .ctx{margin-top:12px;padding:10px 14px;background:#F5F7F8;border-left:3px solid var(--machine);font-size:13px}
+  .ctx b{color:var(--machine)}
+  code{font-family:var(--mono);font-size:12px;background:#F2F4F6;padding:1px 5px}
+  footer{border-top:3px solid var(--ink);padding:18px 0 44px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+  @media (max-width:760px){body{font-size:14px} section.term{padding:16px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap titleblock">
+    <div class="doc-eyebrow">REFERENCE B · <b>용어사전 — 스마트팩토리 · 산업 표준</b> · SIM-FIRST SMART FACTORY</div>
+    <h1>스마트팩토리 · 산업 표준 용어
+      <span class="sub">제조 도메인이 처음인 팀원을 위한 설명 — 계획서·오버뷰 본문에서 하이퍼링크로 연결됨</span>
+    </h1>
+  </div>
+</header>
+
+<nav aria-label="문서 이동">
+  <div class="wrap">
+    <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a href="glossary_robotics.html">REF A · 로보틱스·시뮬레이션</a>
+    <a class="here" href="glossary_industrial.html">REF B · 스마트팩토리·표준</a>
+    <a href="glossary_ai_data.html">REF C · AI·데이터·서비스</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<div class="toc-chips">
+  <a href="#smartfactory">스마트팩토리 · IT/OT</a><a href="#isa95">ISA-95</a><a href="#mes">MES</a>
+  <a href="#digitaltwin">디지털 트윈</a><a href="#des">이산사건 시뮬레이션 · SimPy</a><a href="#mqtt">MQTT</a>
+  <a href="#sparkplug">Sparkplug B</a><a href="#vda5050">VDA 5050</a><a href="#amr">AMR vs AGV</a>
+  <a href="#andon">Andon</a><a href="#oee">OEE</a><a href="#closedloop">폐루프 품질관리</a>
+</div>
+
+<section class="term" id="smartfactory">
+  <h2>스마트팩토리 · IT/OT 융합<span class="en">Smart Factory · IT/OT Convergence</span></h2>
+  <p class="def">설비·로봇이 만드는 현장 데이터(OT)와 기업 정보 시스템(IT)을 연결해, 공장이 스스로 상태를 보고하고 지시를 받는 체계. "IT와 OT의 융합"이 스마트팩토리의 본질이다.</p>
+  <figure>
+    <svg viewBox="0 0 720 150" role="img" aria-label="IT와 OT의 융합">
+      <rect x="30" y="30" width="250" height="90" fill="#F5F7F8" stroke="#33506B" stroke-width="2"/>
+      <text x="155" y="55" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#33506B">IT — 정보 기술</text>
+      <text x="155" y="78" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#5A6673">ERP · MES · DB · 웹 서비스</text>
+      <text x="155" y="96" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#5A6673">"무엇을 얼마나 만들까"</text>
+      <rect x="440" y="30" width="250" height="90" fill="#FDF4EC" stroke="#E8720C" stroke-width="2"/>
+      <text x="565" y="55" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#E8720C">OT — 운영 기술</text>
+      <text x="565" y="78" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#5A6673">PLC · 로봇 · 센서 · 설비</text>
+      <text x="565" y="96" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#5A6673">"지금 어떻게 만드는가"</text>
+      <line x1="280" y1="65" x2="440" y2="65" stroke="#1F7A4D" stroke-width="2.5" marker-end="url(#br)" marker-start="url(#bl)"/>
+      <text x="360" y="55" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1F7A4D">MQTT · 표준 프로토콜</text>
+      <text x="360" y="140" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#5A6673">두 세계를 잇는 다리가 이 프로젝트의 데이터 인프라 레이어</text>
+      <defs>
+        <marker id="br" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#1F7A4D" stroke-width="1.5"/></marker>
+        <marker id="bl" markerWidth="8" markerHeight="8" refX="0" refY="3" orient="auto"><path d="M7,0 L0,3 L7,6" fill="none" stroke="#1F7A4D" stroke-width="1.5"/></marker>
+      </defs>
+    </svg>
+    <figcaption>전통 공장에서는 IT와 OT가 단절되어 있었다 — 이 단절을 잇는 것이 스마트팩토리 프로젝트의 핵심 주제</figcaption>
+  </figure>
+  <p>OT(Operational Technology)는 물리 세계를 직접 움직이는 기술이고, IT는 정보를 다루는 기술이다. 두 세계는 쓰는 프로토콜·시간 단위·안정성 요구가 완전히 달라서 오랫동안 분리되어 있었다. 스마트팩토리는 이 사이에 표준화된 데이터 파이프라인을 놓아 "현장에서 일어나는 일"을 실시간으로 위(경영·분석)까지 올리고, "위의 결정"을 현장까지 내리는 것이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 물리 레이어(OT)만 시뮬레이션일 뿐, IT/OT를 잇는 데이터 플로우·백엔드·서비스는 실제 스마트팩토리와 동일한 구조로 만든다. 이것이 "로봇 데모"와 다른 점이다.</div>
+</section>
+
+<section class="term" id="isa95">
+  <h2>ISA-95<span class="en">제조 시스템의 계층 표준</span></h2>
+  <p class="def">공장의 소프트웨어를 5개 층(L0~L4)으로 나누는 국제 표준. 아래로 갈수록 물리에 가깝고 빠르며(마이크로초), 위로 갈수록 경영에 가깝고 느리다(일 단위).</p>
+  <figure>
+    <svg viewBox="0 0 720 240" role="img" aria-label="ISA-95 피라미드">
+      <polygon points="285,15 435,15 455,55 265,55" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="360" y="41" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">L4 · ERP 경영</text>
+      <polygon points="265,60 455,60 480,100 240,100" fill="#1B2430"/>
+      <text x="360" y="86" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">L3 · MES 생산 관리</text>
+      <polygon points="240,105 480,105 505,145 215,145" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="360" y="131" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">L2 · SCADA 감시 제어</text>
+      <polygon points="215,150 505,150 530,190 190,190" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="360" y="176" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">L1 · PLC 제어</text>
+      <polygon points="190,195 530,195 555,235 165,235" fill="#FDF4EC" stroke="#E8720C" stroke-width="2"/>
+      <text x="360" y="221" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8720C">L0 · 센서 · 설비 · 로봇 (물리)</text>
+      <text x="620" y="38" font-family="monospace" font-size="10" fill="#5A6673">시간: 일 · 주</text>
+      <text x="620" y="83" font-family="monospace" font-size="10" fill="#5A6673">초 · 분</text>
+      <text x="620" y="128" font-family="monospace" font-size="10" fill="#5A6673">밀리초 · 초</text>
+      <text x="620" y="173" font-family="monospace" font-size="10" fill="#5A6673">µs · ms</text>
+      <text x="620" y="218" font-family="monospace" font-size="10" fill="#E8720C">물리 시간</text>
+      <text x="80" y="83" font-family="monospace" font-size="10" fill="#5A6673">← 본 프로젝트의</text>
+      <text x="80" y="98" font-family="monospace" font-size="10" fill="#5A6673">   MES-lite 위치</text>
+      <text x="80" y="218" font-family="monospace" font-size="10" fill="#E8720C">← Isaac Sim이 대체</text>
+    </svg>
+    <figcaption>위로 갈수록 타이밍이 느슨해진다 — 층마다 요구되는 실시간성이 다르다는 것이 아키텍처 설계의 근거</figcaption>
+  </figure>
+  <p>웹의 프론트–백–DB 계층처럼, 제조 SW에도 표준 계층이 있다. 각 층은 바로 위·아래하고만 대화하는 것이 원칙이며, 이 규율이 시스템을 교체 가능하게 만든다. 면접·실무에서 제조 IT를 논할 때의 공용어이기도 하다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 아키텍처 전체가 ISA-95 구조를 따른다. L0~2를 Isaac Sim(가상 공장)이 담당하고, L3에 Spring MES-lite + SimPy 오케스트레이터가 놓인다.</div>
+</section>
+
+<section class="term" id="mes">
+  <h2>MES<span class="en">Manufacturing Execution System — 생산 실행 시스템</span></h2>
+  <p class="def">"오늘 무엇을 몇 개 만들지"(작업지시)를 받아 현장에 배분하고, 실제로 몇 개가 만들어졌는지(실적)를 집계하는 공장 운영의 두뇌.</p>
+  <p>이커머스의 주문 관리 시스템(OMS)과 구조가 유사하다. 주문(작업지시)이 들어오면 → 처리 가능한 자원(스테이션·로봇)에 할당하고 → 진행 상태를 추적하고 → 완료 실적을 집계한다. 실무 MES는 거대한 패키지 소프트웨어지만, 핵심 로직(작업지시 라이프사이클 + 자원 할당 + 실적 집계)은 웹 백엔드 기술로 충분히 구현 가능하다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — Spring Boot로 MES-lite를 구현한다. 작업지시 생성 → 스테이션 할당 → AMR 배차 → 실적 집계가 범위이고, AMR 플릿에 대해서는 VDA 5050의 "마스터 컨트롤" 역할을 겸한다.</div>
+</section>
+
+<section class="term" id="digitaltwin">
+  <h2>디지털 트윈<span class="en">Digital Twin</span></h2>
+  <p class="def">실제 공장·설비의 상태를 반영하는 가상 복제본. 현실을 관찰하는 거울이자, "이렇게 바꾸면 어떻게 될까"를 미리 실험하는 모의 무대다.</p>
+  <p>단순 3D 모형과의 차이는 <b>데이터 동기화</b>다. 진짜 디지털 트윈은 현실의 측정값(사이클 타임·고장률)으로 계속 보정되고, 반대로 트윈에서의 실험 결과(배차 정책 변경, 설비 증설)가 현실 의사결정에 반영된다. 산업계에서는 물리 시뮬레이션과 통계 모델(이산사건 시뮬레이션)을 결합한 하이브리드 구조가 표준적이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — Isaac에서 실측한 작업 시간 분포를 SimPy 공장 모델에 주입하는 "캘리브레이션 결합"이 정확히 이 구조다. 물리 셀과 통계 셀이 공존하는 하이브리드가 최종형.</div>
+</section>
+
+<section class="term" id="des">
+  <h2>이산사건 시뮬레이션 · SimPy<span class="en">Discrete Event Simulation</span></h2>
+  <p class="def">시간을 연속으로 흘리지 않고 "사건에서 다음 사건으로 점프"하며 공장의 흐름(대기열·처리량·병목)을 계산하는 시뮬레이션. SimPy는 이를 위한 Python 라이브러리다.</p>
+  <figure>
+    <svg viewBox="0 0 720 180" role="img" aria-label="연속 시뮬레이션과 이산사건 시뮬레이션 비교">
+      <text x="20" y="30" font-family="monospace" font-size="11" font-weight="bold" fill="#E8720C">연속시간 (Isaac Sim)</text>
+      <line x1="20" y1="55" x2="700" y2="55" stroke="#D4D9DD" stroke-width="2"/>
+      <g stroke="#E8720C" stroke-width="1.5">
+        <line x1="30" y1="48" x2="30" y2="62"/><line x1="55" y1="48" x2="55" y2="62"/><line x1="80" y1="48" x2="80" y2="62"/>
+        <line x1="105" y1="48" x2="105" y2="62"/><line x1="130" y1="48" x2="130" y2="62"/><line x1="155" y1="48" x2="155" y2="62"/>
+        <line x1="180" y1="48" x2="180" y2="62"/><line x1="205" y1="48" x2="205" y2="62"/><line x1="230" y1="48" x2="230" y2="62"/>
+        <line x1="255" y1="48" x2="255" y2="62"/><line x1="280" y1="48" x2="280" y2="62"/><line x1="305" y1="48" x2="305" y2="62"/>
+        <line x1="330" y1="48" x2="330" y2="62"/><line x1="355" y1="48" x2="355" y2="62"/><line x1="380" y1="48" x2="380" y2="62"/>
+        <line x1="405" y1="48" x2="405" y2="62"/><line x1="430" y1="48" x2="430" y2="62"/><line x1="455" y1="48" x2="455" y2="62"/>
+        <line x1="480" y1="48" x2="480" y2="62"/><line x1="505" y1="48" x2="505" y2="62"/><line x1="530" y1="48" x2="530" y2="62"/>
+        <line x1="555" y1="48" x2="555" y2="62"/><line x1="580" y1="48" x2="580" y2="62"/><line x1="605" y1="48" x2="605" y2="62"/>
+        <line x1="630" y1="48" x2="630" y2="62"/><line x1="655" y1="48" x2="655" y2="62"/><line x1="680" y1="48" x2="680" y2="62"/>
+      </g>
+      <text x="20" y="85" font-family="monospace" font-size="9.5" fill="#5A6673">모든 타임스텝(1/60초)을 빠짐없이 계산 — 물리적 정확성, 대신 느림</text>
+      <text x="20" y="120" font-family="monospace" font-size="11" font-weight="bold" fill="#33506B">이산사건 (SimPy)</text>
+      <line x1="20" y1="145" x2="700" y2="145" stroke="#D4D9DD" stroke-width="2"/>
+      <circle cx="60" cy="145" r="7" fill="#33506B"/><circle cx="290" cy="145" r="7" fill="#33506B"/><circle cx="480" cy="145" r="7" fill="#33506B"/><circle cx="660" cy="145" r="7" fill="#33506B"/>
+      <text x="60" y="168" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">부품 도착</text>
+      <text x="290" y="168" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">가공 시작</text>
+      <text x="480" y="168" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">가공 완료</text>
+      <text x="660" y="168" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">운송 완료</text>
+      <path d="M70 137 C 150 118, 210 118, 282 137" fill="none" stroke="#33506B" stroke-width="1.5" marker-end="url(#dj)"/>
+      <path d="M300 137 C 360 118, 410 118, 472 137" fill="none" stroke="#33506B" stroke-width="1.5" marker-end="url(#dj)"/>
+      <path d="M490 137 C 550 118, 600 118, 652 137" fill="none" stroke="#33506B" stroke-width="1.5" marker-end="url(#dj)"/>
+      <defs><marker id="dj" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#33506B" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>사건 사이 구간은 계산하지 않고 건너뜀 — 공장 하루치를 몇 초 만에, 수천 번 반복 실험 가능</figcaption>
+  </figure>
+  <p>물리 시뮬레이션이 "로봇이 어떻게 움직이는가"에 답한다면, DES는 "공장 전체가 얼마나 잘 흘러가는가"에 답한다. AMR을 3대에서 4대로 늘리면 처리량이 얼마나 오르는지, 어느 스테이션이 병목인지 같은 질문은 DES로 수천 번 돌려 통계로 확인하는 것이 산업 표준 방법론이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — SimPy가 공장 물류·배차의 두뇌다. Isaac 실측치로 보정(캘리브레이션)한 뒤, 라이브 모드에서는 실시간 이벤트 기반 잡 스케줄러로 승격된다. 개발 초기의 mock publisher도 SimPy로 만든다.</div>
+</section>
+
+<section class="term" id="mqtt">
+  <h2>MQTT<span class="en">경량 발행/구독 메시징 프로토콜</span></h2>
+  <p class="def">IoT·제조 현장의 표준 메시징 프로토콜. 모든 참여자가 중앙 브로커에 연결해, 토픽 이름으로 메시지를 발행(publish)하고 구독(subscribe)한다.</p>
+  <figure>
+    <svg viewBox="0 0 720 180" role="img" aria-label="MQTT 발행 구독 구조">
+      <rect x="290" y="60" width="140" height="60" fill="#1B2430"/>
+      <text x="360" y="87" text-anchor="middle" font-family="monospace" font-size="12" fill="#fff">브로커</text>
+      <text x="360" y="105" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#9AA7B4">EMQX · Mosquitto</text>
+      <rect x="20" y="25" width="150" height="40" fill="#FDF4EC" stroke="#E8720C" stroke-width="2"/>
+      <text x="95" y="50" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8720C">AMR (발행)</text>
+      <rect x="20" y="115" width="150" height="40" fill="#FDF4EC" stroke="#E8720C" stroke-width="2"/>
+      <text x="95" y="140" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8720C">설비 (발행)</text>
+      <rect x="550" y="25" width="150" height="40" fill="#F5F7F8" stroke="#33506B" stroke-width="2"/>
+      <text x="625" y="50" text-anchor="middle" font-family="monospace" font-size="11" fill="#33506B">MES (구독)</text>
+      <rect x="550" y="115" width="150" height="40" fill="#F5F7F8" stroke="#33506B" stroke-width="2"/>
+      <text x="625" y="140" text-anchor="middle" font-family="monospace" font-size="11" fill="#33506B">웹 관제 (구독)</text>
+      <line x1="170" y1="45" x2="288" y2="75" stroke="#5A6673" stroke-width="1.5" marker-end="url(#mq)"/>
+      <line x1="170" y1="135" x2="288" y2="105" stroke="#5A6673" stroke-width="1.5" marker-end="url(#mq)"/>
+      <line x1="430" y1="75" x2="548" y2="45" stroke="#5A6673" stroke-width="1.5" marker-end="url(#mq)"/>
+      <line x1="430" y1="105" x2="548" y2="135" stroke="#5A6673" stroke-width="1.5" marker-end="url(#mq)"/>
+      <text x="222" y="30" font-family="monospace" font-size="9.5" fill="#5A6673">state/... 토픽으로 발행</text>
+      <text x="440" y="170" font-family="monospace" font-size="9.5" fill="#5A6673">같은 토픽을 여럿이 동시에 구독</text>
+      <defs><marker id="mq" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#5A6673" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>발행자와 구독자는 서로를 모른다 — 결합도가 낮아 시스템을 자유롭게 추가·교체할 수 있다</figcaption>
+  </figure>
+  <p>HTTP가 "요청하면 응답"(1:1, 클라이언트가 물어봐야 함)이라면, MQTT는 "일어난 일을 방송"(1:N, 상태가 바뀌면 즉시 전파)이다. 헤더가 몇 바이트로 극단적으로 가볍고, 불안정한 네트워크를 견디도록 설계되어 제조·IoT의 사실상 표준이 됐다. 메시지 안에 뭘 담을지는 정하지 않기 때문에, 그 위에 Sparkplug B나 VDA 5050 같은 페이로드 표준이 얹힌다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 로봇(ROS 2)과 IT 세계(MES·DB·웹)를 잇는 중추 신경. EMQX 브로커를 쓰고, 웹 관제 화면도 MQTT-over-WebSocket으로 같은 토픽을 직접 구독한다.</div>
+</section>
+
+<section class="term" id="sparkplug">
+  <h2>Sparkplug B<span class="en">설비 텔레메트리 페이로드 표준</span></h2>
+  <p class="def">MQTT 위에서 "설비 데이터를 어떤 토픽 구조와 형식으로 보낼 것인가"를 정한 산업 표준. 설비의 탄생·데이터·사망을 생애주기로 관리한다.</p>
+  <figure>
+    <svg viewBox="0 0 720 130" role="img" aria-label="Sparkplug B 생애주기">
+      <line x1="40" y1="65" x2="690" y2="65" stroke="#D4D9DD" stroke-width="2"/>
+      <rect x="50" y="40" width="110" height="50" fill="#1F7A4D"/>
+      <text x="105" y="61" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">NBIRTH</text>
+      <text x="105" y="79" text-anchor="middle" font-family="monospace" font-size="9" fill="#D9EFE3">온라인 + 전체 상태</text>
+      <rect x="230" y="40" width="80" height="50" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="270" y="61" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">NDATA</text>
+      <text x="270" y="79" text-anchor="middle" font-family="monospace" font-size="9" fill="#5A6673">변경분만</text>
+      <rect x="340" y="40" width="80" height="50" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="380" y="61" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">NDATA</text>
+      <text x="380" y="79" text-anchor="middle" font-family="monospace" font-size="9" fill="#5A6673">변경분만</text>
+      <rect x="450" y="40" width="80" height="50" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="490" y="61" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">NDATA</text>
+      <text x="490" y="79" text-anchor="middle" font-family="monospace" font-size="9" fill="#5A6673">변경분만</text>
+      <rect x="570" y="40" width="110" height="50" fill="#FDF4EC" stroke="#E8720C" stroke-width="2"/>
+      <text x="625" y="61" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8720C">NDEATH</text>
+      <text x="625" y="79" text-anchor="middle" font-family="monospace" font-size="9" fill="#5A6673">유언장 — 끊김 자동 감지</text>
+      <text x="360" y="118" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">구독자는 BIRTH/DEATH만 봐도 "지금 어떤 설비가 살아있는지"를 안다</text>
+    </svg>
+    <figcaption>접속 시 전체 상태를 선언(BIRTH), 이후엔 변경분만(DATA), 끊기면 브로커가 대신 부고(DEATH)를 발행</figcaption>
+  </figure>
+  <p>MQTT만 쓰면 팀마다 토픽 구조와 JSON 형식을 제각각 정하게 된다. Sparkplug B는 네임스페이스(<code>spBv1.0/그룹/메시지타입/노드/디바이스</code>), 데이터 형식(Protobuf), 상태 관리(BIRTH/DEATH)를 표준화해서, 처음 보는 설비도 구독만 하면 바로 해석할 수 있게 만든다. "설비가 지금 온라인인가"라는 제조 현장의 핵심 질문에 프로토콜 차원에서 답하는 것이 특징이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 설비(생산 셀·컨베이어·검사 스테이션) 텔레메트리에 적용한다. 관제 화면의 설비 온라인/오프라인 표시가 BIRTH/DEATH를 그대로 시각화한 것이다.</div>
+</section>
+
+<section class="term" id="vda5050">
+  <h2>VDA 5050<span class="en">AMR 플릿 통신 표준</span></h2>
+  <p class="def">중앙 관제(마스터 컨트롤)와 AMR들이 주고받는 메시지를 표준화한 규격. 관제가 경로를 노드·엣지 그래프로 내려주고(order), AMR이 상태를 보고한다(state).</p>
+  <figure>
+    <svg viewBox="0 0 720 190" role="img" aria-label="VDA 5050 order 구조">
+      <rect x="20" y="20" width="170" height="50" fill="#1B2430"/>
+      <text x="105" y="41" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">마스터 컨트롤</text>
+      <text x="105" y="58" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#9AA7B4">= 본 프로젝트의 MES</text>
+      <path d="M105 70 L105 120" stroke="#5A6673" stroke-width="1.5" marker-end="url(#vd)"/>
+      <text x="118" y="100" font-family="monospace" font-size="10" fill="#5A6673">order 발행</text>
+      <path d="M300 155 l14 -22 14 22 z" fill="#E8720C"/>
+      <circle cx="314" cy="140" r="16" fill="none" stroke="#E8720C" stroke-width="2"/>
+      <text x="314" y="180" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#E8720C">AMR</text>
+      <circle cx="240" cy="140" r="9" fill="#1F7A4D"/>
+      <circle cx="400" cy="140" r="9" fill="#1F7A4D"/>
+      <circle cx="530" cy="105" r="9" fill="#D4D9DD" stroke="#5A6673" stroke-width="1.5"/>
+      <circle cx="650" cy="140" r="9" fill="#D4D9DD" stroke="#5A6673" stroke-width="1.5"/>
+      <line x1="249" y1="140" x2="391" y2="140" stroke="#1F7A4D" stroke-width="3"/>
+      <line x1="409" y1="137" x2="521" y2="108" stroke="#5A6673" stroke-width="2" stroke-dasharray="6 4"/>
+      <line x1="539" y1="108" x2="641" y2="137" stroke="#5A6673" stroke-width="2" stroke-dasharray="6 4"/>
+      <text x="320" y="128" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#1F7A4D">릴리스됨 — 주행 허가</text>
+      <text x="545" y="85" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">예고만 — 아직 주행 불가</text>
+      <text x="450" y="180" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">엣지를 조금씩 풀어주는 방식으로 교차로 충돌·교착을 중앙에서 제어</text>
+      <defs><marker id="vd" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#5A6673" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>점진적 엣지 릴리스 — 여러 AMR이 같은 통로를 쓸 때의 교통 정리가 표준 안에 내장되어 있다</figcaption>
+  </figure>
+  <p>독일 자동차공업협회(VDA)가 만든 표준으로, 서로 다른 제조사의 AMR을 하나의 관제로 묶기 위해 태어났다. 관제와 로봇의 책임 분리가 명확하다: 관제는 "어디로 갈지"(경로 그래프)를 정하고, 로봇은 "어떻게 갈지"(실제 주행·회피)를 알아서 한다. 공식 JSON 스키마가 공개되어 있어 웹 개발자에게도 친숙한 형태다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — MES-lite가 마스터 컨트롤로서 order를 발행하고, AMR 쪽 커넥터가 이를 Nav2 목표로 변환해 실행한 뒤 state를 보고한다. 관제 맵의 노드·엣지 시각화가 이 표준을 그대로 그린 것이다.</div>
+</section>
+
+<section class="term" id="amr">
+  <h2>AMR vs AGV<span class="en">Autonomous Mobile Robot · Automated Guided Vehicle</span></h2>
+  <p class="def">AGV는 바닥의 자기 테이프·QR 등 정해진 선로만 따라가는 운송 로봇, AMR은 지도와 센서로 스스로 경로를 계획하고 장애물을 피하는 운송 로봇이다.</p>
+  <p>AGV는 기차(선로 이탈 불가), AMR은 택시(목적지만 주면 알아서 감)에 비유된다. AMR은 레이아웃 변경에 유연하고 사람과 공존할 수 있어 물류·제조 현장에서 빠르게 AGV를 대체하는 중이다. 그만큼 소프트웨어(위치 추정·경로 계획·플릿 관제)의 비중이 압도적으로 커진다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 옴니휠 AMR 2대가 스테이션 간 부품 운송과 불량품 리젝트 라인 운송을 담당한다. 주행 지능은 Nav2, 플릿 관제는 VDA 5050.</div>
+</section>
+
+<section class="term" id="andon">
+  <h2>Andon<span class="en">안돈 — 이상 알림 체계</span></h2>
+  <p class="def">생산 라인에 이상이 생기면 즉시 불빛·알림으로 알려 대응을 촉구하는 체계. 도요타 생산방식에서 나온 용어로, 현장 위 신호등이 원형이다.</p>
+  <p>핵심 사상은 "문제를 숨기지 말고 그 자리에서 드러내라"다. 현대 스마트팩토리에서는 물리적 경광등을 넘어 대시보드 알림·모바일 푸시로 확장됐다. 웹 서비스의 장애 알림(PagerDuty·Slack 알림)과 정확히 같은 역할이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 불량 검출·설비 이상 시 관제 포털에 Andon 알림 스트림이 뜨고, PWA 웹 푸시로 모바일에도 전달된다.</div>
+</section>
+
+<section class="term" id="oee">
+  <h2>OEE<span class="en">Overall Equipment Effectiveness — 설비종합효율</span></h2>
+  <p class="def">설비가 "이론상 최대치 대비 실제로 얼마나 가치를 만들었나"를 하나의 숫자로 나타내는 제조업 대표 KPI. 가용성 × 성능 × 품질로 계산한다.</p>
+  <figure>
+    <svg viewBox="0 0 720 170" role="img" aria-label="OEE 손실 구조">
+      <rect x="30" y="20" width="660" height="26" fill="#33506B"/>
+      <text x="360" y="38" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">계획 가동시간 100%</text>
+      <rect x="30" y="56" width="500" height="26" fill="#5A6673"/>
+      <rect x="530" y="56" width="160" height="26" fill="#E9ECEE" stroke="#D4D9DD"/>
+      <text x="280" y="74" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">가용성 — 고장·대기로 깎임</text>
+      <text x="610" y="74" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">정지 손실</text>
+      <rect x="30" y="92" width="380" height="26" fill="#8A96A3"/>
+      <rect x="410" y="92" width="120" height="26" fill="#E9ECEE" stroke="#D4D9DD"/>
+      <text x="220" y="110" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">성능 — 저속·잔멈춤으로 깎임</text>
+      <text x="470" y="110" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">속도 손실</text>
+      <rect x="30" y="128" width="300" height="26" fill="#E8720C"/>
+      <rect x="330" y="128" width="80" height="26" fill="#E9ECEE" stroke="#D4D9DD"/>
+      <text x="180" y="146" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">품질 — 불량으로 깎임 → OEE</text>
+      <text x="370" y="146" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">불량 손실</text>
+    </svg>
+    <figcaption>세 가지 손실을 차례로 곱해 남는 것이 OEE — 어디서 깎였는지가 개선 포인트를 알려준다</figcaption>
+  </figure>
+  <p>예를 들어 가용성 90% × 성능 85% × 품질 95% = OEE 72.7%. 세계적 수준의 공장이 85% 정도다. 단순 가동률보다 강력한 이유는 "돌고는 있는데 느리게 돈다", "빨리 도는데 불량을 만든다" 같은 숨은 손실이 다 드러나기 때문이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 관제 포털 분석 화면의 중심 지표. 시뮬 공장의 이벤트 로그(가동·정지·사이클·불량)에서 세 요소를 계산해 보여준다.</div>
+</section>
+
+<section class="term" id="closedloop">
+  <h2>폐루프 품질관리<span class="en">Closed-Loop Quality</span></h2>
+  <p class="def">검사 결과가 사람 손을 거치지 않고 곧바로 생산 흐름의 변화(불량품 격리·재작업 지시)로 이어지는 구조. "감지 → 판정 → 조치"의 고리가 자동으로 닫힌다.</p>
+  <figure>
+    <svg viewBox="0 0 720 170" role="img" aria-label="폐루프 품질관리 흐름">
+      <rect x="20" y="60" width="120" height="48" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <text x="80" y="88" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">생산 셀</text>
+      <rect x="185" y="60" width="120" height="48" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <text x="245" y="82" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">검사 카메라</text>
+      <text x="245" y="98" text-anchor="middle" font-family="monospace" font-size="9" fill="#5A6673">촬영</text>
+      <rect x="350" y="60" width="120" height="48" fill="#1F7A4D"/>
+      <text x="410" y="82" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">AI 판정</text>
+      <text x="410" y="98" text-anchor="middle" font-family="monospace" font-size="9" fill="#D9EFE3">양품/불량</text>
+      <rect x="515" y="60" width="120" height="48" fill="#1B2430"/>
+      <text x="575" y="88" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">MES 기록</text>
+      <line x1="140" y1="84" x2="183" y2="84" stroke="#5A6673" stroke-width="1.5" marker-end="url(#cl)"/>
+      <line x1="305" y1="84" x2="348" y2="84" stroke="#5A6673" stroke-width="1.5" marker-end="url(#cl)"/>
+      <line x1="470" y1="84" x2="513" y2="84" stroke="#5A6673" stroke-width="1.5" marker-end="url(#cl)"/>
+      <path d="M575 108 C 575 150, 300 155, 90 112" fill="none" stroke="#E8720C" stroke-width="2" marker-end="url(#cla)"/>
+      <text x="350" y="150" text-anchor="middle" font-family="monospace" font-size="10" fill="#E8720C">불량 → AMR이 리젝트 라인으로 운송 (자동 조치)</text>
+      <defs>
+        <marker id="cl" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#5A6673" stroke-width="1.5"/></marker>
+        <marker id="cla" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#E8720C" stroke-width="1.5"/></marker>
+      </defs>
+    </svg>
+    <figcaption>판정이 물리적 행동(운송·격리)으로 되돌아와야 루프가 "닫힌" 것 — 대시보드에 표시만 하면 열린 루프다</figcaption>
+  </figure>
+  <p>많은 데모가 "AI가 불량을 찾았다"에서 끝난다(열린 루프). 진짜 스마트팩토리의 가치는 그 판정이 자동으로 조치까지 이어지는 데 있다. 시스템 전 계층(비전 → AI → MES → 배차 → 로봇)이 실제로 연결되어야만 가능하므로, 통합 완성도의 증명이기도 하다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 최종 데모의 킬러 장면. Replicator로 만든 결함 → AI 검출 → MES 판정 → AMR이 불량품을 리젝트 라인으로 옮기는 전 과정이 자동으로 흐른다.</div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">SIM-FIRST SMART FACTORY · REFERENCE B — <a href="glossary_robotics.html">A 로보틱스·시뮬레이션</a> · <a href="glossary_ai_data.html">C AI·데이터·서비스</a> · <a href="index.html">문서 인덱스</a></div>
+</footer>
+
+</body>
+</html>
