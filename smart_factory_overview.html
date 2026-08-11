@@ -145,10 +145,10 @@
       </h1>
     </div>
     <div class="meta">
-      TEAM · <b>6명 (PM 별도 지정)</b><br>
+      TEAM · <b>6명 · 7주</b><br>
       PARTS · <b>로보틱스 2 · AI 2 · 백엔드 2</b><br>
-      FRONTEND · <b>AI 에이전트 + 발주 오너</b><br>
-      INFRA · <b>조율자 겸임 + 파트별 분담</b>
+      RULE · <b>1인 1트랙 · 1겸임 (보조 없음)</b><br>
+      FRONTEND · <b>발주 오너(B2) + AI 에이전트</b>
     </div>
   </div>
 </header>
@@ -195,89 +195,101 @@
   <div class="sec-head"><span class="sec-no">SEC 02</span><h2>시스템 파노라마 — 레이어 × 오너</h2></div>
   <div class="sec-body">
     <div class="stack">
-      <div class="layer"><div class="tag">서비스<small>React SPA · PWA</small></div><div class="desc">운영 관제 포털 — REST(작업지시/실적/QA) + <b>MQTT-over-WebSocket</b>(실시간 텔레메트리 직접 구독)</div><div class="owner c-steel">AI 에이전트<br>+발주 오너(BE)</div></div>
+      <div class="layer"><div class="tag">서비스<small>React SPA · PWA</small></div><div class="desc">운영 관제 포털 — REST(작업지시/실적/QA) + <b>MQTT-over-WebSocket</b>(실시간 텔레메트리 직접 구독)</div><div class="owner c-steel">B2 발주 오너<br>+AI 에이전트</div></div>
       <div class="flowdown">▼ ▲</div>
-      <div class="layer"><div class="tag">L3 · MES<small>Spring Boot</small></div><div class="desc">MES-lite: 작업지시 → 스테이션 할당 → AMR 배차 → 실적 집계 + SimPy 물류 오케스트레이터</div><div class="owner c-steel">백엔드 2</div></div>
+      <div class="layer"><div class="tag">L3 · MES<small>Spring Boot</small></div><div class="desc">MES-lite: 작업지시 → 스테이션 할당 → AMR 배차 → 실적 집계 + SimPy 물류 오케스트레이터</div><div class="owner c-steel">B1 · MES/물류</div></div>
       <div class="flowdown">▼ ▲</div>
-      <div class="layer"><div class="tag">데이터 인프라</div><div class="desc">EMQX → TimescaleDB(시계열) + PostgreSQL(트랜잭션)<span class="proto">설비 = Sparkplug B&nbsp;&nbsp;|&nbsp;&nbsp;AMR = VDA 5050</span></div><div class="owner c-slate">조율자<br>+파트별 분담</div></div>
+      <div class="layer"><div class="tag">데이터 인프라</div><div class="desc">EMQX → TimescaleDB(시계열) + PostgreSQL(트랜잭션)<span class="proto">설비 = Sparkplug B&nbsp;&nbsp;|&nbsp;&nbsp;AMR = VDA 5050</span></div><div class="owner c-slate">B2 플랫폼<br>+파트별 배포</div></div>
       <div class="flowdown">▼ ▲</div>
-      <div class="layer"><div class="tag">AI QA</div><div class="desc">Replicator 합성 결함 → 검출 모델 학습 → ONNX 서빙 → 판정 → 불량품 리젝트 운송 (폐루프)</div><div class="owner c-green">AI 2</div></div>
+      <div class="layer"><div class="tag">AI QA</div><div class="desc">Replicator 합성 결함 → 검출 모델 학습 → ONNX 서빙 → 판정 → 불량품 리젝트 운송 (폐루프)</div><div class="owner c-green">A1 · A2</div></div>
       <div class="flowdown">▼ ▲</div>
-      <div class="layer"><div class="tag">로봇 제어<small>ROS2</small></div><div class="desc">Nav2 + EKF(주행) · MoveIt2(매니퓰레이션) · behavior tree 오케스트레이션 · ros2_control</div><div class="owner c-amber">로보틱스 2</div></div>
+      <div class="layer"><div class="tag">로봇 제어<small>ROS2</small></div><div class="desc">Nav2 + EKF(주행) · MoveIt2(매니퓰레이션) · behavior tree 오케스트레이션 · ros2_control</div><div class="owner c-amber">R1 주행<br>R2 매니퓰</div></div>
       <div class="flowdown">▼ ▲</div>
-      <div class="layer"><div class="tag">L0~2 · 물리<small>Gazebo → Isaac Sim</small></div><div class="desc">가상 공장: 생산 셀(매니퓰레이터 2~3 + 컨베이어) + 옴니휠 AMR 2대 + 검사 스테이션 — 개발은 Gazebo, 본 무대는 Isaac</div><div class="owner c-amber">로보틱스 2</div></div>
+      <div class="layer"><div class="tag">L0~2 · 물리<small>Gazebo → Isaac Sim</small></div><div class="desc">가상 공장: 생산 셀(매니퓰레이터 2~3 + 컨베이어) + 옴니휠 AMR 2대 + 검사 스테이션 — 개발은 Gazebo, 본 무대는 Isaac</div><div class="owner c-amber">R1 · R2<br>+A1 씬·에셋</div></div>
     </div>
-    <p class="soft">오너 색상: <span class="chip c-amber">로보틱스</span> <span class="chip c-green">AI 파이프라인</span> <span class="chip c-steel">백엔드·서비스</span> <span class="chip c-slate">인프라(공통)</span></p>
+    <p class="soft">오너 색상: <span class="chip c-amber">로보틱스 R1·R2</span> <span class="chip c-green">AI A1·A2</span> <span class="chip c-steel">백엔드 B1·B2</span> <span class="chip c-slate">공통(파트별 분담)</span> — 역할 상세는 SEC 03</p>
   </div>
 </section>
 <!-- ── 03 팀 구성 ── -->
 <section id="o3">
-  <div class="sec-head"><span class="sec-no">SEC 03</span><h2>팀 구성과 오너십 (6명)</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 03</span><h2>팀 구성과 오너십 (6명 — 1인 1트랙 · 1겸임)</h2></div>
   <div class="sec-body">
+    <p class="lead">특정 개인을 전제하지 않는 <b>역할 설계도</b>. 전원이 ① 데모에 보이는 수직 트랙 하나를 소유하고 ② 횡단 역할(PM·아키텍트·통합 등) 하나를 겸임한다. "보조" 역할은 없다 — 실제 배정은 킥오프 때 각자의 강점·지망으로 결정.</p>
     <div class="team">
       <div class="member m-robot">
-        <span class="role-tag">ROBOTICS · TECH LEAD</span>
-        <h4>기술 리드 (본인)</h4>
+        <span class="role-tag">ROBOTICS · R1</span>
+        <h4>주행/AMR 트랙</h4>
         <ul>
-          <li>로보틱스 스택 주 구현: URDF/ros2_control, Nav2+MoveIt2, behavior tree, Isaac 포팅, Isaac Lab RL</li>
-          <li>아키텍처 전체 + <b>데이터 계약 설계·승인</b> (토픽 스키마/OpenAPI)</li>
-          <li>인프라 조율자 겸임 (셀프서비스 환경 구축이 1순위 산출물)</li>
+          <li>베이스 URDF · ros2_control(velocity) · Nav2 + EKF · 도킹 시퀀스</li>
+          <li>VDA 5050 커넥터: order 수신 → Nav2 액션 변환 → state 보고</li>
+          <li>Isaac 포팅 — 주행 측 (센서·물리 파라미터 정합)</li>
         </ul>
-        <div class="note">시간 확보: 월드·에셋·레퍼런스 설정은 오픈소스 기성품 사용. 단 통합부(ros2_control·MoveIt2·Isaac 정합)는 절대 아끼지 않음 — 주력 깊이의 본체</div>
+        <div class="note"><b>겸임 · 통합 주관</b> — 통합 #1~3 이벤트의 리허설·체크리스트 오너</div>
       </div>
       <div class="member m-robot">
-        <span class="role-tag">ROBOTICS · PM</span>
-        <h4>PM + 로보틱스 보조</h4>
+        <span class="role-tag">ROBOTICS · R2</span>
+        <h4>매니퓰레이션 트랙</h4>
         <ul>
-          <li>일정·리소스·범위 조정, 스크럼, 발표 주관</li>
-          <li>mock publisher 구현/유지보수 (전 파트의 개발 기반)</li>
-          <li>Gazebo 월드/에셋 제작, 시나리오 정의, 파라미터 튜닝 보조, 통합 테스트 주관</li>
+          <li>팔 URDF · ros2_control(position) · MoveIt2 픽앤플레이스</li>
+          <li>behavior tree 오케스트레이션 (주행→도킹→파지 시퀀스)</li>
+          <li>Isaac 포팅 — 셀 측 · (스트레치) Isaac Lab RL 1태스크</li>
         </ul>
-        <div class="note">중단·재개가 쉬운 과업 위주 배치 — 크리티컬 패스(Nav2·MoveIt2·Isaac)는 PM 일정에 걸지 않음</div>
+        <div class="note"><b>겸임 · 아키텍트</b> — 데이터 계약·ADR의 기술 키 (2-키 중 하나)</div>
       </div>
       <div class="member m-ai">
-        <span class="role-tag">AI · DATA TRACK</span>
-        <h4>AI — 데이터 생성 트랙</h4>
+        <span class="role-tag">AI · A1</span>
+        <h4>합성 데이터 트랙</h4>
         <ul>
-          <li>Replicator 씬/도메인 랜덤화 설계 (합성 결함: 스크래치·오조립·결품)</li>
-          <li>Phase 0부터 Isaac 학습 시작 (진입 장벽 선흡수)</li>
+          <li>Replicator 씬·도메인 랜덤화 설계 (합성 결함: 스크래치·오조립·결품)</li>
+          <li>Gazebo/Isaac 월드·에셋 공동 소유 (R1·R2와) — 로보틱스 실질 +0.5인</li>
+          <li>발표 핵심: 공개 데이터 베이스라인 vs 합성 데이터 정량 비교</li>
         </ul>
-        <div class="note">발표 핵심 슬라이드: "공개 데이터 베이스라인 vs 합성 데이터 학습" 정량 비교</div>
+        <div class="note"><b>겸임 · 시뮬 회귀 CI</b> — headless 표준 시나리오 자동 실행·리포트 (Replicator 배치와 동일 도구체인)</div>
       </div>
       <div class="member m-ai">
-        <span class="role-tag">AI · MODEL TRACK</span>
-        <h4>AI — 모델/서빙 트랙</h4>
+        <span class="role-tag">AI · A2</span>
+        <h4>모델/서빙 트랙</h4>
         <ul>
-          <li>QA 모델 선정(YOLO/PatchCore·PaDiM) + ONNX 추론 서비스</li>
+          <li>QA 모델 선정(YOLO/PatchCore·PaDiM) → ONNX 추론 서비스</li>
+          <li>Phase 0~1: 공개 결함 데이터셋(MVTec AD 등) 베이스라인 선구축</li>
           <li>오버라이드 → 재학습 데이터 축적 루프 (MLOps 서사)</li>
-          <li>Phase 0~1: 공개 결함 데이터셋(MVTec AD 등)으로 베이스라인 선구축</li>
         </ul>
+        <div class="note"><b>겸임 · 데모/발표 오너</b> — 시연 각본과 발표 자료의 단일 책임자</div>
       </div>
       <div class="member m-be">
-        <span class="role-tag">BACKEND · CORE</span>
-        <h4>백엔드 — 코어</h4>
+        <span class="role-tag">BACKEND · B1</span>
+        <h4>MES/물류 트랙</h4>
         <ul>
-          <li>Spring MES-lite: 작업지시/실적/QA 판정 API, 배차 로직, DB 스키마</li>
-          <li>인프라 정형 업무 인수 (CI 유지보수, EC2 배포 표준)</li>
+          <li>Spring MES-lite: 작업지시/실적/QA 판정 API · DB 스키마</li>
+          <li>SimPy 물류 오케스트레이터 — 배차 로직 (VDA 5050 order 발행)</li>
+          <li>mock publisher 구현·유지 — SimPy 기반, 전 파트의 개발 기반 (1~2주차 최우선 납품물)</li>
         </ul>
+        <div class="note"><b>겸임 · 스키마 레지스트리</b> — 동결 계약의 버전·변경 이력 관리 실무 (승인은 2-키)</div>
       </div>
       <div class="member m-be">
-        <span class="role-tag">BACKEND · FRONT OWNER</span>
-        <h4>백엔드 — 프론트 발주 오너</h4>
+        <span class="role-tag">BACKEND · B2</span>
+        <h4>플랫폼/프론트 오너 트랙</h4>
         <ul>
-          <li>프론트는 <b>AI 에이전트에게 발주</b>: 스펙 작성 → 결과 검수 → API 연동 → 버그 재현·재발주</li>
-          <li>운영·품질·분석 화면은 에이전트 산출물 위주 (조립형)</li>
+          <li>EMQX + TimescaleDB/PostgreSQL + docker compose 셀프서비스 (1~2주차 완성) · Grafana · CI/배포 표준</li>
+          <li>프론트 발주 오너: AI 에이전트 스펙 작성 → 검수 → API 연동 → 버그 재현·재발주</li>
           <li><b>관제 맵만 예외</b>: MQTT-WS + Canvas 실시간 렌더링은 사람이 구조 설계 후 에이전트가 살 붙임</li>
         </ul>
-        <div class="note">"프론트 전담 0명"은 성립, "프론트 오너 0명"은 불성립 — 검수 없는 에이전트 코드는 데모 직전 수정 불가 리스크</div>
+        <div class="note"><b>겸임 · PM</b> — 일정·리소스·범위의 일정 키. 발주·플랫폼은 중단·재개가 쉬워 PM 겸임에 적합</div>
       </div>
     </div>
+    <h3>배치 원칙</h3>
+    <ul class="rules">
+      <li><b>크리티컬 패스 보호</b>: Nav2·MoveIt2·Isaac 통합 소유자(R1·R2)에게 일정성 겸임(PM)을 걸지 않는다</li>
+      <li><b>도구 시너지로 겸임 배치</b>: mock publisher는 SimPy 오너(B1)에게, 시뮬 CI는 headless 배치를 다루는 A1에게</li>
+      <li><b>"프론트 전담 0명"은 성립, "프론트 오너 0명"은 불성립</b> — 검수 없는 에이전트 코드는 데모 직전 수정 불가 리스크</li>
+      <li>월드·에셋·레퍼런스 설정은 오픈소스 기성품 우선 — 직접 만드는 것은 각 트랙의 차별화 지점뿐</li>
+    </ul>
     <h3>거버넌스 — 2-키 구조</h3>
     <ul class="rules">
-      <li><b>기술 리드</b>: 데이터 계약·아키텍처 결정의 승인권 (기술 타당성 판단)</li>
-      <li><b>PM</b>: 일정·리소스·범위 조정의 승인권 (일정 영향 판단)</li>
+      <li><b>아키텍트(R2)</b>: 데이터 계약·아키텍처 결정의 승인권 (기술 타당성 판단)</li>
+      <li><b>PM(B2)</b>: 일정·리소스·범위 조정의 승인권 (일정 영향 판단)</li>
       <li>계약 변경 요청 = 두 키 모두 통과해야 반영. "필드 하나만 추가"로 계약이 조용히 부식되는 것을 차단</li>
-      <li>버스 팩터 완화: 주요 결정은 ADR로 짧게 기록 (Decision Log 운영과 동일 습관)</li>
+      <li>버스 팩터 완화: 주요 결정은 ADR로 짧게 기록 — 서기는 주간 순환</li>
     </ul>
   </div>
 </section>
@@ -305,7 +317,7 @@
     </div>
     <h3>Mock Publisher — 시뮬레이터 이전의 시뮬레이터</h3>
     <ul class="rules">
-      <li>SimPy 기반 가짜 공장이 <b>표준 토픽 스키마 그대로</b> 가상 AMR/설비 이벤트를 발행 (로보틱스 파트 1순위 납품물, PM 팀원 담당)</li>
+      <li>SimPy 기반 가짜 공장이 <b>표준 토픽 스키마 그대로</b> 가상 AMR/설비 이벤트를 발행 — <b>B1 담당</b> (SimPy 오케스트레이터와 동일 도구체인), 1~2주차 최우선 납품물</li>
       <li>백엔드·AI·프론트는 실물 로봇 완성 전부터 "움직이는 데이터"로 개발 시작</li>
       <li>Gazebo → Isaac으로 소스가 교체되어도 <b>소비자 코드는 한 줄도 변경 없음</b> — 표준 준수의 가치를 팀 개발 속도로 증명</li>
     </ul>
@@ -339,9 +351,9 @@
   <div class="sec-body">
     <table>
       <tr><th style="width:180px">규칙</th><th>내용</th></tr>
-      <tr><td><b>계약 우선</b></td><td>파트 간 소통은 동결된 계약(스키마/API)이 기준. 변경은 2-키(기술 리드 + PM) 승인</td></tr>
+      <tr><td><b>계약 우선</b></td><td>파트 간 소통은 동결된 계약(스키마/API)이 기준. 변경은 2-키(아키텍트 R2 + PM B2) 승인</td></tr>
       <tr><td><b>mock 우선</b></td><td>어떤 파트도 다른 파트의 완성을 기다리지 않는다 — mock publisher가 대역</td></tr>
-      <tr><td><b>오너십 명시</b></td><td>모든 컴포넌트에 오너 1인. "전원 분담" 영역(인프라)도 조율자 1인 + 파트별 배포 책임으로 분해</td></tr>
+      <tr><td><b>오너십 명시</b></td><td>모든 컴포넌트에 오너 1인. "전원 분담" 영역(인프라)도 플랫폼 오너(B2) + 파트별 배포 책임으로 분해</td></tr>
       <tr><td><b>AI 에이전트 운용</b></td><td>프론트는 에이전트 산출물 허용, 단 발주 오너가 스펙·검수·연동 책임. 검수 없는 머지 금지</td></tr>
       <tr><td><b>기성품 우선</b></td><td>월드·에셋·레퍼런스 설정·컴포넌트 라이브러리는 가져다 쓴다. 직접 만드는 것은 각 파트의 차별화 지점뿐</td></tr>
       <tr><td><b>기록 습관</b></td><td>주요 결정은 ADR/Decision Log로. 버스 팩터 1 완화 + 발표 자료의 원천</td></tr>
