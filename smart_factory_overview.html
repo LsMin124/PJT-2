@@ -185,13 +185,13 @@
     <h3>서비스: 물류센터 운영 관제 포털 (Operations Center) + PWA</h3>
     <table>
       <tr><th style="width:140px">영역</th><th>내용</th></tr>
-      <tr><td><b>관제 Operations</b></td><td><b>실시간 센터 맵 (킬러 화면)</b> — <a class="term" href="glossary_industrial.html#amr">AMR</a> 위치/궤적, <a class="term" href="glossary_industrial.html#vda5050">VDA 5050</a> order의 node/edge 시각화 + 점진적 엣지 릴리스, 설비 온라인/오프라인(<a class="term" href="glossary_industrial.html#sparkplug">Sparkplug B</a> BIRTH/DEATH), <a class="term" href="glossary_industrial.html#andon">Andon</a> 알림 스트림. 여유 시 Three.js 3D 뷰</td></tr>
+      <tr><td><b>관제 Operations</b></td><td><b>실시간 3D 물류센터 뷰 (필수 요구·킬러 화면)</b> — Isaac Sim WebRTC 스트림을 포털에 임베드, 가상 물류센터가 돌아가는 실사급 3D 모습을 웹에서 그대로 관람 (스트레치: Three.js 자체 3D 트윈)<br>+ <b>2D 관제 맵</b> — <a class="term" href="glossary_industrial.html#amr">AMR</a> 위치/궤적, <a class="term" href="glossary_industrial.html#vda5050">VDA 5050</a> order의 node/edge 시각화 + 점진적 엣지 릴리스, 설비 온라인/오프라인(<a class="term" href="glossary_industrial.html#sparkplug">Sparkplug B</a> BIRTH/DEATH), <a class="term" href="glossary_industrial.html#andon">Andon</a> 알림 스트림</td></tr>
       <tr><td><b>주문 Orders</b></td><td>주문·<a class="term" href="glossary_industrial.html#fulfillment">웨이브</a> 라이프사이클, 재고/로케이션 조회, 배차 현황(의사결정 로그 노출), 피킹 스테이션별 큐 상태</td></tr>
       <tr><td><b>검수 Inspection</b></td><td>검수 이미지 + AI 판정(오피킹·파손) + 승인/오버라이드 (<a class="term" href="glossary_ai_data.html#hitl">human-in-the-loop</a>) → 오버라이드를 재학습 데이터로 축적</td></tr>
       <tr><td><b>분석 Analytics</b></td><td>UPH·피킹 정확도·주문 리드타임 KPI 대시보드, 설비 <a class="term" href="glossary_industrial.html#oee">OEE</a>, 병목 분석</td></tr>
     </table>
     <ul class="rules">
-      <li>사용자 시나리오 = 시연 시나리오: 로그인 → 주문 등록 → 웨이브 생성 → 맵에서 AMR 배차·이동 관찰 → 오피킹/파손 Andon 수신 → AI 판정 확인·오버라이드 → 출고 실적 리포트</li>
+      <li>사용자 시나리오 = 시연 시나리오: 로그인 → 주문 등록 → 웨이브 생성 → 3D 뷰·맵에서 AMR 배차·이동 관찰 → 오피킹/파손 Andon 수신 → AI 판정 확인·오버라이드 → 출고 실적 리포트</li>
       <li>Grafana는 엔지니어용 내부 관측 도구로 분리 — 서비스는 "데이터를 본다"가 아니라 <b>"물류센터를 운영한다"</b></li>
       <li>모바일은 네이티브 앱 대신 <b><a class="term" href="glossary_ai_data.html#pwa">PWA</a></b>(반응형 + 웹 푸시 불량 알림)로 충족</li>
     </ul>
@@ -204,7 +204,7 @@
   <div class="sec-body">
     <div class="plain"><span class="pl-tag">쉽게 말하면</span>전체 시스템을 층으로 쌓은 그림입니다. 맨 아래에 가상 물류센터(로봇·설비)가 있고, 그 위로 데이터가 오가는 통로(메시지 인프라) → 일을 지시하는 두뇌(WMS 서버) → 사람이 보는 웹 화면 순서로 올라갑니다. 오른쪽 색깔 열이 그 층의 담당자를 나타냅니다.</div>
     <div class="stack">
-      <div class="layer"><div class="tag">서비스<small>React SPA · PWA</small></div><div class="desc">운영 관제 포털 — REST(주문/재고/검수) + <b><a class="term" href="glossary_ai_data.html#mqttws">MQTT-over-WebSocket</a></b>(실시간 텔레메트리 직접 구독)</div><div class="owner c-steel">B2 발주 오너<br>+AI 에이전트</div></div>
+      <div class="layer"><div class="tag">서비스<small>React SPA · PWA</small></div><div class="desc">운영 관제 포털 — REST(주문/재고/검수) + <b><a class="term" href="glossary_ai_data.html#mqttws">MQTT-over-WebSocket</a></b>(실시간 텔레메트리 직접 구독) + <b>Isaac WebRTC 3D 스트림 임베드</b></div><div class="owner c-steel">B2 발주 오너<br>+AI 에이전트</div></div>
       <div class="flowdown">▼ ▲</div>
       <div class="layer"><div class="tag">L3 · WMS/WES<small>Spring Boot</small></div><div class="desc"><a class="term" href="glossary_industrial.html#wms">WMS/WES-lite</a>: 주문 접수 → 웨이브 생성 → 피킹 태스크 할당 → AMR 배차 → 출고 실적 + <a class="term" href="glossary_industrial.html#des">SimPy</a> 물류 오케스트레이터</div><div class="owner c-steel">B1 · WMS/물류</div></div>
       <div class="flowdown">▼ ▲</div>
@@ -282,7 +282,7 @@
         <ul>
           <li>EMQX + TimescaleDB/PostgreSQL + docker compose 셀프서비스 (1~2주차 완성) · Grafana · CI/배포 표준</li>
           <li>프론트 발주 오너: AI 에이전트 스펙 작성 → 검수 → API 연동 → 버그 재현·재발주</li>
-          <li><b>관제 맵만 예외</b>: MQTT-WS + Canvas 실시간 렌더링은 사람이 구조 설계 후 에이전트가 살 붙임</li>
+          <li><b>관제 맵·3D 스트림 임베드만 예외</b>: MQTT-WS + Canvas 실시간 렌더링과 Isaac WebRTC 임베드는 사람이 구조 설계 후 에이전트가 살 붙임</li>
         </ul>
         <div class="note"><b>겸임 · PM</b> — 일정·리소스·범위의 일정 키. 발주·플랫폼은 중단·재개가 쉬워 PM 겸임에 적합</div>
       </div>

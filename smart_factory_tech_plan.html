@@ -267,7 +267,7 @@
       <li><b>50시리즈(Blackwell)는 Isaac Sim 5.x 전용</b> — 4.x 드라이버/CUDA 비호환. <span class="chip green">Isaac Sim 5.x</span><span class="chip green">Isaac Lab 릴리스 태그 고정</span><span class="chip green">Python 3.11</span> 버전 고정</li>
       <li>Python 환경 격리 필수: ROS2 Humble(3.10) vs Isaac Lab(3.11) — conda/venv 분리</li>
       <li>드라이버 최신 production branch (580.65.06+), SSD 여유 100GB+</li>
-      <li>학습은 <b>--headless 습관화</b>, 렌더 카메라는 검사 스테이션 위주로 VRAM 예산 관리</li>
+      <li>학습은 <b>--headless 습관화</b>, 렌더 카메라는 검수 스테이션 위주로 VRAM 예산 관리 — 단 시연·관제 3D 스트림 시에는 뷰포트 렌더 모드로 전환</li>
       <li>RAM 64GB 증설은 옵션 — Replicator 대량 생성/대형 씬 병목 체감 시 5080 우선</li>
     </ul>
   </div>
@@ -411,7 +411,7 @@
       </div>
       <div class="phase">
         <span class="ph-tag">PHASE 2</span><h4>Isaac Sim 포팅 + 수직 슬라이스 완성</h4>
-        <p>USD 변환·ROS2 브리지로 노드 재사용 · 피킹 스테이션 1 + AMR 1 라이브 접속(패턴 2) · Replicator 합성 데이터 → 검수 모델 → 폐루프</p>
+        <p>USD 변환·ROS2 브리지로 노드 재사용 · 피킹 스테이션 1 + AMR 1 라이브 접속(패턴 2) · Replicator 합성 데이터 → 검수 모델 → 폐루프 · <b>Isaac WebRTC 스트림 → 관제 포털 임베드 (3D 비주얼 필수 요구)</b></p>
       </div>
       <div class="phase">
         <span class="ph-tag">PHASE 3</span><h4>Isaac Lab RL</h4>
@@ -490,6 +490,7 @@
     <div class="plain"><span class="pl-tag">쉽게 말하면</span>지금까지 정한 중요한 결정들의 목록입니다. "이거 왜 이렇게 했더라?"가 궁금해지면 여기부터 봅니다. 결정이 바뀌면 이 목록에 이력을 남깁니다.</div>
     <div class="dlog">
       <div>도메인 = 물류센터(풀필먼트) — 상위 시스템은 WMS/WES, 매니퓰레이션은 피스 피킹으로 유지 (REV B 전환)</div>
+      <div>물류센터 3D 비주얼 = 필수 요구 — Isaac Sim WebRTC 스트리밍을 관제 포털에 임베드, Three.js 자체 트윈은 스트레치</div>
       <div>프로젝트 정체성 = 시뮬 기반 물류 IT/OT 통합 시스템 (로봇 단독 프로젝트 아님)</div>
       <div>피스 피킹 = MoveIt2 고전 접근이 본체, SKU 파지 RL은 심화 챕터</div>
       <div>시뮬레이터 = Gazebo(개발 무대) + Isaac Sim(합성 데이터·물리 셀) + Isaac Lab(RL 1태스크) + SimPy(물류 DES)</div>
