@@ -70,6 +70,8 @@
   p{color:var(--ink);margin-bottom:10px}
   .lead{font-size:15.5px}
   .soft{color:var(--ink-soft)}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:13.5px;line-height:1.8}
+  .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
   .tagline{
     font-size:16px;font-weight:600;background:var(--ink);color:#fff;padding:16px 20px;margin:14px 0;
     border-left:6px solid var(--amber)
@@ -224,9 +226,10 @@
 <section id="s1">
   <div class="sec-head"><span class="sec-no">SEC 01</span><h2>프로젝트 정체성과 목표</h2></div>
   <div class="sec-body">
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>로봇 데모가 아니라, 실제 물류센터가 쓰는 것과 같은 구조의 소프트웨어 시스템을 만듭니다. 다만 진짜 로봇과 창고 대신 컴퓨터 속 가상 공간을 씁니다 — 그래서 비싼 장비 없이도 7주 안에 전체를 완성할 수 있습니다.</div>
     <div class="tagline"><small>ONE-LINE DEFINITION</small>"멀티로봇 시뮬레이션 기반 물류센터를 구축하고 산업 계층 구조로 WMS/WES까지 통합한 스마트 물류 솔루션"</div>
     <p class="lead">"로봇 프로젝트에 백엔드를 붙인 것"이 아니라 <b>물류 <a class="term" href="glossary_industrial.html#smartfactory">IT/OT 통합 시스템</a>에서 물리 레이어를 시뮬레이션으로 구현한 것</b>. 물리 세계만 가상일 뿐, 데이터 플로우·백엔드·서비스는 실제 스마트 물류센터와 동일한 구조로 구축한다.</p>
-    <p class="soft">처음 보는 용어는 용어사전에서 그래픽과 함께 설명한다 — <a href="glossary_robotics.html">A 로보틱스·시뮬레이션</a> · <a href="glossary_industrial.html">B 물류센터·표준</a> · <a href="glossary_ai_data.html">C AI·데이터·서비스</a></p>
+    <p class="soft">이 문서가 처음이라면 <a href="project_intro.html"><b>안내 문서(DOC 00)</b></a>를 먼저 읽는 것을 권한다. 처음 보는 용어는 용어사전에서 그래픽과 함께 설명 — <a href="glossary_robotics.html">A 로보틱스·시뮬레이션</a> · <a href="glossary_industrial.html">B 물류센터·표준</a> · <a href="glossary_ai_data.html">C AI·데이터·서비스</a></p>
     <h3>전략적 배경</h3>
     <ul class="rules">
       <li>하드웨어 없이 <b>시뮬레이션 온리</b>로 기술 스택 완성 — 6인·7주 제약에서 하드웨어 조달·고장 리스크를 원천 제거</li>
@@ -241,6 +244,7 @@
 <section id="s2">
   <div class="sec-head"><span class="sec-no">SEC 02</span><h2>시뮬레이터 선택과 하드웨어 환경</h2></div>
   <div class="sec-body">
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>가상 공간(시뮬레이터)은 용도별로 세 가지를 씁니다: 가볍고 빠른 개발 연습장(Gazebo), 사진처럼 진짜 같은 최종 무대(Isaac Sim), 그리고 "하루치 물류 흐름을 몇 초 만에 계산"하는 흐름 계산기(SimPy). 고사양 그래픽카드가 달린 컴퓨터 한 대가 전용 서버 역할을 하고, 나머지는 원격으로 접속해 씁니다.</div>
     <h3>시뮬레이터 역할 정의</h3>
     <table>
       <tr><th style="width:110px">도구</th><th>계층</th><th>본 프로젝트에서의 역할</th></tr>
@@ -273,6 +277,7 @@
 <section id="s3">
   <div class="sec-head"><span class="sec-no">SEC 03</span><h2>시스템 아키텍처 — <a class="term" href="glossary_industrial.html#isa95">ISA-95</a> × <a class="term" href="glossary_industrial.html#wms">WMS/WES/WCS</a> 계층</h2></div>
   <div class="sec-body">
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>시스템을 층층이 쌓는 설계도입니다. 실제 산업계가 쓰는 표준 구조와 통신 규격을 그대로 따라 만들어서, "학생 프로젝트 구조"가 아니라 "현장 구조"가 되도록 합니다. AI 검수 파트가 특별한 이유도 함께 설명합니다: 진짜 불량품 사진을 못 구하니 가상 카메라로 만들어서 AI를 가르친다는 것.</div>
     <div class="stack">
       <div class="layer"><div class="tag">관제/분석</div><div class="desc"><b><a class="term" href="glossary_ai_data.html#grafana">Grafana</a> 대시보드</b> — 설비 가동률 · 사이클 타임 · AMR 위치/배터리 · 불량률</div></div>
       <div class="flowdown">▼ ▲</div>
@@ -307,6 +312,7 @@
 <section id="s4">
   <div class="sec-head"><span class="sec-no">SEC 04</span><h2>SimPy × Isaac Sim 정합성과 통합</h2></div>
   <div class="sec-body">
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>두 시뮬레이터는 시간을 다루는 방식이 정반대입니다. 하나는 영화처럼 매 순간을 전부 그리고(Isaac), 하나는 중요한 사건만 골라 빨리감기합니다(SimPy). 억지로 하나로 묶으면 둘 다 망가지므로, 느슨한 연결부터 시작해 세 단계로 점점 깊게 결합합니다.</div>
     <h3>근본적 차이 — 시간 패러다임</h3>
     <div class="versus">
       <div class="vcard des">
@@ -360,6 +366,7 @@
 <section id="s5">
   <div class="sec-head"><span class="sec-no">SEC 05</span><h2>기술 투자 배분 — 50 / 30 / 20</h2></div>
   <div class="sec-body">
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>시간과 노력을 어디에 쓸지 정한 예산표입니다. 팀이 처음 해보는 어려운 영역(로봇·시뮬레이션)에 절반을 쓰고, 이미 잘하는 영역(웹·DB)은 기존 지식과 기성 코드를 재활용해 최소 시간으로 처리합니다.</div>
     <div class="alloc">
       <div class="a50">50% 로봇/시뮬</div>
       <div class="a30">30% 산업 통합</div>
@@ -391,6 +398,7 @@
 <section id="s6">
   <div class="sec-head"><span class="sec-no">SEC 06</span><h2>단계별 로드맵</h2></div>
   <div class="sec-body">
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>작은 완성품을 먼저 만들고 살을 붙입니다. 0단계에서 로봇 없이 데이터 흐름부터, 1단계에서 로봇 조종, 2단계에서 전체 연결 — 어느 단계에서 멈춰도 "완성된 무언가"가 남도록 설계했습니다. 3단계부터는 심화(AI 강화학습, 확장)입니다.</div>
     <div class="tagline"><small>PRINCIPLE</small>수직 슬라이스 우선 — "스테이션 1개 + AMR 1대 + 데이터 경로 끝까지"를 최소 구성으로 먼저 관통, 이후 수평 확장. 통합 리스크를 앞에서 흡수.</div>
     <div class="phases">
       <div class="phase">
@@ -425,6 +433,7 @@
 <section id="s7">
   <div class="sec-head"><span class="sec-no">SEC 07</span><h2>Sim-to-Real 사이드 트랙 — 하드웨어 계획</h2></div>
   <div class="sec-body">
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>시간이 남으면 작은 실물 로봇(로봇팔 + 바퀴 베이스)을 사서 가상 세계에 연결해보는 선택 과제입니다. 무엇을 살지, 언제 살지(가상에서 충분히 검증된 시점), 무엇이 어려운지를 미리 정리해둔 섹션이라 — 지금 당장 읽지 않아도 됩니다.</div>
     <h3>플랫폼 확정: SO-101 (팔) + LeKiwi (베이스)</h3>
     <ul class="rules">
       <li><b>SO-101</b>: LeRobot 생태계 표준 오픈소스 6DOF 매니퓰레이터</li>
@@ -456,6 +465,7 @@
 <section id="s8">
   <div class="sec-head"><span class="sec-no">SEC 08</span><h2>이론 학습 전략 — Just-in-Time</h2></div>
   <div class="sec-body">
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>수학·이론 공부는 교과서 정주행 대신, 프로젝트에서 그 이론이 실제로 필요해지는 순간에 최소한만 배웁니다. 미리 해둘 것은 딱 하나(모터 제어의 기본인 PID 감 잡기, 2~3일)뿐입니다.</div>
     <p class="lead">원칙: 교과서 정주행(현대제어·라그랑주 동역학 등)은 오버. <b>프로젝트 단계가 이론을 소환하는 시점에 최소 구현으로 학습</b>. 별도 트랙 없음.</p>
     <table>
       <tr><th>프로젝트 단계</th><th>소환되는 이론</th><th>최소 구현 과제</th></tr>
@@ -477,6 +487,7 @@
 <section id="s9">
   <div class="sec-head"><span class="sec-no">SEC 09</span><h2>핵심 결정 사항 — Decision Log</h2></div>
   <div class="sec-body">
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>지금까지 정한 중요한 결정들의 목록입니다. "이거 왜 이렇게 했더라?"가 궁금해지면 여기부터 봅니다. 결정이 바뀌면 이 목록에 이력을 남깁니다.</div>
     <div class="dlog">
       <div>도메인 = 물류센터(풀필먼트) — 상위 시스템은 WMS/WES, 매니퓰레이션은 피스 피킹으로 유지 (REV B 전환)</div>
       <div>프로젝트 정체성 = 시뮬 기반 물류 IT/OT 통합 시스템 (로봇 단독 프로젝트 아님)</div>

@@ -42,6 +42,12 @@
 
   main{flex:1;padding:46px 0 80px}
 
+  a.intro-banner{display:block;text-decoration:none;background:var(--machine);color:#fff;padding:15px 20px;margin:0 0 18px;border-left:6px solid #12532F;transition:transform .15s,box-shadow .15s}
+  a.intro-banner:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(31,122,77,.28)}
+  a.intro-banner:focus-visible{outline:3px solid var(--machine);outline-offset:2px}
+  a.intro-banner small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#BFE3CF;margin-bottom:5px}
+  a.intro-banner b{font-size:15px}
+  a.intro-banner .go{font-family:var(--mono);font-size:12px;font-weight:700;margin-left:10px;white-space:nowrap}
   .tagline{
     font-size:15px;font-weight:600;background:var(--ink);color:#fff;padding:16px 20px;margin:0 0 26px;
     border-left:6px solid var(--amber)
@@ -128,7 +134,11 @@
 
 <main class="wrap">
 
-  <div class="tagline"><small>READING ORDER</small>처음 합류한 팀원은 <b>01 전체 조망</b>(그림·오너십·협업 규칙) → <b>02 실행 계획서</b>(기술 상세·결정 근거) 순서로. 파트 간 계약·일정의 기준은 항상 01. 낯선 용어는 <b>REF A–C 용어사전</b>에서 그래픽과 함께.</div>
+  <a class="intro-banner" href="project_intro.html">
+    <small>DOC 00 · INTRO — 읽는 데 약 10분</small>
+    <b>처음이신가요? 전문용어 없이 프로젝트 전체를 설명하는 안내 문서부터 시작하세요</b><span class="go">읽으러 가기 →</span>
+  </a>
+  <div class="tagline"><small>READING ORDER</small>읽는 순서: <b>00 안내</b>(입문) → <b>01 전체 조망</b>(그림·오너십·협업 규칙) → <b>02 실행 계획서</b>(기술 상세·결정 근거). 파트 간 계약·일정의 기준은 항상 01. 낯선 용어는 <b>REF A–C 용어사전</b>에서 그래픽과 함께.</div>
 
   <div class="register-label">Documents · 2 Active</div>
   <div class="docs">

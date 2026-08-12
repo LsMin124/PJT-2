@@ -62,6 +62,8 @@
   p{margin-bottom:10px}
   .lead{font-size:15.5px}
   .soft{color:var(--ink-soft)}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:13.5px;line-height:1.8}
+  .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
   .tagline{font-size:16px;font-weight:600;background:var(--ink);color:#fff;padding:16px 20px;margin:14px 0;border-left:6px solid var(--amber)}
   .tagline small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#9AA7B4;margin-bottom:6px;font-weight:400}
 
@@ -176,9 +178,10 @@
 <section id="o1">
   <div class="sec-head"><span class="sec-no">SEC 01</span><h2>비전과 서비스 정의</h2></div>
   <div class="sec-body">
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>우리는 '가상의 물류센터'와 그것을 운영하는 '진짜 웹 서비스'를 함께 만듭니다. 화면 속 3D 창고에서 로봇이 상품을 나르고, 운영자는 우리가 만든 웹사이트에서 주문을 넣고 로봇을 지켜보고 문제가 생기면 알림을 받습니다. 물리 세계만 가상일 뿐, 쿠팡 물류센터의 축소판이라고 생각하면 됩니다.</div>
     <div class="tagline"><small>WHAT WE BUILD</small>AMR 플릿 + 피스 피킹 매니퓰레이션 시뮬레이션 물류센터 위에, 산업 표준 데이터 플로우·AI 검수·운영 관제 웹 서비스까지 통합한 스마트 물류 솔루션</div>
     <p class="lead">단순 로봇 데모가 아니라 <b>운영자가 실제로 쓰는 서비스</b>가 최종 산출물. 물리 세계만 시뮬레이션일 뿐, 데이터 플로우·백엔드·서비스는 실제 <a class="term" href="glossary_industrial.html#smartfactory">스마트 물류센터</a>와 동일한 구조로 구축한다.</p>
-    <p class="soft">처음 보는 용어는 용어사전에서 그래픽과 함께 설명 — <a href="glossary_robotics.html">A 로보틱스·시뮬레이션</a> · <a href="glossary_industrial.html">B 물류센터·표준</a> · <a href="glossary_ai_data.html">C AI·데이터·서비스</a></p>
+    <p class="soft">이 문서가 처음이라면 <a href="project_intro.html"><b>안내 문서(DOC 00)</b></a>를 먼저 읽는 것을 권합니다. 처음 보는 용어는 용어사전에서 그래픽과 함께 설명 — <a href="glossary_robotics.html">A 로보틱스·시뮬레이션</a> · <a href="glossary_industrial.html">B 물류센터·표준</a> · <a href="glossary_ai_data.html">C AI·데이터·서비스</a></p>
     <h3>서비스: 물류센터 운영 관제 포털 (Operations Center) + PWA</h3>
     <table>
       <tr><th style="width:140px">영역</th><th>내용</th></tr>
@@ -199,6 +202,7 @@
 <section id="o2">
   <div class="sec-head"><span class="sec-no">SEC 02</span><h2>시스템 파노라마 — 레이어 × 오너</h2></div>
   <div class="sec-body">
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>전체 시스템을 층으로 쌓은 그림입니다. 맨 아래에 가상 물류센터(로봇·설비)가 있고, 그 위로 데이터가 오가는 통로(메시지 인프라) → 일을 지시하는 두뇌(WMS 서버) → 사람이 보는 웹 화면 순서로 올라갑니다. 오른쪽 색깔 열이 그 층의 담당자를 나타냅니다.</div>
     <div class="stack">
       <div class="layer"><div class="tag">서비스<small>React SPA · PWA</small></div><div class="desc">운영 관제 포털 — REST(주문/재고/검수) + <b><a class="term" href="glossary_ai_data.html#mqttws">MQTT-over-WebSocket</a></b>(실시간 텔레메트리 직접 구독)</div><div class="owner c-steel">B2 발주 오너<br>+AI 에이전트</div></div>
       <div class="flowdown">▼ ▲</div>
@@ -219,6 +223,7 @@
 <section id="o3">
   <div class="sec-head"><span class="sec-no">SEC 03</span><h2>팀 구성과 오너십 (6명 — 1인 1트랙 · 1겸임)</h2></div>
   <div class="sec-body">
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>여섯 명이 각자 하나의 큰 덩어리(트랙)를 책임지고, 추가로 팀 전체를 위한 역할(일정 관리, 문서 관리 등)을 하나씩 겸합니다. "보조"는 없습니다 — 전원이 시연 화면에 자기 결과물을 하나씩 올립니다. 누가 어느 자리를 맡을지는 킥오프에서 정합니다.</div>
     <p class="lead">특정 개인을 전제하지 않는 <b>역할 설계도</b>. 전원이 ① 데모에 보이는 수직 트랙 하나를 소유하고 ② 횡단 역할(PM·아키텍트·통합 등) 하나를 겸임한다. "보조" 역할은 없다 — 실제 배정은 킥오프 때 각자의 강점·지망으로 결정.</p>
     <div class="team">
       <div class="member m-robot">
@@ -303,6 +308,7 @@
 <section id="o4">
   <div class="sec-head"><span class="sec-no">SEC 04</span><h2>데이터 계약 — 파트를 병렬로 달리게 하는 장치</h2></div>
   <div class="sec-body">
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>여섯 명이 서로를 기다리지 않고 동시에 개발하려면, "주고받을 데이터의 형식"을 먼저 약속하고 얼려두면 됩니다. 약속만 지키면 로봇이 완성되기 전에도 웹·서버 파트는 가짜 데이터(mock)로 개발을 시작할 수 있습니다. 이 약속 문서가 이 프로젝트 협업의 헌법입니다.</div>
     <p class="lead">4개 파트가 서로를 기다리지 않는 유일한 방법: <b>1~2주차에 인터페이스 계약을 동결</b>하고, 각 파트는 계약만 보고 개발한다.</p>
     <div class="hub">
       <div class="side">
@@ -339,6 +345,7 @@
 <section id="o5">
   <div class="sec-head"><span class="sec-no">SEC 05</span><h2>통합 캘린더 — 빅뱅 금지</h2></div>
   <div class="sec-body">
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>마지막 주에 한꺼번에 합치면 반드시 사고가 납니다. 그래서 2~3주에 한 번씩 전체를 미리 연결해보는 날을 정해두고, 그날마다 "실제로 돌아가는 모습"을 확인합니다. 중반 이후로는 언제 시연 요청이 와도 보여줄 수 있는 상태를 유지하는 게 목표입니다.</div>
     <div class="milestones">
       <div class="ms"><span class="ms-tag">WEEK 1~2</span><h4>계약 동결 + 셀프서비스 환경</h4><p>토픽 스키마·OpenAPI v1.0 확정 · docker compose 전 스택 · mock publisher 가동</p></div>
       <div class="ms"><span class="ms-tag">WEEK 2~3</span><h4>통합 #1 — mock → 웹 맵</h4><p>가짜 AMR이 웹 관제 맵에서 움직임 · 백엔드 order 발행 → mock 반응 확인</p></div>
@@ -354,6 +361,7 @@
 <section id="o6">
   <div class="sec-head"><span class="sec-no">SEC 06</span><h2>협업 규칙 요약</h2></div>
   <div class="sec-body">
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>위 내용 전체를 여섯 줄 규칙으로 압축한 표입니다. 일하다 헷갈리면 이 표만 다시 보면 됩니다.</div>
     <table>
       <tr><th style="width:180px">규칙</th><th>내용</th></tr>
       <tr><td><b>계약 우선</b></td><td>파트 간 소통은 동결된 계약(스키마/API)이 기준. 변경은 2-키(아키텍트 R2 + PM B2) 승인</td></tr>
