@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>시뮬레이션 기반 통합 스마트팩토리 솔루션 — 기술 실행 계획서</title>
+<title>시뮬레이션 기반 통합 스마트 물류센터 솔루션 — 기술 실행 계획서</title>
 <style>
   :root{
     --bg:#E9ECEE;          /* 공장 패널 그레이 */
@@ -188,9 +188,9 @@
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow">TECH PLAN · REV A · <b>SIM-FIRST SMART FACTORY</b> · 2026-08</div>
-      <h1>시뮬레이션 기반 통합 스마트팩토리 솔루션
-        <span class="sub">매니퓰레이션 생산라인 + 운송 AMR + 산업 데이터 플로우 + AI QA — 물리 레이어가 시뮬레이션인 제조 IT/OT 통합 시스템</span>
+      <div class="doc-eyebrow">TECH PLAN · REV B · <b>SIM-FIRST SMART LOGISTICS</b> · 2026-08</div>
+      <h1>시뮬레이션 기반 통합 스마트 물류센터 솔루션
+        <span class="sub">AMR 플릿 + 피스 피킹 매니퓰레이션 + 산업 데이터 플로우 + AI 검수 — 물리 레이어가 시뮬레이션인 물류 IT/OT 통합 시스템</span>
       </h1>
     </div>
     <div class="meta">
@@ -224,9 +224,9 @@
 <section id="s1">
   <div class="sec-head"><span class="sec-no">SEC 01</span><h2>프로젝트 정체성과 목표</h2></div>
   <div class="sec-body">
-    <div class="tagline"><small>ONE-LINE DEFINITION</small>"멀티로봇 시뮬레이션 기반 생산 셀을 구축하고 ISA-95 계층으로 MES까지 통합한 스마트팩토리 솔루션"</div>
-    <p class="lead">"로봇 프로젝트에 백엔드를 붙인 것"이 아니라 <b>제조 <a class="term" href="glossary_industrial.html#smartfactory">IT/OT 통합 시스템</a>에서 물리 레이어를 시뮬레이션으로 구현한 것</b>. 물리 세계만 가상일 뿐, 데이터 플로우·백엔드·서비스는 실제 스마트팩토리와 동일한 구조로 구축한다.</p>
-    <p class="soft">처음 보는 용어는 용어사전에서 그래픽과 함께 설명한다 — <a href="glossary_robotics.html">A 로보틱스·시뮬레이션</a> · <a href="glossary_industrial.html">B 스마트팩토리·표준</a> · <a href="glossary_ai_data.html">C AI·데이터·서비스</a></p>
+    <div class="tagline"><small>ONE-LINE DEFINITION</small>"멀티로봇 시뮬레이션 기반 물류센터를 구축하고 산업 계층 구조로 WMS/WES까지 통합한 스마트 물류 솔루션"</div>
+    <p class="lead">"로봇 프로젝트에 백엔드를 붙인 것"이 아니라 <b>물류 <a class="term" href="glossary_industrial.html#smartfactory">IT/OT 통합 시스템</a>에서 물리 레이어를 시뮬레이션으로 구현한 것</b>. 물리 세계만 가상일 뿐, 데이터 플로우·백엔드·서비스는 실제 스마트 물류센터와 동일한 구조로 구축한다.</p>
+    <p class="soft">처음 보는 용어는 용어사전에서 그래픽과 함께 설명한다 — <a href="glossary_robotics.html">A 로보틱스·시뮬레이션</a> · <a href="glossary_industrial.html">B 물류센터·표준</a> · <a href="glossary_ai_data.html">C AI·데이터·서비스</a></p>
     <h3>전략적 배경</h3>
     <ul class="rules">
       <li>하드웨어 없이 <b>시뮬레이션 온리</b>로 기술 스택 완성 — 6인·7주 제약에서 하드웨어 조달·고장 리스크를 원천 제거</li>
@@ -244,13 +244,13 @@
     <h3>시뮬레이터 역할 정의</h3>
     <table>
       <tr><th style="width:110px">도구</th><th>계층</th><th>본 프로젝트에서의 역할</th></tr>
-      <tr><td><b><a class="term" href="glossary_robotics.html#isaac">Isaac Sim</a></b></td><td>연속시간 물리 시뮬레이터 (Omniverse)</td><td>생산 셀·AMR 물리/센서 시뮬레이션, <a class="term" href="glossary_robotics.html#replicator">Replicator</a> 합성 데이터</td></tr>
-      <tr><td><b><a class="term" href="glossary_robotics.html#isaaclab">Isaac Lab</a></b></td><td>Isaac Sim 위의 RL 프레임워크 (GPU 병렬화)</td><td>매니퓰레이션 RL 태스크 1개 완주 (심화 챕터)</td></tr>
+      <tr><td><b><a class="term" href="glossary_robotics.html#isaac">Isaac Sim</a></b></td><td>연속시간 물리 시뮬레이터 (Omniverse)</td><td>랙·피킹 스테이션·AMR 물리/센서 시뮬레이션, <a class="term" href="glossary_robotics.html#replicator">Replicator</a> 합성 데이터 — 웨어하우스 기본 에셋 제공으로 씬 구축 비용 낮음</td></tr>
+      <tr><td><b><a class="term" href="glossary_robotics.html#isaaclab">Isaac Lab</a></b></td><td>Isaac Sim 위의 RL 프레임워크 (GPU 병렬화)</td><td>SKU 파지 RL 태스크 1개 완주 (심화 챕터 — 다품종 파지는 물류 피킹의 실제 최전선 난제)</td></tr>
       <tr><td><b><a class="term" href="glossary_robotics.html#gazebo">Gazebo</a></b></td><td>ROS2 네이티브 시뮬레이터</td><td>ROS2 스택(Nav2/MoveIt2) 개발 주 무대, 저비용 반복</td></tr>
-      <tr><td><b><a class="term" href="glossary_industrial.html#des">SimPy</a></b></td><td>이산사건 시뮬레이션 (DES)</td><td>공장 물류/스케줄링 레이어, AMR 배차 두뇌</td></tr>
+      <tr><td><b><a class="term" href="glossary_industrial.html#des">SimPy</a></b></td><td>이산사건 시뮬레이션 (DES)</td><td>센터 물류/주문 흐름 레이어, AMR 배차 두뇌 — 물류센터는 DES의 본고장</td></tr>
     </table>
     <ul class="rules">
-      <li>매니퓰레이션은 <b><a class="term" href="glossary_robotics.html#moveit2">MoveIt2</a> 기반 고전 접근</b>(모션 플래닝 + IK)이 산업 표준 — Gazebo로 충분, RL은 심화</li>
+      <li>피스 피킹 매니퓰레이션은 <b><a class="term" href="glossary_robotics.html#moveit2">MoveIt2</a> 기반 고전 접근</b>(모션 플래닝 + IK)이 본체 — Gazebo로 충분, SKU 파지 RL은 심화</li>
       <li>학습 우선순위: <span class="chip amber">ROS2 절대 코어</span> &gt; <span class="chip steel">Gazebo 기본기</span> &gt; <span class="chip green">Isaac 희소성 차별화</span></li>
     </ul>
     <h3>하드웨어 환경 (확정)</h3>
@@ -271,20 +271,20 @@
 
 <!-- ── 03 아키텍처 ── -->
 <section id="s3">
-  <div class="sec-head"><span class="sec-no">SEC 03</span><h2>시스템 아키텍처 — <a class="term" href="glossary_industrial.html#isa95">ISA-95</a> 계층</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 03</span><h2>시스템 아키텍처 — <a class="term" href="glossary_industrial.html#isa95">ISA-95</a> × <a class="term" href="glossary_industrial.html#wms">WMS/WES/WCS</a> 계층</h2></div>
   <div class="sec-body">
     <div class="stack">
       <div class="layer"><div class="tag">관제/분석</div><div class="desc"><b><a class="term" href="glossary_ai_data.html#grafana">Grafana</a> 대시보드</b> — 설비 가동률 · 사이클 타임 · AMR 위치/배터리 · 불량률</div></div>
       <div class="flowdown">▼ ▲</div>
-      <div class="layer l-hi"><div class="tag">L3 · MES<small>Spring Boot</small></div><div class="desc"><b><a class="term" href="glossary_industrial.html#mes">MES-lite</a></b>: 작업지시 생성 → 스테이션 할당 → AMR 배차 → 실적 집계<br>+ <b><a class="term" href="glossary_industrial.html#des">SimPy</a> 물류 오케스트레이터</b> (배차 두뇌)</div></div>
+      <div class="layer l-hi"><div class="tag">L3 · WMS/WES<small>Spring Boot</small></div><div class="desc"><b><a class="term" href="glossary_industrial.html#wms">WMS/WES-lite</a></b>: 주문 접수 → 웨이브 생성 → 피킹 태스크 할당 → AMR 배차 → 출고 실적<br>+ <b><a class="term" href="glossary_industrial.html#des">SimPy</a> 물류 오케스트레이터</b> (배차 두뇌)</div></div>
       <div class="flowdown">▼ ▲</div>
-      <div class="layer"><div class="tag">데이터 인프라</div><div class="desc"><a class="term" href="glossary_ai_data.html#emqx">EMQX</a>/Mosquitto → <a class="term" href="glossary_ai_data.html#timescale">TimescaleDB</a>(시계열) + PostgreSQL(작업지시/실적)<span class="proto">설비 텔레메트리 = Sparkplug B&nbsp;&nbsp;|&nbsp;&nbsp;AMR 운송 = VDA 5050</span></div></div>
+      <div class="layer"><div class="tag">데이터 인프라</div><div class="desc"><a class="term" href="glossary_ai_data.html#emqx">EMQX</a>/Mosquitto → <a class="term" href="glossary_ai_data.html#timescale">TimescaleDB</a>(시계열) + PostgreSQL(주문·재고/실적)<span class="proto">설비 텔레메트리 = Sparkplug B&nbsp;&nbsp;|&nbsp;&nbsp;AMR 운송 = VDA 5050</span></div></div>
       <div class="flowdown">▼ ▲</div>
       <div class="layer"><div class="tag">엣지</div><div class="desc"><a class="term" href="glossary_robotics.html#ros2">ROS2</a> 노드 ↔ <a class="term" href="glossary_industrial.html#mqtt">MQTT</a> 브리지</div></div>
       <div class="flowdown">▼ ▲</div>
-      <div class="layer"><div class="tag">L0~2 · 물리<small>Isaac Sim</small></div><div class="desc"><b>가상 공장</b>: 생산 셀(매니퓰레이터 스테이션 2~3 + 컨베이어) + 운송 <a class="term" href="glossary_industrial.html#amr">AMR</a>(<a class="term" href="glossary_robotics.html#omni">옴니휠</a>) 2대 + 검사 스테이션(카메라)</div></div>
+      <div class="layer"><div class="tag">L0~2 · 물리<small>Isaac Sim</small></div><div class="desc"><b>가상 물류센터</b>: 랙·토트 + <a class="term" href="glossary_industrial.html#fulfillment">피킹 스테이션</a>(매니퓰레이터 1~2) + 컨베이어/소터 + 운송 <a class="term" href="glossary_industrial.html#amr">AMR</a>(<a class="term" href="glossary_robotics.html#omni">옴니휠</a>) 2대+ + 검수 스테이션(카메라)</div></div>
       <div class="flowdown">▼ ▲</div>
-      <div class="layer"><div class="tag">AI QA</div><div class="desc"><a class="term" href="glossary_robotics.html#replicator">Replicator</a> 합성 결함 데이터 → 결함검출 모델(<a class="term" href="glossary_ai_data.html#onnx">ONNX</a>) → 판정 → MES 회신 → 불량품 AMR 리젝트 라인 운송 <b>(<a class="term" href="glossary_industrial.html#closedloop">폐루프</a>)</b></div></div>
+      <div class="layer"><div class="tag">AI QA</div><div class="desc"><a class="term" href="glossary_robotics.html#replicator">Replicator</a> 합성 SKU·파손 데이터 → 검수 모델(<a class="term" href="glossary_ai_data.html#onnx">ONNX</a>) → 판정 → WMS 회신 → 예외품 AMR 리젝트 라인 운송 <b>(<a class="term" href="glossary_industrial.html#closedloop">폐루프</a>)</b></div></div>
     </div>
 
     <h3>산업 표준 배치 — 부주력 축의 두 기둥</h3>
@@ -292,14 +292,14 @@
       <tr><th style="width:130px">표준</th><th>용도</th><th>핵심 내용</th></tr>
       <tr><td><b><a class="term" href="glossary_industrial.html#sparkplug">Sparkplug B</a></b></td><td>설비 텔레메트리</td><td>NBIRTH/NDATA 네임스페이스, 디바이스 상태 모델</td></tr>
       <tr><td><b><a class="term" href="glossary_industrial.html#vda5050">VDA 5050</a></b></td><td>AMR 플릿 통신<br><span class="soft num" style="font-size:11px">VDA/VDMA 표준</span></td><td>마스터 컨트롤이 <code class="num">order</code>(node/edge 그래프 + 점진적 엣지 릴리스로 교통 제어) 발행 → AMR이 <code class="num">state</code> 보고. 구현은 커넥터 생태계가 성숙한 2.x 기준, 3.0(자유주행 경로·존)은 지식으로 커버. 재료: 공식 JSON 스키마, OTTO 오픈소스 커넥터, ROS2 vda5050_connector</td></tr>
-      <tr><td class="soft">주변 표준<br>(지식 지도)</td><td class="soft">안전·상호운용</td><td class="soft">ISO 3691-4 / ANSI R15.08 (안전), MassRobotics Interop (채택 열세), SEMI E84 등 반도체 AMHS 별도 체계</td></tr>
+      <tr><td class="soft">주변 표준<br>(지식 지도)</td><td class="soft">안전·식별·상호운용</td><td class="soft">ISO 3691-4 / ANSI R15.08 (AMR 안전), GS1 바코드·SSCC (물류 식별), MassRobotics Interop (채택 열세)</td></tr>
     </table>
 
-    <h3>AI QA — Replicator가 킬러 무브인 이유</h3>
+    <h3>AI 검수 — Replicator가 킬러 무브인 이유</h3>
     <ul class="rules">
-      <li>현장 결함 검출의 난제 = <b>불량 샘플 희소성</b> → <a class="term" href="glossary_ai_data.html#synthetic">합성 데이터</a>가 실제 산업 트렌드</li>
-      <li>파이프라인: Replicator 결함 랜덤 생성(스크래치·오조립·결품) → <a class="term" href="glossary_ai_data.html#yolo">YOLO</a>/<a class="term" href="glossary_ai_data.html#anomaly">이상탐지</a>(PatchCore·PaDiM) 학습 → ONNX 서비스화 → 시뮬 검사 카메라 실시간 적용</li>
-      <li>합성 데이터는 결함 희소성과 도메인 일반화 문제에 대한 산업계의 실전 해답 — AI 트랙의 핵심 차별화 지점</li>
+      <li>현장 검수의 난제 = <b>예외 샘플(파손·오피킹) 희소성 + 수천 종 SKU 다양성</b> → <a class="term" href="glossary_ai_data.html#synthetic">합성 데이터</a>가 실제 산업 트렌드</li>
+      <li>파이프라인: Replicator SKU·파손·라벨 변형 랜덤 생성 → <a class="term" href="glossary_ai_data.html#yolo">YOLO</a>/<a class="term" href="glossary_ai_data.html#anomaly">이상탐지</a>(PatchCore·PaDiM) 학습 → ONNX 서비스화 → 시뮬 검수 카메라 실시간 적용</li>
+      <li>합성 데이터는 예외 샘플 희소성과 SKU 일반화 문제에 대한 산업계의 실전 해답 — AI 트랙의 핵심 차별화 지점</li>
     </ul>
   </div>
 </section>
@@ -332,7 +332,7 @@
     <div class="patterns">
       <div class="pat">
         <h4>캘리브레이션 결합 <small>OFFLINE · 우선</small></h4>
-        <p>Isaac에서 단위 작업 반복 측정(픽앤플레이스 200회 → 평균 12.3s, σ=1.8s, 실패율 4%) → SimPy 공정 파라미터로 주입. 실행 완전 분리·단방향. "물리적 근거를 가진 공장 모델" — 산업 <a class="term" href="glossary_industrial.html#digitaltwin">디지털 트윈</a> 표준 구조. what-if 실험 자유(AMR 3대 vs 4대, 배차 A vs B).</p>
+        <p>Isaac에서 단위 작업 반복 측정(피킹 200회 → 평균 12.3s, σ=1.8s, 실패율 4%) → SimPy 공정 파라미터로 주입. 실행 완전 분리·단방향. "물리적 근거를 가진 센터 모델" — 산업 <a class="term" href="glossary_industrial.html#digitaltwin">디지털 트윈</a> 표준 구조. what-if 실험 자유(AMR 3대 vs 4대, 배차 A vs B, 슬로팅 전략 비교).</p>
       </div>
       <div class="promote">▼ 승격</div>
       <div class="pat">
@@ -373,13 +373,13 @@
     <table>
       <tr><th style="width:90px">배분</th><th>내용</th><th>깊이 기준</th></tr>
       <tr><td><b class="num" style="color:var(--amber)">50%</b></td><td><a class="term" href="glossary_robotics.html#ros2control">ros2_control</a> 하드웨어 인터페이스, <a class="term" href="glossary_robotics.html#nav2">Nav2</a>+MoveIt2 통합, <a class="term" href="glossary_robotics.html#bt">behavior tree</a> 오케스트레이션, Isaac 포팅, Isaac Lab 태스크 1개</td><td>컨트롤러 체인·DDS QoS·물리 파라미터 선택 근거를 팀 스스로 설명·방어할 수 있는 수준</td></tr>
-      <tr><td><b class="num" style="color:var(--steel)">30%</b></td><td>Sparkplug B 네임스페이스 설계, ROS2↔MQTT 브리지, VDA 5050 배차, MES↔로봇 명령 계약(<a class="term" href="glossary_ai_data.html#openapi">스키마</a>)</td><td>코드보다 설계 문서가 산출물 — "왜 이 표준인가" 설명</td></tr>
-      <tr><td><b class="num" style="color:#8A96A3">20%</b></td><td>Spring MES-lite, DB, Grafana, QA 모델 서빙, 관제 포털</td><td>템플릿·기성 코드 재활용. "전체가 연결됨"이 목적</td></tr>
+      <tr><td><b class="num" style="color:var(--steel)">30%</b></td><td>Sparkplug B 네임스페이스 설계, ROS2↔MQTT 브리지, VDA 5050 배차, WMS↔로봇 명령 계약(<a class="term" href="glossary_ai_data.html#openapi">스키마</a>)</td><td>코드보다 설계 문서가 산출물 — "왜 이 표준인가" 설명</td></tr>
+      <tr><td><b class="num" style="color:#8A96A3">20%</b></td><td>Spring WMS/WES-lite, DB, Grafana, 검수 모델 서빙, 관제 포털</td><td>템플릿·기성 코드 재활용. "전체가 연결됨"이 목적</td></tr>
     </table>
     <h3>판단 근거 (희소성 × 리스크)</h3>
     <ul class="rules">
       <li>Spring/DB/Grafana: 팀 전원이 이미 보유한 역량 → 재사용으로 시간 확보, 동작 수준으로</li>
-      <li>AI QA는 모델 자체보다 <b>Replicator 데이터 생성 파이프라인</b>에 무게</li>
+      <li>AI 검수는 모델 자체보다 <b>Replicator 데이터 생성 파이프라인</b>에 무게</li>
       <li>ROS2/Isaac: 팀의 학습 곡선이 가장 가파르고 통합 리스크가 집중되는 영역 → 시간 50% 선제 배정</li>
       <li>산업 표준(ISA-95/Sparkplug B/VDA 5050): 난이도 중간, 차별화 효과 큼 → <b>가성비 최고</b></li>
       <li>힘 빼기 = 안 만들어도 되는 건 안 만들기. 주력 영역은 오픈소스도 해부 후 재구성 (서보 프로토콜 레벨까지)</li>
@@ -395,27 +395,27 @@
     <div class="phases">
       <div class="phase">
         <span class="ph-tag">PHASE 0</span><h4>데이터 백본 (Isaac 없이 시작)</h4>
-        <p>SimPy 물류 모델(가짜 분포) + Spring MES-lite + MQTT 브로커 + TimescaleDB/PostgreSQL + Grafana · VDA 5050/Sparkplug B 스키마 설계 · mock publisher 가동</p>
+        <p>SimPy 물류 모델(가짜 분포) + Spring WMS/WES-lite + MQTT 브로커 + TimescaleDB/PostgreSQL + Grafana · VDA 5050/Sparkplug B 스키마 설계 · mock publisher 가동</p>
       </div>
       <div class="phase">
         <span class="ph-tag">PHASE 1</span><h4>ROS2 코어 (Gazebo)</h4>
-        <p>AMR+팔 통합 <a class="term" href="glossary_robotics.html#urdf">URDF</a> · ros2_control(베이스 velocity/팔 position) · Nav2 + <a class="term" href="glossary_robotics.html#ekf">EKF</a> + MoveIt2 · behavior tree로 주행→도킹→픽앤플레이스</p>
+        <p>AMR+팔 통합 <a class="term" href="glossary_robotics.html#urdf">URDF</a> · ros2_control(베이스 velocity/팔 position) · Nav2 + <a class="term" href="glossary_robotics.html#ekf">EKF</a> + MoveIt2 · behavior tree로 주행→도킹→피킹</p>
       </div>
       <div class="phase">
         <span class="ph-tag">PHASE 2</span><h4>Isaac Sim 포팅 + 수직 슬라이스 완성</h4>
-        <p>USD 변환·ROS2 브리지로 노드 재사용 · 셀 1 + AMR 1 라이브 접속(패턴 2) · Replicator 결함 데이터 → QA 모델 → 폐루프</p>
+        <p>USD 변환·ROS2 브리지로 노드 재사용 · 피킹 스테이션 1 + AMR 1 라이브 접속(패턴 2) · Replicator 합성 데이터 → 검수 모델 → 폐루프</p>
       </div>
       <div class="phase">
         <span class="ph-tag">PHASE 3</span><h4>Isaac Lab RL</h4>
-        <p>파지(또는 도킹 정렬) 1태스크: 환경 정의 → 도메인 랜덤화 → PPO → 평가 · 실기체 서보 실측 스펙 반영 · 검증 서사 = sim-to-sim 전이 + 랜덤화 민감도 분석 · 소규모(64~128 env) 검증 → 야간 대규모(2048+) 본 학습</p>
+        <p>SKU 파지(또는 도킹 정렬) 1태스크: 환경 정의 → 도메인 랜덤화 → PPO → 평가 · 실기체 서보 실측 스펙 반영 · 검증 서사 = sim-to-sim 전이 + 랜덤화 민감도 분석 · 소규모(64~128 env) 검증 → 야간 대규모(2048+) 본 학습</p>
       </div>
       <div class="phase">
         <span class="ph-tag">PHASE 4</span><h4>수평 확장 + 시뮬 CI</h4>
-        <p>셀/AMR 추가(하이브리드) · 배차 알고리즘 비교(consistent hashing/Power of Two Choices) · Jenkins headless 회귀 CI: 표준 시나리오 자동 실행 → 사이클 타임/성공률 리포트</p>
+        <p>스테이션/AMR 추가(하이브리드) · 배차·슬로팅 전략 비교(consistent hashing/Power of Two Choices) · Jenkins headless 회귀 CI: 표준 시나리오 자동 실행 → UPH/피킹 성공률 리포트</p>
       </div>
       <div class="phase opt">
         <span class="ph-tag">PHASE 5 · 선택</span><h4>Sim-to-Real 사이드</h4>
-        <p>SO-101 + LeKiwi 실기체를 "실물 셀 1개"로 편입 → 하이브리드 디지털 트윈 완성형</p>
+        <p>SO-101 + LeKiwi 실기체를 "실물 피킹 스테이션 1개"로 편입 → 하이브리드 디지털 트윈 완성형</p>
       </div>
     </div>
     <p class="soft">주차 단위 통합 마일스톤(통합 #1~#3, 빅뱅 금지)은 <a href="smart_factory_overview.html#o5">TEAM OVERVIEW의 통합 캘린더</a>가 기준.</p>
@@ -478,8 +478,9 @@
   <div class="sec-head"><span class="sec-no">SEC 09</span><h2>핵심 결정 사항 — Decision Log</h2></div>
   <div class="sec-body">
     <div class="dlog">
-      <div>프로젝트 정체성 = 시뮬 기반 제조 IT/OT 통합 시스템 (로봇 단독 프로젝트 아님)</div>
-      <div>매니퓰레이션 = MoveIt2 고전 접근이 본체, RL은 심화 챕터</div>
+      <div>도메인 = 물류센터(풀필먼트) — 상위 시스템은 WMS/WES, 매니퓰레이션은 피스 피킹으로 유지 (REV B 전환)</div>
+      <div>프로젝트 정체성 = 시뮬 기반 물류 IT/OT 통합 시스템 (로봇 단독 프로젝트 아님)</div>
+      <div>피스 피킹 = MoveIt2 고전 접근이 본체, SKU 파지 RL은 심화 챕터</div>
       <div>시뮬레이터 = Gazebo(개발 무대) + Isaac Sim(합성 데이터·물리 셀) + Isaac Lab(RL 1태스크) + SimPy(물류 DES)</div>
       <div>버전 고정 = Isaac Sim 5.x / Isaac Lab 릴리스 태그 / Python 3.11 (Blackwell 제약)</div>
       <div>머신 역할 = 5080 Ubuntu 전담 워크스테이션, 5060 Ti Windows는 원격 클라이언트</div>
@@ -497,7 +498,7 @@
 </main>
 
 <footer>
-  <div class="wrap">SIM-FIRST SMART FACTORY · TECH PLAN REV A · 2026-08 — 계획 변경 시 Decision Log에 이력 추가 · 팀 전체 조망은 <a href="smart_factory_overview.html">TEAM OVERVIEW</a> · 용어는 <a href="glossary_robotics.html">용어사전 A</a>·<a href="glossary_industrial.html">B</a>·<a href="glossary_ai_data.html">C</a></div>
+  <div class="wrap">SIM-FIRST SMART LOGISTICS · TECH PLAN REV B (도메인: 물류센터) · 2026-08 — 계획 변경 시 Decision Log에 이력 추가 · 팀 전체 조망은 <a href="smart_factory_overview.html">TEAM OVERVIEW</a> · 용어는 <a href="glossary_robotics.html">용어사전 A</a>·<a href="glossary_industrial.html">B</a>·<a href="glossary_ai_data.html">C</a></div>
 </footer>
 
 </body>

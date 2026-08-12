@@ -58,7 +58,7 @@
 
 <header>
   <div class="wrap titleblock">
-    <div class="doc-eyebrow">REFERENCE A · <b>용어사전 — 로보틱스 · 시뮬레이션</b> · SIM-FIRST SMART FACTORY</div>
+    <div class="doc-eyebrow">REFERENCE A · <b>용어사전 — 로보틱스 · 시뮬레이션</b> · SIM-FIRST SMART LOGISTICS</div>
     <h1>로보틱스 · 시뮬레이션 용어
       <span class="sub">로봇을 처음 다루는 팀원을 위한 설명 — 계획서·오버뷰 본문에서 하이퍼링크로 연결됨</span>
     </h1>
@@ -69,7 +69,7 @@
   <div class="wrap">
     <a class="nav-home" href="index.html">⌂ INDEX</a>
     <a class="here" href="glossary_robotics.html">REF A · 로보틱스·시뮬레이션</a>
-    <a href="glossary_industrial.html">REF B · 스마트팩토리·표준</a>
+    <a href="glossary_industrial.html">REF B · 물류센터·표준</a>
     <a href="glossary_ai_data.html">REF C · AI·데이터·서비스</a>
   </div>
 </nav>
@@ -182,7 +182,7 @@
     <figcaption>내비게이션 파이프라인 — 각 단계가 교체 가능한 플러그인 구조</figcaption>
   </figure>
   <p>자동차 내비게이션 + 운전기사를 합친 것으로 생각하면 된다. 전역 플래너가 "어느 길로 갈지"를 정하고(내비), 지역 컨트롤러가 "지금 당장 핸들·액셀을 어떻게"를 정한다(운전기사). 도중에 장애물이 나타나면 지역 단계에서 실시간으로 피한다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — AMR의 스테이션 간 이동을 담당한다. MES가 발행한 VDA 5050 order를 커넥터가 Nav2 목표 지점으로 변환한다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — AMR의 랙·스테이션 간 이동을 담당한다. WMS/WES가 발행한 VDA 5050 order를 커넥터가 Nav2 목표 지점으로 변환한다.</div>
 </section>
 
 <section class="term" id="ekf">
@@ -240,7 +240,7 @@
     <figcaption>FK는 계산이 한 방향으로 정해지지만, IK는 해가 여러 개거나 없을 수도 있어 더 어렵다</figcaption>
   </figure>
   <p>MoveIt2는 IK 풀이에 더해 <b>충돌 회피 경로 탐색</b>까지 한다. "팔이 컨베이어에 부딪히지 않으면서 물체까지 도달하는 관절 움직임의 순서"를 샘플링 기반 알고리즘으로 찾는 것. 산업 현장 매니퓰레이션의 표준 접근이며, 강화학습 없이도 픽앤플레이스(집어서 옮기기)는 이 방식으로 충분하다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 생산 셀의 부품 픽앤플레이스를 담당한다. RL(Isaac Lab)은 심화 챕터이고 본체는 MoveIt2 고전 접근이다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 피킹 스테이션의 피스 피킹(bin에서 상품을 집어 토트에 담기)을 담당한다. RL(Isaac Lab)은 심화 챕터이고 본체는 MoveIt2 고전 접근이다.</div>
 </section>
 
 <section class="term" id="bt">
@@ -268,7 +268,7 @@
     <figcaption>if-else 스파게티 대신 트리 — 실패 처리·재시도·우선순위가 구조적으로 표현된다</figcaption>
   </figure>
   <p>프론트엔드의 상태 관리에 비유하면, 복잡한 로봇 작업의 "상태 머신을 사람이 읽을 수 있는 형태"로 만든 것이다. 게임 AI에서 출발해 로봇 업계 표준이 됐고, Nav2 내부도 행동 트리로 돌아간다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — "주행 → 도킹 → 픽앤플레이스 → 복귀"라는 AMR의 한 사이클 전체를 행동 트리로 오케스트레이션한다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — "주행 → 도킹 → 피킹 → 복귀"라는 로봇의 한 사이클 전체를 행동 트리로 오케스트레이션한다.</div>
 </section>
 
 <section class="term" id="omni">
@@ -294,7 +294,7 @@
     <figcaption>바퀴 3개를 120° 간격으로 배치한 키위 드라이브 — 좁은 공장 통로에서 방향 전환 없이 어느 쪽으로든 이동</figcaption>
   </figure>
   <p>자동차는 옆으로 못 움직인다(비홀로노믹 — 평행주차가 어려운 이유). 옴니휠 로봇은 세 바퀴의 회전 속도 조합만으로 원하는 평면 속도 (vx, vy, ω)를 만들 수 있고, 이 변환이 3×3 행렬 하나로 표현된다. 이론 학습 트랙에서 이 행렬을 직접 유도한다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 운송 AMR의 베이스(LeKiwi)가 3륜 키위 드라이브다. 좁은 셀 사이 정밀 도킹에 유리하다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 운송 AMR의 베이스(LeKiwi)가 3륜 키위 드라이브다. 좁은 랙 통로에서의 방향 전환 없는 이동과 정밀 도킹에 유리하다.</div>
 </section>
 
 <section class="term" id="gazebo">
@@ -308,7 +308,7 @@
   <h2>Isaac Sim · USD<span class="en">NVIDIA Omniverse 물리 시뮬레이터</span></h2>
   <p class="def">NVIDIA의 고정밀 로봇 시뮬레이터. 사실적인 렌더링(RTX 레이트레이싱)과 정밀한 물리를 제공하며, 합성 데이터 생성과 GPU 병렬 강화학습의 기반이 된다.</p>
   <p>씬(장면) 기술에는 픽사가 만든 3D 표준 포맷 <b>USD</b>(Universal Scene Description)를 쓴다 — 3D 세계의 HTML이라고 생각하면 된다. Gazebo 대비 진입 장벽과 하드웨어 요구(RTX GPU 필수)가 높지만, "카메라에 실제처럼 찍히는" 수준의 렌더링이 필요한 AI 데이터 생성에서는 대체재가 없다. 50시리즈(Blackwell) GPU는 Isaac Sim 5.x만 지원하는 버전 제약이 있다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 본 무대. 생산 셀·AMR·검사 스테이션의 최종 시뮬레이션 환경이자, Replicator 합성 데이터와 Isaac Lab RL의 기반. RTX 5080 워크스테이션에서 구동한다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 본 무대. 랙·피킹 스테이션·AMR·검수 스테이션의 최종 시뮬레이션 환경이자, Replicator 합성 데이터와 Isaac Lab RL의 기반. 웨어하우스 씬·에셋이 기본 제공되어 구축 비용이 낮다. RTX 5080 워크스테이션에서 구동한다.</div>
 </section>
 
 <section class="term" id="replicator">
@@ -333,8 +333,8 @@
     </svg>
     <figcaption>수천 가지 변형을 자동 생성 — 사람이 라벨링할 필요가 없고, 희귀한 불량 샘플도 원하는 만큼 만든다</figcaption>
   </figure>
-  <p>실제 공장에서 불량품 사진은 구하기 어렵다(불량이 드물어야 정상이니까). 합성 데이터는 이 희소성 문제의 산업계 해답이다. 도메인 랜덤화는 "시뮬 이미지가 실제와 조금 달라도, 변형을 충분히 다양하게 주면 모델이 본질만 배운다"는 기법으로, 시뮬로 학습한 모델이 실제에서도 작동하게 만드는 핵심이다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 스크래치·오조립·결품 결함을 Replicator로 생성해 QA 모델을 학습시킨다. AI 파트의 핵심 차별화 지점.</div>
+  <p>실제 현장에서 예외 샘플(파손·불량) 사진은 구하기 어렵다(문제가 드물어야 정상이니까). 합성 데이터는 이 희소성 문제의 산업계 해답이다. 도메인 랜덤화는 "시뮬 이미지가 실제와 조금 달라도, 변형을 충분히 다양하게 주면 모델이 본질만 배운다"는 기법으로, 시뮬로 학습한 모델이 실제에서도 작동하게 만드는 핵심이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 다양한 SKU·파손 박스·라벨 변형을 Replicator로 생성해 검수 모델을 학습시킨다. AI 파트의 핵심 차별화 지점.</div>
 </section>
 
 <section class="term" id="isaaclab">
@@ -358,7 +358,7 @@
     <figcaption>행동 → 보상 루프를 수백만 번 반복 — GPU 병렬화로 며칠 걸릴 학습을 몇 시간으로 압축</figcaption>
   </figure>
   <p>지도학습이 "정답지를 보고 배우기"라면 강화학습은 "게임을 반복 플레이하며 점수 높이는 법 배우기"다. PPO는 그중 가장 널리 쓰이는 학습 알고리즘. 명시적으로 프로그래밍하기 어려운 기술(미끄러운 물체 파지, 정밀 도킹의 마지막 몇 cm)에 유효하다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 심화 챕터로 파지(또는 도킹 정렬) 태스크 1개를 완주한다. 본체는 MoveIt2 고전 접근이고, RL은 그 위의 차별화 요소다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 심화 챕터로 SKU 파지(또는 도킹 정렬) 태스크 1개를 완주한다. 다양한 상품 파지는 물류 피킹의 실제 최전선 난제라 도메인 핵심과 직결된다. 본체는 MoveIt2 고전 접근이고, RL은 그 위의 차별화 요소다.</div>
 </section>
 
 <section class="term" id="sim2real">
@@ -371,7 +371,7 @@
 </main>
 
 <footer>
-  <div class="wrap">SIM-FIRST SMART FACTORY · REFERENCE A — <a href="glossary_industrial.html">B 스마트팩토리·표준</a> · <a href="glossary_ai_data.html">C AI·데이터·서비스</a> · <a href="index.html">문서 인덱스</a></div>
+  <div class="wrap">SIM-FIRST SMART LOGISTICS · REFERENCE A — <a href="glossary_industrial.html">B 물류센터·표준</a> · <a href="glossary_ai_data.html">C AI·데이터·서비스</a> · <a href="index.html">문서 인덱스</a></div>
 </footer>
 
 </body>
