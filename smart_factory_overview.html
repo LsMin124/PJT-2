@@ -188,10 +188,12 @@
       <tr><td><b>관제 Operations</b></td><td><b>실시간 3D 물류센터 뷰 (필수 요구·킬러 화면)</b> — Isaac Sim WebRTC 스트림을 포털에 임베드, 가상 물류센터가 돌아가는 실사급 3D 모습을 웹에서 그대로 관람 (스트레치: Three.js 자체 3D 트윈)<br>+ <b>2D 관제 맵</b> — <a class="term" href="glossary_industrial.html#amr">AMR</a> 위치/궤적, <a class="term" href="glossary_industrial.html#vda5050">VDA 5050</a> order의 node/edge 시각화 + 점진적 엣지 릴리스, 설비 온라인/오프라인(<a class="term" href="glossary_industrial.html#sparkplug">Sparkplug B</a> BIRTH/DEATH), <a class="term" href="glossary_industrial.html#andon">Andon</a> 알림 스트림</td></tr>
       <tr><td><b>주문 Orders</b></td><td>주문·<a class="term" href="glossary_industrial.html#fulfillment">웨이브</a> 라이프사이클, 재고/로케이션 조회, 배차 현황(의사결정 로그 노출), 피킹 스테이션별 큐 상태</td></tr>
       <tr><td><b>검수 Inspection</b></td><td>검수 이미지 + AI 판정(오피킹·파손) + 승인/오버라이드 (<a class="term" href="glossary_ai_data.html#hitl">human-in-the-loop</a>) → 오버라이드를 재학습 데이터로 축적</td></tr>
-      <tr><td><b>분석 Analytics</b></td><td>UPH·피킹 정확도·주문 리드타임 KPI 대시보드, 설비 <a class="term" href="glossary_industrial.html#oee">OEE</a>, 병목 분석</td></tr>
+      <tr><td><b>분석 Analytics</b></td><td>UPH·피킹 정확도·주문 리드타임 KPI 대시보드, 설비 <a class="term" href="glossary_industrial.html#oee">OEE</a>, 병목 분석<br>+ <b>What-if 예측 화면 (필수 시연 요소)</b> — <a class="term" href="glossary_industrial.html#des">SimPy 이산사건 시뮬레이션</a>으로 "주문이 2배로 몰리면? AMR을 1대 추가하면?"을 즉석에서 차트로 예측 — 눈에 안 보이던 DES 레이어를 시연 무대에 올리는 화면</td></tr>
     </table>
     <ul class="rules">
-      <li>사용자 시나리오 = 시연 시나리오: 로그인 → 주문 등록 → 웨이브 생성 → 3D 뷰·맵에서 AMR 배차·이동 관찰 → 오피킹/파손 Andon 수신 → AI 판정 확인·오버라이드 → 출고 실적 리포트</li>
+      <li>사용자 시나리오 = 시연 시나리오: 로그인 → 주문 등록 → 웨이브 생성 → 3D 뷰·맵에서 AMR 배차·이동 관찰 → <b>장애 주입(AMR 1대 고장·통로 폐쇄) → 경로 재계획·재배차로 스스로 복구하는 모습 관람</b> → 오피킹/파손 Andon 수신 → AI 판정 확인·오버라이드 → <b>What-if 예측(주문 폭증 시나리오)</b> → 출고 실적 리포트</li>
+      <li><b>시연 철학</b> — "정상 동작"보다 <b>"고장에서 스스로 복구"(장애 주입)</b>와 <b>"미래를 예측"(What-if)</b>이 기억에 남는다. 두 하이라이트는 신규 개발이 거의 없고(주입 버튼 + 화면 1개) 이미 만든 시스템의 능력을 드러내는 장치다</li>
+      <li><b>(스트레치) 키팅 스테이션</b> — 수직 슬라이스가 5주차 전 안정되면 착수: 로봇팔이 복수 SKU를 세트 상품으로 조립하는 경공정. BOM·작업지시·생산 실적까지 붙이면 <a class="term" href="glossary_industrial.html#mes">MES</a> 기능이 문자 그대로 실체화됨 (필수 아님 — WMS/WES가 이미 물류 도메인의 L3/MES 계층)</li>
       <li>Grafana는 엔지니어용 내부 관측 도구로 분리 — 서비스는 "데이터를 본다"가 아니라 <b>"물류센터를 운영한다"</b></li>
       <li>모바일은 네이티브 앱 대신 <b><a class="term" href="glossary_ai_data.html#pwa">PWA</a></b>(반응형 + 웹 푸시 불량 알림)로 충족</li>
     </ul>

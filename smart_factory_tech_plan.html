@@ -419,7 +419,7 @@
       </div>
       <div class="phase">
         <span class="ph-tag">PHASE 4</span><h4>수평 확장 + 시뮬 CI</h4>
-        <p>스테이션/AMR 추가(하이브리드) · 배차·슬로팅 전략 비교(consistent hashing/Power of Two Choices) · Jenkins headless 회귀 CI: 표준 시나리오 자동 실행 → UPH/피킹 성공률 리포트</p>
+        <p>스테이션/AMR 추가(하이브리드) · 배차·슬로팅 전략 비교(consistent hashing/Power of Two Choices) · Jenkins headless 회귀 CI: 표준 시나리오 자동 실행 → UPH/피킹 성공률 리포트 · <b>시연 하이라이트 2종 — 장애 주입 버튼(AMR 고장·통로 폐쇄 → 자동 복구) + What-if 예측 화면(SimPy)</b> · (스트레치) 키팅 스테이션 — 수직 슬라이스 안정 시 착수</p>
       </div>
       <div class="phase opt">
         <span class="ph-tag">PHASE 5 · 선택</span><h4>Sim-to-Real 사이드</h4>
@@ -491,6 +491,8 @@
     <div class="dlog">
       <div>도메인 = 물류센터(풀필먼트) — 상위 시스템은 WMS/WES, 매니퓰레이션은 피스 피킹으로 유지 (REV B 전환)</div>
       <div>물류센터 3D 비주얼 = 필수 요구 — Isaac Sim WebRTC 스트리밍을 관제 포털에 임베드, Three.js 자체 트윈은 스트레치</div>
+      <div>MES = 별도 구축 없음(옵션 A 확정) — WMS/WES가 물류 도메인의 L3(MES 계층) 시스템임을 발표 자료의 기능 대응표로 서술. 키팅 스테이션(경공정 추가로 MES 실체화)은 수직 슬라이스가 5주차 전 안정되면 착수하는 스트레치</div>
+      <div>시연 풍부화 = 장애 주입(AMR 고장·통로 폐쇄 → 자동 복구 관람) + What-if 예측 화면(SimPy) 2종을 필수 시연 요소로 채택 — 신규 개발 최소로 기존 역량을 무대에 올린다</div>
       <div>프로젝트 정체성 = 시뮬 기반 물류 IT/OT 통합 시스템 (로봇 단독 프로젝트 아님)</div>
       <div>피스 피킹 = MoveIt2 고전 접근이 본체, SKU 파지 RL은 심화 챕터</div>
       <div>시뮬레이터 = Gazebo(개발 무대) + Isaac Sim(합성 데이터·물리 셀) + Isaac Lab(RL 1태스크) + SimPy(물류 DES)</div>
