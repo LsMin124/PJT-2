@@ -127,7 +127,7 @@
     <div class="meta">
       TYPE · <b>주제 제안서 (PROPOSAL)</b><br>
       GOAL · <b>팀 토론 → 주제 확정</b><br>
-      FORMAT · <b>7분 시연 스토리보드 중심</b><br>
+      FORMAT · <b>핵심 시나리오 스토리보드 중심</b><br>
       BASIS · <b>DOC 01·02와 정합</b>
     </div>
   </div>
@@ -137,7 +137,7 @@
   <div class="wrap">
     <a class="nav-home" href="index.html">⌂ INDEX</a>
     <a href="#p1">01 한 문장 제안</a>
-    <a href="#p2">02 7분 스토리보드</a>
+    <a href="#p2">02 핵심 시나리오</a>
     <a href="#p3">03 대안 비교</a>
     <a href="#p4">04 6명의 무대</a>
     <a href="#p5">05 실현 근거</a>
@@ -181,47 +181,47 @@
     </div>
   </section>
 
-  <!-- ══════════ P2 7분 스토리보드 ══════════ -->
+  <!-- ══════════ P2 핵심 시나리오 스토리보드 ══════════ -->
   <section id="p2">
-    <div class="sec-head"><span class="sec-no">SEC 02</span><h2>발표 당일 7분 — 시연 스토리보드</h2></div>
+    <div class="sec-head"><span class="sec-no">SEC 02</span><h2>핵심 시나리오 — 여섯 장면의 스토리보드</h2></div>
     <div class="sec-body">
-      <p class="lead">기능 목록이 아니라 <b>발표 당일 심사위원이 보게 될 장면의 순서</b>로 제안합니다. 이 7분이 곧 프로젝트의 범위 정의입니다 — 여기 나오지 않는 것은 만들지 않습니다.</p>
+      <p class="lead">기능 목록이 아니라 <b>완성된 시스템이 보여줄 장면의 순서</b>로 제안합니다. 이 여섯 장면이 곧 프로젝트의 범위 정의입니다 — 여기 나오지 않는 것은 만들지 않습니다.</p>
       <div class="milestones">
         <div class="ms">
-          <span class="ms-tag">00:00 · 장면 1</span>
+          <span class="ms-tag">장면 1</span>
           <h4>주문 — 이야기의 시작</h4>
           <p>관객이 보는 앞에서 포털에 주문 3건을 등록한다. <a class="term" href="glossary_industrial.html#wms">WMS</a>가 웨이브를 생성하고 작업으로 분해하는 과정이 화면에 흐른다.</p>
           <span class="cast">무대: B1 (주문·웨이브) · B2 (포털 화면)</span>
         </div>
         <div class="ms">
-          <span class="ms-tag">00:40 · 장면 2</span>
+          <span class="ms-tag">장면 2</span>
           <h4>무인 운영 — 3D 물류센터가 움직인다</h4>
           <p>Isaac Sim 실사 3D 뷰(킬러 화면)에서 AMR들이 배차받아 보관 구역으로 향하고, 토트를 싣고 피킹 스테이션으로 이동한다. 관제 맵과 3D 뷰가 나란히 표시된다.</p>
           <span class="cast">무대: R1 (AMR 군집·배차) · B2 (관제 화면)</span>
         </div>
         <div class="ms">
-          <span class="ms-tag">02:00 · 장면 3</span>
+          <span class="ms-tag">장면 3</span>
           <h4>피킹·검수 — 손과 눈</h4>
           <p>로봇팔이 토트에서 상품을 집어 주문 박스에 담는다. 일부러 틀린 상품 하나를 섞어 AI 검수가 오피킹을 잡아내고 <a class="term" href="glossary_industrial.html#andon">Andon</a>이 울린다 → 관리자가 판정을 확인·오버라이드한다.</p>
           <span class="cast">무대: R2 (피킹 팔) · A1 (모델을 만든 합성데이터) · A2 (AI 판정·HITL)</span>
         </div>
         <div class="ms hl">
-          <span class="ms-tag">03:20 · 장면 4 ★ 하이라이트</span>
+          <span class="ms-tag">장면 4 ★ 하이라이트</span>
           <h4>장애 주입 — 일부러 고장 낸다</h4>
           <p>진행자가 버튼으로 AMR 1대를 고장 내고 통로 하나를 폐쇄한다. 남은 AMR들이 작업을 넘겨받고 경로를 우회하며, KPI 그래프가 출렁였다가 회복된다. <b>"우리가 만든 것은 자동화가 아니라 회복력입니다."</b></p>
           <span class="cast">무대: R1 (재계획·재배차) · B2 (주입 버튼·Andon·KPI)</span>
         </div>
         <div class="ms hl">
-          <span class="ms-tag">05:00 · 장면 5 ★ 하이라이트</span>
+          <span class="ms-tag">장면 5 ★ 하이라이트</span>
           <h4>What-if — 미래를 미리 돌려본다</h4>
           <p>"블랙프라이데이에 주문이 2배로 몰리면?" — <a class="term" href="glossary_industrial.html#des">SimPy 이산사건 시뮬레이션</a>이 즉석에서 예측 차트를 그리고, "AMR 1대 증설 시 리드타임 회복"까지 비교해 보여준다.</p>
           <span class="cast">무대: B1 (주문 프로파일) · B2 (예측 화면) — DES 레이어는 공용 자산</span>
         </div>
         <div class="ms">
-          <span class="ms-tag">06:00 · 장면 6</span>
+          <span class="ms-tag">장면 6</span>
           <h4>리포트 — 숫자로 마무리</h4>
           <p>출고 실적·UPH·피킹 정확도·리드타임 요약 리포트로 이야기를 닫는다. 처음 등록한 주문 3건의 여정이 데이터로 남아 있음을 보여준다.</p>
-          <span class="cast">무대: B1 (실적 집계) · A2 (발표 마무리)</span>
+          <span class="cast">무대: B1 (실적 집계) · A2 (시연 총괄)</span>
         </div>
       </div>
       <p class="soft">부속 제안 — 물리 컨셉: AMR이 <b>토트(빈)를 운반하는 GTP(Goods-to-Person)</b> 방식을 제안한다. 선반을 통째로 드는 Kiva형 대비 리프트 기구 시뮬 부담이 없고, 팔이 눕혀진 토트 위에서 집으므로 파지 난이도가 낮다 — 이 프로젝트 리스크 1순위(매니퓰레이션)를 줄이는 선택. 세부 수치(맵 크기·대수·SKU)는 채택 후 팀이 확정한다.</p>
@@ -272,13 +272,13 @@
   <section id="p4">
     <div class="sec-head"><span class="sec-no">SEC 04</span><h2>6명 각자의 무대 — 스토리 안의 오너십</h2></div>
     <div class="sec-body">
-      <p class="lead">7분 안에 <b>전원이 무대에 오릅니다.</b> 각자의 산출물이 어느 장면에서 관객에게 보이는지의 지도입니다 (역할 정의는 <a href="smart_factory_overview.html#o3">DOC 01 · SEC 03</a> 기준).</p>
+      <p class="lead">여섯 장면 안에 <b>전원이 무대에 오릅니다.</b> 각자의 산출물이 어느 장면에서 보이는지의 지도입니다 (역할 정의는 <a href="smart_factory_overview.html#o3">DOC 01 · SEC 03</a> 기준).</p>
       <table>
         <tr><th style="width:18%">역할</th><th style="width:52%">스토리 안에서 만드는 것</th><th style="width:30%">등장 장면</th></tr>
         <tr><td><b>R1</b> <span class="soft">주행·AMR</span></td><td>AMR 군집의 주행·배차·복구 — 장면 2의 움직임과 장면 4의 회복 그 자체</td><td><span class="chip c-amber">장면 2</span><span class="chip c-amber">장면 4 ★</span></td></tr>
         <tr><td><b>R2</b> <span class="soft">매니퓰레이션</span></td><td>토트에서 상품을 집어 옮기는 피스 피킹 팔 — 장면 3의 주인공</td><td><span class="chip c-amber">장면 3</span></td></tr>
         <tr><td><b>A1</b> <span class="soft">합성데이터·시뮬 CI</span></td><td>검수 모델을 학습시킨 합성 데이터 파이프라인 — 장면 3의 AI 뒤에 있는 공장</td><td><span class="chip c-green">장면 3</span></td></tr>
-        <tr><td><b>A2</b> <span class="soft">모델·서빙·시연</span></td><td>오피킹·파손 판정과 HITL 오버라이드, 그리고 발표 진행</td><td><span class="chip c-green">장면 3</span><span class="chip c-green">장면 6</span></td></tr>
+        <tr><td><b>A2</b> <span class="soft">모델·서빙·시연</span></td><td>오피킹·파손 판정과 HITL 오버라이드, 데모 시연 총괄</td><td><span class="chip c-green">장면 3</span><span class="chip c-green">장면 6</span></td></tr>
         <tr><td><b>B1</b> <span class="soft">WMS·물류</span></td><td>주문·웨이브·재고·실적 — 이야기의 시작(장면 1)과 끝(장면 6), What-if의 데이터</td><td><span class="chip c-steel">장면 1</span><span class="chip c-steel">장면 5 ★</span><span class="chip c-steel">장면 6</span></td></tr>
         <tr><td><b>B2</b> <span class="soft">플랫폼·프론트</span></td><td>관제 화면·장애 주입 버튼·What-if 화면 — 관객이 보는 모든 창</td><td><span class="chip c-steel">장면 1·2</span><span class="chip c-steel">장면 4·5 ★</span></td></tr>
       </table>
@@ -306,11 +306,11 @@
     <div class="sec-head"><span class="sec-no">SEC 06</span><h2>예상 질문과 답 — 토론 대비</h2></div>
     <div class="sec-body">
       <h3>Q1. 제조 프로젝트가 아닌데 완성도가 인정될까? (MES가 없다)</h3>
-      <p><a class="term" href="glossary_industrial.html#wms">WMS/WES</a>는 물류 도메인에서 <a class="term" href="glossary_industrial.html#isa95">ISA-95</a> L3, 즉 <a class="term" href="glossary_industrial.html#mes">MES</a>와 같은 계층의 시스템이다 — 주문 접수→작업 분해→설비 배분→실행 추적→실적 집계라는 기능 골격이 동일하다. 발표 자료에 기능 대응표로 서술하고, 여유가 생기면 키팅 스테이션(경공정) 스트레치로 문자 그대로의 제조까지 실체화한다.</p>
+      <p><a class="term" href="glossary_industrial.html#wms">WMS/WES</a>는 물류 도메인에서 <a class="term" href="glossary_industrial.html#isa95">ISA-95</a> L3, 즉 <a class="term" href="glossary_industrial.html#mes">MES</a>와 같은 계층의 시스템이다 — 주문 접수→작업 분해→설비 배분→실행 추적→실적 집계라는 기능 골격이 동일하다. 기능 대응표로 정리해 서술하고, 여유가 생기면 키팅 스테이션(경공정) 스트레치로 문자 그대로의 제조까지 실체화한다.</p>
       <h3>Q2. 실물 로봇이 없는데 로봇 프로젝트로 인정받을 수 있나?</h3>
       <p>시뮬레이션되는 것은 물리(모터·중력)뿐이고, 소프트웨어 스택은 실물과 동일하다 — ROS2·Nav2·MoveIt2에 <a class="term" href="glossary_industrial.html#vda5050">VDA 5050</a>·<a class="term" href="glossary_industrial.html#sparkplug">Sparkplug B</a> 같은 실제 산업 표준까지. 오히려 실물 1대로는 불가능한 "군집 + 고장 시나리오"를 보여줄 수 있는 것이 시뮬레이션의 강점이다. 여력이 되면 <a class="term" href="glossary_robotics.html#sim2real">Sim-to-Real</a> 사이드 트랙으로 실기 이식 가능성도 증명한다.</p>
       <h3>Q3. 7주에 이걸 다 만들 수 있나?</h3>
-      <p>7분 스토리보드가 곧 범위의 상한이다 — 거기 없는 것은 만들지 않는다. 데이터 계약을 먼저 동결해 6명이 mock으로 병렬 개발하고(<a href="smart_factory_overview.html#o4">DOC 01 · SEC 04</a>), 개발은 Gazebo에서 빠르게 돌리다 Isaac으로 포팅하는 2단계 전략이며, 4주차에 얇은 수직 슬라이스(주문 1건의 전체 여정)를 먼저 완성해 리스크를 앞당겨 소진한다.</p>
+      <p>시나리오 스토리보드가 곧 범위의 상한이다 — 거기 없는 것은 만들지 않는다. 데이터 계약을 먼저 동결해 6명이 mock으로 병렬 개발하고(<a href="smart_factory_overview.html#o4">DOC 01 · SEC 04</a>), 개발은 Gazebo에서 빠르게 돌리다 Isaac으로 포팅하는 2단계 전략이며, 4주차에 얇은 수직 슬라이스(주문 1건의 전체 여정)를 먼저 완성해 리스크를 앞당겨 소진한다.</p>
       <h3>Q4. 범위가 너무 넓지 않나?</h3>
       <p>물류센터의 업무 중 <b>아웃바운드 주문 처리 한 흐름</b>만 다룬다. 입고·반품·소터(분류기)·검수 외 품질 공정은 명시적으로 범위 밖이다. "넓어 보이는 것"은 한 흐름을 끝까지 관통하기 때문이지, 여러 흐름을 벌였기 때문이 아니다.</p>
       <h3>Q5. 시연 중 의도하지 않은 진짜 고장이 나면?</h3>
