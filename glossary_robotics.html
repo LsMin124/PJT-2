@@ -301,14 +301,14 @@
   <h2>Gazebo<span class="en">ROS 네이티브 물리 시뮬레이터</span></h2>
   <p class="def">ROS 2와 가장 잘 붙는 오픈소스 로봇 시뮬레이터. 가볍고 빨라서 로봇 소프트웨어 개발의 "로컬 개발 서버" 역할을 한다.</p>
   <p>물리 엔진 위에서 URDF 로봇을 움직이고 가상 센서(라이다·카메라·IMU)를 흉내 낸다. 그래픽 품질과 물리 정밀도는 Isaac Sim보다 낮지만, 켜는 데 몇 초면 되고 저사양에서도 돌아 <b>반복 개발 속도</b>가 압도적으로 좋다. 웹 개발로 치면 Gazebo는 로컬 dev 서버, Isaac은 스테이징 환경이다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — Phase 1의 주 무대. Nav2·MoveIt2·행동 트리를 모두 Gazebo에서 개발·검증한 뒤 Isaac으로 포팅한다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — Phase 1의 주 개발 환경. Nav2·MoveIt2·행동 트리를 모두 Gazebo에서 개발·검증한 뒤 Isaac으로 포팅한다.</div>
 </section>
 
 <section class="term" id="isaac">
   <h2>Isaac Sim · USD<span class="en">NVIDIA Omniverse 물리 시뮬레이터</span></h2>
   <p class="def">NVIDIA의 고정밀 로봇 시뮬레이터. 사실적인 렌더링(RTX 레이트레이싱)과 정밀한 물리를 제공하며, 합성 데이터 생성과 GPU 병렬 강화학습의 기반이 된다.</p>
   <p>씬(장면) 기술에는 픽사가 만든 3D 표준 포맷 <b>USD</b>(Universal Scene Description)를 쓴다 — 3D 세계의 HTML이라고 생각하면 된다. Gazebo 대비 진입 장벽과 하드웨어 요구(RTX GPU 필수)가 높지만, "카메라에 실제처럼 찍히는" 수준의 렌더링이 필요한 AI 데이터 생성에서는 대체재가 없다. 50시리즈(Blackwell) GPU는 Isaac Sim 5.x만 지원하는 버전 제약이 있다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 본 무대. 랙·피킹 스테이션·AMR·검수 스테이션의 최종 시뮬레이션 환경이자, Replicator 합성 데이터와 Isaac Lab RL의 기반. 웨어하우스 씬·에셋이 기본 제공되어 구축 비용이 낮다. RTX 5080 워크스테이션에서 구동한다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 랙·피킹 스테이션·AMR·검수 스테이션의 최종 시뮬레이션 환경이자, Replicator 합성 데이터와 Isaac Lab RL의 기반. 웨어하우스 씬·에셋이 기본 제공되어 구축 비용이 낮다. RTX 5080 워크스테이션에서 구동한다.</div>
 </section>
 
 <section class="term" id="replicator">

@@ -132,12 +132,12 @@
       <text x="575" y="58" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">분류</text>
       <rect x="622" y="30" width="78" height="46" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
       <text x="661" y="58" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">출고</text>
-      <text x="360" y="100" text-anchor="middle" font-family="monospace" font-size="10" fill="#E8720C">강조 구간 = 본 프로젝트 데모의 중심 (AMR 운송 · 매니퓰레이션 · AI가 여기 모인다)</text>
+      <text x="360" y="100" text-anchor="middle" font-family="monospace" font-size="10" fill="#E8720C">강조 구간 = 본 프로젝트 데모의 중심 (AMR 운송 · 로봇팔 피킹 · AI가 여기 모인다)</text>
     </svg>
     <figcaption>주문 이행의 8단계 — 각 단계 사이를 AMR과 컨베이어가 잇는다</figcaption>
   </figure>
   <p>핵심 파생 용어: <b>SKU</b>(Stock Keeping Unit — 재고 관리의 최소 단위, "품목 한 종류"), <b>웨이브</b>(주문 여러 건을 묶어 한 번에 처리하는 배치 단위), <b>슬로팅</b>(어떤 상품을 어느 로케이션에 둘지 정하는 배치 전략 — 잘 하면 이동 거리가 급감), <b>Goods-to-Person</b>(작업자가 선반으로 걸어가는 대신 AMR이 선반/토트를 작업자·로봇 앞으로 가져오는 방식 — Amazon Kiva가 대중화).</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 주문 등록부터 출고 실적까지 이 흐름 전체가 시연 시나리오다. AMR이 Goods-to-Person 운송을, 매니퓰레이터가 피스 피킹을, AI가 검수를 담당한다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 주문 등록부터 출고 실적까지 이 흐름 전체가 시연 시나리오다. AMR이 Goods-to-Person 운송을, 로봇팔이 피스 피킹을, AI가 검수를 담당한다.</div>
 </section>
 
 <section class="term" id="isa95">
@@ -212,7 +212,7 @@
 
 <section class="term" id="digitaltwin">
   <h2>디지털 트윈<span class="en">Digital Twin</span></h2>
-  <p class="def">실제 공장·설비의 상태를 반영하는 가상 복제본. 현실을 관찰하는 거울이자, "이렇게 바꾸면 어떻게 될까"를 미리 실험하는 모의 무대다.</p>
+  <p class="def">실제 공장·설비의 상태를 반영하는 가상 복제본. 현실을 관찰하는 거울이자, "이렇게 바꾸면 어떻게 될까"를 미리 실험해 보는 공간이다.</p>
   <p>단순 3D 모형과의 차이는 <b>데이터 동기화</b>다. 진짜 디지털 트윈은 현실의 측정값(사이클 타임·고장률)으로 계속 보정되고, 반대로 트윈에서의 실험 결과(배차 정책 변경, 설비 증설)가 현실 의사결정에 반영된다. 산업계에서는 물리 시뮬레이션과 통계 모델(이산사건 시뮬레이션)을 결합한 하이브리드 구조가 표준적이다.</p>
   <div class="ctx"><b>이 프로젝트에서</b> — Isaac에서 실측한 작업 시간 분포를 SimPy 공장 모델에 주입하는 "캘리브레이션 결합"이 정확히 이 구조다. 물리 셀과 통계 셀이 공존하는 하이브리드가 최종형.</div>
 </section>
@@ -250,7 +250,7 @@
     </svg>
     <figcaption>사건 사이 구간은 계산하지 않고 건너뜀 — 센터 하루치를 몇 초 만에, 수천 번 반복 실험 가능</figcaption>
   </figure>
-  <p>물리 시뮬레이션이 "로봇이 어떻게 움직이는가"에 답한다면, DES는 "센터 전체가 얼마나 잘 흘러가는가"에 답한다. AMR을 3대에서 4대로 늘리면 처리량이 얼마나 오르는지, 어느 스테이션이 병목인지 같은 질문은 DES로 수천 번 돌려 통계로 확인한다. <b>물류센터는 DES의 본고장</b>이다 — 창고 설계·운영 분석의 표준 방법론이 바로 이것이다.</p>
+  <p>물리 시뮬레이션이 "로봇이 어떻게 움직이는가"에 답한다면, DES는 "센터 전체가 얼마나 잘 흘러가는가"에 답한다. AMR을 3대에서 4대로 늘리면 처리량이 얼마나 오르는지, 어느 스테이션이 병목인지 같은 질문은 DES로 수천 번 돌려 통계로 확인한다. <b>물류센터는 DES의 대표 적용 분야</b>다. 창고 설계·운영 분석의 표준 방법론이 바로 이것이다.</p>
   <div class="ctx"><b>이 프로젝트에서</b> — SimPy가 센터 물류·배차의 두뇌다. Isaac 실측치로 보정(캘리브레이션)한 뒤, 라이브 모드에서는 실시간 이벤트 기반 잡 스케줄러로 승격된다. 개발 초기의 mock publisher도 SimPy로 만든다.</div>
 </section>
 
@@ -314,7 +314,7 @@
 </section>
 
 <section class="term" id="vda5050">
-  <h2>VDA 5050<span class="en">AMR 플릿 통신 표준</span></h2>
+  <h2>VDA 5050<span class="en">AMR 군집 통신 표준</span></h2>
   <p class="def">중앙 관제(마스터 컨트롤)와 AMR들이 주고받는 메시지를 표준화한 규격. 관제가 경로를 노드·엣지 그래프로 내려주고(order), AMR이 상태를 보고한다(state).</p>
   <figure>
     <svg viewBox="0 0 720 190" role="img" aria-label="VDA 5050 order 구조">
@@ -340,15 +340,15 @@
     </svg>
     <figcaption>점진적 엣지 릴리스 — 여러 AMR이 같은 통로를 쓸 때의 교통 정리가 표준 안에 내장되어 있다</figcaption>
   </figure>
-  <p>독일 자동차공업협회(VDA)가 만든 표준으로, 서로 다른 제조사의 AMR을 하나의 관제로 묶기 위해 태어났다. 물류·창고 AMR 플릿이 본래의 주 무대라, 물류센터 도메인에서는 중심축 표준이 된다. 관제와 로봇의 책임 분리가 명확하다: 관제는 "어디로 갈지"(경로 그래프)를 정하고, 로봇은 "어떻게 갈지"(실제 주행·회피)를 알아서 한다. 공식 JSON 스키마가 공개되어 있어 웹 개발자에게도 친숙한 형태다.</p>
+  <p>독일 자동차공업협회(VDA)가 만든 표준으로, 서로 다른 제조사의 AMR을 하나의 관제로 묶기 위해 만들어졌다. 본래 물류·창고의 AMR 관제가 주 용도라, 물류센터 도메인에서는 중심 표준이다. 관제와 로봇의 책임 분리가 명확하다: 관제는 "어디로 갈지"(경로 그래프)를 정하고, 로봇은 "어떻게 갈지"(실제 주행·회피)를 알아서 한다. 공식 JSON 스키마가 공개되어 있어 웹 개발자에게도 친숙한 형태다.</p>
   <div class="ctx"><b>이 프로젝트에서</b> — WMS/WES-lite가 마스터 컨트롤로서 order를 발행하고, AMR 쪽 커넥터가 이를 Nav2 목표로 변환해 실행한 뒤 state를 보고한다. 관제 맵의 노드·엣지 시각화가 이 표준을 그대로 그린 것이다.</div>
 </section>
 
 <section class="term" id="amr">
   <h2>AMR vs AGV<span class="en">Autonomous Mobile Robot · Automated Guided Vehicle</span></h2>
   <p class="def">AGV는 바닥의 자기 테이프·QR 등 정해진 선로만 따라가는 운송 로봇, AMR은 지도와 센서로 스스로 경로를 계획하고 장애물을 피하는 운송 로봇이다.</p>
-  <p>AGV는 기차(선로 이탈 불가), AMR은 택시(목적지만 주면 알아서 감)에 비유된다. AMR은 레이아웃 변경에 유연하고 사람과 공존할 수 있어 물류·제조 현장에서 빠르게 AGV를 대체하는 중이다. 그만큼 소프트웨어(위치 추정·경로 계획·플릿 관제)의 비중이 압도적으로 커진다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 옴니휠 AMR 플릿이 랙/토트 운송(Goods-to-Person)과 예외품 리젝트 운송을 담당한다. 주행 지능은 Nav2, 플릿 관제는 VDA 5050.</div>
+  <p>AGV는 기차(선로 이탈 불가), AMR은 택시(목적지만 주면 알아서 감)에 비유된다. AMR은 레이아웃 변경에 유연하고 사람과 공존할 수 있어 물류·제조 현장에서 빠르게 AGV를 대체하는 중이다. 그만큼 소프트웨어(위치 추정·경로 계획·군집 관제)의 비중이 압도적으로 커진다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 옴니휠 AMR 여러 대가 랙/토트 운송(Goods-to-Person)과 예외품 리젝트 운송을 담당한다. 주행은 Nav2, 군집 관제는 VDA 5050.</div>
 </section>
 
 <section class="term" id="andon">
@@ -412,7 +412,7 @@
     <figcaption>판정이 물리적 행동(운송·격리)으로 되돌아와야 루프가 "닫힌" 것 — 대시보드에 표시만 하면 열린 루프다</figcaption>
   </figure>
   <p>많은 데모가 "AI가 문제를 찾았다"에서 끝난다(열린 루프). 진짜 스마트 물류센터의 가치는 그 판정이 자동으로 조치까지 이어지는 데 있다. 시스템 전 계층(비전 → AI → WMS → 배차 → 로봇)이 실제로 연결되어야만 가능하므로, 통합 완성도의 증명이기도 하다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 최종 데모의 킬러 장면. Replicator로 만든 파손/오피킹 상황 → AI 검출 → WMS 판정 → AMR이 예외품을 리젝트 라인으로 옮기는 전 과정이 자동으로 흐른다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 최종 데모의 대표 장면. Replicator로 만든 파손/오피킹 상황 → AI 검출 → WMS 판정 → AMR이 예외품을 리젝트 라인으로 옮기는 전 과정이 자동으로 이어진다.</div>
 </section>
 
 </main>

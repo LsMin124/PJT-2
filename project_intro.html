@@ -40,7 +40,7 @@
   h2 .q{color:var(--amber);margin-right:8px}
   p{margin-bottom:12px}
   .note{margin-top:10px;padding:12px 16px;background:#F5F7F8;border-left:3px solid var(--steel);font-size:13.5px}
-  /* 주문 여정 */
+  /* 주문 처리 과정 */
   .journey{counter-reset:st;display:grid;gap:0;margin:16px 0;border-left:3px solid var(--amber)}
   .st{position:relative;padding:12px 16px 12px 52px;border-bottom:1px dashed var(--grid)}
   .st:last-child{border-bottom:none}
@@ -92,7 +92,7 @@
   <div class="wrap">
     <a class="nav-home" href="index.html">⌂ INDEX</a>
     <a href="#i1">무엇을 만드나</a>
-    <a href="#i2">주문 하나의 여정</a>
+    <a href="#i2">주문 처리 과정</a>
     <a href="#i3">왜 시뮬레이션인가</a>
     <a href="#i4">여섯 명의 역할</a>
     <a href="#i5">자주 나오는 말</a>
@@ -121,7 +121,7 @@
     <div class="st"><b>문제가 있으면 자동으로 되돌린다</b><p>잘못 집었거나 파손된 상품은 운반 로봇이 별도 라인으로 옮기고, 다시 집도록 지시가 내려갑니다.</p></div>
     <div class="st"><b>이 모든 과정이 실시간으로 화면에 보인다</b><p>웹 화면 속 3D 영상으로 물류센터가 돌아가는 모습을 그대로 볼 수 있고, 지도에는 로봇 위치와 진행 상황이 실시간으로 움직이며, 문제가 생기면 알림이 울립니다.</p></div>
   </div>
-  <p>최종 발표에서 보여줄 장면이 바로 이 흐름 전체입니다. 각 팀원이 만드는 것은 이 여정의 한 구간씩입니다.</p>
+  <p>최종 발표에서 보여줄 장면이 바로 이 흐름 전체입니다. 각 팀원이 만드는 것은 이 과정의 한 구간씩입니다.</p>
 </section>
 
 <section id="i3">
@@ -151,7 +151,7 @@
   <p>아래 일곱 개만 감을 잡아두면 다른 문서를 읽는 난이도가 크게 내려갑니다. 더 자세한 설명은 각 링크(용어사전)에 그림과 함께 있습니다.</p>
   <dl>
     <dt>AMR<span class="en">운반 로봇</span></dt>
-    <dd>정해진 선로 없이 스스로 길을 찾아다니는 바퀴 달린 운반 로봇. 이 프로젝트의 주인공. <a href="glossary_industrial.html#amr">자세히 →</a></dd>
+    <dd>정해진 선로 없이 스스로 길을 찾아다니는 바퀴 달린 운반 로봇. 이 프로젝트의 중심 장비. <a href="glossary_industrial.html#amr">자세히 →</a></dd>
     <dt>피킹<span class="en">Picking</span></dt>
     <dd>선반이나 상자에서 주문된 상품을 "집어내는" 일. 물류센터 일의 핵심이자 로봇팔의 임무. <a href="glossary_industrial.html#fulfillment">자세히 →</a></dd>
     <dt>WMS<span class="en">물류센터의 두뇌</span></dt>
@@ -159,7 +159,7 @@
     <dt>MQTT<span class="en">메시지 우체국</span></dt>
     <dd>로봇·설비·서버·웹이 서로 소식을 주고받는 통신 방식. 모두가 중앙 우체국(브로커)에 편지를 보내고 받아본다. <a href="glossary_industrial.html#mqtt">자세히 →</a></dd>
     <dt>시뮬레이터<span class="en">Gazebo · Isaac Sim</span></dt>
-    <dd>물리 법칙이 적용되는 가상 3D 공간. 연습용(Gazebo)과 최종 무대용(Isaac, 사진처럼 진짜 같음) 두 가지를 쓴다. <a href="glossary_robotics.html#isaac">자세히 →</a></dd>
+    <dd>물리 법칙이 적용되는 가상 3D 공간. 개발용(Gazebo)과 시연용(Isaac, 실사에 가까운 화질) 두 가지를 쓴다. <a href="glossary_robotics.html#isaac">자세히 →</a></dd>
     <dt>합성 데이터<span class="en">AI 공부용 가짜 사진</span></dt>
     <dd>가상 카메라로 자동 생성한 학습용 이미지. 진짜 불량품 사진은 구하기 어려우니 가상으로 만들어 AI를 가르친다. <a href="glossary_ai_data.html#synthetic">자세히 →</a></dd>
     <dt>디지털 트윈<span class="en">Digital Twin</span></dt>
