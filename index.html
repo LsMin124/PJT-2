@@ -14,6 +14,7 @@
     --amber:#E8720C;       /* 산업 안전 주황 */
     --machine:#1F7A4D;     /* 설비 상태 그린 */
     --steel:#33506B;       /* 강판 블루 */
+    --slate:#8A96A3;       /* 인프라/공통 */
     --grid:#DDE2E6;
     --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
     --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
@@ -68,6 +69,7 @@
   a.doc.d-team{--accent:var(--amber)}
   a.doc.d-plan{--accent:var(--steel)}
   a.doc.d-pitch{--accent:var(--machine)}
+  a.doc.d-lab{--accent:var(--slate)}
   a.doc:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(27,36,48,.14);border-color:var(--accent)}
   a.doc:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
   .doc-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px;flex-wrap:wrap}
@@ -141,7 +143,7 @@
   </a>
   <div class="tagline"><small>READING ORDER</small>읽는 순서: <b>00 안내</b> → <b>01 전체 조망</b> → <b>02 실행 계획서</b>. 파트 간 계약과 일정의 기준은 항상 01. 모르는 용어는 <b>REF A–C 용어사전</b> 참고.</div>
 
-  <div class="register-label">Documents · 3 Active</div>
+  <div class="register-label">Documents · 4 Active</div>
   <div class="docs">
 
     <a class="doc d-team" href="smart_factory_overview.html">
@@ -206,6 +208,28 @@
       </div>
       <div class="doc-foot">
         <span class="chips"><span class="chip">PROPOSAL</span><span class="chip">LIGHTS-OUT</span><span class="chip">SCENARIO</span></span>
+        <span class="open">열람</span>
+      </div>
+    </a>
+
+    <a class="doc d-lab" href="ros2_arm_lab.html">
+      <div class="doc-top">
+        <span class="doc-no">DOC 04 · LAB-NOTE · REV A</span>
+        <span class="aud">FOR 학습·복기</span>
+      </div>
+      <h2>ROS2 랩 노트<span class="en">LAB NOTE</span></h2>
+      <p>로봇팔 101→201 실습 복기. colcon 빌드부터 URDF·TF, Foxglove 원격 시각화, ros2_control×MoveIt2 제어까지 — 개념·실습·점검 문항과 장애 복기 7건을 담은 학습 문서.</p>
+      <div class="toc">
+        <span><b>01</b>전체 지도</span>
+        <span><b>02</b>빌드</span>
+        <span><b>03</b>URDF·TF</span>
+        <span><b>04</b>원격 시각화</span>
+        <span><b>05</b>제어</span>
+        <span><b>06</b>장애 복기</span>
+        <span><b>07</b>재현 과제</span>
+      </div>
+      <div class="doc-foot">
+        <span class="chips"><span class="chip">ARM 101→201</span><span class="chip">MOVEIT2</span><span class="chip">HANDS-ON</span></span>
         <span class="open">열람</span>
       </div>
     </a>

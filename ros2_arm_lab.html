@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROS2 랩 노트 — 로봇팔 101→201 (Lab Note)</title>
+<style>
+  :root{
+    --bg:#E9ECEE;
+    --panel:#FFFFFF;
+    --panel-edge:#D4D9DD;
+    --ink:#1B2430;
+    --ink-soft:#5A6673;
+    --amber:#E8720C;   /* 로보틱스/시뮬 */
+    --machine:#1F7A4D; /* AI 파이프라인 */
+    --steel:#33506B;   /* 백엔드/서비스 */
+    --slate:#8A96A3;   /* 인프라/공통 */
+    --grid:#DDE2E6;
+    --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important;animation:none!important}}
+  body{
+    background:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:32px 32px;
+    color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:15px;
+  }
+  a{color:var(--steel)}
+  a.term{color:inherit;text-decoration:underline;text-decoration-style:dotted;text-decoration-color:var(--steel);text-underline-offset:3px}
+  a.term:hover{color:var(--steel);text-decoration-style:solid}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+  header{border-bottom:3px solid var(--ink);background:var(--panel)}
+  .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
+  .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
+  .doc-eyebrow b{color:var(--amber);font-weight:600}
+  h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
+  h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
+  .meta b{color:var(--ink);font-weight:600}
+
+  nav{position:sticky;top:0;z-index:50;background:var(--ink);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav .wrap{display:flex;gap:2px;padding:0 20px}
+  nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
+  nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--amber);outline:none}
+  nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
+  nav a.nav-cross{margin-left:auto;color:var(--amber);font-weight:700}
+
+  main{padding:44px 0 80px}
+  section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
+  .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
+  h2{font-size:20px;font-weight:800;letter-spacing:-.01em}
+  .sec-body{padding:16px 26px 26px}
+  h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+  h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
+  p{margin-bottom:10px}
+  .lead{font-size:15.5px}
+  .soft{color:var(--ink-soft)}
+
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:13.5px;line-height:1.8}
+  .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
+  .plain.try{background:#EDF2F7;border-left-color:var(--steel)}
+  .plain.try .pl-tag{color:var(--steel)}
+  .plain.quiz{background:#FDF1E5;border-left-color:var(--amber)}
+  .plain.quiz .pl-tag{color:var(--amber)}
+  .quiz details{margin-top:4px}
+  .quiz summary{cursor:pointer;font-weight:600;font-size:12.5px;color:var(--ink-soft)}
+
+  pre{font-family:var(--mono);font-size:12px;line-height:1.7;background:#F5F7F8;border:1px solid var(--panel-edge);border-left:4px solid var(--steel);padding:12px 16px;overflow-x:auto;margin:12px 0}
+  code{font-family:var(--mono);font-size:.92em;background:#F0F3F5;padding:1px 5px;border:1px solid var(--grid)}
+  pre code{background:none;border:none;padding:0}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
+  td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .tbl-scroll{overflow-x:auto}
+
+  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px}
+  .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)} .c-slate{color:var(--slate)}
+
+  ul.rules{list-style:none;margin:10px 0}
+  ul.rules li{padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--grid);font-size:13.5px}
+  ul.rules li:last-child{border-bottom:none}
+  ul.rules li::before{content:"▸";position:absolute;left:6px;color:var(--amber);font-weight:700}
+
+  .milestones{display:grid;gap:0;margin:14px 0;border-left:3px solid var(--ink)}
+  .ms{position:relative;padding:12px 18px 12px 28px;border-bottom:1px dashed var(--grid)}
+  .ms:last-child{border-bottom:none}
+  .ms::before{content:"";position:absolute;left:-8px;top:18px;width:13px;height:13px;background:var(--panel);border:3px solid var(--amber)}
+  .ms .ms-tag{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--amber);letter-spacing:.08em}
+  .ms h4{font-size:14px;font-weight:700;margin:2px 0 2px}
+  .ms p{font-size:12.5px;color:var(--ink-soft);margin:0}
+
+  footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+
+  @media (max-width:820px){
+    .titleblock{grid-template-columns:1fr}
+    .meta{border-left:none;padding-left:0;text-align:left}
+    body{font-size:14px}
+    .sec-head,.sec-body{padding-left:16px;padding-right:16px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap titleblock">
+    <div>
+      <div class="doc-eyebrow">DOC 04 · LAB-NOTE · <b>REV A</b> · 2026-08</div>
+      <h1>ROS2 랩 노트 — 로봇팔 101→201
+        <span class="sub">빌드부터 MoveIt2 제어까지 — 에이전트가 한 일을 내 것으로 만드는 복기 문서</span>
+      </h1>
+    </div>
+    <div class="meta">
+      SCOPE · <b>~/ros2_ws 실습 전체</b><br>
+      FORMAT · <b>개념 → 파일 → 실습 → 점검</b><br>
+      PREREQ · <b>REF A 용어사전</b><br>
+      ENV · <b>Ubuntu 22.04 · Humble</b>
+    </div>
+  </div>
+</header>
+
+<nav aria-label="문서 내 탐색">
+  <div class="wrap">
+    <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a href="#l1">01 전체 지도</a>
+    <a href="#l2">02 빌드</a>
+    <a href="#l3">03 URDF·TF</a>
+    <a href="#l4">04 원격 시각화</a>
+    <a href="#l5">05 제어</a>
+    <a href="#l6">06 장애 복기</a>
+    <a href="#l7">07 재현 과제</a>
+    <a class="nav-cross" href="glossary_robotics.html">용어사전 ↗</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ══════════ L1 전체 지도 ══════════ -->
+<section id="l1">
+  <div class="sec-head"><span class="sec-no">SEC 01</span><h2>전체 지도 — 우리가 만든 것</h2></div>
+  <div class="sec-body">
+    <p class="lead">이 노트는 코딩 에이전트가 대신 수행한 작업을 <b>결과가 아니라 과정으로</b> 복기하는 문서입니다.
+    각 절은 <span class="chip c-green">쉽게 말하면</span> <span class="chip c-steel">직접 해보기</span> <span class="chip c-amber">스스로 점검</span> 순서로 구성했습니다.
+    읽기만 하면 부채는 그대로입니다 — <b>SEC 07의 재현 과제까지 스스로 마쳐야 상환 완료</b>입니다.</p>
+
+    <p>완성된 시스템은 파이프라인 두 개입니다. 하나는 로봇을 <b>보이게</b> 하고, 하나는 <b>움직이게</b> 합니다.</p>
+<pre><code>[보이기]   URDF(구조) ─▶ robot_state_publisher ─▶ /tf ─▶ foxglove_bridge ─▶ 노트북 Foxglove
+                              ▲
+                        /joint_states (이 각도가 "어디서 오는가"가 각 단계의 차이)
+
+[움직이기] moveit_demo ─▶ /move_action ─▶ move_group(계획·OMPL)
+              ─▶ scaled_joint_trajectory_controller(실행) ─▶ mock hardware ─▶ /joint_states ─▶ (보이기로 합류)</code></pre>
+
+    <div class="tbl-scroll"><table>
+      <tr><th>단계</th><th>만든 것</th><th>여기서 배우는 개념</th></tr>
+      <tr><td><b>101 — 자작 팔</b></td><td>프리미티브 3관절 URDF + <code>joint_wave</code>(사인파 각도 발행)</td><td><a class="term" href="glossary_robotics.html#urdf">URDF</a> · /joint_states · TF · <a class="term" href="glossary_robotics.html#ros2">ROS2</a> 토픽</td></tr>
+      <tr><td><b>101.5 — 진짜 팔</b></td><td>UR 공식 description 재사용, UR5e를 Foxglove에 렌더</td><td>오픈소스 재사용 · xacro · 메시 전송(fetchAsset)</td></tr>
+      <tr><td><b>201 — 제어</b></td><td>UR 드라이버(mock) + MoveIt2 + <code>moveit_demo</code></td><td><a class="term" href="glossary_robotics.html#ros2control">ros2_control</a> · <a class="term" href="glossary_robotics.html#moveit2">MoveIt2</a> · 액션</td></tr>
+    </table></div>
+
+    <h3>파일 지도 — ~/ros2_ws/src/arm101</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th>파일</th><th>역할</th><th>읽는 순서</th></tr>
+      <tr><td><code>package.xml</code></td><td>패키지 이름·의존성 선언. colcon과 rosdep이 읽는 명세서</td><td>②</td></tr>
+      <tr><td><code>setup.py</code></td><td>무엇을 어디에 설치할지 + <code>ros2 run</code> 실행자 등록(entry_points)</td><td>③</td></tr>
+      <tr><td><code>urdf/arm101.urdf</code></td><td>자작 3관절 팔의 구조 정의</td><td>① 여기부터</td></tr>
+      <tr><td><code>arm101/joint_wave.py</code></td><td>관절 각도를 지어내서 /joint_states로 발행하는 노드</td><td>④</td></tr>
+      <tr><td><code>launch/view_arm.launch.py</code></td><td>자작 팔 시각화 3종 세트 실행</td><td>⑤</td></tr>
+      <tr><td><code>launch/view_ur.launch.py</code></td><td>UR5e 버전 — xacro 변환이 추가된 것만 다름</td><td>⑥</td></tr>
+      <tr><td><code>arm101/moveit_demo.py</code></td><td>MoveGroup 액션으로 관절 목표를 보내는 제어 클라이언트</td><td>⑦ 마지막</td></tr>
+    </table></div>
+    <p class="soft">이 순서대로 한 파일씩 열어 읽으면서 아래 절들을 병행하는 것을 권장.</p>
+  </div>
+</section>
+
+<!-- ══════════ L2 빌드 ══════════ -->
+<section id="l2">
+  <div class="sec-head"><span class="sec-no">SEC 02</span><h2>워크스페이스와 빌드 — colcon</h2></div>
+  <div class="sec-body">
+    <p class="lead">ROS2 개발의 시작은 "내 코드를 ROS가 찾을 수 있는 형태로 설치"하는 것입니다. 그 규칙이 워크스페이스이고, 도구가 colcon입니다.</p>
+
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>
+    <code>/opt/ros/humble</code>은 공장에서 출고된 밑그림, <code>~/ros2_ws</code>는 그 위에 얹는 내 덧그림(오버레이)입니다.
+    터미널에서 <code>source</code>를 밑그림 → 덧그림 순서로 하면, 같은 이름의 패키지는 내 것이 우선합니다.
+    UR 공식 description을 apt 대신 소스로 클론해 워크스페이스에 둔 것도 이 원리 — 언제든 내가 고칠 수 있는 쪽이 이깁니다.</div>
+
+    <h3>ament_python 패키지의 최소 구성</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th>구성물</th><th>왜 필요한가</th></tr>
+      <tr><td><code>package.xml</code></td><td>"나는 arm101이고 rclpy·sensor_msgs가 필요하다"는 선언. 빌드 순서·의존 설치의 근거</td></tr>
+      <tr><td><code>setup.py</code> — <code>data_files</code></td><td>URDF·launch 파일을 <code>install/arm101/share/…</code>로 복사. launch가 <code>get_package_share_directory('arm101')</code>로 찾을 수 있는 이유</td></tr>
+      <tr><td><code>setup.py</code> — <code>entry_points</code></td><td><code>'joint_wave = arm101.joint_wave:main'</code> 한 줄이 <code>ros2 run arm101 joint_wave</code>를 만든다</td></tr>
+      <tr><td><code>resource/arm101</code>(빈 파일)</td><td>ament 인덱스용 마커 — "이 패키지가 설치되어 있음"의 표식</td></tr>
+    </table></div>
+
+    <div class="plain try"><span class="pl-tag">직접 해보기</span>
+    빌드 산출물을 전부 지우고 백지에서 다시 빌드해보세요. 이게 되면 빌드는 이해한 겁니다.<br>
+    <code>cd ~/ros2_ws && rm -rf build install log</code><br>
+    <code>source /opt/ros/humble/setup.bash && colcon build --symlink-install</code><br>
+    <code>source install/setup.bash && ros2 pkg list | grep arm101</code><br>
+    <code>--symlink-install</code>은 파이썬 파일을 복사 대신 링크로 설치 — .py를 고쳐도 재빌드 없이 반영됩니다(단, setup.py를 고치면 재빌드).</div>
+
+    <div class="plain quiz"><span class="pl-tag">스스로 점검</span>
+    ① 새 터미널에서 <code>ros2 run arm101 joint_wave</code>가 "package not found"로 실패한다. 무엇을 빼먹었나?<br>
+    ② conda <code>(base)</code>가 켜진 터미널에서 ROS를 실행하면 왜 위험한가?
+    <details><summary>답 보기</summary>
+    ① <code>source ~/ros2_ws/install/setup.bash</code> — source는 터미널마다 매번 필요.
+    ② <code>#!/usr/bin/env python3</code>이 conda의 파이썬을 잡아 시스템에 설치된 ROS 파이썬 모듈(lxml 등)을 못 찾는다. 실제로 TurtleBot3 스폰이 이걸로 죽었다. ROS 터미널에서는 <code>conda deactivate</code>.</details></div>
+  </div>
+</section>
+
+<!-- ══════════ L3 URDF·TF ══════════ -->
+<section id="l3">
+  <div class="sec-head"><span class="sec-no">SEC 03</span><h2>로봇을 그리다 — URDF · joint_states · TF</h2></div>
+  <div class="sec-body">
+    <p class="lead">로봇팔은 "강체(link)를 관절(joint)로 이어붙인 나무"입니다. <a class="term" href="glossary_robotics.html#urdf">URDF</a>가 그 나무를 적는 형식이고, 우리 <code>arm101.urdf</code>는 링크 5개·회전 관절 3개짜리 최소 예제입니다.</p>
+
+<pre><code>&lt;joint name="base_yaw" type="revolute"&gt;   ← 회전 관절 (J1)
+  &lt;parent link="base_link"/&gt;              ← 어느 강체에서
+  &lt;child  link="shoulder_link"/&gt;          ← 어느 강체로 이어지나
+  &lt;origin xyz="0 0 0.05"/&gt;                ← 부모 기준 관절의 위치(= 베이스 위 5cm)
+  &lt;axis   xyz="0 0 1"/&gt;                   ← 회전축 (z축 = 좌우로 도는 yaw)
+  &lt;limit lower="-3.14" upper="3.14" …/&gt;   ← 가동 범위(rad)
+&lt;/joint&gt;</code></pre>
+
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>
+    URDF는 <b>구조</b>만 있고 <b>자세</b>가 없습니다. "팔꿈치가 지금 몇 도인가"는 <code>/joint_states</code> 토픽이 실시간으로 채웁니다.
+    <b>robot_state_publisher</b>가 이 둘을 곱해 모든 링크의 3차원 위치(<code>/tf</code>)를 계산합니다.
+    Foxglove에서 좌표축만 보이고 팔이 안 보였던 날 — 그게 바로 "TF는 있는데 URDF 레이어를 안 붙인" 상태였습니다.</div>
+
+    <h3>joint_wave — 각도를 지어내는 노드</h3>
+    <p><code>joint_wave.py</code>는 30Hz 타이머로 사인파 각도를 만들어 /joint_states에 발행합니다. 진짜 로봇이라면 모터 엔코더가 할 일을 흉내내는 것 —
+    <b>같은 자리에 SEC 05에서는 mock hardware가, 최종 프로젝트에서는 <a class="term" href="glossary_robotics.html#isaac">Isaac Sim</a>이 들어옵니다.</b>
+    joints·amplitudes_rad·periods_sec·offsets_rad를 파라미터로 받도록 일반화해서 자작 팔에도 UR5e에도 같은 노드를 씁니다.</p>
+
+    <div class="plain try"><span class="pl-tag">직접 해보기</span>
+    ① <code>ros2 launch arm101 view_arm.launch.py</code> 후 다른 터미널에서:<br>
+    <code>ros2 topic echo /joint_states --once</code> · <code>ros2 topic echo /tf --once</code> — 각도(rad)와 변환(translation·rotation)을 눈으로 대조.<br>
+    ② <code>urdf/arm101.urdf</code>에서 upper_arm 길이 <code>0.30</code>을 <code>0.45</code>로 바꾸고 재실행 — Foxglove에서 팔이 길어졌는지 확인.
+    (visual의 origin z도 절반만큼 같이 움직여야 하는 이유를 생각해볼 것: 박스는 중심 기준으로 그려진다.)</div>
+
+    <div class="plain quiz"><span class="pl-tag">스스로 점검</span>
+    joint_wave를 끄고 robot_state_publisher만 켜면 Foxglove에 무엇이 보일까?
+    <details><summary>답 보기</summary>고정(fixed) 관절의 TF만 발행되고 회전 관절 3개의 TF가 끊겨, 팔이 그려지지 않거나 링크들이 연결되지 않은 채 남는다. "구조 × 자세 = 화면"에서 자세가 빠진 상태.</details></div>
+  </div>
+</section>
+
+<!-- ══════════ L4 원격 시각화 ══════════ -->
+<section id="l4">
+  <div class="sec-head"><span class="sec-no">SEC 04</span><h2>원격에서 보다 — Foxglove 파이프라인</h2></div>
+  <div class="sec-body">
+    <p class="lead">이 PC는 SSH로만 접근하는 헤드리스 환경입니다. <a class="term" href="glossary_robotics.html#gazebo">Gazebo</a> GUI 대신 "PC는 계산만, 그림은 노트북에서"로 갔고 —
+    이 구조는 최종 프로젝트의 <b>Isaac 헤드리스 + 원격 뷰</b>와 같은 패턴의 예행연습입니다.</p>
+
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>
+    <b>foxglove_bridge</b>는 ROS 토픽 ↔ 웹소켓(포트 8765) 번역기입니다. 중요한 특성: <b>클라이언트가 구독을 요청한 토픽만</b> ROS 쪽 구독을 만듭니다.
+    "invalid topic" 사건 때 서버에서 <code>Subscription count: 0</code>을 보고 "브리지는 멀쩡하고 뷰어가 요청을 안 했다"고 판정할 수 있었던 근거입니다.</div>
+
+    <h3>세 가지 전송 메커니즘</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th>무엇이</th><th>어떻게 노트북까지 가나</th></tr>
+      <tr><td>로봇 구조(URDF)</td><td><code>/robot_description</code> 토픽. <b>latched(TRANSIENT_LOCAL)</b> — 발행이 한 번뿐이어도 늦게 접속한 구독자가 마지막 메시지를 받는다</td></tr>
+      <tr><td>실시간 자세</td><td><code>/tf</code> · <code>/joint_states</code> 스트리밍</td></tr>
+      <tr><td>메시 파일(.dae)</td><td>URDF 속 <code>package://ur_description/…</code> 경로를 뷰어가 보고, 브리지의 <b>fetchAsset</b> 기능으로 파일 자체를 받아간다</td></tr>
+    </table></div>
+
+    <h3>UR5e 재사용 — xacro</h3>
+    <p>정밀 모델은 그리지 않고 제조사 공식 <code>Universal_Robots_ROS2_Description</code>을 클론했습니다. UR은 URDF를 직접 주지 않고
+    <b>xacro</b>(변수·매크로가 있는 URDF 템플릿)를 줍니다 — 같은 파일에서 <code>ur_type:=ur3e/ur5e/ur10e</code>로 다른 로봇이 나오는 방식.
+    <code>view_ur.launch.py</code>에서는 launch가 실행되는 순간 <code>Command</code>로 xacro를 돌려 URDF 문자열을 만들어 robot_state_publisher에 넘깁니다.</p>
+
+    <div class="plain try"><span class="pl-tag">직접 해보기</span>
+    ① <code>ros2 launch arm101 view_ur.launch.py</code> 후: <code>ros2 topic info /robot_description --verbose</code> — Durability가 TRANSIENT_LOCAL인지 확인.<br>
+    ② xacro가 뭘 만드는지 직접 보기: <code>xacro $(ros2 pkg prefix ur_description)/share/ur_description/urdf/ur.urdf.xacro ur_type:=ur5e name:=ur | head -50</code><br>
+    ③ 노트북 Foxglove → 3D 패널 → Custom layers → Add URDF → Source: Topic → <code>/robot_description</code></div>
+
+    <div class="plain quiz"><span class="pl-tag">스스로 점검</span>
+    브리지를 재시작해도 Foxglove를 재접속만 하면 URDF가 다시 뜨는 이유는?
+    <details><summary>답 보기</summary>robot_state_publisher가 살아있는 한 /robot_description은 latched로 유지되고, 새 브리지·새 클라이언트가 구독을 다시 만들면 마지막 메시지를 즉시 받는다. 반대로 robot_state_publisher를 재시작하면 그 발행자의 latch도 사라진다.</details></div>
+  </div>
+</section>
+
+<!-- ══════════ L5 제어 ══════════ -->
+<section id="l5">
+  <div class="sec-head"><span class="sec-no">SEC 05</span><h2>움직이게 하다 — ros2_control × MoveIt2</h2></div>
+  <div class="sec-body">
+    <p class="lead">201의 핵심은 계층입니다. <b>계획(어디로 어떻게 갈까)</b>과 <b>실행(그 궤적을 시간에 맞춰 재생)</b>이 분리되어 있고, 그 사이를 컨트롤러 이름이 잇습니다.</p>
+
+<pre><code>moveit_demo ──(MoveGroup 액션: "이 관절 각도로 가라")──▶ /move_action
+    │
+    ▼
+ move_group  ← 계획: OMPL이 충돌 없는 경로를 찾고 시간을 입힘(궤적)
+    │  FollowJointTrajectory 액션 — 보낼 컨트롤러를 "이름"으로 고른다 ★여기가 -4 사건의 무대
+    ▼
+ scaled_joint_trajectory_controller  ← 실행: 궤적을 잘게 쪼개 관절 명령으로
+    │  (controller_manager 위에서 동작)
+    ▼
+ mock hardware  ← 가짜 모터: 명령 각도를 그대로 상태로 되돌려줌
+    ▼
+ /joint_states ─▶ robot_state_publisher ─▶ /tf ─▶ Foxglove  (SEC 03·04와 동일한 "보이기" 경로)</code></pre>
+
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>
+    <a class="term" href="glossary_robotics.html#ros2control">ros2_control</a>은 "모터 추상화 계층"입니다. 진짜 UR이든, mock이든, Isaac이든
+    hardware interface만 갈아끼우면 위쪽(컨트롤러·MoveIt·우리 코드)은 그대로입니다. 오늘 mock으로 배운 코드가 그대로 시뮬레이터·실기로 이어지는 이유이고,
+    이것이 <a class="term" href="glossary_robotics.html#sim2real">Sim-to-Real</a>의 소프트웨어적 토대입니다.</div>
+
+    <h3>ros2_control 등장인물</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th>구성요소</th><th>역할</th></tr>
+      <tr><td>hardware interface</td><td>모터·엔코더와의 실제 접점. <code>use_fake_hardware:=true</code>면 mock으로 대체</td></tr>
+      <tr><td>controller_manager</td><td>컨트롤러들을 로드·활성화·전환하는 관리자. 이름이 고정이라 <b>한 도메인에 하나만</b></td></tr>
+      <tr><td>joint_state_broadcaster</td><td>읽기 전용 — 하드웨어 상태를 /joint_states로 내보냄 (joint_wave의 자리를 대체한 것)</td></tr>
+      <tr><td>scaled_joint_trajectory_controller</td><td>쓰기 — 궤적을 받아 하드웨어에 명령. UR MoveIt 설정의 <b>기본 실행 컨트롤러</b></td></tr>
+      <tr><td>spawner</td><td>launch 시 컨트롤러를 로드·활성화해주는 일회성 도우미</td></tr>
+    </table></div>
+
+    <h3>moveit_demo — 액션 goal의 해부</h3>
+    <p>라이브러리 없이 MoveGroup 액션을 직접 조립했습니다. 핵심만 보면:</p>
+<pre><code>goal.request.group_name = 'ur_manipulator'      # SRDF에 정의된 계획 그룹(= 팔 전체)
+constraints.joint_constraints = [               # "관절 목표" — 각 관절이 이 각도(±0.01rad)면 성공
+    JointConstraint(joint_name='shoulder_pan_joint', position=0.0, …), … 6개 ]
+goal.planning_options.plan_only = False         # 계획만 하지 말고 실행까지</code></pre>
+    <p class="soft">플래너 선택·충돌 검사·시간 파라미터화는 전부 move_group이 대신한다 — 클라이언트는 "무엇을"만 말하고 "어떻게"는 위임하는 구조.</p>
+
+    <h3>실행 명령 (터미널 4개 · 각각 한 줄 그대로)</h3>
+<pre><code>ros2 launch ur_robot_driver ur_control.launch.py ur_type:=ur5e robot_ip:=127.0.0.1 use_fake_hardware:=true initial_joint_controller:=scaled_joint_trajectory_controller launch_rviz:=false
+ros2 launch ur_moveit_config ur_moveit.launch.py ur_type:=ur5e launch_rviz:=false
+ros2 run foxglove_bridge foxglove_bridge
+ros2 run arm101 moveit_demo          # ← 이 터미널만 ~/ros2_ws/install/setup.bash 소싱 필요</code></pre>
+
+    <div class="plain try"><span class="pl-tag">직접 해보기</span>
+    ① <code>moveit_demo.py</code>의 PRESETS에 자세를 하나 추가하고 CYCLE_ORDER에 끼워 넣어 4자세 순환으로 만들기.<br>
+    ② 컨트롤러 상태 확인(ros2controlcli 미설치 시): <code>ros2 service call /controller_manager/list_controllers controller_manager_msgs/srv/ListControllers</code><br>
+    ③ 일부러 -4 재현: switch_controller 서비스로 jtc를 활성화해 데모를 돌려보고, 다시 scaled로 복구 — SEC 06 사건 4를 몸으로 익히는 실습.</div>
+
+    <div class="plain quiz"><span class="pl-tag">스스로 점검</span>
+    ① joint_wave와 이 스택을 동시에 켜면 어떤 증상이 나타날까?
+    ② "계획은 성공했는데 실행이 실패했다"는 것을 로그의 어떤 문장으로 구분할 수 있나?
+    <details><summary>답 보기</summary>
+    ① /joint_states에 발행자가 둘이 되어 TF가 두 자세 사이를 널뛰듯 튄다. 실제로 pkill 잔존 프로세스 때문에 겪었다(SEC 06 사건 5).
+    ② move_group 로그의 "Solution found but controller failed during execution" — Solution found(계획 성공)와 controller failed(실행 실패)가 한 문장에 있다.</details></div>
+  </div>
+</section>
+
+<!-- ══════════ L6 장애 복기 ══════════ -->
+<section id="l6">
+  <div class="sec-head"><span class="sec-no">SEC 06</span><h2>장애 복기 — 삽질이 진짜 교재</h2></div>
+  <div class="sec-body">
+    <p class="lead">이번 실습에서 만난 장애 7건. 각각 "증상 → 원인 → 챙길 교훈"으로 정리했습니다. 프로젝트 본편에서 같은 부류의 문제를 다시 만납니다.</p>
+
+    <div class="milestones">
+      <div class="ms"><span class="ms-tag">사건 1 · 환경 오염</span><h4>Gazebo 스폰 노드가 lxml ModuleNotFoundError로 사망</h4>
+      <p>conda (base)의 파이썬이 ROS 노드의 셔뱅을 가로챔 → 시스템 파이썬에만 있는 모듈 실종. <b>교훈: ROS 터미널과 conda는 격리. 프롬프트의 (base)부터 확인.</b></p></div>
+      <div class="ms"><span class="ms-tag">사건 2 · 프로토콜 버전</span><h4>Foxglove 접속이 handshake failed로 반복 거부</h4>
+      <p>브리지 3.4.3은 서브프로토콜 foxglove.sdk.v1만 수락, 구버전 앱은 옛 이름을 제시. curl로 서버에 두 이름을 직접 보내 어느 쪽이 101/400인지 확인해 판정. <b>교훈: "연결 안 됨"은 양쪽 버전 합의부터 의심 — 서버에 직접 물어보면 확실하다.</b></p></div>
+      <div class="ms"><span class="ms-tag">사건 3 · 계층 분리 진단</span><h4>URDF 레이어에서 invalid topic</h4>
+      <p>서버 점검 결과 발행 정상·스키마 정상·<b>Subscription count 0</b> → 뷰어가 요청을 안 한 것. 클라이언트 설정(Source=Topic 선택)이 원인. <b>교훈: 파이프라인 장애는 "어느 계층까지 정상인가"를 한 단계씩 자르며 내려간다.</b></p></div>
+      <div class="ms"><span class="ms-tag">사건 4 · 이름 매칭</span><h4>MoveIt 실행이 CONTROL_FAILED(-4)</h4>
+      <p>계획은 성공했지만 실행 대상이 비활성 컨트롤러(scaled가 기본인데 jtc를 활성화해 둠) → goal 거부. switch_controller로 해결. <b>교훈: MoveIt과 ros2_control은 "컨트롤러 이름"으로 약속한다. 드라이버의 initial_joint_controller를 MoveIt 기본과 맞출 것.</b></p></div>
+      <div class="ms"><span class="ms-tag">사건 5 · 프로세스 수명</span><h4>pkill 후에도 옛 노드가 살아서 두 로봇이 섞임</h4>
+      <p>launch 부모만 죽고 자식 노드 생존 → /joint_states 발행자 2개, robot_description 충돌. <b>교훈: launch 종료는 Ctrl+C(SIGINT)로 정상 전파. 강제 종료했다면 pgrep으로 잔존 확인.</b></p></div>
+      <div class="ms"><span class="ms-tag">사건 6 · 유일 자원</span><h4>스택을 두 벌 띄우자 spawner가 죽고 데모가 -4</h4>
+      <p>/controller_manager는 이름 고정 — 두 개가 뜨면 서비스 콜이 아무 쪽에나 가서 꼬임. 부가 발견: 멀티라인 명령 붙여넣기로 인자가 깨지면 실물 로봇 모드로 뜬다(ur_ros2_control_node·dashboard_client가 뜨면 그 신호). <b>교훈: 스택은 한 벌만, 긴 명령은 한 줄로.</b></p></div>
+      <div class="ms"><span class="ms-tag">사건 7 · 잔재 청소</span><h4>강제 종료 뒤 새 CLI들이 "A message was lost" · SHM 에러</h4>
+      <p>Fast DDS 공유메모리 파일이 /dev/shm에 잔존해 새 프로세스의 전송 초기화를 방해. <b>교훈: 비정상 종료 후 통신이 이상하면 fastdds shm clean.</b></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ L7 재현 과제 ══════════ -->
+<section id="l7">
+  <div class="sec-head"><span class="sec-no">SEC 07</span><h2>재현 과제 — 부채 상환 체크리스트</h2></div>
+  <div class="sec-body">
+    <p class="lead">아무것도 띄우지 않은 상태에서, 이 노트만 보고 아래를 스스로 완주하면 학습 부채는 상환입니다.</p>
+
+    <ul class="rules">
+      <li><b>재현 1</b> — build/install/log 삭제 후 재빌드, <code>ros2 pkg list</code>로 arm101 확인 <span class="soft">(SEC 02)</span></li>
+      <li><b>재현 2</b> — view_arm 실행, 노트북 Foxglove에서 자작 팔이 움직이는 것 확인 <span class="soft">(SEC 03·04)</span></li>
+      <li><b>재현 3</b> — view_ur로 전환해 UR5e 렌더 확인 — 전환 전 이전 launch를 어떻게 내려야 하는지 포함 <span class="soft">(SEC 04·사건 5)</span></li>
+      <li><b>재현 4</b> — MoveIt 스택 4종을 순서대로 띄우고 데모 순환 확인 <span class="soft">(SEC 05)</span></li>
+      <li><b>재현 5</b> — 일부러 -4를 만든 뒤 switch_controller로 복구 <span class="soft">(사건 4)</span></li>
+    </ul>
+
+    <h3>변형 과제 — 난이도 순</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th>난이도</th><th>과제</th><th>얻는 것</th></tr>
+      <tr><td><span class="chip c-green">하</span></td><td>arm101.urdf에 손목 관절 하나 추가(4-DOF) + joint_wave 파라미터로 흔들기</td><td>URDF 체인·파라미터 감각</td></tr>
+      <tr><td><span class="chip c-green">하</span></td><td>moveit_demo 프리셋 2개 추가, 속도 스케일 0.5→0.2로 바꿔 차이 관찰</td><td>MotionPlanRequest 필드 감각</td></tr>
+      <tr><td><span class="chip c-steel">중</span></td><td>ur_type:=ur3e로 전 과정 반복 — 어디는 그대로고 어디만 바뀌는지 기록</td><td>xacro 파라미터화의 힘</td></tr>
+      <tr><td><span class="chip c-steel">중</span></td><td>Foxglove에 Plot 패널 추가해 /joint_states 한 관절을 그래프로 — 계획된 궤적의 속도 프로파일 관찰</td><td>궤적 시간 파라미터화 이해</td></tr>
+      <tr><td><span class="chip c-amber">상</span></td><td>pose 목표(IK) 데모: goal_constraints를 position+orientation constraint로 구성</td><td>피킹의 실제 인터페이스 — 다음 스텝</td></tr>
+      <tr><td><span class="chip c-amber">상</span></td><td>planning scene에 박스 장애물 추가 후 같은 프리셋 순환 — 경로가 돌아가는지 확인</td><td>충돌 회피 계획의 실체 — 물류 데모 축소판</td></tr>
+    </table></div>
+
+    <div class="plain"><span class="pl-tag">이 노트가 프로젝트로 이어지는 곳</span>
+    여기서 익힌 배선이 본편에서 그대로 확장됩니다: joint_wave·mock hardware의 자리에 <b>Isaac Sim</b>이,
+    Foxglove의 자리에 <b>운영 대시보드·3D 뷰</b>가, moveit_demo의 자리에 <b>피킹 오케스트레이션</b>이 들어옵니다.
+    구조는 이미 한 번 손으로 만들어봤으므로, 이제는 규모의 문제입니다.</div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">DOC 04 · LAB NOTE — ~/ros2_ws 실습과 병행해서 읽는 문서 · 재현 과제 완료 시 REV B에서 IK·planning scene 장으로 확장 예정</div>
+</footer>
+
+</body>
+</html>
