@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>심화 B — 인덕션 병목의 정량 분석 (Deep-Dive)</title>
+<style>
+  :root{
+    --bg:#E9ECEE;
+    --panel:#FFFFFF;
+    --panel-edge:#D4D9DD;
+    --ink:#1B2430;
+    --ink-soft:#5A6673;
+    --amber:#E8720C;
+    --machine:#1F7A4D;
+    --steel:#33506B;
+    --slate:#8A96A3;
+    --grid:#DDE2E6;
+    --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important;animation:none!important}}
+  body{
+    background:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:32px 32px;
+    color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:15px;
+  }
+  a{color:var(--steel)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+  header{border-bottom:3px solid var(--ink);background:var(--panel)}
+  .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
+  .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
+  .doc-eyebrow b{color:var(--amber);font-weight:600}
+  h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
+  h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
+  .meta b{color:var(--ink);font-weight:600}
+
+  nav{position:sticky;top:0;z-index:50;background:var(--ink);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav .wrap{display:flex;gap:2px;padding:0 20px}
+  nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
+  nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--amber);outline:none}
+  nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
+  nav a.nav-cross{margin-left:auto;color:var(--amber);font-weight:700}
+  nav a.nav-x2{color:var(--amber);font-weight:700}
+
+  main{padding:44px 0 80px}
+  section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
+  .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
+  h2{font-size:20px;font-weight:800;letter-spacing:-.01em}
+  .sec-body{padding:16px 26px 26px}
+  h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+  h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
+  p{margin-bottom:10px}
+  .lead{font-size:15.5px}
+  .soft{color:var(--ink-soft)}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:13.5px;line-height:1.8}
+  .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
+  td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .tbl-scroll{overflow-x:auto}
+  .num{font-family:var(--mono)}
+  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px}
+  .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)} .c-slate{color:var(--slate)}
+
+  ul.rules{list-style:none;margin:10px 0}
+  ul.rules li{padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--grid);font-size:13.5px}
+  ul.rules li:last-child{border-bottom:none}
+  ul.rules li::before{content:"▸";position:absolute;left:6px;color:var(--amber);font-weight:700}
+
+  /* 처리량 체인 다이어그램 */
+  .chain{display:grid;gap:0;margin:14px 0;border:1px solid var(--panel-edge)}
+  .chain .link{display:grid;grid-template-columns:150px 1fr 170px;border-bottom:1px solid var(--panel-edge)}
+  .chain .link:last-child{border-bottom:none}
+  .chain .link .tag{font-family:var(--mono);font-size:11px;font-weight:700;padding:13px 14px;background:#F2F4F6;border-right:1px solid var(--panel-edge);display:flex;align-items:center}
+  .chain .link .desc{padding:12px 16px;font-size:13px}
+  .chain .link .cap{font-family:var(--mono);font-size:11px;padding:12px 14px;border-left:1px dashed var(--panel-edge);display:flex;align-items:center;color:var(--ink-soft)}
+  .chain .link.bottleneck .tag{background:var(--amber);color:#fff;border-right-color:var(--amber)}
+  .chain .link.bottleneck .cap{color:var(--amber);font-weight:700}
+
+  pre{background:#1B2430;color:#DDE4EA;font-family:var(--mono);font-size:12px;line-height:1.7;padding:16px 18px;overflow-x:auto;margin:12px 0}
+  pre .cm{color:#8A96A3}
+  code{font-family:var(--mono);font-size:12.5px;background:#F2F4F6;padding:1px 5px}
+
+  ul.srcs{list-style:none;margin:10px 0;font-size:12.5px}
+  ul.srcs li{padding:5px 0 5px 22px;position:relative;border-bottom:1px dashed var(--grid)}
+  ul.srcs li:last-child{border-bottom:none}
+  ul.srcs li::before{content:"↗";position:absolute;left:4px;color:var(--steel);font-weight:700}
+
+  footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+
+  @media (max-width:820px){
+    .titleblock{grid-template-columns:1fr}
+    .meta{border-left:none;padding-left:0;text-align:left}
+    .chain .link{grid-template-columns:1fr}
+    .chain .link .tag{border-right:none;border-bottom:1px solid var(--panel-edge)}
+    .chain .link .cap{border-left:none;border-top:1px dashed var(--panel-edge)}
+    body{font-size:14px}
+    .sec-head,.sec-body{padding-left:16px;padding-right:16px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap titleblock">
+    <div>
+      <div class="doc-eyebrow">DEEP-DIVE B · REV A · <b>DOC 05 심화 3부</b> · 2026-08</div>
+      <h1>인덕션 병목의 정량 분석
+        <span class="sub">소터는 빠른데 왜 허브가 막히는가 — 처리량 체인과 대기열 이론으로 병목을 수식화하고, SimPy 모델 설계까지 구체화한다</span>
+      </h1>
+    </div>
+    <div class="meta">
+      SERIES · <b>심화 A / B / C</b><br>
+      PARENT · <b>DOC 05 · SEC 03 인덕션</b><br>
+      SCOPE · <b>하차 이후 → 소터 분기까지</b><br>
+      TOOL · <b>SimPy 이산사건 시뮬레이션</b>
+    </div>
+  </div>
+</header>
+
+<nav aria-label="섹션 이동">
+  <div class="wrap">
+    <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a href="#b1">01 인덕션이란</a>
+    <a href="#b2">02 처리량 체인</a>
+    <a href="#b3">03 대기열 관점</a>
+    <a href="#b4">04 싱귤레이터 기술</a>
+    <a href="#b5">05 SimPy 모델 설계</a>
+    <a href="#b6">06 실험 설계</a>
+    <a class="nav-cross" href="logistics_domain_research.html">DOC 05 ↗</a>
+    <a class="nav-x2" href="deep_dive_unloading.html">심화 A ↗</a>
+    <a class="nav-x2" href="deep_dive_perception_grasp.html">심화 C ↗</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- ══════════ B1 인덕션이란 ══════════ -->
+  <section id="b1">
+    <div class="sec-head"><span class="sec-no">SEC 01</span><h2>인덕션은 세 가지 일을 동시에 한다</h2></div>
+    <div class="sec-body">
+      <div class="plain"><span class="pl-tag">쉽게 말하면</span>
+        분류기(소터)는 "한 줄로, 한 개씩, 간격 맞춰" 들어오는 상자만 처리할 수 있습니다. 하차된 상자 무더기를 그 상태로 바꿔주는 공정이 인덕션입니다. 무더기 → 한 줄 정렬이라는 변환이 핵심입니다.
+      </div>
+      <div class="tbl-scroll">
+      <table>
+        <tr><th style="width:22%">기능</th><th style="width:44%">내용</th><th style="width:34%">실패하면</th></tr>
+        <tr><td><b>싱귤레이션</b><br><span class="soft num" style="font-size:11px">singulation</span></td><td>겹치거나 나란히 붙은 상자를 낱개로 분리해 한 줄로 만든다</td><td>2개가 붙은 채 스캐너 통과 → 미스캔 → 리젝트 라인행</td></tr>
+        <tr><td><b>정렬·간격 확보</b></td><td>운송장 면이 스캐너를 향하도록 돌리고, 상자 사이 간격을 소터 투입 규격에 맞춘다</td><td>간격 부족 → 소터 캐리어 탑재 실패 → 재순환</td></tr>
+        <tr><td><b>투입 타이밍</b></td><td>순환 중인 소터 캐리어의 빈 칸에 맞춰 상자를 밀어 넣는다</td><td>타이밍 불일치 → 캐리어가 빈 채로 지나감 (용량 낭비)</td></tr>
+      </table>
+      </div>
+      <p class="soft">기계식 설비가 대부분을 처리하지만, 겹침 해소와 비정형물 정리는 여전히 인덕션 라인의 작업자 몫이다. 그래서 이 공정의 처리율에는 "사람 손 속도"라는 상한이 걸린다.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ B2 처리량 체인 ══════════ -->
+  <section id="b2">
+    <div class="sec-head"><span class="sec-no">SEC 02</span><h2>처리량 체인 — 병목은 구조적으로 인덕션에 온다</h2></div>
+    <div class="sec-body">
+      <p class="lead">허브의 시간당 처리량은 직렬 공정 중 <b>가장 느린 단계</b>가 정한다. 각 단계의 용량 특성을 나란히 놓으면 병목의 위치가 보인다.</p>
+      <div class="chain">
+        <div class="link">
+          <div class="tag">① 하차</div>
+          <div class="desc">도크 수 × 도크당 하차 속도. 인력 작업이라 확장하려면 사람을 더 투입해야 한다 (<a href="deep_dive_unloading.html">심화 A</a>)</div>
+          <div class="cap">인력 비례</div>
+        </div>
+        <div class="link bottleneck">
+          <div class="tag">② 인덕션</div>
+          <div class="desc">라인 수 × 라인당 투입 속도. 겹침 해소·정렬에 사람 손이 필요해 <b>라인당 속도에 상한</b>이 있다. 라인 증설은 공간·인력 제약</div>
+          <div class="cap">병목 후보 1순위</div>
+        </div>
+        <div class="link">
+          <div class="tag">③ 스캔·계측</div>
+          <div class="desc">다면 스캐너·DWS는 컨베이어 속도로 처리 — 기계 용량이 크고 병목이 되는 일이 드물다</div>
+          <div class="cap">기계 용량</div>
+        </div>
+        <div class="link">
+          <div class="tag">④ 소터</div>
+          <div class="desc">캐리어 속도 × 캐리어 피치로 정해지는 기계 용량. 크로스벨트 소터는 벤더 공개 자료 기준 시간당 수만 개 수준 (<a href="https://www.interroll.com/">Interroll</a>·<a href="https://www.beumer.com/">BEUMER</a> 등)</div>
+          <div class="cap">기계 용량 (큼)</div>
+        </div>
+        <div class="link">
+          <div class="tag">⑤ 슈트·상차</div>
+          <div class="desc">슈트 버퍼가 차면 소터가 해당 슈트에 부릴 수 없어 재순환 — 상차 인력 속도가 뒤에서 미는 병목이 될 수 있다</div>
+          <div class="cap">버퍼 + 인력</div>
+        </div>
+      </div>
+      <ul class="rules">
+        <li><b>구조적 결론</b> — 소터(④)는 돈으로 용량을 살 수 있는 기계지만, 인덕션(②)은 낱개 분리라는 비정형 작업 때문에 기계화가 덜 됐다. 그래서 <b>소터가 굶는(starvation) 형태</b>의 병목이 전형적이다</li>
+        <li><b>수치 감각</b> — 곤지암 메가허브의 처리 능력은 하루 175만 개다. 가동이 심야 수 시간에 집중되는 것을 감안하면 피크 시간당 십수만 개를 여러 인덕션 라인이 나눠 감당해야 한다는 계산이 나온다 (<a href="https://www.cjlogistics.com/ko/newsroom/news/NR_00000865">공개 수치 출처</a>)</li>
+        <li><b>이형물의 이중 타격</b> — 이형물은 인덕션에서 별도 라인으로 빼는 작업 자체가 인덕션 속도를 깎는다. 심화 A의 문제가 여기서 다시 나타난다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══════════ B3 대기열 관점 ══════════ -->
+  <section id="b3">
+    <div class="sec-head"><span class="sec-no">SEC 03</span><h2>대기열 이론 관점 — 피크가 왜 치명적인가</h2></div>
+    <div class="sec-body">
+      <div class="plain"><span class="pl-tag">쉽게 말하면</span>
+        처리 능력의 90%만큼 물량이 들어올 때와 99%만큼 들어올 때, 대기 시간은 10% 차이가 아니라 <b>수 배~수십 배</b> 차이가 납니다. 혼잡은 용량에 가까워질수록 비선형으로 폭발합니다. 피크 시간대가 문제인 이유가 이것입니다.
+      </div>
+      <ul class="rules">
+        <li><b>가동률</b> — 도착률 λ, 서버(라인) 수 c, 라인당 처리율 μ일 때 가동률은 <code>ρ = λ / (c·μ)</code>. ρ가 1에 가까워지면 대기열 길이와 대기 시간이 <code>1/(1−ρ)</code>에 비례해 급증한다 (M/M/c 대기열의 기본 성질)</li>
+        <li><b>비정상 도착</b> — 택배 도착은 하루 안에서 심하게 출렁인다(간선차 도착 스케줄에 따라 몰림). 평균으로 계산하면 안전해 보여도 피크 구간에서는 ρ&gt;1이 되어 대기열이 무한정 자란다 — 버퍼(컨베이어)가 차면 하차까지 거꾸로 막힌다(blocking)</li>
+        <li><b>해석의 한계</b> — 수식 모델(M/M/c)은 감을 잡는 용도다. 실제로는 서비스 시간이 지수분포가 아니고, 공정이 직렬로 얽혀 있고, 버퍼가 유한하다 → 그래서 <b>시뮬레이션(DES)이 필요</b>하다 (SEC 05)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══════════ B4 싱귤레이터 기술 ══════════ -->
+  <section id="b4">
+    <div class="sec-head"><span class="sec-no">SEC 04</span><h2>싱귤레이터 기술 — 기계식과 로봇식</h2></div>
+    <div class="sec-body">
+      <div class="tbl-scroll">
+      <table>
+        <tr><th style="width:20%">방식</th><th style="width:40%">원리</th><th style="width:40%">한계</th></tr>
+        <tr>
+          <td><b>기계식 싱귤레이터</b></td>
+          <td>속도가 다른 벨트를 병렬·직렬로 배열해 상자들이 자연히 한 줄로 벌어지게 만든다. 정렬 컨베이어·경사 롤러 조합</td>
+          <td>완전히 겹친(포개진) 상자는 못 푼다. 비닐·마대는 벨트에서 미끄러져 오작동. 잔여 겹침은 결국 사람이 푼다</td>
+        </tr>
+        <tr>
+          <td><b>비전 + 로봇식</b></td>
+          <td>카메라로 무더기를 인식하고 로봇팔(흡착)이 한 개씩 집어 투입 — 파렛트·벌크에서 소포를 낱개 투입하는 상용 사례로 <a href="https://www.ambirobotics.com/">Ambi Robotics</a> 등</td>
+          <td>처리율이 파지 사이클 시간에 묶인다. 겹침·비정형 인식은 심화 C의 인식 문제와 동일 — 여기서 두 심화 주제가 만난다</td>
+        </tr>
+        <tr>
+          <td><b>운영적 해법</b></td>
+          <td>기술 대신 흐름 제어로 — 간선차 도착 스케줄 평탄화, 하차 속도 조절로 인덕션에 맞춰 공급</td>
+          <td>상류(발송 터미널·간선 운행)와의 조정이 필요해 허브 단독으로는 한계</td>
+        </tr>
+      </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ B5 SimPy 모델 설계 ══════════ -->
+  <section id="b5">
+    <div class="sec-head"><span class="sec-no">SEC 05</span><h2>SimPy 모델 설계 — 구체안</h2></div>
+    <div class="sec-body">
+      <p class="lead">허브 1개 라인을 <a href="https://simpy.readthedocs.io/">SimPy</a>로 모델링하는 설계안이다. 목적은 "인덕션 처리율·라인 수가 전체 처리량과 체류 시간에 미치는 영향"의 정량화다.</p>
+
+      <h3>모델 구성 요소</h3>
+      <div class="tbl-scroll">
+      <table>
+        <tr><th style="width:18%">요소</th><th style="width:42%">정의</th><th style="width:40%">파라미터 (출처)</th></tr>
+        <tr><td><b>엔티티</b></td><td>상자 — 속성: 도착 시각, 크기 등급(대/중/소), 목적지 슈트, 이형물 여부</td><td>크기 비율: 소형 약 90% (<a href="https://cjnews.cj.net/cj%EB%8C%80%ED%95%9C%ED%86%B5%EC%9A%B4-%EC%86%8C%ED%98%95%ED%83%9D%EB%B0%B0-%EC%A0%84%EB%8B%B4-%EB%B6%84%EB%A5%98%EC%8B%9C%EC%8A%A4%ED%85%9C-%EA%B5%AC%EC%B6%95-%ED%86%B5%ED%95%B4-%EC%B2%A8%EB%8B%A8/">CJ 공개 자료</a>)</td></tr>
+        <tr><td><b>도착 과정</b></td><td>간선차 단위 배치 도착 — 차 1대 = 상자 수천 개가 하차 속도로 풀려나옴. 차량 도착은 시간대별 스케줄</td><td>시간대 분포: <a href="https://www.nlic.go.kr/">NLIC</a> 월별 통계 + 심야 집중 가정을 명시</td></tr>
+        <tr><td><b>자원 1 · 하차 도크</b></td><td><code>Resource(capacity=도크 수)</code> — 차량이 도크를 점유</td><td>하차 속도: 심화 A의 공개 수치 범위로 시나리오화</td></tr>
+        <tr><td><b>자원 2 · 인덕션</b></td><td><code>Resource(capacity=라인 수)</code> — 상자별 처리 시간은 로그정규분포(겹침·이형물이면 길어짐)</td><td>평균 처리 시간은 미지수 → <b>실험 변수로 두는 것이 이 모델의 목적</b></td></tr>
+        <tr><td><b>자원 3 · 소터</b></td><td>용량 C의 순환 컨베이어 — <code>Store</code>로 캐리어 슬롯을 표현, 슈트 만차 시 재순환</td><td>용량: 벤더 공개 범위(시간당 수만 개)에서 설정</td></tr>
+        <tr><td><b>버퍼</b></td><td>하차→인덕션 사이 유한 버퍼 — 차면 하차 중단(blocking)</td><td>길이는 레이아웃 가정으로 명시</td></tr>
+      </table>
+      </div>
+
+      <h3>코드 골격 (개념 스케치)</h3>
+      <pre><span class="cm"># 상자 1개의 여정: 하차 버퍼 → 인덕션 → 소터 → 슈트</span>
+def box_flow(env, box, buffer, induction, sorter, stats):
+    yield buffer.put(box)                        <span class="cm"># 하차 (버퍼 만차면 여기서 블로킹)</span>
+    t_in = env.now
+    with induction.request() as line:            <span class="cm"># 인덕션 라인 점유</span>
+        yield line
+        t = lognormal(MEAN_INDUCT, SIGMA)
+        if box.is_irregular: t *= IRREGULAR_FACTOR
+        yield env.timeout(t)                     <span class="cm"># 낱개 분리·정렬·투입</span>
+    yield sorter.slots.get()                     <span class="cm"># 빈 캐리어 대기 (소터 굶주림이 여기서 보임)</span>
+    yield env.timeout(RIDE_TIME)
+    stats.record(wait=env.now - t_in, box=box)   <span class="cm"># 체류 시간 기록</span></pre>
+      <p class="soft">전체 모델은 여기에 간선차 도착 스케줄러, 슈트 만차 → 재순환 분기, 시간대별 통계 수집이 붙는다. 핵심은 구조가 아니라 <b>파라미터의 출처를 명시하고, 미지 파라미터는 실험 변수로 돌리는 규율</b>이다.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ B6 실험 설계 ══════════ -->
+  <section id="b6">
+    <div class="sec-head"><span class="sec-no">SEC 06</span><h2>실험 설계 — 무엇을 돌려서 무엇을 얻나</h2></div>
+    <div class="sec-body">
+      <div class="tbl-scroll">
+      <table>
+        <tr><th style="width:26%">실험</th><th style="width:38%">조작 변수</th><th style="width:36%">관측 지표</th></tr>
+        <tr>
+          <td><b>① 병목 위치 확인</b></td>
+          <td>인덕션 라인당 처리율을 범위로 스윕</td>
+          <td>소터 공회전율(빈 캐리어 비율), 시간당 총 처리량 — 처리율이 어느 값 아래에서 소터가 굶는지 곡선으로 제시</td>
+        </tr>
+        <tr>
+          <td><b>② 증설 비교</b></td>
+          <td>인덕션 라인 수 +1 vs 라인당 속도 +20% (같은 투자라 가정)</td>
+          <td>처리량·평균 체류 시간·버퍼 블로킹 시간 — 어느 쪽 투자가 효과적인지</td>
+        </tr>
+        <tr>
+          <td><b>③ 피크 민감도</b></td>
+          <td>도착 집중도(피크 시간 폭)를 조절</td>
+          <td>최대 대기열 길이, 마감 시각까지 처리 완료율 — SEC 03의 비선형 폭발을 수치로 재현</td>
+        </tr>
+        <tr>
+          <td><b>④ 이형물 비율 영향</b></td>
+          <td>이형물 비율·처리 시간 배수를 조절</td>
+          <td>전체 처리량 하락 폭 — "이형물 사전 분기"의 가치를 정량화 (심화 A SEC 04와 연결)</td>
+        </tr>
+      </table>
+      </div>
+      <ul class="rules">
+        <li><b>검증 규율</b> — 각 실험은 난수 시드를 바꿔 반복(replication)하고 평균±신뢰구간으로 보고한다. 1회 실행 결과로 결론 내리지 않는다</li>
+        <li><b>캘리브레이션</b> — 공개 수치(일 175만 개 등)와 총량이 대략 맞는지로 모델의 스케일을 점검한다. 맞지 않으면 파라미터 가정을 문서에 남기고 수정한다</li>
+        <li><b>산출물</b> — "인덕션 처리율 vs 소터 공회전율" 곡선 1장이 이 심화 문서 전체의 결론을 요약하는 그림이 된다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══════════ 참고 자료 ══════════ -->
+  <section id="b7">
+    <div class="sec-head"><span class="sec-no">REF</span><h2>참고 자료</h2></div>
+    <div class="sec-body">
+      <ul class="srcs">
+        <li><a href="https://simpy.readthedocs.io/">SimPy 공식 문서</a> — Resource·Store·프로세스 모델링</li>
+        <li><a href="https://www.nlic.go.kr/">국가물류통합정보센터(NLIC)</a> — 물동량 통계 (도착 분포 설정 근거)</li>
+        <li><a href="https://www.cjlogistics.com/ko/newsroom/news/NR_00000865">CJ대한통운 뉴스룸 — 곤지암 메가허브</a> (일 175만 개 처리 능력)</li>
+        <li><a href="https://www.interroll.com/">Interroll</a> · <a href="https://www.beumer.com/">BEUMER</a> · <a href="https://www.vanderlande.com/">Vanderlande</a> · <a href="https://www.daifuku.com/">Daifuku</a> — 소터 용량·구성 기술자료</li>
+        <li><a href="https://www.ambirobotics.com/">Ambi Robotics</a> — 비전 로봇식 소포 낱개 투입 상용 사례</li>
+        <li><a href="https://www.anylogic.com/">AnyLogic</a> — 물류센터·소터 DES 모델 예제 (구조 참고)</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">DEEP-DIVE B · REV A — 상위 문서 <a href="logistics_domain_research.html">DOC 05 도메인 리서치</a> · 같은 시리즈 <a href="deep_dive_unloading.html">A 벌크 하차</a>·<a href="deep_dive_perception_grasp.html">C 인식·파지</a> · <a href="index.html">문서 인덱스로</a></div>
+</footer>
+
+</body>
+</html>
