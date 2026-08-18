@@ -224,7 +224,7 @@
           <p>기사가 적재 순서와 경로를 정해 최종 배송한다. 현재까지 전 구간 인력.</p>
         </div>
       </div>
-      <p class="soft">풀필먼트 센터가 허브와 같은 건물에 있는 경우(곤지암 2~4층), 앞단에 <b>입고 → 보관 → 피킹 → 패킹 → 출고</b>가 추가되고 그 출고 물량이 바로 1층 허브 분류로 이어진다. 우리 프로젝트가 다루는 범위가 이 앞단과 같은 구조다.</p>
+      <p class="soft">풀필먼트 센터가 허브와 같은 건물에 있는 경우(곤지암 2~4층), 앞단에 <b>입고 → 보관 → 피킹 → 패킹 → 출고</b>가 추가되고 그 출고 물량이 바로 1층 허브 분류로 이어진다. 본 프로젝트가 다루는 범위가 이 앞단과 같은 구조다.</p>
 
       <h3>기준 사례와 시장 규모 (조사로 확인한 수치)</h3>
       <div class="tbl-scroll">
@@ -276,7 +276,7 @@
         </div>
       </div>
       <div class="plain"><span class="pl-tag">왜 이 구간만 남았나</span>
-        남은 구간의 공통점은 <b>비정형</b>입니다. 크기·모양·재질·적재 상태가 매번 다른 물체를 인식하고 집어야 하는데, 이는 "정해진 규격의 상자가 컨베이어 위를 흐르는" 상황과 달리 인식(어디에 무엇이 어떤 자세로 있나)과 파지(어떻게 집나)를 동시에 풀어야 하는 로보틱스 문제입니다. 우리 프로젝트의 피스 피킹·검수와 같은 계열의 문제입니다.
+        남은 구간의 공통점은 <b>비정형</b>입니다. 크기·모양·재질·적재 상태가 매번 다른 물체를 인식하고 집어야 하는데, 이는 "정해진 규격의 상자가 컨베이어 위를 흐르는" 상황과 달리 인식(어디에 무엇이 어떤 자세로 있나)과 파지(어떻게 집나)를 동시에 풀어야 하는 로보틱스 문제입니다. 본 프로젝트의 피스 피킹·검수와 같은 계열의 문제입니다.
       </div>
     </div>
   </section>
@@ -333,19 +333,19 @@
 
   <!-- ══════════ R4 프로젝트 연결 ══════════ -->
   <section id="r4">
-    <div class="sec-head"><span class="sec-no">SEC 04</span><h2>우리 프로젝트와의 연결</h2></div>
+    <div class="sec-head"><span class="sec-no">SEC 04</span><h2>프로젝트 기술 스택과의 대응</h2></div>
     <div class="sec-body">
-      <p class="lead">하차·인덕션·이형물은 결국 <b>비정형 물체의 인식(세그멘테이션·6D 자세 추정) + 파지(grasping)</b> 문제다. 우리가 이미 갖고 있거나 이번 프로젝트에서 만드는 자산이 이 문제에 그대로 대응된다.</p>
+      <p class="lead">하차·인덕션·이형물은 결국 <b>비정형 물체의 인식(세그멘테이션·6D 자세 추정) + 파지(grasping)</b> 문제다. 이 프로젝트에서 구축하는 기술 스택이 이 문제에 그대로 대응된다.</p>
       <div class="tbl-scroll">
       <table>
-        <tr><th style="width:32%">보유·계획 중인 자산</th><th style="width:38%">대응되는 허브 문제</th><th style="width:30%">전이 방법</th></tr>
+        <tr><th style="width:32%">프로젝트 기술 스택</th><th style="width:38%">대응되는 허브 문제</th><th style="width:30%">전이 방법</th></tr>
         <tr>
           <td><b>Isaac Sim + Replicator</b> 합성 데이터 파이프라인 (검수 모델 학습용)</td>
           <td>벌크 적재 상자·이형물의 세그멘테이션/자세 라벨 데이터 부족</td>
           <td>SKU·파손 랜덤화 대신 <b>벌크 적재 랜덤화</b>로 씬만 교체 — 방법론 동일</td>
         </tr>
         <tr>
-          <td><b>6D 자세 추정 경험</b> + MoveIt2 피스 피킹</td>
+          <td><b>6D 자세 추정</b> + MoveIt2 피스 피킹</td>
           <td>겹친 상자 중 "어느 것을 어떤 자세로 집을지" 결정</td>
           <td>토트 내 피킹과 같은 파이프라인 (인식 → 파지 계획 → 실행)</td>
         </tr>
@@ -357,7 +357,7 @@
         <tr>
           <td><b>MQTT·VDA 5050·Sparkplug B</b> 데이터 연동</td>
           <td>설비·로봇·제어 시스템(WCS) 간 표준 연동</td>
-          <td>이미 쓰는 표준 그대로 — 허브 설비도 같은 계층 구조</td>
+          <td>프로젝트 채택 표준과 동일 — 허브 설비도 같은 계층 구조</td>
         </tr>
         <tr>
           <td><b>AI 검수·리젝트 폐루프</b></td>
@@ -379,12 +379,12 @@
       <div class="tbl-scroll">
       <table>
         <tr><th style="width:24%">이름</th><th style="width:46%">내용</th><th style="width:30%">활용</th></tr>
-        <tr><td><b>ARMBench</b> <span class="soft">(Amazon, 2023)</span></td><td>실제 아마존 물류센터에서 수집한 로봇 조작 데이터셋 — 픽 대상 세그멘테이션, 물체 식별, 파손 검출</td><td>세그멘테이션·파손 검출 벤치마크. 우리 검수 문제와 가장 가까운 공개셋</td></tr>
-        <tr><td><b>GraspNet-1Billion</b></td><td>RGB-D 약 9.7만 장 + 대규모 파지 자세 라벨. 파지 검출의 표준 벤치마크</td><td>파지 모델 학습·평가</td></tr>
-        <tr><td><b>OCID</b></td><td>복잡하게 쌓인(clutter) 실내 물체의 세그멘테이션 데이터셋</td><td>겹침 상황 세그멘테이션 사전 학습</td></tr>
-        <tr><td><b>SKU-110K</b></td><td>매대에 밀집 진열된 상품 검출 데이터셋</td><td>밀집 소형 물체 검출 보조</td></tr>
-        <tr><td><b>Replicator 합성 데이터</b> <span class="c-amber chip" style="font-size:9.5px">보유 스택</span></td><td>Isaac Sim에서 벌크 적재 상자를 무작위 배치·렌더 → 세그멘테이션/자세 라벨 자동 생성</td><td>공개셋에 없는 "국내 택배 상자·벌크 적재" 상황을 직접 생성 — 검수용 합성 파이프라인과 방법론 동일</td></tr>
-        <tr><td><b>운송장 OCR</b></td><td>운송장 특화 공개셋은 없음. AI허브의 <b>OCR 데이터(공공)</b>, <b>다양한 형태의 한글 문자 OCR</b>, <b>금융·물류 문서 OCR</b>(송장·명세서류), 야외 촬영 한글 이미지 데이터로 대체</td><td>한글 OCR 기반 학습 + 합성 운송장 이미지 생성으로 보강</td></tr>
+        <tr><td><b><a href="https://www.amazon.science/code-and-datasets/amazon-robotic-manipulation-benchmark-armbench">ARMBench</a></b> <span class="soft">(Amazon, 2023)</span></td><td>실제 아마존 물류센터에서 수집한 로봇 조작 데이터셋 — 픽 대상 세그멘테이션, 물체 식별, 파손 검출 (<a href="https://arxiv.org/abs/2303.16382">논문</a>)</td><td>세그멘테이션·파손 검출 벤치마크. 물류 검수 문제와 가장 가까운 공개셋</td></tr>
+        <tr><td><b><a href="https://graspnet.net/">GraspNet-1Billion</a></b></td><td>RGB-D 약 9.7만 장 + 대규모 파지 자세 라벨. 파지 검출의 표준 벤치마크</td><td>파지 모델 학습·평가</td></tr>
+        <tr><td><b><a href="https://www.acin.tuwien.ac.at/en/vision-for-robotics/software-tools/object-clutter-indoor-dataset/">OCID</a></b></td><td>복잡하게 쌓인(clutter) 실내 물체의 세그멘테이션 데이터셋</td><td>겹침 상황 세그멘테이션 사전 학습</td></tr>
+        <tr><td><b><a href="https://github.com/eg4000/SKU110K_CVPR19">SKU-110K</a></b></td><td>매대에 밀집 진열된 상품 검출 데이터셋</td><td>밀집 소형 물체 검출 보조</td></tr>
+        <tr><td><b><a href="https://developer.nvidia.com/omniverse/replicator">Replicator</a> 합성 데이터</b></td><td>Isaac Sim에서 벌크 적재 상자를 무작위 배치·렌더 → 세그멘테이션/자세 라벨 자동 생성</td><td>공개셋에 없는 "국내 택배 상자·벌크 적재" 상황을 직접 생성 (합성 결함 데이터 생성과 동일한 방법론)</td></tr>
+        <tr><td><b>운송장 OCR</b></td><td>운송장 특화 공개셋은 없음. AI허브의 <b><a href="https://www.aihub.or.kr/aihubdata/data/view.do?dataSetSn=71299">OCR 데이터(공공)</a></b>, <b><a href="https://www.aihub.or.kr/aihubdata/data/view.do?dataSetSn=91">다양한 형태의 한글 문자 OCR</a></b>, 금융·물류 문서 OCR(송장·명세서류), 야외 촬영 한글 이미지 데이터로 대체</td><td>한글 OCR 기반 학습 + 합성 운송장 이미지 생성으로 보강</td></tr>
       </table>
       </div>
 
@@ -392,12 +392,12 @@
       <div class="tbl-scroll">
       <table>
         <tr><th style="width:24%">이름</th><th style="width:46%">내용</th><th style="width:30%">활용</th></tr>
-        <tr><td><b>SimPy</b> <span class="c-amber chip" style="font-size:9.5px">보유 스택</span></td><td>이산사건 시뮬레이션 프레임워크 — 이미 프로젝트의 물류 오케스트레이터로 채택</td><td>허브 라인 처리량·병목 시뮬레이션에 그대로 적용</td></tr>
-        <tr><td><b>NLIC 생활물류통계</b> <span class="soft">(nlic.go.kr)</span></td><td>국가물류통합정보센터 — 월별 택배 물동량, 1인당 이용 횟수 등 공식 통계</td><td>시뮬레이션의 도착 물량 분포·피크 설정 근거</td></tr>
-        <tr><td><b>공공데이터포털</b></td><td>택배 물동량·생활물류 관련 공공 데이터</td><td>물량 예측 모델 학습 데이터</td></tr>
-        <tr><td><b>BR1–BR15 벤치마크</b></td><td>Bischoff &amp; Ratcliff의 컨테이너 적재(3D bin packing) 표준 문제 세트</td><td>상차 적재 최적화 알고리즘 검증</td></tr>
-        <tr><td><b>Google OR-Tools</b></td><td>구글의 오픈소스 최적화 라이브러리 (bin packing·라우팅 포함)</td><td>적재·배차 최적화 베이스라인</td></tr>
-        <tr><td><b>AnyLogic 물류 예제</b></td><td>상용 시뮬레이션 툴의 공개 물류센터·소터 모델 예제</td><td>DES 모델링 시 구조 참고</td></tr>
+        <tr><td><b><a href="https://simpy.readthedocs.io/">SimPy</a></b></td><td>파이썬 기반 이산사건 시뮬레이션 프레임워크</td><td>허브 라인 처리량·병목 시뮬레이션</td></tr>
+        <tr><td><b><a href="https://www.nlic.go.kr/">NLIC 생활물류통계</a></b></td><td>국가물류통합정보센터 — 월별 택배 물동량, 1인당 이용 횟수 등 공식 통계</td><td>시뮬레이션의 도착 물량 분포·피크 설정 근거</td></tr>
+        <tr><td><b><a href="https://www.data.go.kr/">공공데이터포털</a></b></td><td>택배 물동량·생활물류 관련 공공 데이터</td><td>물량 예측 모델 학습 데이터</td></tr>
+        <tr><td><b><a href="http://people.brunel.ac.uk/~mastjjb/jeb/orlib/thpackinfo.html">BR1–BR15 벤치마크</a></b></td><td>Bischoff &amp; Ratcliff의 컨테이너 적재(3D bin packing) 표준 문제 세트 — OR-Library 수록</td><td>상차 적재 최적화 알고리즘 검증</td></tr>
+        <tr><td><b><a href="https://developers.google.com/optimization">Google OR-Tools</a></b></td><td>구글의 오픈소스 최적화 라이브러리 (bin packing·라우팅 포함)</td><td>적재·배차 최적화 베이스라인</td></tr>
+        <tr><td><b><a href="https://www.anylogic.com/">AnyLogic 물류 예제</a></b></td><td>상용 시뮬레이션 툴의 공개 물류센터·소터 모델 예제</td><td>DES 모델링 시 구조 참고</td></tr>
       </table>
       </div>
 
@@ -405,11 +405,11 @@
       <div class="tbl-scroll">
       <table>
         <tr><th style="width:24%">이름</th><th style="width:46%">내용</th><th style="width:30%">활용</th></tr>
-        <tr><td><b>스마트물류센터 인증 기준</b> <span class="soft">(국토부·cslc.koti.re.kr)</span></td><td>물류 과정별 자동화 수준 평가 항목, 1~5등급 (기능영역 + 기반영역)</td><td>기술 체크리스트이자 발표의 공식 근거</td></tr>
-        <tr><td><b>VDA 5050</b> <span class="c-amber chip" style="font-size:9.5px">보유 스택</span></td><td>AMR 군집 통신 표준 — 이미 프로젝트 채택</td><td>허브 내 AMR·설비 연동에 동일 적용</td></tr>
-        <tr><td><b>소터 벤더 기술자료</b></td><td>Interroll·Vanderlande·BEUMER·Daifuku 등의 크로스벨트 소터·컨베이어 기술백서</td><td>설비 사양·처리량 수치의 근거</td></tr>
-        <tr><td><b>MHI 리포트</b></td><td>Material Handling Institute의 물류 자동화 산업 동향 연례 보고서</td><td>글로벌 기술 동향 파악</td></tr>
-        <tr><td><b>KILA · 물류신문(CLO 등)</b></td><td>한국통합물류협회 통계, 국내 물류 전문지 기사</td><td>국내 허브 운영 실태·사례 파악</td></tr>
+        <tr><td><b><a href="https://cslc.koti.re.kr/">스마트물류센터 인증 기준</a></b> <span class="soft">(국토부)</span></td><td>물류 과정별 자동화 수준 평가 항목, 1~5등급 (기능영역 + 기반영역)</td><td>기술 체크리스트이자 발표의 공식 근거</td></tr>
+        <tr><td><b><a href="https://github.com/VDA5050/VDA5050">VDA 5050</a></b></td><td>AMR 군집 통신 표준 — 공식 JSON 스키마·문서 공개</td><td>허브 내 AMR·설비 연동 표준</td></tr>
+        <tr><td><b>소터 벤더 기술자료</b></td><td><a href="https://www.interroll.com/">Interroll</a> · <a href="https://www.vanderlande.com/">Vanderlande</a> · <a href="https://www.beumer.com/">BEUMER</a> · <a href="https://www.daifuku.com/">Daifuku</a> 등의 크로스벨트 소터·컨베이어 기술백서</td><td>설비 사양·처리량 수치의 근거</td></tr>
+        <tr><td><b><a href="https://www.mhi.org/">MHI 리포트</a></b></td><td>Material Handling Institute의 물류 자동화 산업 동향 연례 보고서</td><td>글로벌 기술 동향 파악</td></tr>
+        <tr><td><b><a href="https://koila.or.kr/">KILA</a> · <a href="https://www.klnews.co.kr/">물류신문</a> 등</b></td><td>한국통합물류협회 통계, 국내 물류 전문지 기사</td><td>국내 허브 운영 실태·사례 파악</td></tr>
       </table>
       </div>
     </div>
@@ -417,9 +417,9 @@
 
   <!-- ══════════ R6 접근 순서 ══════════ -->
   <section id="r6">
-    <div class="sec-head"><span class="sec-no">SEC 06</span><h2>접근 순서 제안 — 기존 자산의 전이 경로</h2></div>
+    <div class="sec-head"><span class="sec-no">SEC 06</span><h2>접근 순서 제안 — 3단계</h2></div>
     <div class="sec-body">
-      <p class="lead">세 단계 모두 <b>이미 보유한 스택(SimPy·Replicator·Isaac)을 재사용</b>하므로, 새로 배우는 비용이 가장 적은 경로다.</p>
+      <p class="lead">세 단계 모두 <b>같은 도구 체인(SimPy · Isaac Sim · Replicator)</b>으로 진행할 수 있어 도입 비용이 적다.</p>
       <div class="patterns">
         <div class="pat">
           <h4>허브 라인 DES 모델링 <small>SimPy · 병목 정량화</small></h4>
@@ -427,7 +427,7 @@
         </div>
         <div class="pat">
           <h4>벌크 상자 합성 데이터 생성 <small>Replicator · 데이터 확보</small></h4>
-          <p>Isaac Sim에서 다양한 크기·재질의 상자를 벌크로 무작위 적재한 씬을 만들고, Replicator로 세그멘테이션·6D 자세 라벨을 자동 생성한다. 검수용 합성 결함 파이프라인과 같은 방법론이라 코드 재사용률이 높다. 산출물: 라벨 포함 합성 데이터셋.</p>
+          <p>Isaac Sim에서 다양한 크기·재질의 상자를 벌크로 무작위 적재한 씬을 만들고, Replicator로 세그멘테이션·6D 자세 라벨을 자동 생성한다. 합성 결함 데이터 생성과 같은 방법론이라 코드 재사용률이 높다. 산출물: 라벨 포함 합성 데이터셋.</p>
         </div>
         <div class="pat">
           <h4>인식·파지 모델 학습 <small>세그멘테이션 · 6D 자세 · 파지</small></h4>
@@ -435,7 +435,7 @@
         </div>
       </div>
       <ul class="rules">
-        <li><b>포트폴리오 관점</b> — "스마트팩토리/물류센터 시뮬레이션 자산을 실제 산업 미해결 문제(벌크 하차)로 확장했다"는 서사가 된다. 6D 자세 추정 경험과 직접 연결되는 것도 이 경로다</li>
+        <li><b>확장 관점</b> — 물류센터 시뮬레이션에서 만든 파이프라인을 산업의 미해결 문제(벌크 하차)로 넓히는 경로다</li>
         <li><b>프로젝트 범위와의 관계</b> — 이 조사는 본 프로젝트(DOC 01~03) 범위를 바꾸지 않는다. 심화 방향과 발표의 산업적 근거를 보강하는 자료다</li>
         <li><b>주의</b> — 벌크 하차의 실물 검증은 7주 범위 밖이다. 시뮬레이션 안에서 인식 → 파지 계획까지가 현실적인 상한선</li>
       </ul>
