@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMR 경로계획 이론 기반 — MAPF (Theory Base)</title>
+<style>
+  :root{
+    --bg:#E9ECEE;
+    --panel:#FFFFFF;
+    --panel-edge:#D4D9DD;
+    --ink:#1B2430;
+    --ink-soft:#5A6673;
+    --amber:#E8720C;
+    --machine:#1F7A4D;
+    --steel:#33506B;
+    --slate:#8A96A3;
+    --grid:#DDE2E6;
+    --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important;animation:none!important}}
+  body{
+    background:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:32px 32px;
+    color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:15px;
+  }
+  a{color:var(--steel)}
+  a.term{color:inherit;text-decoration:underline;text-decoration-style:dotted;text-decoration-color:var(--steel);text-underline-offset:3px}
+  a.term:hover{color:var(--steel);text-decoration-style:solid}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+  header{border-bottom:3px solid var(--ink);background:var(--panel)}
+  .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
+  .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
+  .doc-eyebrow b{color:var(--machine);font-weight:600}
+  h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
+  h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
+  .meta b{color:var(--ink);font-weight:600}
+
+  nav{position:sticky;top:0;z-index:50;background:var(--ink);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav .wrap{display:flex;gap:2px;padding:0 20px}
+  nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
+  nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--machine);outline:none}
+  nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
+  nav a.nav-cross{margin-left:auto;color:var(--amber);font-weight:700}
+
+  main{padding:44px 0 80px}
+  section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
+  .sec-no{font-family:var(--mono);font-size:12px;color:var(--machine);font-weight:700;letter-spacing:.1em}
+  h2{font-size:20px;font-weight:800;letter-spacing:-.01em}
+  .sec-body{padding:16px 26px 26px}
+  h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+  h3::before{content:"";width:8px;height:8px;background:var(--machine);flex:none}
+  p{margin-bottom:10px}
+  .lead{font-size:15.5px}
+  .soft{color:var(--ink-soft)}
+
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:13.5px;line-height:1.8}
+  .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
+
+  pre{font-family:var(--mono);font-size:12px;line-height:1.7;background:#F5F7F8;border:1px solid var(--panel-edge);border-left:4px solid var(--steel);padding:12px 16px;overflow-x:auto;margin:12px 0}
+  code{font-family:var(--mono);font-size:.92em;background:#F0F3F5;padding:1px 5px;border:1px solid var(--grid)}
+  pre code{background:none;border:none;padding:0}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
+  td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .tbl-scroll{overflow-x:auto}
+
+  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px}
+  .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)}
+
+  ul.rules{list-style:none;margin:10px 0}
+  ul.rules li{padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--grid);font-size:13.5px}
+  ul.rules li:last-child{border-bottom:none}
+  ul.rules li::before{content:"▸";position:absolute;left:6px;color:var(--machine);font-weight:700}
+
+  .milestones{display:grid;gap:0;margin:14px 0;border-left:3px solid var(--ink)}
+  .ms{position:relative;padding:12px 18px 12px 28px;border-bottom:1px dashed var(--grid)}
+  .ms:last-child{border-bottom:none}
+  .ms::before{content:"";position:absolute;left:-8px;top:18px;width:13px;height:13px;background:var(--panel);border:3px solid var(--machine)}
+  .ms .ms-tag{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--machine);letter-spacing:.08em}
+  .ms h4{font-size:14px;font-weight:700;margin:2px 0 2px}
+  .ms p{font-size:12.5px;color:var(--ink-soft);margin:0}
+
+  footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+
+  @media (max-width:820px){
+    .titleblock{grid-template-columns:1fr}
+    .meta{border-left:none;padding-left:0;text-align:left}
+    body{font-size:14px}
+    .sec-head,.sec-body{padding-left:16px;padding-right:16px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap titleblock">
+    <div>
+      <div class="doc-eyebrow">DOC 06 · THEORY-BASE · <b>REV A</b> · 2026-08</div>
+      <h1>AMR 경로계획 이론 기반 — MAPF
+        <span class="sub">"대수–처리량 곡선이 왜 꺾이는가"를 설명하는 이론 체계와 핵심 문헌</span>
+      </h1>
+    </div>
+    <div class="meta">
+      SCOPE · <b>AMR 견적 시뮬레이션의 이론층</b><br>
+      FORMAT · <b>이론 → 문헌 → 학습 로드맵</b><br>
+      PAIR · <b>DOC 07 구현 결정 인벤토리</b><br>
+      USE · <b>설계 근거 · 면접 대비</b>
+    </div>
+  </div>
+</header>
+
+<nav aria-label="문서 내 탐색">
+  <div class="wrap">
+    <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a href="#t1">01 왜 경로계획인가</a>
+    <a href="#t2">02 MAPF 스펙트럼</a>
+    <a href="#t3">03 TAPF·데드락</a>
+    <a href="#t4">04 집계 이론</a>
+    <a href="#t5">05 핵심 문헌</a>
+    <a href="#t6">06 학습 로드맵</a>
+    <a class="nav-cross" href="amr_decision_inventory.html">결정 인벤토리 ↗</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ══════════ T1 ══════════ -->
+<section id="t1">
+  <div class="sec-head"><span class="sec-no">SEC 01</span><h2>왜 경로계획이 견적의 핵심인가</h2></div>
+  <div class="sec-body">
+    <p class="lead">AMR 견적 시뮬레이션의 헤드라인은 대수–처리량 곡선입니다. 그 곡선의 한계효용 체감은
+    <b>경로 경합(congestion)</b> — 통로 정체, 교차로 대기, 데드락 — 때문에 발생합니다.</p>
+    <ul class="rules">
+      <li>경합을 모델링하지 못하면 견적이 <b>낙관 편향</b> → "투명한 견적" 주장과 정면 충돌</li>
+      <li>즉 경로계획 이론은 장식이 아니라 <b>곡선의 모양을 결정하는 물리학</b></li>
+    </ul>
+
+    <h3>용어 3계층 — 혼용 금지</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th>계층</th><th>문제</th><th>프로젝트에서의 위치</th></tr>
+      <tr><td>1. Task Allocation</td><td>어느 로봇이 어느 작업을</td><td>디스패처 파트 (규칙/휴리스틱/RL)</td></tr>
+      <tr><td>2. Path Planning / <b>MAPF</b></td><td>충돌 없는 경로 집합</td><td><b>본 문서의 본체</b>, 견적 엔진</td></tr>
+      <tr><td>3. Motion Planning / Control</td><td>속도·가감속 프로파일 추종</td><td><a class="term" href="glossary_robotics.html#nav2">Nav2</a> 담당, 에뮬레이션 검증 계층</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- ══════════ T2 ══════════ -->
+<section id="t2">
+  <div class="sec-head"><span class="sec-no">SEC 02</span><h2>핵심 기반이론 — MAPF</h2></div>
+  <div class="sec-body">
+    <p class="lead"><b>MAPF(Multi-Agent Path Finding)</b>: 그리드/그래프 위에서 N개 에이전트의 무충돌 경로 집합을 찾되,
+    sum-of-costs 또는 makespan을 최소화하는 문제. 창고 AMR이 대표 응용이며 Amazon 물류로봇 연구가 분야를 견인했습니다.</p>
+
+    <h3>알고리즘 스펙트럼 — 학습 순서대로</h3>
+    <div class="milestones">
+      <div class="ms"><span class="ms-tag">STEP 1 · A*</span><h4>단일 에이전트 최단경로</h4>
+      <p>모든 것의 출발점.</p></div>
+      <div class="ms"><span class="ms-tag">STEP 2 · 시공간 예약 테이블</span><h4>Space-Time Reservation</h4>
+      <p>시간축 포함 3차원 그리드에 경로를 "예약". 모든 방법의 기저 프리미티브. 원류는 Silver의 Cooperative A*/WHCA* (2005).</p></div>
+      <div class="ms"><span class="ms-tag">STEP 3 · Prioritized Planning</span><h4>우선순위 순차 계획 <span class="chip c-amber">v1 구현 타겟</span></h4>
+      <p>로봇에 우선순위를 매기고 앞 로봇 경로를 시공간 장애물로 취급해 순차 계획. 최적성 없음, 빠름, 실무 최다 사용.</p></div>
+      <div class="ms"><span class="ms-tag">STEP 4 · CBS</span><h4>Conflict-Based Search — 최적 알고리즘의 대표</h4>
+      <p>충돌 발생 시 제약을 추가해 Conflict Tree를 분기하는 2단 구조. 로봇 수 증가 시 폭발.</p></div>
+      <div class="ms"><span class="ms-tag">STEP 5 · ECBS / EECBS</span><h4>유계 준최적(bounded-suboptimal) 변형</h4>
+      <p>최적성과 속도 사이의 실용선.</p></div>
+      <div class="ms"><span class="ms-tag">STEP 6 · Lifelong MAPF</span><h4>일회성 가정을 깬 연속 운영 문제</h4>
+      <p>도착 즉시 새 작업이 재발급되는 조건 — 창고의 실제 운영 조건.</p></div>
+      <div class="ms"><span class="ms-tag">STEP 7 · RHCR</span><h4>Rolling-Horizon Collision Resolution <span class="chip c-green">직접 기반 문헌</span></h4>
+      <p>lifelong 문제를 "앞 W스텝만 충돌 해소 + 주기적 재계획"으로 분해. 대규모 창고 플릿의 사실상 표준 프레임.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ T3 ══════════ -->
+<section id="t3">
+  <div class="sec-head"><span class="sec-no">SEC 03</span><h2>결합 문제와 데드락 이론</h2></div>
+  <div class="sec-body">
+    <h3>TAPF — 할당·경로의 결합 최적화</h3>
+    <p>할당(1층)과 경로(2층)를 분리해서 풀면 준최적 — "가장 가까운 로봇"이 경합 구간을 지나야 한다면 실제로는 먼 로봇이 빠를 수 있습니다.
+    이 결합 최적화가 <b>TAPF</b>(Combined Target Assignment and Path Finding)로 정립되어 있습니다.</p>
+    <div class="plain"><span class="pl-tag">v1 절충 설계</span>
+    분리해서 풀되, <b>경합 페널티를 포함한 경로 비용을 할당 비용행렬에 피드백</b>한다.
+    RL 디스패처 상태에 경합 정보를 포함시키는 것도 같은 맥락.</div>
+
+    <h3>데드락 이론 — AGV 고전 문헌</h3>
+    <p>MAPF가 충돌(collision)을 다룬다면, 좁은 통로·단방향 구간의 <b>교착(deadlock)</b>은 별도 이론입니다.
+    1990년대 AGV 시스템 문헌 + OS 자원 할당 이론이 원류.</p>
+    <ul class="rules">
+      <li><b>Zone Control</b> — 구역당 1대만 허용 (반도체 팹 OHT 방식). 단순·보수적</li>
+      <li><b>Banker's Algorithm 계열</b> — 구역 요청 시 안전 상태 검사 후 승인</li>
+      <li>프레임: <b>예방(prevention) / 회피(avoidance) / 탐지·복구(detection &amp; recovery)</b> 3분류</li>
+      <li>시뮬레이션 지표 "데드락 발생 횟수"의 이론적 근거</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════ T4 ══════════ -->
+<section id="t4">
+  <div class="sec-head"><span class="sec-no">SEC 04</span><h2>SimPy 계층의 집계 이론 — 대기행렬 &amp; 흐름</h2></div>
+  <div class="sec-body">
+    <p class="lead"><b>결정 사항</b>: 360회 스윕에서 매 틱 CBS는 불가 → SimPy 계층은 두 선택지 중 (a)를 채택하되 (b)의 언어로 결과를 해석합니다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th>선택지</th><th>내용</th><th>판단</th></tr>
+      <tr><td>(a) 경량 MAPF</td><td>Prioritized Planning + 예약 테이블 — DES 내에서 충분히 빠르고 경합이 창발</td><td><b>기본 채택</b></td></tr>
+      <tr><td>(b) 흐름 근사</td><td>통로를 용량 있는 SimPy <code>Resource</code>로, 정체를 대기행렬로 근사</td><td>해석의 언어로 활용</td></tr>
+    </table></div>
+    <ul class="rules">
+      <li><b>대기행렬 이론</b> — M/M/c, Jackson network</li>
+      <li><b>Little's Law</b> (L = λW) — 시뮬레이션 산출 리드타임의 검산 도구 → VDI 3633 verification 활동에 연결</li>
+      <li><b>교통류의 fundamental diagram</b> (흐름–밀도 관계) — "밀도가 임계치를 넘으면 처리량이 오히려 감소" = 대수–처리량 포화의 이론적 설명</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════ T5 ══════════ -->
+<section id="t5">
+  <div class="sec-head"><span class="sec-no">SEC 05</span><h2>핵심 문헌 리스트</h2></div>
+  <div class="sec-body">
+    <h3>필독 — 프로젝트 직결</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th>#</th><th>논문</th><th>왜 읽나</th><th>링크</th></tr>
+      <tr><td>①</td><td>Sharon, Stern, Felner, Sturtevant. <b>"Conflict-Based Search for Optimal Multi-Agent Pathfinding."</b> <i>Artificial Intelligence</i> 219, pp. 40–66, 2015. DOI: 10.1016/j.artint.2014.11.006</td><td>CBS — 이 분야의 관문 논문</td><td><a href="https://digitalcommons.du.edu/computer_science_faculty/7/">원문(무료)</a> · <a href="https://ojs.aaai.org/index.php/AAAI/article/view/8140">AAAI 초기판</a></td></tr>
+      <tr><td>②</td><td>Li, Tinka, Kiesel, Durham, Kumar, Koenig. <b>"Lifelong Multi-Agent Path Finding in Large-Scale Warehouses."</b> AAAI 2021, pp. 11272–11281. 1,000대 규모 창고 시뮬레이션에서 검증 — 스윕 규모 상한의 참고점</td><td>RHCR / Lifelong MAPF — <b>본 프로젝트의 직접 기반</b></td><td><a href="https://arxiv.org/abs/2005.07371">arXiv</a> · <a href="https://ojs.aaai.org/index.php/AAAI/article/view/17344">AAAI</a></td></tr>
+      <tr><td>③</td><td>Stern et al. <b>"Multi-Agent Pathfinding: Definitions, Variants, and Benchmarks."</b> SoCS 2019, pp. 151–158. 자체 구현을 공개 벤치마크로 검증 → 또 하나의 V&amp;V 스토리</td><td>용어와 벤치마크의 표준</td><td><a href="https://arxiv.org/abs/1906.08291">arXiv</a> · <a href="https://ojs.aaai.org/index.php/SOCS/article/view/18510">공식</a></td></tr>
+    </table></div>
+
+    <h3>확장 — 면접 깊이용</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th>#</th><th>논문</th><th>왜 읽나</th><th>링크</th></tr>
+      <tr><td>④</td><td>Ma, Koenig. <b>"Optimal Target Assignment and Path Finding for Teams of Agents."</b> AAMAS 2016. CBM: 하위층 min-cost max-flow 할당 + 상위층 CBS 충돌 해소</td><td>TAPF — 할당·경로 결합 최적화</td><td><a href="https://arxiv.org/abs/1612.05693">arXiv</a></td></tr>
+      <tr><td>⑤</td><td>Li, Ruml, Koenig. <b>"EECBS: A Bounded-Suboptimal Search for Multi-Agent Path Finding."</b> AAAI 2021</td><td>유계 준최적 실용선</td><td><a href="https://arxiv.org/abs/2010.01367">arXiv</a></td></tr>
+      <tr><td>⑥</td><td>Ma, Li, Kumar, Koenig. <b>"Lifelong Multi-Agent Path Finding for Online Pickup and Delivery Tasks."</b> AAMAS 2017</td><td>창고 작업 모델의 원형</td><td><a href="https://arxiv.org/abs/1705.10868">arXiv</a></td></tr>
+    </table></div>
+
+    <h3>링크 미확정 — 제목·키워드로 검색</h3>
+    <ul class="rules">
+      <li><b>Silver (2005)</b> "Cooperative Pathfinding." AIIDE 2005 — WHCA*, 시공간 예약의 원류. 검색: <code>Silver cooperative pathfinding WHCA</code></li>
+      <li><b>ECBS</b> — Barer, Sharon, Stern, Felner. "Suboptimal Variants of the Conflict-Based Search Algorithm…" SoCS 2014</li>
+      <li><b>PRIMAL2</b> — 학습 기반 lifelong MAPF (분산 RL 정책). RL 디스패처 확장 시 참고. 검색: <code>PRIMAL2 lifelong MAPF</code></li>
+      <li><b>AGV 데드락</b> — 검색 키워드 <code>AGV deadlock avoidance zone control</code>, <code>Reveliotis AGV deadlock</code></li>
+      <li>커뮤니티 허브: <a href="https://mapf.info"><b>mapf.info</b></a> — 논문·벤치마크·코드 집대성</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════ T6 ══════════ -->
+<section id="t6">
+  <div class="sec-head"><span class="sec-no">SEC 06</span><h2>학습 로드맵 — 이론 → 구현 직결 순</h2></div>
+  <div class="sec-body">
+    <div class="tbl-scroll"><table>
+      <tr><th>순서</th><th>항목</th><th>소요</th><th>산출물</th></tr>
+      <tr><td>1</td><td>A* + 시공간 예약 테이블</td><td>주말 1회</td><td>단일/2대 데모 구현</td></tr>
+      <tr><td>2</td><td>Prioritized Planning</td><td>1주</td><td><b>v1 SimPy 내장 플래너</b></td></tr>
+      <tr><td>3</td><td>CBS 논문(①) 정독</td><td>1주</td><td>이론 베이스, 면접 대비</td></tr>
+      <tr><td>4</td><td>RHCR(②) + 벤치마크(③)</td><td>1~2주</td><td>windowed 재계획 구조 반영</td></tr>
+      <tr><td>5</td><td>Little's Law + M/M/c</td><td>반나절</td><td>결과 검산·해석 언어</td></tr>
+      <tr><td>6</td><td>(선택) TAPF(④), 데드락 이론</td><td>여유 시</td><td>면접 심화</td></tr>
+    </table></div>
+
+    <div class="plain"><span class="pl-tag">프로젝트 서사와의 연결</span>
+    현상 수준 — "AMR을 늘렸더니 처리량이 포화됐다"<br>
+    이론 수준 — <b>"이것은 MAPF 문헌에서 정립된 경합 구조이며, 우리 모델의 포화 거동은 lifelong MAPF 연구(RHCR) 및 교통류 이론과 정합한다"</b><br>
+    검증 수준 — 공개 MAPF 벤치마크 + Little's Law 검산 + <a class="term" href="glossary_robotics.html#isaac">Isaac Sim</a> 교차검증 = VDI 3633 V&amp;V 체계의 구체적 실행</div>
+
+    <p class="soft">다음 설계 과제: SimPy 이산사건 세계에서 Prioritized Planning + 예약 테이블을 어떻게 구현할지 — 연속 시간 vs 틱 기반의 절충 설계
+    (→ <a href="amr_decision_inventory.html">DOC 07 결정 인벤토리</a> B1·D 계열에서 결정).</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">DOC 06 · THEORY-BASE — 원본: AMR_경로계획_기반이론_정리.md (2026-08-19) · 짝 문서: <a href="amr_decision_inventory.html">DOC 07 구현 결정 인벤토리</a></div>
+</footer>
+
+</body>
+</html>

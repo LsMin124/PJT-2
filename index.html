@@ -71,6 +71,8 @@
   a.doc.d-pitch{--accent:var(--machine)}
   a.doc.d-lab{--accent:var(--slate)}
   a.doc.d-research{--accent:var(--steel)}
+  a.doc.d-theory{--accent:var(--machine)}
+  a.doc.d-decision{--accent:var(--amber)}
   a.doc:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(27,36,48,.14);border-color:var(--accent)}
   a.doc:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
   .doc-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px;flex-wrap:wrap}
@@ -144,7 +146,7 @@
   </a>
   <div class="tagline"><small>READING ORDER</small>읽는 순서: <b>00 안내</b> → <b>01 전체 조망</b> → <b>02 실행 계획서</b>. 파트 간 계약과 일정의 기준은 항상 01. 모르는 용어는 <b>REF A–C 용어사전</b> 참고.</div>
 
-  <div class="register-label">Documents · 5 Active</div>
+  <div class="register-label">Documents · 7 Active</div>
   <div class="docs">
 
     <a class="doc d-team" href="smart_factory_overview.html">
@@ -215,22 +217,23 @@
 
     <a class="doc d-lab" href="ros2_arm_lab.html">
       <div class="doc-top">
-        <span class="doc-no">DOC 04 · LAB-NOTE · REV A</span>
+        <span class="doc-no">DOC 04 · LAB-NOTE · REV B</span>
         <span class="aud">FOR 학습·복기</span>
       </div>
       <h2>ROS2 랩 노트<span class="en">LAB NOTE</span></h2>
-      <p>로봇팔 101→201 실습 복기. colcon 빌드부터 URDF·TF, Foxglove 원격 시각화, ros2_control×MoveIt2 제어까지 — 개념·실습·점검 문항과 장애 복기 7건을 담은 학습 문서.</p>
+      <p>로봇팔 101→202 실습 복기. colcon 빌드부터 URDF·TF, Foxglove 원격 시각화, MoveIt2 제어, 인터랙티브 IK(클릭·타이핑·조그)까지 — 개념·실습·점검 문항과 장애 복기 10건을 담은 학습 문서.</p>
       <div class="toc">
         <span><b>01</b>전체 지도</span>
         <span><b>02</b>빌드</span>
         <span><b>03</b>URDF·TF</span>
         <span><b>04</b>원격 시각화</span>
         <span><b>05</b>제어</span>
-        <span><b>06</b>장애 복기</span>
-        <span><b>07</b>재현 과제</span>
+        <span><b>06</b>인터랙티브 IK</span>
+        <span><b>07</b>장애 복기</span>
+        <span><b>08</b>재현 과제</span>
       </div>
       <div class="doc-foot">
-        <span class="chips"><span class="chip">ARM 101→201</span><span class="chip">MOVEIT2</span><span class="chip">HANDS-ON</span></span>
+        <span class="chips"><span class="chip">ARM 101→202</span><span class="chip">MOVEIT2</span><span class="chip">IK·SERVO</span></span>
         <span class="open">열람</span>
       </div>
     </a>
@@ -252,6 +255,48 @@
       </div>
       <div class="doc-foot">
         <span class="chips"><span class="chip">HUB &amp; SPOKE</span><span class="chip">DATASETS</span><span class="chip">SOURCED</span></span>
+        <span class="open">열람</span>
+      </div>
+    </a>
+
+    <a class="doc d-theory" href="amr_mapf_theory.html">
+      <div class="doc-top">
+        <span class="doc-no">DOC 06 · THEORY-BASE · REV A</span>
+        <span class="aud">FOR 이론·면접</span>
+      </div>
+      <h2>AMR 경로계획 이론 기반<span class="en">MAPF THEORY</span></h2>
+      <p>AMR 견적 시뮬레이션의 이론층. 대수–처리량 곡선이 꺾이는 이유(경로 경합)를 MAPF·TAPF·데드락·대기행렬 이론으로 설명하고, 핵심 문헌 6편과 학습 로드맵을 정리.</p>
+      <div class="toc">
+        <span><b>01</b>왜 경로계획인가</span>
+        <span><b>02</b>MAPF 스펙트럼</span>
+        <span><b>03</b>TAPF·데드락</span>
+        <span><b>04</b>집계 이론</span>
+        <span><b>05</b>핵심 문헌</span>
+        <span><b>06</b>학습 로드맵</span>
+      </div>
+      <div class="doc-foot">
+        <span class="chips"><span class="chip">MAPF</span><span class="chip">RHCR</span><span class="chip">LITTLE'S LAW</span></span>
+        <span class="open">열람</span>
+      </div>
+    </a>
+
+    <a class="doc d-decision" href="amr_decision_inventory.html">
+      <div class="doc-top">
+        <span class="doc-no">DOC 07 · DECISION-INVENTORY · REV A</span>
+        <span class="aud">FOR 팀 합의</span>
+      </div>
+      <h2>구현 결정 인벤토리<span class="en">DECISIONS</span></h2>
+      <p>구현 전 결정해야 할 사항의 전수 목록. 데이터 스키마·SimPy 엔진·디스패처 AI·MAPF·인프라·Isaac 에뮬레이션·프론트·실험 설계까지 60여 개 항목과 권고안, 크리티컬 패스 6건.</p>
+      <div class="toc">
+        <span><b>00</b>크리티컬 패스</span>
+        <span><b>A</b>데이터 모델</span>
+        <span><b>B</b>DES 엔진</span>
+        <span><b>C</b>디스패처·AI</span>
+        <span><b>D–E</b>경로·인프라</span>
+        <span><b>F–J</b>에뮬레이션·검증</span>
+      </div>
+      <div class="doc-foot">
+        <span class="chips"><span class="chip">60+ DECISIONS</span><span class="chip">VDA 5050</span><span class="chip">CRITICAL PATH</span></span>
         <span class="open">열람</span>
       </div>
     </a>
