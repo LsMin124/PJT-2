@@ -345,7 +345,7 @@ if (typeof document !== 'undefined') (function () {
     if (!f) return;
     gridEl.style.backgroundImage = 'url(' + URL.createObjectURL(f) + ')';
     gridEl.classList.add('overlay');
-    $('bgnote').textContent = '도면 오버레이 적용됨 — 랙 도구로 위에 따라 그리세요. (실서비스 T2: 2점 축척 보정 + 트레이싱)';
+    $('bgnote').textContent = '도면 오버레이 적용 — 랙 도구로 트레이싱하세요. 실서비스 T2 인테이크는 2점 축척 보정을 지원합니다.';
   });
 
   // ── 물류 정보 ──
@@ -359,8 +359,8 @@ if (typeof document !== 'undefined') (function () {
   function demandSummary() {
     const p = readParams();
     if (!(p.ordersPerHour > 0)) { $('dsum').textContent = ''; return; }
-    $('dsum').innerHTML = '스윕에 들어갈 피크 수요: <b>' + fmt(Math.round(p.ordersPerHour * p.peakFactor)) +
-      '건/시</b> · 목표: <b>' + fmt(p.target) + '건/시</b> — 로봇 3~15대 범위에서 답을 찾습니다';
+    $('dsum').innerHTML = '피크 수요 <b>' + fmt(Math.round(p.ordersPerHour * p.peakFactor)) +
+      '건/시</b> · 목표 <b>' + fmt(p.target) + '건/시</b> — FLEET 3–15 범위를 스윕합니다';
   }
   ['f-oph', 'f-peak', 'f-target'].forEach(id => $(id).addEventListener('input', demandSummary));
   function histSvg(buckets) {
@@ -390,7 +390,7 @@ if (typeof document !== 'undefined') (function () {
   const matEl = $('matrix');
   $('run').addEventListener('click', () => {
     const params = readParams();
-    if (!(params.ordersPerHour > 0) || !(params.speed > 0)) { $('runnote').textContent = '⚠ 물류 정보를 먼저 입력하세요'; return; }
+    if (!(params.ordersPerHour > 0) || !(params.speed > 0)) { $('runnote').textContent = '수요 파라미터를 먼저 입력해 주세요.'; return; }
     stopReplay();
     matEl.innerHTML = '';
     const boxes = [];
@@ -475,6 +475,7 @@ if (typeof document !== 'undefined') (function () {
 
   // ── 대표 런 리플레이 ──
   function stopReplay() { if (replay) { cancelAnimationFrame(replay.raf); replay = null; } }
+  const SPEED_TPS = { 1: 8, 4: 24, 12: 55 };               // 배속 → 초당 틱 (틱당 1회 드로잉 유지)
   function startReplay(params, n) {
     stopReplay();
     const board = $('replay'), iso = $('iso');
@@ -487,52 +488,80 @@ if (typeof document !== 'undefined') (function () {
     }
     const sim = createSim(cells, params, n, SEEDS[0]);
     if (!sim) return;
-    for (let i = 0; i < 120; i++) sim.tick();              // 살짝 워밍업 후 시작
+    for (let i = 0; i < 120; i++) sim.tick();              // 워밍업 일부 진행 후 시작
     const mk = host => sim.robots.map(() => {
       const b = document.createElement('div');
       b.className = 'bot';
+      b.innerHTML = '<i></i><b class="tote"></b>';
       host.appendChild(b);
       return b;
     });
     const bots = mk(board), isoBots = mk(iso);
+    const lastPos = sim.robots.map(rb => rb.pos);
+    const heading = sim.robots.map(() => 0);
     const clock = $('rp-clock'), stat = $('rp-stat'), hudOrd = $('hud-ord'), hudRtf = $('hud-rtf');
-    replay = { raf: 0, speed: +($('rp-speed').dataset.v || 4), paused: false };
-    function place(el, rb, cw, ch, z) {
+    const v0 = +($('rp-speed').dataset.v || 4);
+    replay = { raf: 0, tps: SPEED_TPS[v0], paused: false, acc: 0, last: performance.now(), boards: [board, iso] };
+    setTickVar();
+    function place(el, rb, i, cw, ch, z) {
       const x = rb.pos % W, y = (rb.pos / W) | 0;
-      el.style.transform = 'translate(' + (x * cw + cw * 0.15) + 'px,' + (y * ch + ch * 0.15) + 'px)' + (z ? ' translateZ(' + z + 'px)' : '');
-      el.style.width = (cw * 0.7) + 'px'; el.style.height = (ch * 0.7) + 'px';
-      el.className = 'bot' + (rb.job ? (rb.state === 'pick' || rb.state === 'drop' ? ' work' : ' carry') : ' free');
+      el.style.transform = 'translate(' + (x * cw + cw * 0.14) + 'px,' + (y * ch + ch * 0.14) + 'px) rotate(' + heading[i] + 'deg)' + (z ? ' translateZ(' + z + 'px)' : '');
+      el.style.width = (cw * 0.72) + 'px'; el.style.height = (ch * 0.72) + 'px';
+      const cls = 'bot' + (rb.job ? (rb.state === 'pick' || rb.state === 'drop' ? ' work' : ' carry') : ' free');
+      if (el.className !== cls) el.className = cls;
     }
     function draw() {
       const cw = board.clientWidth / W, ch = board.clientHeight / H;
       const iw = iso.clientWidth / W, ih = iso.clientHeight / H;
-      sim.robots.forEach((rb, i) => { place(bots[i], rb, cw, ch, 0); place(isoBots[i], rb, iw, ih, 8); });
+      sim.robots.forEach((rb, i) => {
+        if (rb.pos !== lastPos[i]) {                       // 주행 방향으로 차체 회전
+          const d = rb.pos - lastPos[i];
+          heading[i] = d === 1 ? 0 : d === -1 ? 180 : d === W ? 90 : 270;
+          lastPos[i] = rb.pos;
+        }
+        place(bots[i], rb, i, cw, ch, 0);
+        place(isoBots[i], rb, i, iw, ih, 8);
+      });
       const secs = Math.round(sim.S.t * sim.tickSec);
       clock.textContent = 'T+' + String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0');
-      stat.textContent = n + '대 · 완료 ' + sim.S.completed + '건 · 대기 주문 ' + sim.jobsWaiting.length + '건';
+      stat.textContent = 'FLEET ' + n + ' · 완료 ' + sim.S.completed + '건 · 대기 ' + sim.jobsWaiting.length + '건';
       hudOrd.textContent = '#' + (1000 + sim.S.completed);
       hudRtf.textContent = (0.96 + 0.03 * Math.sin(sim.S.t / 60)).toFixed(2);
     }
-    function frame() {
+    function frame(now) {
       if (!replay) return;
       if (!replay.paused) {
-        let alive = true;
-        for (let k = 0; k < replay.speed && alive; k++) alive = sim.tick();
-        draw();
-        if (!alive) { stat.textContent += ' · 리플레이 종료'; replay = null; return; }
-      }
+        replay.acc += (now - replay.last) * replay.tps / 1000;
+        replay.last = now;
+        // 프레임당 정확히 1틱 — 그려지는 이동이 항상 인접 셀이 되도록 (랙 관통·모서리 절단 보간 방지)
+        let alive = true, stepped = false;
+        if (replay.acc >= 1) { alive = sim.tick(); replay.acc -= 1; stepped = true; }
+        if (replay.acc > 1.5) replay.acc = 1.5;
+        if (stepped) draw();
+        if (!alive) { stat.textContent += ' · END OF RUN'; replay = null; return; }
+      } else { replay.last = now; }
       replay.raf = requestAnimationFrame(frame);
     }
     draw();
     replay.raf = requestAnimationFrame(frame);
   }
-  $('rp-pause').addEventListener('click', () => { if (replay) { replay.paused = !replay.paused; $('rp-pause').textContent = replay.paused ? '▶ 재생' : '⏸ 일시정지'; } });
+  function setTickVar() {
+    if (!replay) return;
+    const ms = Math.max(60, Math.round(1000 / replay.tps));
+    replay.boards.forEach(b => b.style.setProperty('--tick', ms + 'ms'));
+  }
+  $('rp-pause').addEventListener('click', () => {
+    if (!replay) return;
+    replay.paused = !replay.paused;
+    if (!replay.paused) replay.last = performance.now();
+    $('rp-pause').textContent = replay.paused ? '▶ RESUME' : '⏸ PAUSE';
+  });
   $('rp-speed').addEventListener('click', () => {
     const seq = { '4': '12', '12': '1', '1': '4' };
     const v = seq[$('rp-speed').dataset.v || '4'];
     $('rp-speed').dataset.v = v;
-    $('rp-speed').textContent = '배속 ×' + { '1': '1', '4': '4', '12': '12' }[v];
-    if (replay) replay.speed = +v;
+    $('rp-speed').textContent = 'SPEED ×' + v;
+    if (replay) { replay.tps = SPEED_TPS[+v]; setTickVar(); }
   });
 
   // ── 견적서 렌더 ──
@@ -587,7 +616,7 @@ if (typeof document !== 'undefined') (function () {
       '이 견적의 모든 수치는 방금 이 브라우저에서 계산되었으며, 근거는 사용자의 입력뿐입니다 — 선택은 고객이, 근거는 시스템이.',
     ].map(x => '<li>' + x + '</li>').join('');
     startReplay(params, pickN);
-    $('rp-title').textContent = '대표 런 리플레이 — ' + pickN + '대 구성이 실제로 움직이는 모습';
+    $('rp-title').textContent = 'REPRESENTATIVE RUN — ' + pickN + '대 구성';
   }
   $('print').addEventListener('click', () => window.print());
 
