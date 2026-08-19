@@ -134,13 +134,18 @@ section.step>p.desc{font-size:13.5px;line-height:1.7;max-width:560px;margin:0 0 
 .iso-outer::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.022) 0 1px,transparent 1px 3px),radial-gradient(circle at 50% 42%,transparent 55%,rgba(0,0,0,.5))}
 .iso-stage{perspective:1200px;width:100%;height:100%;display:grid;place-items:center;padding:34px 0}
 #iso{width:84%;aspect-ratio:24/14;transform:rotateX(55deg) rotateZ(-32deg);transform-style:preserve-3d;display:grid;grid-template-columns:repeat(24,1fr);gap:1px;background:#151515;border:1px solid #333;position:relative;box-shadow:0 60px 90px rgba(0,0,0,.65)}
-#iso .cell{background:#101010}
-#iso .cell.c1{background:#43433f;transform:translateZ(10px);box-shadow:-3px 3px 0 rgba(0,0,0,.6),inset 0 0 0 1px #2b2b28}
-#iso .cell.c1::after{content:"";position:absolute;inset:18% 12%;background:repeating-linear-gradient(180deg,#5f5f5b 0 2px,transparent 2px 6px)}
+#iso .cell{background:#101010;transform-style:preserve-3d}
+#iso .cell.c1{background:repeating-linear-gradient(180deg,#5a5a53 0 2px,#454540 2px 6px);transform:translateZ(16px);box-shadow:inset 0 0 0 1px #2b2b28}
+#iso .cell.c1::after{content:"";position:absolute;left:0;right:0;bottom:0;height:16px;background:#2e2e2a;transform:rotateX(-90deg);transform-origin:50% 100%}
+#iso .cell.c1::before{content:"";position:absolute;top:0;bottom:0;left:0;width:16px;background:#201f1d;transform:rotateY(-90deg);transform-origin:0 50%}
 #iso .cell.c2{background:#5c1414;box-shadow:inset 0 0 0 1.5px var(--red)}
-#iso .cell.c3{background:#cfcdc8}
+#iso .cell.c3{background:#cfcdc8;transform:translateZ(5px)}
+#iso .cell.c3::before{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:#8f8d87;transform:rotateX(-90deg);transform-origin:50% 100%}
 #iso .cell.c2::after,#iso .cell.c3::after{content:none}
-#iso .bot{box-shadow:0 0 16px rgba(231,45,45,.9)}
+#iso .bot{box-shadow:0 0 16px rgba(231,45,45,.9);transform-style:preserve-3d}
+#iso .bot::before,#iso .bot::after{display:none}
+.bot .zwall{display:none}
+#iso .bot .zwall{display:block;position:absolute;left:0;right:0;bottom:0;height:10px;background:#0d0d0d;border-left:1px solid #333;border-right:1px solid #333;transform:rotateX(-90deg);transform-origin:50% 100%}
 .hud{position:absolute;font:500 9px 'DM Mono',monospace;letter-spacing:.08em;color:#bbb;background:rgba(9,9,9,.6);padding:5px 9px;border:1px solid #333;z-index:5;display:flex;align-items:center;gap:7px}
 .hud b{color:#fff;font-weight:600}
 .hud.tl{top:12px;left:12px}.hud.tr{top:12px;right:12px}.hud.bl{bottom:12px;left:12px}.hud.br{bottom:12px;right:12px}

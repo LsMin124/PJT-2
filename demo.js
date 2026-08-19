@@ -492,7 +492,7 @@ if (typeof document !== 'undefined') (function () {
     const mk = host => sim.robots.map(() => {
       const b = document.createElement('div');
       b.className = 'bot';
-      b.innerHTML = '<i></i><b class="tote"></b>';
+      b.innerHTML = '<i></i><b class="tote"></b><u class="zwall"></u>';
       host.appendChild(b);
       return b;
     });
@@ -520,7 +520,7 @@ if (typeof document !== 'undefined') (function () {
           lastPos[i] = rb.pos;
         }
         place(bots[i], rb, i, cw, ch, 0);
-        place(isoBots[i], rb, i, iw, ih, 8);
+        place(isoBots[i], rb, i, iw, ih, 10);
       });
       const secs = Math.round(sim.S.t * sim.tickSec);
       clock.textContent = 'T+' + String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0');
