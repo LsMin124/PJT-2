@@ -74,6 +74,14 @@
   .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
   .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
 
+  details.more{border:1px solid var(--panel-edge);background:#20272F;margin:12px 0}
+  details.more summary{cursor:pointer;padding:11px 14px;font-weight:700;font-size:13px;list-style:none}
+  details.more summary::-webkit-details-marker{display:none}
+  details.more summary::before{content:"▸ ";color:var(--amber)}
+  details.more[open] summary::before{content:"▾ "}
+  details.more>*:not(summary){margin-left:14px;margin-right:14px}
+  details.more>*:last-child{margin-bottom:14px}
+
   pre{font-family:var(--mono);font-size:12px;line-height:1.7;background:#20272F;border:1px solid var(--panel-edge);border-left:4px solid var(--steel);padding:12px 16px;overflow-x:auto;margin:12px 0}
   code{font-family:var(--mono);font-size:.92em;background:#232B34;padding:1px 5px;border:1px solid var(--grid)}
   pre code{background:none;border:none;padding:0}
@@ -162,8 +170,7 @@
       <li>③ 시뮬레이션이 낸 숫자가 맞다는 것을 무슨 이론으로 검산하는가? — SEC 04</li>
     </ul>
 
-    <h3>먼저 알아둘 용어 — 경로계획 문헌의 기본 어휘</h3>
-    <p>MAPF 문헌은 아래 용어를 당연하다는 듯 씁니다. 본문을 읽기 전에 한 번 훑어 두세요.</p>
+    <details class="more"><summary>먼저 알아둘 용어 6개 — 경로계획 문헌의 기본 어휘 (펼쳐 보기)</summary>
     <div class="tbl-scroll"><table>
       <tr><th>용어</th><th>쉬운 설명</th></tr>
       <tr><td><b>에이전트(agent)</b></td><td>경로를 계획해야 하는 주체. 이 프로젝트에서는 AMR 한 대가 에이전트 하나</td></tr>
@@ -173,6 +180,7 @@
       <tr><td><b>lifelong</b></td><td>작업이 한 번 끝나면 종료가 아니라, 끝나는 즉시 새 작업이 발급되는 "끝없는 운영" 조건. 실제 창고가 이 조건이다</td></tr>
       <tr><td><b>경합(congestion)</b></td><td>여러 로봇이 같은 통로·교차로를 원해서 생기는 정체·대기. 이 문서 전체의 주인공</td></tr>
     </table></div>
+    </details>
   </div>
 </section>
 
@@ -205,28 +213,11 @@
       <text x="560" y="130" text-anchor="end" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">견적의 답 — 이 부근이 최적 대수</text>
       <text x="575" y="300" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#F08A32">N*</text>
     </svg>
-    <p class="soft">같은 창고에서 로봇을 늘려갈 때의 전형적인 곡선. 이 문서의 이론은 전부 "왜 ②와 ③이 생기는가"에 대한 설명입니다.</p>
-
-    <div class="plain"><span class="pl-tag">대수–처리량 곡선이란</span>
-    가로축은 투입한 로봇 대수, 세로축은 시간당 처리한 작업 수입니다.
-    로봇이 적을 때는 1대를 더 넣으면 처리량이 거의 1대만큼 늘어납니다.
-    그런데 어느 시점부터 통로가 붐비기 시작하면 곡선이 눕고(한계효용 체감), 심하면 서로 길을 막아 <b>오히려 줄어듭니다</b>.
-    "몇 대가 최적인가"라는 견적 질문의 답은 이 곡선이 꺾이는 지점에 있습니다.</div>
-
-    <p>곡선이 꺾이는 원인이 바로 <b>경로 경합</b> — 통로 정체, 교차로 대기, 데드락(교착)입니다. 그래서:</p>
-    <ul class="rules">
-      <li>경합을 모델링하지 못하는 시뮬레이션은 "로봇을 넣은 만큼 늘어난다"는 <b>낙관 편향</b> 견적을 내놓는다. "투명한 견적"이라는 서비스 주장과 정면 충돌</li>
-      <li>즉 경로계획 이론은 장식이 아니라 <b>곡선의 모양을 결정하는 물리학</b>이다</li>
-    </ul>
+    <p class="soft">같은 창고에서 로봇을 늘려갈 때의 전형적인 곡선. "몇 대가 최적인가"의 답은 곡선이 꺾이는 지점(N*)에 있고,
+    꺾임의 원인은 <b>경로 경합</b>(통로 정체·교차로 대기·교착)입니다. 경합을 모델링하지 못하는 시뮬레이션은 낙관 편향 견적을 내놓습니다 —
+    경로계획 이론이 장식이 아니라 <b>곡선의 모양을 결정하는 물리학</b>인 이유입니다.</p>
 
     <h3>용어 3계층 — 혼용 금지</h3>
-    <div class="tbl-scroll"><table>
-      <tr><th>계층</th><th>문제</th><th>프로젝트에서의 위치</th></tr>
-      <tr><td>1. Task Allocation</td><td>어느 로봇이 어느 작업을</td><td>디스패처 파트 (규칙/휴리스틱/RL)</td></tr>
-      <tr><td>2. Path Planning / <b>MAPF</b></td><td>충돌 없는 경로 집합</td><td><b>본 문서의 본체</b>, 견적 엔진</td></tr>
-      <tr><td>3. Motion Planning / Control</td><td>속도·가감속 프로파일 추종</td><td><a class="term" href="glossary_robotics.html#nav2">Nav2</a> 담당, 에뮬레이션 검증 계층</td></tr>
-    </table></div>
-
     <svg viewBox="0 0 900 252" role="img" aria-label="할당·경로·주행 3계층 구조 — 이 문서는 2층 경로 계획을 다룬다" style="max-width:100%;height:auto;display:block;margin:14px 0">
       <defs><marker id="tl-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
       <rect x="150" y="14" width="600" height="56" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
@@ -254,24 +245,22 @@
     그리드/그래프 위에서 N개 에이전트의 서로 충돌하지 않는 경로 집합을 찾되, sum-of-costs 또는 makespan을 최소화하는 문제.
     창고 AMR이 대표 응용이며 Amazon 물류로봇 연구가 이 분야를 견인했습니다.</p>
 
-    <h3>알고리즘 스펙트럼 — 학습 순서대로</h3>
-    <p>단순한 것부터 실전형까지 7단계입니다. 각 단계는 앞 단계의 한계를 하나씩 해결하며,
-    앞 단계를 이해해야 다음이 이해되는 구조라 학습 순서 그대로 배치했습니다.</p>
+    <h3>알고리즘 스펙트럼 — 학습 순서대로 7단계</h3>
     <div class="milestones">
       <div class="ms"><span class="ms-tag">STEP 1 · A*</span><h4>단일 에이전트 최단경로</h4>
-      <p>로봇 한 대의 최단경로 탐색. "지금까지 온 거리 + 남은 거리 어림값"이 가장 작은 칸부터 넓혀가며 찾는다. 모든 것의 출발점.</p></div>
+      <p>로봇 한 대의 최단경로 탐색. 모든 것의 출발점.</p></div>
       <div class="ms"><span class="ms-tag">STEP 2 · 시공간 예약 테이블</span><h4>Space-Time Reservation</h4>
-      <p>공간(x, y)에 시간축을 더한 3차원 그리드에 경로를 "예약"한다. 예: 로봇1이 (3,4) 칸을 t=7초에 지나가기로 찜하면, 로봇2는 그 시각 그 칸을 피해 계획한다. 뒤에 나오는 모든 방법의 기저 부품. 원류는 Silver의 Cooperative A*/WHCA* (2005).</p></div>
+      <p>"(칸, 시각)"을 먼저 찜한 로봇이 임자 — 뒤 로봇은 찜된 조합을 피해 계획한다. 모든 방법의 기저 부품.</p></div>
       <div class="ms"><span class="ms-tag">STEP 3 · Prioritized Planning</span><h4>우선순위 순차 계획 <span class="chip c-amber">v1 구현 타겟</span></h4>
-      <p>로봇에 순번을 매기고 차례로 계획한다: 1번이 먼저 계획 → 2번은 1번의 예약을 피해서 → 3번은 1·2번을 피해서. 뒤 순번일수록 손해라 최적성은 없지만 빠르고 단순해서 실무에서 가장 많이 쓴다.</p></div>
-      <div class="ms"><span class="ms-tag">STEP 4 · CBS</span><h4><a class="term" href="glossary_robotics.html#cbs">Conflict-Based Search</a> — 최적 알고리즘의 대표</h4>
-      <p>일단 각자 최단경로로 계획하고, 충돌이 발견되면 "로봇A는 그 시각 그 칸 금지"와 "로봇B는 금지"라는 두 세계로 나눠 각각 다시 푼다(Conflict Tree). 수학적 최적을 보장하지만 로봇 수가 늘면 분기가 폭발한다.</p></div>
-      <div class="ms"><span class="ms-tag">STEP 5 · ECBS / EECBS</span><h4>유계 준최적(bounded-suboptimal) 변형</h4>
-      <p>"최적 대비 x% 이내"만 보장하는 대신 속도를 버는 절충. 최적성과 계산 시간 사이의 실용선이다.</p></div>
-      <div class="ms"><span class="ms-tag">STEP 6 · Lifelong MAPF</span><h4>일회성 가정을 깬 연속 운영 문제</h4>
-      <p>표준 MAPF는 "전원 도착하면 끝"을 가정하지만, 실제 창고는 작업이 끝나는 즉시 새 작업이 발급된다. 이 끝없는 조건을 다루는 문제 설정이 lifelong.</p></div>
+      <p>순번대로 앞 로봇의 예약을 피해 계획. 최적성은 없지만 빠르고 단순해 실무 최다 사용.</p></div>
+      <div class="ms"><span class="ms-tag">STEP 4 · CBS</span><h4><a class="term" href="glossary_robotics.html#cbs">Conflict-Based Search</a> — 최적의 대표</h4>
+      <p>충돌마다 금지 제약을 걸어 두 갈래로 나눠 다시 푸는 트리 탐색. 최적 보장, 대신 로봇 수에 지수적으로 느려짐.</p></div>
+      <div class="ms"><span class="ms-tag">STEP 5 · ECBS / EECBS</span><h4>유계 준최적 변형</h4>
+      <p>"최적 대비 x% 이내" 보장으로 완화해 속도를 버는 실용선.</p></div>
+      <div class="ms"><span class="ms-tag">STEP 6 · Lifelong MAPF</span><h4>끝없는 운영 조건</h4>
+      <p>작업이 끝나는 즉시 새 작업이 발급되는, 실제 창고의 문제 설정.</p></div>
       <div class="ms"><span class="ms-tag">STEP 7 · RHCR</span><h4><a class="term" href="glossary_robotics.html#rhcr">Rolling-Horizon Collision Resolution</a> <span class="chip c-green">직접 기반 문헌</span></h4>
-      <p>무한한 미래를 다 계획하는 대신 "앞 W스텝만 충돌 없이 계획하고, 주기적으로 다시 계획"한다. lifelong 문제를 감당 가능한 크기로 자르는 프레임으로, 대규모 창고의 사실상 표준이자 본 프로젝트 재계획 구조(MAIN 05 B4)의 원형.</p></div>
+      <p>앞 W스텝만 충돌 해소 + 주기적 재계획. 대규모 창고의 사실상 표준이자 본 프로젝트 재계획 구조(MAIN 05 B4)의 원형.</p></div>
     </div>
   </div>
 </section>
@@ -284,24 +273,25 @@
     그리고 충돌과는 다른 실패 모드인 교착(데드락)을 다룹니다.</p>
 
     <h3>TAPF — 할당·경로의 결합 최적화</h3>
-    <p>할당("누가")과 경로("어떻게")를 따로 풀면 준최적입니다.
-    예: 작업장 바로 옆에 있는 로봇이 "가장 가깝다"고 뽑혔는데 그 사이에 정체 구간이 있다면,
+    <p><a class="term" href="glossary_robotics.html#tapf"><b>TAPF</b></a>: 할당("누가")과 경로("어떻게")를 따로 풀면 준최적 —
+    v1 절충은 <b>경합 페널티를 할당 비용행렬에 피드백</b>하는 것입니다.</p>
+    <details class="more"><summary>왜 따로 풀면 손해인가 — 예시와 v1 설계 (펼쳐 보기)</summary>
+    <p>예: 작업장 바로 옆에 있는 로봇이 "가장 가깝다"고 뽑혔는데 그 사이에 정체 구간이 있다면,
     멀리 있지만 한산한 우회로를 가진 로봇이 실제로는 먼저 도착합니다.
-    이 둘을 묶어 최적화하는 문제가 <a class="term" href="glossary_robotics.html#tapf"><b>TAPF</b></a>(Combined Target Assignment and Path Finding)로 정립되어 있습니다.</p>
-    <div class="plain"><span class="pl-tag">v1 절충 설계</span>
-    분리해서 풀되, <b>경합 페널티를 포함한 경로 비용을 할당 비용행렬에 피드백</b>한다.
-    RL 디스패처 상태에 경합 정보를 포함시키는 것도 같은 맥락.</div>
+    v1은 분리해서 풀되 경합 페널티를 포함한 경로 비용을 할당에 피드백하고,
+    RL 디스패처 상태에 경합 정보를 포함시키는 것도 같은 맥락입니다.</p>
+    </details>
 
     <h3>데드락 이론 — AGV 고전 문헌</h3>
-    <p>충돌과 교착은 다릅니다. 좁은 외길에서 마주 보고 멈춘 두 로봇은 부딪히지 않았지만 <b>영원히 움직이지 못합니다</b> — 이것이 교착(deadlock)입니다.
-    MAPF가 충돌을 다룬다면 교착은 별도 이론으로, 1990년대 AGV(바닥 유도선을 따라가는 구세대 무인 운반차) 시스템 문헌과
-    운영체제의 자원 할당 이론이 원류입니다.</p>
+    <p>좁은 외길에서 마주 본 두 로봇은 충돌하지 않았지만 영원히 못 움직입니다 — 충돌과는 다른 실패 모드인 <b>교착</b>이고,
+    시뮬레이션 지표 "데드락 발생 횟수"의 이론적 근거입니다.</p>
+    <details class="more"><summary>교착 대응의 고전 기법 3가지 (펼쳐 보기)</summary>
     <ul class="rules">
       <li><b>Zone Control</b> — 구역당 1대만 허용 (반도체 팹 OHT 방식). 단순·보수적</li>
       <li><b>Banker's Algorithm 계열</b> — 구역 요청 시 안전 상태 검사 후 승인</li>
-      <li>프레임: <b>예방(prevention) / 회피(avoidance) / 탐지·복구(detection &amp; recovery)</b> 3분류</li>
-      <li>시뮬레이션 지표 "데드락 발생 횟수"의 이론적 근거</li>
+      <li>프레임: <b>예방 / 회피 / 탐지·복구</b> 3분류 — 1990년대 AGV 문헌과 OS 자원 할당 이론이 원류</li>
     </ul>
+    </details>
   </div>
 </section>
 
@@ -309,24 +299,14 @@
 <section id="t4">
   <div class="sec-head"><span class="sec-no">SEC 04</span><h2>SimPy 계층의 집계 이론 — 대기행렬 &amp; 흐름</h2></div>
   <div class="sec-body">
-    <p class="lead">시뮬레이션이 뱉은 숫자를 검산하고 해석하는 도구들입니다.
-    배경이 되는 결정: 수백 회 스윕에서 매 틱 CBS를 돌리는 것은 계산량상 불가능하므로,
-    SimPy 계층은 아래 두 선택지 중 (a)를 채택하되 (b)의 언어로 결과를 해석합니다.</p>
-    <div class="tbl-scroll"><table>
-      <tr><th>선택지</th><th>내용</th><th>판단</th></tr>
-      <tr><td>(a) 경량 MAPF</td><td>Prioritized Planning + 예약 테이블 — DES 내에서 충분히 빠르고 경합이 창발</td><td><b>기본 채택</b></td></tr>
-      <tr><td>(b) 흐름 근사</td><td>통로를 용량 있는 SimPy <code>Resource</code>로, 정체를 대기행렬로 근사</td><td>해석의 언어로 활용</td></tr>
-    </table></div>
-    <h3>해석에 쓰는 세 가지 이론</h3>
+    <p class="lead">시뮬레이션이 뱉은 숫자를 검산·해석하는 세 가지 도구입니다.
+    (매 틱 CBS는 배속을 파괴하므로 SimPy 계층은 경량 MAPF를 내장하고, 결과를 대기행렬의 언어로 해석합니다.)</p>
     <ul class="rules">
-      <li><b>대기행렬 이론 (M/M/c, Jackson network)</b> — "창구 c개에 손님이 무작위로 도착하면 평균 몇 명이 기다리는가"를 계산하는 수학.
-      피킹 스테이션 앞에 로봇이 줄 서는 상황이 정확히 이 모형이다</li>
-      <li><b><a class="term" href="glossary_industrial.html#littleslaw">Little's Law</a> (L = λW)</b> — "시스템 안에 머무는 평균 개수 = 도착률 × 평균 체류시간".
-      예: 시간당 주문 100건이 들어오고 평균 30분 머문다면 시스템 안에는 평균 50건이 떠 있어야 한다.
-      시뮬레이션 집계가 이 등식에서 어긋나면 어딘가 버그가 있다는 뜻 — 검산 도구이자 VDI 3633 verification 활동의 실체</li>
-      <li><b>교통류의 fundamental diagram (흐름–밀도 관계)</b> — 도로에 차가 적당히 있을 땐 밀도가 늘수록 흐름도 늘지만,
-      임계 밀도를 넘으면 서로 막혀 흐름이 오히려 줄어든다는 교통공학의 기본 곡선.
-      "로봇을 더 넣었더니 처리량이 줄었다"는 대수–처리량 포화 현상의 이론적 설명이 이것이다</li>
+      <li><b>대기행렬 이론 (M/M/c)</b> — 스테이션 앞에 로봇이 줄 서는 상황의 수학. 대기·병목 해석의 언어</li>
+      <li><b><a class="term" href="glossary_industrial.html#littleslaw">Little's Law</a> (L = λW)</b> — "체류 개수 = 도착률 × 체류시간".
+      집계가 이 등식에서 어긋나면 버그 — 검산 도구이자 VDI 3633 verification의 실체</li>
+      <li><b>교통류 fundamental diagram</b> — 임계 밀도를 넘으면 흐름이 오히려 감소.
+      "로봇을 더 넣었더니 처리량이 줄었다"(곡선 ③구간)의 이론적 설명</li>
     </ul>
   </div>
 </section>
@@ -335,8 +315,9 @@
 <section id="t5">
   <div class="sec-head"><span class="sec-no">SEC 05</span><h2>핵심 문헌 리스트</h2></div>
   <div class="sec-body">
-    <p class="lead">학습·인용에 쓸 원 논문 목록입니다. 읽는 요령: ①은 알고리즘의 기준점, ②는 본 프로젝트 구조의 원형,
-    ③은 용어·벤치마크의 표준 — 이 셋만 읽어도 프로젝트 서사를 논문 근거로 말할 수 있습니다. 전부 무료 공개본 링크가 있습니다.</p>
+    <p class="lead">필독은 3편입니다 — ① CBS(관문 논문) · ② RHCR(본 프로젝트의 직접 기반) · ③ MAPF 벤치마크(용어·검증 표준).
+    이 셋만 읽어도 프로젝트 서사를 논문 근거로 말할 수 있고, 전부 무료 공개본이 있습니다.</p>
+    <details class="more"><summary>문헌 6편 전체 + 링크 · 검색 키워드 (펼쳐 보기)</summary>
     <h3>필독 — 프로젝트 직결</h3>
     <div class="tbl-scroll"><table>
       <tr><th>#</th><th>논문</th><th>왜 읽나</th><th>링크</th></tr>
@@ -361,6 +342,7 @@
       <li><b>AGV 데드락</b> — 검색 키워드 <code>AGV deadlock avoidance zone control</code>, <code>Reveliotis AGV deadlock</code></li>
       <li>커뮤니티 허브: <a href="https://mapf.info"><b>mapf.info</b></a> — 논문·벤치마크·코드 집대성</li>
     </ul>
+    </details>
   </div>
 </section>
 
@@ -368,6 +350,8 @@
 <section id="t6">
   <div class="sec-head"><span class="sec-no">SEC 06</span><h2>학습 로드맵 — 이론 → 구현 직결 순</h2></div>
   <div class="sec-body">
+    <p class="lead">순서는 6단계 — A*·예약 테이블(주말) → Prioritized(v1 플래너) → CBS 정독 → RHCR·벤치마크 → Little's Law → (선택) TAPF·데드락.</p>
+    <details class="more"><summary>로드맵 상세 표 — 소요·산출물 (펼쳐 보기)</summary>
     <div class="tbl-scroll"><table>
       <tr><th>순서</th><th>항목</th><th>소요</th><th>산출물</th></tr>
       <tr><td>1</td><td>A* + 시공간 예약 테이블</td><td>주말 1회</td><td>단일/2대 데모 구현</td></tr>
@@ -377,6 +361,7 @@
       <tr><td>5</td><td>Little's Law + M/M/c</td><td>반나절</td><td>결과 검산·해석 언어</td></tr>
       <tr><td>6</td><td>(선택) TAPF(④), 데드락 이론</td><td>여유 시</td><td>면접 심화</td></tr>
     </table></div>
+    </details>
 
     <div class="plain"><span class="pl-tag">프로젝트 서사와의 연결</span>
     현상 수준 — "AMR을 늘렸더니 처리량이 포화됐다"<br>

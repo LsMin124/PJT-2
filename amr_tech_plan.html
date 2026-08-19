@@ -101,6 +101,14 @@
   .ms h4{font-size:14px;font-weight:700;margin:2px 0 2px}
   .ms p{font-size:12.5px;color:var(--ink-soft);margin:0}
 
+  details.more{border:1px solid var(--panel-edge);background:#20272F;margin:12px 0}
+  details.more summary{cursor:pointer;padding:11px 14px;font-weight:700;font-size:13px;list-style:none}
+  details.more summary::-webkit-details-marker{display:none}
+  details.more summary::before{content:"▸ ";color:var(--amber)}
+  details.more[open] summary::before{content:"▾ "}
+  details.more>*:not(summary){margin-left:14px;margin-right:14px}
+  details.more>*:last-child{margin-bottom:14px}
+
   footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
 
   @media (max-width:820px){
@@ -192,7 +200,7 @@
     <p class="soft">두 계층 모두 같은 VDA 5050 경계 위에서 동작합니다. 경로는 중앙에서 하달하고 Nav2는 구간 주행만 맡아야
     두 계층이 "같은 시스템"을 시뮬레이션하게 됩니다 — 오차 비교가 성립하는 조건입니다.</p>
 
-    <h3>먼저 알아둘 용어</h3>
+    <details class="more"><summary>먼저 알아둘 용어 7개 — 펼쳐 보기</summary>
     <div class="tbl-scroll"><table>
       <tr><th>용어</th><th>쉬운 설명</th></tr>
       <tr><td><b>SIL</b></td><td>Software-In-the-Loop. 실제 소프트웨어 스택을 가상 하드웨어에 물려 검증하는 방식. 본 프로젝트 검증 트랙의 정체</td></tr>
@@ -203,6 +211,7 @@
       <tr><td><b>Gymnasium</b></td><td>강화학습 환경의 표준 인터페이스. SimPy 시뮬레이션을 RL이 학습할 수 있는 형태로 감싼다</td></tr>
       <tr><td><b>OAT · CI</b></td><td>변수 하나씩 흔드는 민감도 분석(One-At-a-Time) · 95% 신뢰구간(Confidence Interval). 통계적 정직함의 도구</td></tr>
     </table></div>
+    </details>
   </div>
 </section>
 
@@ -219,12 +228,7 @@
       <li><b>경로 지시는 중앙 하달</b> — 플랫폼 코어가 VDA 5050 노드/엣지 경로를 내려보내고 <a class="term" href="glossary_robotics.html#nav2">Nav2</a>는 구간 주행만.
       로봇이 스스로 경로를 고르면 두 시뮬레이션 계층이 서로 다른 시스템이 되어 정합성 비교가 무너진다</li>
     </ul>
-    <div class="plain"><span class="pl-tag">의사결정 여정 — 왜 이 제품이 되었나</span>
-    디스패처 비교 연구 → 인력 배치 전환 검토 → 관제탑 포장(ROS 조연화 모순 발견) → FMS 제품화 → 견적 서비스 →
-    <b>최종: 견적 서비스(v1) + SIL 에뮬레이션 검증 계층, 실시간 관제(FMS)는 v2 백로그.</b><br>
-    교훈 세 가지 — ① 로봇 데모는 웹 서비스로 포장되어야 임팩트가 생긴다
-    ② 제품 카테고리를 로봇 도메인 안에서 고르면 "서비스 포장 vs ROS 주연"이 양립한다
-    ③ v1에서 ROS의 정직한 역할은 검증 계층이다.</div>
+    <p class="soft">이 제품에 이르게 된 5단계 의사결정 여정과 교훈은 <a href="topic_journey.html#p2">APPENDIX A · 확정 여정</a>에 있습니다.</p>
   </div>
 </section>
 
@@ -233,14 +237,9 @@
   <div class="sec-head"><span class="sec-no">SEC 02</span><h2>이론 기반 요약 — 경합이 곡선의 모양을 결정한다</h2></div>
   <div class="sec-body">
     <p class="lead">견적의 헤드라인인 대수–처리량 곡선이 꺾이는 이유는 <b>경로 경합</b>이고, 그 수학이
-    <a class="term" href="glossary_robotics.html#mapf">MAPF</a>입니다. 전체 이론은 <a href="amr_mapf_theory.html">MAIN 04</a>에 풀어 두었고, 요약만 적습니다.</p>
-    <ul class="rules">
-      <li><b>MAPF 계보</b> — A* → 시공간 예약 테이블 → <b>Prioritized Planning(v1 플래너)</b> → CBS/ECBS → <b><a class="term" href="glossary_robotics.html#rhcr">Lifelong MAPF/RHCR</a></b>(직접 기반 문헌, Li et al. AAAI 2021)</li>
-      <li><b>TAPF 절충</b> — 할당과 경로를 따로 풀되, 경합 페널티를 할당 비용행렬에 피드백</li>
-      <li><b>데드락 이론</b> — Zone Control, Banker's Algorithm 계열</li>
-      <li><b>집계 이론</b> — <a class="term" href="glossary_industrial.html#littleslaw">Little's Law</a> 검산, M/M/c 대기행렬, 교통류 fundamental diagram(포화의 이론적 설명)</li>
-      <li><b>SimPy 계층 결정</b> — 경량 MAPF 내장(고정 틱, 1틱=1셀 이동). 매 틱 CBS는 배속을 파괴하므로 배제</li>
-    </ul>
+    <a class="term" href="glossary_robotics.html#mapf">MAPF</a>입니다. 계보(A*→예약 테이블→Prioritized→CBS→RHCR)·문헌·집계 이론 전체는
+    <b><a href="amr_mapf_theory.html">MAIN 04 경로계획 이론</a></b> 한 곳에서 다룹니다.
+    이 계획서에 남는 결정은 하나 — <b>SimPy 계층에는 경량 MAPF를 내장</b>(고정 틱, 1틱=1셀)하며, 매 틱 CBS는 배속을 파괴하므로 배제.</p>
   </div>
 </section>
 
@@ -340,13 +339,15 @@
 <section id="s8">
   <div class="sec-head"><span class="sec-no">SEC 08</span><h2>발표·면접 핵심 메시지</h2></div>
   <div class="sec-body">
-    <p class="lead">같은 시스템을 청중에 따라 다른 층위로 설명합니다.</p>
+    <p class="lead">같은 시스템을 청중에 따라 다른 층위로 설명합니다. 발표 준비 시 펼쳐 보세요.</p>
+    <details class="more"><summary>청중별 핵심 메시지 — 펼쳐 보기</summary>
     <div class="tbl-scroll"><table>
       <tr><th>청중</th><th>메시지</th></tr>
       <tr><td><b>비전문가</b></td><td>"로봇 업체의 블랙박스 견적을 중립 시뮬레이션으로 — 곡선에서 직접 선택하세요." + T1 3분 체험 + 스윕 매트릭스가 실시간으로 채워지는 화면</td></tr>
       <tr><td><b>기술 면접관</b></td><td>2계층 분리의 물리적 필연성 / VDA 5050 경계 불변("테스트한 코드가 배포된다") / SimPy vs Isaac 오차 분석(디지털 트윈 정합성) / RHCR·MAPF 이론 정합 / VDI 3633 V&amp;V / CI·민감도의 통계적 정직함</td></tr>
       <tr><td><b>트랙별</b></td><td>대기업 생산기술 지원 → DES·반송 최적화·V&amp;V 중심 / AMR 기업 지원 → VDA 5050·Isaac 검증 트랙 중심</td></tr>
     </table></div>
+    </details>
   </div>
 </section>
 

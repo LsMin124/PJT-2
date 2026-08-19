@@ -86,6 +86,13 @@
   .qs li:last-child{border-bottom:none}
   .qs li::before{content:"Q";position:absolute;left:6px;top:7px;font-family:var(--mono);font-weight:700;color:var(--amber)}
   .caption{font-size:12.5px;color:var(--ink-soft);margin:2px 0 10px}
+  details.more{border:1px solid var(--panel-edge);background:#20272F;margin:12px 0}
+  details.more summary{cursor:pointer;padding:11px 14px;font-weight:700;font-size:13px;list-style:none}
+  details.more summary::-webkit-details-marker{display:none}
+  details.more summary::before{content:"▸ ";color:var(--amber)}
+  details.more[open] summary::before{content:"▾ "}
+  details.more>*:not(summary){margin-left:14px;margin-right:14px}
+  details.more>*:last-child{margin-bottom:14px}
   svg{max-width:100%;height:auto;display:block;margin:14px 0}
   footer{border-top:3px solid var(--ink);padding:18px 0 44px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
   @media (max-width:760px){body{font-size:14.5px} section{padding:18px}}
@@ -167,12 +174,12 @@
   <h2><span class="q">Q.</span>고객은 이 서비스를 어떻게 쓰나요?</h2>
   <p>완성된 모습을 상상하는 가장 쉬운 방법은, 고객 한 명의 사용 과정을 따라가 보는 것입니다.</p>
   <div class="journey">
-    <div class="st"><b>창고 모양을 알려준다</b><p>웹 화면에서 직접 그리거나, 가지고 있는 도면(PDF·이미지)을 올려 그 위에 선반·통로·작업대 위치를 표시합니다.</p></div>
-    <div class="st"><b>주문 기록을 올린다</b><p>"언제 어떤 상품이 몇 개 주문됐는지"가 담긴 엑셀 파일을 올리면, 시스템이 주문 패턴(바쁜 시간대, 잘 나가는 상품)을 자동으로 읽어냅니다. 데이터가 없으면 숫자 몇 개만 입력해 대략적인 견적부터 받아볼 수도 있습니다.</p></div>
-    <div class="st"><b>시스템이 어울리는 로봇 방식을 거른다</b><p>"이 창고는 통로 폭·취급 물량 조건상 이 방식은 맞지 않습니다"처럼, 조건에 맞지 않는 로봇 방식을 <b>배제 사유와 함께</b> 걸러냅니다. 맞지 않는 것을 맞다고 하지 않는 것 — 이것도 중립 견적의 일부입니다.</p></div>
-    <div class="st"><b>가상 창고가 수백 번 돌아간다</b><p>컴퓨터 속에 지어진 고객의 창고에서, 로봇 기종과 대수를 바꿔가며 운영을 수백 번 반복 실험합니다. 여러 대의 서버가 나눠서 병렬로 계산합니다.</p></div>
-    <div class="st"><b>곡선을 보고 직접 고른다</b><p>"5대면 시간당 이만큼, 7대면 이만큼, 그 이상부터는 로봇끼리 길이 막혀 효과가 줄어듭니다" — 이 관계가 곡선 그래프로 나타나고, 비용 곡선과 겹쳐 <b>투자 대비 최적 지점</b>이 보입니다. 곡선 위 한 점을 클릭하면 그 구성의 상세 리포트가 열립니다.</p></div>
-    <div class="st"><b>"만약에?"를 바로 실험한다</b><p>"주문이 몰리면? 작업대를 하나 늘리면?" 조건을 바꿔 즉시 다시 계산해 봅니다. 로봇을 더 사는 것보다 배치를 바꾸는 게 나은 경우("7대 대신 스테이션 증설")도 여기서 드러납니다.</p></div>
+    <div class="st"><b>창고 모양을 알려준다</b><p>웹에서 직접 그리거나, 도면(PDF·이미지)을 올려 그 위에 표시합니다.</p></div>
+    <div class="st"><b>주문 기록을 올린다</b><p>엑셀을 올리면 주문 패턴을 자동으로 읽고, 없으면 숫자 몇 개로 러프 견적부터 시작합니다.</p></div>
+    <div class="st"><b>시스템이 어울리는 로봇 방식을 거른다</b><p>조건에 맞지 않는 방식은 <b>배제 사유와 함께</b> 걸러냅니다 — 이것도 중립 견적의 일부.</p></div>
+    <div class="st"><b>가상 창고가 수백 번 돌아간다</b><p>기종·대수를 바꿔가며 서버 여러 대가 병렬로 반복 실험합니다.</p></div>
+    <div class="st"><b>곡선을 보고 직접 고른다</b><p>대수별 처리량 곡선에 비용을 겹쳐 <b>최적 지점</b>이 보이고, 점을 클릭하면 상세 리포트가 열립니다.</p></div>
+    <div class="st"><b>"만약에?"를 바로 실험한다</b><p>조건을 바꿔 즉시 재계산 — "로봇 추가 대신 작업대 증설"이 나은 경우도 여기서 드러납니다.</p></div>
   </div>
   <p>최종 발표에서 보여줄 것이 바로 이 흐름입니다 — 실제 고객이 되어 데이터를 넣고, 잠시 뒤 곡선에서 답을 고르는 체험.</p>
 </section>
@@ -264,21 +271,20 @@
   <p>좋은 질문이고, 이 프로젝트의 기술적 핵심이 바로 이 질문에 대한 답입니다. 세 겹의 장치가 있습니다.</p>
   <table>
     <tr><th style="width:150px">장치</th><th>내용</th></tr>
-    <tr><td><b>빠른 계산 + 정밀 검증</b></td><td>수백 번의 반복 실험은 빠른 수학적 시뮬레이션이 하고, 그중 최적으로 뽑힌 한두 구성은
-    <b>물리 법칙이 적용되는 3D 가상 세계</b>(실제 로봇 소프트웨어를 그대로 얹은 환경)에서 실제 속도로 다시 돌려 봅니다.
-    빠른 계산의 답이 정밀 세계에서도 성립하는지 확인하고, 차이가 나면 그만큼 빠른 계산 쪽을 보정합니다.</td></tr>
-    <tr><td><b>가정의 전면 공개</b></td><td>"로봇 속도·작업 시간을 어떤 값으로 가정했는지"를 리포트에 전부 명시하고, 고객이 가정을
-    수정하면 결과도 다시 계산됩니다. 숨기는 숫자가 없다는 것이 곧 신뢰의 근거입니다.</td></tr>
-    <tr><td><b>통계적 정직함</b></td><td>같은 조건도 무작위 요소 때문에 결과가 조금씩 다릅니다. 그래서 조건마다 여러 번 돌린 결과의
-    <b>오차 범위(95% 신뢰구간)를 함께</b> 보여주고, 가정이 흔들리면 결과가 얼마나 달라지는지(민감도)도 공개합니다.
-    이런 절차는 시뮬레이션 검증에 관한 공학 지침(VDI 3633)을 따릅니다.</td></tr>
+    <tr><td><b>빠른 계산 + 정밀 검증</b></td><td>수백 번의 실험은 빠른 시뮬레이션이, 최적 한두 구성은 <b>물리 법칙이 적용되는 3D 세계</b>에서
+    실제 속도로 재검증합니다. 차이가 나면 빠른 계산 쪽을 보정합니다.</td></tr>
+    <tr><td><b>가정의 전면 공개</b></td><td>어떤 값을 가정했는지 리포트에 전부 명시하고, 가정을 수정하면 결과도 재계산됩니다.
+    숨기는 숫자가 없다는 것이 신뢰의 근거입니다.</td></tr>
+    <tr><td><b>통계적 정직함</b></td><td>조건마다 여러 번 돌려 <b>오차 범위(95% 신뢰구간)</b>와 민감도를 함께 공개합니다.
+    절차는 공학 지침(VDI 3633)을 따릅니다.</td></tr>
   </table>
   <div class="note">한 줄 요약: 이 견적은 "믿어 달라"가 아니라 <b>"계산 과정을 다 보여줄 테니 직접 확인하라"</b>는 방식으로 신뢰를 만듭니다.</div>
 </section>
 
 <section id="i5">
   <h2><span class="q">Q.</span>문서를 읽다 보면 자주 나오는 말들이 있던데요?</h2>
-  <p>아래 일곱 개만 감을 잡아두면 다른 문서를 읽는 난이도가 크게 내려갑니다. 더 자세한 설명은 각 링크(용어사전)에 그림과 함께 있습니다.</p>
+  <p>일곱 개만 감을 잡아두면 다른 문서 읽기가 쉬워집니다. 필요할 때 펼쳐 보세요.</p>
+  <details class="more"><summary>자주 나오는 용어 7개 — 펼쳐 보기</summary>
   <dl>
     <dt>AMR<span class="en">운반 로봇</span></dt>
     <dd>바닥 선로 없이 스스로 길을 찾아다니는 바퀴 달린 운반 로봇. 이 서비스가 견적을 내주는 대상. <a href="glossary_industrial.html#amr">자세히 →</a></dd>
@@ -295,6 +301,7 @@
     <dt>What-if<span class="en">만약에 실험</span></dt>
     <dd>"주문이 2배로 늘면? 배치를 바꾸면?"처럼 조건을 바꿔 즉시 다시 계산해 보는 기능. 이 서비스의 핵심 사용 경험.</dd>
   </dl>
+  </details>
 </section>
 
 <section id="i6">

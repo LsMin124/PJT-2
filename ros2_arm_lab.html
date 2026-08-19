@@ -110,6 +110,13 @@
   .flow-nav a:hover{border-color:var(--amber)}
   .flow-nav .next{text-align:right;margin-left:auto}
   .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
+  details.more{border:1px solid var(--panel-edge);background:#20272F;margin:12px 0}
+  details.more summary{cursor:pointer;padding:11px 14px;font-weight:700;font-size:13px;list-style:none}
+  details.more summary::-webkit-details-marker{display:none}
+  details.more summary::before{content:"\25B8 ";color:var(--amber)}
+  details.more[open] summary::before{content:"\25BE "}
+  details.more>*:not(summary){margin-left:14px;margin-right:14px}
+  details.more>*:last-child{margin-bottom:14px}
   footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
 
   @media (max-width:820px){
@@ -266,7 +273,7 @@
       <tr><td><b>202 — 인터랙티브 IK</b></td><td><code>ik_goto</code>(클릭·타이핑 목표) + <code>servo_jog</code>(실시간 조그)</td><td>위치 IK · 미분 IK · MoveIt Servo · 컨트롤러 전환</td></tr>
     </table></div>
 
-    <h3>파일 지도 — ~/ros2_ws/src/arm101</h3>
+    <details class="more"><summary>파일 지도 — 읽는 순서 ①~⑨</summary>
     <div class="tbl-scroll"><table>
       <tr><th>파일</th><th>역할</th><th>읽는 순서</th></tr>
       <tr><td><code>package.xml</code></td><td>패키지 이름·의존성 선언. colcon과 rosdep이 읽는 명세서</td><td>②</td></tr>
@@ -280,6 +287,7 @@
       <tr><td><code>arm101/servo_jog.py</code></td><td>Teleop Twist → MoveIt Servo 릴레이 + 컨트롤러 자동 전환</td><td>⑨ 마지막</td></tr>
     </table></div>
     <p class="soft">이 순서대로 한 파일씩 열어 읽으면서 아래 절들을 병행하는 것을 권장.</p>
+    </details>
   </div>
 </section>
 
@@ -288,6 +296,8 @@
   <div class="sec-head"><span class="sec-no">SEC 02</span><h2>워크스페이스와 빌드 — colcon</h2></div>
   <div class="sec-body">
     <p class="lead">ROS2 개발의 시작은 "내 코드를 ROS가 찾을 수 있는 형태로 설치"하는 것입니다. 그 규칙이 워크스페이스이고, 도구가 colcon입니다.</p>
+
+    <details class="more"><summary>빌드 상세 — 오버레이 개념 · 패키지 구성 · 실습 · 점검</summary>
 
     <div class="plain"><span class="pl-tag">쉽게 말하면</span>
     <code>/opt/ros/humble</code>은 공장에서 출고된 밑그림, <code>~/ros2_ws</code>는 그 위에 얹는 내 덧그림(오버레이)입니다.
@@ -316,6 +326,7 @@
     <details><summary>답 보기</summary>
     ① <code>source ~/ros2_ws/install/setup.bash</code> — source는 터미널마다 매번 필요.
     ② <code>#!/usr/bin/env python3</code>이 conda의 파이썬을 잡아 시스템에 설치된 ROS 파이썬 모듈(lxml 등)을 못 찾는다. 실제로 TurtleBot3 스폰이 이걸로 죽었다. ROS 터미널에서는 <code>conda deactivate</code>.</details></div>
+    </details>
   </div>
 </section>
 
@@ -324,6 +335,8 @@
   <div class="sec-head"><span class="sec-no">SEC 03</span><h2>로봇을 그리다 — URDF · joint_states · TF</h2></div>
   <div class="sec-body">
     <p class="lead">로봇팔은 "강체(link)를 관절(joint)로 이어붙인 나무"입니다. <a class="term" href="glossary_robotics.html#urdf">URDF</a>가 그 나무를 적는 형식이고, 우리 <code>arm101.urdf</code>는 링크 5개·회전 관절 3개짜리 최소 예제입니다.</p>
+
+    <details class="more"><summary>URDF 해부 · joint_wave · 실습 · 점검</summary>
 
 <pre><code>&lt;joint name="base_yaw" type="revolute"&gt;   ← 회전 관절 (J1)
   &lt;parent link="base_link"/&gt;              ← 어느 강체에서
@@ -352,6 +365,7 @@
     <div class="plain quiz"><span class="pl-tag">스스로 점검</span>
     joint_wave를 끄고 robot_state_publisher만 켜면 Foxglove에 무엇이 보일까?
     <details><summary>답 보기</summary>고정(fixed) 관절의 TF만 발행되고 회전 관절 3개의 TF가 끊겨, 팔이 그려지지 않거나 링크들이 연결되지 않은 채 남는다. "구조 × 자세 = 화면"에서 자세가 빠진 상태.</details></div>
+    </details>
   </div>
 </section>
 
@@ -361,6 +375,8 @@
   <div class="sec-body">
     <p class="lead">이 PC는 SSH로만 접근하는 헤드리스 환경입니다. <a class="term" href="glossary_robotics.html#gazebo">Gazebo</a> GUI 대신 "PC는 계산만, 그림은 노트북에서"로 갔고 —
     이 구조는 최종 프로젝트의 <b>Isaac 헤드리스 + 원격 뷰</b>와 같은 패턴의 예행연습입니다.</p>
+
+    <details class="more"><summary>브리지 특성 · 전송 메커니즘 3종 · xacro · 실습 · 점검</summary>
 
     <div class="plain"><span class="pl-tag">쉽게 말하면</span>
     <b>foxglove_bridge</b>는 ROS 토픽 ↔ 웹소켓(포트 8765) 번역기입니다. 중요한 특성: <b>클라이언트가 구독을 요청한 토픽만</b> ROS 쪽 구독을 만듭니다.
@@ -387,6 +403,7 @@
     <div class="plain quiz"><span class="pl-tag">스스로 점검</span>
     브리지를 재시작해도 Foxglove를 재접속만 하면 URDF가 다시 뜨는 이유는?
     <details><summary>답 보기</summary>robot_state_publisher가 살아있는 한 /robot_description은 latched로 유지되고, 새 브리지·새 클라이언트가 구독을 다시 만들면 마지막 메시지를 즉시 받는다. 반대로 robot_state_publisher를 재시작하면 그 발행자의 latch도 사라진다.</details></div>
+    </details>
   </div>
 </section>
 
@@ -395,6 +412,8 @@
   <div class="sec-head"><span class="sec-no">SEC 05</span><h2>움직이게 하다 — ros2_control × MoveIt2</h2></div>
   <div class="sec-body">
     <p class="lead">201의 핵심은 계층입니다. <b>계획(어디로 어떻게 갈까)</b>과 <b>실행(그 궤적을 시간에 맞춰 재생)</b>이 분리되어 있고, 그 사이를 컨트롤러 이름이 잇습니다.</p>
+
+    <details class="more"><summary>계층 구조도 · ros2_control 등장인물 · goal 해부 · 실행 명령 · 실습 · 점검</summary>
 
     <figure>
       <svg viewBox="0 0 900 450" role="img" aria-label="계획과 실행의 계층 구조">
@@ -467,6 +486,7 @@ ros2 run arm101 moveit_demo          # ← 이 터미널만 ~/ros2_ws/install/se
     <details><summary>답 보기</summary>
     ① /joint_states에 발행자가 둘이 되어 TF가 두 자세 사이를 널뛰듯 튄다. 실제로 pkill 잔존 프로세스 때문에 겪었다(SEC 07 사건 5).
     ② move_group 로그의 "Solution found but controller failed during execution" — Solution found(계획 성공)와 controller failed(실행 실패)가 한 문장에 있다.</details></div>
+    </details>
   </div>
 </section>
 
@@ -476,6 +496,8 @@ ros2 run arm101 moveit_demo          # ← 이 터미널만 ~/ros2_ws/install/se
   <div class="sec-body">
     <p class="lead">201의 moveit_demo는 <b>관절 공간</b> 목표("각 관절을 이 각도로")였습니다.
     202는 <b>작업 공간</b>으로 올라갑니다 — "툴 끝을 저 좌표에"를 사람이 실시간으로 지시하고, 관절 각도는 IK가 풀게 합니다.</p>
+
+    <details class="more"><summary>FK/IK 비교 · 두 경로 구조도 · ik_goto/servo_jog 상세 · 실습 · 점검</summary>
 
     <h3>FK · IK · 미분 IK — 한 표로</h3>
     <div class="tbl-scroll"><table>
@@ -575,6 +597,7 @@ ros2 run arm101 moveit_demo          # ← 이 터미널만 ~/ros2_ws/install/se
     <details><summary>답 보기</summary>
     ① Foxglove의 Publish 클릭은 3D 장면의 바닥 평면(z=0)에 레이캐스트되는 도구라, 클릭 한 번에 높이를 담을 수 없다. 그래서 z는 fixed_z 치환 또는 타이핑으로 받는다.
     ② 버튼이 주는 것은 작업 공간의 속도 ẋ이고, 서보는 q̇ = J⁻¹(q)·ẋ로 관절 속도를 역산한다. 방향이 작업공간→관절공간이므로 정의상 역문제. FK에는 없는 특이점(자코비안 조건수) 감속 설정이 서보에 있는 것도 방증.</details></div>
+    </details>
   </div>
 </section>
 
@@ -583,6 +606,8 @@ ros2 run arm101 moveit_demo          # ← 이 터미널만 ~/ros2_ws/install/se
   <div class="sec-head"><span class="sec-no">SEC 07</span><h2>장애 복기 — 삽질이 진짜 교재</h2></div>
   <div class="sec-body">
     <p class="lead">이번 실습에서 만난 장애 10건. 각각 "증상 → 원인 → 챙길 교훈"으로 정리했습니다. 프로젝트 본편에서 같은 부류의 문제를 다시 만납니다.</p>
+
+    <details class="more"><summary>장애 10건 전체 — 증상 → 원인 → 교훈</summary>
 
     <div class="milestones">
       <div class="ms"><span class="ms-tag">사건 1 · 환경 오염</span><h4>Gazebo 스폰 노드가 lxml ModuleNotFoundError로 사망</h4>
@@ -606,6 +631,7 @@ ros2 run arm101 moveit_demo          # ← 이 터미널만 ~/ros2_ws/install/se
       <div class="ms"><span class="ms-tag">사건 10 · Ctrl+Z ≠ 종료</span><h4>정지(T 상태)된 프로세스가 컨트롤러·구독을 쥔 채 잔존</h4>
       <p>Ctrl+Z는 종료가 아니라 suspend — 프로세스가 자원을 쥔 채 얼어붙고, 그 상태에선 SIGTERM도 큐잉만 될 뿐 재개(SIGCONT) 전엔 처리되지 않는다. 정지된 servo_jog는 종료 루틴(컨트롤러 원복)을 실행할 기회조차 없었다. <b>교훈: 노드 종료는 Ctrl+C. ps의 STAT 열에 T가 보이면 kill -CONT 후 종료 신호.</b></p></div>
     </div>
+    </details>
   </div>
 </section>
 
@@ -614,6 +640,8 @@ ros2 run arm101 moveit_demo          # ← 이 터미널만 ~/ros2_ws/install/se
   <div class="sec-head"><span class="sec-no">SEC 08</span><h2>재현 과제 — 부채 상환 체크리스트</h2></div>
   <div class="sec-body">
     <p class="lead">아무것도 띄우지 않은 상태에서, 이 노트만 보고 아래를 스스로 완주하면 학습 부채는 상환입니다.</p>
+
+    <details class="more"><summary>재현 체크리스트 7건 + 변형 과제 6건</summary>
 
     <ul class="rules">
       <li><b>재현 1</b> — build/install/log 삭제 후 재빌드, <code>ros2 pkg list</code>로 arm101 확인 <span class="soft">(SEC 02)</span></li>
@@ -635,6 +663,7 @@ ros2 run arm101 moveit_demo          # ← 이 터미널만 ~/ros2_ws/install/se
       <tr><td><span class="chip c-amber">상</span></td><td>ik_goto의 IK 경로 교체: compute_ik→관절 목표 대신 goal_constraints에 position+orientation constraint를 직접 구성</td><td>같은 문제의 두 해법 비교 — MoveIt 제약 시스템 이해</td></tr>
       <tr><td><span class="chip c-amber">상</span></td><td>planning scene에 박스 장애물 추가 후 같은 프리셋 순환 — 경로가 돌아가는지 확인</td><td>충돌 회피 계획의 실체 — 물류 데모 축소판</td></tr>
     </table></div>
+    </details>
 
     <div class="plain"><span class="pl-tag">이 노트가 프로젝트로 이어지는 곳</span>
     본편(AMR 견적 시뮬레이션)에서 ROS2 역량이 투입되는 곳은 <b>검증 트랙</b>입니다:

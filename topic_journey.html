@@ -112,6 +112,13 @@
   .flow-nav a:hover{border-color:var(--amber)}
   .flow-nav .next{text-align:right;margin-left:auto}
   .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
+  details.more{border:1px solid var(--panel-edge);background:#20272F;margin:12px 0}
+  details.more summary{cursor:pointer;padding:11px 14px;font-weight:700;font-size:13px;list-style:none}
+  details.more summary::-webkit-details-marker{display:none}
+  details.more summary::before{content:"\25B8 ";color:var(--amber)}
+  details.more[open] summary::before{content:"\25BE "}
+  details.more>*:not(summary){margin-left:14px;margin-right:14px}
+  details.more>*:last-child{margin-bottom:14px}
   footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
 
   @media (max-width:820px){
@@ -234,7 +241,7 @@
         </div>
       </div>
 
-      <h3>먼저 알아둘 용어 — 이 문서에 반복해서 나옵니다</h3>
+      <details class="more"><summary>먼저 알아둘 용어 — 9개</summary>
       <div class="tbl-scroll"><table>
         <tr><th style="width:190px">용어</th><th>뜻</th></tr>
         <tr><td><b>견적 SaaS</b></td><td>설치 없이 웹에서 쓰는 소프트웨어 서비스 형태의 견적 도구. 이 프로젝트의 제품 형태</td></tr>
@@ -247,6 +254,7 @@
         <tr><td><b>FMS</b></td><td>Fleet Management System — 여러 AMR을 실시간으로 지휘하는 관제 시스템. 이번 여정에서 v2 백로그로 미뤄진 후보</td></tr>
         <tr><td><b>디스패처</b></td><td>"어느 로봇이 어느 작업을 맡을지" 정하는 할당 로직. 여정의 출발점이었던 연구 대상</td></tr>
       </table></div>
+      </details>
     </div>
   </section>
 
@@ -256,6 +264,7 @@
     <div class="sec-body">
       <p class="lead">각 단계에서 무엇을 검토했고, 무엇이 걸려서 다음으로 넘어갔는지의 기록입니다.
       이 이동의 논리가 곧 "왜 이 주제인가"에 대한 답이기도 합니다.</p>
+      <details class="more"><summary>다섯 단계 상세 — 각 단계에서 무엇이 걸렸나 + 핵심 교훈 3가지</summary>
       <div class="milestones">
         <div class="ms">
           <span class="ms-tag">단계 1</span>
@@ -289,6 +298,7 @@
         ② 제품 카테고리를 <b>로봇 도메인 안에서</b> 고르면 "서비스 포장 vs ROS 주연"이 양립할 수 없다 — 도메인 밖(견적·분석)에서 골라야 둘 다 산다.<br>
         ③ v1에서 ROS의 정직한 역할은 <b>검증 계층</b>이다.
       </div>
+      </details>
     </div>
   </section>
 
@@ -325,12 +335,14 @@
     <div class="sec-head"><span class="sec-no">SEC 04</span><h2>기각된 이전 제안 — "불 꺼진 물류센터"</h2></div>
     <div class="sec-body">
       <p class="lead">이 문서의 이전 판(REV A)은 전혀 다른 제안이었습니다. 기록으로 남깁니다.</p>
+      <details class="more"><summary>기각 사유와 남긴 것</summary>
       <p>이전 제안 <b>"불 꺼진 물류센터"</b>는 무인 풀필먼트 센터를 시뮬레이션으로 만들어
       무인 운영·자가 복구·What-if 예측의 6장면 시연을 보여주자는 것이었습니다.
       주제 논의가 진행되면서 질문이 <b>"무엇을 보여줄까(데모)"에서 "누가 왜 쓰는가(제품)"로</b> 이동했고,
       이 제안은 완성도 높은 자동화 데모일 수는 있어도 명확한 사용자와 구매 맥락을 갖기 어렵다는 판단으로 기각됐습니다.</p>
       <p class="soft">다만 남긴 것이 있습니다 — "로봇 데모는 웹 서비스로 포장되어야 임팩트가 생긴다"는 교훈(SEC 02 ①),
       그리고 What-if 시뮬레이션 같은 요소는 형태를 바꿔 최종 주제(견적 스윕·What-if 재실행)에 흡수됐습니다.</p>
+      </details>
     </div>
   </section>
 
@@ -339,6 +351,7 @@
     <div class="sec-head"><span class="sec-no">SEC 05</span><h2>발표 · 면접 핵심 메시지</h2></div>
     <div class="sec-body">
       <p class="lead">같은 프로젝트라도 듣는 사람에 따라 앞세울 메시지가 다릅니다. 청중별 정리입니다.</p>
+      <details class="more"><summary>청중별 메시지 표</summary>
       <div class="tbl-scroll"><table>
         <tr><th style="width:20%">청중</th><th>앞세울 메시지</th></tr>
         <tr>
@@ -354,6 +367,7 @@
           <td>대기업 생산기술 직무 → DES·반송 최적화·V&amp;V 중심으로 / AMR 기업 → VDA 5050·Isaac 검증 트랙 중심으로</td>
         </tr>
       </table></div>
+      </details>
     </div>
   </section>
 
