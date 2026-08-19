@@ -108,6 +108,7 @@
     <a href="#i0">한눈에 보기</a>
     <a href="#i1">무엇을 만드나</a>
     <a href="#i2">고객은 어떻게 쓰나</a>
+    <a href="#i2x">창고 안 물류 흐름</a>
     <a href="#i3">왜 필요한가</a>
     <a href="#i4">어떻게 믿나</a>
     <a href="#i5">자주 나오는 말</a>
@@ -176,6 +177,62 @@
   <p>최종 발표에서 보여줄 것이 바로 이 흐름입니다 — 실제 고객이 되어 데이터를 넣고, 잠시 뒤 곡선에서 답을 고르는 체험.</p>
 </section>
 
+<section id="i2x">
+  <h2><span class="q">Q.</span>그래서 창고 안에서는 실제로 무슨 일이 벌어지나요?</h2>
+  <p>우리가 시뮬레이션하는 로봇 방식의 원칙은 한 문장입니다 — <b>"집는 것은 사람, 나르는 것은 로봇."</b>
+  운반 로봇(AMR)에는 팔이 없어서 선반에서 물건을 직접 꺼내지 못합니다. 대신 사람이 꺼내 실어주는 접점(작업대)이 있고,
+  로봇은 사람의 <b>걷기와 나르기</b>를 대신합니다. 주문 하나가 창고를 통과하는 여정은 이렇습니다.</p>
+
+  <svg viewBox="0 0 900 250" role="img" aria-label="주문 하나의 여정: 주문 접수, 배차, 공차 주행, 사람 적재, 적차 주행, 출고, 회수 순환">
+    <defs><marker id="pf-ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
+    <rect x="20" y="20" width="190" height="62" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+    <text x="36" y="46" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">① 주문 접수</text>
+    <text x="36" y="68" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">주문 → 반송 작업 생성</text>
+    <line x1="212" y1="51" x2="248" y2="51" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pf-ar)"/>
+    <rect x="254" y="20" width="190" height="62" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+    <text x="270" y="46" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">② 배차</text>
+    <text x="270" y="68" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">어느 로봇이 맡을까 (AI)</text>
+    <line x1="446" y1="51" x2="482" y2="51" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pf-ar)"/>
+    <rect x="488" y="20" width="180" height="62" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+    <text x="504" y="46" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">③ 공차 주행</text>
+    <text x="504" y="68" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">경로계획·경합 시작</text>
+    <line x1="670" y1="51" x2="706" y2="51" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pf-ar)"/>
+    <rect x="712" y="14" width="170" height="74" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+    <circle cx="738" cy="38" r="7" fill="none" stroke="#F08A32" stroke-width="2"/>
+    <path d="M727 60 Q738 46 749 60" fill="none" stroke="#F08A32" stroke-width="2"/>
+    <text x="762" y="42" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">④ 사람 적재</text>
+    <text x="728" y="80" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="11.5" fill="#9AA7B4">집는 건 사람 · 작업대</text>
+    <line x1="797" y1="88" x2="797" y2="122" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pf-ar)"/>
+    <rect x="712" y="128" width="170" height="62" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+    <text x="728" y="154" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">⑤ 적차 주행</text>
+    <text x="728" y="176" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">토트를 싣고 출고로</text>
+    <line x1="706" y1="159" x2="670" y2="159" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pf-ar)"/>
+    <rect x="470" y="128" width="198" height="62" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+    <text x="486" y="154" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">⑥ 출고 · 포장</text>
+    <text x="486" y="176" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">주문 리드타임 측정 종료</text>
+    <line x1="464" y1="159" x2="428" y2="159" stroke="#8A96A3" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#pf-ar)"/>
+    <rect x="228" y="128" width="194" height="62" fill="#20272F" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+    <text x="244" y="154" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">⑦ 회수 · 복귀</text>
+    <text x="244" y="176" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">빈 토트 회수 → ②로 순환</text>
+    <text x="450" y="232" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">주황 상자(④)만 사람의 일 — 나머지 전부(주행·배차·순환)를 로봇과 시스템이 맡습니다</text>
+  </svg>
+  <p class="caption">그림 2 · 주문 하나의 여정. 데모·시뮬레이션의 "픽업 스테이션(P)"이 ④의 사람↔로봇 접점이고, "픽 시간"이 사람의 적재 시간입니다.</p>
+
+  <p>사람이 로봇과 만나는 방식에는 몇 가지 패턴이 있습니다. 어느 쪽이든 원칙은 같습니다 — 사람은 더 이상 걷지 않습니다.</p>
+  <table>
+    <tr><th style="width:130px">패턴</th><th>사람</th><th>로봇</th></tr>
+    <tr><td><b>존 릴레이</b></td><td>자기 구역에 상주하며 자기 구역 상품만 담아줌</td><td>빈 토트를 싣고 구역들을 순회하며 주문을 완성</td></tr>
+    <tr><td><b>동행형</b></td><td>로봇이 선 위치로 와서 해당 상품을 담아줌</td><td>주문의 픽 위치들을 스스로 순회</td></tr>
+    <tr><td><b>단순 반송</b></td><td>작업대에서 토트를 완성해 실어줌</td><td>완성 토트의 장거리 운반과 빈 토트 회수 <span style="color:#9AA7B4">(v1 모델)</span></td></tr>
+  </table>
+
+  <div class="note"><b>"반쪽 자동화 아닌가?"라는 질문에는 이렇게 답합니다</b> — 수작업 피킹에서 시간을 가장 많이 먹는 것은
+  집는 행위가 아니라 <b>걷기와 나르기</b>입니다. 이 방식은 가장 비싸고 어려운 부분(비정형 물건 집기 — 왜 어려운지는
+  <a href="archive.html#perception">검토 아카이브</a>에 정리)은 사람에게 남기고, 시간을 가장 많이 먹는 부분을 가장 싼 로봇으로 제거합니다.
+  창고 공사 없이 2~4주 만에 3~15대로 시작할 수 있어, 투입 비용 대비 효과(ROI)가 성립하기 가장 쉬운 구간입니다 —
+  그리고 "정말 성립하는가?"를 창고마다 계산해 주는 것이 바로 이 서비스입니다.</div>
+</section>
+
 <section id="i3">
   <h2><span class="q">Q.</span>이런 서비스가 왜 필요한가요?</h2>
   <p>지금 로봇 도입을 검토하는 회사가 견적을 받을 곳은 사실상 <b>로봇 판매 업체뿐</b>입니다. 그런데 판매 업체의 견적은
@@ -196,7 +253,7 @@
     <text x="490" y="130" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">· 고객이 근거를 보고 직접 고른다</text>
     <text x="450" y="185" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">주 고객층: 창고를 이미 운영 중이고, 로봇 소수 대를 점진적으로 들여볼까 검토하는 회사 (국내는 이커머스·3PL이 수요의 중심)</text>
   </svg>
-  <p class="caption">그림 2 · 이 서비스가 서 있는 자리. "중립"과 "투명"이 판매 업체 견적과의 근본적인 차이입니다.</p>
+  <p class="caption">그림 3 · 이 서비스가 서 있는 자리. "중립"과 "투명"이 판매 업체 견적과의 근본적인 차이입니다.</p>
   <p>참고로, 로봇이 상품 선반을 통째로 작업대까지 가져다주는 대형 방식(GTP)은 처음부터 로봇 업체가 창고 설계까지 통째로 맡는
   턴키 거래라, 중립 견적이 끼어들 자리가 구조적으로 좁습니다. 그래서 이 서비스의 첫 버전은 <b>기존 창고를 바꾸지 않고
   로봇 3~15대를 점진적으로 들이는 방식</b>(반송·피킹 보조)에 집중합니다 — 견적 고민이 실제로 일어나는 곳이 여기이기 때문입니다.</p>
