@@ -40,11 +40,13 @@
   .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
   .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
   .doc-eyebrow b{color:var(--amber);font-weight:600}
-  .flow-nav{display:flex;justify-content:space-between;gap:14px;margin:8px 0 40px}
-  .flow-nav a{flex:1;max-width:420px;background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
+  .flow-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px 0 40px}
+  .flow-nav a{background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
   .flow-nav a:hover{border-color:var(--amber)}
-  .flow-nav .next{text-align:right;margin-left:auto}
+  .flow-nav .prev{grid-column:1}
+  .flow-nav .next{grid-column:2;text-align:right}
   .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
+  @media(max-width:640px){.flow-nav{grid-template-columns:1fr}.flow-nav .prev,.flow-nav .next{grid-column:auto;text-align:left}}
   h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
   h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
   .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
@@ -62,7 +64,7 @@
   section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
   .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
   .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
-  h2{font-size:20px;font-weight:800;letter-spacing:-.01em}
+  h2{font-size:clamp(22px,2.6vw,34px);font-weight:800;line-height:1.3;letter-spacing:-.025em}
   .sec-body{padding:16px 26px 26px}
   h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
   h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
@@ -82,6 +84,12 @@
   details.more[open] summary::before{content:"▾ "}
   details.more>*:not(summary){margin-left:14px;margin-right:14px}
   details.more>*:last-child{margin-bottom:14px}
+
+  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
+  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
+  .kcard b{display:block;font-size:15px;margin-bottom:4px}
+  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
 
   code{font-family:var(--mono);font-size:.92em;background:#232B34;padding:1px 5px;border:1px solid var(--grid)}
 
@@ -155,18 +163,15 @@
 
 <!-- ══════════ 도입 — 읽는 법 ══════════ -->
 <section id="dintro">
-  <div class="sec-head"><span class="sec-no">READ ME</span><h2>이 문서를 읽는 법</h2></div>
+  <div class="sec-head"><span class="sec-no">READ ME · 이 문서를 읽는 법</span><h2>권고는 제안, 개괄이 우선이다</h2></div>
   <div class="sec-body">
-    <p class="lead">이 문서는 AMR 견적 시뮬레이션 서비스를 실제로 만들기 전에 <b>팀이 합의해야 할 결정 항목 60여 개</b>를
-    컴포넌트별로 모은 목록입니다. 각 항목에는 선택지와 함께 "권고"를 달아 두었는데,
-    권고는 논의를 시작하기 위한 기본값 제안일 뿐 확정이 아닙니다.
-    2026-08-19 전체 개괄(<a href="amr_overview.html">MAIN 02 전체 조망</a>) 확정으로 상당수 권고가 팀 방향으로 승격되었습니다 —
-    이 문서와 개괄의 서술이 다르면 <b>개괄이 우선</b>합니다.</p>
-    <ul class="rules">
-      <li>표의 <span class="star">★</span> 표시는 <b>크리티컬 패스</b> — 이 결정이 먼저 정해져야 다른 결정들을 진행할 수 있다는 뜻입니다. 아래 SEC 00에 7건을 모아 두었습니다.</li>
-      <li>회의에서 쓸 때: SEC 00의 7건부터 확정 → 이후 각 파트 담당자가 자기 섹션(A~J)을 펼쳐 담당 항목을 결정합니다. 본문은 섹션별 핵심만 보이고, 전체 결정 표는 접혀 있습니다.</li>
-      <li>결정이 끝난 항목은 ADR(Architecture Decision Record, "무엇을 왜 그렇게 정했나"를 남기는 짧은 기록 문서)로 저장소에 남깁니다(J3 참조).</li>
-    </ul>
+    <p class="lead">팀이 합의해야 할 결정 60여 건의 목록입니다 — 각 "권고"는 논의용 기본값이며,
+    <a href="amr_overview.html">개괄(MAIN 02)</a>과 서술이 다르면 개괄이 우선합니다.</p>
+    <div class="kcards">
+      <div class="kcard"><b><span class="star">★</span> = 크리티컬 패스</b><span>먼저 정해져야 다른 결정이 진행되는 항목 — SEC 00에 7건</span></div>
+      <div class="kcard s"><b>회의에서 쓰는 법</b><span>SEC 00 확정 → 파트별로 자기 섹션(A~J)을 펼쳐 결정. 전체 표는 접혀 있음</span></div>
+      <div class="kcard g"><b>결정하면 ADR로</b><span>"무엇을 왜"를 짧은 기록으로 저장소에 남긴다 (J3)</span></div>
+    </div>
 
     <h3>시스템 지도 — 각 섹션(A~J)이 시스템의 어디를 결정하는가</h3>
     <p>아래 그림이 만들려는 시스템의 전체 모습입니다. 상자 안 괄호의 알파벳이 이 문서의 섹션 번호와 일치하므로,
@@ -238,10 +243,9 @@
 
 <!-- ══════════ D0 크리티컬 패스 ══════════ -->
 <section id="d0">
-  <div class="sec-head"><span class="sec-no">SEC 00</span><h2>크리티컬 패스 요약 — 1~2주차에 반드시 확정</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 00 · 크리티컬 패스 (1~2주차 확정)</span><h2>이 7건을 동결해야 병렬이 시작된다</h2></div>
   <div class="sec-body">
-    <p class="lead">다른 결정들이 줄줄이 걸려 있는 결정 7건입니다. 이것부터 팀 합의로 동결해야 나머지 항목들을 파트별로 병렬 진행할 수 있습니다.
-    각 항목이 왜 크리티컬한지 이유를 함께 적었습니다.</p>
+    <p class="lead">다른 결정이 줄줄이 걸린 7건 — 팀 합의로 동결해야 나머지가 파트별 병렬로 갑니다.</p>
     <div class="milestones">
       <div class="ms"><span class="ms-tag">CP 1 · A1–A3</span><h4>맵 표현 · 셀 크기 · 좌표계</h4><p>맵을 격자로 볼지 그래프로 볼지, 칸 하나를 몇 m로 할지, 좌표의 기준 원본을 무엇으로 삼을지. 이 셋이 정해져야 맵 에디터·시뮬레이션·3D 검증이 같은 세계를 두고 말할 수 있다. 여기가 흔들리면 전 컴포넌트를 다시 고친다.</p></div>
       <div class="ms"><span class="ms-tag">CP 2 · B1</span><h4>시간 모델 — 고정 틱</h4><p>시뮬레이션 시간을 1초 단위 틱으로 끊을지 연속으로 흘릴지. MAPF의 예약 테이블, 재계획 주기, 통계 수집이 전부 이 선택 위에 세워진다.</p></div>
@@ -256,10 +260,9 @@
 
 <!-- ══════════ DA ══════════ -->
 <section id="da">
-  <div class="sec-head"><span class="sec-no">SEC A</span><h2>데이터 모델 / 입력 스키마 — 시스템 전체의 계약</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC A · 데이터 모델 / 입력 스키마</span><h2>스키마가 시스템 전체의 계약이다</h2></div>
   <div class="sec-body">
-    <p class="lead">맵·주문·로봇을 어떤 형식의 데이터로 표현할지 정하는 곳입니다. 여기서 정한 스키마가 맵 에디터·시뮬레이션 엔진·3D 검증이
-    공유하는 "계약"이 되기 때문에, 한 번 정하면 바꾸는 비용이 가장 큰 섹션입니다.</p>
+    <p class="lead">에디터·엔진·3D 검증이 공유하는 계약이라, 한 번 정하면 바꾸는 비용이 가장 큰 섹션입니다.</p>
     <p><span class="star">★</span> 핵심 — <b>A1</b> 그리드 기반 + 내부 그래프 변환 · <b>A2</b> 1셀 = 로봇 풋프린트(≈1m) · <b>A3</b> 미터 세계 좌표를 단일 원본으로.</p>
     <details class="more"><summary>A. 전체 결정 표 A1~A12 + 용어 — 펼쳐 보기</summary>
     <div class="tbl-scroll"><table>
@@ -290,10 +293,9 @@
 
 <!-- ══════════ DB ══════════ -->
 <section id="db">
-  <div class="sec-head"><span class="sec-no">SEC B</span><h2>SimPy DES 엔진</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC B · SimPy DES 엔진</span><h2>충실도와 속도의 절충이 엔진이다</h2></div>
   <div class="sec-body">
-    <p class="lead">견적 엔진의 본체인 SimPy 시뮬레이션을 어떻게 굴릴지 정합니다. 모든 항목에 공통으로 깔린 긴장은
-    "현실을 얼마나 충실히 담을까"와 "수백 번 돌릴 만큼 빠를까" 사이의 절충입니다.</p>
+    <p class="lead">모든 항목의 공통 긴장은 "현실 충실도"와 "수백 런을 감당할 속도"의 절충입니다.</p>
     <p><span class="star">★</span> 핵심 — <b>B1</b> 고정 틱(1틱 = 1셀 이동) · <b>B4</b> RHCR식 고정 윈도우 재계획 · <b>B7</b> 워밍업 구간 절단 필수.</p>
     <details class="more"><summary>B. 전체 결정 표 B1~B10 + 용어 — 펼쳐 보기</summary>
     <div class="tbl-scroll"><table>
@@ -322,11 +324,9 @@
 
 <!-- ══════════ DC ══════════ -->
 <section id="dc">
-  <div class="sec-head"><span class="sec-no">SEC C</span><h2>디스패처 / AI</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC C · 디스패처 / AI</span><h2>교체 가능한 두뇌, 후퇴선 있는 연구</h2></div>
   <div class="sec-body">
-    <p class="lead">"어느 로봇이 어느 작업을 맡을지"를 정하는 두뇌입니다. 규칙 기반 → 헝가리안 → 강화학습 순으로
-    갈아끼우며 성능을 비교하는 것이 서비스의 차별점이므로, 교체 가능한 인터페이스(C1)와
-    강화학습이 실패했을 때의 대비선(C4)이 이 섹션의 핵심입니다.</p>
+    <p class="lead">규칙 → 헝가리안 → 강화학습으로 갈아끼우는 비교가 차별점이므로, 교체 인터페이스(C1)와 RL 후퇴선(C4)이 핵심입니다.</p>
     <p><span class="star">★</span> 핵심 — <b>C4</b> RL 맵 일반화가 최대 연구 리스크: 맵 불변 관측 + 랜덤 레이아웃 학습, 실패 시 휴리스틱으로 후퇴(사전 합의).</p>
     <details class="more"><summary>C. 전체 결정 표 C1~C8 + 용어 — 펼쳐 보기</summary>
     <div class="tbl-scroll"><table>
@@ -354,10 +354,9 @@
 
 <!-- ══════════ DD ══════════ -->
 <section id="dd">
-  <div class="sec-head"><span class="sec-no">SEC D</span><h2>경로계획 — MAPF 구현</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC D · 경로계획 (MAPF)</span><h2>v1 플래너는 정해져 있다 — 세부만 남았다</h2></div>
   <div class="sec-body">
-    <p class="lead">SimPy 안에 들어갈 경로계획기(<a class="term" href="glossary_robotics.html#mapf">MAPF</a>)의 구현 수준을 정합니다.
-    v1 방식 — 우선순위 순차 계획 + 시공간 예약 테이블 — 은 이미 정해져 있고, 여기서는 그 세부 규칙만 남았습니다.</p>
+    <p class="lead">v1 방식(우선순위 순차 계획 + 시공간 예약 테이블)은 기결정 — 남은 것은 세부 규칙뿐입니다.</p>
     <p>핵심 — <b>D1</b> v1 플래너 기결정 · <b>D5</b> 유휴 로봇은 대기 구역 복귀(통로 점거 방지) · <b>D6</b> 공개 벤치마크로 정합성 검증.</p>
     <details class="more"><summary>D. 전체 결정 표 D1~D6 + 용어 — 펼쳐 보기</summary>
     <div class="tbl-scroll"><table>
@@ -381,10 +380,9 @@
 
 <!-- ══════════ DE ══════════ -->
 <section id="de">
-  <div class="sec-head"><span class="sec-no">SEC E</span><h2>백엔드 / 인프라</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC E · 백엔드 / 인프라</span><h2>스윕 한 번 = 잡 한 벌</h2></div>
   <div class="sec-body">
-    <p class="lead">수백 개의 시뮬레이션 런을 실제로 돌리고 결과를 저장하는 기반 설비입니다. 목표는 화려함이 아니라
-    "스윕 한 번 = 잡 한 벌"이 실패 없이 도는 것입니다.</p>
+    <p class="lead">목표는 화려함이 아니라 수백 런의 병렬 실행이 실패 없이 도는 것입니다.</p>
     <p><span class="star">★</span> 핵심 — <b>E2</b> K8s Indexed Job으로 스윕 병렬화(별도 큐 불필요) · <b>E5</b> 집계 저장 기본 + 대표 런만 상세 보존(리플레이용).</p>
     <details class="more"><summary>E. 전체 결정 표 E1~E10 + 용어 — 펼쳐 보기</summary>
     <div class="tbl-scroll"><table>
@@ -414,11 +412,9 @@
 
 <!-- ══════════ DF ══════════ -->
 <section id="df">
-  <div class="sec-head"><span class="sec-no">SEC F</span><h2>에뮬레이션 계층 — ROS2 + Isaac Sim</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC F · 에뮬레이션 (ROS2 + Isaac)</span><h2>두 계층이 같은 시스템을 시뮬레이션해야 한다</h2></div>
   <div class="sec-body">
-    <p class="lead">빠른 SimPy 결과를 믿어도 되는지, 물리엔진이 있는 <a class="term" href="glossary_robotics.html#isaac">Isaac Sim</a>에서
-    소수의 로봇을 실제처럼 굴려 확인하는 검증 계층입니다. 두 계층이 "같은 시스템"을 시뮬레이션하도록 만드는 것(F1)이
-    이 섹션의 전부라고 해도 과언이 아닙니다.</p>
+    <p class="lead">SimPy의 답을 <a class="term" href="glossary_robotics.html#isaac">Isaac Sim</a>에서 실제 스택으로 재검증합니다 — 그 정합성의 성립 조건이 F1입니다.</p>
     <p><span class="star">★</span> 핵심 — <b>F1</b> 경로는 VDA 5050 중앙 하달, Nav2는 구간 주행만(정합성 성립 조건) · <b>F5</b> RTF 실측으로 검증 스코프 상한 확정.</p>
     <details class="more"><summary>F. 전체 결정 표 F1~F9 + 용어 — 펼쳐 보기</summary>
     <div class="tbl-scroll"><table>
@@ -446,10 +442,9 @@
 
 <!-- ══════════ DG ══════════ -->
 <section id="dg">
-  <div class="sec-head"><span class="sec-no">SEC G</span><h2>프론트엔드</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC G · 프론트엔드</span><h2>리포트가 설득력 있게 보이는가가 기준이다</h2></div>
   <div class="sec-body">
-    <p class="lead">고객이 맵을 그리고 결과를 읽는 화면입니다. 모든 결정의 판단 기준은 한 가지 —
-    견적 리포트가 설득력 있게 보이는가.</p>
+    <p class="lead">고객이 맵을 그리고 결과를 읽는 화면 — 판단 기준은 이 한 가지입니다.</p>
     <p>핵심 — <b>G3</b> 구현 순서: 대수–처리량–TCO 곡선 → 병목 히트맵 → 대표 런 리플레이 · <b>G5</b> 스윕 매트릭스 실시간 채움.</p>
     <details class="more"><summary>G. 전체 결정 표 G1~G5 + 용어 — 펼쳐 보기</summary>
     <div class="tbl-scroll"><table>
@@ -472,10 +467,9 @@
 
 <!-- ══════════ DH ══════════ -->
 <section id="dh">
-  <div class="sec-head"><span class="sec-no">SEC H</span><h2>실험 설계 / 통계</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC H · 실험 설계 / 통계</span><h2>시드가 다르면 결과도 다르다 — 그래서 통계다</h2></div>
   <div class="sec-body">
-    <p class="lead">시뮬레이션 결과를 "통계적으로 믿을 수 있는 주장"으로 만드는 실험 규칙입니다.
-    같은 조건이라도 시드에 따라 결과가 흔들리므로, 몇 번 반복하고 어떻게 비교할지를 미리 정해 둡니다.</p>
+    <p class="lead">같은 조건도 시드에 따라 흔들리므로, 반복 횟수와 비교 방식을 미리 못 박습니다.</p>
     <p>핵심 — <b>H2</b> 95% 신뢰구간 항상 병기 · <b>H5</b> 최적점은 목표 충족 최소 대수와 ROI 최대점 둘 다 제시, 선택은 고객에게.</p>
     <details class="more"><summary>H. 전체 결정 표 H1~H5 + 용어 — 펼쳐 보기</summary>
     <div class="tbl-scroll"><table>
@@ -498,14 +492,13 @@
 
 <!-- ══════════ DI ══════════ -->
 <section id="di">
-  <div class="sec-head"><span class="sec-no">SEC I·J</span><h2>검증(V&amp;V — VDI 3633) · 프로젝트 운영</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC I·J · 검증(VDI 3633) · 운영</span><h2>가정을 명시하고, 검산하고, 기록한다</h2></div>
   <div class="sec-body">
-    <p class="lead">만든 시뮬레이션이 맞다는 근거를 어떻게 남길지(V&amp;V)와 팀 운영 규칙입니다.
-    VDI 3633은 시뮬레이션 프로젝트의 검증 절차를 정리한 독일 공학 지침으로, "가정을 명시하고 검산한다"는 이 문서 전체 원칙의 출처입니다.</p>
-    <ul class="rules">
-      <li><b>Verification(검증)</b> — "모델을 설계대로 올바르게 구현했는가". 예: 생성한 주문 수와 완료+미완료 수가 정확히 맞아떨어지는지 확인</li>
-      <li><b>Validation(타당성 확인)</b> — "모델이 현실을 충분히 닮았는가". 예: SimPy 결과를 Isaac 실측·공개 벤치마크와 비교</li>
-    </ul>
+    <p class="lead">V&amp;V의 준거는 VDI 3633 — "가정을 명시하고 검산한다"가 이 문서 전체의 원칙입니다.</p>
+    <div class="kcards">
+      <div class="kcard g"><b>Verification — 올바르게 만들었나</b><span>예: 생성 주문 수 = 완료 + 미완료가 정확히 맞아떨어지는지</span></div>
+      <div class="kcard s"><b>Validation — 현실을 닮았나</b><span>예: SimPy 결과를 Isaac 실측·공개 벤치마크와 비교</span></div>
+    </div>
     <p>핵심 — <b>J1</b> 4대 계약(입력 스키마·Kafka 스키마·디스패처 인터페이스·VDA 5050 서브셋)을 1주차에 동결 · <b>J2</b> 데모 폴백 준비, what-if만은 라이브 사수.</p>
     <details class="more"><summary>I·J. 전체 결정 표 I1~I3 · J1~J3 — 펼쳐 보기</summary>
     <h3>I — 검증</h3>

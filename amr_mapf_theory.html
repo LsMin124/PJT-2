@@ -40,11 +40,13 @@
   .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
   .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
   .doc-eyebrow b{color:var(--machine);font-weight:600}
-  .flow-nav{display:flex;justify-content:space-between;gap:14px;margin:8px 0 40px}
-  .flow-nav a{flex:1;max-width:420px;background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
+  .flow-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px 0 40px}
+  .flow-nav a{background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
   .flow-nav a:hover{border-color:var(--amber)}
-  .flow-nav .next{text-align:right;margin-left:auto}
+  .flow-nav .prev{grid-column:1}
+  .flow-nav .next{grid-column:2;text-align:right}
   .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
+  @media(max-width:640px){.flow-nav{grid-template-columns:1fr}.flow-nav .prev,.flow-nav .next{grid-column:auto;text-align:left}}
   h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
   h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
   .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
@@ -62,7 +64,7 @@
   section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
   .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
   .sec-no{font-family:var(--mono);font-size:12px;color:var(--machine);font-weight:700;letter-spacing:.1em}
-  h2{font-size:20px;font-weight:800;letter-spacing:-.01em}
+  h2{font-size:clamp(22px,2.6vw,34px);font-weight:800;line-height:1.3;letter-spacing:-.025em}
   .sec-body{padding:16px 26px 26px}
   h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
   h3::before{content:"";width:8px;height:8px;background:var(--machine);flex:none}
@@ -81,6 +83,12 @@
   details.more[open] summary::before{content:"▾ "}
   details.more>*:not(summary){margin-left:14px;margin-right:14px}
   details.more>*:last-child{margin-bottom:14px}
+
+  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
+  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
+  .kcard b{display:block;font-size:15px;margin-bottom:4px}
+  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
 
   pre{font-family:var(--mono);font-size:12px;line-height:1.7;background:#20272F;border:1px solid var(--panel-edge);border-left:4px solid var(--steel);padding:12px 16px;overflow-x:auto;margin:12px 0}
   code{font-family:var(--mono);font-size:.92em;background:#232B34;padding:1px 5px;border:1px solid var(--grid)}
@@ -156,19 +164,16 @@
 
 <!-- ══════════ T0 읽는 법 ══════════ -->
 <section id="t0">
-  <div class="sec-head"><span class="sec-no">READ ME</span><h2>이 문서를 읽는 법</h2></div>
+  <div class="sec-head"><span class="sec-no">READ ME · 이 문서를 읽는 법</span><h2>이론은 견적의 물리학이다</h2></div>
   <div class="sec-body">
-    <p class="lead">이 문서는 AMR 도입 견적 시뮬레이션 서비스가 내놓는 숫자의 <b>이론적 근거</b>를 정리한 학습 자료입니다.
-    제품 전체 그림은 <a href="amr_overview.html">MAIN 02 전체 조망(마스터 개괄)</a>에 있습니다.
-    구현 결정은 <a href="amr_decision_inventory.html">MAIN 05 결정 인벤토리</a>가 담당하고,
-    여기서는 "그 결정이 왜 타당한가"를 뒷받침하는 이론과 원 논문을 다룹니다. SEC 01~04는 이론, SEC 05는 문헌, SEC 06은 학습 순서입니다.</p>
+    <p class="lead">견적 숫자의 이론적 근거만 다룹니다 — 제품 전체는 <a href="amr_overview.html">MAIN 02</a>,
+    구현 결정은 <a href="amr_decision_inventory.html">MAIN 05</a> 담당입니다.</p>
 
-    <h3>이 문서가 답하는 질문</h3>
-    <ul class="rules">
-      <li>① 로봇을 늘리면 처리량은 왜 정비례로 늘지 않는가? — SEC 01</li>
-      <li>② 여러 로봇의 길찾기(MAPF)는 어떤 알고리즘 계보로 발전해 왔고, 본 프로젝트는 그중 무엇을 쓰는가? — SEC 02·03</li>
-      <li>③ 시뮬레이션이 낸 숫자가 맞다는 것을 무슨 이론으로 검산하는가? — SEC 04</li>
-    </ul>
+    <div class="kcards">
+      <div class="kcard"><b>Q1 · 왜 정비례로 안 느는가</b><span>로봇을 늘려도 처리량이 꺾이는 이유 → SEC 01</span></div>
+      <div class="kcard s"><b>Q2 · 어떤 알고리즘을 쓰는가</b><span>A*부터 RHCR까지의 계보와 v1의 선택 → SEC 02·03</span></div>
+      <div class="kcard g"><b>Q3 · 숫자를 어떻게 검산하는가</b><span>Little's Law·대기행렬·교통류 → SEC 04</span></div>
+    </div>
 
     <details class="more"><summary>먼저 알아둘 용어 6개 — 경로계획 문헌의 기본 어휘 (펼쳐 보기)</summary>
     <div class="tbl-scroll"><table>
@@ -186,10 +191,9 @@
 
 <!-- ══════════ T1 ══════════ -->
 <section id="t1">
-  <div class="sec-head"><span class="sec-no">SEC 01</span><h2>왜 경로계획이 견적의 핵심인가</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 01 · 왜 경로계획인가</span><h2>경합이 곡선의 모양을 결정한다</h2></div>
   <div class="sec-body">
-    <p class="lead">AMR 견적 시뮬레이션이 고객에게 내미는 핵심 그림은 <b>대수–처리량 곡선</b>입니다.
-    이 절에서는 그 곡선이 왜 경로계획 이론 없이는 그려질 수 없는지 설명합니다.</p>
+    <p class="lead">견적의 헤드라인인 <b>대수–처리량 곡선</b>은 경로계획 이론 없이는 그려지지 않습니다.</p>
 
     <svg viewBox="0 0 880 330" role="img" aria-label="로봇 대수와 처리량의 관계 곡선 — 선형 구간, 포화 구간, 과밀 구간" style="max-width:100%;height:auto;display:block;margin:14px 0">
       <line x1="70" y1="100" x2="850" y2="100" stroke="#2A323B" stroke-width="1"/>
@@ -213,9 +217,8 @@
       <text x="560" y="130" text-anchor="end" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">견적의 답 — 이 부근이 최적 대수</text>
       <text x="575" y="300" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#F08A32">N*</text>
     </svg>
-    <p class="soft">같은 창고에서 로봇을 늘려갈 때의 전형적인 곡선. "몇 대가 최적인가"의 답은 곡선이 꺾이는 지점(N*)에 있고,
-    꺾임의 원인은 <b>경로 경합</b>(통로 정체·교차로 대기·교착)입니다. 경합을 모델링하지 못하는 시뮬레이션은 낙관 편향 견적을 내놓습니다 —
-    경로계획 이론이 장식이 아니라 <b>곡선의 모양을 결정하는 물리학</b>인 이유입니다.</p>
+    <p class="soft">답은 곡선이 꺾이는 지점(N*)에 있고, 꺾임의 원인은 <b>경로 경합</b>입니다 —
+    경합을 모델링하지 못하는 시뮬레이션은 낙관 편향 견적을 냅니다.</p>
 
     <h3>용어 3계층 — 혼용 금지</h3>
     <svg viewBox="0 0 900 252" role="img" aria-label="할당·경로·주행 3계층 구조 — 이 문서는 2층 경로 계획을 다룬다" style="max-width:100%;height:auto;display:block;margin:14px 0">
@@ -239,11 +242,10 @@
 
 <!-- ══════════ T2 ══════════ -->
 <section id="t2">
-  <div class="sec-head"><span class="sec-no">SEC 02</span><h2>핵심 기반이론 — MAPF</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 02 · MAPF 스펙트럼</span><h2>A*에서 RHCR까지 — 우리는 실용선을 탄다</h2></div>
   <div class="sec-body">
-    <p class="lead"><a class="term" href="glossary_robotics.html#mapf"><b>MAPF(Multi-Agent Path Finding)</b></a>:
-    그리드/그래프 위에서 N개 에이전트의 서로 충돌하지 않는 경로 집합을 찾되, sum-of-costs 또는 makespan을 최소화하는 문제.
-    창고 AMR이 대표 응용이며 Amazon 물류로봇 연구가 이 분야를 견인했습니다.</p>
+    <p class="lead"><a class="term" href="glossary_robotics.html#mapf"><b>MAPF</b></a>는 N대의 무충돌 경로 집합을 찾아
+    총 이동시간을 최소화하는 문제 — 창고 AMR이 대표 응용입니다.</p>
 
     <h3>알고리즘 스펙트럼 — 학습 순서대로 7단계</h3>
     <div class="milestones">
@@ -267,10 +269,9 @@
 
 <!-- ══════════ T3 ══════════ -->
 <section id="t3">
-  <div class="sec-head"><span class="sec-no">SEC 03</span><h2>결합 문제와 데드락 이론</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 03 · TAPF · 데드락</span><h2>충돌보다 무서운 것은 교착이다</h2></div>
   <div class="sec-body">
-    <p class="lead">경로계획만 잘해서는 부족한 두 가지 — "누가 맡을지"와 결합하는 문제(TAPF),
-    그리고 충돌과는 다른 실패 모드인 교착(데드락)을 다룹니다.</p>
+    <p class="lead">경로계획만으로는 부족한 두 가지 — 할당과의 결합(TAPF), 그리고 교착(데드락)입니다.</p>
 
     <h3>TAPF — 할당·경로의 결합 최적화</h3>
     <p><a class="term" href="glossary_robotics.html#tapf"><b>TAPF</b></a>: 할당("누가")과 경로("어떻게")를 따로 풀면 준최적 —
@@ -283,8 +284,7 @@
     </details>
 
     <h3>데드락 이론 — AGV 고전 문헌</h3>
-    <p>좁은 외길에서 마주 본 두 로봇은 충돌하지 않았지만 영원히 못 움직입니다 — 충돌과는 다른 실패 모드인 <b>교착</b>이고,
-    시뮬레이션 지표 "데드락 발생 횟수"의 이론적 근거입니다.</p>
+    <p>좁은 외길에서 마주 본 두 로봇은 충돌 없이도 영원히 멈춥니다 — 그것이 <b>교착</b>이고, 시뮬레이션 지표 "데드락 발생 횟수"의 근거입니다.</p>
     <details class="more"><summary>교착 대응의 고전 기법 3가지 (펼쳐 보기)</summary>
     <ul class="rules">
       <li><b>Zone Control</b> — 구역당 1대만 허용 (반도체 팹 OHT 방식). 단순·보수적</li>
@@ -297,26 +297,27 @@
 
 <!-- ══════════ T4 ══════════ -->
 <section id="t4">
-  <div class="sec-head"><span class="sec-no">SEC 04</span><h2>SimPy 계층의 집계 이론 — 대기행렬 &amp; 흐름</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 04 · 집계 이론</span><h2>Little's Law로 검산한다</h2></div>
   <div class="sec-body">
-    <p class="lead">시뮬레이션이 뱉은 숫자를 검산·해석하는 세 가지 도구입니다.
-    (매 틱 CBS는 배속을 파괴하므로 SimPy 계층은 경량 MAPF를 내장하고, 결과를 대기행렬의 언어로 해석합니다.)</p>
-    <ul class="rules">
-      <li><b>대기행렬 이론 (M/M/c)</b> — 스테이션 앞에 로봇이 줄 서는 상황의 수학. 대기·병목 해석의 언어</li>
-      <li><b><a class="term" href="glossary_industrial.html#littleslaw">Little's Law</a> (L = λW)</b> — "체류 개수 = 도착률 × 체류시간".
-      집계가 이 등식에서 어긋나면 버그 — 검산 도구이자 VDI 3633 verification의 실체</li>
-      <li><b>교통류 fundamental diagram</b> — 임계 밀도를 넘으면 흐름이 오히려 감소.
-      "로봇을 더 넣었더니 처리량이 줄었다"(곡선 ③구간)의 이론적 설명</li>
-    </ul>
+    <p class="lead">매 틱 CBS는 배속을 파괴하므로 경량 MAPF를 내장하고, 결과는 아래 세 도구로 검산·해석합니다.</p>
+    <div class="kcards">
+      <div class="kcard s"><b>대기행렬 M/M/c</b><span>스테이션 앞 로봇 줄서기의 수학 — 대기·병목 해석의 언어</span></div>
+      <div class="kcard g"><b><a class="term" href="glossary_industrial.html#littleslaw">Little's Law</a> (L = λW)</b><span>등식이 어긋나면 버그 — 검산 도구이자 VDI 3633 verification의 실체</span></div>
+      <div class="kcard"><b>Fundamental diagram</b><span>임계 밀도를 넘으면 흐름 감소 — 곡선 ③구간(과밀)의 이론적 설명</span></div>
+    </div>
   </div>
 </section>
 
 <!-- ══════════ T5 ══════════ -->
 <section id="t5">
-  <div class="sec-head"><span class="sec-no">SEC 05</span><h2>핵심 문헌 리스트</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 05 · 핵심 문헌</span><h2>세 편이면 서사를 논문으로 말할 수 있다</h2></div>
   <div class="sec-body">
-    <p class="lead">필독은 3편입니다 — ① CBS(관문 논문) · ② RHCR(본 프로젝트의 직접 기반) · ③ MAPF 벤치마크(용어·검증 표준).
-    이 셋만 읽어도 프로젝트 서사를 논문 근거로 말할 수 있고, 전부 무료 공개본이 있습니다.</p>
+    <p class="lead">필독 3편 — 전부 무료 공개본이 있습니다.</p>
+    <div class="kcards">
+      <div class="kcard"><b>① CBS</b><span>이 분야의 관문 논문 — 충돌 제약 트리로 최적 보장 (Sharon et al. 2015)</span></div>
+      <div class="kcard g"><b>② RHCR</b><span>본 프로젝트의 직접 기반 — lifelong 창고의 표준 프레임 (Li et al. AAAI 2021)</span></div>
+      <div class="kcard s"><b>③ MAPF 벤치마크</b><span>용어·검증의 표준 — 자체 플래너 검증에 사용 (Stern et al. 2019)</span></div>
+    </div>
     <details class="more"><summary>문헌 6편 전체 + 링크 · 검색 키워드 (펼쳐 보기)</summary>
     <h3>필독 — 프로젝트 직결</h3>
     <div class="tbl-scroll"><table>
@@ -348,7 +349,7 @@
 
 <!-- ══════════ T6 ══════════ -->
 <section id="t6">
-  <div class="sec-head"><span class="sec-no">SEC 06</span><h2>학습 로드맵 — 이론 → 구현 직결 순</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 06 · 학습 로드맵</span><h2>주말 하나로 시작할 수 있다</h2></div>
   <div class="sec-body">
     <p class="lead">순서는 6단계 — A*·예약 테이블(주말) → Prioritized(v1 플래너) → CBS 정독 → RHCR·벤치마크 → Little's Law → (선택) TAPF·데드락.</p>
     <details class="more"><summary>로드맵 상세 표 — 소요·산출물 (펼쳐 보기)</summary>

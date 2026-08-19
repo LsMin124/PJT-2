@@ -57,7 +57,7 @@
   section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
   .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
   .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
-  h2{font-size:20px;font-weight:800;letter-spacing:-.01em}
+  h2{font-size:clamp(22px,2.6vw,34px);font-weight:800;line-height:1.3;letter-spacing:-.025em}
   .sec-body{padding:16px 26px 26px}
   h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
   h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
@@ -107,11 +107,13 @@
   .ms h4{font-size:14px;font-weight:700;margin:2px 0 2px}
   .ms p{font-size:12.5px;color:var(--ink-soft);margin:0}
 
-  .flow-nav{display:flex;justify-content:space-between;gap:14px;margin:8px 0 40px}
-  .flow-nav a{flex:1;max-width:420px;background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
+  .flow-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px 0 40px}
+  .flow-nav a{background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
   .flow-nav a:hover{border-color:var(--amber)}
-  .flow-nav .next{text-align:right;margin-left:auto}
+  .flow-nav .prev{grid-column:1}
+  .flow-nav .next{grid-column:2;text-align:right}
   .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
+  @media(max-width:640px){.flow-nav{grid-template-columns:1fr}.flow-nav .prev,.flow-nav .next{grid-column:auto;text-align:left}}
   details.more{border:1px solid var(--panel-edge);background:#20272F;margin:12px 0}
   details.more summary{cursor:pointer;padding:11px 14px;font-weight:700;font-size:13px;list-style:none}
   details.more summary::-webkit-details-marker{display:none}
@@ -119,6 +121,11 @@
   details.more[open] summary::before{content:"\25BE "}
   details.more>*:not(summary){margin-left:14px;margin-right:14px}
   details.more>*:last-child{margin-bottom:14px}
+  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
+  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
+  .kcard b{display:block;font-size:15px;margin-bottom:4px}
+  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
   footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
 
   @media (max-width:820px){
@@ -167,15 +174,14 @@
 
   <!-- ══════════ P0 한눈에 보기 ══════════ -->
   <section id="p0">
-    <div class="sec-head"><span class="sec-no">SEC 00</span><h2>한눈에 보기 — 주제는 어떻게 확정됐나</h2></div>
+    <div class="sec-head"><span class="sec-no">SEC 00 · 한눈에 보기</span><h2>다섯 번 검토하고, 여기 도착했다</h2></div>
     <div class="sec-body">
-      <p class="lead">이 문서는 주제가 확정되기까지의 논의 과정과 최종 제안을 기록한 문서입니다. 읽고 나면 아래 세 질문에 답할 수 있습니다.</p>
-      <ul class="rules">
-        <li>최종 주제는 정확히 무엇인가? (SEC 01)</li>
-        <li>어떤 후보들을 거쳐, 왜 각각을 접고 여기에 도달했는가? (SEC 02·04)</li>
-        <li>왜 시장 1위 세그먼트(GTP)가 아니라 반송·피킹 보조를 노리는가? (SEC 03)</li>
-      </ul>
-      <p style="margin-top:14px">주제는 한 번에 나온 것이 아니라 <b>다섯 단계의 검토와 기각</b>을 거쳤습니다. 아래 그림이 그 여정 전체입니다.</p>
+      <p class="lead">주제 확정까지의 논의 과정과 최종 제안의 기록 — 이 문서가 답하는 질문은 셋입니다.</p>
+      <div class="kcards">
+        <div class="kcard"><b>최종 주제는 무엇인가</b><span>한 문장 정의와 세 개의 축 — SEC 01</span></div>
+        <div class="kcard s"><b>왜 여기에 도달했나</b><span>다섯 단계의 검토와 기각 사유 — SEC 02·04</span></div>
+        <div class="kcard g"><b>왜 시장 1위(GTP)가 아닌가</b><span>매출이 아니라 구매 경로의 논리 — SEC 03</span></div>
+      </div>
 
       <svg viewBox="0 0 900 320" role="img" aria-label="주제 확정 여정: 디스패처 비교 연구부터 최종 견적 서비스까지 다섯 단계" style="max-width:100%;height:auto;display:block;margin:14px 0">
         <defs><marker id="tj-ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
@@ -211,7 +217,7 @@
 
   <!-- ══════════ P1 최종 제안 ══════════ -->
   <section id="p1">
-    <div class="sec-head"><span class="sec-no">SEC 01</span><h2>최종 제안 — 한 문장과 세 개의 축</h2></div>
+    <div class="sec-head"><span class="sec-no">SEC 01 · 최종 제안</span><h2>결론은 중립 견적 SaaS다</h2></div>
     <div class="sec-body">
       <div class="tagline"><small>ONE-SENTENCE DEFINITION</small>
         물류센터의 시설·물류 데이터를 받아, 시뮬레이션으로 AMR 대수별 처리량–비용–ROI를 <b>투명하게</b> 산출하고,
@@ -260,10 +266,9 @@
 
   <!-- ══════════ P2 확정 여정 ══════════ -->
   <section id="p2">
-    <div class="sec-head"><span class="sec-no">SEC 02</span><h2>확정 여정 — 다섯 단계의 검토와 이동</h2></div>
+    <div class="sec-head"><span class="sec-no">SEC 02 · 확정 여정</span><h2>여정 자체가 논증이다</h2></div>
     <div class="sec-body">
-      <p class="lead">각 단계에서 무엇을 검토했고, 무엇이 걸려서 다음으로 넘어갔는지의 기록입니다.
-      이 이동의 논리가 곧 "왜 이 주제인가"에 대한 답이기도 합니다.</p>
+      <p class="lead">각 단계에서 무엇이 걸려 다음으로 넘어갔는지의 기록 — 이 이동의 논리가 곧 "왜 이 주제인가"의 답입니다.</p>
       <details class="more"><summary>다섯 단계 상세 — 각 단계에서 무엇이 걸렸나 + 핵심 교훈 3가지</summary>
       <div class="milestones">
         <div class="ms">
@@ -304,10 +309,9 @@
 
   <!-- ══════════ P3 시장 근거 ══════════ -->
   <section id="p3">
-    <div class="sec-head"><span class="sec-no">SEC 03</span><h2>시장 근거 — 왜 반송·피킹 보조인가</h2></div>
+    <div class="sec-head"><span class="sec-no">SEC 03 · 시장 근거</span><h2>시장 1위가 아니라 구매 경로를 골랐다</h2></div>
     <div class="sec-body">
-      <p class="lead">"왜 시장 1위 세그먼트를 안 하나"는 반드시 나올 질문입니다.
-      답은 매출 크기가 아니라 <b>구매 경로</b>에 있습니다 — 중립 견적이 끼어들 자리가 있는 세그먼트는 따로 있습니다.</p>
+      <p class="lead">중립 견적이 끼어들 자리가 있는 세그먼트는 매출 순위가 아니라 <b>거래 방식</b>이 결정합니다.</p>
       <div class="tbl-scroll"><table>
         <tr><th style="width:20%">세그먼트</th><th style="width:16%">시장 비중</th><th style="width:34%">거래 방식</th><th style="width:30%">중립 견적의 자리</th></tr>
         <tr>
@@ -332,9 +336,9 @@
 
   <!-- ══════════ P4 기각된 이전 제안 ══════════ -->
   <section id="p4">
-    <div class="sec-head"><span class="sec-no">SEC 04</span><h2>기각된 이전 제안 — "불 꺼진 물류센터"</h2></div>
+    <div class="sec-head"><span class="sec-no">SEC 04 · 기각된 이전 제안</span><h2>데모가 아니라 제품이 필요했다</h2></div>
     <div class="sec-body">
-      <p class="lead">이 문서의 이전 판(REV A)은 전혀 다른 제안이었습니다. 기록으로 남깁니다.</p>
+      <p class="lead">이전 판(REV A)의 "불 꺼진 물류센터" 제안은 이 질문에 걸려 기각됐습니다 — 기록으로 남깁니다.</p>
       <details class="more"><summary>기각 사유와 남긴 것</summary>
       <p>이전 제안 <b>"불 꺼진 물류센터"</b>는 무인 풀필먼트 센터를 시뮬레이션으로 만들어
       무인 운영·자가 복구·What-if 예측의 6장면 시연을 보여주자는 것이었습니다.
@@ -348,9 +352,9 @@
 
   <!-- ══════════ P5 발표 메시지 ══════════ -->
   <section id="p5">
-    <div class="sec-head"><span class="sec-no">SEC 05</span><h2>발표 · 면접 핵심 메시지</h2></div>
+    <div class="sec-head"><span class="sec-no">SEC 05 · 발표 메시지</span><h2>청중이 다르면 첫 문장이 다르다</h2></div>
     <div class="sec-body">
-      <p class="lead">같은 프로젝트라도 듣는 사람에 따라 앞세울 메시지가 다릅니다. 청중별 정리입니다.</p>
+      <p class="lead">같은 프로젝트라도 듣는 사람에 따라 앞세울 메시지가 다릅니다.</p>
       <details class="more"><summary>청중별 메시지 표</summary>
       <div class="tbl-scroll"><table>
         <tr><th style="width:20%">청중</th><th>앞세울 메시지</th></tr>

@@ -29,11 +29,13 @@
   .titleblock{padding:30px 0 22px}
   .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:8px}
   .doc-eyebrow b{color:var(--amber);font-weight:600}
-  .flow-nav{display:flex;justify-content:space-between;gap:14px;margin:8px 0 40px}
-  .flow-nav a{flex:1;max-width:420px;background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
+  .flow-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px 0 40px}
+  .flow-nav a{background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
   .flow-nav a:hover{border-color:var(--amber)}
-  .flow-nav .next{text-align:right;margin-left:auto}
+  .flow-nav .prev{grid-column:1}
+  .flow-nav .next{grid-column:2;text-align:right}
   .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
+  @media(max-width:640px){.flow-nav{grid-template-columns:1fr}.flow-nav .prev,.flow-nav .next{grid-column:auto;text-align:left}}
   h1{font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-.02em}
   h1 .sub{display:block;font-size:.55em;font-weight:500;color:var(--ink-soft);margin-top:6px}
   nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
@@ -44,8 +46,14 @@
   nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
   main{padding:40px 0 80px}
   section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:28px;padding:24px 28px;scroll-margin-top:56px}
-  h2{font-size:19px;font-weight:800;letter-spacing:-.01em;margin-bottom:12px}
+  h2{font-size:clamp(19px,2.4vw,26px);font-weight:800;letter-spacing:-.02em;line-height:1.35;margin-bottom:12px}
   h2 .q{color:var(--amber);margin-right:8px}
+  .ans{font-size:17px;font-weight:800;border-left:4px solid var(--amber);padding-left:12px;margin:0 0 12px}
+  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:14px 0}
+  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
+  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
+  .kcard b{display:block;font-size:15px;margin-bottom:4px}
+  .kcard span{font-size:13px;color:var(--ink-soft);line-height:1.65;display:block}
   p{margin-bottom:12px}
   .note{margin-top:10px;padding:12px 16px;background:#20272F;border-left:3px solid var(--steel);font-size:14px}
   /* 고객 사용 여정 */
@@ -160,11 +168,9 @@
 
 <section id="i1">
   <h2><span class="q">Q.</span>무엇을 만드는 프로젝트인가요?</h2>
-  <p>창고를 운영하는 회사가 요즘 가장 많이 하는 고민 중 하나는 이것입니다 — <b>"운반 로봇(AMR)을 들이면 좋다는데,
-  우리 창고에는 몇 대가 맞을까? 그 돈이 언제 회수될까?"</b> 로봇은 대당 가격이 높아, 감으로 정하기에는 너무 큰 결정입니다.</p>
-  <p>이 프로젝트가 만드는 것은 그 질문에 답해 주는 <b>웹 서비스</b>입니다. 고객이 자기 창고의 모양과 주문 데이터를 넣으면,
-  컴퓨터 속에 그 창고를 그대로 지어 놓고 로봇 대수를 바꿔가며 수백 번 가동해 봅니다. 그 결과를
-  <b>"로봇 대수별 처리량–비용–투자 회수" 곡선</b>으로 보여주고, 고객이 곡선 위에서 직접 도입 규모를 선택하게 합니다.</p>
+  <p class="ans">"우리 창고엔 로봇 몇 대가 맞을까"에 숫자로 답하는 웹 서비스입니다.</p>
+  <p>고객이 창고 모양과 주문 데이터를 넣으면 컴퓨터 속에 그 창고를 지어 수백 번 가동해 보고,
+  결과를 <b>"대수별 처리량–비용–투자 회수" 곡선</b>으로 돌려줍니다 — 도입 규모는 곡선 위에서 고객이 직접 고릅니다.</p>
   <div class="note">공식 한 줄 정의: <b>"물류센터의 시설·물류 데이터를 받아, 시뮬레이션으로 AMR 대수별 처리량–비용–ROI를
   투명하게 산출하고, 고객이 곡선 위에서 직접 도입 규모를 선택하게 하는 중립 견적 SaaS."</b>
   제품 철학은 열 글자로 요약됩니다 — <b>선택은 고객이, 근거는 시스템이.</b></div>
@@ -242,10 +248,9 @@
 
 <section id="i3">
   <h2><span class="q">Q.</span>이런 서비스가 왜 필요한가요?</h2>
-  <p>지금 로봇 도입을 검토하는 회사가 견적을 받을 곳은 사실상 <b>로봇 판매 업체뿐</b>입니다. 그런데 판매 업체의 견적은
-  자기 로봇을 파는 쪽의 계산이고, 어떤 가정으로 그 숫자가 나왔는지 보여주지 않는 경우가 많습니다. 말하자면 <b>"블랙박스 견적"</b>입니다.</p>
-  <p>고객 입장에서는 "업체 말만 믿기는 불안한데, 직접 검증할 역량도 없는" 상황이 됩니다. 이 프로젝트는 그 사이에
-  <b>어느 로봇 업체와도 이해관계가 없는 중립 계산기</b>를 놓겠다는 것입니다.</p>
+  <p class="ans">지금의 로봇 견적이 "블랙박스"이기 때문입니다.</p>
+  <p>판매 업체의 견적은 파는 쪽의 계산이고 근거를 보여주지 않습니다 — 이 프로젝트는 그 자리에
+  <b>어느 로봇 업체와도 이해관계가 없는 중립 계산기</b>를 놓습니다.</p>
 
   <svg viewBox="0 0 900 205" role="img" aria-label="판매 업체의 블랙박스 견적과 중립 시뮬레이션 견적의 비교">
     <rect x="20" y="24" width="410" height="130" fill="#20272F" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
@@ -268,16 +273,12 @@
 
 <section id="i4">
   <h2><span class="q">Q.</span>컴퓨터가 계산한 견적을 어떻게 믿나요?</h2>
-  <p>좋은 질문이고, 이 프로젝트의 기술적 핵심이 바로 이 질문에 대한 답입니다. 세 겹의 장치가 있습니다.</p>
-  <table>
-    <tr><th style="width:150px">장치</th><th>내용</th></tr>
-    <tr><td><b>빠른 계산 + 정밀 검증</b></td><td>수백 번의 실험은 빠른 시뮬레이션이, 최적 한두 구성은 <b>물리 법칙이 적용되는 3D 세계</b>에서
-    실제 속도로 재검증합니다. 차이가 나면 빠른 계산 쪽을 보정합니다.</td></tr>
-    <tr><td><b>가정의 전면 공개</b></td><td>어떤 값을 가정했는지 리포트에 전부 명시하고, 가정을 수정하면 결과도 재계산됩니다.
-    숨기는 숫자가 없다는 것이 신뢰의 근거입니다.</td></tr>
-    <tr><td><b>통계적 정직함</b></td><td>조건마다 여러 번 돌려 <b>오차 범위(95% 신뢰구간)</b>와 민감도를 함께 공개합니다.
-    절차는 공학 지침(VDI 3633)을 따릅니다.</td></tr>
-  </table>
+  <p class="ans">계산 과정을 전부 보여주는 방식으로 믿게 만듭니다 — 장치는 세 겹입니다.</p>
+  <div class="kcards">
+    <div class="kcard"><b>빠른 계산 + 정밀 검증</b><span>수백 번의 실험은 빠른 시뮬레이션이, 최적 한두 구성은 물리 법칙이 적용되는 3D 세계에서 실제 속도로 재검증 — 차이가 나면 빠른 쪽을 보정</span></div>
+    <div class="kcard s"><b>가정의 전면 공개</b><span>어떤 값을 가정했는지 전부 명시하고, 가정을 수정하면 결과도 재계산 — 숨기는 숫자가 없다</span></div>
+    <div class="kcard g"><b>통계적 정직함</b><span>조건마다 여러 번 돌려 오차 범위(95% 신뢰구간)와 민감도를 함께 공개 — 절차는 공학 지침(VDI 3633) 준거</span></div>
+  </div>
   <div class="note">한 줄 요약: 이 견적은 "믿어 달라"가 아니라 <b>"계산 과정을 다 보여줄 테니 직접 확인하라"</b>는 방식으로 신뢰를 만듭니다.</div>
 </section>
 

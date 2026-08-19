@@ -40,11 +40,13 @@
   .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
   .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
   .doc-eyebrow b{color:var(--amber);font-weight:600}
-  .flow-nav{display:flex;justify-content:space-between;gap:14px;margin:8px 0 40px}
-  .flow-nav a{flex:1;max-width:420px;background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
+  .flow-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px 0 40px}
+  .flow-nav a{background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
   .flow-nav a:hover{border-color:var(--amber)}
-  .flow-nav .next{text-align:right;margin-left:auto}
+  .flow-nav .prev{grid-column:1}
+  .flow-nav .next{grid-column:2;text-align:right}
   .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
+  @media(max-width:640px){.flow-nav{grid-template-columns:1fr}.flow-nav .prev,.flow-nav .next{grid-column:auto;text-align:left}}
   h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
   h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
   .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
@@ -62,7 +64,12 @@
   section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
   .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
   .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
-  h2{font-size:20px;font-weight:800;letter-spacing:-.01em}
+  h2{font-size:clamp(22px,2.6vw,34px);font-weight:800;letter-spacing:-.025em;line-height:1.3}
+  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
+  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
+  .kcard b{display:block;font-size:15px;margin-bottom:4px}
+  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
   .sec-body{padding:16px 26px 26px}
   h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
   h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
@@ -158,7 +165,7 @@
 
 <!-- ══════════ O0 한눈에 보기 ══════════ -->
 <section id="o0">
-  <div class="sec-head"><span class="sec-no">SEC 00</span><h2>한눈에 보기</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 00 · 한눈에 보기</span><h2>데이터가 들어와, 곡선이 되어 나간다</h2></div>
   <div class="sec-body">
     <p class="lead"><b>"물류센터의 시설·물류 데이터를 받아, 시뮬레이션으로 AMR 대수별 처리량–비용–ROI를 투명하게 산출하고,
     고객이 곡선 위에서 직접 도입 규모를 선택하게 하는 중립 견적 SaaS."</b> — 제품 한 줄 정의</p>
@@ -253,15 +260,14 @@
 
 <!-- ══════════ O1 제품 정의 ══════════ -->
 <section id="o1">
-  <div class="sec-head"><span class="sec-no">SEC 01</span><h2>제품 정의 — 무엇을, 누구에게, 왜</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 01 · 제품 정의</span><h2>선택은 고객이, 근거는 시스템이</h2></div>
   <div class="sec-body">
-    <p class="lead">로봇 도입을 검토하는 창고 운영사는 지금까지 <b>판매자(로봇 업체)가 내미는 블랙박스 견적</b>에 의존해 왔습니다.
-    이 서비스는 그 자리에 <b>중립·투명 시뮬레이션</b>을 놓습니다 — 가정·계산 과정·불확실성을 전면 공개하고, 선택은 고객이 합니다.</p>
-    <ul class="rules">
-      <li><b>잠재 고객</b> — 창고를 보유하고 AGV/AMR 자동화 전환을 검토하는 모든 사업체</li>
-      <li><b>핵심 차별점</b> — 벤더 견적은 팔기 위한 숫자, 우리는 중립 시뮬레이션의 숫자. 가정과 과정을 전부 보여준다</li>
-      <li><b>제품 철학</b> — "선택은 고객이, 근거는 시스템이"</li>
-    </ul>
+    <p class="lead">판매자의 블랙박스 견적이 놓여 있던 자리에, 가정·과정·불확실성을 전면 공개하는 <b>중립 시뮬레이션</b>을 놓습니다.</p>
+    <div class="kcards">
+      <div class="kcard"><b>잠재 고객</b><span>창고를 보유하고 AGV/AMR 자동화 전환을 검토하는 모든 사업체</span></div>
+      <div class="kcard s"><b>핵심 차별점</b><span>벤더 견적은 팔기 위한 숫자 — 우리는 가정과 과정을 전부 보여주는 중립 시뮬레이션의 숫자</span></div>
+      <div class="kcard g"><b>제품 철학</b><span>선택은 고객이, 근거는 시스템이</span></div>
+    </div>
 
     <h3>왜 v1 타겟이 반송/피킹 보조 카테고리인가</h3>
     <p>시장 1위인 GTP(~38%)는 벤더 턴키 거래라 중립 견적의 자리가 없고, <b>반송/피킹 보조(~25~27%)</b>는
@@ -272,27 +278,26 @@
 
 <!-- ══════════ O2 2계층 시뮬레이션 ══════════ -->
 <section id="o2">
-  <div class="sec-head"><span class="sec-no">SEC 02</span><h2>2계층 시뮬레이션 — 왜 두 개가 필요한가</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 02 · 2계층 시뮬레이션</span><h2>빠르게 계산하고, 물리로 검증한다</h2></div>
   <div class="sec-body">
-    <p class="lead">"몇 대가 최적인가"를 알려면 조건을 바꿔가며 <b>수백 번</b> 돌려야 하고, "그 답이 실제 로봇 스택에서도 성립하는가"를 확인하려면
-    <b>실제와 같은 속도</b>로 정밀하게 돌려야 합니다. 한 시뮬레이터로는 둘 다 할 수 없습니다 — 물리적 필연으로 2계층입니다.</p>
+    <p class="lead">"수백 번 돌리는 속도"와 "실제와 같은 정밀함"은 한 시뮬레이터로 얻을 수 없습니다 — 물리적 필연으로 2계층입니다.</p>
     <div class="tbl-scroll"><table>
       <tr><th></th><th>SimPy DES (견적 본체)</th><th>ROS2 + Isaac SIL 에뮬레이션 (검증)</th></tr>
       <tr><td>답하는 질문</td><td>몇 대가 최적인가 (정량 스윕)</td><td>그 답이 실제 스택에서 성립하는가</td></tr>
       <tr><td>속도</td><td>수백~수천 배속</td><td><a class="term" href="glossary_robotics.html#rtf">RTF</a> ≈ 1 (실제 속도)</td></tr>
       <tr><td>실행 횟수</td><td>수백 런 (K8s 병렬)</td><td>최적 구성 1~2개만</td></tr>
     </table></div>
-    <ul class="rules">
-      <li><b>VDA 5050 경계 불변</b> — <a class="term" href="glossary_industrial.html#vda5050">VDA 5050</a> 경계선 위의 플랫폼 코드는 가상↔현실 전환 시 바뀌지 않는다. v2(실제 로봇 관제) 확장이 아키텍처에 내장되어 있다는 주장의 근거</li>
-      <li><b>보정 루프</b> — 에뮬레이션에서 실측한 구간 주행시간으로 SimPy의 유효속도 계수를 보정하고 재스윕</li>
-      <li><b>정합성 결정</b> — 경로는 중앙에서 하달(VDA 5050 노드/엣지), <a class="term" href="glossary_robotics.html#nav2">Nav2</a>는 구간 주행만. 두 계층이 같은 시스템을 시뮬레이션해야 오차 비교가 성립</li>
-    </ul>
+    <div class="kcards">
+      <div class="kcard"><b>VDA 5050 경계 불변</b><span><a class="term" href="glossary_industrial.html#vda5050">VDA 5050</a> 경계선 위의 플랫폼 코드는 가상↔현실 전환 시 바뀌지 않는다 — v2(실로봇 관제) 확장이 아키텍처에 내장</span></div>
+      <div class="kcard g"><b>보정 루프</b><span>에뮬레이션 실측 구간 주행시간 → SimPy 유효속도 계수 보정 → 재스윕</span></div>
+      <div class="kcard s"><b>정합성 결정</b><span>경로는 중앙 하달, <a class="term" href="glossary_robotics.html#nav2">Nav2</a>는 구간 주행만 — 두 계층이 같은 시스템을 시뮬레이션해야 오차 비교가 성립</span></div>
+    </div>
   </div>
 </section>
 
 <!-- ══════════ O3 팀 역할 ══════════ -->
 <section id="o3">
-  <div class="sec-head"><span class="sec-no">SEC 03</span><h2>팀 역할 — 6명 · 4트랙</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 03 · 팀 역할</span><h2>4개 트랙이 계약으로 병렬 주행한다</h2></div>
   <div class="sec-body">
     <p class="lead">여섯 명이 4개 트랙으로 나뉩니다. 각 트랙의 산출물이 시스템 지도(SEC 00)의 상자들과 1:1로 대응합니다.</p>
     <div class="tbl-scroll"><table>
@@ -308,16 +313,15 @@
 
 <!-- ══════════ O4 계약·다음 액션 ══════════ -->
 <section id="o4">
-  <div class="sec-head"><span class="sec-no">SEC 04</span><h2>4대 계약과 다음 액션</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 04 · 계약</span><h2>인터페이스 4개를 동결해야 병렬이 시작된다</h2></div>
   <div class="sec-body">
-    <p class="lead">여섯 명이 서로 기다리지 않고 병렬로 개발하려면, 컴포넌트 사이의 <b>계약(인터페이스)</b>을 먼저 동결해야 합니다.
-    주 1~2차에 아래 4개를 동결하는 것이 크리티컬 패스입니다.</p>
-    <ul class="rules">
-      <li><b>① 입력 JSON 스키마</b> — 시맨틱 그리드 + 수요 프로파일 + 운영 설문. 시스템 전체의 계약</li>
-      <li><b>② Kafka 이벤트 스키마</b> — 시뮬레이션 결과·진행률이 흐르는 형식</li>
-      <li><b>③ 디스패처 인터페이스</b> — 규칙·휴리스틱·RL을 갈아끼우는 경계</li>
-      <li><b>④ VDA 5050 서브셋</b> — 검증 트랙과 v2 확장의 인터페이스 (2.0, order/state/connection + instantActions)</li>
-    </ul>
+    <p class="lead">계약이 동결되어야 여섯 명이 서로 기다리지 않습니다 — 주 1~2차의 크리티컬 패스입니다.</p>
+    <div class="kcards">
+      <div class="kcard"><b>① 입력 JSON 스키마</b><span>시맨틱 그리드 + 수요 프로파일 + 운영 설문 — 시스템 전체의 계약</span></div>
+      <div class="kcard s"><b>② Kafka 이벤트 스키마</b><span>시뮬레이션 결과·진행률이 흐르는 형식</span></div>
+      <div class="kcard g"><b>③ 디스패처 인터페이스</b><span>규칙·휴리스틱·RL을 갈아끼우는 경계</span></div>
+      <div class="kcard"><b>④ VDA 5050 서브셋</b><span>검증 트랙과 v2 확장의 인터페이스 (2.0 · order/state/connection + instantActions)</span></div>
+    </div>
     <h3>다음 액션</h3>
     <ul class="rules">
       <li>입력 JSON 스키마 확정 — 3티어 인테이크 + 운영 설문 편입</li>
@@ -331,10 +335,9 @@
 
 <!-- ══════════ O5 인테이크 ══════════ -->
 <section id="oi">
-  <div class="sec-head"><span class="sec-no">SEC 05</span><h2>인테이크 3티어 — 고객 데이터가 들어오는 문</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 05 · 인테이크</span><h2>요구 데이터는 최소로, 전환율은 최대로</h2></div>
   <div class="sec-body">
-    <p class="lead">견적의 품질은 입력 데이터의 품질을 넘지 못합니다. 그래서 고객이 낼 수 있는 데이터 수준에 맞춰 문을 3개 만듭니다 —
-    쉽게 들어올수록 러프하게, 데이터를 더 낼수록 정밀하게.</p>
+    <p class="lead">견적 품질은 입력 품질을 넘지 못하므로, 고객이 낼 수 있는 데이터 수준에 맞춰 문을 3개 둡니다.</p>
     <div class="tbl-scroll"><table>
       <tr><th>티어</th><th>시설 데이터</th><th>수요 데이터</th><th>v1</th></tr>
       <tr><td><b>T1</b></td><td>웹 에디터로 직접 작도</td><td>폼 6개 숫자 → 러프 견적</td><td>포함</td></tr>
@@ -351,10 +354,9 @@
 
 <!-- ══════════ O6 기종 결정 ══════════ -->
 <section id="og">
-  <div class="sec-head"><span class="sec-no">SEC 06</span><h2>기종 결정 파이프라인 — 게이트와 스윕의 2단 분리</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 06 · 기종 결정</span><h2>카테고리는 룰이 거르고, 대수는 스윕이 정한다</h2></div>
   <div class="sec-body">
-    <p class="lead">원칙: <b>카테고리 = 시뮬레이션 모델 템플릿, 기종 = 파라미터.</b> "어떤 방식의 로봇인가"는 룰로 거르고,
-    "그 방식 안에서 어느 기종 몇 대인가"는 시뮬레이션으로 잽니다.</p>
+    <p class="lead">원칙: <b>카테고리 = 시뮬레이션 모델 템플릿, 기종 = 파라미터.</b></p>
     <ul class="rules">
       <li><b>1단 · 카테고리 게이트(룰)</b> — 하드 제약(반송 단위·중량, 통로 폭, 환경) + 소프트 신호(SKU×주문 구조, 재설계 수용성) → 권장/배제 + <b>배제 사유 명시</b>. 투명성 서사의 일부</li>
       <li><b>2단 · 카테고리 내 스윕(정량)</b> — 카탈로그 필터 → 기종 × 대수 2차원 스윕 → 등처리량 곡선 비교 ("A 기종 5대 = B 기종 7대")</li>
@@ -370,23 +372,23 @@
 
 <!-- ══════════ O7 출력 설계 ══════════ -->
 <section id="oo">
-  <div class="sec-head"><span class="sec-no">SEC 07</span><h2>출력 설계 — 고객이 받아 보는 것</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 07 · 출력 설계</span><h2>고객은 곡선 위에서 고른다</h2></div>
   <div class="sec-body">
     <p class="lead">최종 산출물은 숫자 하나가 아니라 <b>선택할 수 있는 곡선</b>입니다.</p>
-    <ul class="rules">
-      <li><b>대수–처리량 한계효용 곡선</b> — 곡선이 꺾이는 지점은 병목이 이동했다는 뜻. "로봇 추가 대신 스테이션 증설" 같은 컨설팅적 조언으로 이어진다 (곡선의 원리는 <a href="amr_mapf_theory.html">MAIN 04</a> SEC 01의 그림 참조)</li>
-      <li><b>TCO 곡선 중첩 → ROI 최적점</b> — 곡선 위를 클릭하면 그 구성의 상세 리포트</li>
-      <li><b>통계적 정직함</b> — 조건당 다중 시드 + 95% 신뢰구간 병기, 워밍업 절단, 민감도 분석(OAT)</li>
-      <li><b>투명성 3겹</b> — 가정 명세(수정 가능) / 과정(병목·대기열 분해) / 불확실성(신뢰구간·민감도)</li>
-    </ul>
+    <div class="kcards">
+      <div class="kcard"><b>한계효용 곡선</b><span>곡선이 꺾이는 지점 = 병목의 이동 → "로봇 추가 대신 스테이션 증설" 조언으로 (원리: <a href="amr_mapf_theory.html">MAIN 04</a>)</span></div>
+      <div class="kcard s"><b>TCO 중첩 → ROI 최적점</b><span>비용 곡선을 겹치고, 곡선 위 클릭 = 그 구성의 상세 리포트</span></div>
+      <div class="kcard g"><b>통계적 정직함</b><span>다중 시드 + 95% 신뢰구간 병기 · 워밍업 절단 · 민감도(OAT)</span></div>
+      <div class="kcard"><b>투명성 3겹</b><span>가정 명세(수정 가능) / 과정(병목·대기열 분해) / 불확실성(신뢰구간·민감도)</span></div>
+    </div>
   </div>
 </section>
 
 <!-- ══════════ O8 마일스톤 ══════════ -->
 <section id="o5">
-  <div class="sec-head"><span class="sec-no">SEC 08</span><h2>마일스톤 — 8주</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 08 · 마일스톤</span><h2>8주 — 견적을 먼저 완성한다</h2></div>
   <div class="sec-body">
-    <p class="lead">순서의 원칙: <b>Plan(견적)을 먼저 완성</b>합니다. 최악의 경우에도 완결된 견적 데모가 남도록, Isaac 검증은 마지막에 붙입니다.</p>
+    <p class="lead">최악의 경우에도 완결된 견적 데모가 남도록, Isaac 검증은 마지막에 붙입니다.</p>
     <svg viewBox="0 0 900 214" role="img" aria-label="8주 마일스톤 타임라인 — 다섯 구간" style="max-width:100%;height:auto;display:block;margin:14px 0">
       <text x="16" y="42" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#E8ECF1">M1 계약 동결 · DES 최소 루프 · RTF 실측</text>
       <rect x="400" y="28" width="114" height="18" fill="#8FB4D9"/>

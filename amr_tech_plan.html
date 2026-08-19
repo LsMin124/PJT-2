@@ -40,11 +40,13 @@
   .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
   .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
   .doc-eyebrow b{color:var(--steel);font-weight:600}
-  .flow-nav{display:flex;justify-content:space-between;gap:14px;margin:8px 0 40px}
-  .flow-nav a{flex:1;max-width:420px;background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
+  .flow-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px 0 40px}
+  .flow-nav a{background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
   .flow-nav a:hover{border-color:var(--amber)}
-  .flow-nav .next{text-align:right;margin-left:auto}
+  .flow-nav .prev{grid-column:1}
+  .flow-nav .next{grid-column:2;text-align:right}
   .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
+  @media(max-width:640px){.flow-nav{grid-template-columns:1fr}.flow-nav .prev,.flow-nav .next{grid-column:auto;text-align:left}}
   h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
   h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
   .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
@@ -62,7 +64,12 @@
   section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
   .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
   .sec-no{font-family:var(--mono);font-size:12px;color:var(--steel);font-weight:700;letter-spacing:.1em}
-  h2{font-size:20px;font-weight:800;letter-spacing:-.01em}
+  h2{font-size:clamp(22px,2.6vw,34px);font-weight:800;letter-spacing:-.025em;line-height:1.3}
+  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
+  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
+  .kcard b{display:block;font-size:15px;margin-bottom:4px}
+  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
   .sec-body{padding:16px 26px 26px}
   h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
   h3::before{content:"";width:8px;height:8px;background:var(--steel);flex:none}
@@ -158,11 +165,9 @@
 
 <!-- ══════════ S0 한눈에 ══════════ -->
 <section id="s0">
-  <div class="sec-head"><span class="sec-no">SEC 00</span><h2>한눈에 보기</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 00 · 한눈에 보기</span><h2>테스트한 코드가 그대로 배포된다</h2></div>
   <div class="sec-body">
-    <p class="lead">이 문서는 <a href="amr_overview.html">전체 조망(MAIN 02)</a>의 시스템을 실제로 만들기 위한
-    <b>기술 결정의 근거와 실행 순서</b>를 담습니다. 개별 결정의 전수 목록은 <a href="amr_decision_inventory.html">MAIN 05</a>가 맡고,
-    여기서는 뼈대가 되는 큰 결정들만 다룹니다.</p>
+    <p class="lead"><a href="amr_overview.html">전체 조망(MAIN 02)</a>의 시스템을 성립시키는 큰 기술 결정과 실행 순서 — 결정의 전수 목록은 <a href="amr_decision_inventory.html">MAIN 05</a>가 맡습니다.</p>
 
     <h3>이 문서가 답하는 질문</h3>
     <ul class="rules">
@@ -217,26 +222,23 @@
 
 <!-- ══════════ S1 아키텍처 ══════════ -->
 <section id="s1">
-  <div class="sec-head"><span class="sec-no">SEC 01</span><h2>아키텍처 상세 — 흐름과 결정</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 01 · 아키텍처</span><h2>모든 컴포넌트는 하나의 계약만 바라본다</h2></div>
   <div class="sec-body">
-    <p class="lead">전체 그림은 <a href="amr_overview.html#o0">MAIN 02 SEC 00의 시스템 지도</a>에 있습니다.
-    여기서는 그 그림을 성립시키는 기술 결정 세 가지를 설명합니다.</p>
-    <ul class="rules">
-      <li><b>단일 내부 표현이 계약</b> — 인테이크가 어떤 형태(에디터·엑셀·설문)로 들어와도 어댑터 계층이
-      "시맨틱 그리드 + 수요 프로파일 JSON" 하나로 변환한다. 이후 모든 컴포넌트는 이 표현만 바라본다</li>
-      <li><b>스윕은 K8s Indexed Job</b> — 스윕 1회 = 잡 1벌, 인덱스 = (기종 × 대수 × 시드) 조합. Kafka → TimescaleDB로 집계가 흐르고, Redis → WebSocket으로 진행률이 흐른다</li>
-      <li><b>경로 지시는 중앙 하달</b> — 플랫폼 코어가 VDA 5050 노드/엣지 경로를 내려보내고 <a class="term" href="glossary_robotics.html#nav2">Nav2</a>는 구간 주행만.
-      로봇이 스스로 경로를 고르면 두 시뮬레이션 계층이 서로 다른 시스템이 되어 정합성 비교가 무너진다</li>
-    </ul>
+    <p class="lead">전체 그림은 <a href="amr_overview.html#o0">MAIN 02 시스템 지도</a> — 여기서는 그 그림을 성립시키는 결정 세 가지입니다.</p>
+    <div class="kcards">
+      <div class="kcard"><b>단일 내부 표현 = 계약</b><span>인테이크가 어떤 형태로 들어와도 "시맨틱 그리드 + 수요 프로파일 JSON" 하나로 변환 — 이후 전부 이것만 바라본다</span></div>
+      <div class="kcard s"><b>스윕 = K8s Indexed Job</b><span>스윕 1회 = 잡 1벌, 인덱스 = 기종×대수×시드. Kafka→TimescaleDB 집계, Redis→WebSocket 진행률</span></div>
+      <div class="kcard g"><b>경로는 중앙 하달</b><span>VDA 5050 노드/엣지를 내려보내고 <a class="term" href="glossary_robotics.html#nav2">Nav2</a>는 구간 주행만 — 아니면 두 계층의 정합성 비교가 무너진다</span></div>
+    </div>
     <p class="soft">이 제품에 이르게 된 5단계 의사결정 여정과 교훈은 <a href="topic_journey.html#p2">APPENDIX A · 확정 여정</a>에 있습니다.</p>
   </div>
 </section>
 
 <!-- ══════════ S2 이론 기반 ══════════ -->
 <section id="s2">
-  <div class="sec-head"><span class="sec-no">SEC 02</span><h2>이론 기반 요약 — 경합이 곡선의 모양을 결정한다</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 02 · 이론 기반</span><h2>경합이 곡선의 모양을 결정한다</h2></div>
   <div class="sec-body">
-    <p class="lead">견적의 헤드라인인 대수–처리량 곡선이 꺾이는 이유는 <b>경로 경합</b>이고, 그 수학이
+    <p class="lead">대수–처리량 곡선이 꺾이는 이유는 <b>경로 경합</b>이고, 그 수학이
     <a class="term" href="glossary_robotics.html#mapf">MAPF</a>입니다. 계보(A*→예약 테이블→Prioritized→CBS→RHCR)·문헌·집계 이론 전체는
     <b><a href="amr_mapf_theory.html">MAIN 04 경로계획 이론</a></b> 한 곳에서 다룹니다.
     이 계획서에 남는 결정은 하나 — <b>SimPy 계층에는 경량 MAPF를 내장</b>(고정 틱, 1틱=1셀)하며, 매 틱 CBS는 배속을 파괴하므로 배제.</p>
@@ -245,10 +247,9 @@
 
 <!-- ══════════ S3 AI 파트 ══════════ -->
 <section id="s3">
-  <div class="sec-head"><span class="sec-no">SEC 03</span><h2>AI 파트 — 디스패처 3단 비교와 RL 리스크 관리</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 03 · AI 파트</span><h2>휴리스틱이 기본, RL은 후퇴선 있는 연구다</h2></div>
   <div class="sec-body">
-    <p class="lead">"어느 로봇이 어느 작업을"을 정하는 디스패처를 세 단계로 만들어 같은 조건에서 비교합니다 —
-    이것이 서비스의 연구적 차별점이자, 유일하게 실패 가능성이 있는 요소입니다.</p>
+    <p class="lead">디스패처 세 단계를 같은 조건에서 겨루게 합니다 — 유일하게 실패 가능성이 있는 연구 요소입니다.</p>
     <div class="tbl-scroll"><table>
       <tr><th>단계</th><th>방식</th><th>역할</th></tr>
       <tr><td><b>규칙</b></td><td>FIFO + 최근접</td><td>기준선(baseline). 주 1~2차 E2E 루프의 기본</td></tr>
@@ -268,10 +269,9 @@
 
 <!-- ══════════ S4 표준 스택 ══════════ -->
 <section id="s4">
-  <div class="sec-head"><span class="sec-no">SEC 04</span><h2>표준 스택 — 프로토콜에서 방법론 중심으로</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 04 · 표준 스택</span><h2>프로토콜이 아니라 방법론이 정체성이다</h2></div>
   <div class="sec-body">
-    <p class="lead">제품 정체성이 "로봇을 움직이는 시스템"에서 <b>"신뢰할 수 있는 분석"</b>으로 이동하면서,
-    따르는 표준도 통신 프로토콜 중심에서 <b>방법론(검증·KPI·안전) 중심</b>으로 재편했습니다.</p>
+    <p class="lead">정체성이 "로봇을 움직이는 시스템"에서 "신뢰할 수 있는 분석"으로 이동하며, 표준도 방법론(검증·KPI·안전) 중심으로 재편했습니다.</p>
     <div class="tbl-scroll"><table>
       <tr><th>표준</th><th>역할</th><th>채택 수준</th></tr>
       <tr><td><b>VDI 3633</b></td><td>DES 절차·V&amp;V — 투명성 주장의 표준 준거</td><td><span class="chip c-green">필수</span></td></tr>
@@ -286,21 +286,20 @@
 
 <!-- ══════════ S5 V&V ══════════ -->
 <section id="s5">
-  <div class="sec-head"><span class="sec-no">SEC 05</span><h2>V&amp;V 체계 — 이 숫자를 왜 믿어야 하는가</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 05 · V&amp;V</span><h2>검산 없는 숫자는 내보내지 않는다</h2></div>
   <div class="sec-body">
-    <p class="lead">"투명한 견적"이라는 주장은 검증 체계가 있어야 실체가 됩니다.
-    Verification은 "모델을 올바르게 구현했는가", Validation은 "모델이 현실을 닮았는가"입니다.</p>
-    <ul class="rules">
-      <li><b>Verification</b> — 보존 법칙(생성 주문 수 = 완료+미완료), Little's Law 검산, 로봇 1대 극한 케이스의 해석해 대조</li>
-      <li><b>Validation</b> — MAPF 공개 벤치마크 대조, SimPy vs 에뮬레이션 정합성(엣지 주행시간 → 사이클타임 → 처리량 3단 오차), 예측 오차 N% 공개</li>
-      <li><b>문서화</b> — 모든 가정·분포·보정 계수를 리포트 부록의 "가정 명세서"로 — 투명성 주장의 실체</li>
-    </ul>
+    <p class="lead">Verification은 "올바르게 구현했는가", Validation은 "현실을 닮았는가"입니다.</p>
+    <div class="kcards">
+      <div class="kcard"><b>Verification</b><span>보존 법칙(주문 수 일치) · Little's Law 검산 · 로봇 1대 극한 케이스의 해석해 대조</span></div>
+      <div class="kcard s"><b>Validation</b><span>MAPF 공개 벤치마크 대조 · SimPy vs 에뮬레이션 3단 오차(주행시간→사이클타임→처리량) · 예측 오차 공개</span></div>
+      <div class="kcard g"><b>문서화</b><span>모든 가정·분포·보정 계수를 리포트 부록 "가정 명세서"로 — 투명성 주장의 실체</span></div>
+    </div>
   </div>
 </section>
 
 <!-- ══════════ S6 크리티컬 패스 ══════════ -->
 <section id="s6">
-  <div class="sec-head"><span class="sec-no">SEC 06</span><h2>크리티컬 패스 — 주 1~2차에 동결할 결정 7건</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 06 · 크리티컬 패스</span><h2>이 7건을 동결해야 병렬이 시작된다</h2></div>
   <div class="sec-body">
     <p class="lead">다른 모든 작업이 이 결정들 위에 서 있습니다. 상세 배경은 <a href="amr_decision_inventory.html">MAIN 05</a>의 해당 섹션 참조.</p>
     <div class="milestones">
@@ -317,7 +316,7 @@
 
 <!-- ══════════ S7 로드맵 ══════════ -->
 <section id="s7">
-  <div class="sec-head"><span class="sec-no">SEC 07</span><h2>로드맵 — 8주와 생존 원칙</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 07 · 로드맵</span><h2>최악의 경우에도 완결된 데모가 남는다</h2></div>
   <div class="sec-body">
     <p class="lead">타임라인 그림은 <a href="amr_overview.html#o5">MAIN 02 SEC 08</a>에 있습니다. 여기서는 주차별 산출물과 순서의 이유를 적습니다.</p>
     <div class="tbl-scroll"><table>
@@ -337,7 +336,7 @@
 
 <!-- ══════════ S8 발표 메시지 ══════════ -->
 <section id="s8">
-  <div class="sec-head"><span class="sec-no">SEC 08</span><h2>발표·면접 핵심 메시지</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 08 · 발표 메시지</span><h2>청중마다 다른 층위로 말한다</h2></div>
   <div class="sec-body">
     <p class="lead">같은 시스템을 청중에 따라 다른 층위로 설명합니다. 발표 준비 시 펼쳐 보세요.</p>
     <details class="more"><summary>청중별 핵심 메시지 — 펼쳐 보기</summary>
