@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ROS2 랩 노트 — 로봇팔 101→201 (Lab Note)</title>
+<title>ROS2 랩 노트 — 로봇팔 101→202 (Lab Note)</title>
 <style>
   :root{
     --bg:#E9ECEE;
@@ -112,9 +112,9 @@
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow">DOC 04 · LAB-NOTE · <b>REV A</b> · 2026-08</div>
-      <h1>ROS2 랩 노트 — 로봇팔 101→201
-        <span class="sub">빌드부터 MoveIt2 제어까지 — 에이전트가 한 일을 내 것으로 만드는 복기 문서</span>
+      <div class="doc-eyebrow">DOC 04 · LAB-NOTE · <b>REV B</b> · 2026-08</div>
+      <h1>ROS2 랩 노트 — 로봇팔 101→202
+        <span class="sub">빌드부터 MoveIt2 제어·인터랙티브 IK까지 — 에이전트가 한 일을 내 것으로 만드는 복기 문서</span>
       </h1>
     </div>
     <div class="meta">
@@ -134,8 +134,9 @@
     <a href="#l3">03 URDF·TF</a>
     <a href="#l4">04 원격 시각화</a>
     <a href="#l5">05 제어</a>
-    <a href="#l6">06 장애 복기</a>
-    <a href="#l7">07 재현 과제</a>
+    <a href="#l6">06 인터랙티브 IK</a>
+    <a href="#l7">07 장애 복기</a>
+    <a href="#l8">08 재현 과제</a>
     <a class="nav-cross" href="glossary_robotics.html">용어사전 ↗</a>
   </div>
 </nav>
@@ -148,7 +149,7 @@
   <div class="sec-body">
     <p class="lead">이 노트는 코딩 에이전트가 대신 수행한 작업을 <b>결과가 아니라 과정으로</b> 복기하는 문서입니다.
     각 절은 <span class="chip c-green">쉽게 말하면</span> <span class="chip c-steel">직접 해보기</span> <span class="chip c-amber">스스로 점검</span> 순서로 구성했습니다.
-    읽기만 하면 부채는 그대로입니다 — <b>SEC 07의 재현 과제까지 스스로 마쳐야 상환 완료</b>입니다.</p>
+    읽기만 하면 부채는 그대로입니다 — <b>SEC 08의 재현 과제까지 스스로 마쳐야 상환 완료</b>입니다.</p>
 
     <p>완성된 시스템은 파이프라인 두 개입니다. 하나는 로봇을 <b>보이게</b> 하고, 하나는 <b>움직이게</b> 합니다.</p>
 <pre><code>[보이기]   URDF(구조) ─▶ robot_state_publisher ─▶ /tf ─▶ foxglove_bridge ─▶ 노트북 Foxglove
@@ -156,13 +157,16 @@
                         /joint_states (이 각도가 "어디서 오는가"가 각 단계의 차이)
 
 [움직이기] moveit_demo ─▶ /move_action ─▶ move_group(계획·OMPL)
-              ─▶ scaled_joint_trajectory_controller(실행) ─▶ mock hardware ─▶ /joint_states ─▶ (보이기로 합류)</code></pre>
+              ─▶ scaled_joint_trajectory_controller(실행) ─▶ mock hardware ─▶ /joint_states ─▶ (보이기로 합류)
+
+[202 확장]  Foxglove 클릭·타이핑·버튼 ─▶ ik_goto(위치 IK) / servo_jog(미분 IK) ─▶ 같은 실행 계층으로 합류 (SEC 06)</code></pre>
 
     <div class="tbl-scroll"><table>
       <tr><th>단계</th><th>만든 것</th><th>여기서 배우는 개념</th></tr>
       <tr><td><b>101 — 자작 팔</b></td><td>프리미티브 3관절 URDF + <code>joint_wave</code>(사인파 각도 발행)</td><td><a class="term" href="glossary_robotics.html#urdf">URDF</a> · /joint_states · TF · <a class="term" href="glossary_robotics.html#ros2">ROS2</a> 토픽</td></tr>
       <tr><td><b>101.5 — 진짜 팔</b></td><td>UR 공식 description 재사용, UR5e를 Foxglove에 렌더</td><td>오픈소스 재사용 · xacro · 메시 전송(fetchAsset)</td></tr>
       <tr><td><b>201 — 제어</b></td><td>UR 드라이버(mock) + MoveIt2 + <code>moveit_demo</code></td><td><a class="term" href="glossary_robotics.html#ros2control">ros2_control</a> · <a class="term" href="glossary_robotics.html#moveit2">MoveIt2</a> · 액션</td></tr>
+      <tr><td><b>202 — 인터랙티브 IK</b></td><td><code>ik_goto</code>(클릭·타이핑 목표) + <code>servo_jog</code>(실시간 조그)</td><td>위치 IK · 미분 IK · MoveIt Servo · 컨트롤러 전환</td></tr>
     </table></div>
 
     <h3>파일 지도 — ~/ros2_ws/src/arm101</h3>
@@ -174,7 +178,9 @@
       <tr><td><code>arm101/joint_wave.py</code></td><td>관절 각도를 지어내서 /joint_states로 발행하는 노드</td><td>④</td></tr>
       <tr><td><code>launch/view_arm.launch.py</code></td><td>자작 팔 시각화 3종 세트 실행</td><td>⑤</td></tr>
       <tr><td><code>launch/view_ur.launch.py</code></td><td>UR5e 버전 — xacro 변환이 추가된 것만 다름</td><td>⑥</td></tr>
-      <tr><td><code>arm101/moveit_demo.py</code></td><td>MoveGroup 액션으로 관절 목표를 보내는 제어 클라이언트</td><td>⑦ 마지막</td></tr>
+      <tr><td><code>arm101/moveit_demo.py</code></td><td>MoveGroup 액션으로 관절 목표를 보내는 제어 클라이언트</td><td>⑦</td></tr>
+      <tr><td><code>arm101/ik_goto.py</code></td><td>PoseStamped 목표 → /compute_ik → MoveGroup 실행. 위치 IK 클라이언트</td><td>⑧</td></tr>
+      <tr><td><code>arm101/servo_jog.py</code></td><td>Teleop Twist → MoveIt Servo 릴레이 + 컨트롤러 자동 전환</td><td>⑨ 마지막</td></tr>
     </table></div>
     <p class="soft">이 순서대로 한 파일씩 열어 읽으면서 아래 절들을 병행하는 것을 권장.</p>
   </div>
@@ -338,22 +344,85 @@ ros2 run arm101 moveit_demo          # ← 이 터미널만 ~/ros2_ws/install/se
     <div class="plain try"><span class="pl-tag">직접 해보기</span>
     ① <code>moveit_demo.py</code>의 PRESETS에 자세를 하나 추가하고 CYCLE_ORDER에 끼워 넣어 4자세 순환으로 만들기.<br>
     ② 컨트롤러 상태 확인(ros2controlcli 미설치 시): <code>ros2 service call /controller_manager/list_controllers controller_manager_msgs/srv/ListControllers</code><br>
-    ③ 일부러 -4 재현: switch_controller 서비스로 jtc를 활성화해 데모를 돌려보고, 다시 scaled로 복구 — SEC 06 사건 4를 몸으로 익히는 실습.</div>
+    ③ 일부러 -4 재현: switch_controller 서비스로 jtc를 활성화해 데모를 돌려보고, 다시 scaled로 복구 — SEC 07 사건 4를 몸으로 익히는 실습.</div>
 
     <div class="plain quiz"><span class="pl-tag">스스로 점검</span>
     ① joint_wave와 이 스택을 동시에 켜면 어떤 증상이 나타날까?
     ② "계획은 성공했는데 실행이 실패했다"는 것을 로그의 어떤 문장으로 구분할 수 있나?
     <details><summary>답 보기</summary>
-    ① /joint_states에 발행자가 둘이 되어 TF가 두 자세 사이를 널뛰듯 튄다. 실제로 pkill 잔존 프로세스 때문에 겪었다(SEC 06 사건 5).
+    ① /joint_states에 발행자가 둘이 되어 TF가 두 자세 사이를 널뛰듯 튄다. 실제로 pkill 잔존 프로세스 때문에 겪었다(SEC 07 사건 5).
     ② move_group 로그의 "Solution found but controller failed during execution" — Solution found(계획 성공)와 controller failed(실행 실패)가 한 문장에 있다.</details></div>
   </div>
 </section>
 
-<!-- ══════════ L6 장애 복기 ══════════ -->
+<!-- ══════════ L6 인터랙티브 IK ══════════ -->
 <section id="l6">
-  <div class="sec-head"><span class="sec-no">SEC 06</span><h2>장애 복기 — 삽질이 진짜 교재</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 06</span><h2>인터랙티브 IK — 202: 클릭 · 타이핑 · 조그</h2></div>
   <div class="sec-body">
-    <p class="lead">이번 실습에서 만난 장애 7건. 각각 "증상 → 원인 → 챙길 교훈"으로 정리했습니다. 프로젝트 본편에서 같은 부류의 문제를 다시 만납니다.</p>
+    <p class="lead">201의 moveit_demo는 <b>관절 공간</b> 목표("각 관절을 이 각도로")였습니다.
+    202는 <b>작업 공간</b>으로 올라갑니다 — "툴 끝을 저 좌표에"를 사람이 실시간으로 지시하고, 관절 각도는 IK가 풀게 합니다.</p>
+
+    <h3>FK · IK · 미분 IK — 한 표로</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th>문제</th><th>입력 → 출력</th><th>우리 코드에서</th></tr>
+      <tr><td>FK (정기구학)</td><td>관절값 q → 툴 자세 x</td><td>robot_state_publisher가 TF를 만들 때 (SEC 03)</td></tr>
+      <tr><td>위치 IK</td><td>목표 자세 x → 관절값 q</td><td><code>ik_goto</code>가 <code>/compute_ik</code> 서비스로 한 방에 풀이</td></tr>
+      <tr><td>미분(속도) IK</td><td>툴 속도 ẋ → 관절 속도 q̇</td><td><code>servo_jog</code> → MoveIt Servo가 4ms마다 자코비안 역산</td></tr>
+    </table></div>
+
+<pre><code>[클릭·타이핑]  Foxglove 3D 패널 Publish pose(바닥 클릭) / Publish 패널(z까지 타이핑)
+      ─▶ /goal_pose (PoseStamped) ─▶ ik_goto ─▶ /compute_ik(관절해) ─▶ /move_action(계획+실행)
+                                                                        └─ scaled_joint_trajectory_controller
+
+[조그]        Foxglove Teleop 버튼(누르는 동안) ─▶ /cmd_vel (Twist)
+      ─▶ servo_jog(스탬프·프레임 부여) ─▶ /servo_node/delta_twist_cmds
+      ─▶ MoveIt Servo(미분 IK) ─▶ forward_position_controller</code></pre>
+
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>
+    클릭 IK는 <b>"저기로 가"</b>(목표 하나 → 계획 → 실행, 이산적), 조그는 <b>"누르는 동안 계속 이동"</b>(속도 스트림, 연속적)입니다.
+    조그는 FK처럼 느껴질 수 있지만 — 버튼이 지정하는 건 관절이 아니라 <b>툴의 이동 방향·속도</b>이고, 6개 관절의 협조 비율은 매 주기 자코비안을 역산해 구합니다.
+    +z 버튼 하나에 툴이 수직 <b>직선</b>으로 올라가는 것이 그 증거입니다(관절 조그였다면 호를 그림).
+    산업 로봇 티치펜던트의 3단 구성과 대응: 관절 목표(moveit_demo) · 포즈 목표(ik_goto) · 카르테시안 조그(servo_jog).</div>
+
+    <h3>ik_goto — 목표 입력 규칙</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th>입력 경로</th><th>z 처리</th><th>방향(orientation)</th></tr>
+      <tr><td>3D 패널 바닥 클릭 (z=0으로 수신)</td><td><code>fixed_z</code>(기본 0.25m)로 치환 — 클릭은 바닥 평면에만 떨어지므로</td><td rowspan="2"><code>tool_down=true</code>면 클릭의 yaw만 유지한 채 툴이 아래를 보게 재구성</td></tr>
+      <tr><td>Publish 패널에 z 타이핑 (z≠0)</td><td>수신값 그대로 — 완전한 3D 목표</td></tr>
+    </table></div>
+    <p class="soft">피드백: <code>/ik_goto/target_marker</code> 구체 — 주황(계산 중) · 초록(도달) · 빨강(실패). 리치 밖 목표는 error_code=-31(NO_IK_SOLUTION)로 거절된다.</p>
+
+    <h3>servo_jog — 모드 전환이 핵심</h3>
+    <p>UR 서보 설정(ur_servo.yaml)은 <code>forward_position_controller</code>로 출력합니다. 그래서 조그 모드는 컨트롤러를 갈아타야 하고,
+    servo_jog가 시작 시 전환(scaled→forward + start_servo)과 <b>Ctrl+C 종료 시 원복</b>을 자동으로 합니다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th></th><th>클릭 모드 — ik_goto</th><th>조그 모드 — servo_jog</th></tr>
+      <tr><td>방식</td><td>목표 1개 → 계획 → 실행 (위치 IK)</td><td>속도 스트림 → 연속 미분 IK</td></tr>
+      <tr><td>컨트롤러</td><td>scaled_joint_trajectory_controller</td><td>forward_position_controller</td></tr>
+      <tr><td>안전장치</td><td>계획 단계의 충돌 검사·IK 실패 거절</td><td>0.1초 무명령 시 정지(데드맨) · 특이점 감속</td></tr>
+    </table></div>
+    <p class="soft">동시 실행 금지 — 조그 모드 중 MoveGroup 실행은 전부 CONTROL_FAILED(-4). SEC 07 사건 9·10 참조.</p>
+
+    <div class="plain try"><span class="pl-tag">직접 해보기</span>
+    ① 클릭: <code>ros2 run arm101 ik_goto</code> → 3D 패널 우상단 Publish pose 도구 → 바닥 클릭-드래그(드래그 방향 = 툴 yaw).<br>
+    ② 타이핑 3D: Publish 패널 추가 → 토픽 <code>/goal_pose</code> · PoseStamped → position에 x·y·z 입력(frame_id는 base_link).<br>
+    ③ 도달 불가 재현: x=1.5를 보내 -31 로그와 빨간 마커 확인 — UR5e 리치는 0.85m.<br>
+    ④ 조그: ik_goto를 <b>Ctrl+C로 끄고</b> <code>ros2 run arm101 servo_jog</code> → Teleop 패널 2개(패널1: linear-x/y ±0.1 · 패널2: linear-z ±0.1과 angular-z ±0.5 · 10Hz) → 누르는 동안 이동, Ctrl+C 종료 후 list_controllers로 원복 확인.</div>
+
+    <div class="plain quiz"><span class="pl-tag">스스로 점검</span>
+    ① 클릭만으로는 왜 z를 지정할 수 없나?
+    ② 서보 조그는 왜 FK가 아니라 IK인가?
+    <details><summary>답 보기</summary>
+    ① Foxglove의 Publish 클릭은 3D 장면의 바닥 평면(z=0)에 레이캐스트되는 도구라, 클릭 한 번에 높이를 담을 수 없다. 그래서 z는 fixed_z 치환 또는 타이핑으로 받는다.
+    ② 버튼이 주는 것은 작업 공간의 속도 ẋ이고, 서보는 q̇ = J⁻¹(q)·ẋ로 관절 속도를 역산한다. 방향이 작업공간→관절공간이므로 정의상 역문제. FK에는 없는 특이점(자코비안 조건수) 감속 설정이 서보에 있는 것도 방증.</details></div>
+  </div>
+</section>
+
+<!-- ══════════ L7 장애 복기 ══════════ -->
+<section id="l7">
+  <div class="sec-head"><span class="sec-no">SEC 07</span><h2>장애 복기 — 삽질이 진짜 교재</h2></div>
+  <div class="sec-body">
+    <p class="lead">이번 실습에서 만난 장애 10건. 각각 "증상 → 원인 → 챙길 교훈"으로 정리했습니다. 프로젝트 본편에서 같은 부류의 문제를 다시 만납니다.</p>
 
     <div class="milestones">
       <div class="ms"><span class="ms-tag">사건 1 · 환경 오염</span><h4>Gazebo 스폰 노드가 lxml ModuleNotFoundError로 사망</h4>
@@ -370,13 +439,19 @@ ros2 run arm101 moveit_demo          # ← 이 터미널만 ~/ros2_ws/install/se
       <p>/controller_manager는 이름 고정 — 두 개가 뜨면 서비스 콜이 아무 쪽에나 가서 꼬임. 부가 발견: 멀티라인 명령 붙여넣기로 인자가 깨지면 실물 로봇 모드로 뜬다(ur_ros2_control_node·dashboard_client가 뜨면 그 신호). <b>교훈: 스택은 한 벌만, 긴 명령은 한 줄로.</b></p></div>
       <div class="ms"><span class="ms-tag">사건 7 · 잔재 청소</span><h4>강제 종료 뒤 새 CLI들이 "A message was lost" · SHM 에러</h4>
       <p>Fast DDS 공유메모리 파일이 /dev/shm에 잔존해 새 프로세스의 전송 초기화를 방해. <b>교훈: 비정상 종료 후 통신이 이상하면 fastdds shm clean.</b></p></div>
+      <div class="ms"><span class="ms-tag">사건 8 · 이름 가림</span><h4>ik_goto 노드 생성이 AttributeError: __enter__로 즉사</h4>
+      <p>클래스에 만든 handle(msg) 메서드가 rclpy Node의 handle 프로퍼티를 가림 → 부모 __init__의 with self.handle:이 메서드 객체를 만나 실패. 맨 노드·기존 노드·새 노드를 같은 환경에서 비교하는 이분 탐색으로 고립. <b>교훈: Node 상속 시 부모 속성명(handle·context·executor 등)과 겹치는 이름 금지. "환경 탓 vs 코드 탓"은 최소 재현으로 가른다.</b></p></div>
+      <div class="ms"><span class="ms-tag">사건 9 · 컨트롤러 점유</span><h4>servo_jog가 떠 있는 동안 ik_goto가 전부 -4</h4>
+      <p>조그 모드가 forward_position_controller를 활성화하며 scaled_jtc를 내림 → MoveGroup의 실행 대상이 비활성. 사건 4와 같은 -4지만 원인 계층이 다름(이름 불일치 vs 모드 점유). <b>교훈: -4가 나오면 list_controllers부터 — 지금 활성인 컨트롤러가 무엇인지 확인.</b></p></div>
+      <div class="ms"><span class="ms-tag">사건 10 · Ctrl+Z ≠ 종료</span><h4>정지(T 상태)된 프로세스가 컨트롤러·구독을 쥔 채 잔존</h4>
+      <p>Ctrl+Z는 종료가 아니라 suspend — 프로세스가 자원을 쥔 채 얼어붙고, 그 상태에선 SIGTERM도 큐잉만 될 뿐 재개(SIGCONT) 전엔 처리되지 않는다. 정지된 servo_jog는 종료 루틴(컨트롤러 원복)을 실행할 기회조차 없었다. <b>교훈: 노드 종료는 Ctrl+C. ps의 STAT 열에 T가 보이면 kill -CONT 후 종료 신호.</b></p></div>
     </div>
   </div>
 </section>
 
-<!-- ══════════ L7 재현 과제 ══════════ -->
-<section id="l7">
-  <div class="sec-head"><span class="sec-no">SEC 07</span><h2>재현 과제 — 부채 상환 체크리스트</h2></div>
+<!-- ══════════ L8 재현 과제 ══════════ -->
+<section id="l8">
+  <div class="sec-head"><span class="sec-no">SEC 08</span><h2>재현 과제 — 부채 상환 체크리스트</h2></div>
   <div class="sec-body">
     <p class="lead">아무것도 띄우지 않은 상태에서, 이 노트만 보고 아래를 스스로 완주하면 학습 부채는 상환입니다.</p>
 
@@ -386,6 +461,8 @@ ros2 run arm101 moveit_demo          # ← 이 터미널만 ~/ros2_ws/install/se
       <li><b>재현 3</b> — view_ur로 전환해 UR5e 렌더 확인 — 전환 전 이전 launch를 어떻게 내려야 하는지 포함 <span class="soft">(SEC 04·사건 5)</span></li>
       <li><b>재현 4</b> — MoveIt 스택 4종을 순서대로 띄우고 데모 순환 확인 <span class="soft">(SEC 05)</span></li>
       <li><b>재현 5</b> — 일부러 -4를 만든 뒤 switch_controller로 복구 <span class="soft">(사건 4)</span></li>
+      <li><b>재현 6</b> — ik_goto로 클릭 목표·타이핑 3D 목표(z 포함) 각각 도달 + 리치 밖 목표로 -31 확인 <span class="soft">(SEC 06)</span></li>
+      <li><b>재현 7</b> — servo_jog로 z 조그 → Ctrl+C 종료 → list_controllers로 원복 확인 → ik_goto 재작동 <span class="soft">(SEC 06 · 사건 9·10)</span></li>
     </ul>
 
     <h3>변형 과제 — 난이도 순</h3>
@@ -395,13 +472,13 @@ ros2 run arm101 moveit_demo          # ← 이 터미널만 ~/ros2_ws/install/se
       <tr><td><span class="chip c-green">하</span></td><td>moveit_demo 프리셋 2개 추가, 속도 스케일 0.5→0.2로 바꿔 차이 관찰</td><td>MotionPlanRequest 필드 감각</td></tr>
       <tr><td><span class="chip c-steel">중</span></td><td>ur_type:=ur3e로 전 과정 반복 — 어디는 그대로고 어디만 바뀌는지 기록</td><td>xacro 파라미터화의 힘</td></tr>
       <tr><td><span class="chip c-steel">중</span></td><td>Foxglove에 Plot 패널 추가해 /joint_states 한 관절을 그래프로 — 계획된 궤적의 속도 프로파일 관찰</td><td>궤적 시간 파라미터화 이해</td></tr>
-      <tr><td><span class="chip c-amber">상</span></td><td>pose 목표(IK) 데모: goal_constraints를 position+orientation constraint로 구성</td><td>피킹의 실제 인터페이스 — 다음 스텝</td></tr>
+      <tr><td><span class="chip c-amber">상</span></td><td>ik_goto의 IK 경로 교체: compute_ik→관절 목표 대신 goal_constraints에 position+orientation constraint를 직접 구성</td><td>같은 문제의 두 해법 비교 — MoveIt 제약 시스템 이해</td></tr>
       <tr><td><span class="chip c-amber">상</span></td><td>planning scene에 박스 장애물 추가 후 같은 프리셋 순환 — 경로가 돌아가는지 확인</td><td>충돌 회피 계획의 실체 — 물류 데모 축소판</td></tr>
     </table></div>
 
     <div class="plain"><span class="pl-tag">이 노트가 프로젝트로 이어지는 곳</span>
     여기서 익힌 배선이 본편에서 그대로 확장됩니다: joint_wave·mock hardware의 자리에 <b>Isaac Sim</b>이,
-    Foxglove의 자리에 <b>운영 대시보드·3D 뷰</b>가, moveit_demo의 자리에 <b>피킹 오케스트레이션</b>이 들어옵니다.
+    Foxglove의 자리에 <b>운영 대시보드·3D 뷰</b>가, moveit_demo·ik_goto의 자리에 <b>피킹 오케스트레이션</b>이 들어옵니다.
     구조는 이미 한 번 손으로 만들어봤으므로, 이제는 규모의 문제입니다.</div>
   </div>
 </section>
@@ -409,7 +486,7 @@ ros2 run arm101 moveit_demo          # ← 이 터미널만 ~/ros2_ws/install/se
 </main>
 
 <footer>
-  <div class="wrap">DOC 04 · LAB NOTE — ~/ros2_ws 실습과 병행해서 읽는 문서 · 재현 과제 완료 시 REV B에서 IK·planning scene 장으로 확장 예정</div>
+  <div class="wrap">DOC 04 · LAB NOTE — ~/ros2_ws 실습과 병행해서 읽는 문서 · REV B(2026-08-18): 인터랙티브 IK 장(SEC 06) 추가 · 다음 확장: planning scene 장애물 · Isaac 연동</div>
 </footer>
 
 </body>
