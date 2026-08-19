@@ -3,21 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <title>심화 B — 인덕션 병목의 정량 분석 (Deep-Dive)</title>
 <style>
   :root{
-    --bg:#E9ECEE;
-    --panel:#FFFFFF;
-    --panel-edge:#D4D9DD;
-    --ink:#1B2430;
-    --ink-soft:#5A6673;
-    --amber:#E8720C;
-    --machine:#1F7A4D;
-    --steel:#33506B;
+    --bg:#14181D;
+    --panel:#1C2229;
+    --panel-edge:#2C343D;
+    --ink:#E8ECF1;
+    --ink-soft:#9AA7B4;
+    --amber:#F08A32;
+    --machine:#3BAF77;
+    --steel:#8FB4D9;
     --slate:#8A96A3;
-    --grid:#DDE2E6;
+    --grid:#2A323B;
     --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
-    --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -42,7 +45,7 @@
   .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
   .meta b{color:var(--ink);font-weight:600}
 
-  nav{position:sticky;top:0;z-index:50;background:var(--ink);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
   nav::-webkit-scrollbar{display:none}
   nav .wrap{display:flex;gap:2px;padding:0 20px}
   nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
@@ -63,13 +66,13 @@
   .sec-body p{max-width:76ch}
   .lead{font-size:15.5px}
   .soft{color:var(--ink-soft)}
-  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
   .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
 
   table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
-  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F}
   td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
-  table tr:nth-child(even) td{background:#F8FAFB}
+  table tr:nth-child(even) td{background:#1E252D}
   tr:last-child td{border-bottom:none}
   .tbl-scroll{overflow-x:auto}
   .num{font-family:var(--mono)}
@@ -85,15 +88,15 @@
   .chain{display:grid;gap:0;margin:14px 0;border:1px solid var(--panel-edge)}
   .chain .link{display:grid;grid-template-columns:150px 1fr 170px;border-bottom:1px solid var(--panel-edge)}
   .chain .link:last-child{border-bottom:none}
-  .chain .link .tag{font-family:var(--mono);font-size:11px;font-weight:700;padding:13px 14px;background:#F2F4F6;border-right:1px solid var(--panel-edge);display:flex;align-items:center}
+  .chain .link .tag{font-family:var(--mono);font-size:11px;font-weight:700;padding:13px 14px;background:#20272F;border-right:1px solid var(--panel-edge);display:flex;align-items:center}
   .chain .link .desc{padding:12px 16px;font-size:13px}
   .chain .link .cap{font-family:var(--mono);font-size:11px;padding:12px 14px;border-left:1px dashed var(--panel-edge);display:flex;align-items:center;color:var(--ink-soft)}
   .chain .link.bottleneck .tag{background:var(--amber);color:#fff;border-right-color:var(--amber)}
   .chain .link.bottleneck .cap{color:var(--amber);font-weight:700}
 
-  pre{background:#1B2430;color:#DDE4EA;font-family:var(--mono);font-size:12px;line-height:1.7;padding:16px 18px;overflow-x:auto;margin:12px 0}
+  pre{background:#E8ECF1;color:#26303A;font-family:var(--mono);font-size:12px;line-height:1.7;padding:16px 18px;overflow-x:auto;margin:12px 0}
   pre .cm{color:#8A96A3}
-  code{font-family:var(--mono);font-size:12.5px;background:#F2F4F6;padding:1px 5px}
+  code{font-family:var(--mono);font-size:12.5px;background:#20272F;padding:1px 5px}
 
   ul.srcs{list-style:none;margin:10px 0;font-size:12.5px}
   ul.srcs li{padding:5px 0 5px 22px;position:relative;border-bottom:1px dashed var(--grid)}
@@ -163,44 +166,44 @@
 
       <h3>배경이 되는 장면 — 인덕션에서 소터까지</h3>
       <svg viewBox="0 0 900 330" role="img" aria-label="하차 무더기에서 인덕션을 거쳐 소터 루프와 슈트로 이어지는 흐름 도해" style="max-width:100%;height:auto;display:block;margin:14px 0">
-        <defs><marker id="arrB1" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
-        <g fill="#FFFFFF" stroke="#8A96A3" stroke-width="1">
+        <defs><marker id="arrB1" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
+        <g fill="#222A33" stroke="#8A96A3" stroke-width="1">
           <rect x="52" y="128" width="34" height="26" transform="rotate(-8 69 141)"/>
           <rect x="90" y="118" width="40" height="28" transform="rotate(6 110 132)"/>
           <rect x="62" y="158" width="44" height="28"/>
           <rect x="110" y="152" width="34" height="30" transform="rotate(-5 127 167)"/>
           <rect x="82" y="188" width="52" height="26" transform="rotate(3 108 201)"/>
         </g>
-        <text x="95" y="240" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="13" fill="#5A6673">하차된 무더기</text>
-        <text x="95" y="258" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#8A96A3">(겹치고 붙은 상태)</text>
-        <line x1="150" y1="165" x2="196" y2="165" stroke="#33506B" stroke-width="1.8" marker-end="url(#arrB1)"/>
-        <rect x="202" y="140" width="168" height="52" fill="#FDF1E5" stroke="#E8720C" stroke-width="2"/>
-        <text x="286" y="162" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">인덕션</text>
-        <text x="286" y="181" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">낱개 분리 · 정렬 · 간격</text>
-        <text x="286" y="212" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12.5" font-weight="700" fill="#E8720C">◀ 병목 — 사람 손 속도가 상한</text>
-        <line x1="370" y1="165" x2="408" y2="165" stroke="#33506B" stroke-width="1.8" marker-end="url(#arrB1)"/>
-        <g fill="#FFFFFF" stroke="#8A96A3" stroke-width="1">
+        <text x="95" y="240" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4">하차된 무더기</text>
+        <text x="95" y="258" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#8A96A3">(겹치고 붙은 상태)</text>
+        <line x1="150" y1="165" x2="196" y2="165" stroke="#8FB4D9" stroke-width="1.8" marker-end="url(#arrB1)"/>
+        <rect x="202" y="140" width="168" height="52" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+        <text x="286" y="162" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">인덕션</text>
+        <text x="286" y="181" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">낱개 분리 · 정렬 · 간격</text>
+        <text x="286" y="212" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" font-weight="700" fill="#F08A32">◀ 병목 — 사람 손 속도가 상한</text>
+        <line x1="370" y1="165" x2="408" y2="165" stroke="#8FB4D9" stroke-width="1.8" marker-end="url(#arrB1)"/>
+        <g fill="#222A33" stroke="#8A96A3" stroke-width="1">
           <rect x="414" y="154" width="20" height="22"/><rect x="444" y="154" width="20" height="22"/><rect x="474" y="154" width="20" height="22"/>
         </g>
-        <text x="454" y="196" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">한 줄 · 한 개씩 · 간격 맞춤</text>
-        <line x1="500" y1="165" x2="530" y2="165" stroke="#33506B" stroke-width="1.8" marker-end="url(#arrB1)"/>
-        <rect x="536" y="140" width="96" height="52" fill="#F5F7F8" stroke="#33506B" stroke-width="1.5"/>
-        <text x="584" y="162" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1B2430">스캔·계측</text>
-        <text x="584" y="181" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">DWS</text>
-        <line x1="632" y1="165" x2="662" y2="165" stroke="#33506B" stroke-width="1.8" marker-end="url(#arrB1)"/>
-        <rect x="668" y="82" width="212" height="150" rx="70" fill="none" stroke="#33506B" stroke-width="2.5"/>
-        <g fill="#FFFFFF" stroke="#33506B" stroke-width="1.2">
+        <text x="454" y="196" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">한 줄 · 한 개씩 · 간격 맞춤</text>
+        <line x1="500" y1="165" x2="530" y2="165" stroke="#8FB4D9" stroke-width="1.8" marker-end="url(#arrB1)"/>
+        <rect x="536" y="140" width="96" height="52" fill="#20272F" stroke="#8FB4D9" stroke-width="1.5"/>
+        <text x="584" y="162" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">스캔·계측</text>
+        <text x="584" y="181" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">DWS</text>
+        <line x1="632" y1="165" x2="662" y2="165" stroke="#8FB4D9" stroke-width="1.8" marker-end="url(#arrB1)"/>
+        <rect x="668" y="82" width="212" height="150" rx="70" fill="none" stroke="#8FB4D9" stroke-width="2.5"/>
+        <g fill="#222A33" stroke="#8FB4D9" stroke-width="1.2">
           <rect x="706" y="76" width="16" height="12"/><rect x="746" y="76" width="16" height="12"/><rect x="786" y="76" width="16" height="12"/><rect x="826" y="76" width="16" height="12"/>
           <rect x="706" y="226" width="16" height="12"/><rect x="766" y="226" width="16" height="12"/><rect x="826" y="226" width="16" height="12"/>
         </g>
-        <text x="774" y="150" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">소터 (순환 분류기)</text>
-        <text x="774" y="170" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">캐리어가 상자를 싣고 돈다</text>
-        <path d="M840 100 C 870 70, 740 48, 700 88" fill="none" stroke="#E8720C" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#arrB1)"/>
-        <text x="770" y="46" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12.5" fill="#E8720C">분류 실패 → 재순환 (한 바퀴 더 = 용량 낭비)</text>
-        <g stroke="#1F7A4D" stroke-width="1.8" fill="none">
+        <text x="774" y="150" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">소터 (순환 분류기)</text>
+        <text x="774" y="170" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">캐리어가 상자를 싣고 돈다</text>
+        <path d="M840 100 C 870 70, 740 48, 700 88" fill="none" stroke="#F08A32" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#arrB1)"/>
+        <text x="770" y="46" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#F08A32">분류 실패 → 재순환 (한 바퀴 더 = 용량 낭비)</text>
+        <g stroke="#3BAF77" stroke-width="1.8" fill="none">
           <line x1="700" y1="238" x2="678" y2="288"/><line x1="760" y1="238" x2="752" y2="288"/><line x1="820" y1="238" x2="836" y2="288"/>
         </g>
-        <text x="757" y="312" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12.5" fill="#1F7A4D">슈트 — 목적지(행선지)별 출구</text>
+        <text x="757" y="312" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#3BAF77">슈트 — 목적지(행선지)별 출구</text>
       </svg>
       <p class="soft">그림: 무더기 상태의 상자를 "한 줄, 한 개씩"으로 바꾸는 인덕션이 유일하게 사람 손에 묶인 구간이다. 소터는 기계 용량이 커서, 인덕션이 느리면 <b>빈 캐리어가 도는(소터가 굶는)</b> 형태로 병목이 나타난다.</p>
     </div>
@@ -306,27 +309,27 @@
       </div>
       <h3>곡선으로 보면 — 가동률과 대기의 관계</h3>
       <svg viewBox="0 0 900 310" role="img" aria-label="가동률이 1에 가까워질수록 평균 대기가 비선형으로 폭발하는 곡선 차트" style="max-width:100%;height:auto;display:block;margin:14px 0">
-        <g stroke="#DDE2E6" stroke-width="1">
+        <g stroke="#2A323B" stroke-width="1">
           <line x1="60" y1="187" x2="850" y2="187"/><line x1="60" y1="113" x2="850" y2="113"/><line x1="60" y1="40" x2="850" y2="40"/>
         </g>
-        <g font-family="JetBrains Mono, monospace" font-size="12" fill="#5A6673">
+        <g font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">
           <text x="52" y="191" text-anchor="end">10×</text><text x="52" y="117" text-anchor="end">20×</text><text x="52" y="44" text-anchor="end">30×</text>
           <text x="450" y="282" text-anchor="middle">0.5</text><text x="606" y="282" text-anchor="middle">0.7</text><text x="762" y="282" text-anchor="middle">0.9</text><text x="840" y="282" text-anchor="middle">1.0</text>
         </g>
-        <line x1="60" y1="30" x2="60" y2="260" stroke="#1B2430" stroke-width="1.5"/>
-        <line x1="60" y1="260" x2="850" y2="260" stroke="#1B2430" stroke-width="1.5"/>
+        <line x1="60" y1="30" x2="60" y2="260" stroke="#E8ECF1" stroke-width="1.5"/>
+        <line x1="60" y1="260" x2="850" y2="260" stroke="#E8ECF1" stroke-width="1.5"/>
         <line x1="840" y1="36" x2="840" y2="260" stroke="#8A96A3" stroke-width="1.2" stroke-dasharray="5 4"/>
-        <polyline points="60,253 216,251 372,249 450,246 528,242 606,236 645,231 684,224 723,211 762,187 781,165 793,140 801,113 809,74 813,47" fill="none" stroke="#E8720C" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-        <line x1="606" y1="236" x2="606" y2="260" stroke="#33506B" stroke-width="1.2" stroke-dasharray="4 3"/>
-        <circle cx="606" cy="236" r="4.5" fill="#FFFFFF" stroke="#33506B" stroke-width="2"/>
-        <text x="606" y="222" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">ρ=0.7 → 약 3배</text>
-        <line x1="762" y1="187" x2="762" y2="260" stroke="#33506B" stroke-width="1.2" stroke-dasharray="4 3"/>
-        <circle cx="762" cy="187" r="4.5" fill="#FFFFFF" stroke="#33506B" stroke-width="2"/>
-        <text x="742" y="172" text-anchor="end" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">ρ=0.9 → 10배</text>
-        <text x="806" y="34" text-anchor="end" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">ρ=0.99 → 100배 (차트 밖)</text>
-        <text x="846" y="300" text-anchor="end" font-family="Pretendard, sans-serif" font-size="13" fill="#8A96A3">ρ=1: 대기 무한대</text>
-        <text x="455" y="302" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="13.5" fill="#1B2430">가동률 ρ = 도착량 ÷ 처리 능력</text>
-        <text x="76" y="26" font-family="Pretendard, sans-serif" font-size="13.5" fill="#1B2430">평균 대기 (한산할 때 대비 배수)</text>
+        <polyline points="60,253 216,251 372,249 450,246 528,242 606,236 645,231 684,224 723,211 762,187 781,165 793,140 801,113 809,74 813,47" fill="none" stroke="#F08A32" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <line x1="606" y1="236" x2="606" y2="260" stroke="#8FB4D9" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <circle cx="606" cy="236" r="4.5" fill="#222A33" stroke="#8FB4D9" stroke-width="2"/>
+        <text x="606" y="222" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">ρ=0.7 → 약 3배</text>
+        <line x1="762" y1="187" x2="762" y2="260" stroke="#8FB4D9" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <circle cx="762" cy="187" r="4.5" fill="#222A33" stroke="#8FB4D9" stroke-width="2"/>
+        <text x="742" y="172" text-anchor="end" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">ρ=0.9 → 10배</text>
+        <text x="806" y="34" text-anchor="end" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">ρ=0.99 → 100배 (차트 밖)</text>
+        <text x="846" y="300" text-anchor="end" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#8A96A3">ρ=1: 대기 무한대</text>
+        <text x="455" y="302" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" fill="#E8ECF1">가동률 ρ = 도착량 ÷ 처리 능력</text>
+        <text x="76" y="26" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" fill="#E8ECF1">평균 대기 (한산할 때 대비 배수)</text>
       </svg>
       <p class="soft">그림: 가동률 70%까지는 대기가 완만하게 늘지만, 90%를 넘으면 급격히 치솟고 100%에서는 이론상 무한대가 된다. "물량이 10%만 늘었는데 왜 마비되나"의 답이 이 곡선이다.</p>
 

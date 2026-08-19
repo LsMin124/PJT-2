@@ -3,21 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <title>국내 택배 물류 도메인 리서치 (Domain Research)</title>
 <style>
   :root{
-    --bg:#E9ECEE;
-    --panel:#FFFFFF;
-    --panel-edge:#D4D9DD;
-    --ink:#1B2430;
-    --ink-soft:#5A6673;
-    --amber:#E8720C;   /* 로보틱스/시뮬 */
-    --machine:#1F7A4D; /* AI 파이프라인 */
-    --steel:#33506B;   /* 백엔드/서비스 */
+    --bg:#14181D;
+    --panel:#1C2229;
+    --panel-edge:#2C343D;
+    --ink:#E8ECF1;
+    --ink-soft:#9AA7B4;
+    --amber:#F08A32;   /* 로보틱스/시뮬 */
+    --machine:#3BAF77; /* AI 파이프라인 */
+    --steel:#8FB4D9;   /* 백엔드/서비스 */
     --slate:#8A96A3;   /* 인프라/공통 */
-    --grid:#DDE2E6;
+    --grid:#2A323B;
     --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
-    --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -42,7 +45,7 @@
   .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
   .meta b{color:var(--ink);font-weight:600}
 
-  nav{position:sticky;top:0;z-index:50;background:var(--ink);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
   nav::-webkit-scrollbar{display:none}
   nav .wrap{display:flex;gap:2px;padding:0 20px}
   nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
@@ -63,17 +66,17 @@
   p{margin-bottom:10px}
   .lead{font-size:15.5px}
   .soft{color:var(--ink-soft)}
-  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
   .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
-  .tagline{font-size:16px;font-weight:600;background:var(--ink);color:#fff;padding:16px 20px;margin:14px 0;border-left:6px solid var(--amber)}
+  .tagline{font-size:16px;font-weight:600;background:#0E1318;color:#fff;padding:16px 20px;margin:14px 0;border-left:6px solid var(--amber)}
   .tagline small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#9AA7B4;margin-bottom:6px;font-weight:400}
   .tagline b{color:var(--amber)}
 
   table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
-  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F}
   td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
   tr:last-child td{border-bottom:none}
-  table.zebra tr:nth-child(even) td{background:#F8FAFB}
+  table.zebra tr:nth-child(even) td{background:#1E252D}
   .tbl-scroll{overflow-x:auto}
   .num{font-family:var(--mono)}
 
@@ -113,7 +116,7 @@
   .pat::before{
     counter-increment:pat;content:counter(pat);position:absolute;left:14px;top:14px;
     width:30px;height:30px;display:flex;align-items:center;justify-content:center;
-    background:var(--ink);color:#fff;font-family:var(--mono);font-weight:700;font-size:14px
+    background:#0E1318;color:#fff;font-family:var(--mono);font-weight:700;font-size:14px
   }
   .pat h4{font-size:14px;font-weight:700}
   .pat h4 small{font-family:var(--mono);font-size:10.5px;color:var(--amber);font-weight:600;letter-spacing:.06em;margin-left:8px}
@@ -184,35 +187,35 @@
 
       <h3>허브앤스포크 — 국내 택배의 기본 구조</h3>
       <svg viewBox="0 0 900 250" role="img" aria-label="허브앤스포크 구조도" style="max-width:100%;height:auto;display:block;margin:14px 0">
-        <defs><marker id="hsarr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
-        <text x="105" y="26" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1B2430" text-anchor="middle">① 집화·발송</text>
-        <text x="450" y="26" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1B2430" text-anchor="middle">② 허브 — 한곳에서 분류</text>
-        <text x="795" y="26" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1B2430" text-anchor="middle">③ 배송 — 다시 흩어보낸다</text>
-        <rect x="20" y="46" width="170" height="44" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="105" y="73" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430" text-anchor="middle">발송 서브터미널</text>
-        <rect x="20" y="110" width="170" height="44" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="105" y="137" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430" text-anchor="middle">발송 서브터미널</text>
-        <rect x="20" y="174" width="170" height="44" fill="#FFFFFF" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
-        <text x="105" y="201" font-family="Pretendard, sans-serif" font-size="13" fill="#5A6673" text-anchor="middle">⋯ 전국 수십 곳</text>
-        <rect x="330" y="66" width="240" height="140" fill="#FDF1E5" stroke="#1B2430" stroke-width="2"/>
-        <text x="450" y="98" font-family="Pretendard, sans-serif" font-size="16" font-weight="800" fill="#1B2430" text-anchor="middle">메가 허브</text>
-        <text x="450" y="126" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430" text-anchor="middle">전국 물량을 한꺼번에 분류</text>
-        <text x="450" y="150" font-family="JetBrains Mono, monospace" font-size="12" fill="#5A6673" text-anchor="middle">하차→인덕션→분류→상차</text>
-        <text x="450" y="182" font-family="Pretendard, sans-serif" font-size="12" fill="#E8720C" text-anchor="middle" font-weight="700">하루 100만 개 이상</text>
-        <line x1="192" y1="68" x2="326" y2="100" stroke="#33506B" stroke-width="2" marker-end="url(#hsarr)"/>
-        <line x1="192" y1="132" x2="326" y2="136" stroke="#33506B" stroke-width="2" marker-end="url(#hsarr)"/>
-        <line x1="192" y1="196" x2="326" y2="172" stroke="#33506B" stroke-width="2" marker-end="url(#hsarr)"/>
-        <text x="258" y="112" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">간선차량</text>
-        <rect x="710" y="46" width="170" height="44" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="795" y="73" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430" text-anchor="middle">도착 서브터미널</text>
-        <rect x="710" y="110" width="170" height="44" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="795" y="137" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430" text-anchor="middle">도착 서브터미널</text>
-        <rect x="710" y="174" width="170" height="44" fill="#FFFFFF" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
-        <text x="795" y="201" font-family="Pretendard, sans-serif" font-size="13" fill="#5A6673" text-anchor="middle">⋯ 기사별 배송</text>
-        <line x1="574" y1="100" x2="706" y2="68" stroke="#33506B" stroke-width="2" marker-end="url(#hsarr)"/>
-        <line x1="574" y1="136" x2="706" y2="132" stroke="#33506B" stroke-width="2" marker-end="url(#hsarr)"/>
-        <line x1="574" y1="172" x2="706" y2="196" stroke="#33506B" stroke-width="2" marker-end="url(#hsarr)"/>
-        <text x="642" y="112" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">간선차량</text>
+        <defs><marker id="hsarr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
+        <text x="105" y="26" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1" text-anchor="middle">① 집화·발송</text>
+        <text x="450" y="26" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1" text-anchor="middle">② 허브 — 한곳에서 분류</text>
+        <text x="795" y="26" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1" text-anchor="middle">③ 배송 — 다시 흩어보낸다</text>
+        <rect x="20" y="46" width="170" height="44" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="105" y="73" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1" text-anchor="middle">발송 서브터미널</text>
+        <rect x="20" y="110" width="170" height="44" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="105" y="137" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1" text-anchor="middle">발송 서브터미널</text>
+        <rect x="20" y="174" width="170" height="44" fill="#222A33" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <text x="105" y="201" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4" text-anchor="middle">⋯ 전국 수십 곳</text>
+        <rect x="330" y="66" width="240" height="140" fill="#2A2019" stroke="#E8ECF1" stroke-width="2"/>
+        <text x="450" y="98" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="16" font-weight="800" fill="#E8ECF1" text-anchor="middle">메가 허브</text>
+        <text x="450" y="126" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1" text-anchor="middle">전국 물량을 한꺼번에 분류</text>
+        <text x="450" y="150" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4" text-anchor="middle">하차→인덕션→분류→상차</text>
+        <text x="450" y="182" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#F08A32" text-anchor="middle" font-weight="700">하루 100만 개 이상</text>
+        <line x1="192" y1="68" x2="326" y2="100" stroke="#8FB4D9" stroke-width="2" marker-end="url(#hsarr)"/>
+        <line x1="192" y1="132" x2="326" y2="136" stroke="#8FB4D9" stroke-width="2" marker-end="url(#hsarr)"/>
+        <line x1="192" y1="196" x2="326" y2="172" stroke="#8FB4D9" stroke-width="2" marker-end="url(#hsarr)"/>
+        <text x="258" y="112" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">간선차량</text>
+        <rect x="710" y="46" width="170" height="44" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="795" y="73" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1" text-anchor="middle">도착 서브터미널</text>
+        <rect x="710" y="110" width="170" height="44" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="795" y="137" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1" text-anchor="middle">도착 서브터미널</text>
+        <rect x="710" y="174" width="170" height="44" fill="#222A33" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <text x="795" y="201" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4" text-anchor="middle">⋯ 기사별 배송</text>
+        <line x1="574" y1="100" x2="706" y2="68" stroke="#8FB4D9" stroke-width="2" marker-end="url(#hsarr)"/>
+        <line x1="574" y1="136" x2="706" y2="132" stroke="#8FB4D9" stroke-width="2" marker-end="url(#hsarr)"/>
+        <line x1="574" y1="172" x2="706" y2="196" stroke="#8FB4D9" stroke-width="2" marker-end="url(#hsarr)"/>
+        <text x="642" y="112" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">간선차량</text>
       </svg>
       <p class="soft">자전거 바퀴처럼 살(스포크)이 축(허브)에 모이는 모양이라 "허브앤스포크"라 부른다.
       어디서 보내든 대부분 허브를 한 번 거치므로, <b>허브의 분류 속도가 곧 전국 택배의 속도</b>가 된다 — 이 문서가 허브 내부를 파고드는 이유다.</p>
@@ -246,30 +249,30 @@
 
       <h3>허브 내부 5개 공정 — 자동화 구간과 인력 구간</h3>
       <svg viewBox="0 0 900 132" role="img" aria-label="허브 내부 처리 흐름 — 자동화 구간과 인력 구간 구분" style="max-width:100%;height:auto;display:block;margin:14px 0">
-        <defs><marker id="flarr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
-        <rect x="20" y="12" width="14" height="14" fill="#FDF1E5" stroke="#E8720C" stroke-width="1.5"/>
-        <text x="42" y="24" font-family="Pretendard, sans-serif" font-size="12" fill="#1B2430">사람이 하는 구간 (자동화 공백)</text>
-        <rect x="270" y="12" width="14" height="14" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="1.5"/>
-        <text x="292" y="24" font-family="Pretendard, sans-serif" font-size="12" fill="#1B2430">자동 설비 구간</text>
-        <rect x="16" y="46" width="150" height="64" fill="#FDF1E5" stroke="#E8720C" stroke-width="1.5"/>
-        <text x="91" y="72" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430" text-anchor="middle">① 하차</text>
-        <text x="91" y="94" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">차에서 꺼내기</text>
-        <line x1="168" y1="78" x2="184" y2="78" stroke="#33506B" stroke-width="2" marker-end="url(#flarr)"/>
-        <rect x="188" y="46" width="150" height="64" fill="#FDF1E5" stroke="#E8720C" stroke-width="1.5"/>
-        <text x="263" y="72" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430" text-anchor="middle">② 인덕션</text>
-        <text x="263" y="94" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">낱개로 정리해 투입</text>
-        <line x1="340" y1="78" x2="356" y2="78" stroke="#33506B" stroke-width="2" marker-end="url(#flarr)"/>
-        <rect x="360" y="46" width="150" height="64" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="1.5"/>
-        <text x="435" y="72" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430" text-anchor="middle">③ 스캔·계측</text>
-        <text x="435" y="94" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">바코드·무게·체적</text>
-        <line x1="512" y1="78" x2="528" y2="78" stroke="#33506B" stroke-width="2" marker-end="url(#flarr)"/>
-        <rect x="532" y="46" width="150" height="64" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="1.5"/>
-        <text x="607" y="72" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430" text-anchor="middle">④ 자동 분류</text>
-        <text x="607" y="94" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">도착지별로 밀어내기</text>
-        <line x1="684" y1="78" x2="700" y2="78" stroke="#33506B" stroke-width="2" marker-end="url(#flarr)"/>
-        <rect x="704" y="46" width="150" height="64" fill="#FDF1E5" stroke="#E8720C" stroke-width="1.5"/>
-        <text x="779" y="72" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430" text-anchor="middle">⑤ 상차</text>
-        <text x="779" y="94" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">차에 빈틈없이 쌓기</text>
+        <defs><marker id="flarr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
+        <rect x="20" y="12" width="14" height="14" fill="#2A2019" stroke="#F08A32" stroke-width="1.5"/>
+        <text x="42" y="24" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#E8ECF1">사람이 하는 구간 (자동화 공백)</text>
+        <rect x="270" y="12" width="14" height="14" fill="#17251E" stroke="#3BAF77" stroke-width="1.5"/>
+        <text x="292" y="24" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#E8ECF1">자동 설비 구간</text>
+        <rect x="16" y="46" width="150" height="64" fill="#2A2019" stroke="#F08A32" stroke-width="1.5"/>
+        <text x="91" y="72" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1" text-anchor="middle">① 하차</text>
+        <text x="91" y="94" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">차에서 꺼내기</text>
+        <line x1="168" y1="78" x2="184" y2="78" stroke="#8FB4D9" stroke-width="2" marker-end="url(#flarr)"/>
+        <rect x="188" y="46" width="150" height="64" fill="#2A2019" stroke="#F08A32" stroke-width="1.5"/>
+        <text x="263" y="72" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1" text-anchor="middle">② 인덕션</text>
+        <text x="263" y="94" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">낱개로 정리해 투입</text>
+        <line x1="340" y1="78" x2="356" y2="78" stroke="#8FB4D9" stroke-width="2" marker-end="url(#flarr)"/>
+        <rect x="360" y="46" width="150" height="64" fill="#17251E" stroke="#3BAF77" stroke-width="1.5"/>
+        <text x="435" y="72" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1" text-anchor="middle">③ 스캔·계측</text>
+        <text x="435" y="94" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">바코드·무게·체적</text>
+        <line x1="512" y1="78" x2="528" y2="78" stroke="#8FB4D9" stroke-width="2" marker-end="url(#flarr)"/>
+        <rect x="532" y="46" width="150" height="64" fill="#17251E" stroke="#3BAF77" stroke-width="1.5"/>
+        <text x="607" y="72" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1" text-anchor="middle">④ 자동 분류</text>
+        <text x="607" y="94" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">도착지별로 밀어내기</text>
+        <line x1="684" y1="78" x2="700" y2="78" stroke="#8FB4D9" stroke-width="2" marker-end="url(#flarr)"/>
+        <rect x="704" y="46" width="150" height="64" fill="#2A2019" stroke="#F08A32" stroke-width="1.5"/>
+        <text x="779" y="72" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1" text-anchor="middle">⑤ 상차</text>
+        <text x="779" y="94" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">차에 빈틈없이 쌓기</text>
       </svg>
       <p class="soft">허브의 5개 공정 중 <b>양 끝(하차·상차)과 투입(인덕션)이 여전히 사람 몫</b>이다.
       가운데 자동화 구간(스캔·분류)이 아무리 빨라도 주황 구간이 따라가지 못하면 전체가 느려진다 — 이것이 이 문서의 주제인 "자동화 공백"이다.

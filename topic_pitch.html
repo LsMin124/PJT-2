@@ -3,21 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <title>주제 제안 — 불 꺼진 물류센터 (Topic Pitch)</title>
 <style>
   :root{
-    --bg:#E9ECEE;
-    --panel:#FFFFFF;
-    --panel-edge:#D4D9DD;
-    --ink:#1B2430;
-    --ink-soft:#5A6673;
-    --amber:#E8720C;   /* 로보틱스/시뮬 */
-    --machine:#1F7A4D; /* AI 파이프라인 */
-    --steel:#33506B;   /* 백엔드/서비스 */
+    --bg:#14181D;
+    --panel:#1C2229;
+    --panel-edge:#2C343D;
+    --ink:#E8ECF1;
+    --ink-soft:#9AA7B4;
+    --amber:#F08A32;   /* 로보틱스/시뮬 */
+    --machine:#3BAF77; /* AI 파이프라인 */
+    --steel:#8FB4D9;   /* 백엔드/서비스 */
     --slate:#8A96A3;   /* 인프라/공통 */
-    --grid:#DDE2E6;
+    --grid:#2A323B;
     --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
-    --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -42,7 +45,7 @@
   .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
   .meta b{color:var(--ink);font-weight:600}
 
-  nav{position:sticky;top:0;z-index:50;background:var(--ink);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
   nav::-webkit-scrollbar{display:none}
   nav .wrap{display:flex;gap:2px;padding:0 20px}
   nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
@@ -63,14 +66,14 @@
   .sec-body p{max-width:76ch}
   .lead{font-size:15.5px}
   .soft{color:var(--ink-soft)}
-  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
   .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
-  .tagline{font-size:16px;font-weight:600;background:var(--ink);color:#fff;padding:16px 20px;margin:14px 0;border-left:6px solid var(--amber)}
+  .tagline{font-size:16px;font-weight:600;background:#0E1318;color:#fff;padding:16px 20px;margin:14px 0;border-left:6px solid var(--amber)}
   .tagline small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#9AA7B4;margin-bottom:6px;font-weight:400}
   .tagline b{color:var(--amber)}
 
   table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
-  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F}
   td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
   tr:last-child td{border-bottom:none}
   .tbl-scroll{overflow-x:auto}
@@ -166,36 +169,36 @@
       번호 순서대로 읽으면 시연 당일의 진행 순서가 됩니다.</p>
 
       <svg viewBox="0 0 900 290" role="img" aria-label="시연 시나리오 6장면 스토리보드: 주문 등록부터 실적 리포트까지, 장면 4와 5가 하이라이트">
-        <defs><marker id="tp-ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
-        <rect x="20" y="28" width="260" height="92" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="36" y="54" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#33506B">장면 1</text>
-        <text x="36" y="78" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">주문 등록</text>
-        <text x="36" y="100" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">포털에서 주문 3건을 등록한다</text>
-        <rect x="320" y="28" width="260" height="92" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="336" y="54" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#33506B">장면 2</text>
-        <text x="336" y="78" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">무인 운영 — AMR 반송</text>
-        <text x="336" y="100" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">로봇들이 상자를 작업대로 나른다</text>
-        <rect x="620" y="28" width="260" height="92" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="636" y="54" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#33506B">장면 3</text>
-        <text x="636" y="78" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">피킹 · AI 검수</text>
-        <text x="636" y="100" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">로봇팔이 집고, AI가 잘못 집기를 잡아낸다</text>
-        <rect x="620" y="170" width="260" height="92" fill="#FDF1E5" stroke="#E8720C" stroke-width="2"/>
-        <text x="636" y="196" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8720C">장면 4 ★</text>
-        <text x="636" y="220" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">장애 주입 · 자가 복구</text>
-        <text x="636" y="242" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">일부러 고장 내도 스스로 회복한다</text>
-        <rect x="320" y="170" width="260" height="92" fill="#FDF1E5" stroke="#E8720C" stroke-width="2"/>
-        <text x="336" y="196" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8720C">장면 5 ★</text>
-        <text x="336" y="220" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">What-if 수요 예측</text>
-        <text x="336" y="242" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">"주문 2배면?" 즉석 시뮬레이션</text>
-        <rect x="20" y="170" width="260" height="92" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="36" y="196" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#33506B">장면 6</text>
-        <text x="36" y="220" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">실적 리포트</text>
-        <text x="36" y="242" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">처리 이력을 숫자로 보여주며 마무리</text>
-        <line x1="282" y1="74" x2="316" y2="74" stroke="#33506B" stroke-width="2" marker-end="url(#tp-ar)"/>
-        <line x1="582" y1="74" x2="616" y2="74" stroke="#33506B" stroke-width="2" marker-end="url(#tp-ar)"/>
-        <line x1="750" y1="122" x2="750" y2="166" stroke="#33506B" stroke-width="2" marker-end="url(#tp-ar)"/>
-        <line x1="616" y1="216" x2="584" y2="216" stroke="#33506B" stroke-width="2" marker-end="url(#tp-ar)"/>
-        <line x1="316" y1="216" x2="284" y2="216" stroke="#33506B" stroke-width="2" marker-end="url(#tp-ar)"/>
+        <defs><marker id="tp-ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
+        <rect x="20" y="28" width="260" height="92" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="36" y="54" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#8FB4D9">장면 1</text>
+        <text x="36" y="78" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">주문 등록</text>
+        <text x="36" y="100" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">포털에서 주문 3건을 등록한다</text>
+        <rect x="320" y="28" width="260" height="92" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="336" y="54" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#8FB4D9">장면 2</text>
+        <text x="336" y="78" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">무인 운영 — AMR 반송</text>
+        <text x="336" y="100" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">로봇들이 상자를 작업대로 나른다</text>
+        <rect x="620" y="28" width="260" height="92" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="636" y="54" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#8FB4D9">장면 3</text>
+        <text x="636" y="78" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">피킹 · AI 검수</text>
+        <text x="636" y="100" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">로봇팔이 집고, AI가 잘못 집기를 잡아낸다</text>
+        <rect x="620" y="170" width="260" height="92" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+        <text x="636" y="196" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#F08A32">장면 4 ★</text>
+        <text x="636" y="220" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">장애 주입 · 자가 복구</text>
+        <text x="636" y="242" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">일부러 고장 내도 스스로 회복한다</text>
+        <rect x="320" y="170" width="260" height="92" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+        <text x="336" y="196" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#F08A32">장면 5 ★</text>
+        <text x="336" y="220" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">What-if 수요 예측</text>
+        <text x="336" y="242" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">"주문 2배면?" 즉석 시뮬레이션</text>
+        <rect x="20" y="170" width="260" height="92" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="36" y="196" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#8FB4D9">장면 6</text>
+        <text x="36" y="220" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">실적 리포트</text>
+        <text x="36" y="242" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">처리 이력을 숫자로 보여주며 마무리</text>
+        <line x1="282" y1="74" x2="316" y2="74" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-ar)"/>
+        <line x1="582" y1="74" x2="616" y2="74" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-ar)"/>
+        <line x1="750" y1="122" x2="750" y2="166" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-ar)"/>
+        <line x1="616" y1="216" x2="584" y2="216" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-ar)"/>
+        <line x1="316" y1="216" x2="284" y2="216" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-ar)"/>
       </svg>
       <p class="soft">그림 1 · 시연 스토리보드. 주황 테두리(★)가 이 제안의 두 하이라이트 — 자가 복구와 수요 예측. 장면별 상세와 담당은 SEC 02·04에서 다룹니다.</p>
     </div>

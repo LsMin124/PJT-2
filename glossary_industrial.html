@@ -3,13 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <title>용어사전 B — 스마트 물류센터 · 산업 표준</title>
 <style>
   :root{
-    --bg:#E9ECEE;--panel:#FFFFFF;--panel-edge:#D4D9DD;--ink:#1B2430;--ink-soft:#5A6673;
-    --amber:#E8720C;--machine:#1F7A4D;--steel:#33506B;--grid:#DDE2E6;
+    --bg:#14181D;--panel:#1C2229;--panel-edge:#2C343D;--ink:#E8ECF1;--ink-soft:#9AA7B4;
+    --amber:#F08A32;--machine:#3BAF77;--steel:#8FB4D9;--grid:#2A323B;
     --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
-    --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -28,7 +31,7 @@
   .doc-eyebrow b{color:var(--amber);font-weight:600}
   h1{font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-.02em}
   h1 .sub{display:block;font-size:.55em;font-weight:500;color:var(--ink-soft);margin-top:6px}
-  nav{position:sticky;top:0;z-index:50;background:var(--ink);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
   nav::-webkit-scrollbar{display:none}
   nav .wrap{display:flex;gap:2px;padding:0 20px}
   nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
@@ -43,14 +46,14 @@
   section.term{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:26px;padding:22px 26px;scroll-margin-top:56px}
   .term h2{font-size:19px;font-weight:800;letter-spacing:-.01em}
   .term h2 .en{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-soft);letter-spacing:.06em;margin-left:10px}
-  p.def{font-size:14px;font-weight:600;border-left:4px solid var(--amber);padding:9px 14px;background:#FDF4EC;margin:12px 0}
+  p.def{font-size:14px;font-weight:600;border-left:4px solid var(--amber);padding:9px 14px;background:#2A2019;margin:12px 0}
   .term p{font-size:14px;margin:8px 0}
-  figure{margin:16px 0;border:1px solid var(--panel-edge);background:#FBFCFC;padding:14px}
+  figure{margin:16px 0;border:1px solid var(--panel-edge);background:#1F262E;padding:14px}
   figure svg{display:block;width:100%;height:auto}
   figcaption{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);margin-top:8px;letter-spacing:.05em}
-  .ctx{margin-top:12px;padding:10px 14px;background:#F5F7F8;border-left:3px solid var(--machine);font-size:13px}
+  .ctx{margin-top:12px;padding:10px 14px;background:#20272F;border-left:3px solid var(--machine);font-size:13px}
   .ctx b{color:var(--machine)}
-  code{font-family:var(--mono);font-size:12px;background:#F2F4F6;padding:1px 5px}
+  code{font-family:var(--mono);font-size:12px;background:#20272F;padding:1px 5px}
   footer{border-top:3px solid var(--ink);padding:18px 0 44px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
   @media (max-width:760px){body{font-size:14px} section.term{padding:16px}}
 </style>
@@ -93,20 +96,20 @@
   <p class="def">설비·로봇이 만드는 현장 데이터(OT)와 기업 정보 시스템(IT)을 연결해, 현장이 스스로 상태를 보고하고 지시를 받는 체계. 공장이든 물류센터든 "IT와 OT의 융합"이 본질이다.</p>
   <figure>
     <svg viewBox="0 0 720 150" role="img" aria-label="IT와 OT의 융합">
-      <rect x="30" y="30" width="250" height="90" fill="#F5F7F8" stroke="#33506B" stroke-width="2"/>
-      <text x="155" y="55" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#33506B">IT — 정보 기술</text>
-      <text x="155" y="78" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#5A6673">ERP · MES · DB · 웹 서비스</text>
-      <text x="155" y="96" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#5A6673">"무엇을 얼마나 만들까"</text>
-      <rect x="440" y="30" width="250" height="90" fill="#FDF4EC" stroke="#E8720C" stroke-width="2"/>
-      <text x="565" y="55" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#E8720C">OT — 운영 기술</text>
-      <text x="565" y="78" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#5A6673">PLC · 로봇 · 센서 · 설비</text>
-      <text x="565" y="96" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#5A6673">"지금 어떻게 만드는가"</text>
-      <line x1="280" y1="65" x2="440" y2="65" stroke="#1F7A4D" stroke-width="2.5" marker-end="url(#br)" marker-start="url(#bl)"/>
-      <text x="360" y="55" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1F7A4D">MQTT · 표준 프로토콜</text>
-      <text x="360" y="140" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#5A6673">두 세계를 잇는 다리가 이 프로젝트의 데이터 인프라 레이어</text>
+      <rect x="30" y="30" width="250" height="90" fill="#20272F" stroke="#8FB4D9" stroke-width="2"/>
+      <text x="155" y="55" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#8FB4D9">IT — 정보 기술</text>
+      <text x="155" y="78" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#9AA7B4">ERP · MES · DB · 웹 서비스</text>
+      <text x="155" y="96" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#9AA7B4">"무엇을 얼마나 만들까"</text>
+      <rect x="440" y="30" width="250" height="90" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="565" y="55" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#F08A32">OT — 운영 기술</text>
+      <text x="565" y="78" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#9AA7B4">PLC · 로봇 · 센서 · 설비</text>
+      <text x="565" y="96" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#9AA7B4">"지금 어떻게 만드는가"</text>
+      <line x1="280" y1="65" x2="440" y2="65" stroke="#3BAF77" stroke-width="2.5" marker-end="url(#br)" marker-start="url(#bl)"/>
+      <text x="360" y="55" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#3BAF77">MQTT · 표준 프로토콜</text>
+      <text x="360" y="140" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#9AA7B4">두 세계를 잇는 다리가 이 프로젝트의 데이터 인프라 레이어</text>
       <defs>
-        <marker id="br" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#1F7A4D" stroke-width="1.5"/></marker>
-        <marker id="bl" markerWidth="8" markerHeight="8" refX="0" refY="3" orient="auto"><path d="M7,0 L0,3 L7,6" fill="none" stroke="#1F7A4D" stroke-width="1.5"/></marker>
+        <marker id="br" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#3BAF77" stroke-width="1.5"/></marker>
+        <marker id="bl" markerWidth="8" markerHeight="8" refX="0" refY="3" orient="auto"><path d="M7,0 L0,3 L7,6" fill="none" stroke="#3BAF77" stroke-width="1.5"/></marker>
       </defs>
     </svg>
     <figcaption>전통 현장에서는 IT와 OT가 단절되어 있었다 — 이 단절을 잇는 것이 본 프로젝트의 핵심 주제</figcaption>
@@ -120,23 +123,23 @@
   <p class="def">주문을 받아 상품이 고객에게 나가기까지 물류센터 안에서 일어나는 전 과정. 입고 → 적치 → 보관 → 피킹 → 검수 → 패킹 → 분류 → 출고로 이어진다.</p>
   <figure>
     <svg viewBox="0 0 720 110" role="img" aria-label="풀필먼트 프로세스 흐름">
-      <rect x="20" y="30" width="78" height="46" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="59" y="58" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">입고</text>
-      <rect x="106" y="30" width="78" height="46" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="145" y="58" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">적치</text>
-      <rect x="192" y="30" width="78" height="46" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="231" y="58" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">보관</text>
-      <rect x="278" y="30" width="78" height="46" fill="#FDF4EC" stroke="#E8720C" stroke-width="2.5"/>
-      <text x="317" y="58" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#E8720C">피킹</text>
-      <rect x="364" y="30" width="78" height="46" fill="#FDF4EC" stroke="#E8720C" stroke-width="2.5"/>
-      <text x="403" y="58" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#E8720C">검수</text>
-      <rect x="450" y="30" width="78" height="46" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="489" y="58" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">패킹</text>
-      <rect x="536" y="30" width="78" height="46" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="575" y="58" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">분류</text>
-      <rect x="622" y="30" width="78" height="46" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="661" y="58" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">출고</text>
-      <text x="360" y="100" text-anchor="middle" font-family="monospace" font-size="10" fill="#E8720C">강조 구간 = 본 프로젝트 데모의 중심 (AMR 운송 · 로봇팔 피킹 · AI가 여기 모인다)</text>
+      <rect x="20" y="30" width="78" height="46" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="59" y="58" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">입고</text>
+      <rect x="106" y="30" width="78" height="46" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="145" y="58" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">적치</text>
+      <rect x="192" y="30" width="78" height="46" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="231" y="58" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">보관</text>
+      <rect x="278" y="30" width="78" height="46" fill="#2A2019" stroke="#F08A32" stroke-width="2.5"/>
+      <text x="317" y="58" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#F08A32">피킹</text>
+      <rect x="364" y="30" width="78" height="46" fill="#2A2019" stroke="#F08A32" stroke-width="2.5"/>
+      <text x="403" y="58" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#F08A32">검수</text>
+      <rect x="450" y="30" width="78" height="46" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="489" y="58" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">패킹</text>
+      <rect x="536" y="30" width="78" height="46" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="575" y="58" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">분류</text>
+      <rect x="622" y="30" width="78" height="46" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="661" y="58" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">출고</text>
+      <text x="360" y="100" text-anchor="middle" font-family="monospace" font-size="10" fill="#F08A32">강조 구간 = 본 프로젝트 데모의 중심 (AMR 운송 · 로봇팔 피킹 · AI가 여기 모인다)</text>
     </svg>
     <figcaption>주문 이행의 8단계 — 각 단계 사이를 AMR과 컨베이어가 잇는다</figcaption>
   </figure>
@@ -149,24 +152,24 @@
   <p class="def">공장의 소프트웨어를 5개 층(L0~L4)으로 나누는 국제 표준. 아래로 갈수록 물리에 가깝고 빠르며(마이크로초), 위로 갈수록 경영에 가깝고 느리다(일 단위).</p>
   <figure>
     <svg viewBox="0 0 720 240" role="img" aria-label="ISA-95 피라미드">
-      <polygon points="285,15 435,15 455,55 265,55" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="360" y="41" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">L4 · ERP 경영</text>
-      <polygon points="265,60 455,60 480,100 240,100" fill="#1B2430"/>
+      <polygon points="285,15 435,15 455,55 265,55" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="360" y="41" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">L4 · ERP 경영</text>
+      <polygon points="265,60 455,60 480,100 240,100" fill="#E8ECF1"/>
       <text x="360" y="86" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">L3 · MES 생산 관리</text>
-      <polygon points="240,105 480,105 505,145 215,145" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="360" y="131" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">L2 · SCADA 감시 제어</text>
-      <polygon points="215,150 505,150 530,190 190,190" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="360" y="176" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">L1 · PLC 제어</text>
-      <polygon points="190,195 530,195 555,235 165,235" fill="#FDF4EC" stroke="#E8720C" stroke-width="2"/>
-      <text x="360" y="221" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8720C">L0 · 센서 · 설비 · 로봇 (물리)</text>
-      <text x="620" y="38" font-family="monospace" font-size="10" fill="#5A6673">시간: 일 · 주</text>
-      <text x="620" y="83" font-family="monospace" font-size="10" fill="#5A6673">초 · 분</text>
-      <text x="620" y="128" font-family="monospace" font-size="10" fill="#5A6673">밀리초 · 초</text>
-      <text x="620" y="173" font-family="monospace" font-size="10" fill="#5A6673">µs · ms</text>
-      <text x="620" y="218" font-family="monospace" font-size="10" fill="#E8720C">물리 시간</text>
-      <text x="80" y="83" font-family="monospace" font-size="10" fill="#5A6673">← 본 프로젝트의</text>
-      <text x="80" y="98" font-family="monospace" font-size="10" fill="#5A6673">   WMS/WES-lite 위치</text>
-      <text x="80" y="218" font-family="monospace" font-size="10" fill="#E8720C">← Isaac Sim이 대체</text>
+      <polygon points="240,105 480,105 505,145 215,145" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="360" y="131" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">L2 · SCADA 감시 제어</text>
+      <polygon points="215,150 505,150 530,190 190,190" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="360" y="176" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">L1 · PLC 제어</text>
+      <polygon points="190,195 530,195 555,235 165,235" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="360" y="221" text-anchor="middle" font-family="monospace" font-size="11" fill="#F08A32">L0 · 센서 · 설비 · 로봇 (물리)</text>
+      <text x="620" y="38" font-family="monospace" font-size="10" fill="#9AA7B4">시간: 일 · 주</text>
+      <text x="620" y="83" font-family="monospace" font-size="10" fill="#9AA7B4">초 · 분</text>
+      <text x="620" y="128" font-family="monospace" font-size="10" fill="#9AA7B4">밀리초 · 초</text>
+      <text x="620" y="173" font-family="monospace" font-size="10" fill="#9AA7B4">µs · ms</text>
+      <text x="620" y="218" font-family="monospace" font-size="10" fill="#F08A32">물리 시간</text>
+      <text x="80" y="83" font-family="monospace" font-size="10" fill="#9AA7B4">← 본 프로젝트의</text>
+      <text x="80" y="98" font-family="monospace" font-size="10" fill="#9AA7B4">   WMS/WES-lite 위치</text>
+      <text x="80" y="218" font-family="monospace" font-size="10" fill="#F08A32">← Isaac Sim이 대체</text>
     </svg>
     <figcaption>위로 갈수록 타이밍이 느슨해진다 — 층마다 요구되는 실시간성이 다르다는 것이 아키텍처 설계의 근거</figcaption>
   </figure>
@@ -179,27 +182,27 @@
   <p class="def">물류센터 소프트웨어의 3층 구조. WMS는 "무엇이 어디에 얼마나"(재고·주문의 장부), WES는 "지금 누가 무엇을"(작업 오케스트레이션), WCS는 "설비를 어떻게"(컨베이어·소터 제어)를 담당한다.</p>
   <figure>
     <svg viewBox="0 0 720 120" role="img" aria-label="WMS WES WCS 계층">
-      <rect x="24" y="30" width="120" height="56" fill="#F5F7F8" stroke="#5A6673" stroke-width="1.5"/>
-      <text x="84" y="54" text-anchor="middle" font-family="monospace" font-size="11" fill="#5A6673">OMS · ERP</text>
-      <text x="84" y="72" text-anchor="middle" font-family="monospace" font-size="9" fill="#5A6673">주문 유입</text>
-      <rect x="162" y="30" width="120" height="56" fill="#1B2430"/>
+      <rect x="24" y="30" width="120" height="56" fill="#20272F" stroke="#9AA7B4" stroke-width="1.5"/>
+      <text x="84" y="54" text-anchor="middle" font-family="monospace" font-size="11" fill="#9AA7B4">OMS · ERP</text>
+      <text x="84" y="72" text-anchor="middle" font-family="monospace" font-size="9" fill="#9AA7B4">주문 유입</text>
+      <rect x="162" y="30" width="120" height="56" fill="#E8ECF1"/>
       <text x="222" y="54" text-anchor="middle" font-family="monospace" font-size="12" fill="#fff">WMS</text>
       <text x="222" y="72" text-anchor="middle" font-family="monospace" font-size="9" fill="#9AA7B4">재고·주문·로케이션</text>
-      <rect x="300" y="30" width="120" height="56" fill="#1B2430"/>
+      <rect x="300" y="30" width="120" height="56" fill="#E8ECF1"/>
       <text x="360" y="54" text-anchor="middle" font-family="monospace" font-size="12" fill="#fff">WES</text>
       <text x="360" y="72" text-anchor="middle" font-family="monospace" font-size="9" fill="#9AA7B4">웨이브·태스크 할당</text>
-      <rect x="438" y="30" width="120" height="56" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="498" y="54" text-anchor="middle" font-family="monospace" font-size="12" fill="#1B2430">WCS</text>
-      <text x="498" y="72" text-anchor="middle" font-family="monospace" font-size="9" fill="#5A6673">설비 제어</text>
-      <rect x="576" y="30" width="124" height="56" fill="#FDF4EC" stroke="#E8720C" stroke-width="2"/>
-      <text x="638" y="54" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8720C">설비 · 로봇</text>
-      <text x="638" y="72" text-anchor="middle" font-family="monospace" font-size="9" fill="#5A6673">AMR·소터·컨베이어</text>
-      <line x1="144" y1="58" x2="160" y2="58" stroke="#5A6673" stroke-width="1.5" marker-end="url(#ww)"/>
-      <line x1="282" y1="58" x2="298" y2="58" stroke="#5A6673" stroke-width="1.5" marker-end="url(#ww)"/>
-      <line x1="420" y1="58" x2="436" y2="58" stroke="#5A6673" stroke-width="1.5" marker-end="url(#ww)"/>
-      <line x1="558" y1="58" x2="574" y2="58" stroke="#5A6673" stroke-width="1.5" marker-end="url(#ww)"/>
-      <text x="360" y="110" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">어두운 박스 = 본 프로젝트가 구현하는 범위 (WMS/WES-lite)</text>
-      <defs><marker id="ww" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#5A6673" stroke-width="1.5"/></marker></defs>
+      <rect x="438" y="30" width="120" height="56" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="498" y="54" text-anchor="middle" font-family="monospace" font-size="12" fill="#E8ECF1">WCS</text>
+      <text x="498" y="72" text-anchor="middle" font-family="monospace" font-size="9" fill="#9AA7B4">설비 제어</text>
+      <rect x="576" y="30" width="124" height="56" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="638" y="54" text-anchor="middle" font-family="monospace" font-size="11" fill="#F08A32">설비 · 로봇</text>
+      <text x="638" y="72" text-anchor="middle" font-family="monospace" font-size="9" fill="#9AA7B4">AMR·소터·컨베이어</text>
+      <line x1="144" y1="58" x2="160" y2="58" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#ww)"/>
+      <line x1="282" y1="58" x2="298" y2="58" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#ww)"/>
+      <line x1="420" y1="58" x2="436" y2="58" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#ww)"/>
+      <line x1="558" y1="58" x2="574" y2="58" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#ww)"/>
+      <text x="360" y="110" text-anchor="middle" font-family="monospace" font-size="10" fill="#9AA7B4">어두운 박스 = 본 프로젝트가 구현하는 범위 (WMS/WES-lite)</text>
+      <defs><marker id="ww" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#9AA7B4" stroke-width="1.5"/></marker></defs>
     </svg>
     <figcaption>제조 ISA-95 계층의 물류 버전 — 제조의 MES 실행 기능에 해당하는 것이 WES다</figcaption>
   </figure>
@@ -219,20 +222,20 @@
   <p class="def">실제 공장·설비의 상태를 반영하는 가상 복제본. 현실을 관찰하는 거울이자, "이렇게 바꾸면 어떻게 될까"를 미리 실험해 보는 공간이다.</p>
   <figure>
     <svg viewBox="0 0 720 165" role="img" aria-label="디지털 트윈의 양방향 동기화">
-      <rect x="40" y="50" width="210" height="70" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
-      <text x="145" y="80" text-anchor="middle" font-family="monospace" font-size="12" fill="#1B2430">현실 물류센터</text>
-      <text x="145" y="100" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">설비 · 로봇 · 사람</text>
-      <rect x="470" y="50" width="210" height="70" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="2"/>
-      <text x="575" y="80" text-anchor="middle" font-family="monospace" font-size="12" fill="#1F7A4D">가상 트윈</text>
-      <text x="575" y="100" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">시뮬레이션 모델</text>
-      <path d="M250 68 L 466 68" stroke="#1F7A4D" stroke-width="2" marker-end="url(#dt1)"/>
-      <text x="360" y="58" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#1F7A4D">측정 데이터로 계속 보정 (사이클 타임·고장률)</text>
-      <path d="M470 104 L 254 104" stroke="#E8720C" stroke-width="2" marker-end="url(#dt2)"/>
-      <text x="360" y="126" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#E8720C">실험 결과로 의사결정 (증설·정책 변경)</text>
-      <text x="360" y="155" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">이 양방향 고리가 없으면 그냥 3D 모형이다</text>
+      <rect x="40" y="50" width="210" height="70" fill="#20272F" stroke="#E8ECF1" stroke-width="2"/>
+      <text x="145" y="80" text-anchor="middle" font-family="monospace" font-size="12" fill="#E8ECF1">현실 물류센터</text>
+      <text x="145" y="100" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#9AA7B4">설비 · 로봇 · 사람</text>
+      <rect x="470" y="50" width="210" height="70" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
+      <text x="575" y="80" text-anchor="middle" font-family="monospace" font-size="12" fill="#3BAF77">가상 트윈</text>
+      <text x="575" y="100" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#9AA7B4">시뮬레이션 모델</text>
+      <path d="M250 68 L 466 68" stroke="#3BAF77" stroke-width="2" marker-end="url(#dt1)"/>
+      <text x="360" y="58" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#3BAF77">측정 데이터로 계속 보정 (사이클 타임·고장률)</text>
+      <path d="M470 104 L 254 104" stroke="#F08A32" stroke-width="2" marker-end="url(#dt2)"/>
+      <text x="360" y="126" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#F08A32">실험 결과로 의사결정 (증설·정책 변경)</text>
+      <text x="360" y="155" text-anchor="middle" font-family="monospace" font-size="10" fill="#9AA7B4">이 양방향 고리가 없으면 그냥 3D 모형이다</text>
       <defs>
-        <marker id="dt1" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#1F7A4D" stroke-width="1.5"/></marker>
-        <marker id="dt2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#E8720C" stroke-width="1.5"/></marker>
+        <marker id="dt1" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#3BAF77" stroke-width="1.5"/></marker>
+        <marker id="dt2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#F08A32" stroke-width="1.5"/></marker>
       </defs>
     </svg>
     <figcaption>거울(관찰)이자 실험실(what-if) — 두 방향의 데이터 흐름이 모두 있어야 트윈이라 부를 수 있다</figcaption>
@@ -246,9 +249,9 @@
   <p class="def">시간을 연속으로 흘리지 않고 "사건에서 다음 사건으로 점프"하며 공장의 흐름(대기열·처리량·병목)을 계산하는 시뮬레이션. SimPy는 이를 위한 Python 라이브러리다.</p>
   <figure>
     <svg viewBox="0 0 720 180" role="img" aria-label="연속 시뮬레이션과 이산사건 시뮬레이션 비교">
-      <text x="20" y="30" font-family="monospace" font-size="11" font-weight="bold" fill="#E8720C">연속시간 (Isaac Sim)</text>
-      <line x1="20" y1="55" x2="700" y2="55" stroke="#D4D9DD" stroke-width="2"/>
-      <g stroke="#E8720C" stroke-width="1.5">
+      <text x="20" y="30" font-family="monospace" font-size="11" font-weight="bold" fill="#F08A32">연속시간 (Isaac Sim)</text>
+      <line x1="20" y1="55" x2="700" y2="55" stroke="#2C343D" stroke-width="2"/>
+      <g stroke="#F08A32" stroke-width="1.5">
         <line x1="30" y1="48" x2="30" y2="62"/><line x1="55" y1="48" x2="55" y2="62"/><line x1="80" y1="48" x2="80" y2="62"/>
         <line x1="105" y1="48" x2="105" y2="62"/><line x1="130" y1="48" x2="130" y2="62"/><line x1="155" y1="48" x2="155" y2="62"/>
         <line x1="180" y1="48" x2="180" y2="62"/><line x1="205" y1="48" x2="205" y2="62"/><line x1="230" y1="48" x2="230" y2="62"/>
@@ -259,18 +262,18 @@
         <line x1="555" y1="48" x2="555" y2="62"/><line x1="580" y1="48" x2="580" y2="62"/><line x1="605" y1="48" x2="605" y2="62"/>
         <line x1="630" y1="48" x2="630" y2="62"/><line x1="655" y1="48" x2="655" y2="62"/><line x1="680" y1="48" x2="680" y2="62"/>
       </g>
-      <text x="20" y="85" font-family="monospace" font-size="9.5" fill="#5A6673">모든 타임스텝(1/60초)을 빠짐없이 계산 — 물리적 정확성, 대신 느림</text>
-      <text x="20" y="120" font-family="monospace" font-size="11" font-weight="bold" fill="#33506B">이산사건 (SimPy)</text>
-      <line x1="20" y1="145" x2="700" y2="145" stroke="#D4D9DD" stroke-width="2"/>
-      <circle cx="60" cy="145" r="7" fill="#33506B"/><circle cx="290" cy="145" r="7" fill="#33506B"/><circle cx="480" cy="145" r="7" fill="#33506B"/><circle cx="660" cy="145" r="7" fill="#33506B"/>
-      <text x="60" y="168" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">주문 도착</text>
-      <text x="290" y="168" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">피킹 시작</text>
-      <text x="480" y="168" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">피킹 완료</text>
-      <text x="660" y="168" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">운송 완료</text>
-      <path d="M70 137 C 150 118, 210 118, 282 137" fill="none" stroke="#33506B" stroke-width="1.5" marker-end="url(#dj)"/>
-      <path d="M300 137 C 360 118, 410 118, 472 137" fill="none" stroke="#33506B" stroke-width="1.5" marker-end="url(#dj)"/>
-      <path d="M490 137 C 550 118, 600 118, 652 137" fill="none" stroke="#33506B" stroke-width="1.5" marker-end="url(#dj)"/>
-      <defs><marker id="dj" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#33506B" stroke-width="1.5"/></marker></defs>
+      <text x="20" y="85" font-family="monospace" font-size="9.5" fill="#9AA7B4">모든 타임스텝(1/60초)을 빠짐없이 계산 — 물리적 정확성, 대신 느림</text>
+      <text x="20" y="120" font-family="monospace" font-size="11" font-weight="bold" fill="#8FB4D9">이산사건 (SimPy)</text>
+      <line x1="20" y1="145" x2="700" y2="145" stroke="#2C343D" stroke-width="2"/>
+      <circle cx="60" cy="145" r="7" fill="#8FB4D9"/><circle cx="290" cy="145" r="7" fill="#8FB4D9"/><circle cx="480" cy="145" r="7" fill="#8FB4D9"/><circle cx="660" cy="145" r="7" fill="#8FB4D9"/>
+      <text x="60" y="168" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#9AA7B4">주문 도착</text>
+      <text x="290" y="168" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#9AA7B4">피킹 시작</text>
+      <text x="480" y="168" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#9AA7B4">피킹 완료</text>
+      <text x="660" y="168" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#9AA7B4">운송 완료</text>
+      <path d="M70 137 C 150 118, 210 118, 282 137" fill="none" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#dj)"/>
+      <path d="M300 137 C 360 118, 410 118, 472 137" fill="none" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#dj)"/>
+      <path d="M490 137 C 550 118, 600 118, 652 137" fill="none" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#dj)"/>
+      <defs><marker id="dj" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#8FB4D9" stroke-width="1.5"/></marker></defs>
     </svg>
     <figcaption>사건 사이 구간은 계산하지 않고 건너뜀 — 센터 하루치를 몇 초 만에, 수천 번 반복 실험 가능</figcaption>
   </figure>
@@ -283,17 +286,17 @@
   <p class="def">안정 상태의 어떤 시스템이든 "안에 머무는 평균 개수(L) = 도착률(λ) × 평균 체류시간(W)"이 성립한다는 대기행렬 이론의 기본 법칙.</p>
   <figure>
     <svg viewBox="0 0 720 140" role="img" aria-label="리틀의 법칙 개념">
-      <line x1="20" y1="70" x2="180" y2="70" stroke="#E8720C" stroke-width="2.5" marker-end="url(#ll)"/>
-      <text x="100" y="55" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#E8720C">도착 λ = 100건/시간</text>
-      <rect x="200" y="30" width="320" height="80" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
-      <text x="360" y="63" text-anchor="middle" font-family="monospace" font-size="12" fill="#1B2430">시스템(창고) 안</text>
-      <text x="360" y="86" text-anchor="middle" font-family="monospace" font-size="11" fill="#33506B">평균 L = 50건 처리 중</text>
-      <line x1="540" y1="70" x2="700" y2="70" stroke="#1F7A4D" stroke-width="2.5" marker-end="url(#ll2)"/>
-      <text x="620" y="55" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1F7A4D">완료 후 출발</text>
-      <text x="360" y="132" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#5A6673">평균 체류 W = 0.5시간 → L = λ × W = 100 × 0.5 = 50 ✓</text>
+      <line x1="20" y1="70" x2="180" y2="70" stroke="#F08A32" stroke-width="2.5" marker-end="url(#ll)"/>
+      <text x="100" y="55" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#F08A32">도착 λ = 100건/시간</text>
+      <rect x="200" y="30" width="320" height="80" fill="#20272F" stroke="#E8ECF1" stroke-width="2"/>
+      <text x="360" y="63" text-anchor="middle" font-family="monospace" font-size="12" fill="#E8ECF1">시스템(창고) 안</text>
+      <text x="360" y="86" text-anchor="middle" font-family="monospace" font-size="11" fill="#8FB4D9">평균 L = 50건 처리 중</text>
+      <line x1="540" y1="70" x2="700" y2="70" stroke="#3BAF77" stroke-width="2.5" marker-end="url(#ll2)"/>
+      <text x="620" y="55" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#3BAF77">완료 후 출발</text>
+      <text x="360" y="132" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#9AA7B4">평균 체류 W = 0.5시간 → L = λ × W = 100 × 0.5 = 50 ✓</text>
       <defs>
-        <marker id="ll" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#E8720C" stroke-width="1.5"/></marker>
-        <marker id="ll2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#1F7A4D" stroke-width="1.5"/></marker>
+        <marker id="ll" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#F08A32" stroke-width="1.5"/></marker>
+        <marker id="ll2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#3BAF77" stroke-width="1.5"/></marker>
       </defs>
     </svg>
     <figcaption>세 숫자 중 두 개를 알면 나머지가 정해진다 — 세 개가 동시에 안 맞으면 어딘가 버그가 있는 것</figcaption>
@@ -307,24 +310,24 @@
   <p class="def">IoT·제조 현장의 표준 메시징 프로토콜. 모든 참여자가 중앙 브로커에 연결해, 토픽 이름으로 메시지를 발행(publish)하고 구독(subscribe)한다.</p>
   <figure>
     <svg viewBox="0 0 720 180" role="img" aria-label="MQTT 발행 구독 구조">
-      <rect x="290" y="60" width="140" height="60" fill="#1B2430"/>
+      <rect x="290" y="60" width="140" height="60" fill="#E8ECF1"/>
       <text x="360" y="87" text-anchor="middle" font-family="monospace" font-size="12" fill="#fff">브로커</text>
       <text x="360" y="105" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#9AA7B4">EMQX · Mosquitto</text>
-      <rect x="20" y="25" width="150" height="40" fill="#FDF4EC" stroke="#E8720C" stroke-width="2"/>
-      <text x="95" y="50" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8720C">AMR (발행)</text>
-      <rect x="20" y="115" width="150" height="40" fill="#FDF4EC" stroke="#E8720C" stroke-width="2"/>
-      <text x="95" y="140" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8720C">설비 (발행)</text>
-      <rect x="550" y="25" width="150" height="40" fill="#F5F7F8" stroke="#33506B" stroke-width="2"/>
-      <text x="625" y="50" text-anchor="middle" font-family="monospace" font-size="11" fill="#33506B">MES (구독)</text>
-      <rect x="550" y="115" width="150" height="40" fill="#F5F7F8" stroke="#33506B" stroke-width="2"/>
-      <text x="625" y="140" text-anchor="middle" font-family="monospace" font-size="11" fill="#33506B">웹 관제 (구독)</text>
-      <line x1="170" y1="45" x2="288" y2="75" stroke="#5A6673" stroke-width="1.5" marker-end="url(#mq)"/>
-      <line x1="170" y1="135" x2="288" y2="105" stroke="#5A6673" stroke-width="1.5" marker-end="url(#mq)"/>
-      <line x1="430" y1="75" x2="548" y2="45" stroke="#5A6673" stroke-width="1.5" marker-end="url(#mq)"/>
-      <line x1="430" y1="105" x2="548" y2="135" stroke="#5A6673" stroke-width="1.5" marker-end="url(#mq)"/>
-      <text x="222" y="30" font-family="monospace" font-size="9.5" fill="#5A6673">state/... 토픽으로 발행</text>
-      <text x="440" y="170" font-family="monospace" font-size="9.5" fill="#5A6673">같은 토픽을 여럿이 동시에 구독</text>
-      <defs><marker id="mq" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#5A6673" stroke-width="1.5"/></marker></defs>
+      <rect x="20" y="25" width="150" height="40" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="95" y="50" text-anchor="middle" font-family="monospace" font-size="11" fill="#F08A32">AMR (발행)</text>
+      <rect x="20" y="115" width="150" height="40" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="95" y="140" text-anchor="middle" font-family="monospace" font-size="11" fill="#F08A32">설비 (발행)</text>
+      <rect x="550" y="25" width="150" height="40" fill="#20272F" stroke="#8FB4D9" stroke-width="2"/>
+      <text x="625" y="50" text-anchor="middle" font-family="monospace" font-size="11" fill="#8FB4D9">MES (구독)</text>
+      <rect x="550" y="115" width="150" height="40" fill="#20272F" stroke="#8FB4D9" stroke-width="2"/>
+      <text x="625" y="140" text-anchor="middle" font-family="monospace" font-size="11" fill="#8FB4D9">웹 관제 (구독)</text>
+      <line x1="170" y1="45" x2="288" y2="75" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#mq)"/>
+      <line x1="170" y1="135" x2="288" y2="105" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#mq)"/>
+      <line x1="430" y1="75" x2="548" y2="45" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#mq)"/>
+      <line x1="430" y1="105" x2="548" y2="135" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#mq)"/>
+      <text x="222" y="30" font-family="monospace" font-size="9.5" fill="#9AA7B4">state/... 토픽으로 발행</text>
+      <text x="440" y="170" font-family="monospace" font-size="9.5" fill="#9AA7B4">같은 토픽을 여럿이 동시에 구독</text>
+      <defs><marker id="mq" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#9AA7B4" stroke-width="1.5"/></marker></defs>
     </svg>
     <figcaption>발행자와 구독자는 서로를 모른다 — 결합도가 낮아 시스템을 자유롭게 추가·교체할 수 있다</figcaption>
   </figure>
@@ -337,23 +340,23 @@
   <p class="def">MQTT 위에서 "설비 데이터를 어떤 토픽 구조와 형식으로 보낼 것인가"를 정한 산업 표준. 설비의 탄생·데이터·사망을 생애주기로 관리한다.</p>
   <figure>
     <svg viewBox="0 0 720 130" role="img" aria-label="Sparkplug B 생애주기">
-      <line x1="40" y1="65" x2="690" y2="65" stroke="#D4D9DD" stroke-width="2"/>
-      <rect x="50" y="40" width="110" height="50" fill="#1F7A4D"/>
+      <line x1="40" y1="65" x2="690" y2="65" stroke="#2C343D" stroke-width="2"/>
+      <rect x="50" y="40" width="110" height="50" fill="#3BAF77"/>
       <text x="105" y="61" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">NBIRTH</text>
-      <text x="105" y="79" text-anchor="middle" font-family="monospace" font-size="9" fill="#D9EFE3">온라인 + 전체 상태</text>
-      <rect x="230" y="40" width="80" height="50" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="270" y="61" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">NDATA</text>
-      <text x="270" y="79" text-anchor="middle" font-family="monospace" font-size="9" fill="#5A6673">변경분만</text>
-      <rect x="340" y="40" width="80" height="50" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="380" y="61" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">NDATA</text>
-      <text x="380" y="79" text-anchor="middle" font-family="monospace" font-size="9" fill="#5A6673">변경분만</text>
-      <rect x="450" y="40" width="80" height="50" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="490" y="61" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">NDATA</text>
-      <text x="490" y="79" text-anchor="middle" font-family="monospace" font-size="9" fill="#5A6673">변경분만</text>
-      <rect x="570" y="40" width="110" height="50" fill="#FDF4EC" stroke="#E8720C" stroke-width="2"/>
-      <text x="625" y="61" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8720C">NDEATH</text>
-      <text x="625" y="79" text-anchor="middle" font-family="monospace" font-size="9" fill="#5A6673">유언장 — 끊김 자동 감지</text>
-      <text x="360" y="118" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">구독자는 BIRTH/DEATH만 봐도 "지금 어떤 설비가 살아있는지"를 안다</text>
+      <text x="105" y="79" text-anchor="middle" font-family="monospace" font-size="9" fill="#17251E">온라인 + 전체 상태</text>
+      <rect x="230" y="40" width="80" height="50" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="270" y="61" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">NDATA</text>
+      <text x="270" y="79" text-anchor="middle" font-family="monospace" font-size="9" fill="#9AA7B4">변경분만</text>
+      <rect x="340" y="40" width="80" height="50" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="380" y="61" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">NDATA</text>
+      <text x="380" y="79" text-anchor="middle" font-family="monospace" font-size="9" fill="#9AA7B4">변경분만</text>
+      <rect x="450" y="40" width="80" height="50" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="490" y="61" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">NDATA</text>
+      <text x="490" y="79" text-anchor="middle" font-family="monospace" font-size="9" fill="#9AA7B4">변경분만</text>
+      <rect x="570" y="40" width="110" height="50" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="625" y="61" text-anchor="middle" font-family="monospace" font-size="11" fill="#F08A32">NDEATH</text>
+      <text x="625" y="79" text-anchor="middle" font-family="monospace" font-size="9" fill="#9AA7B4">유언장 — 끊김 자동 감지</text>
+      <text x="360" y="118" text-anchor="middle" font-family="monospace" font-size="10" fill="#9AA7B4">구독자는 BIRTH/DEATH만 봐도 "지금 어떤 설비가 살아있는지"를 안다</text>
     </svg>
     <figcaption>접속 시 전체 상태를 선언(BIRTH), 이후엔 변경분만(DATA), 끊기면 브로커가 대신 부고(DEATH)를 발행</figcaption>
   </figure>
@@ -366,25 +369,25 @@
   <p class="def">중앙 관제(마스터 컨트롤)와 AMR들이 주고받는 메시지를 표준화한 규격. 관제가 경로를 노드·엣지 그래프로 내려주고(order), AMR이 상태를 보고한다(state).</p>
   <figure>
     <svg viewBox="0 0 720 190" role="img" aria-label="VDA 5050 order 구조">
-      <rect x="20" y="20" width="170" height="50" fill="#1B2430"/>
+      <rect x="20" y="20" width="170" height="50" fill="#E8ECF1"/>
       <text x="105" y="41" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">마스터 컨트롤</text>
       <text x="105" y="58" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#9AA7B4">= 본 프로젝트의 WMS/WES</text>
-      <path d="M105 70 L105 120" stroke="#5A6673" stroke-width="1.5" marker-end="url(#vd)"/>
-      <text x="118" y="100" font-family="monospace" font-size="10" fill="#5A6673">order 발행</text>
-      <path d="M300 155 l14 -22 14 22 z" fill="#E8720C"/>
-      <circle cx="314" cy="140" r="16" fill="none" stroke="#E8720C" stroke-width="2"/>
-      <text x="314" y="180" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#E8720C">AMR</text>
-      <circle cx="240" cy="140" r="9" fill="#1F7A4D"/>
-      <circle cx="400" cy="140" r="9" fill="#1F7A4D"/>
-      <circle cx="530" cy="105" r="9" fill="#D4D9DD" stroke="#5A6673" stroke-width="1.5"/>
-      <circle cx="650" cy="140" r="9" fill="#D4D9DD" stroke="#5A6673" stroke-width="1.5"/>
-      <line x1="249" y1="140" x2="391" y2="140" stroke="#1F7A4D" stroke-width="3"/>
-      <line x1="409" y1="137" x2="521" y2="108" stroke="#5A6673" stroke-width="2" stroke-dasharray="6 4"/>
-      <line x1="539" y1="108" x2="641" y2="137" stroke="#5A6673" stroke-width="2" stroke-dasharray="6 4"/>
-      <text x="320" y="128" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#1F7A4D">릴리스됨 — 주행 허가</text>
-      <text x="545" y="85" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">예고만 — 아직 주행 불가</text>
-      <text x="450" y="180" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">엣지를 조금씩 풀어주는 방식으로 교차로 충돌·교착을 중앙에서 제어</text>
-      <defs><marker id="vd" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#5A6673" stroke-width="1.5"/></marker></defs>
+      <path d="M105 70 L105 120" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#vd)"/>
+      <text x="118" y="100" font-family="monospace" font-size="10" fill="#9AA7B4">order 발행</text>
+      <path d="M300 155 l14 -22 14 22 z" fill="#F08A32"/>
+      <circle cx="314" cy="140" r="16" fill="none" stroke="#F08A32" stroke-width="2"/>
+      <text x="314" y="180" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#F08A32">AMR</text>
+      <circle cx="240" cy="140" r="9" fill="#3BAF77"/>
+      <circle cx="400" cy="140" r="9" fill="#3BAF77"/>
+      <circle cx="530" cy="105" r="9" fill="#2C343D" stroke="#9AA7B4" stroke-width="1.5"/>
+      <circle cx="650" cy="140" r="9" fill="#2C343D" stroke="#9AA7B4" stroke-width="1.5"/>
+      <line x1="249" y1="140" x2="391" y2="140" stroke="#3BAF77" stroke-width="3"/>
+      <line x1="409" y1="137" x2="521" y2="108" stroke="#9AA7B4" stroke-width="2" stroke-dasharray="6 4"/>
+      <line x1="539" y1="108" x2="641" y2="137" stroke="#9AA7B4" stroke-width="2" stroke-dasharray="6 4"/>
+      <text x="320" y="128" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#3BAF77">릴리스됨 — 주행 허가</text>
+      <text x="545" y="85" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#9AA7B4">예고만 — 아직 주행 불가</text>
+      <text x="450" y="180" text-anchor="middle" font-family="monospace" font-size="10" fill="#9AA7B4">엣지를 조금씩 풀어주는 방식으로 교차로 충돌·교착을 중앙에서 제어</text>
+      <defs><marker id="vd" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#9AA7B4" stroke-width="1.5"/></marker></defs>
     </svg>
     <figcaption>점진적 엣지 릴리스 — 여러 AMR이 같은 통로를 쓸 때의 교통 정리가 표준 안에 내장되어 있다</figcaption>
   </figure>
@@ -400,17 +403,17 @@
       <text x="170" y="28" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#8A96A3">AGV — 정해진 선로만 (기차)</text>
       <rect x="50" y="45" width="240" height="100" fill="none" stroke="#8A96A3" stroke-width="2" stroke-dasharray="7 5"/>
       <rect x="140" y="36" width="34" height="18" fill="#8A96A3"/>
-      <line x1="238" y1="132" x2="262" y2="158" stroke="#E8720C" stroke-width="3"/>
-      <line x1="262" y1="132" x2="238" y2="158" stroke="#E8720C" stroke-width="3"/>
-      <text x="170" y="168" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">선로가 막히면 그 자리에 정지</text>
-      <text x="545" y="28" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#1F7A4D">AMR — 스스로 우회 (택시)</text>
-      <circle cx="420" cy="130" r="14" fill="#1F7A4D"/>
+      <line x1="238" y1="132" x2="262" y2="158" stroke="#F08A32" stroke-width="3"/>
+      <line x1="262" y1="132" x2="238" y2="158" stroke="#F08A32" stroke-width="3"/>
+      <text x="170" y="168" text-anchor="middle" font-family="monospace" font-size="10" fill="#9AA7B4">선로가 막히면 그 자리에 정지</text>
+      <text x="545" y="28" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#3BAF77">AMR — 스스로 우회 (택시)</text>
+      <circle cx="420" cy="130" r="14" fill="#3BAF77"/>
       <text x="420" y="135" text-anchor="middle" font-family="monospace" font-size="9" fill="#fff">AMR</text>
-      <path d="M690 55 l6 12 13 2 -9 9 2 13 -12 -6 -12 6 2 -13 -9 -9 13 -2 z" fill="#E8720C"/>
-      <rect x="530" y="80" width="55" height="45" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="557" y="107" text-anchor="middle" font-family="monospace" font-size="9" fill="#5A6673">장애물</text>
-      <path d="M436 125 C 490 145, 560 145, 610 120 C 650 100, 670 80, 683 68" fill="none" stroke="#1F7A4D" stroke-width="2.5" stroke-dasharray="1 0"/>
-      <text x="545" y="168" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">장애물을 감지하면 실시간으로 돌아간다</text>
+      <path d="M690 55 l6 12 13 2 -9 9 2 13 -12 -6 -12 6 2 -13 -9 -9 13 -2 z" fill="#F08A32"/>
+      <rect x="530" y="80" width="55" height="45" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="557" y="107" text-anchor="middle" font-family="monospace" font-size="9" fill="#9AA7B4">장애물</text>
+      <path d="M436 125 C 490 145, 560 145, 610 120 C 650 100, 670 80, 683 68" fill="none" stroke="#3BAF77" stroke-width="2.5" stroke-dasharray="1 0"/>
+      <text x="545" y="168" text-anchor="middle" font-family="monospace" font-size="10" fill="#9AA7B4">장애물을 감지하면 실시간으로 돌아간다</text>
     </svg>
     <figcaption>같은 운송 로봇이지만 소프트웨어 자율성의 수준이 다르다 — AMR일수록 경로계획·관제 소프트웨어의 비중이 커진다</figcaption>
   </figure>
@@ -430,20 +433,20 @@
   <p class="def">설비가 "이론상 최대치 대비 실제로 얼마나 가치를 만들었나"를 하나의 숫자로 나타내는 제조업 대표 KPI. 가용성 × 성능 × 품질로 계산한다.</p>
   <figure>
     <svg viewBox="0 0 720 170" role="img" aria-label="OEE 손실 구조">
-      <rect x="30" y="20" width="660" height="26" fill="#33506B"/>
+      <rect x="30" y="20" width="660" height="26" fill="#8FB4D9"/>
       <text x="360" y="38" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">계획 가동시간 100%</text>
-      <rect x="30" y="56" width="500" height="26" fill="#5A6673"/>
-      <rect x="530" y="56" width="160" height="26" fill="#E9ECEE" stroke="#D4D9DD"/>
+      <rect x="30" y="56" width="500" height="26" fill="#9AA7B4"/>
+      <rect x="530" y="56" width="160" height="26" fill="#14181D" stroke="#2C343D"/>
       <text x="280" y="74" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">가용성 — 고장·대기로 깎임</text>
-      <text x="610" y="74" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">정지 손실</text>
+      <text x="610" y="74" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#9AA7B4">정지 손실</text>
       <rect x="30" y="92" width="380" height="26" fill="#8A96A3"/>
-      <rect x="410" y="92" width="120" height="26" fill="#E9ECEE" stroke="#D4D9DD"/>
+      <rect x="410" y="92" width="120" height="26" fill="#14181D" stroke="#2C343D"/>
       <text x="220" y="110" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">성능 — 저속·잔멈춤으로 깎임</text>
-      <text x="470" y="110" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">속도 손실</text>
-      <rect x="30" y="128" width="300" height="26" fill="#E8720C"/>
-      <rect x="330" y="128" width="80" height="26" fill="#E9ECEE" stroke="#D4D9DD"/>
+      <text x="470" y="110" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#9AA7B4">속도 손실</text>
+      <rect x="30" y="128" width="300" height="26" fill="#F08A32"/>
+      <rect x="330" y="128" width="80" height="26" fill="#14181D" stroke="#2C343D"/>
       <text x="180" y="146" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">품질 — 불량으로 깎임 → OEE</text>
-      <text x="370" y="146" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">불량 손실</text>
+      <text x="370" y="146" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#9AA7B4">불량 손실</text>
     </svg>
     <figcaption>세 가지 손실을 차례로 곱해 남는 것이 OEE — 어디서 깎였는지가 개선 포인트를 알려준다</figcaption>
   </figure>
@@ -456,24 +459,24 @@
   <p class="def">검수 결과가 사람 손을 거치지 않고 곧바로 물류 흐름의 변화(예외품 격리·재피킹 지시)로 이어지는 구조. "감지 → 판정 → 조치"의 고리가 자동으로 닫힌다.</p>
   <figure>
     <svg viewBox="0 0 720 170" role="img" aria-label="폐루프 품질관리 흐름">
-      <rect x="20" y="60" width="120" height="48" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
-      <text x="80" y="88" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">피킹 스테이션</text>
-      <rect x="185" y="60" width="120" height="48" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
-      <text x="245" y="82" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">검사 카메라</text>
-      <text x="245" y="98" text-anchor="middle" font-family="monospace" font-size="9" fill="#5A6673">촬영</text>
-      <rect x="350" y="60" width="120" height="48" fill="#1F7A4D"/>
+      <rect x="20" y="60" width="120" height="48" fill="#20272F" stroke="#E8ECF1" stroke-width="2"/>
+      <text x="80" y="88" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">피킹 스테이션</text>
+      <rect x="185" y="60" width="120" height="48" fill="#20272F" stroke="#E8ECF1" stroke-width="2"/>
+      <text x="245" y="82" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">검사 카메라</text>
+      <text x="245" y="98" text-anchor="middle" font-family="monospace" font-size="9" fill="#9AA7B4">촬영</text>
+      <rect x="350" y="60" width="120" height="48" fill="#3BAF77"/>
       <text x="410" y="82" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">AI 판정</text>
-      <text x="410" y="98" text-anchor="middle" font-family="monospace" font-size="9" fill="#D9EFE3">정상/예외</text>
-      <rect x="515" y="60" width="120" height="48" fill="#1B2430"/>
+      <text x="410" y="98" text-anchor="middle" font-family="monospace" font-size="9" fill="#17251E">정상/예외</text>
+      <rect x="515" y="60" width="120" height="48" fill="#E8ECF1"/>
       <text x="575" y="88" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">WMS 기록</text>
-      <line x1="140" y1="84" x2="183" y2="84" stroke="#5A6673" stroke-width="1.5" marker-end="url(#cl)"/>
-      <line x1="305" y1="84" x2="348" y2="84" stroke="#5A6673" stroke-width="1.5" marker-end="url(#cl)"/>
-      <line x1="470" y1="84" x2="513" y2="84" stroke="#5A6673" stroke-width="1.5" marker-end="url(#cl)"/>
-      <path d="M575 108 C 575 150, 300 155, 90 112" fill="none" stroke="#E8720C" stroke-width="2" marker-end="url(#cla)"/>
-      <text x="350" y="150" text-anchor="middle" font-family="monospace" font-size="10" fill="#E8720C">예외품(오피킹·파손) → AMR이 리젝트 라인으로 운송 (자동 조치)</text>
+      <line x1="140" y1="84" x2="183" y2="84" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#cl)"/>
+      <line x1="305" y1="84" x2="348" y2="84" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#cl)"/>
+      <line x1="470" y1="84" x2="513" y2="84" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#cl)"/>
+      <path d="M575 108 C 575 150, 300 155, 90 112" fill="none" stroke="#F08A32" stroke-width="2" marker-end="url(#cla)"/>
+      <text x="350" y="150" text-anchor="middle" font-family="monospace" font-size="10" fill="#F08A32">예외품(오피킹·파손) → AMR이 리젝트 라인으로 운송 (자동 조치)</text>
       <defs>
-        <marker id="cl" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#5A6673" stroke-width="1.5"/></marker>
-        <marker id="cla" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#E8720C" stroke-width="1.5"/></marker>
+        <marker id="cl" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#9AA7B4" stroke-width="1.5"/></marker>
+        <marker id="cla" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#F08A32" stroke-width="1.5"/></marker>
       </defs>
     </svg>
     <figcaption>판정이 물리적 행동(운송·격리)으로 되돌아와야 루프가 "닫힌" 것 — 대시보드에 표시만 하면 열린 루프다</figcaption>

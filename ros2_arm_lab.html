@@ -3,21 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <title>ROS2 랩 노트 — 로봇팔 101→202 (Lab Note)</title>
 <style>
   :root{
-    --bg:#E9ECEE;
-    --panel:#FFFFFF;
-    --panel-edge:#D4D9DD;
-    --ink:#1B2430;
-    --ink-soft:#5A6673;
-    --amber:#E8720C;   /* 로보틱스/시뮬 */
-    --machine:#1F7A4D; /* AI 파이프라인 */
-    --steel:#33506B;   /* 백엔드/서비스 */
+    --bg:#14181D;
+    --panel:#1C2229;
+    --panel-edge:#2C343D;
+    --ink:#E8ECF1;
+    --ink-soft:#9AA7B4;
+    --amber:#F08A32;   /* 로보틱스/시뮬 */
+    --machine:#3BAF77; /* AI 파이프라인 */
+    --steel:#8FB4D9;   /* 백엔드/서비스 */
     --slate:#8A96A3;   /* 인프라/공통 */
-    --grid:#DDE2E6;
+    --grid:#2A323B;
     --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
-    --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -42,7 +45,7 @@
   .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
   .meta b{color:var(--ink);font-weight:600}
 
-  nav{position:sticky;top:0;z-index:50;background:var(--ink);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
   nav::-webkit-scrollbar{display:none}
   nav .wrap{display:flex;gap:2px;padding:0 20px}
   nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
@@ -63,27 +66,27 @@
   .lead{font-size:15.5px}
   .soft{color:var(--ink-soft)}
 
-  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
   .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
-  .plain.try{background:#EDF2F7;border-left-color:var(--steel)}
+  .plain.try{background:#1A222B;border-left-color:var(--steel)}
   .plain.try .pl-tag{color:var(--steel)}
-  .plain.quiz{background:#FDF1E5;border-left-color:var(--amber)}
+  .plain.quiz{background:#2A2019;border-left-color:var(--amber)}
   .plain.quiz .pl-tag{color:var(--amber)}
   .quiz details{margin-top:4px}
   .quiz summary{cursor:pointer;font-weight:600;font-size:12.5px;color:var(--ink-soft)}
 
-  pre{font-family:var(--mono);font-size:12px;line-height:1.7;background:#F5F7F8;border:1px solid var(--panel-edge);border-left:4px solid var(--steel);padding:12px 16px;overflow-x:auto;margin:12px 0}
-  figure{margin:14px 0;border:1px solid var(--panel-edge);background:#FBFCFC;padding:14px}
+  pre{font-family:var(--mono);font-size:12px;line-height:1.7;background:#20272F;border:1px solid var(--panel-edge);border-left:4px solid var(--steel);padding:12px 16px;overflow-x:auto;margin:12px 0}
+  figure{margin:14px 0;border:1px solid var(--panel-edge);background:#1F262E;padding:14px}
   figure svg{display:block;width:100%;height:auto}
   figcaption{font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin-top:8px;letter-spacing:.05em}
-  code{font-family:var(--mono);font-size:.92em;background:#F0F3F5;padding:1px 5px;border:1px solid var(--grid)}
+  code{font-family:var(--mono);font-size:.92em;background:#232B34;padding:1px 5px;border:1px solid var(--grid)}
   pre code{background:none;border:none;padding:0}
 
   table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
-  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F}
   td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
   tr:last-child td{border-bottom:none}
-  table tr:nth-child(even) td{background:#F8FAFB}
+  table tr:nth-child(even) td{background:#1E252D}
   .tbl-scroll{overflow-x:auto}
 
   .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px}
@@ -160,23 +163,23 @@
     </ul>
     <figure>
       <svg viewBox="0 0 900 130" role="img" aria-label="랩 노트 4단계 여정">
-        <rect x="15" y="25" width="185" height="64" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="107" y="52" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">101 · 자작 팔</text>
-        <text x="107" y="73" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">직접 그려서 화면에 띄우기</text>
-        <rect x="248" y="25" width="185" height="64" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="340" y="52" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">101.5 · 진짜 팔 UR5e</text>
-        <text x="340" y="73" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">공식 3D 모델 재사용</text>
-        <rect x="481" y="25" width="185" height="64" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="573" y="52" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">201 · MoveIt2 제어</text>
-        <text x="573" y="73" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">계획을 세워 움직이기</text>
-        <rect x="714" y="25" width="172" height="64" fill="#FDF1E5" stroke="#E8720C" stroke-width="2"/>
-        <text x="800" y="52" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8720C">202 · 인터랙티브 IK</text>
-        <text x="800" y="73" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">사람이 실시간 지시</text>
-        <line x1="200" y1="57" x2="244" y2="57" stroke="#33506B" stroke-width="1.5" marker-end="url(#lj)"/>
-        <line x1="433" y1="57" x2="477" y2="57" stroke="#33506B" stroke-width="1.5" marker-end="url(#lj)"/>
-        <line x1="666" y1="57" x2="710" y2="57" stroke="#33506B" stroke-width="1.5" marker-end="url(#lj)"/>
-        <text x="450" y="118" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">각 단계는 앞 단계의 배선을 그대로 쓰며 한 층씩 쌓인다</text>
-        <defs><marker id="lj" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
+        <rect x="15" y="25" width="185" height="64" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="107" y="52" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">101 · 자작 팔</text>
+        <text x="107" y="73" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">직접 그려서 화면에 띄우기</text>
+        <rect x="248" y="25" width="185" height="64" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="340" y="52" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">101.5 · 진짜 팔 UR5e</text>
+        <text x="340" y="73" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">공식 3D 모델 재사용</text>
+        <rect x="481" y="25" width="185" height="64" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="573" y="52" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">201 · MoveIt2 제어</text>
+        <text x="573" y="73" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">계획을 세워 움직이기</text>
+        <rect x="714" y="25" width="172" height="64" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+        <text x="800" y="52" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#F08A32">202 · 인터랙티브 IK</text>
+        <text x="800" y="73" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">사람이 실시간 지시</text>
+        <line x1="200" y1="57" x2="244" y2="57" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#lj)"/>
+        <line x1="433" y1="57" x2="477" y2="57" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#lj)"/>
+        <line x1="666" y1="57" x2="710" y2="57" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#lj)"/>
+        <text x="450" y="118" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">각 단계는 앞 단계의 배선을 그대로 쓰며 한 층씩 쌓인다</text>
+        <defs><marker id="lj" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
       </svg>
       <figcaption>4단계 여정 — 본문 SEC 01~06이 이 순서를 그대로 따라간다</figcaption>
     </figure>
@@ -196,55 +199,55 @@
     <p>완성된 시스템은 파이프라인 두 개입니다. 하나는 로봇을 <b>보이게</b> 하고, 하나는 <b>움직이게</b> 합니다.</p>
     <figure>
       <svg viewBox="0 0 900 335" role="img" aria-label="보이기 파이프라인과 움직이기 파이프라인">
-        <text x="15" y="28" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#33506B">보이기 — 구조 × 자세를 그림으로</text>
-        <rect x="15" y="42" width="105" height="48" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="67" y="63" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12.5" fill="#1B2430">URDF</text>
-        <text x="67" y="80" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="11" fill="#5A6673">로봇 구조</text>
-        <rect x="150" y="42" width="195" height="48" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="247" y="63" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#1B2430">robot_state_publisher</text>
-        <text x="247" y="80" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="11" fill="#5A6673">구조 × 자세 → 3차원 위치</text>
-        <rect x="375" y="50" width="80" height="32" rx="16" fill="#33506B"/>
+        <text x="15" y="28" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#8FB4D9">보이기 — 구조 × 자세를 그림으로</text>
+        <rect x="15" y="42" width="105" height="48" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="67" y="63" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#E8ECF1">URDF</text>
+        <text x="67" y="80" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="11" fill="#9AA7B4">로봇 구조</text>
+        <rect x="150" y="42" width="195" height="48" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="247" y="63" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#E8ECF1">robot_state_publisher</text>
+        <text x="247" y="80" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="11" fill="#9AA7B4">구조 × 자세 → 3차원 위치</text>
+        <rect x="375" y="50" width="80" height="32" rx="16" fill="#8FB4D9"/>
         <text x="415" y="70" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#fff">/tf</text>
-        <rect x="485" y="42" width="155" height="48" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="562" y="63" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#1B2430">foxglove_bridge</text>
-        <text x="562" y="80" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="11" fill="#5A6673">웹소켓 번역기</text>
-        <rect x="670" y="42" width="155" height="48" fill="#FDF1E5" stroke="#E8720C" stroke-width="2"/>
-        <text x="747" y="63" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12.5" font-weight="700" fill="#E8720C">노트북 Foxglove</text>
-        <text x="747" y="80" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="11" fill="#5A6673">화면에 로봇이 뜬다</text>
-        <line x1="120" y1="66" x2="146" y2="66" stroke="#33506B" stroke-width="1.5" marker-end="url(#lp)"/>
-        <line x1="345" y1="66" x2="371" y2="66" stroke="#33506B" stroke-width="1.5" marker-end="url(#lp)"/>
-        <line x1="455" y1="66" x2="481" y2="66" stroke="#33506B" stroke-width="1.5" marker-end="url(#lp)"/>
-        <line x1="640" y1="66" x2="666" y2="66" stroke="#33506B" stroke-width="1.5" marker-end="url(#lp)"/>
-        <rect x="330" y="155" width="140" height="32" rx="16" fill="#E8720C"/>
+        <rect x="485" y="42" width="155" height="48" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="562" y="63" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#E8ECF1">foxglove_bridge</text>
+        <text x="562" y="80" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="11" fill="#9AA7B4">웹소켓 번역기</text>
+        <rect x="670" y="42" width="155" height="48" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+        <text x="747" y="63" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" font-weight="700" fill="#F08A32">노트북 Foxglove</text>
+        <text x="747" y="80" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="11" fill="#9AA7B4">화면에 로봇이 뜬다</text>
+        <line x1="120" y1="66" x2="146" y2="66" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#lp)"/>
+        <line x1="345" y1="66" x2="371" y2="66" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#lp)"/>
+        <line x1="455" y1="66" x2="481" y2="66" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#lp)"/>
+        <line x1="640" y1="66" x2="666" y2="66" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#lp)"/>
+        <rect x="330" y="155" width="140" height="32" rx="16" fill="#F08A32"/>
         <text x="400" y="175" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#fff">/joint_states</text>
-        <line x1="365" y1="153" x2="255" y2="94" stroke="#E8720C" stroke-width="1.5" marker-end="url(#lpa)"/>
-        <text x="485" y="176" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">관절 각도 — 이 값이 "어디서 오는가"가 각 단계의 차이</text>
-        <text x="15" y="231" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1F7A4D">움직이기 — 목표를 궤적으로</text>
-        <rect x="15" y="245" width="120" height="48" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="75" y="266" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#1B2430">moveit_demo</text>
-        <text x="75" y="283" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="11" fill="#5A6673">관절 목표 전송</text>
-        <rect x="165" y="253" width="115" height="32" rx="16" fill="#33506B"/>
+        <line x1="365" y1="153" x2="255" y2="94" stroke="#F08A32" stroke-width="1.5" marker-end="url(#lpa)"/>
+        <text x="485" y="176" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">관절 각도 — 이 값이 "어디서 오는가"가 각 단계의 차이</text>
+        <text x="15" y="231" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#3BAF77">움직이기 — 목표를 궤적으로</text>
+        <rect x="15" y="245" width="120" height="48" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="75" y="266" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#E8ECF1">moveit_demo</text>
+        <text x="75" y="283" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="11" fill="#9AA7B4">관절 목표 전송</text>
+        <rect x="165" y="253" width="115" height="32" rx="16" fill="#8FB4D9"/>
         <text x="222" y="273" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11.5" fill="#fff">/move_action</text>
-        <rect x="310" y="245" width="145" height="48" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="382" y="266" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#1B2430">move_group</text>
-        <text x="382" y="283" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="11" fill="#5A6673">계획 — 경로·시간 계산</text>
-        <rect x="485" y="245" width="215" height="48" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="592" y="264" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#1B2430">실행 컨트롤러</text>
-        <text x="592" y="282" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#5A6673">scaled_joint_trajectory_controller</text>
-        <rect x="730" y="245" width="115" height="48" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="787" y="266" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#1B2430">mock hardware</text>
-        <text x="787" y="283" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="11" fill="#5A6673">가짜 모터</text>
-        <line x1="135" y1="269" x2="161" y2="269" stroke="#1F7A4D" stroke-width="1.5" marker-end="url(#lpg)"/>
-        <line x1="280" y1="269" x2="306" y2="269" stroke="#1F7A4D" stroke-width="1.5" marker-end="url(#lpg)"/>
-        <line x1="455" y1="269" x2="481" y2="269" stroke="#1F7A4D" stroke-width="1.5" marker-end="url(#lpg)"/>
-        <line x1="700" y1="269" x2="726" y2="269" stroke="#1F7A4D" stroke-width="1.5" marker-end="url(#lpg)"/>
-        <path d="M787 243 C 760 200, 560 178, 478 172" fill="none" stroke="#E8720C" stroke-width="1.5" marker-end="url(#lpa)"/>
-        <text x="640" y="207" font-family="Pretendard, sans-serif" font-size="11" fill="#5A6673">상태 보고 → 보이기로 합류</text>
-        <text x="15" y="323" font-family="Pretendard, sans-serif" font-size="12.5" fill="#E8720C">202 확장 — 사람의 클릭·버튼을 받는 ik_goto·servo_jog도 같은 실행 계층으로 합류한다 (SEC 06)</text>
+        <rect x="310" y="245" width="145" height="48" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="382" y="266" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#E8ECF1">move_group</text>
+        <text x="382" y="283" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="11" fill="#9AA7B4">계획 — 경로·시간 계산</text>
+        <rect x="485" y="245" width="215" height="48" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="592" y="264" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#E8ECF1">실행 컨트롤러</text>
+        <text x="592" y="282" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#9AA7B4">scaled_joint_trajectory_controller</text>
+        <rect x="730" y="245" width="115" height="48" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="787" y="266" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#E8ECF1">mock hardware</text>
+        <text x="787" y="283" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="11" fill="#9AA7B4">가짜 모터</text>
+        <line x1="135" y1="269" x2="161" y2="269" stroke="#3BAF77" stroke-width="1.5" marker-end="url(#lpg)"/>
+        <line x1="280" y1="269" x2="306" y2="269" stroke="#3BAF77" stroke-width="1.5" marker-end="url(#lpg)"/>
+        <line x1="455" y1="269" x2="481" y2="269" stroke="#3BAF77" stroke-width="1.5" marker-end="url(#lpg)"/>
+        <line x1="700" y1="269" x2="726" y2="269" stroke="#3BAF77" stroke-width="1.5" marker-end="url(#lpg)"/>
+        <path d="M787 243 C 760 200, 560 178, 478 172" fill="none" stroke="#F08A32" stroke-width="1.5" marker-end="url(#lpa)"/>
+        <text x="640" y="207" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="11" fill="#9AA7B4">상태 보고 → 보이기로 합류</text>
+        <text x="15" y="323" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#F08A32">202 확장 — 사람의 클릭·버튼을 받는 ik_goto·servo_jog도 같은 실행 계층으로 합류한다 (SEC 06)</text>
         <defs>
-          <marker id="lp" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker>
-          <marker id="lpg" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#1F7A4D"/></marker>
-          <marker id="lpa" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#E8720C"/></marker>
+          <marker id="lp" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker>
+          <marker id="lpg" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#3BAF77"/></marker>
+          <marker id="lpa" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#F08A32"/></marker>
         </defs>
       </svg>
       <figcaption>두 파이프라인이 /joint_states에서 만난다 — 움직인 결과가 곧 화면에 보이는 이유</figcaption>
@@ -390,31 +393,31 @@
 
     <figure>
       <svg viewBox="0 0 900 450" role="img" aria-label="계획과 실행의 계층 구조">
-        <rect x="230" y="15" width="330" height="48" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="395" y="36" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#1B2430">moveit_demo</text>
-        <text x="395" y="53" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="11" fill="#5A6673">우리가 만든 제어 클라이언트</text>
-        <line x1="395" y1="63" x2="395" y2="101" stroke="#33506B" stroke-width="1.5" marker-end="url(#st)"/>
-        <text x="412" y="88" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">MoveGroup 액션 — "이 관절 각도로 가라"</text>
-        <rect x="230" y="105" width="330" height="56" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="395" y="128" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#1B2430">move_group — 계획</text>
-        <text x="395" y="147" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="11" fill="#5A6673">OMPL이 충돌 없는 경로를 찾고 시간을 입힘(궤적)</text>
-        <line x1="395" y1="161" x2="395" y2="211" stroke="#33506B" stroke-width="1.5" marker-end="url(#st)"/>
-        <text x="412" y="182" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">FollowJointTrajectory 액션</text>
-        <text x="412" y="200" font-family="Pretendard, sans-serif" font-size="12" font-weight="700" fill="#E8720C">★ 컨트롤러를 "이름"으로 고른다 — -4 사건의 지점</text>
-        <rect x="230" y="215" width="330" height="56" fill="#FDF1E5" stroke="#E8720C" stroke-width="2"/>
-        <text x="395" y="238" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#1B2430">scaled_joint_trajectory_controller</text>
-        <text x="395" y="257" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="11" fill="#5A6673">실행 — 궤적을 잘게 쪼개 관절 명령으로</text>
-        <line x1="395" y1="271" x2="395" y2="321" stroke="#33506B" stroke-width="1.5" marker-end="url(#st)"/>
-        <text x="412" y="300" font-family="Pretendard, sans-serif" font-size="11" fill="#5A6673">controller_manager 위에서 동작</text>
-        <rect x="230" y="325" width="330" height="48" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="395" y="346" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12.5" fill="#1B2430">mock hardware</text>
-        <text x="395" y="363" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="11" fill="#5A6673">가짜 모터 — 명령 각도를 그대로 상태로 반환</text>
-        <line x1="395" y1="373" x2="395" y2="401" stroke="#33506B" stroke-width="1.5" marker-end="url(#st)"/>
-        <rect x="310" y="405" width="170" height="32" rx="16" fill="#E8720C"/>
+        <rect x="230" y="15" width="330" height="48" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="395" y="36" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#E8ECF1">moveit_demo</text>
+        <text x="395" y="53" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="11" fill="#9AA7B4">우리가 만든 제어 클라이언트</text>
+        <line x1="395" y1="63" x2="395" y2="101" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#st)"/>
+        <text x="412" y="88" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">MoveGroup 액션 — "이 관절 각도로 가라"</text>
+        <rect x="230" y="105" width="330" height="56" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="395" y="128" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#E8ECF1">move_group — 계획</text>
+        <text x="395" y="147" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="11" fill="#9AA7B4">OMPL이 충돌 없는 경로를 찾고 시간을 입힘(궤적)</text>
+        <line x1="395" y1="161" x2="395" y2="211" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#st)"/>
+        <text x="412" y="182" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">FollowJointTrajectory 액션</text>
+        <text x="412" y="200" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" font-weight="700" fill="#F08A32">★ 컨트롤러를 "이름"으로 고른다 — -4 사건의 지점</text>
+        <rect x="230" y="215" width="330" height="56" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+        <text x="395" y="238" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#E8ECF1">scaled_joint_trajectory_controller</text>
+        <text x="395" y="257" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="11" fill="#9AA7B4">실행 — 궤적을 잘게 쪼개 관절 명령으로</text>
+        <line x1="395" y1="271" x2="395" y2="321" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#st)"/>
+        <text x="412" y="300" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="11" fill="#9AA7B4">controller_manager 위에서 동작</text>
+        <rect x="230" y="325" width="330" height="48" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="395" y="346" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#E8ECF1">mock hardware</text>
+        <text x="395" y="363" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="11" fill="#9AA7B4">가짜 모터 — 명령 각도를 그대로 상태로 반환</text>
+        <line x1="395" y1="373" x2="395" y2="401" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#st)"/>
+        <rect x="310" y="405" width="170" height="32" rx="16" fill="#F08A32"/>
         <text x="395" y="425" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#fff">/joint_states</text>
-        <line x1="480" y1="421" x2="700" y2="421" stroke="#33506B" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#st)"/>
-        <text x="710" y="425" font-family="Pretendard, sans-serif" font-size="12" fill="#33506B">보이기 경로 (SEC 03·04)</text>
-        <defs><marker id="st" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
+        <line x1="480" y1="421" x2="700" y2="421" stroke="#8FB4D9" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#st)"/>
+        <text x="710" y="425" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#8FB4D9">보이기 경로 (SEC 03·04)</text>
+        <defs><marker id="st" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
       </svg>
       <figcaption>위에서 아래로 명령이 흐르고, 맨 아래의 상태가 다시 화면으로 올라간다 — 계획과 실행 사이의 약속이 "컨트롤러 이름"</figcaption>
     </figure>
@@ -479,51 +482,51 @@ ros2 run arm101 moveit_demo          # ← 이 터미널만 ~/ros2_ws/install/se
 
     <figure>
       <svg viewBox="0 0 900 320" role="img" aria-label="클릭·타이핑 경로와 조그 경로">
-        <text x="15" y="25" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#33506B">클릭·타이핑 — 목표 하나를 주면 알아서 (위치 IK)</text>
-        <rect x="15" y="38" width="145" height="50" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="87" y="59" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#1B2430">Foxglove 클릭/타이핑</text>
-        <text x="87" y="77" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="10.5" fill="#5A6673">3D 패널 · Publish 패널</text>
-        <rect x="190" y="47" width="105" height="32" rx="16" fill="#33506B"/>
+        <text x="15" y="25" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#8FB4D9">클릭·타이핑 — 목표 하나를 주면 알아서 (위치 IK)</text>
+        <rect x="15" y="38" width="145" height="50" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="87" y="59" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#E8ECF1">Foxglove 클릭/타이핑</text>
+        <text x="87" y="77" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="10.5" fill="#9AA7B4">3D 패널 · Publish 패널</text>
+        <rect x="190" y="47" width="105" height="32" rx="16" fill="#8FB4D9"/>
         <text x="242" y="67" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#fff">/goal_pose</text>
-        <rect x="325" y="38" width="95" height="50" fill="#FDF1E5" stroke="#E8720C" stroke-width="2"/>
-        <text x="372" y="68" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#1B2430">ik_goto</text>
-        <rect x="450" y="38" width="125" height="50" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="512" y="59" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11.5" fill="#1B2430">/compute_ik</text>
-        <text x="512" y="77" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="10.5" fill="#5A6673">IK를 한 번에 풀이</text>
-        <rect x="605" y="38" width="145" height="50" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="677" y="59" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#1B2430">계획 + 실행</text>
-        <text x="677" y="77" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#5A6673">scaled_joint_trajectory_ctrl</text>
-        <line x1="160" y1="63" x2="186" y2="63" stroke="#33506B" stroke-width="1.5" marker-end="url(#ik)"/>
-        <line x1="295" y1="63" x2="321" y2="63" stroke="#33506B" stroke-width="1.5" marker-end="url(#ik)"/>
-        <line x1="420" y1="63" x2="446" y2="63" stroke="#33506B" stroke-width="1.5" marker-end="url(#ik)"/>
-        <line x1="575" y1="63" x2="601" y2="63" stroke="#33506B" stroke-width="1.5" marker-end="url(#ik)"/>
-        <text x="15" y="185" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1F7A4D">조그 — 누르는 동안 연속 이동 (미분 IK)</text>
-        <rect x="15" y="198" width="145" height="50" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="87" y="219" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#1B2430">Teleop 버튼</text>
-        <text x="87" y="237" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="10.5" fill="#5A6673">누르는 동안 10Hz 발행</text>
-        <rect x="190" y="207" width="105" height="32" rx="16" fill="#1F7A4D"/>
+        <rect x="325" y="38" width="95" height="50" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+        <text x="372" y="68" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#E8ECF1">ik_goto</text>
+        <rect x="450" y="38" width="125" height="50" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="512" y="59" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11.5" fill="#E8ECF1">/compute_ik</text>
+        <text x="512" y="77" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="10.5" fill="#9AA7B4">IK를 한 번에 풀이</text>
+        <rect x="605" y="38" width="145" height="50" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="677" y="59" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#E8ECF1">계획 + 실행</text>
+        <text x="677" y="77" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#9AA7B4">scaled_joint_trajectory_ctrl</text>
+        <line x1="160" y1="63" x2="186" y2="63" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#ik)"/>
+        <line x1="295" y1="63" x2="321" y2="63" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#ik)"/>
+        <line x1="420" y1="63" x2="446" y2="63" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#ik)"/>
+        <line x1="575" y1="63" x2="601" y2="63" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#ik)"/>
+        <text x="15" y="185" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#3BAF77">조그 — 누르는 동안 연속 이동 (미분 IK)</text>
+        <rect x="15" y="198" width="145" height="50" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="87" y="219" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#E8ECF1">Teleop 버튼</text>
+        <text x="87" y="237" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="10.5" fill="#9AA7B4">누르는 동안 10Hz 발행</text>
+        <rect x="190" y="207" width="105" height="32" rx="16" fill="#3BAF77"/>
         <text x="242" y="227" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#fff">/cmd_vel</text>
-        <rect x="325" y="198" width="95" height="50" fill="#FDF1E5" stroke="#E8720C" stroke-width="2"/>
-        <text x="372" y="228" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11.5" fill="#1B2430">servo_jog</text>
-        <rect x="450" y="198" width="125" height="50" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="512" y="219" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#1B2430">MoveIt Servo</text>
-        <text x="512" y="237" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="10.5" fill="#5A6673">4ms마다 미분 IK</text>
-        <rect x="605" y="198" width="145" height="50" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="677" y="219" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#1B2430">스트림 실행</text>
-        <text x="677" y="237" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#5A6673">forward_position_controller</text>
-        <line x1="160" y1="223" x2="186" y2="223" stroke="#1F7A4D" stroke-width="1.5" marker-end="url(#jg)"/>
-        <line x1="295" y1="223" x2="321" y2="223" stroke="#1F7A4D" stroke-width="1.5" marker-end="url(#jg)"/>
-        <line x1="420" y1="223" x2="446" y2="223" stroke="#1F7A4D" stroke-width="1.5" marker-end="url(#jg)"/>
-        <line x1="575" y1="223" x2="601" y2="223" stroke="#1F7A4D" stroke-width="1.5" marker-end="url(#jg)"/>
-        <rect x="800" y="108" width="85" height="80" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
-        <text x="842" y="143" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12.5" font-weight="700" fill="#1B2430">로봇</text>
-        <text x="842" y="162" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="10.5" fill="#5A6673">(mock)</text>
-        <line x1="750" y1="70" x2="800" y2="122" stroke="#33506B" stroke-width="1.5" marker-end="url(#ik)"/>
-        <line x1="750" y1="220" x2="800" y2="172" stroke="#1F7A4D" stroke-width="1.5" marker-end="url(#jg)"/>
-        <text x="15" y="300" font-family="Pretendard, sans-serif" font-size="12.5" fill="#E8720C">두 경로는 쓰는 컨트롤러가 달라 동시에 켤 수 없다 — 한 번에 하나만 (SEC 07 사건 9)</text>
+        <rect x="325" y="198" width="95" height="50" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+        <text x="372" y="228" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11.5" fill="#E8ECF1">servo_jog</text>
+        <rect x="450" y="198" width="125" height="50" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="512" y="219" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#E8ECF1">MoveIt Servo</text>
+        <text x="512" y="237" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="10.5" fill="#9AA7B4">4ms마다 미분 IK</text>
+        <rect x="605" y="198" width="145" height="50" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="677" y="219" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#E8ECF1">스트림 실행</text>
+        <text x="677" y="237" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#9AA7B4">forward_position_controller</text>
+        <line x1="160" y1="223" x2="186" y2="223" stroke="#3BAF77" stroke-width="1.5" marker-end="url(#jg)"/>
+        <line x1="295" y1="223" x2="321" y2="223" stroke="#3BAF77" stroke-width="1.5" marker-end="url(#jg)"/>
+        <line x1="420" y1="223" x2="446" y2="223" stroke="#3BAF77" stroke-width="1.5" marker-end="url(#jg)"/>
+        <line x1="575" y1="223" x2="601" y2="223" stroke="#3BAF77" stroke-width="1.5" marker-end="url(#jg)"/>
+        <rect x="800" y="108" width="85" height="80" fill="#20272F" stroke="#E8ECF1" stroke-width="2"/>
+        <text x="842" y="143" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" font-weight="700" fill="#E8ECF1">로봇</text>
+        <text x="842" y="162" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="10.5" fill="#9AA7B4">(mock)</text>
+        <line x1="750" y1="70" x2="800" y2="122" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#ik)"/>
+        <line x1="750" y1="220" x2="800" y2="172" stroke="#3BAF77" stroke-width="1.5" marker-end="url(#jg)"/>
+        <text x="15" y="300" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#F08A32">두 경로는 쓰는 컨트롤러가 달라 동시에 켤 수 없다 — 한 번에 하나만 (SEC 07 사건 9)</text>
         <defs>
-          <marker id="ik" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker>
-          <marker id="jg" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#1F7A4D"/></marker>
+          <marker id="ik" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker>
+          <marker id="jg" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#3BAF77"/></marker>
         </defs>
       </svg>
       <figcaption>같은 로봇에 도달하는 두 가지 인터랙티브 경로 — 이산적(위) vs 연속적(아래)</figcaption>

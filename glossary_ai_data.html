@@ -3,13 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <title>용어사전 C — AI · 데이터 · 서비스</title>
 <style>
   :root{
-    --bg:#E9ECEE;--panel:#FFFFFF;--panel-edge:#D4D9DD;--ink:#1B2430;--ink-soft:#5A6673;
-    --amber:#E8720C;--machine:#1F7A4D;--steel:#33506B;--grid:#DDE2E6;
+    --bg:#14181D;--panel:#1C2229;--panel-edge:#2C343D;--ink:#E8ECF1;--ink-soft:#9AA7B4;
+    --amber:#F08A32;--machine:#3BAF77;--steel:#8FB4D9;--grid:#2A323B;
     --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
-    --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -28,7 +31,7 @@
   .doc-eyebrow b{color:var(--amber);font-weight:600}
   h1{font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-.02em}
   h1 .sub{display:block;font-size:.55em;font-weight:500;color:var(--ink-soft);margin-top:6px}
-  nav{position:sticky;top:0;z-index:50;background:var(--ink);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
   nav::-webkit-scrollbar{display:none}
   nav .wrap{display:flex;gap:2px;padding:0 20px}
   nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
@@ -43,14 +46,14 @@
   section.term{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:26px;padding:22px 26px;scroll-margin-top:56px}
   .term h2{font-size:19px;font-weight:800;letter-spacing:-.01em}
   .term h2 .en{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-soft);letter-spacing:.06em;margin-left:10px}
-  p.def{font-size:14px;font-weight:600;border-left:4px solid var(--amber);padding:9px 14px;background:#FDF4EC;margin:12px 0}
+  p.def{font-size:14px;font-weight:600;border-left:4px solid var(--amber);padding:9px 14px;background:#2A2019;margin:12px 0}
   .term p{font-size:14px;margin:8px 0}
-  figure{margin:16px 0;border:1px solid var(--panel-edge);background:#FBFCFC;padding:14px}
+  figure{margin:16px 0;border:1px solid var(--panel-edge);background:#1F262E;padding:14px}
   figure svg{display:block;width:100%;height:auto}
   figcaption{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);margin-top:8px;letter-spacing:.05em}
-  .ctx{margin-top:12px;padding:10px 14px;background:#F5F7F8;border-left:3px solid var(--machine);font-size:13px}
+  .ctx{margin-top:12px;padding:10px 14px;background:#20272F;border-left:3px solid var(--machine);font-size:13px}
   .ctx b{color:var(--machine)}
-  code{font-family:var(--mono);font-size:12px;background:#F2F4F6;padding:1px 5px}
+  code{font-family:var(--mono);font-size:12px;background:#20272F;padding:1px 5px}
   footer{border-top:3px solid var(--ink);padding:18px 0 44px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
   @media (max-width:760px){body{font-size:14px} section.term{padding:16px}}
 </style>
@@ -92,24 +95,24 @@ AI가 처음이라면 <b>합성 데이터 → 객체 탐지 → 이상 탐지</b
   <p class="def">실제 세계에서 수집한 것이 아니라 시뮬레이터가 생성한 학습 데이터. 라벨이 자동으로 붙고, 희귀한 상황(불량)도 원하는 만큼 만들 수 있다.</p>
   <figure>
     <svg viewBox="0 0 720 120" role="img" aria-label="합성 데이터 파이프라인">
-      <rect x="10" y="35" width="140" height="50" fill="#FDF4EC" stroke="#E8720C" stroke-width="2"/>
-      <text x="80" y="56" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#E8720C">Replicator</text>
-      <text x="80" y="73" text-anchor="middle" font-family="monospace" font-size="9" fill="#5A6673">가상 SKU·파손 생성</text>
-      <rect x="185" y="35" width="130" height="50" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
-      <text x="250" y="56" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1B2430">자동 라벨</text>
-      <text x="250" y="73" text-anchor="middle" font-family="monospace" font-size="9" fill="#5A6673">위치·종류 포함</text>
-      <rect x="350" y="35" width="130" height="50" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
-      <text x="415" y="56" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1B2430">모델 학습</text>
-      <text x="415" y="73" text-anchor="middle" font-family="monospace" font-size="9" fill="#5A6673">YOLO·이상탐지</text>
-      <rect x="515" y="35" width="90" height="50" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
-      <text x="560" y="65" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1B2430">ONNX</text>
-      <rect x="640" y="35" width="70" height="50" fill="#1F7A4D"/>
+      <rect x="10" y="35" width="140" height="50" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="80" y="56" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#F08A32">Replicator</text>
+      <text x="80" y="73" text-anchor="middle" font-family="monospace" font-size="9" fill="#9AA7B4">가상 SKU·파손 생성</text>
+      <rect x="185" y="35" width="130" height="50" fill="#20272F" stroke="#E8ECF1" stroke-width="2"/>
+      <text x="250" y="56" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#E8ECF1">자동 라벨</text>
+      <text x="250" y="73" text-anchor="middle" font-family="monospace" font-size="9" fill="#9AA7B4">위치·종류 포함</text>
+      <rect x="350" y="35" width="130" height="50" fill="#20272F" stroke="#E8ECF1" stroke-width="2"/>
+      <text x="415" y="56" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#E8ECF1">모델 학습</text>
+      <text x="415" y="73" text-anchor="middle" font-family="monospace" font-size="9" fill="#9AA7B4">YOLO·이상탐지</text>
+      <rect x="515" y="35" width="90" height="50" fill="#20272F" stroke="#E8ECF1" stroke-width="2"/>
+      <text x="560" y="65" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#E8ECF1">ONNX</text>
+      <rect x="640" y="35" width="70" height="50" fill="#3BAF77"/>
       <text x="675" y="65" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#fff">판정</text>
-      <line x1="150" y1="60" x2="183" y2="60" stroke="#5A6673" stroke-width="1.5" marker-end="url(#sy)"/>
-      <line x1="315" y1="60" x2="348" y2="60" stroke="#5A6673" stroke-width="1.5" marker-end="url(#sy)"/>
-      <line x1="480" y1="60" x2="513" y2="60" stroke="#5A6673" stroke-width="1.5" marker-end="url(#sy)"/>
-      <line x1="605" y1="60" x2="638" y2="60" stroke="#5A6673" stroke-width="1.5" marker-end="url(#sy)"/>
-      <defs><marker id="sy" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#5A6673" stroke-width="1.5"/></marker></defs>
+      <line x1="150" y1="60" x2="183" y2="60" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#sy)"/>
+      <line x1="315" y1="60" x2="348" y2="60" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#sy)"/>
+      <line x1="480" y1="60" x2="513" y2="60" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#sy)"/>
+      <line x1="605" y1="60" x2="638" y2="60" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#sy)"/>
+      <defs><marker id="sy" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#9AA7B4" stroke-width="1.5"/></marker></defs>
     </svg>
     <figcaption>데이터 수집·라벨링이라는 AI 프로젝트 최대 비용을 시뮬레이터가 대신한다</figcaption>
   </figure>
@@ -122,19 +125,19 @@ AI가 처음이라면 <b>합성 데이터 → 객체 탐지 → 이상 탐지</b
   <p class="def">이미지 안에서 "무엇이 어디에 있는지"를 박스로 찾아내는 AI 태스크와, 그 대표 실시간 모델 계열. 한 번의 신경망 통과로 모든 객체를 동시에 찾는다.</p>
   <figure>
     <svg viewBox="0 0 720 190" role="img" aria-label="객체 탐지 개념">
-      <rect x="40" y="20" width="400" height="150" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
-      <circle cx="160" cy="95" r="34" fill="#33506B"/>
-      <rect x="112" y="48" width="96" height="94" fill="none" stroke="#E8720C" stroke-width="2.5"/>
-      <rect x="112" y="30" width="120" height="18" fill="#E8720C"/>
+      <rect x="40" y="20" width="400" height="150" fill="#20272F" stroke="#E8ECF1" stroke-width="2"/>
+      <circle cx="160" cy="95" r="34" fill="#8FB4D9"/>
+      <rect x="112" y="48" width="96" height="94" fill="none" stroke="#F08A32" stroke-width="2.5"/>
+      <rect x="112" y="30" width="120" height="18" fill="#F08A32"/>
       <text x="172" y="43" text-anchor="middle" font-family="monospace" font-size="10" fill="#fff">파손 0.92</text>
-      <rect x="290" y="90" width="90" height="60" fill="none" stroke="#1F7A4D" stroke-width="2.5" stroke-dasharray="5 3"/>
-      <rect x="290" y="72" width="86" height="18" fill="#1F7A4D"/>
+      <rect x="290" y="90" width="90" height="60" fill="none" stroke="#3BAF77" stroke-width="2.5" stroke-dasharray="5 3"/>
+      <rect x="290" y="72" width="86" height="18" fill="#3BAF77"/>
       <text x="333" y="85" text-anchor="middle" font-family="monospace" font-size="10" fill="#fff">라벨 훼손 0.87</text>
-      <text x="240" y="185" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">검사 카메라 프레임</text>
-      <text x="560" y="60" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">출력 = 박스 + 종류 + 확신도</text>
-      <text x="560" y="90" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">실시간(30fps+) 처리 가능</text>
-      <text x="560" y="120" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">→ 컨베이어 속도에 맞춰</text>
-      <text x="560" y="140" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">   흐르는 부품 검사 가능</text>
+      <text x="240" y="185" text-anchor="middle" font-family="monospace" font-size="10" fill="#9AA7B4">검사 카메라 프레임</text>
+      <text x="560" y="60" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">출력 = 박스 + 종류 + 확신도</text>
+      <text x="560" y="90" text-anchor="middle" font-family="monospace" font-size="10" fill="#9AA7B4">실시간(30fps+) 처리 가능</text>
+      <text x="560" y="120" text-anchor="middle" font-family="monospace" font-size="10" fill="#9AA7B4">→ 컨베이어 속도에 맞춰</text>
+      <text x="560" y="140" text-anchor="middle" font-family="monospace" font-size="10" fill="#9AA7B4">   흐르는 부품 검사 가능</text>
     </svg>
     <figcaption>분류(이 사진은 불량인가)를 넘어 위치까지 — "어디에 어떤 결함"이 검사 리포트의 언어가 된다</figcaption>
   </figure>
@@ -147,17 +150,17 @@ AI가 처음이라면 <b>합성 데이터 → 객체 탐지 → 이상 탐지</b
   <p class="def">"정상"만 학습한 뒤, 정상 분포에서 벗어나는 것을 전부 이상(결함)으로 잡아내는 접근. 불량 샘플이 아예 없어도 학습할 수 있다.</p>
   <figure>
     <svg viewBox="0 0 720 170" role="img" aria-label="이상 탐지 개념">
-      <ellipse cx="300" cy="90" rx="180" ry="60" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="2" stroke-dasharray="6 4"/>
-      <g fill="#1F7A4D">
+      <ellipse cx="300" cy="90" rx="180" ry="60" fill="#17251E" stroke="#3BAF77" stroke-width="2" stroke-dasharray="6 4"/>
+      <g fill="#3BAF77">
         <circle cx="230" cy="80" r="5"/><circle cx="270" cy="100" r="5"/><circle cx="310" cy="70" r="5"/>
         <circle cx="350" cy="95" r="5"/><circle cx="290" cy="115" r="5"/><circle cx="330" cy="110" r="5"/>
         <circle cx="255" cy="65" r="5"/><circle cx="375" cy="75" r="5"/>
       </g>
-      <text x="300" y="35" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1F7A4D">정상 제품의 특징 분포 (학습)</text>
-      <circle cx="590" cy="60" r="8" fill="#E8720C"/>
-      <text x="590" y="35" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#E8720C">분포 밖 = 이상!</text>
-      <line x1="480" y1="90" x2="575" y2="65" stroke="#E8720C" stroke-width="1.5" stroke-dasharray="4 3"/>
-      <text x="530" y="150" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">어떤 종류의 결함인지 몰라도, "정상과 다르다"는 것은 안다</text>
+      <text x="300" y="35" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#3BAF77">정상 제품의 특징 분포 (학습)</text>
+      <circle cx="590" cy="60" r="8" fill="#F08A32"/>
+      <text x="590" y="35" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#F08A32">분포 밖 = 이상!</text>
+      <line x1="480" y1="90" x2="575" y2="65" stroke="#F08A32" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="530" y="150" text-anchor="middle" font-family="monospace" font-size="10" fill="#9AA7B4">어떤 종류의 결함인지 몰라도, "정상과 다르다"는 것은 안다</text>
     </svg>
     <figcaption>PatchCore·PaDiM은 이미지를 패치로 쪼개 정상 특징을 기억해두는 대표 기법 — 처음 보는 결함도 잡는다</figcaption>
   </figure>
@@ -177,24 +180,24 @@ AI가 처음이라면 <b>합성 데이터 → 객체 탐지 → 이상 탐지</b
   <p class="def">학습된 AI 모델의 공용 파일 포맷. 어떤 프레임워크로 학습했든 ONNX로 내보내면, 학습 환경 없이 어디서든(서버·엣지·브라우저) 실행할 수 있다.</p>
   <figure>
     <svg viewBox="0 0 720 150" role="img" aria-label="ONNX 허브 구조">
-      <rect x="20" y="25" width="130" height="40" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
-      <text x="85" y="50" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">PyTorch</text>
-      <rect x="20" y="85" width="130" height="40" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
-      <text x="85" y="110" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">TensorFlow</text>
-      <rect x="295" y="50" width="130" height="55" fill="#1B2430"/>
+      <rect x="20" y="25" width="130" height="40" fill="#20272F" stroke="#E8ECF1" stroke-width="2"/>
+      <text x="85" y="50" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">PyTorch</text>
+      <rect x="20" y="85" width="130" height="40" fill="#20272F" stroke="#E8ECF1" stroke-width="2"/>
+      <text x="85" y="110" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">TensorFlow</text>
+      <rect x="295" y="50" width="130" height="55" fill="#E8ECF1"/>
       <text x="360" y="83" text-anchor="middle" font-family="monospace" font-size="13" fill="#fff">.onnx</text>
-      <rect x="570" y="12" width="130" height="36" fill="#FDF4EC" stroke="#E8720C" stroke-width="2"/>
-      <text x="635" y="35" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#E8720C">서버 GPU 서빙</text>
-      <rect x="570" y="58" width="130" height="36" fill="#FDF4EC" stroke="#E8720C" stroke-width="2"/>
-      <text x="635" y="81" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#E8720C">엣지 (라즈베리파이)</text>
-      <rect x="570" y="104" width="130" height="36" fill="#FDF4EC" stroke="#E8720C" stroke-width="2"/>
-      <text x="635" y="127" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#E8720C">브라우저</text>
-      <line x1="150" y1="45" x2="293" y2="70" stroke="#5A6673" stroke-width="1.5" marker-end="url(#on)"/>
-      <line x1="150" y1="105" x2="293" y2="85" stroke="#5A6673" stroke-width="1.5" marker-end="url(#on)"/>
-      <line x1="425" y1="62" x2="568" y2="32" stroke="#5A6673" stroke-width="1.5" marker-end="url(#on)"/>
-      <line x1="425" y1="77" x2="568" y2="77" stroke="#5A6673" stroke-width="1.5" marker-end="url(#on)"/>
-      <line x1="425" y1="92" x2="568" y2="120" stroke="#5A6673" stroke-width="1.5" marker-end="url(#on)"/>
-      <defs><marker id="on" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#5A6673" stroke-width="1.5"/></marker></defs>
+      <rect x="570" y="12" width="130" height="36" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="635" y="35" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#F08A32">서버 GPU 서빙</text>
+      <rect x="570" y="58" width="130" height="36" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="635" y="81" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#F08A32">엣지 (라즈베리파이)</text>
+      <rect x="570" y="104" width="130" height="36" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="635" y="127" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#F08A32">브라우저</text>
+      <line x1="150" y1="45" x2="293" y2="70" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#on)"/>
+      <line x1="150" y1="105" x2="293" y2="85" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#on)"/>
+      <line x1="425" y1="62" x2="568" y2="32" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#on)"/>
+      <line x1="425" y1="77" x2="568" y2="77" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#on)"/>
+      <line x1="425" y1="92" x2="568" y2="120" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#on)"/>
+      <defs><marker id="on" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#9AA7B4" stroke-width="1.5"/></marker></defs>
     </svg>
     <figcaption>학습 프레임워크와 배포 환경의 분리 — 웹의 "빌드 산출물" 개념과 같다</figcaption>
   </figure>
@@ -207,20 +210,20 @@ AI가 처음이라면 <b>합성 데이터 → 객체 탐지 → 이상 탐지</b
   <p class="def">AI의 판정을 사람이 승인·정정(오버라이드)할 수 있게 하고, 그 정정 기록을 다시 모델 개선에 쓰는 운영 구조.</p>
   <figure>
     <svg viewBox="0 0 720 160" role="img" aria-label="휴먼 인 더 루프 순환">
-      <rect x="30" y="55" width="130" height="50" fill="#1F7A4D"/>
+      <rect x="30" y="55" width="130" height="50" fill="#3BAF77"/>
       <text x="95" y="85" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">AI 판정</text>
-      <rect x="230" y="55" width="170" height="50" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
-      <text x="315" y="77" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">운영자 확인</text>
-      <text x="315" y="95" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">승인 or 오버라이드</text>
-      <rect x="470" y="55" width="130" height="50" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
-      <text x="535" y="85" text-anchor="middle" font-family="monospace" font-size="11" fill="#1B2430">실적 반영</text>
-      <line x1="160" y1="80" x2="228" y2="80" stroke="#5A6673" stroke-width="1.5" marker-end="url(#hi)"/>
-      <line x1="400" y1="80" x2="468" y2="80" stroke="#5A6673" stroke-width="1.5" marker-end="url(#hi)"/>
-      <path d="M315 105 C 315 145, 150 148, 95 108" fill="none" stroke="#E8720C" stroke-width="2" marker-end="url(#hia)"/>
-      <text x="220" y="145" text-anchor="middle" font-family="monospace" font-size="10" fill="#E8720C">오버라이드 → 재학습 데이터로 축적</text>
+      <rect x="230" y="55" width="170" height="50" fill="#20272F" stroke="#E8ECF1" stroke-width="2"/>
+      <text x="315" y="77" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">운영자 확인</text>
+      <text x="315" y="95" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#9AA7B4">승인 or 오버라이드</text>
+      <rect x="470" y="55" width="130" height="50" fill="#20272F" stroke="#E8ECF1" stroke-width="2"/>
+      <text x="535" y="85" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">실적 반영</text>
+      <line x1="160" y1="80" x2="228" y2="80" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#hi)"/>
+      <line x1="400" y1="80" x2="468" y2="80" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#hi)"/>
+      <path d="M315 105 C 315 145, 150 148, 95 108" fill="none" stroke="#F08A32" stroke-width="2" marker-end="url(#hia)"/>
+      <text x="220" y="145" text-anchor="middle" font-family="monospace" font-size="10" fill="#F08A32">오버라이드 → 재학습 데이터로 축적</text>
       <defs>
-        <marker id="hi" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#5A6673" stroke-width="1.5"/></marker>
-        <marker id="hia" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#E8720C" stroke-width="1.5"/></marker>
+        <marker id="hi" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#9AA7B4" stroke-width="1.5"/></marker>
+        <marker id="hia" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#F08A32" stroke-width="1.5"/></marker>
       </defs>
     </svg>
     <figcaption>사람의 정정이 곧 최고 품질의 라벨 — 운영할수록 모델이 좋아지는 선순환</figcaption>
@@ -256,31 +259,31 @@ AI가 처음이라면 <b>합성 데이터 → 객체 탐지 → 이상 탐지</b
   <figure>
     <svg viewBox="0 0 720 200" role="img" aria-label="중계 API가 있는 구조와 MQTT-WS 직접 구독 비교">
       <text x="20" y="25" font-family="monospace" font-size="11" font-weight="bold" fill="#8A96A3">일반적 구조 — 중계 코드를 만들어야 한다</text>
-      <rect x="20" y="38" width="120" height="40" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="80" y="63" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1B2430">로봇·설비</text>
-      <rect x="185" y="38" width="120" height="40" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="245" y="63" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1B2430">브로커</text>
-      <rect x="350" y="38" width="170" height="40" fill="#F5F7F8" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="5 3"/>
+      <rect x="20" y="38" width="120" height="40" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="80" y="63" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#E8ECF1">로봇·설비</text>
+      <rect x="185" y="38" width="120" height="40" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="245" y="63" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#E8ECF1">브로커</text>
+      <rect x="350" y="38" width="170" height="40" fill="#20272F" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="5 3"/>
       <text x="435" y="57" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#8A96A3">백엔드 중계 API</text>
       <text x="435" y="72" text-anchor="middle" font-family="monospace" font-size="8.5" fill="#8A96A3">폴링·SSE 코드 필요</text>
-      <rect x="565" y="38" width="120" height="40" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="625" y="63" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1B2430">브라우저</text>
-      <line x1="140" y1="58" x2="183" y2="58" stroke="#5A6673" stroke-width="1.5" marker-end="url(#mw)"/>
-      <line x1="305" y1="58" x2="348" y2="58" stroke="#5A6673" stroke-width="1.5" marker-end="url(#mw)"/>
-      <line x1="520" y1="58" x2="563" y2="58" stroke="#5A6673" stroke-width="1.5" marker-end="url(#mw)"/>
-      <text x="20" y="120" font-family="monospace" font-size="11" font-weight="bold" fill="#1F7A4D">MQTT over WebSocket — 중계 계층이 사라진다</text>
-      <rect x="20" y="133" width="120" height="40" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="80" y="158" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1B2430">로봇·설비</text>
-      <rect x="185" y="133" width="120" height="40" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="245" y="158" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1B2430">브로커</text>
-      <rect x="565" y="133" width="120" height="40" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="2"/>
-      <text x="625" y="158" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#1F7A4D">브라우저</text>
-      <line x1="140" y1="153" x2="183" y2="153" stroke="#5A6673" stroke-width="1.5" marker-end="url(#mw)"/>
-      <line x1="305" y1="153" x2="563" y2="153" stroke="#1F7A4D" stroke-width="2" marker-end="url(#mw2)"/>
-      <text x="435" y="145" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#1F7A4D">WebSocket으로 토픽 직접 구독</text>
+      <rect x="565" y="38" width="120" height="40" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="625" y="63" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#E8ECF1">브라우저</text>
+      <line x1="140" y1="58" x2="183" y2="58" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#mw)"/>
+      <line x1="305" y1="58" x2="348" y2="58" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#mw)"/>
+      <line x1="520" y1="58" x2="563" y2="58" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#mw)"/>
+      <text x="20" y="120" font-family="monospace" font-size="11" font-weight="bold" fill="#3BAF77">MQTT over WebSocket — 중계 계층이 사라진다</text>
+      <rect x="20" y="133" width="120" height="40" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="80" y="158" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#E8ECF1">로봇·설비</text>
+      <rect x="185" y="133" width="120" height="40" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="245" y="158" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#E8ECF1">브로커</text>
+      <rect x="565" y="133" width="120" height="40" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
+      <text x="625" y="158" text-anchor="middle" font-family="monospace" font-size="10.5" fill="#3BAF77">브라우저</text>
+      <line x1="140" y1="153" x2="183" y2="153" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#mw)"/>
+      <line x1="305" y1="153" x2="563" y2="153" stroke="#3BAF77" stroke-width="2" marker-end="url(#mw2)"/>
+      <text x="435" y="145" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#3BAF77">WebSocket으로 토픽 직접 구독</text>
       <defs>
-        <marker id="mw" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#5A6673" stroke-width="1.5"/></marker>
-        <marker id="mw2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#1F7A4D" stroke-width="1.5"/></marker>
+        <marker id="mw" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#9AA7B4" stroke-width="1.5"/></marker>
+        <marker id="mw2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#3BAF77" stroke-width="1.5"/></marker>
       </defs>
     </svg>
     <figcaption>실시간 중계 API 한 층이 통째로 사라진다 — 관제 화면이 지연 없이 로봇 위치를 그리는 이유</figcaption>
@@ -301,19 +304,19 @@ AI가 처음이라면 <b>합성 데이터 → 객체 탐지 → 이상 탐지</b
   <p class="def">REST API의 요청·응답 형식을 기계가 읽을 수 있는 문서(YAML/JSON)로 정의하는 표준. 넓게는 "파트 간 인터페이스를 문서로 동결하는 것"이 데이터 계약이다.</p>
   <figure>
     <svg viewBox="0 0 720 195" role="img" aria-label="동결된 계약을 중심으로 한 병렬 개발">
-      <rect x="275" y="65" width="170" height="70" fill="#1B2430"/>
+      <rect x="275" y="65" width="170" height="70" fill="#E8ECF1"/>
       <text x="360" y="93" text-anchor="middle" font-family="monospace" font-size="11" fill="#fff">FROZEN CONTRACTS</text>
       <text x="360" y="112" text-anchor="middle" font-family="monospace" font-size="9" fill="#9AA7B4">OpenAPI · VDA 5050 · Sparkplug B</text>
-      <rect x="40" y="20" width="150" height="44" fill="#FDF4EC" stroke="#E8720C" stroke-width="2"/>
-      <text x="115" y="47" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8720C">로보틱스 파트</text>
-      <rect x="40" y="135" width="150" height="44" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="2"/>
-      <text x="115" y="162" text-anchor="middle" font-family="monospace" font-size="11" fill="#1F7A4D">AI 파트</text>
-      <rect x="530" y="75" width="160" height="44" fill="#F5F7F8" stroke="#33506B" stroke-width="2"/>
-      <text x="610" y="102" text-anchor="middle" font-family="monospace" font-size="11" fill="#33506B">백엔드·프론트 파트</text>
-      <line x1="190" y1="52" x2="272" y2="84" stroke="#5A6673" stroke-width="1.5"/>
-      <line x1="190" y1="148" x2="272" y2="116" stroke="#5A6673" stroke-width="1.5"/>
-      <line x1="445" y1="98" x2="527" y2="97" stroke="#5A6673" stroke-width="1.5"/>
-      <text x="360" y="180" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">각 파트는 상대의 완성을 기다리지 않고 계약 문서만 보고 병렬 개발한다</text>
+      <rect x="40" y="20" width="150" height="44" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="115" y="47" text-anchor="middle" font-family="monospace" font-size="11" fill="#F08A32">로보틱스 파트</text>
+      <rect x="40" y="135" width="150" height="44" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
+      <text x="115" y="162" text-anchor="middle" font-family="monospace" font-size="11" fill="#3BAF77">AI 파트</text>
+      <rect x="530" y="75" width="160" height="44" fill="#20272F" stroke="#8FB4D9" stroke-width="2"/>
+      <text x="610" y="102" text-anchor="middle" font-family="monospace" font-size="11" fill="#8FB4D9">백엔드·프론트 파트</text>
+      <line x1="190" y1="52" x2="272" y2="84" stroke="#9AA7B4" stroke-width="1.5"/>
+      <line x1="190" y1="148" x2="272" y2="116" stroke="#9AA7B4" stroke-width="1.5"/>
+      <line x1="445" y1="98" x2="527" y2="97" stroke="#9AA7B4" stroke-width="1.5"/>
+      <text x="360" y="180" text-anchor="middle" font-family="monospace" font-size="10" fill="#9AA7B4">각 파트는 상대의 완성을 기다리지 않고 계약 문서만 보고 병렬 개발한다</text>
     </svg>
     <figcaption>계약이 팀 사이의 "물리 법칙" — 1~2주차에 동결하고, 변경은 승인 절차를 거친다</figcaption>
   </figure>

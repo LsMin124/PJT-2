@@ -3,21 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <title>SIM-FIRST SMART LOGISTICS — 문서 인덱스</title>
 <style>
   :root{
-    --bg:#E9ECEE;          /* 공장 패널 그레이 */
-    --panel:#FFFFFF;
-    --panel-edge:#D4D9DD;
-    --ink:#1B2430;
-    --ink-soft:#5A6673;
-    --amber:#E8720C;       /* 산업 안전 주황 */
-    --machine:#1F7A4D;     /* 설비 상태 그린 */
-    --steel:#33506B;       /* 강판 블루 */
+    --bg:#14181D;          /* 공장 패널 그레이 */
+    --panel:#1C2229;
+    --panel-edge:#2C343D;
+    --ink:#E8ECF1;
+    --ink-soft:#9AA7B4;
+    --amber:#F08A32;       /* 산업 안전 주황 */
+    --machine:#3BAF77;     /* 설비 상태 그린 */
+    --steel:#8FB4D9;       /* 강판 블루 */
     --slate:#8A96A3;       /* 인프라/공통 */
-    --grid:#DDE2E6;
+    --grid:#2A323B;
     --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
-    --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -43,14 +46,14 @@
 
   main{flex:1;padding:46px 0 80px}
 
-  a.intro-banner{display:block;text-decoration:none;background:var(--machine);color:#fff;padding:15px 20px;margin:0 0 18px;border-left:6px solid #12532F;transition:transform .15s,box-shadow .15s}
-  a.intro-banner:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(31,122,77,.28)}
+  a.intro-banner{display:block;text-decoration:none;background:#1F7A4D;color:#fff;padding:15px 20px;margin:0 0 18px;border-left:6px solid #12532F;transition:transform .15s,box-shadow .15s}
+  a.intro-banner:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.5)}
   a.intro-banner:focus-visible{outline:3px solid var(--machine);outline-offset:2px}
   a.intro-banner small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#BFE3CF;margin-bottom:5px}
   a.intro-banner b{font-size:15px}
   a.intro-banner .go{font-family:var(--mono);font-size:12px;font-weight:700;margin-left:10px;white-space:nowrap}
   .tagline{
-    font-size:15px;font-weight:600;background:var(--ink);color:#fff;padding:16px 20px;margin:0 0 26px;
+    font-size:15px;font-weight:600;background:#0E1318;color:#fff;padding:16px 20px;margin:0 0 26px;
     border-left:6px solid var(--amber)
   }
   .tagline small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#9AA7B4;margin-bottom:6px;font-weight:400}
@@ -78,7 +81,7 @@
   a.doc.d-research{--accent:var(--steel)}
   a.doc.d-theory{--accent:var(--machine)}
   a.doc.d-decision{--accent:var(--amber)}
-  a.doc:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(27,36,48,.14);border-color:var(--accent)}
+  a.doc:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.5);border-color:var(--accent)}
   a.doc:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
   .doc-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px;flex-wrap:wrap}
   .doc-no{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--accent)}
@@ -106,7 +109,7 @@
   a.ref.r-a{--accent:var(--amber)}
   a.ref.r-b{--accent:var(--steel)}
   a.ref.r-c{--accent:var(--machine)}
-  a.ref:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(27,36,48,.14);border-color:var(--accent)}
+  a.ref:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.5);border-color:var(--accent)}
   a.ref:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
   a.ref .doc-no{margin-bottom:6px;display:block}
   a.ref h2{font-size:16px;font-weight:800;margin-bottom:4px}
@@ -152,48 +155,48 @@
   <div class="journey">
     <div class="register-label">READING MAP · 무엇을 어떤 순서로 읽나</div>
     <svg viewBox="0 0 900 264" role="img" aria-label="문서 읽기 순서 지도 — 트랙 1은 처음 읽는 순서, 트랙 2는 진행 중 주제, 트랙 3은 참고 문서">
-      <defs><marker id="jm-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
-      <text x="20" y="40" font-family="JetBrains Mono, monospace" font-size="12" fill="#5A6673">TRACK 1</text>
-      <text x="20" y="60" font-family="Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#1B2430">처음이라면</text>
-      <rect x="190" y="22" width="190" height="50" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="204" y="43" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8720C">DOC 00</text>
-      <text x="204" y="62" font-family="Pretendard, sans-serif" font-size="14" fill="#1B2430">안내 — 전문용어 없음</text>
-      <line x1="380" y1="47" x2="424" y2="47" stroke="#33506B" stroke-width="2" marker-end="url(#jm-arr)"/>
-      <rect x="430" y="22" width="190" height="50" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="444" y="43" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8720C">DOC 01</text>
-      <text x="444" y="62" font-family="Pretendard, sans-serif" font-size="14" fill="#1B2430">전체 조망 — 큰 그림</text>
-      <line x1="620" y1="47" x2="664" y2="47" stroke="#33506B" stroke-width="2" marker-end="url(#jm-arr)"/>
-      <rect x="670" y="22" width="200" height="50" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="684" y="43" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8720C">DOC 02</text>
-      <text x="684" y="62" font-family="Pretendard, sans-serif" font-size="14" fill="#1B2430">실행 계획서 — 기술 상세</text>
-      <text x="20" y="128" font-family="JetBrains Mono, monospace" font-size="12" fill="#5A6673">TRACK 2</text>
-      <text x="20" y="148" font-family="Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#1B2430">진행 중 주제</text>
-      <text x="20" y="166" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">AMR 견적 시뮬레이션</text>
-      <rect x="190" y="110" width="190" height="50" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="204" y="131" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8720C">DOC 05</text>
-      <text x="204" y="150" font-family="Pretendard, sans-serif" font-size="14" fill="#1B2430">도메인 리서치 — 현장</text>
-      <line x1="380" y1="135" x2="424" y2="135" stroke="#33506B" stroke-width="2" marker-end="url(#jm-arr)"/>
-      <rect x="430" y="110" width="190" height="50" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="444" y="131" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8720C">DOC 06</text>
-      <text x="444" y="150" font-family="Pretendard, sans-serif" font-size="14" fill="#1B2430">경로계획 이론 — 근거</text>
-      <line x1="620" y1="135" x2="664" y2="135" stroke="#33506B" stroke-width="2" marker-end="url(#jm-arr)"/>
-      <rect x="670" y="110" width="200" height="50" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="684" y="131" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8720C">DOC 07</text>
-      <text x="684" y="150" font-family="Pretendard, sans-serif" font-size="14" fill="#1B2430">구현 결정 — 팀 합의</text>
-      <text x="20" y="216" font-family="JetBrains Mono, monospace" font-size="12" fill="#5A6673">TRACK 3</text>
-      <text x="20" y="236" font-family="Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#1B2430">필요할 때 참고</text>
-      <rect x="190" y="198" width="160" height="50" fill="#F5F7F8" stroke="#8A96A3" stroke-width="1.5"/>
-      <text x="202" y="219" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#5A6673">DOC 03·04</text>
-      <text x="202" y="238" font-family="Pretendard, sans-serif" font-size="13.5" fill="#1B2430">제안서 · 랩 노트</text>
-      <rect x="370" y="198" width="160" height="50" fill="#F5F7F8" stroke="#8A96A3" stroke-width="1.5"/>
-      <text x="382" y="219" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#5A6673">DEEP-DIVE A–C</text>
-      <text x="382" y="238" font-family="Pretendard, sans-serif" font-size="13.5" fill="#1B2430">구간별 심화 분석</text>
-      <rect x="550" y="198" width="160" height="50" fill="#F5F7F8" stroke="#8A96A3" stroke-width="1.5"/>
-      <text x="562" y="219" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#5A6673">REF A–C</text>
-      <text x="562" y="238" font-family="Pretendard, sans-serif" font-size="13.5" fill="#1B2430">용어사전 3부</text>
-      <rect x="730" y="198" width="140" height="50" fill="#F5F7F8" stroke="#8A96A3" stroke-width="1.5"/>
-      <text x="742" y="219" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#5A6673">용어 표</text>
-      <text x="742" y="238" font-family="Pretendard, sans-serif" font-size="13.5" fill="#1B2430">각 문서 도입부</text>
+      <defs><marker id="jm-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
+      <text x="20" y="40" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">TRACK 1</text>
+      <text x="20" y="60" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">처음이라면</text>
+      <rect x="190" y="22" width="190" height="50" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="204" y="43" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#F08A32">DOC 00</text>
+      <text x="204" y="62" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" fill="#E8ECF1">안내 — 전문용어 없음</text>
+      <line x1="380" y1="47" x2="424" y2="47" stroke="#8FB4D9" stroke-width="2" marker-end="url(#jm-arr)"/>
+      <rect x="430" y="22" width="190" height="50" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="444" y="43" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#F08A32">DOC 01</text>
+      <text x="444" y="62" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" fill="#E8ECF1">전체 조망 — 큰 그림</text>
+      <line x1="620" y1="47" x2="664" y2="47" stroke="#8FB4D9" stroke-width="2" marker-end="url(#jm-arr)"/>
+      <rect x="670" y="22" width="200" height="50" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="684" y="43" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#F08A32">DOC 02</text>
+      <text x="684" y="62" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" fill="#E8ECF1">실행 계획서 — 기술 상세</text>
+      <text x="20" y="128" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">TRACK 2</text>
+      <text x="20" y="148" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">진행 중 주제</text>
+      <text x="20" y="166" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">AMR 견적 시뮬레이션</text>
+      <rect x="190" y="110" width="190" height="50" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="204" y="131" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#F08A32">DOC 05</text>
+      <text x="204" y="150" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" fill="#E8ECF1">도메인 리서치 — 현장</text>
+      <line x1="380" y1="135" x2="424" y2="135" stroke="#8FB4D9" stroke-width="2" marker-end="url(#jm-arr)"/>
+      <rect x="430" y="110" width="190" height="50" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="444" y="131" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#F08A32">DOC 06</text>
+      <text x="444" y="150" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" fill="#E8ECF1">경로계획 이론 — 근거</text>
+      <line x1="620" y1="135" x2="664" y2="135" stroke="#8FB4D9" stroke-width="2" marker-end="url(#jm-arr)"/>
+      <rect x="670" y="110" width="200" height="50" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="684" y="131" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#F08A32">DOC 07</text>
+      <text x="684" y="150" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" fill="#E8ECF1">구현 결정 — 팀 합의</text>
+      <text x="20" y="216" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">TRACK 3</text>
+      <text x="20" y="236" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">필요할 때 참고</text>
+      <rect x="190" y="198" width="160" height="50" fill="#20272F" stroke="#8A96A3" stroke-width="1.5"/>
+      <text x="202" y="219" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#9AA7B4">DOC 03·04</text>
+      <text x="202" y="238" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" fill="#E8ECF1">제안서 · 랩 노트</text>
+      <rect x="370" y="198" width="160" height="50" fill="#20272F" stroke="#8A96A3" stroke-width="1.5"/>
+      <text x="382" y="219" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#9AA7B4">DEEP-DIVE A–C</text>
+      <text x="382" y="238" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" fill="#E8ECF1">구간별 심화 분석</text>
+      <rect x="550" y="198" width="160" height="50" fill="#20272F" stroke="#8A96A3" stroke-width="1.5"/>
+      <text x="562" y="219" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#9AA7B4">REF A–C</text>
+      <text x="562" y="238" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" fill="#E8ECF1">용어사전 3부</text>
+      <rect x="730" y="198" width="140" height="50" fill="#20272F" stroke="#8A96A3" stroke-width="1.5"/>
+      <text x="742" y="219" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#9AA7B4">용어 표</text>
+      <text x="742" y="238" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" fill="#E8ECF1">각 문서 도입부</text>
     </svg>
     <p class="journey-cap">화살표 순서대로 읽으면 됩니다. 처음이면 트랙 1, 지금 진행 중인 주제를 따라가려면 트랙 2.
     읽다가 모르는 용어가 나오면 그 문서 도입부의 "먼저 알아둘 용어" 표를 먼저 보고, 더 깊은 설명이 필요하면 용어사전(REF A–C)의 해당 항목으로 이동하세요.</p>

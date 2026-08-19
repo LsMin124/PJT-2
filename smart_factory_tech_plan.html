@@ -3,20 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <title>시뮬레이션 기반 통합 스마트 물류센터 솔루션 — 기술 실행 계획서</title>
 <style>
   :root{
-    --bg:#E9ECEE;          /* 공장 패널 그레이 */
-    --panel:#FFFFFF;
-    --panel-edge:#D4D9DD;
-    --ink:#1B2430;
-    --ink-soft:#5A6673;
-    --amber:#E8720C;       /* 산업 안전 주황 — 주력/강조 */
-    --machine:#1F7A4D;     /* 설비 상태 그린 — 결정/확정 */
-    --steel:#33506B;       /* 강판 블루 — 데이터/표준 */
-    --grid:#DDE2E6;
+    --bg:#14181D;          /* 공장 패널 그레이 */
+    --panel:#1C2229;
+    --panel-edge:#2C343D;
+    --ink:#E8ECF1;
+    --ink-soft:#9AA7B4;
+    --amber:#F08A32;       /* 산업 안전 주황 — 주력/강조 */
+    --machine:#3BAF77;     /* 설비 상태 그린 — 결정/확정 */
+    --steel:#8FB4D9;       /* 강판 블루 — 데이터/표준 */
+    --grid:#2A323B;
     --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
-    --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -46,7 +49,7 @@
   .meta b{color:var(--ink);font-weight:600}
 
   /* ── 상단 고정 내비 ── */
-  nav{position:sticky;top:0;z-index:50;background:var(--ink);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
   nav::-webkit-scrollbar{display:none}
   nav .wrap{display:flex;gap:2px;padding:0 20px}
   nav a{
@@ -71,20 +74,20 @@
   p{color:var(--ink);margin-bottom:10px}
   .lead{font-size:15.5px}
   .soft{color:var(--ink-soft)}
-  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
   .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
   .tagline{
-    font-size:16px;font-weight:600;background:var(--ink);color:#fff;padding:16px 20px;margin:14px 0;
+    font-size:16px;font-weight:600;background:#0E1318;color:#fff;padding:16px 20px;margin:14px 0;
     border-left:6px solid var(--amber)
   }
   .tagline small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#9AA7B4;margin-bottom:6px;font-weight:400}
 
   /* ── 표 ── */
   table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
-  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F}
   td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
   tr:last-child td{border-bottom:none}
-  table.zebra tr:nth-child(even) td{background:#F8FAFB}
+  table.zebra tr:nth-child(even) td{background:#1E252D}
   td b{font-weight:700}
   .num{font-family:var(--mono)}
 
@@ -98,17 +101,17 @@
   .stack{margin:18px 0;border:1px solid var(--panel-edge)}
   .layer{display:grid;grid-template-columns:150px 1fr;border-bottom:1px solid var(--panel-edge);transition:background .15s}
   .layer:last-child{border-bottom:none}
-  .layer:hover{background:#FDF4EC}
+  .layer:hover{background:#2A2019}
   .layer .tag{
     font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;padding:16px 14px;
-    background:#F2F4F6;border-right:1px solid var(--panel-edge);display:flex;flex-direction:column;gap:2px;justify-content:center
+    background:#20272F;border-right:1px solid var(--panel-edge);display:flex;flex-direction:column;gap:2px;justify-content:center
   }
   .layer .tag small{font-weight:400;color:var(--ink-soft);font-size:10px}
   .layer .desc{padding:14px 18px;font-size:13.5px}
   .layer .desc b{font-weight:700}
   .layer .desc .proto{font-family:var(--mono);font-size:11px;color:var(--steel);margin-top:4px;display:block}
-  .layer.l-hi .tag{background:var(--ink);color:#fff;border-right-color:var(--ink)}
-  .flowdown{text-align:center;font-family:var(--mono);font-size:10px;color:var(--ink-soft);letter-spacing:.2em;padding:4px 0;background:#F5F7F8;border-bottom:1px solid var(--panel-edge)}
+  .layer.l-hi .tag{background:#0E1318;color:#fff;border-right-color:var(--ink)}
+  .flowdown{text-align:center;font-family:var(--mono);font-size:10px;color:var(--ink-soft);letter-spacing:.2em;padding:4px 0;background:#20272F;border-bottom:1px solid var(--panel-edge)}
 
   /* ── 배분 바 ── */
   .alloc{display:flex;height:44px;margin:16px 0 6px;font-family:var(--mono);font-size:12px;font-weight:700;color:#fff}
@@ -148,7 +151,7 @@
   .pat::before{
     counter-increment:pat;content:counter(pat);position:absolute;left:14px;top:14px;
     width:30px;height:30px;display:flex;align-items:center;justify-content:center;
-    background:var(--ink);color:#fff;font-family:var(--mono);font-weight:700;font-size:14px
+    background:#0E1318;color:#fff;font-family:var(--mono);font-weight:700;font-size:14px
   }
   .pat h4{font-size:14px;font-weight:700}
   .pat h4 small{font-family:var(--mono);font-size:10.5px;color:var(--amber);font-weight:600;letter-spacing:.06em;margin-left:8px}
@@ -165,7 +168,7 @@
   /* ── Decision Log ── */
   .dlog{counter-reset:dec;display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;margin:12px 0}
   .dlog div{
-    counter-increment:dec;position:relative;padding:9px 12px 9px 44px;background:#F5F7F8;
+    counter-increment:dec;position:relative;padding:9px 12px 9px 44px;background:#20272F;
     border-left:3px solid var(--machine);font-size:13px
   }
   .dlog div::before{
@@ -238,27 +241,27 @@
     <h3>프로젝트 전체 구도 — 시뮬레이터 2종의 분업과 보정 루프</h3>
     <svg viewBox="0 0 900 270" role="img" aria-label="SimPy와 Isaac Sim 이중 계층과 보정 루프" style="max-width:100%;height:auto;display:block;margin:14px 0">
       <defs>
-        <marker id="s0arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker>
-        <marker id="s0arrg" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#1F7A4D"/></marker>
+        <marker id="s0arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker>
+        <marker id="s0arrg" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#3BAF77"/></marker>
       </defs>
-      <rect x="20" y="26" width="380" height="140" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-      <rect x="20" y="26" width="380" height="34" fill="#33506B"/>
-      <text x="34" y="48" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">SimPy — 흐름 시뮬레이션 (DES)</text>
-      <text x="34" y="88" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">하루치 물류 흐름을 몇 초 만에 계산</text>
-      <text x="34" y="112" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">수백 번 반복해 최적 조건 탐색 (what-if)</text>
-      <text x="34" y="136" font-family="Pretendard, sans-serif" font-size="13" fill="#5A6673">관심사: 처리량 · 병목 · 대기열</text>
-      <rect x="500" y="26" width="380" height="140" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
-      <rect x="500" y="26" width="380" height="34" fill="#E8720C"/>
-      <text x="514" y="48" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">Isaac Sim — 물리 시뮬레이션</text>
-      <text x="514" y="88" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">로봇·상자가 실제처럼 움직이는 가상 센터</text>
-      <text x="514" y="112" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">소수의 작업 셀만 정밀하게 실행</text>
-      <text x="514" y="136" font-family="Pretendard, sans-serif" font-size="13" fill="#5A6673">관심사: 파지 · 충돌 · 센서</text>
-      <line x1="402" y1="96" x2="494" y2="96" stroke="#33506B" stroke-width="2" marker-end="url(#s0arr)"/>
-      <text x="450" y="84" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">① 작업 명령</text>
-      <line x1="498" y1="132" x2="406" y2="132" stroke="#33506B" stroke-width="2" marker-end="url(#s0arr)"/>
-      <text x="450" y="152" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">② 실행 결과</text>
-      <path d="M690 166 L690 214 L210 214 L210 172" fill="none" stroke="#1F7A4D" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#s0arrg)"/>
-      <text x="450" y="242" font-family="Pretendard, sans-serif" font-size="13" font-weight="600" fill="#1F7A4D" text-anchor="middle">③ 보정 루프 — Isaac에서 잰 실제 작업 시간으로 SimPy의 계산 근거를 갱신</text>
+      <rect x="20" y="26" width="380" height="140" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <rect x="20" y="26" width="380" height="34" fill="#8FB4D9"/>
+      <text x="34" y="48" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#222A33">SimPy — 흐름 시뮬레이션 (DES)</text>
+      <text x="34" y="88" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">하루치 물류 흐름을 몇 초 만에 계산</text>
+      <text x="34" y="112" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">수백 번 반복해 최적 조건 탐색 (what-if)</text>
+      <text x="34" y="136" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4">관심사: 처리량 · 병목 · 대기열</text>
+      <rect x="500" y="26" width="380" height="140" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <rect x="500" y="26" width="380" height="34" fill="#F08A32"/>
+      <text x="514" y="48" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#222A33">Isaac Sim — 물리 시뮬레이션</text>
+      <text x="514" y="88" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">로봇·상자가 실제처럼 움직이는 가상 센터</text>
+      <text x="514" y="112" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">소수의 작업 셀만 정밀하게 실행</text>
+      <text x="514" y="136" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4">관심사: 파지 · 충돌 · 센서</text>
+      <line x1="402" y1="96" x2="494" y2="96" stroke="#8FB4D9" stroke-width="2" marker-end="url(#s0arr)"/>
+      <text x="450" y="84" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">① 작업 명령</text>
+      <line x1="498" y1="132" x2="406" y2="132" stroke="#8FB4D9" stroke-width="2" marker-end="url(#s0arr)"/>
+      <text x="450" y="152" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">② 실행 결과</text>
+      <path d="M690 166 L690 214 L210 214 L210 172" fill="none" stroke="#3BAF77" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#s0arrg)"/>
+      <text x="450" y="242" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="600" fill="#3BAF77" text-anchor="middle">③ 보정 루프 — Isaac에서 잰 실제 작업 시간으로 SimPy의 계산 근거를 갱신</text>
     </svg>
     <p class="soft">성격이 정반대인 시뮬레이터 둘을 분업시키는 것이 이 프로젝트의 뼈대다. SimPy가 빠르게 "전체 흐름"을 계산하고,
     Isaac이 그 계산의 근거 수치를 물리적으로 검증해 되돌려준다. 연동의 상세 설계는 SEC 04에 있다.</p>
@@ -344,30 +347,30 @@
     <p class="soft">아래 그림 읽는 법: 위로 갈수록 관리(IT) 계층, 아래로 갈수록 물리(OT) 계층이다.
     오른쪽 두 세로선이 이 구조의 핵심 — 명령은 위에서 아래로 내려가고, 상태·실적은 아래에서 위로 올라간다.</p>
     <svg viewBox="0 0 900 368" role="img" aria-label="ISA-95 계층 스택 구조도" style="max-width:100%;height:auto;display:block;margin:14px 0">
-      <defs><marker id="stka" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
-      <rect x="20" y="20" width="750" height="46" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/><rect x="20" y="20" width="170" height="46" fill="#F2F4F6" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="105" y="48" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#1B2430" text-anchor="middle">관제·분석</text>
-      <text x="205" y="48" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">Grafana 대시보드 — 가동률 · AMR 위치 · 불량률</text>
-      <rect x="20" y="76" width="750" height="46" fill="#FDF1E5" stroke="#1B2430" stroke-width="1.5"/><rect x="20" y="76" width="170" height="46" fill="#1B2430"/>
-      <text x="105" y="104" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">L3 · WMS/WES</text>
-      <text x="205" y="104" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">Spring Boot 주문·웨이브·배차 + SimPy 오케스트레이터 (두뇌 역할)</text>
-      <rect x="20" y="132" width="750" height="46" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/><rect x="20" y="132" width="170" height="46" fill="#F2F4F6" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="105" y="160" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#1B2430" text-anchor="middle">데이터 인프라</text>
-      <text x="205" y="152" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">MQTT 브로커 → TimescaleDB(시계열) · PostgreSQL(주문·재고)</text>
-      <text x="205" y="170" font-family="JetBrains Mono, monospace" font-size="11" fill="#33506B">설비 = Sparkplug B  ·  AMR = VDA 5050</text>
-      <rect x="20" y="188" width="750" height="46" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/><rect x="20" y="188" width="170" height="46" fill="#F2F4F6" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="105" y="216" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#1B2430" text-anchor="middle">엣지</text>
-      <text x="205" y="216" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">ROS2 노드 ↔ MQTT 브리지 — 로봇 세계와 IT 세계의 번역기</text>
-      <rect x="20" y="244" width="750" height="46" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/><rect x="20" y="244" width="170" height="46" fill="#EAF3EE" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="105" y="272" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#1F7A4D" text-anchor="middle">L0~2 · 물리</text>
-      <text x="205" y="272" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">Isaac Sim 가상 물류센터 — 랙 · 로봇팔 피킹 · AMR · 검수 카메라</text>
-      <rect x="20" y="300" width="750" height="46" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/><rect x="20" y="300" width="170" height="46" fill="#FDF1E5" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="105" y="328" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8720C" text-anchor="middle">AI QA</text>
-      <text x="205" y="328" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">합성 데이터 → 검수 모델 → 판정 → WMS 회신 (폐루프)</text>
-      <text x="815" y="14" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">명령</text>
-      <line x1="815" y1="24" x2="815" y2="340" stroke="#33506B" stroke-width="2" marker-end="url(#stka)"/>
-      <text x="858" y="14" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">상태</text>
-      <line x1="858" y1="340" x2="858" y2="24" stroke="#33506B" stroke-width="2" marker-end="url(#stka)"/>
+      <defs><marker id="stka" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
+      <rect x="20" y="20" width="750" height="46" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><rect x="20" y="20" width="170" height="46" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="105" y="48" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8ECF1" text-anchor="middle">관제·분석</text>
+      <text x="205" y="48" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">Grafana 대시보드 — 가동률 · AMR 위치 · 불량률</text>
+      <rect x="20" y="76" width="750" height="46" fill="#2A2019" stroke="#E8ECF1" stroke-width="1.5"/><rect x="20" y="76" width="170" height="46" fill="#E8ECF1"/>
+      <text x="105" y="104" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#222A33" text-anchor="middle">L3 · WMS/WES</text>
+      <text x="205" y="104" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">Spring Boot 주문·웨이브·배차 + SimPy 오케스트레이터 (두뇌 역할)</text>
+      <rect x="20" y="132" width="750" height="46" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><rect x="20" y="132" width="170" height="46" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="105" y="160" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8ECF1" text-anchor="middle">데이터 인프라</text>
+      <text x="205" y="152" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">MQTT 브로커 → TimescaleDB(시계열) · PostgreSQL(주문·재고)</text>
+      <text x="205" y="170" font-family="JetBrains Mono, monospace" font-size="11" fill="#8FB4D9">설비 = Sparkplug B  ·  AMR = VDA 5050</text>
+      <rect x="20" y="188" width="750" height="46" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><rect x="20" y="188" width="170" height="46" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="105" y="216" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8ECF1" text-anchor="middle">엣지</text>
+      <text x="205" y="216" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">ROS2 노드 ↔ MQTT 브리지 — 로봇 세계와 IT 세계의 번역기</text>
+      <rect x="20" y="244" width="750" height="46" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><rect x="20" y="244" width="170" height="46" fill="#17251E" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="105" y="272" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#3BAF77" text-anchor="middle">L0~2 · 물리</text>
+      <text x="205" y="272" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">Isaac Sim 가상 물류센터 — 랙 · 로봇팔 피킹 · AMR · 검수 카메라</text>
+      <rect x="20" y="300" width="750" height="46" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><rect x="20" y="300" width="170" height="46" fill="#2A2019" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="105" y="328" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#F08A32" text-anchor="middle">AI QA</text>
+      <text x="205" y="328" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">합성 데이터 → 검수 모델 → 판정 → WMS 회신 (폐루프)</text>
+      <text x="815" y="14" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">명령</text>
+      <line x1="815" y1="24" x2="815" y2="340" stroke="#8FB4D9" stroke-width="2" marker-end="url(#stka)"/>
+      <text x="858" y="14" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">상태</text>
+      <line x1="858" y1="340" x2="858" y2="24" stroke="#8FB4D9" stroke-width="2" marker-end="url(#stka)"/>
     </svg>
     <p class="soft">각 계층의 구성 요소 상세 — 용어사전 링크 포함:</p>
     <table class="zebra">
@@ -490,32 +493,32 @@
     <div class="tagline"><small>PRINCIPLE</small>수직 슬라이스 우선 — "스테이션 1개 + AMR 1대 + 데이터 경로 끝까지"의 최소 구성을 먼저 완성하고, 이후 수평으로 확장한다. 통합 리스크를 초반에 해소하기 위함.</div>
 
     <svg viewBox="0 0 900 150" role="img" aria-label="단계별 로드맵 타임라인" style="max-width:100%;height:auto;display:block;margin:14px 0">
-      <defs><marker id="rmarr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
-      <text x="450" y="22" font-family="Pretendard, sans-serif" font-size="13" fill="#5A6673" text-anchor="middle">→ 진행 방향 — 어느 단계에서 멈춰도 "완성된 무언가"가 남도록 설계</text>
-      <rect x="16" y="44" width="128" height="58" fill="#FDF1E5" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="80" y="68" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1B2430" text-anchor="middle">P0 데이터 백본</text>
-      <text x="80" y="90" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">로봇 없이 데이터 먼저</text>
-      <line x1="146" y1="73" x2="158" y2="73" stroke="#33506B" stroke-width="2" marker-end="url(#rmarr)"/>
-      <rect x="162" y="44" width="128" height="58" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="226" y="68" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1B2430" text-anchor="middle">P1 ROS2 코어</text>
-      <text x="226" y="90" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">Gazebo 주행·피킹</text>
-      <line x1="292" y1="73" x2="304" y2="73" stroke="#33506B" stroke-width="2" marker-end="url(#rmarr)"/>
-      <rect x="308" y="44" width="128" height="58" fill="#EAF3EE" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="372" y="68" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1B2430" text-anchor="middle">P2 Isaac 슬라이스</text>
-      <text x="372" y="90" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">전 계층 연결 완성</text>
-      <line x1="438" y1="73" x2="450" y2="73" stroke="#33506B" stroke-width="2" marker-end="url(#rmarr)"/>
-      <rect x="454" y="44" width="128" height="58" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="518" y="68" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1B2430" text-anchor="middle">P3 RL 심화</text>
-      <text x="518" y="90" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">파지 강화학습 1개</text>
-      <line x1="584" y1="73" x2="596" y2="73" stroke="#33506B" stroke-width="2" marker-end="url(#rmarr)"/>
-      <rect x="600" y="44" width="128" height="58" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
-      <text x="664" y="68" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1B2430" text-anchor="middle">P4 확장·CI</text>
-      <text x="664" y="90" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">규모 확대·자동시험</text>
+      <defs><marker id="rmarr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
+      <text x="450" y="22" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4" text-anchor="middle">→ 진행 방향 — 어느 단계에서 멈춰도 "완성된 무언가"가 남도록 설계</text>
+      <rect x="16" y="44" width="128" height="58" fill="#2A2019" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="80" y="68" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1" text-anchor="middle">P0 데이터 백본</text>
+      <text x="80" y="90" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">로봇 없이 데이터 먼저</text>
+      <line x1="146" y1="73" x2="158" y2="73" stroke="#8FB4D9" stroke-width="2" marker-end="url(#rmarr)"/>
+      <rect x="162" y="44" width="128" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="226" y="68" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1" text-anchor="middle">P1 ROS2 코어</text>
+      <text x="226" y="90" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">Gazebo 주행·피킹</text>
+      <line x1="292" y1="73" x2="304" y2="73" stroke="#8FB4D9" stroke-width="2" marker-end="url(#rmarr)"/>
+      <rect x="308" y="44" width="128" height="58" fill="#17251E" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="372" y="68" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1" text-anchor="middle">P2 Isaac 슬라이스</text>
+      <text x="372" y="90" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">전 계층 연결 완성</text>
+      <line x1="438" y1="73" x2="450" y2="73" stroke="#8FB4D9" stroke-width="2" marker-end="url(#rmarr)"/>
+      <rect x="454" y="44" width="128" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="518" y="68" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1" text-anchor="middle">P3 RL 심화</text>
+      <text x="518" y="90" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">파지 강화학습 1개</text>
+      <line x1="584" y1="73" x2="596" y2="73" stroke="#8FB4D9" stroke-width="2" marker-end="url(#rmarr)"/>
+      <rect x="600" y="44" width="128" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="664" y="68" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1" text-anchor="middle">P4 확장·CI</text>
+      <text x="664" y="90" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">규모 확대·자동시험</text>
       <line x1="730" y1="73" x2="742" y2="73" stroke="#8A96A3" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#rmarr)"/>
-      <rect x="746" y="44" width="138" height="58" fill="#F5F7F8" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
-      <text x="815" y="68" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#5A6673" text-anchor="middle">P5 실기체 (선택)</text>
-      <text x="815" y="90" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">sim-to-real 전이</text>
-      <text x="450" y="132" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">색: 주황 = 시작점(데이터), 초록 = 핵심 완성 지점(수직 슬라이스), 점선 = 선택 트랙</text>
+      <rect x="746" y="44" width="138" height="58" fill="#20272F" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <text x="815" y="68" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#9AA7B4" text-anchor="middle">P5 실기체 (선택)</text>
+      <text x="815" y="90" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">sim-to-real 전이</text>
+      <text x="450" y="132" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">색: 주황 = 시작점(데이터), 초록 = 핵심 완성 지점(수직 슬라이스), 점선 = 선택 트랙</text>
     </svg>
     <p class="soft">각 단계의 상세 내용은 아래 목록에 있다. 주차 단위 일정은 이 문서가 아니라 TEAM OVERVIEW의 통합 일정이 기준.</p>
     <div class="phases">

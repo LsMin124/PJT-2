@@ -3,21 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <title>심화 A — 벌크 하차·이형물 (Deep-Dive)</title>
 <style>
   :root{
-    --bg:#E9ECEE;
-    --panel:#FFFFFF;
-    --panel-edge:#D4D9DD;
-    --ink:#1B2430;
-    --ink-soft:#5A6673;
-    --amber:#E8720C;
-    --machine:#1F7A4D;
-    --steel:#33506B;
+    --bg:#14181D;
+    --panel:#1C2229;
+    --panel-edge:#2C343D;
+    --ink:#E8ECF1;
+    --ink-soft:#9AA7B4;
+    --amber:#F08A32;
+    --machine:#3BAF77;
+    --steel:#8FB4D9;
     --slate:#8A96A3;
-    --grid:#DDE2E6;
+    --grid:#2A323B;
     --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
-    --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -42,7 +45,7 @@
   .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
   .meta b{color:var(--ink);font-weight:600}
 
-  nav{position:sticky;top:0;z-index:50;background:var(--ink);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
   nav::-webkit-scrollbar{display:none}
   nav .wrap{display:flex;gap:2px;padding:0 20px}
   nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
@@ -63,13 +66,13 @@
   .sec-body p{max-width:76ch}
   .lead{font-size:15.5px}
   .soft{color:var(--ink-soft)}
-  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
   .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
 
   table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
-  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F}
   td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
-  table tr:nth-child(even) td{background:#F8FAFB}
+  table tr:nth-child(even) td{background:#1E252D}
   tr:last-child td{border-bottom:none}
   .tbl-scroll{overflow-x:auto}
   .num{font-family:var(--mono)}
@@ -146,33 +149,33 @@
 
       <h3>배경이 되는 장면 — 간선 트럭의 짐칸</h3>
       <svg viewBox="0 0 900 330" role="img" aria-label="간선 트럭 짐칸의 벌크 적재 단면과 하차 작업 도해" style="max-width:100%;height:auto;display:block;margin:14px 0">
-        <defs><marker id="arrA1" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
-        <text x="40" y="28" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">간선 트럭 짐칸 (단면)</text>
-        <rect x="40" y="40" width="478" height="240" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-        <g fill="#FFFFFF" stroke="#8A96A3" stroke-width="1">
+        <defs><marker id="arrA1" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
+        <text x="40" y="28" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">간선 트럭 짐칸 (단면)</text>
+        <rect x="40" y="40" width="478" height="240" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <g fill="#222A33" stroke="#8A96A3" stroke-width="1">
           <rect x="50" y="232" width="84" height="44"/><rect x="138" y="232" width="72" height="44"/><rect x="214" y="232" width="96" height="44"/><rect x="314" y="232" width="78" height="44"/><rect x="396" y="232" width="66" height="44"/><rect x="466" y="232" width="46" height="44"/>
           <rect x="50" y="184" width="76" height="44"/><rect x="130" y="184" width="90" height="44"/><rect x="224" y="184" width="64" height="44"/><rect x="292" y="184" width="84" height="44"/><rect x="380" y="184" width="72" height="44"/><rect x="456" y="184" width="56" height="44"/>
           <rect x="50" y="136" width="92" height="44"/><rect x="146" y="136" width="70" height="44"/><rect x="220" y="136" width="60" height="44"/><rect x="284" y="136" width="96" height="44"/><rect x="384" y="136" width="72" height="44"/>
           <rect x="50" y="88" width="80" height="44"/><rect x="134" y="88" width="64" height="44"/><rect x="202" y="88" width="88" height="44"/><rect x="294" y="88" width="70" height="44"/>
           <rect x="50" y="52" width="70" height="32"/><rect x="124" y="52" width="88" height="32"/><rect x="216" y="52" width="60" height="32"/>
         </g>
-        <rect x="460" y="132" width="54" height="48" rx="10" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="1.5"/>
-        <ellipse cx="410" cy="110" rx="40" ry="19" fill="#FDF1E5" stroke="#E8720C" stroke-width="1.5" stroke-dasharray="4 3"/>
-        <rect x="452" y="88" width="62" height="40" fill="#FDF1E5" stroke="#E8720C" stroke-width="2"/>
-        <path d="M514 112 C 560 130, 578 200, 558 242" fill="none" stroke="#33506B" stroke-width="1.8" marker-end="url(#arrA1)"/>
-        <rect x="500" y="248" width="360" height="14" fill="#EDF2F7" stroke="#33506B" stroke-width="1.5"/>
-        <line x1="540" y1="262" x2="540" y2="280" stroke="#33506B" stroke-width="1.5"/><line x1="820" y1="262" x2="820" y2="280" stroke="#33506B" stroke-width="1.5"/>
-        <text x="552" y="296" font-family="Pretendard, sans-serif" font-size="13" fill="#5A6673">텔레스코픽 컨베이어 — 짐칸 안까지 늘어나 상자를 받아 나른다</text>
-        <text x="545" y="60" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">왜 어려운가</text>
-        <text x="545" y="86" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">① 천장 근처까지 빽빽 — 위에서부터만 접근 가능</text>
-        <text x="545" y="110" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">② 상자끼리 밀착 — 한 개의 경계가 안 보임</text>
-        <text x="545" y="134" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">③ 무게·내용물은 겉에서 알 수 없음</text>
-        <text x="545" y="158" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">④ 아래를 먼저 빼면 더미가 무너짐</text>
-        <g font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">
-          <rect x="545" y="182" width="16" height="13" fill="#FDF1E5" stroke="#E8720C" stroke-width="2"/><text x="568" y="193">지금 꺼낼 상자 — 위에서부터 낱개로</text>
-          <ellipse cx="553" cy="215" rx="9" ry="6" fill="#FDF1E5" stroke="#E8720C" stroke-width="1.5" stroke-dasharray="3 2"/><text x="568" y="219">비닐 파우치 (형태가 변함 · 이형물)</text>
-          <rect x="545" y="234" width="16" height="13" rx="4" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="1.5"/><text x="568" y="245">마대 자루 (흡착 불가 · 이형물)</text>
-          <rect x="545" y="260" width="16" height="13" fill="#FFFFFF" stroke="#8A96A3"/><text x="568" y="271">골판지 상자 (밀착 벌크 적재)</text>
+        <rect x="460" y="132" width="54" height="48" rx="10" fill="#17251E" stroke="#3BAF77" stroke-width="1.5"/>
+        <ellipse cx="410" cy="110" rx="40" ry="19" fill="#2A2019" stroke="#F08A32" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <rect x="452" y="88" width="62" height="40" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+        <path d="M514 112 C 560 130, 578 200, 558 242" fill="none" stroke="#8FB4D9" stroke-width="1.8" marker-end="url(#arrA1)"/>
+        <rect x="500" y="248" width="360" height="14" fill="#1A222B" stroke="#8FB4D9" stroke-width="1.5"/>
+        <line x1="540" y1="262" x2="540" y2="280" stroke="#8FB4D9" stroke-width="1.5"/><line x1="820" y1="262" x2="820" y2="280" stroke="#8FB4D9" stroke-width="1.5"/>
+        <text x="552" y="296" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4">텔레스코픽 컨베이어 — 짐칸 안까지 늘어나 상자를 받아 나른다</text>
+        <text x="545" y="60" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">왜 어려운가</text>
+        <text x="545" y="86" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">① 천장 근처까지 빽빽 — 위에서부터만 접근 가능</text>
+        <text x="545" y="110" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">② 상자끼리 밀착 — 한 개의 경계가 안 보임</text>
+        <text x="545" y="134" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">③ 무게·내용물은 겉에서 알 수 없음</text>
+        <text x="545" y="158" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">④ 아래를 먼저 빼면 더미가 무너짐</text>
+        <g font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">
+          <rect x="545" y="182" width="16" height="13" fill="#2A2019" stroke="#F08A32" stroke-width="2"/><text x="568" y="193">지금 꺼낼 상자 — 위에서부터 낱개로</text>
+          <ellipse cx="553" cy="215" rx="9" ry="6" fill="#2A2019" stroke="#F08A32" stroke-width="1.5" stroke-dasharray="3 2"/><text x="568" y="219">비닐 파우치 (형태가 변함 · 이형물)</text>
+          <rect x="545" y="234" width="16" height="13" rx="4" fill="#17251E" stroke="#3BAF77" stroke-width="1.5"/><text x="568" y="245">마대 자루 (흡착 불가 · 이형물)</text>
+          <rect x="545" y="260" width="16" height="13" fill="#222A33" stroke="#8A96A3"/><text x="568" y="271">골판지 상자 (밀착 벌크 적재)</text>
         </g>
       </svg>
       <p class="soft">그림: 간선 트럭 짐칸의 단면. 파렛트 없이 낱개로 쌓인 상자(벌크 적재)를 위에서부터 하나씩 꺼내 컨베이어에 올리는 것이 하차 작업이다 — 지금은 사람이, 목표는 로봇이 한다.</p>
@@ -230,31 +233,31 @@
       <p class="lead">"상자를 집어서 옮긴다"는 한 문장이 실제로는 네 종류의 난제로 쪼개진다. 각각이 독립된 연구 분야다.</p>
 
       <svg viewBox="0 0 900 250" role="img" aria-label="하차 작업의 난점 4분해 다이어그램" style="max-width:100%;height:auto;display:block;margin:14px 0">
-        <defs><marker id="arrA2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
-        <rect x="320" y="16" width="260" height="50" fill="#FDF1E5" stroke="#1B2430" stroke-width="1.5"/>
-        <text x="450" y="38" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="15" font-weight="700" fill="#1B2430">"상자를 집어서 옮긴다"</text>
-        <text x="450" y="57" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">한 문장 뒤에 숨은 네 개의 난제</text>
-        <line x1="400" y1="66" x2="120" y2="126" stroke="#33506B" stroke-width="1.5" marker-end="url(#arrA2)"/>
-        <line x1="435" y1="66" x2="340" y2="126" stroke="#33506B" stroke-width="1.5" marker-end="url(#arrA2)"/>
-        <line x1="465" y1="66" x2="560" y2="126" stroke="#33506B" stroke-width="1.5" marker-end="url(#arrA2)"/>
-        <line x1="500" y1="66" x2="780" y2="126" stroke="#33506B" stroke-width="1.5" marker-end="url(#arrA2)"/>
-        <g font-family="Pretendard, sans-serif">
-          <rect x="10" y="132" width="200" height="96" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
-          <text x="24" y="158" font-size="14" font-weight="700" fill="#E8720C">① 인식</text>
-          <text x="24" y="180" font-size="13" fill="#1B2430">어디까지가 한 상자인가</text>
-          <text x="24" y="202" font-size="12.5" fill="#5A6673">밀착 · 가림 · 역광 · 미학습 물체</text>
-          <rect x="230" y="132" width="200" height="96" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
-          <text x="244" y="158" font-size="14" font-weight="700" fill="#E8720C">② 파지</text>
-          <text x="244" y="180" font-size="13" fill="#1B2430">어떻게 집는가</text>
-          <text x="244" y="202" font-size="12.5" fill="#5A6673">무게 미지 · 표면 상태 · 흡착 한계</text>
-          <rect x="450" y="132" width="200" height="96" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
-          <text x="464" y="158" font-size="14" font-weight="700" fill="#E8720C">③ 물리</text>
-          <text x="464" y="180" font-size="13" fill="#1B2430">더미는 무너진다</text>
-          <text x="464" y="202" font-size="12.5" fill="#5A6673">지지 관계 · 빼는 순서 · 낙하 대응</text>
-          <rect x="670" y="132" width="220" height="96" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
-          <text x="684" y="158" font-size="14" font-weight="700" fill="#E8720C">④ 시스템</text>
-          <text x="684" y="180" font-size="13" fill="#1B2430">한 대의 문제가 아니다</text>
-          <text x="684" y="202" font-size="12.5" fill="#5A6673">택트 타임 · 짐칸 진입 · 예외 전달</text>
+        <defs><marker id="arrA2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
+        <rect x="320" y="16" width="260" height="50" fill="#2A2019" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="450" y="38" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="15" font-weight="700" fill="#E8ECF1">"상자를 집어서 옮긴다"</text>
+        <text x="450" y="57" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">한 문장 뒤에 숨은 네 개의 난제</text>
+        <line x1="400" y1="66" x2="120" y2="126" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#arrA2)"/>
+        <line x1="435" y1="66" x2="340" y2="126" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#arrA2)"/>
+        <line x1="465" y1="66" x2="560" y2="126" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#arrA2)"/>
+        <line x1="500" y1="66" x2="780" y2="126" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#arrA2)"/>
+        <g font-family="IBM Plex Sans KR, Pretendard, sans-serif">
+          <rect x="10" y="132" width="200" height="96" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+          <text x="24" y="158" font-size="14" font-weight="700" fill="#F08A32">① 인식</text>
+          <text x="24" y="180" font-size="13" fill="#E8ECF1">어디까지가 한 상자인가</text>
+          <text x="24" y="202" font-size="12.5" fill="#9AA7B4">밀착 · 가림 · 역광 · 미학습 물체</text>
+          <rect x="230" y="132" width="200" height="96" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+          <text x="244" y="158" font-size="14" font-weight="700" fill="#F08A32">② 파지</text>
+          <text x="244" y="180" font-size="13" fill="#E8ECF1">어떻게 집는가</text>
+          <text x="244" y="202" font-size="12.5" fill="#9AA7B4">무게 미지 · 표면 상태 · 흡착 한계</text>
+          <rect x="450" y="132" width="200" height="96" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+          <text x="464" y="158" font-size="14" font-weight="700" fill="#F08A32">③ 물리</text>
+          <text x="464" y="180" font-size="13" fill="#E8ECF1">더미는 무너진다</text>
+          <text x="464" y="202" font-size="12.5" fill="#9AA7B4">지지 관계 · 빼는 순서 · 낙하 대응</text>
+          <rect x="670" y="132" width="220" height="96" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+          <text x="684" y="158" font-size="14" font-weight="700" fill="#F08A32">④ 시스템</text>
+          <text x="684" y="180" font-size="13" fill="#E8ECF1">한 대의 문제가 아니다</text>
+          <text x="684" y="202" font-size="12.5" fill="#9AA7B4">택트 타임 · 짐칸 진입 · 예외 전달</text>
         </g>
       </svg>
       <p class="soft">그림: 아래 네 소절이 이 네 상자를 하나씩 다룬다. ①②는 인식·파지 방법론(<a href="deep_dive_perception_grasp.html">심화 C</a>)으로, ④의 처리 속도 문제는 라인 분석(<a href="deep_dive_induction.html">심화 B</a>)으로 이어진다.</p>

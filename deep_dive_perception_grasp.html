@@ -3,21 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <title>심화 C — 비정형 인식·파지 파이프라인 (Deep-Dive)</title>
 <style>
   :root{
-    --bg:#E9ECEE;
-    --panel:#FFFFFF;
-    --panel-edge:#D4D9DD;
-    --ink:#1B2430;
-    --ink-soft:#5A6673;
-    --amber:#E8720C;
-    --machine:#1F7A4D;
-    --steel:#33506B;
+    --bg:#14181D;
+    --panel:#1C2229;
+    --panel-edge:#2C343D;
+    --ink:#E8ECF1;
+    --ink-soft:#9AA7B4;
+    --amber:#F08A32;
+    --machine:#3BAF77;
+    --steel:#8FB4D9;
     --slate:#8A96A3;
-    --grid:#DDE2E6;
+    --grid:#2A323B;
     --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
-    --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -42,7 +45,7 @@
   .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
   .meta b{color:var(--ink);font-weight:600}
 
-  nav{position:sticky;top:0;z-index:50;background:var(--ink);overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
   nav::-webkit-scrollbar{display:none}
   nav .wrap{display:flex;gap:2px;padding:0 20px}
   nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
@@ -63,13 +66,13 @@
   .sec-body p{max-width:76ch}
   .lead{font-size:15.5px}
   .soft{color:var(--ink-soft)}
-  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
   .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
 
   table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
-  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F}
   td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
-  table tr:nth-child(even) td{background:#F8FAFB}
+  table tr:nth-child(even) td{background:#1E252D}
   tr:last-child td{border-bottom:none}
   .tbl-scroll{overflow-x:auto}
   .num{font-family:var(--mono)}
@@ -87,13 +90,13 @@
   .pat::before{
     counter-increment:pat;content:counter(pat);position:absolute;left:14px;top:14px;
     width:30px;height:30px;display:flex;align-items:center;justify-content:center;
-    background:var(--ink);color:#fff;font-family:var(--mono);font-weight:700;font-size:14px
+    background:#0E1318;color:#fff;font-family:var(--mono);font-weight:700;font-size:14px
   }
   .pat h4{font-size:14px;font-weight:700}
   .pat h4 small{font-family:var(--mono);font-size:10.5px;color:var(--amber);font-weight:600;letter-spacing:.06em;margin-left:8px}
   .pat p{font-size:13px;color:var(--ink-soft);margin:4px 0 0}
 
-  code{font-family:var(--mono);font-size:12.5px;background:#F2F4F6;padding:1px 5px}
+  code{font-family:var(--mono);font-size:12.5px;background:#20272F;padding:1px 5px}
 
   ul.srcs{list-style:none;margin:10px 0;font-size:12.5px}
   ul.srcs li{padding:5px 0 5px 22px;position:relative;border-bottom:1px dashed var(--grid)}
@@ -161,35 +164,35 @@
 
       <h3>전체 그림 — 보고, 알아내고, 집고, 실행한다</h3>
       <svg viewBox="0 0 900 270" role="img" aria-label="카메라 입력부터 실행·복구까지 인식·파지 파이프라인 4단계와 두 갈래 경로 도해" style="max-width:100%;height:auto;display:block;margin:14px 0">
-        <defs><marker id="arrC1" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
-        <g font-family="Pretendard, sans-serif">
-          <rect x="16" y="100" width="140" height="66" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
-          <text x="86" y="127" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2430">카메라 입력</text>
-          <text x="86" y="148" text-anchor="middle" font-size="12" fill="#5A6673">RGB-D (색+깊이)</text>
-          <rect x="200" y="100" width="160" height="66" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
-          <text x="280" y="122" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2430">① 개체 분리</text>
-          <text x="280" y="141" text-anchor="middle" font-size="12" fill="#5A6673">세그멘테이션</text>
+        <defs><marker id="arrC1" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
+        <g font-family="IBM Plex Sans KR, Pretendard, sans-serif">
+          <rect x="16" y="100" width="140" height="66" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+          <text x="86" y="127" text-anchor="middle" font-size="14" font-weight="700" fill="#E8ECF1">카메라 입력</text>
+          <text x="86" y="148" text-anchor="middle" font-size="12" fill="#9AA7B4">RGB-D (색+깊이)</text>
+          <rect x="200" y="100" width="160" height="66" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+          <text x="280" y="122" text-anchor="middle" font-size="14" font-weight="700" fill="#E8ECF1">① 개체 분리</text>
+          <text x="280" y="141" text-anchor="middle" font-size="12" fill="#9AA7B4">세그멘테이션</text>
           <text x="280" y="158" text-anchor="middle" font-size="11.5" font-family="JetBrains Mono, monospace" fill="#8A96A3">SAM · UOIS</text>
-          <rect x="410" y="26" width="190" height="66" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
-          <text x="505" y="48" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2430">② 6D 자세 추정</text>
-          <text x="505" y="67" text-anchor="middle" font-size="12" fill="#5A6673">경로 ① — 형상을 아는 물체</text>
+          <rect x="410" y="26" width="190" height="66" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+          <text x="505" y="48" text-anchor="middle" font-size="14" font-weight="700" fill="#E8ECF1">② 6D 자세 추정</text>
+          <text x="505" y="67" text-anchor="middle" font-size="12" fill="#9AA7B4">경로 ① — 형상을 아는 물체</text>
           <text x="505" y="84" text-anchor="middle" font-size="11.5" font-family="JetBrains Mono, monospace" fill="#8A96A3">FoundationPose</text>
-          <rect x="410" y="176" width="190" height="66" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
-          <text x="505" y="198" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2430">② 파지점 직접 검출</text>
-          <text x="505" y="217" text-anchor="middle" font-size="12" fill="#5A6673">경로 ② — 처음 보는 물체·이형물</text>
+          <rect x="410" y="176" width="190" height="66" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+          <text x="505" y="198" text-anchor="middle" font-size="14" font-weight="700" fill="#E8ECF1">② 파지점 직접 검출</text>
+          <text x="505" y="217" text-anchor="middle" font-size="12" fill="#9AA7B4">경로 ② — 처음 보는 물체·이형물</text>
           <text x="505" y="234" text-anchor="middle" font-size="11.5" font-family="JetBrains Mono, monospace" fill="#8A96A3">Dex-Net · GraspNet</text>
-          <rect x="654" y="100" width="230" height="66" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="2"/>
-          <text x="769" y="122" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2430">③ 파지 계획 → ④ 실행·복구</text>
-          <text x="769" y="141" text-anchor="middle" font-size="12" fill="#5A6673">충돌 없는 경로로 접근, 실패하면 재시도</text>
+          <rect x="654" y="100" width="230" height="66" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
+          <text x="769" y="122" text-anchor="middle" font-size="14" font-weight="700" fill="#E8ECF1">③ 파지 계획 → ④ 실행·복구</text>
+          <text x="769" y="141" text-anchor="middle" font-size="12" fill="#9AA7B4">충돌 없는 경로로 접근, 실패하면 재시도</text>
           <text x="769" y="158" text-anchor="middle" font-size="11.5" font-family="JetBrains Mono, monospace" fill="#8A96A3">MoveIt2 · 최후엔 HITL</text>
         </g>
-        <line x1="156" y1="133" x2="194" y2="133" stroke="#33506B" stroke-width="1.8" marker-end="url(#arrC1)"/>
-        <path d="M360 118 C 384 100, 384 78, 404 62" fill="none" stroke="#33506B" stroke-width="1.8" marker-end="url(#arrC1)"/>
-        <path d="M360 148 C 384 166, 384 190, 404 206" fill="none" stroke="#33506B" stroke-width="1.8" marker-end="url(#arrC1)"/>
-        <path d="M600 62 C 628 78, 628 100, 648 118" fill="none" stroke="#33506B" stroke-width="1.8" marker-end="url(#arrC1)"/>
-        <path d="M600 206 C 628 190, 628 166, 648 148" fill="none" stroke="#33506B" stroke-width="1.8" marker-end="url(#arrC1)"/>
-        <text x="384" y="34" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="end">상자처럼 형상을 알면 ↑</text>
-        <text x="384" y="252" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="end">비닐·마대처럼 모르면 ↓</text>
+        <line x1="156" y1="133" x2="194" y2="133" stroke="#8FB4D9" stroke-width="1.8" marker-end="url(#arrC1)"/>
+        <path d="M360 118 C 384 100, 384 78, 404 62" fill="none" stroke="#8FB4D9" stroke-width="1.8" marker-end="url(#arrC1)"/>
+        <path d="M360 148 C 384 166, 384 190, 404 206" fill="none" stroke="#8FB4D9" stroke-width="1.8" marker-end="url(#arrC1)"/>
+        <path d="M600 62 C 628 78, 628 100, 648 118" fill="none" stroke="#8FB4D9" stroke-width="1.8" marker-end="url(#arrC1)"/>
+        <path d="M600 206 C 628 190, 628 166, 648 148" fill="none" stroke="#8FB4D9" stroke-width="1.8" marker-end="url(#arrC1)"/>
+        <text x="384" y="34" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="end">상자처럼 형상을 알면 ↑</text>
+        <text x="384" y="252" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="end">비닐·마대처럼 모르면 ↓</text>
       </svg>
       <p class="soft">그림: 모든 경우는 개체 분리(①)에서 시작하고, 대상의 형상을 아느냐에 따라 정밀한 자세 추정(경로 ①)과 파지점 직접 검출(경로 ②)로 갈린 뒤, 같은 실행 단계(③④)로 합류한다.</p>
     </div>
@@ -364,27 +367,27 @@
       <p class="lead"><a href="https://docs.omniverse.nvidia.com/extensions/latest/ext_replicator.html">Replicator</a>로 벌크·혼재 장면 데이터를 만들 때의 설계 항목이다. 원칙: <b>물리 낙하로 배치를 만들고, 나머지를 도메인 랜덤화로 흔든다.</b></p>
 
       <svg viewBox="0 0 900 260" role="img" aria-label="합성 데이터 생성-학습-평가-부족분 재생성의 폐루프 도해" style="max-width:100%;height:auto;display:block;margin:14px 0">
-        <defs><marker id="arrC2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
-        <g font-family="Pretendard, sans-serif">
-          <rect x="50" y="34" width="230" height="66" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="1.5"/>
-          <text x="165" y="60" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2430">① 시뮬레이터로 장면 생성</text>
-          <text x="165" y="82" text-anchor="middle" font-size="12" fill="#5A6673">물리 낙하 + 랜덤화, 라벨 자동 출력</text>
-          <rect x="620" y="34" width="230" height="66" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
-          <text x="735" y="60" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2430">② 모델 학습</text>
-          <text x="735" y="82" text-anchor="middle" font-size="12" fill="#5A6673">세그멘테이션 · 자세 · 파지</text>
-          <rect x="620" y="160" width="230" height="66" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
-          <text x="735" y="186" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2430">③ 실사 데이터로 평가</text>
-          <text x="735" y="208" text-anchor="middle" font-size="12" fill="#5A6673">OCID · ARMBench · BOP 성적표</text>
-          <rect x="50" y="160" width="230" height="66" fill="#FDF1E5" stroke="#E8720C" stroke-width="1.5"/>
-          <text x="165" y="186" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2430">④ 약한 조건 진단</text>
-          <text x="165" y="208" text-anchor="middle" font-size="12" fill="#5A6673">역광·비닐 반사 등 실패 조건 식별</text>
+        <defs><marker id="arrC2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
+        <g font-family="IBM Plex Sans KR, Pretendard, sans-serif">
+          <rect x="50" y="34" width="230" height="66" fill="#17251E" stroke="#3BAF77" stroke-width="1.5"/>
+          <text x="165" y="60" text-anchor="middle" font-size="14" font-weight="700" fill="#E8ECF1">① 시뮬레이터로 장면 생성</text>
+          <text x="165" y="82" text-anchor="middle" font-size="12" fill="#9AA7B4">물리 낙하 + 랜덤화, 라벨 자동 출력</text>
+          <rect x="620" y="34" width="230" height="66" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+          <text x="735" y="60" text-anchor="middle" font-size="14" font-weight="700" fill="#E8ECF1">② 모델 학습</text>
+          <text x="735" y="82" text-anchor="middle" font-size="12" fill="#9AA7B4">세그멘테이션 · 자세 · 파지</text>
+          <rect x="620" y="160" width="230" height="66" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+          <text x="735" y="186" text-anchor="middle" font-size="14" font-weight="700" fill="#E8ECF1">③ 실사 데이터로 평가</text>
+          <text x="735" y="208" text-anchor="middle" font-size="12" fill="#9AA7B4">OCID · ARMBench · BOP 성적표</text>
+          <rect x="50" y="160" width="230" height="66" fill="#2A2019" stroke="#F08A32" stroke-width="1.5"/>
+          <text x="165" y="186" text-anchor="middle" font-size="14" font-weight="700" fill="#E8ECF1">④ 약한 조건 진단</text>
+          <text x="165" y="208" text-anchor="middle" font-size="12" fill="#9AA7B4">역광·비닐 반사 등 실패 조건 식별</text>
         </g>
-        <line x1="280" y1="67" x2="614" y2="67" stroke="#33506B" stroke-width="1.8" marker-end="url(#arrC2)"/>
-        <line x1="735" y1="100" x2="735" y2="154" stroke="#33506B" stroke-width="1.8" marker-end="url(#arrC2)"/>
-        <line x1="620" y1="193" x2="286" y2="193" stroke="#33506B" stroke-width="1.8" marker-end="url(#arrC2)"/>
-        <line x1="165" y1="160" x2="165" y2="106" stroke="#E8720C" stroke-width="1.8" marker-end="url(#arrC2)"/>
-        <text x="152" y="138" text-anchor="end" font-family="Pretendard, sans-serif" font-size="12.5" fill="#E8720C">그 조건만 골라 다시 생성</text>
-        <text x="450" y="140" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="13" fill="#5A6673">라벨은 공짜, 조건은 무한 제어 — 합성 데이터 폐루프</text>
+        <line x1="280" y1="67" x2="614" y2="67" stroke="#8FB4D9" stroke-width="1.8" marker-end="url(#arrC2)"/>
+        <line x1="735" y1="100" x2="735" y2="154" stroke="#8FB4D9" stroke-width="1.8" marker-end="url(#arrC2)"/>
+        <line x1="620" y1="193" x2="286" y2="193" stroke="#8FB4D9" stroke-width="1.8" marker-end="url(#arrC2)"/>
+        <line x1="165" y1="160" x2="165" y2="106" stroke="#F08A32" stroke-width="1.8" marker-end="url(#arrC2)"/>
+        <text x="152" y="138" text-anchor="end" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#F08A32">그 조건만 골라 다시 생성</text>
+        <text x="450" y="140" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4">라벨은 공짜, 조건은 무한 제어 — 합성 데이터 폐루프</text>
       </svg>
       <p class="soft">그림: 실사 데이터를 모으고 라벨을 손으로 붙이는 대신, 시뮬레이터가 장면과 라벨을 함께 만들어낸다. 평가에서 약한 조건이 발견되면 그 조건의 데이터만 골라 다시 생성하는 폐루프가 돈다.</p>
       <div class="tbl-scroll">
