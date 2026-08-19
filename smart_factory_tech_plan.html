@@ -27,7 +27,7 @@
     background-size:32px 32px;
     color:var(--ink);
     font-family:var(--sans);
-    line-height:1.65;
+    line-height:1.75;
     font-size:15px;
   }
   a{color:var(--steel)}
@@ -65,12 +65,13 @@
   .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
   h2{font-size:20px;font-weight:800;letter-spacing:-.01em}
   .sec-body{padding:16px 26px 26px}
+  .sec-body>p{max-width:76ch}
   h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
   h3::before{content:"";width:8px;height:8px;background:var(--amber)}
   p{color:var(--ink);margin-bottom:10px}
   .lead{font-size:15.5px}
   .soft{color:var(--ink-soft)}
-  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:13.5px;line-height:1.8}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
   .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
   .tagline{
     font-size:16px;font-weight:600;background:var(--ink);color:#fff;padding:16px 20px;margin:14px 0;
@@ -79,10 +80,11 @@
   .tagline small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#9AA7B4;margin-bottom:6px;font-weight:400}
 
   /* ── 표 ── */
-  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
   th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
-  td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top}
+  td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
   tr:last-child td{border-bottom:none}
+  table.zebra tr:nth-child(even) td{background:#F8FAFB}
   td b{font-weight:700}
   .num{font-family:var(--mono)}
 
@@ -230,6 +232,26 @@
     <div class="tagline"><small>ONE-LINE DEFINITION</small>"멀티로봇 시뮬레이션 기반 물류센터를 구축하고 산업 계층 구조로 WMS/WES까지 통합한 스마트 물류 솔루션"</div>
     <p class="lead">"로봇 프로젝트에 백엔드를 붙인 것"이 아니라 <b>물류 <a class="term" href="glossary_industrial.html#smartfactory">IT/OT 통합 시스템</a>에서 물리 레이어를 시뮬레이션으로 구현한 것</b>. 물리 세계만 가상일 뿐, 데이터 플로우·백엔드·서비스는 실제 스마트 물류센터와 동일한 구조로 구축한다.</p>
     <p class="soft">이 문서가 처음이라면 <a href="project_intro.html"><b>안내 문서(DOC 00)</b></a>를 먼저 읽는 것을 권한다. 처음 보는 용어는 용어사전에서 그래픽과 함께 설명 — <a href="glossary_robotics.html">A 로보틱스·시뮬레이션</a> · <a href="glossary_industrial.html">B 물류센터·표준</a> · <a href="glossary_ai_data.html">C AI·데이터·서비스</a></p>
+    <h3>먼저 알아둘 용어 — 이 문서에 반복 등장하는 14개</h3>
+    <p class="soft">아래 표만 훑고 시작하면 본문을 막힘 없이 읽을 수 있다. 더 자세한 설명은 오른쪽 용어사전 링크에 그림과 함께 있다.</p>
+    <table class="zebra">
+      <tr><th style="width:170px">용어</th><th>쉬운 설명</th><th style="width:80px">더 보기</th></tr>
+      <tr><td><b>ROS2</b></td><td>로봇 소프트웨어를 만드는 표준 프레임워크. 기능별 프로그램(노드)들이 메시지를 주고받으며 로봇 하나를 이룬다</td><td><a class="term" href="glossary_robotics.html#ros2">REF A</a></td></tr>
+      <tr><td><b>Isaac Sim</b></td><td>NVIDIA의 사실적 물리 시뮬레이터. 이 프로젝트에서 가상 물류센터의 "물리 세계"를 담당</td><td><a class="term" href="glossary_robotics.html#isaac">REF A</a></td></tr>
+      <tr><td><b>Gazebo</b></td><td>ROS2와 궁합이 좋은 가벼운 시뮬레이터. 그래픽은 소박하지만 반복 개발이 빠르다</td><td><a class="term" href="glossary_robotics.html#gazebo">REF A</a></td></tr>
+      <tr><td><b>SimPy / DES</b></td><td>DES(Discrete-Event Simulation, 이산사건 시뮬레이션)의 파이썬 도구. 사건이 일어나는 순간만 골라 계산하므로 하루치 물류 흐름을 몇 초 만에 돌린다</td><td><a class="term" href="glossary_industrial.html#des">REF B</a></td></tr>
+      <tr><td><b>WMS / WES</b></td><td>창고 관리 시스템(Warehouse Management System) / 창고 실행 시스템(Warehouse Execution System). 주문·재고·작업 지시를 관리하는 소프트웨어 계층</td><td><a class="term" href="glossary_industrial.html#wms">REF B</a></td></tr>
+      <tr><td><b>ISA-95</b></td><td>공장·물류센터의 시스템을 L0(설비)부터 L4(경영)까지 계층으로 나누는 국제 표준. 이 문서의 아키텍처가 이 계층을 따른다</td><td><a class="term" href="glossary_industrial.html#isa95">REF B</a></td></tr>
+      <tr><td><b>MQTT</b></td><td>가벼운 발행–구독 방식 메시징 프로토콜. 설비 데이터가 오가는 공용 통로</td><td><a class="term" href="glossary_industrial.html#mqtt">REF B</a></td></tr>
+      <tr><td><b>Sparkplug B</b></td><td>MQTT 위에서 설비 상태·측정값을 표준 형식으로 싣는 규약. "데이터를 어떤 이름·구조로 보낼지"의 약속</td><td><a class="term" href="glossary_industrial.html#sparkplug">REF B</a></td></tr>
+      <tr><td><b>VDA 5050</b></td><td>AMR과 중앙 관제가 주고받는 명령·상태 메시지의 산업 표준(독일 자동차산업협회 제정)</td><td><a class="term" href="glossary_industrial.html#vda5050">REF B</a></td></tr>
+      <tr><td><b>AMR</b></td><td>자율 이동 로봇(Autonomous Mobile Robot). 바닥 유도선 없이 스스로 경로를 찾아 다니는 운반 로봇</td><td><a class="term" href="glossary_industrial.html#amr">REF B</a></td></tr>
+      <tr><td><b>Replicator</b></td><td>Isaac Sim의 합성 데이터 생성 도구. 가상 카메라로 정답 라벨이 달린 학습 이미지를 자동 생산한다</td><td><a class="term" href="glossary_robotics.html#replicator">REF A</a></td></tr>
+      <tr><td><b>ONNX</b></td><td>학습한 AI 모델을 프레임워크에 상관없이 실행하기 위한 공용 파일 형식</td><td><a class="term" href="glossary_ai_data.html#onnx">REF C</a></td></tr>
+      <tr><td><b>TimescaleDB / Grafana</b></td><td>시계열(시간 순서) 데이터 전용 데이터베이스와, 그 데이터를 그래프 대시보드로 보여주는 도구</td><td><a class="term" href="glossary_ai_data.html#timescale">REF C</a></td></tr>
+      <tr><td><b>RL (강화학습)</b></td><td>로봇이 시행착오와 보상 신호로 동작을 스스로 익히는 학습 방법. Isaac Lab이 이를 GPU 병렬로 가속한다</td><td><a class="term" href="glossary_robotics.html#isaaclab">REF A</a></td></tr>
+    </table>
+
     <h3>전략적 배경</h3>
     <ul class="rules">
       <li>하드웨어 없이 <b>시뮬레이션 온리</b>로 기술 스택 완성 — 6인·7주 제약에서 하드웨어 조달·고장 리스크를 원천 제거</li>
@@ -264,10 +286,10 @@
       <tr><td><b>보조 PC</b></td><td class="num">RTX 5060 Ti 16GB · RAM 32GB</td><td>Windows</td><td>원격 개발 클라이언트 (VS Code Remote-SSH + Tailscale), TensorBoard/Grafana/WebRTC 모니터링</td></tr>
     </table>
     <ul class="rules">
-      <li><b>50시리즈(Blackwell)는 Isaac Sim 5.x 전용</b> — 4.x 드라이버/CUDA 비호환. <span class="chip green">Isaac Sim 5.x</span><span class="chip green">Isaac Lab 릴리스 태그 고정</span><span class="chip green">Python 3.11</span> 버전 고정</li>
+      <li><b>RTX 50시리즈(Blackwell 아키텍처)는 Isaac Sim 5.x 전용</b> — 구버전 4.x는 드라이버·CUDA가 호환되지 않는다. 따라서 버전을 고정한다: <span class="chip green">Isaac Sim 5.x</span><span class="chip green">Isaac Lab 릴리스 태그 고정</span><span class="chip green">Python 3.11</span></li>
       <li>Python 환경 격리 필수: ROS2 Humble(3.10) vs Isaac Lab(3.11) — conda/venv 분리</li>
       <li>드라이버 최신 production branch (580.65.06+), SSD 여유 100GB+</li>
-      <li>학습은 <b>--headless 습관화</b>, 렌더 카메라는 검수 스테이션 위주로 VRAM 예산 관리 — 단 시연·관제 3D 스트림 시에는 뷰포트 렌더 모드로 전환</li>
+      <li>학습은 <b>--headless(화면 렌더 없이 실행) 습관화</b>. 렌더 카메라는 검수 스테이션 위주로 두어 VRAM(그래픽 메모리) 예산을 아낀다. 단 시연·관제용 3D 스트림을 켤 때는 뷰포트 렌더 모드로 전환</li>
       <li>RAM 64GB 증설은 옵션 — Replicator 대량 생성/대형 씬 병목 체감 시 5080 우선</li>
     </ul>
   </div>
@@ -278,10 +300,11 @@
   <div class="sec-head"><span class="sec-no">SEC 03</span><h2>시스템 아키텍처 — <a class="term" href="glossary_industrial.html#isa95">ISA-95</a> × <a class="term" href="glossary_industrial.html#wms">WMS/WES/WCS</a> 계층</h2></div>
   <div class="sec-body">
     <div class="plain"><span class="pl-tag">쉽게 말하면</span>시스템을 층층이 쌓는 설계도입니다. 실제 산업계가 쓰는 표준 구조와 통신 규격을 그대로 따라 만들어서, "학생 프로젝트 구조"가 아니라 "현장 구조"가 되도록 합니다. AI 검수 파트가 특별한 이유도 함께 설명합니다: 진짜 불량품 사진을 못 구하니 가상 카메라로 만들어서 AI를 가르친다는 것.</div>
+    <p class="soft">아래 그림 읽는 법: 위로 갈수록 관리 계층, 아래로 갈수록 물리 계층이다. ▼는 명령이 내려가는 방향, ▲는 상태·실적이 올라가는 방향.</p>
     <div class="stack">
       <div class="layer"><div class="tag">관제/분석</div><div class="desc"><b><a class="term" href="glossary_ai_data.html#grafana">Grafana</a> 대시보드</b> — 설비 가동률 · 사이클 타임 · AMR 위치/배터리 · 불량률</div></div>
       <div class="flowdown">▼ ▲</div>
-      <div class="layer l-hi"><div class="tag">L3 · WMS/WES<small>Spring Boot</small></div><div class="desc"><b><a class="term" href="glossary_industrial.html#wms">WMS/WES-lite</a></b>: 주문 접수 → 웨이브 생성 → 피킹 태스크 할당 → AMR 배차 → 출고 실적<br>+ <b><a class="term" href="glossary_industrial.html#des">SimPy</a> 물류 오케스트레이터</b> (배차 두뇌)</div></div>
+      <div class="layer l-hi"><div class="tag">L3 · WMS/WES<small>Spring Boot</small></div><div class="desc"><b><a class="term" href="glossary_industrial.html#wms">WMS/WES-lite</a></b>: 주문 접수 → 웨이브(주문을 묶어 일괄 처리하는 단위) 생성 → 피킹 태스크 할당 → AMR 배차 → 출고 실적<br>+ <b><a class="term" href="glossary_industrial.html#des">SimPy</a> 물류 오케스트레이터</b> — 어느 로봇에 어떤 작업을 줄지 정하는 배차 결정 담당</div></div>
       <div class="flowdown">▼ ▲</div>
       <div class="layer"><div class="tag">데이터 인프라</div><div class="desc"><a class="term" href="glossary_ai_data.html#emqx">EMQX</a>/Mosquitto → <a class="term" href="glossary_ai_data.html#timescale">TimescaleDB</a>(시계열) + PostgreSQL(주문·재고/실적)<span class="proto">설비 텔레메트리 = Sparkplug B&nbsp;&nbsp;|&nbsp;&nbsp;AMR 운송 = VDA 5050</span></div></div>
       <div class="flowdown">▼ ▲</div>
@@ -295,15 +318,15 @@
     <h3>산업 표준 — 채택한 두 가지</h3>
     <table>
       <tr><th style="width:130px">표준</th><th>용도</th><th>핵심 내용</th></tr>
-      <tr><td><b><a class="term" href="glossary_industrial.html#sparkplug">Sparkplug B</a></b></td><td>설비 텔레메트리</td><td>NBIRTH/NDATA 네임스페이스, 디바이스 상태 모델</td></tr>
-      <tr><td><b><a class="term" href="glossary_industrial.html#vda5050">VDA 5050</a></b></td><td>AMR 군집 통신<br><span class="soft num" style="font-size:11px">VDA/VDMA 표준</span></td><td>마스터 컨트롤이 <code class="num">order</code>(node/edge 그래프 + 점진적 엣지 릴리스로 교통 제어) 발행 → AMR이 <code class="num">state</code> 보고. 구현은 커넥터 생태계가 성숙한 2.x 기준, 3.0(자유주행 경로·존)은 지식으로 커버. 재료: 공식 JSON 스키마, OTTO 오픈소스 커넥터, ROS2 vda5050_connector</td></tr>
+      <tr><td><b><a class="term" href="glossary_industrial.html#sparkplug">Sparkplug B</a></b></td><td>설비 텔레메트리<br><span class="soft" style="font-size:12px">(상태 데이터 원격 수집)</span></td><td>장비 접속 알림(NBIRTH)·측정 데이터(NDATA) 같은 표준 토픽 구조와 장비 상태 모델을 정의한다. MQTT 위에 얹는 "데이터 문법"이라고 보면 된다</td></tr>
+      <tr><td><b><a class="term" href="glossary_industrial.html#vda5050">VDA 5050</a></b></td><td>AMR 군집 통신<br><span class="soft num" style="font-size:11px">VDA/VDMA 표준</span></td><td>중앙 관제가 <code class="num">order</code> 메시지로 이동 경로를 지시하고(경로는 노드/엣지 그래프로 표현), AMR은 <code class="num">state</code> 메시지로 상태를 보고한다.<br>엣지(구간)를 한 번에 다 풀지 않고 조금씩 허가하는 방식으로 교통을 제어한다.<br>구현은 커넥터 생태계가 성숙한 2.x 기준. 3.0(자유주행 경로·존)은 지식으로만 커버.<br>재료: 공식 JSON 스키마 · OTTO 오픈소스 커넥터 · ROS2 vda5050_connector</td></tr>
       <tr><td class="soft">주변 표준<br>(지식 지도)</td><td class="soft">안전·식별·상호운용</td><td class="soft">ISO 3691-4 / ANSI R15.08 (AMR 안전), GS1 바코드·SSCC (물류 식별), MassRobotics Interop (채택 열세)</td></tr>
     </table>
 
     <h3>AI 검수 — 합성 데이터가 핵심인 이유</h3>
     <ul class="rules">
       <li>현장 검수의 난제 = <b>예외 샘플(파손·오피킹) 희소성 + 수천 종 SKU 다양성</b> → <a class="term" href="glossary_ai_data.html#synthetic">합성 데이터</a>가 실제 산업 트렌드</li>
-      <li>파이프라인: Replicator SKU·파손·라벨 변형 랜덤 생성 → <a class="term" href="glossary_ai_data.html#yolo">YOLO</a>/<a class="term" href="glossary_ai_data.html#anomaly">이상탐지</a>(PatchCore·PaDiM) 학습 → ONNX 서비스화 → 시뮬 검수 카메라 실시간 적용</li>
+      <li>파이프라인: Replicator SKU·파손·라벨 변형 랜덤 생성 → <a class="term" href="glossary_ai_data.html#yolo">YOLO</a>/<a class="term" href="glossary_ai_data.html#anomaly">이상탐지</a> 모델(PatchCore·PaDiM — 정상 사진만으로 학습해 불량을 찾아내는 대표 기법) 학습 → ONNX 서비스화 → 시뮬 검수 카메라 실시간 적용</li>
       <li>합성 데이터는 예외 샘플 희소성과 SKU 일반화 문제에 대한 산업계의 실전 해답 — AI 트랙의 핵심 차별화 지점</li>
     </ul>
   </div>
@@ -319,7 +342,7 @@
         <h4>SimPy — <a class="term" href="glossary_industrial.html#des" style="color:inherit">이산사건(DES)</a></h4>
         <ul>
           <li><b>시간</b>: 사건→사건 점프, 사이 구간 미계산</li>
-          <li><b>속도</b>: 하루치를 수 초에, Monte Carlo 수천 회</li>
+          <li><b>속도</b>: 하루치를 수 초에, 몬테카를로(무작위 조건 반복 실험) 수천 회</li>
           <li><b>관심사</b>: 흐름과 자원 — 처리량·병목·대기열</li>
         </ul>
       </div>
@@ -338,17 +361,17 @@
     <div class="patterns">
       <div class="pat">
         <h4>캘리브레이션 결합 <small>OFFLINE · 우선</small></h4>
-        <p>Isaac에서 단위 작업 반복 측정(피킹 200회 → 평균 12.3s, σ=1.8s, 실패율 4%) → SimPy 공정 파라미터로 주입. 실행 완전 분리·단방향. "물리적 근거를 가진 센터 모델" — 산업 <a class="term" href="glossary_industrial.html#digitaltwin">디지털 트윈</a> 표준 구조. what-if 실험 자유(AMR 3대 vs 4대, 배차 A vs B, 슬로팅 전략 비교).</p>
+        <p>Isaac에서 단위 작업을 반복 측정한다. 예: 피킹 200회 → 평균 12.3초, 표준편차 1.8초, 실패율 4%. 이 수치를 SimPy의 공정 파라미터로 넣는다. 두 시뮬레이터의 실행은 완전히 분리되고 데이터만 한 방향으로 흐른다. 결과는 "물리적 근거를 가진 센터 모델" — 산업 <a class="term" href="glossary_industrial.html#digitaltwin">디지털 트윈</a>의 표준 구조와 같다. what-if 실험을 마음껏 돌릴 수 있다(AMR 3대 vs 4대, 배차 전략 A vs B, 슬로팅(상품 보관 위치 배치) 전략 비교).</p>
       </div>
       <div class="promote">▼ 다음 단계</div>
       <div class="pat">
         <h4>계획-실행 분리 <small>ONLINE · 데모 핵심</small></h4>
-        <p>SimPy = 실시간 페이싱되는 오케스트레이터(작업 도착·큐·배차 결정). 명령은 MQTT(VDA 5050 order) → Isaac 물리 실행 → 완료 이벤트 회신 → 다음 사건 트리거. 내부 예상 소요시간은 버리고 외부 완료 이벤트 대기 → 사실상 이벤트 기반 잡 스케줄러화.</p>
+        <p>SimPy가 실시간 속도로 진행되는 오케스트레이터가 된다(작업 도착·대기열·배차 결정 담당). 명령은 MQTT(VDA 5050 order)로 나가고, Isaac이 물리로 실행한 뒤 완료 이벤트를 회신하면 다음 사건이 이어진다. SimPy 내부의 예상 소요시간은 쓰지 않고 외부 완료 이벤트만 기다린다 — 사실상 이벤트 기반 작업 스케줄러가 되는 것.</p>
       </div>
       <div class="promote">▼ 다음 단계</div>
       <div class="pat">
         <h4>하이브리드 <small>최종 형태</small></h4>
-        <p>Isaac에 있는 셀 = 패턴 2 실제 실행, 나머지 셀 = 패턴 1 분포로 가상 처리. <b>물리 셀 + 통계 셀 공존</b> = VRAM 예산 해법이자 브라운필드 공장 디지털 트윈과 구조 동일. 실기체 편입 시 "실물 셀 1개 추가"로 자연 확장.</p>
+        <p>Isaac에 실제로 만든 셀은 패턴 2로 실행하고, 나머지 셀은 패턴 1의 통계 분포로 가상 처리한다. <b>물리 셀과 통계 셀이 공존</b>하는 구조다. 그래픽 메모리(VRAM) 예산 문제의 해법이면서, 기존 공장에 디지털 트윈을 부분적으로 입히는 산업 사례(브라운필드)와 구조가 같다. 실기체를 들일 때도 "실물 셀 1개 추가"로 자연스럽게 확장된다.</p>
       </div>
     </div>
 
@@ -357,7 +380,7 @@
       <li><b>시간 권위 단일화</b> — 라이브 통합에서는 벽시계(Isaac 실시간)가 권위, SimPy가 추종</li>
       <li><b>경계는 이산 사건만</b> — 오더 발행/완료/실패만 교환. 연속 상태(관절각·좌표)는 Sparkplug B로 DB/Grafana에만</li>
       <li><b>실패 의미론 통일</b> — Isaac 파지 실패 = SimPy에서 재시도/불량 분기 동일 정의</li>
-      <li><b>결정론 포기 + 전 사건 타임스탬프 로깅</b>으로 사후 재구성 확보</li>
+      <li><b>결정론 포기 + 전 사건 타임스탬프 로깅</b> — 실행마다 결과가 조금씩 달라지는 것은 받아들이되, 모든 사건에 시각을 남겨 사후에 재구성할 수 있게 한다</li>
     </ul>
   </div>
 </section>
@@ -379,7 +402,7 @@
     </div>
     <table>
       <tr><th style="width:90px">배분</th><th>내용</th><th>깊이 기준</th></tr>
-      <tr><td><b class="num" style="color:var(--amber)">50%</b></td><td><a class="term" href="glossary_robotics.html#ros2control">ros2_control</a> 하드웨어 인터페이스, <a class="term" href="glossary_robotics.html#nav2">Nav2</a>+MoveIt2 통합, <a class="term" href="glossary_robotics.html#bt">behavior tree</a> 오케스트레이션, Isaac 포팅, Isaac Lab 태스크 1개</td><td>컨트롤러 체인·DDS QoS·물리 파라미터 선택 근거를 팀 스스로 설명·방어할 수 있는 수준</td></tr>
+      <tr><td><b class="num" style="color:var(--amber)">50%</b></td><td><a class="term" href="glossary_robotics.html#ros2control">ros2_control</a> 하드웨어 인터페이스, <a class="term" href="glossary_robotics.html#nav2">Nav2</a>+MoveIt2 통합, <a class="term" href="glossary_robotics.html#bt">behavior tree</a> 오케스트레이션, Isaac 포팅, Isaac Lab 태스크 1개</td><td>컨트롤러 체인, DDS(ROS2의 통신 계층) QoS(전송 품질 설정), 물리 파라미터의 선택 근거를 팀 스스로 설명·방어할 수 있는 수준</td></tr>
       <tr><td><b class="num" style="color:var(--steel)">30%</b></td><td>Sparkplug B 네임스페이스 설계, ROS2↔MQTT 브리지, VDA 5050 배차, WMS↔로봇 명령 계약(<a class="term" href="glossary_ai_data.html#openapi">스키마</a>)</td><td>코드보다 설계 문서가 산출물 — "왜 이 표준인가" 설명</td></tr>
       <tr><td><b class="num" style="color:#8A96A3">20%</b></td><td>Spring WMS/WES-lite, DB, Grafana, 검수 모델 서빙, 관제 포털</td><td>템플릿·기성 코드 재활용. "전체가 연결됨"이 목적</td></tr>
     </table>
@@ -403,7 +426,7 @@
     <div class="phases">
       <div class="phase">
         <span class="ph-tag">PHASE 0</span><h4>데이터 백본 (Isaac 없이 시작)</h4>
-        <p>SimPy 물류 모델(가짜 분포) + Spring WMS/WES-lite + MQTT 브로커 + TimescaleDB/PostgreSQL + Grafana · VDA 5050/Sparkplug B 스키마 설계 · mock publisher 가동</p>
+        <p>SimPy 물류 모델(임시 가정 분포) + Spring WMS/WES-lite + MQTT 브로커 + TimescaleDB/PostgreSQL + Grafana · VDA 5050/Sparkplug B 스키마 설계 · mock(가짜 데이터) publisher 가동 — 로봇이 없어도 데이터가 끝까지 흐르는 것을 먼저 확인</p>
       </div>
       <div class="phase">
         <span class="ph-tag">PHASE 1</span><h4>ROS2 코어 (Gazebo)</h4>
@@ -411,15 +434,15 @@
       </div>
       <div class="phase">
         <span class="ph-tag">PHASE 2</span><h4>Isaac Sim 포팅 + 수직 슬라이스 완성</h4>
-        <p>USD 변환·ROS2 브리지로 노드 재사용 · 피킹 스테이션 1 + AMR 1 라이브 접속(패턴 2) · Replicator 합성 데이터 → 검수 모델 → 폐루프 · <b>Isaac WebRTC 스트림 → 관제 포털 임베드 (3D 비주얼 필수 요구)</b></p>
+        <p>USD(Omniverse의 3D 씬 파일 형식) 변환·ROS2 브리지로 기존 노드 재사용 · 피킹 스테이션 1 + AMR 1 라이브 접속(패턴 2) · Replicator 합성 데이터 → 검수 모델 → 폐루프 · <b>Isaac WebRTC(브라우저 실시간 영상 전송) 스트림 → 관제 포털 임베드 (3D 비주얼 필수 요구)</b></p>
       </div>
       <div class="phase">
         <span class="ph-tag">PHASE 3</span><h4>Isaac Lab RL</h4>
-        <p>SKU 파지(또는 도킹 정렬) 1태스크: 환경 정의 → 도메인 랜덤화 → PPO → 평가 · 실기체 서보 실측 스펙 반영 · 검증 서사 = sim-to-sim 전이 + 랜덤화 민감도 분석 · 소규모(64~128 env) 검증 → 야간 대규모(2048+) 본 학습</p>
+        <p>SKU 파지(또는 도킹 정렬) 1태스크: 환경 정의 → 도메인 랜덤화(마찰·조명 등을 무작위로 흔들어 일반화시키는 기법) → PPO(대표적 강화학습 알고리즘) 학습 → 평가 · 실기체 서보 실측 스펙 반영 · 검증 서사 = sim-to-sim 전이(다른 시뮬레이터로 옮겨도 성능 유지) + 랜덤화 민감도 분석 · 소규모(병렬 환경 64~128개) 검증 → 야간 대규모(2048개+) 본 학습</p>
       </div>
       <div class="phase">
         <span class="ph-tag">PHASE 4</span><h4>수평 확장 + 시뮬 CI</h4>
-        <p>스테이션/AMR 추가(하이브리드) · 배차·슬로팅 전략 비교(consistent hashing/Power of Two Choices) · Jenkins headless 회귀 CI: 표준 시나리오 자동 실행 → UPH/피킹 성공률 리포트 · <b>시연 하이라이트 2종 — 장애 주입 버튼(AMR 고장·통로 폐쇄 → 자동 복구) + What-if 예측 화면(SimPy)</b> · (스트레치) 키팅 스테이션 — 수직 슬라이스 안정 시 착수</p>
+        <p>스테이션/AMR 추가(하이브리드) · 배차·슬로팅 전략 비교 — consistent hashing, Power of Two Choices 같은 부하 분산 알고리즘 응용 · Jenkins(자동 빌드·테스트 서버) 회귀 CI: 표준 시나리오를 화면 없이 자동 실행 → UPH(시간당 처리 개수)·피킹 성공률 리포트 · <b>시연 하이라이트 2종 — 장애 주입 버튼(AMR 고장·통로 폐쇄 → 자동 복구) + What-if 예측 화면(SimPy)</b> · (스트레치) 키팅(여러 부품을 세트로 묶는 작업) 스테이션 — 수직 슬라이스 안정 시 착수</p>
       </div>
       <div class="phase opt">
         <span class="ph-tag">PHASE 5 · 선택</span><h4>Sim-to-Real 사이드</h4>
@@ -436,7 +459,7 @@
     <div class="plain"><span class="pl-tag">쉽게 말하면</span>시간이 남으면 작은 실물 로봇(로봇팔 + 바퀴 베이스)을 사서 가상 세계에 연결해보는 선택 과제입니다. 무엇을 살지, 언제 살지(가상에서 충분히 검증된 시점), 무엇이 어려운지를 미리 정리해둔 섹션이라 — 지금 당장 읽지 않아도 됩니다.</div>
     <h3>플랫폼 확정: SO-101 (팔) + LeKiwi (베이스)</h3>
     <ul class="rules">
-      <li><b>SO-101</b>: LeRobot 생태계 표준 오픈소스 6DOF 매니퓰레이터</li>
+      <li><b>SO-101</b>: LeRobot 생태계의 표준 오픈소스 로봇팔 — 6DOF(관절 6개, 자유도 6)</li>
       <li><b>LeKiwi</b> (UIUC SIGRobotics): SO-101을 싣도록 설계된 3륜 옴니휠(키위 드라이브) <a class="term" href="glossary_robotics.html#omni">홀로노믹</a> 베이스</li>
       <li>결정 근거: 팔·베이스가 <b>같은 STS3215 + 같은 컨트롤 보드 + 같은 SDK</b>로 통합, ros2_control 커뮤니티 구현체·Isaac 에셋 양쪽 존재, 옴니휠 AMR 구상과 정합</li>
     </ul>
@@ -446,7 +469,7 @@
       <tr><td><b>STS3215 서보 1/345 기어</b></td><td class="num">팔 6 + 바퀴 3 = 9 (+예비 1~2)</td><td><b>전체 12V 통일 권장</b> — 베이스 주행 부하 + 팔 토크 여유, 전원 계통 단순화</td></tr>
       <tr><td>모터 컨트롤 보드 (Waveshare USB 시리얼 버스)</td><td class="num">1~2</td><td></td></tr>
       <tr><td>4인치 옴니휠 (VEX 스타일)</td><td class="num">3</td><td>+ STS3215 어댑터 허브 프린팅</td></tr>
-      <tr><td>12V 리튬이온 배터리 + 12V→5V 벅 컨버터</td><td class="num">각 1</td><td></td></tr>
+      <tr><td>12V 리튬이온 배터리 + 12V→5V 벅 컨버터(전압 강하 변환기)</td><td class="num">각 1</td><td></td></tr>
       <tr><td>3D 프린팅 파츠</td><td>팔로워 프레임 + LeKiwi 섀시</td><td>리더 전용 파츠(Handle/Wrist_Roll) 출력 제외</td></tr>
       <tr><td>Raspberry Pi 5</td><td class="num">1</td><td>보유 장비 재활용</td></tr>
     </table>
@@ -455,8 +478,8 @@
       <li><b>구매 트리거</b>: Isaac Lab 정책이 랜덤화 폭 확대에도 안정 성공률(80%+) 유지 시점 = 주문 시점 (배송/조립 2~4주 감안해 선주문)</li>
       <li>시뮬 단계부터 <b>실기체 URDF(LeKiwi+SO-101) 기준으로 모델 고정</b> → 전이 시 "모델 그대로, 갭 파라미터만 보정"</li>
       <li>배포 구조: Isaac Lab 정책 → ONNX → 관측(관절 상태) → 추론 → 관절 명령 루프</li>
-      <li>알려진 이슈: 팔 전방 신전 자세에서 STS3215 과부하 사망 사례 (지지 블록·P게인 튜닝·고전류 배터리로 해결) — RL 정책은 이런 자세를 서슴없이 취함</li>
-      <li><b>갭 분석 기록이 곧 핵심 산출물</b>: 랜덤화 항목별(마찰·질량·액추에이터 지연·관측 노이즈) 성공률 변화, 시뮬 vs 실기체 갭, 서보 백래시·통신 지연 영향, 실물 응답 특성(계단 명령 정착 시간) 측정 → 시뮬 파라미터 반영 과정</li>
+      <li>알려진 이슈: 팔을 앞으로 쭉 뻗는 자세에서 STS3215 서보가 과부하로 죽은 사례가 보고되어 있다(지지 블록·P게인(PID 비례 이득) 튜닝·고전류 배터리로 해결). RL로 학습한 정책은 이런 무리한 자세를 서슴없이 취하므로 주의</li>
+      <li><b>갭 분석 기록이 곧 핵심 산출물</b>: 랜덤화 항목별(마찰·질량·액추에이터 지연·관측 노이즈) 성공률 변화, 시뮬 vs 실기체 차이, 서보 백래시(기어 유격)·통신 지연의 영향, 실물 응답 특성(계단 명령을 줬을 때 안정되기까지의 시간)을 측정해 시뮬 파라미터에 되먹이는 과정</li>
     </ul>
   </div>
 </section>
@@ -471,7 +494,7 @@
       <tr><th>프로젝트 단계</th><th>필요해지는 이론</th><th>최소 구현 과제</th></tr>
       <tr><td>옴니휠 베이스 제어</td><td>기구학 — 키위 드라이브 역기구학, 홀로노믹/자코비안</td><td>3륜 속도↔(vx,vy,ω) 변환 행렬 직접 유도 + numpy 검증 <span class="num soft">~1일</span></td></tr>
       <tr><td>ros2_control 튜닝</td><td>제어공학 — <a class="term" href="glossary_robotics.html#pid">PID</a></td><td>1차/2차 시스템 Python PID 시뮬, 게인별 응답 관찰 <span class="num soft">~2-3일</span> <span class="chip amber">유일한 선행 학습</span></td></tr>
-      <tr><td>MoveIt2 로봇팔 제어</td><td>로봇공학 — FK/IK, DH, 특이점</td><td>SO-101 URDF 순기구학 numpy 계산</td></tr>
+      <tr><td>MoveIt2 로봇팔 제어</td><td>로봇공학 — FK/IK(정·역기구학), DH 표기법(관절 좌표를 적는 표준 규약), 특이점</td><td>SO-101 URDF 순기구학 numpy 계산</td></tr>
       <tr><td>EKF 센서 퓨전</td><td>상태추정 — <a class="term" href="glossary_robotics.html#ekf">칼만 필터</a></td><td>1차원 칼만 필터 직접 구현 <span class="num soft">~반나절</span></td></tr>
       <tr><td>Isaac Lab RL</td><td>동역학 맛보기</td><td>랜덤화 실험으로 체감 (깊이 불요)</td></tr>
     </table>
@@ -491,7 +514,7 @@
     <div class="dlog">
       <div>도메인 = 물류센터(풀필먼트) — 상위 시스템은 WMS/WES, 로봇팔 작업은 피스 피킹으로 유지 (REV B 전환)</div>
       <div>물류센터 3D 비주얼 = 필수 요구 — Isaac Sim WebRTC 스트리밍을 관제 포털에 임베드, Three.js 자체 트윈은 스트레치</div>
-      <div>MES = 별도 구축 없음(옵션 A 확정) — WMS/WES가 물류 도메인의 L3(MES 계층) 시스템임을 발표 자료의 기능 대응표로 서술. 키팅 스테이션(경공정 추가로 MES 실체화)은 수직 슬라이스가 5주차 전 안정되면 착수하는 스트레치</div>
+      <div>MES(제조실행시스템) = 별도 구축 없음(옵션 A 확정) — WMS/WES가 물류 도메인의 L3(MES 계층) 시스템임을 발표 자료의 기능 대응표로 서술. 키팅 스테이션(경공정 추가로 MES 실체화)은 수직 슬라이스가 5주차 전 안정되면 착수하는 스트레치</div>
       <div>시연 하이라이트 = 장애 주입(AMR 고장·통로 폐쇄 → 자동 복구) + What-if 예측 화면(SimPy) 2종을 필수 시연 요소로 채택 — 신규 개발을 최소화하면서 기존 기능을 보여주는 장치</div>
       <div>프로젝트 정체성 = 시뮬 기반 물류 IT/OT 통합 시스템 (로봇 단독 프로젝트 아님)</div>
       <div>피스 피킹 = MoveIt2 고전 접근이 본체, SKU 파지 RL은 심화 챕터</div>

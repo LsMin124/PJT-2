@@ -26,7 +26,7 @@
     background:var(--bg);
     background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
     background-size:32px 32px;
-    color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:15px;
+    color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px;
   }
   a{color:var(--steel)}
   a.term{color:inherit;text-decoration:underline;text-decoration-style:dotted;text-decoration-color:var(--steel);text-underline-offset:3px}
@@ -59,20 +59,22 @@
   h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
   h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
   p{margin-bottom:10px}
+  .sec-body p{max-width:76ch}
   .lead{font-size:15.5px}
   .soft{color:var(--ink-soft)}
   .star{color:var(--amber);font-weight:700}
 
-  .plain{margin:14px 0 8px;padding:12px 16px;background:#FDF1E5;border-left:4px solid var(--amber);font-size:13.5px;line-height:1.8}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#FDF1E5;border-left:4px solid var(--amber);font-size:14px;line-height:1.8}
   .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--amber);font-weight:700;margin-bottom:4px}
 
   code{font-family:var(--mono);font-size:.92em;background:#F0F3F5;padding:1px 5px;border:1px solid var(--grid)}
 
-  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
   th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
-  td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top}
+  td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
   td.dn{font-family:var(--mono);font-size:12px;font-weight:700;white-space:nowrap}
   tr:last-child td{border-bottom:none}
+  table tr:nth-child(even) td{background:#F8FAFB}
   .tbl-scroll{overflow-x:auto}
 
   .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px}
@@ -118,6 +120,7 @@
 <nav aria-label="문서 내 탐색">
   <div class="wrap">
     <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a href="#dintro">읽는 법</a>
     <a href="#d0">00 크리티컬 패스</a>
     <a href="#da">A 데이터 모델</a>
     <a href="#db">B DES 엔진</a>
@@ -134,18 +137,51 @@
 
 <main class="wrap">
 
+<!-- ══════════ 도입 — 읽는 법 ══════════ -->
+<section id="dintro">
+  <div class="sec-head"><span class="sec-no">READ ME</span><h2>이 문서를 읽는 법</h2></div>
+  <div class="sec-body">
+    <p class="lead">이 문서는 AMR 견적 시뮬레이션 서비스를 실제로 만들기 전에 <b>팀이 합의해야 할 결정 항목 60여 개</b>를
+    컴포넌트별로 모은 목록입니다. 각 항목에는 선택지와 함께 "권고"를 달아 두었는데,
+    권고는 논의를 시작하기 위한 기본값 제안일 뿐 확정이 아닙니다.</p>
+    <ul class="rules">
+      <li>표의 <span class="star">★</span> 표시는 <b>크리티컬 패스</b> — 이 결정이 먼저 정해져야 다른 결정들을 진행할 수 있다는 뜻입니다. 아래 SEC 00에 6건을 모아 두었습니다.</li>
+      <li>회의에서 쓸 때: SEC 00의 6건부터 확정 → 이후 각 파트 담당자가 자기 섹션(A~J)을 읽고 담당 항목을 결정합니다.</li>
+      <li>결정이 끝난 항목은 ADR(Architecture Decision Record, "무엇을 왜 그렇게 정했나"를 남기는 짧은 기록 문서)로 저장소에 남깁니다(J3 참조).</li>
+    </ul>
+
+    <h3>먼저 알아둘 용어 — 본문에 반복해서 나오는 것들</h3>
+    <p>아래 용어들은 본문 표 안에서 설명 없이 등장합니다. 낯설면 여기서 확인하고 들어가세요.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th>용어</th><th>쉬운 설명</th><th>더 보기</th></tr>
+      <tr><td class="dn">AMR</td><td>Autonomous Mobile Robot. 바닥 자석·레일 없이 스스로 길을 찾아 다니는 물류 운반 로봇</td><td><a class="term" href="glossary_industrial.html#amr">용어사전</a></td></tr>
+      <tr><td class="dn">SimPy / DES</td><td>DES(Discrete-Event Simulation, 이산사건 시뮬레이션)는 시간을 1초씩 전부 재생하지 않고 "사건이 일어나는 순간"만 건너뛰며 계산하는 방식. SimPy는 이를 위한 파이썬 라이브러리로, 수백 번을 빠르게 돌리는 견적 엔진의 본체</td><td><a class="term" href="glossary_industrial.html#des">용어사전</a></td></tr>
+      <tr><td class="dn">MAPF</td><td>Multi-Agent Path Finding. 여러 로봇의 경로를 서로 부딪히지 않게 한꺼번에 찾는 문제. 시뮬레이션 안에서 정체·경합을 만들어내는 핵심 부품</td><td><a class="term" href="glossary_robotics.html#mapf">용어사전</a></td></tr>
+      <tr><td class="dn">디스패처</td><td>"어느 로봇이 어느 작업을 맡을지"를 정하는 할당 로직. 규칙 기반부터 강화학습까지 갈아끼울 수 있게 설계한다</td><td>SEC C</td></tr>
+      <tr><td class="dn">스윕(sweep)</td><td>로봇 대수·레이아웃 같은 조건을 바꿔가며 시뮬레이션을 수백 번 돌리는 것. 예: 대수 12단계 × 조건 3종 × 시드 10개 = 360런</td><td>SEC H</td></tr>
+      <tr><td class="dn">시드(seed)</td><td>난수 생성의 시작값. 시드를 고정하면 같은 무작위 시나리오를 그대로 재현할 수 있어 조건 간 공정한 비교가 가능해진다</td><td>—</td></tr>
+      <tr><td class="dn">VDA 5050</td><td>중앙 관제와 AMR이 주고받는 메시지의 산업 표준. "이 노드들을 이 순서로 지나가라"는 주행 지시 형식을 정의한다</td><td><a class="term" href="glossary_industrial.html#vda5050">용어사전</a></td></tr>
+      <tr><td class="dn">에뮬레이션 / Isaac Sim</td><td>물리엔진이 있는 3D 시뮬레이터(Isaac Sim)에서 소수의 로봇을 실제처럼 굴려서, 빠른 SimPy 결과가 현실적인지 교차 검증하는 계층</td><td><a class="term" href="glossary_robotics.html#isaac">용어사전</a></td></tr>
+      <tr><td class="dn">RTF</td><td>Real-Time Factor. 시뮬레이션 진행 속도 ÷ 실제 시간. 1.0이면 현실과 같은 속도, 그 밑이면 시뮬레이터가 현실보다 느려진 것</td><td><a class="term" href="glossary_robotics.html#rtf">용어사전</a></td></tr>
+      <tr><td class="dn">CI (신뢰구간)</td><td>Confidence Interval. "참값이 이 범위 안에 있을 확률 95%"라는 통계적 오차 범위. 시드 여러 개 결과의 흩어짐에서 계산한다</td><td>SEC H</td></tr>
+      <tr><td class="dn">what-if</td><td>"레이아웃을 바꾸면? 로봇을 2대 늘리면?"처럼 조건을 바꿔 즉시 다시 돌려보는 기능. 이 서비스의 핵심 사용자 경험</td><td>—</td></tr>
+    </table></div>
+  </div>
+</section>
+
 <!-- ══════════ D0 크리티컬 패스 ══════════ -->
 <section id="d0">
   <div class="sec-head"><span class="sec-no">SEC 00</span><h2>크리티컬 패스 요약 — 1~2주차에 반드시 확정</h2></div>
   <div class="sec-body">
-    <p class="lead">다른 결정들이 종속되는 결정 6건. 이것부터 팀 합의로 동결해야 나머지가 병렬로 진행됩니다.</p>
+    <p class="lead">다른 결정들이 줄줄이 걸려 있는 결정 6건입니다. 이것부터 팀 합의로 동결해야 나머지 항목들을 파트별로 병렬 진행할 수 있습니다.
+    각 항목이 왜 크리티컬한지 이유를 함께 적었습니다.</p>
     <div class="milestones">
-      <div class="ms"><span class="ms-tag">CP 1 · A1–A3</span><h4>맵 표현 · 셀 크기 · 좌표계</h4><p>모든 컴포넌트가 종속.</p></div>
-      <div class="ms"><span class="ms-tag">CP 2 · B1</span><h4>시간 모델 — 고정 틱</h4><p>MAPF 통합·재계획·통계의 전제.</p></div>
-      <div class="ms"><span class="ms-tag">CP 3 · F1</span><h4>경로 지시 방식 — 중앙 하달</h4><p>두 시뮬레이션 계층의 정합성 성립 조건.</p></div>
-      <div class="ms"><span class="ms-tag">CP 4 · C4</span><h4>RL 일반화 전략</h4><p>실패 가능성이 있는 유일한 연구 요소 — 후퇴선 사전 합의.</p></div>
-      <div class="ms"><span class="ms-tag">CP 5 · E2/E5</span><h4>잡 오케스트레이션 · 저장 정책</h4><p>인프라 골격.</p></div>
-      <div class="ms"><span class="ms-tag">CP 6 · F5</span><h4>RTF 실측</h4><p>검증 계층의 물리적 상한 확정.</p></div>
+      <div class="ms"><span class="ms-tag">CP 1 · A1–A3</span><h4>맵 표현 · 셀 크기 · 좌표계</h4><p>맵을 격자로 볼지 그래프로 볼지, 칸 하나를 몇 m로 할지, 좌표의 기준 원본을 무엇으로 삼을지. 이 셋이 정해져야 맵 에디터·시뮬레이션·3D 검증이 같은 세계를 두고 말할 수 있다. 여기가 흔들리면 전 컴포넌트를 다시 고친다.</p></div>
+      <div class="ms"><span class="ms-tag">CP 2 · B1</span><h4>시간 모델 — 고정 틱</h4><p>시뮬레이션 시간을 1초 단위 틱으로 끊을지 연속으로 흘릴지. MAPF의 예약 테이블, 재계획 주기, 통계 수집이 전부 이 선택 위에 세워진다.</p></div>
+      <div class="ms"><span class="ms-tag">CP 3 · F1</span><h4>경로 지시 방식 — 중앙 하달</h4><p>경로를 중앙에서 계산해 로봇에 내려보낼지, 로봇이 알아서 찾게 둘지. 두 계층(SimPy·Isaac)이 서로 다른 방식을 쓰면 "빠른 결과를 3D로 검증한다"는 구도 자체가 무너진다.</p></div>
+      <div class="ms"><span class="ms-tag">CP 4 · C4</span><h4>RL 일반화 전략</h4><p>고객마다 다른 맵에서도 통하는 강화학습 디스패처를 만들 수 있는가. 이 프로젝트에서 유일하게 "실패할 수도 있는" 연구 요소라서, 실패 시 휴리스틱으로 후퇴한다는 합의를 미리 해 둔다.</p></div>
+      <div class="ms"><span class="ms-tag">CP 5 · E2/E5</span><h4>잡 오케스트레이션 · 저장 정책</h4><p>수백 개의 시뮬레이션 잡을 어떤 방식으로 병렬 실행하고, 결과를 어느 수준까지 저장할지. 인프라 파트가 골격을 잡는 데 필요한 첫 결정.</p></div>
+      <div class="ms"><span class="ms-tag">CP 6 · F5</span><h4>RTF 실측</h4><p>3D 시뮬레이터가 이 프로젝트 장비에서 로봇 몇 대까지 실시간 속도를 유지하는지 초반에 실측한다. 이 숫자가 검증 계층이 감당할 수 있는 범위의 물리적 상한이 된다.</p></div>
     </div>
   </div>
 </section>
@@ -154,6 +190,8 @@
 <section id="da">
   <div class="sec-head"><span class="sec-no">SEC A</span><h2>데이터 모델 / 입력 스키마 — 시스템 전체의 계약</h2></div>
   <div class="sec-body">
+    <p class="lead">맵·주문·로봇을 어떤 형식의 데이터로 표현할지 정하는 곳입니다. 여기서 정한 스키마가 맵 에디터·시뮬레이션 엔진·3D 검증이
+    공유하는 "계약"이 되기 때문에, 한 번 정하면 바꾸는 비용이 가장 큰 섹션입니다.</p>
     <div class="tbl-scroll"><table>
       <tr><th>#</th><th>결정 항목</th><th>선택지 / 쟁점</th><th>권고</th></tr>
       <tr><td class="dn">A1 <span class="star">★</span></td><td><b>맵 표현</b></td><td>균일 그리드 vs 그래프(노드-엣지)</td><td>그리드 기반이되 내부적으로 그래프로 변환. VDA 5050이 노드/엣지 모델이므로 그래프가 최종 공용어</td></tr>
@@ -169,6 +207,13 @@
       <tr><td class="dn">A11</td><td>배터리 모델 충실도</td><td>무시 / 선형 방전 / 충전 곡선</td><td>선형 방전 + 상수 충전율. 충전이 대수 산정에 미치는 영향이 커서 무시 불가, 곡선까지는 과잉</td></tr>
       <tr><td class="dn">A12</td><td>WMS 로그 파싱 범위</td><td>자유 형식 vs 고정 템플릿</td><td>고정 엑셀 템플릿(컬럼 명세 공개) + 파싱 실패 시 폼 입력 폴백</td></tr>
     </table></div>
+    <h3>이 표의 용어</h3>
+    <ul class="rules">
+      <li><b>스키마(schema)</b> — 데이터의 항목·형식 약속. 예: "맵 파일에는 크기, 칸 목록, 시맨틱 요소 필드가 있어야 한다"</li>
+      <li><b>포아송 / NHPP</b> — 주문이 무작위로 도착하는 것을 흉내내는 확률 모형. NHPP는 시간대별로 도착률이 달라지는 버전(예: 오전 피크)</li>
+      <li><b>ABC 존</b> — 잘 나가는 상품(A급)일수록 출고구 가까이에 두는 창고 배치 관행. 상품 하나하나의 좌표 대신 구역 단위 방문 확률로 근사한다</li>
+      <li><b><a class="term" href="glossary_industrial.html#wms">WMS</a></b>(Warehouse Management System) — 창고의 재고·주문을 관리하는 기간 시스템. 이 로그를 읽어 고객사의 수요 패턴을 뽑는다</li>
+    </ul>
   </div>
 </section>
 
@@ -176,6 +221,8 @@
 <section id="db">
   <div class="sec-head"><span class="sec-no">SEC B</span><h2>SimPy DES 엔진</h2></div>
   <div class="sec-body">
+    <p class="lead">견적 엔진의 본체인 SimPy 시뮬레이션을 어떻게 굴릴지 정합니다. 모든 항목에 공통으로 깔린 긴장은
+    "현실을 얼마나 충실히 담을까"와 "수백 번 돌릴 만큼 빠를까" 사이의 절충입니다.</p>
     <div class="tbl-scroll"><table>
       <tr><th>#</th><th>결정 항목</th><th>선택지 / 쟁점</th><th>권고</th></tr>
       <tr><td class="dn">B1 <span class="star">★</span></td><td><b>시간 모델</b></td><td>고정 틱(예: 1초) vs 연속 이벤트</td><td>고정 틱. MAPF 예약 테이블이 이산 타임스텝 전제라 정합. 틱 크기 = 셀 통과 시간과 일치시키면 "1틱 = 1셀 이동" 단순화</td></tr>
@@ -189,6 +236,13 @@
       <tr><td class="dn">B9</td><td>통계 수집 방식</td><td>전 이벤트 로그 vs 온라인 집계</td><td>이중화: 집계 지표는 항상, 상세 이벤트 로그는 플래그로 (리플레이/디버깅용, 용량 문제 → E5)</td></tr>
       <tr><td class="dn">B10</td><td>성능 목표</td><td>—</td><td>1런(8h, 로봇 10대) &lt; 10초 목표 설정 후 프로파일링. what-if 응답성의 상한 결정</td></tr>
     </table></div>
+    <h3>이 표의 용어</h3>
+    <ul class="rules">
+      <li><b>틱(tick)</b> — 시뮬레이션 시간의 최소 단위. "1틱 = 1초 = 로봇이 한 칸 이동"으로 맞추면 계산이 크게 단순해진다</li>
+      <li><b>워밍업</b> — 시뮬레이션 초반, 텅 빈 창고가 정상 가동 상태로 차오르기까지의 구간. 이 구간을 통계에 포함하면 결과가 실제보다 나쁘게 왜곡된다</li>
+      <li><b>Welch 그래프</b> — 지표 곡선이 언제부터 안정되는지를 눈으로 확인해 워밍업의 끝을 판단하는 방법</li>
+      <li><b>로그정규 분포</b> — 대부분은 짧고 가끔 매우 긴 값이 나오는 치우친 분포. 사람의 피킹 시간처럼 "가끔 오래 걸리는" 작업의 관례적 모형</li>
+    </ul>
   </div>
 </section>
 
@@ -196,6 +250,9 @@
 <section id="dc">
   <div class="sec-head"><span class="sec-no">SEC C</span><h2>디스패처 / AI</h2></div>
   <div class="sec-body">
+    <p class="lead">"어느 로봇이 어느 작업을 맡을지"를 정하는 두뇌입니다. 규칙 기반 → 헝가리안 → 강화학습 순으로
+    갈아끼우며 성능을 비교하는 것이 서비스의 차별점이므로, 교체 가능한 인터페이스(C1)와
+    강화학습이 실패했을 때의 대비선(C4)이 이 섹션의 핵심입니다.</p>
     <div class="tbl-scroll"><table>
       <tr><th>#</th><th>결정 항목</th><th>선택지 / 쟁점</th><th>권고</th></tr>
       <tr><td class="dn">C1</td><td>인터페이스 시그니처</td><td><code>assign(pending_tasks, robot_states, map_ctx) -&gt; allocations</code></td><td>전략 패턴 고정 (기결정). 반환에 "할당 보류"도 표현 가능해야 함</td></tr>
@@ -207,6 +264,14 @@
       <tr><td class="dn">C7</td><td>학습/평가 분리</td><td>—</td><td>학습용 시드·레이아웃과 평가용 완전 분리. 평가 시나리오는 스윕과 동일 조건</td></tr>
       <tr><td class="dn">C8</td><td>보상 설계</td><td>-makespan vs 처리량 vs shaped(대기 페널티 등)</td><td>처리량 기반 + 대기시간 페널티. makespan은 lifelong 설정에 부적합</td></tr>
     </table></div>
+    <h3>이 표의 용어</h3>
+    <ul class="rules">
+      <li><b>헝가리안 알고리즘</b> — 로봇×작업의 비용표에서 총비용이 최소가 되는 짝짓기를 찾는 고전 할당 알고리즘</li>
+      <li><b>RL / PPO / SB3</b> — 보상을 최대화하도록 스스로 정책을 학습하는 방법(RL, 강화학습), 그 대표 알고리즘(PPO), 널리 쓰이는 구현 라이브러리(Stable-Baselines3)</li>
+      <li><b>zero-shot 일반화</b> — 학습 때 본 적 없는 새 맵에서도 재학습 없이 통하는 것. 고객마다 맵이 다른 견적 서비스에서는 이게 안 되면 RL 자체가 무용지물</li>
+      <li><b>마스킹(masking)</b> — 로봇·작업 수가 상황마다 달라지는 문제를, 최대 개수를 고정해 두고 "빈 자리는 무시"로 처리하는 기법</li>
+      <li><b>makespan</b> — 마지막 작업이 끝나는 시각. 작업 목록이 고정된 일회성 문제에는 맞지만, 작업이 끝없이 들어오는 창고에는 부적합한 지표</li>
+    </ul>
   </div>
 </section>
 
@@ -214,6 +279,8 @@
 <section id="dd">
   <div class="sec-head"><span class="sec-no">SEC D</span><h2>경로계획 — MAPF 구현</h2></div>
   <div class="sec-body">
+    <p class="lead">SimPy 안에 들어갈 경로계획기(<a class="term" href="glossary_robotics.html#mapf">MAPF</a>)의 구현 수준을 정합니다.
+    v1 방식 — 우선순위 순차 계획 + 시공간 예약 테이블 — 은 이미 정해져 있고, 여기서는 그 세부 규칙만 남았습니다.</p>
     <div class="tbl-scroll"><table>
       <tr><th>#</th><th>결정 항목</th><th>선택지 / 쟁점</th><th>권고</th></tr>
       <tr><td class="dn">D1</td><td>v1 플래너</td><td>Prioritized Planning + 시공간 예약 테이블</td><td>기결정. 우선순위 규칙(작업 긴급도? 선착?)만 추가 결정</td></tr>
@@ -223,7 +290,12 @@
       <tr><td class="dn">D5</td><td>대기(idle) 로봇 위치</td><td>현 위치 정차 vs 지정 대기 구역 복귀</td><td>지정 대기 구역 — 통로 점거 방지. 대기 구역 배치가 what-if 변수가 됨</td></tr>
       <tr><td class="dn">D6</td><td>벤치마크 검증</td><td>—</td><td>Stern 2019 공개 벤치마크 소규모 인스턴스로 플래너 정합성 확인 (V&amp;V 스토리)</td></tr>
     </table></div>
-    <p class="soft">이론 배경(알고리즘 스펙트럼·RHCR·예약 테이블)은 <a href="amr_mapf_theory.html">DOC 06 이론 기반</a> SEC 02 참조.</p>
+    <h3>이 표의 용어</h3>
+    <ul class="rules">
+      <li><b>시공간 예약 테이블</b> — "(칸, 시각)" 조합을 먼저 찜한 로봇이 임자가 되는 장부. 뒤 순번 로봇은 찜된 조합을 피해서 경로를 찾는다. 충돌이 원천적으로 안 나는 이유</li>
+      <li><b>우선순위 순차 계획(Prioritized Planning)</b> — 로봇에 순번을 매기고 1번부터 차례로 계획하는 방식. 빠르지만 뒤 순번일수록 손해를 본다</li>
+    </ul>
+    <p class="soft">알고리즘별 원리와 비교(예약 테이블·CBS·RHCR)는 <a href="amr_mapf_theory.html">DOC 06 이론 기반</a> SEC 02에 풀어 두었습니다.</p>
   </div>
 </section>
 
@@ -231,6 +303,8 @@
 <section id="de">
   <div class="sec-head"><span class="sec-no">SEC E</span><h2>백엔드 / 인프라</h2></div>
   <div class="sec-body">
+    <p class="lead">수백 개의 시뮬레이션 런을 실제로 돌리고 결과를 저장하는 기반 설비입니다. 목표는 화려함이 아니라
+    "스윕 한 번 = 잡 한 벌"이 실패 없이 도는 것입니다.</p>
     <div class="tbl-scroll"><table>
       <tr><th>#</th><th>결정 항목</th><th>선택지 / 쟁점</th><th>권고</th></tr>
       <tr><td class="dn">E1</td><td>API 패턴</td><td>동기 vs 비동기 잡(제출→폴링/푸시)</td><td>비동기: POST /scenarios → jobId → WebSocket 진행률 + GET 결과</td></tr>
@@ -244,6 +318,14 @@
       <tr><td class="dn">E9</td><td>저장소 구조</td><td>모노레포 vs 멀티레포</td><td>모노레포 + 스키마/공용 타입을 shared 패키지로 — 계약(A6) 관리가 쉬움</td></tr>
       <tr><td class="dn">E10</td><td>CI/CD</td><td>—</td><td>GitLab CI (SSAFY 자산 재사용): 스키마 검증 + 단위 테스트 + 소규모 스모크 시뮬</td></tr>
     </table></div>
+    <h3>이 표의 용어</h3>
+    <ul class="rules">
+      <li><b>K8s(쿠버네티스) / Indexed Job</b> — 컨테이너 작업을 여러 서버에 자동 배치하는 오케스트레이터. Indexed Job은 "같은 잡을 번호만 바꿔 N개 병렬 실행"하는 기능이라, 조합 번호별로 도는 스윕과 정확히 맞아떨어진다</li>
+      <li><b>Kafka</b> — 컴포넌트 사이에 이벤트를 순서대로 흘려보내는 메시지 버스. 시뮬레이션 진행 상황·결과 이벤트가 이 위로 흐른다</li>
+      <li><b>Avro / Schema Registry</b> — 메시지 형식을 엄격하게 버전 관리하는 도구 세트. 학습 가치는 있으나 v1은 JSON + 문서화로 충분</li>
+      <li><b>hypertable</b> — 시계열 DB(<a class="term" href="glossary_ai_data.html#timescale">TimescaleDB</a>)에서 시간 기준으로 자동 분할되는 큰 테이블. 시계열 지표 저장용</li>
+      <li><b>k3d</b> — 개인 PC의 도커 안에 가벼운 쿠버네티스를 띄우는 도구. 클라우드 비용 없이 스윕 병렬 실행을 시연할 수 있다</li>
+    </ul>
   </div>
 </section>
 
@@ -251,6 +333,9 @@
 <section id="df">
   <div class="sec-head"><span class="sec-no">SEC F</span><h2>에뮬레이션 계층 — ROS2 + Isaac Sim</h2></div>
   <div class="sec-body">
+    <p class="lead">빠른 SimPy 결과를 믿어도 되는지, 물리엔진이 있는 <a class="term" href="glossary_robotics.html#isaac">Isaac Sim</a>에서
+    소수의 로봇을 실제처럼 굴려 확인하는 검증 계층입니다. 두 계층이 "같은 시스템"을 시뮬레이션하도록 만드는 것(F1)이
+    이 섹션의 전부라고 해도 과언이 아닙니다.</p>
     <div class="tbl-scroll"><table>
       <tr><th>#</th><th>결정 항목</th><th>선택지 / 쟁점</th><th>권고</th></tr>
       <tr><td class="dn">F1 <span class="star">★</span></td><td><b>경로 지시 방식</b></td><td>(a) VDA 5050 노드/엣지 경로 하달(중앙 계획) (b) 목적지만 주고 <a class="term" href="glossary_robotics.html#nav2">Nav2</a> 자율 경로</td><td><b>(a) 필수.</b> SimPy는 중앙 플래너 세계인데 Isaac에서 Nav2가 제멋대로 경로를 고르면 두 계층이 서로 다른 시스템을 시뮬레이션하는 것 — 정합성 비교가 무의미해짐. VDA 5050 표준 자체가 (a) 모델. Nav2는 노드 간 구간 주행만 담당</td></tr>
@@ -263,6 +348,13 @@
       <tr><td class="dn">F8</td><td>보정 루프 절차</td><td>—</td><td>에뮬레이션 실측 엣지 주행시간 → SimPy 유효속도 계수 갱신 → 재스윕. 1회 이상 왕복을 일정에 명시</td></tr>
       <tr><td class="dn">F9</td><td>어댑터</td><td>vda5050_connector 계열 오픈소스 이식 (기결정)</td><td>자작 금지. 포크 후 필요 수정만</td></tr>
     </table></div>
+    <h3>이 표의 용어</h3>
+    <ul class="rules">
+      <li><b>FMS</b>(Fleet Management System) — 여러 AMR을 지휘하는 중앙 관제 소프트웨어. 본 프로젝트에서는 SimPy 세계의 중앙 플래너가 이 역할을 겸한다</li>
+      <li><b>USD</b> — Isaac Sim이 쓰는 3D 장면 파일 형식. 고객이 그린 맵 데이터에서 이 파일을 자동 생성하는 것이 F3</li>
+      <li><b>스모크 테스트</b> — 본격 검증 전에 "일단 켜지고 한 바퀴 도는지"만 확인하는 가벼운 시험</li>
+      <li><b>RTF ≥ 0.9</b> — 시뮬레이터가 실제 시간의 90% 이상 속도를 유지한다는 뜻. 이 밑으로 떨어지면 시간 왜곡이 커져 검증 데이터로 쓰기 어렵다</li>
+    </ul>
   </div>
 </section>
 
@@ -270,6 +362,8 @@
 <section id="dg">
   <div class="sec-head"><span class="sec-no">SEC G</span><h2>프론트엔드</h2></div>
   <div class="sec-body">
+    <p class="lead">고객이 맵을 그리고 결과를 읽는 화면입니다. 모든 결정의 판단 기준은 한 가지 —
+    견적 리포트가 설득력 있게 보이는가.</p>
     <div class="tbl-scroll"><table>
       <tr><th>#</th><th>결정 항목</th><th>선택지 / 쟁점</th><th>권고</th></tr>
       <tr><td class="dn">G1</td><td>스택</td><td>React + 캔버스 라이브러리(Konva/SVG/deck.gl)</td><td>React + Konva (2D 탑뷰 기결정). deck.gl은 과잉</td></tr>
@@ -278,6 +372,12 @@
       <tr><td class="dn">G4</td><td>리포트 출력</td><td>웹 뷰 vs PDF 생성</td><td>웹 뷰 우선, PDF는 인쇄 CSS로 저비용 대응. 전용 PDF 생성은 여유 시</td></tr>
       <tr><td class="dn">G5</td><td>진행률 UX</td><td>스피너 vs 스윕 매트릭스 실시간 채움</td><td>스윕 조합별 완료 상태가 채워지는 매트릭스 — "수백 개 시뮬이 병렬로 도는 중"이 보이는 것 자체가 임팩트</td></tr>
     </table></div>
+    <h3>이 표의 용어</h3>
+    <ul class="rules">
+      <li><b>Konva</b> — 웹 캔버스에 도형을 그리고 드래그하게 해주는 자바스크립트 라이브러리. 2D 탑뷰 맵 에디터의 그리기 엔진</li>
+      <li><b>TCO</b>(Total Cost of Ownership) — 구매비 + 운영비를 합친 총소유비용. "몇 대가 최적인가"의 경제성 축</li>
+      <li><b>히트맵</b> — 정체가 심한 칸일수록 진하게 칠한 지도. 병목이 어디서 생기는지 한눈에 보여준다</li>
+    </ul>
   </div>
 </section>
 
@@ -285,6 +385,8 @@
 <section id="dh">
   <div class="sec-head"><span class="sec-no">SEC H</span><h2>실험 설계 / 통계</h2></div>
   <div class="sec-body">
+    <p class="lead">시뮬레이션 결과를 "통계적으로 믿을 수 있는 주장"으로 만드는 실험 규칙입니다.
+    같은 조건이라도 시드에 따라 결과가 흔들리므로, 몇 번 반복하고 어떻게 비교할지를 미리 정해 둡니다.</p>
     <div class="tbl-scroll"><table>
       <tr><th>#</th><th>결정 항목</th><th>선택지 / 쟁점</th><th>권고</th></tr>
       <tr><td class="dn">H1</td><td>스윕 격자</td><td>대수 범위 자동 결정 방법</td><td>하한: 총 수요/로봇 처리능력 추정치, 상한: 포화 감지(증분 &lt;2% 시 중단)로 적응적 확장</td></tr>
@@ -293,6 +395,12 @@
       <tr><td class="dn">H4</td><td>디스패처 비교 프로토콜</td><td>—</td><td>동일 시드 쌍대 비교(paired) — 분산 줄고 통계 검정 명확</td></tr>
       <tr><td class="dn">H5</td><td>최적점 선정 규칙</td><td>처리량 목표 충족 최소 대수 vs ROI 최대점</td><td>둘 다 제시하고 선택은 고객에게 — "선택하게 하는" 제품 철학과 일치</td></tr>
     </table></div>
+    <h3>이 표의 용어</h3>
+    <ul class="rules">
+      <li><b>OAT</b>(One-At-a-Time) — 변수를 하나씩만 흔들어 결과가 얼마나 민감한지 보는 방식. 간단하지만 변수 간 상호작용은 못 본다</li>
+      <li><b>Sobol</b> — 모든 변수를 동시에 흔드는 전역 민감도 분석. 정밀하지만 계산량이 커서 v1에는 과잉</li>
+      <li><b>쌍대 비교(paired)</b> — 디스패처 A와 B를 같은 시드(= 같은 주문 흐름)에서 맞붙여 우연에 의한 차이를 제거하는 비교 방법</li>
+    </ul>
   </div>
 </section>
 
@@ -300,6 +408,12 @@
 <section id="di">
   <div class="sec-head"><span class="sec-no">SEC I·J</span><h2>검증(V&amp;V — VDI 3633) · 프로젝트 운영</h2></div>
   <div class="sec-body">
+    <p class="lead">만든 시뮬레이션이 맞다는 근거를 어떻게 남길지(V&amp;V)와 팀 운영 규칙입니다.
+    VDI 3633은 시뮬레이션 프로젝트의 검증 절차를 정리한 독일 공학 지침으로, "가정을 명시하고 검산한다"는 이 문서 전체 원칙의 출처입니다.</p>
+    <ul class="rules">
+      <li><b>Verification(검증)</b> — "모델을 설계대로 올바르게 구현했는가". 예: 생성한 주문 수와 완료+미완료 수가 정확히 맞아떨어지는지 확인</li>
+      <li><b>Validation(타당성 확인)</b> — "모델이 현실을 충분히 닮았는가". 예: SimPy 결과를 Isaac 실측·공개 벤치마크와 비교</li>
+    </ul>
     <h3>I — 검증</h3>
     <div class="tbl-scroll"><table>
       <tr><th>#</th><th>결정 항목</th><th>내용</th></tr>

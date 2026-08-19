@@ -26,9 +26,11 @@
     background:var(--bg);
     background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
     background-size:32px 32px;
-    color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:15px;
+    color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px;
   }
   a{color:var(--steel)}
+  a.term{color:inherit;text-decoration:underline;text-decoration-style:dotted;text-decoration-color:var(--steel);text-underline-offset:3px}
+  a.term:hover{color:var(--steel);text-decoration-style:solid}
   .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
 
   header{border-bottom:3px solid var(--ink);background:var(--panel)}
@@ -58,14 +60,16 @@
   h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
   h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
   p{margin-bottom:10px}
+  .sec-body p{max-width:76ch}
   .lead{font-size:15.5px}
   .soft{color:var(--ink-soft)}
-  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:13.5px;line-height:1.8}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
   .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
 
-  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
   th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
-  td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top}
+  td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
+  table tr:nth-child(even) td{background:#F8FAFB}
   tr:last-child td{border-bottom:none}
   .tbl-scroll{overflow-x:auto}
   .num{font-family:var(--mono)}
@@ -73,7 +77,7 @@
   .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)} .c-slate{color:var(--slate)}
 
   ul.rules{list-style:none;margin:10px 0}
-  ul.rules li{padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--grid);font-size:13.5px}
+  ul.rules li{padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--grid);font-size:14px}
   ul.rules li:last-child{border-bottom:none}
   ul.rules li::before{content:"▸";position:absolute;left:6px;color:var(--amber);font-weight:700}
 
@@ -128,6 +132,7 @@
 <nav aria-label="섹션 이동">
   <div class="wrap">
     <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a href="#c0">00 용어</a>
     <a href="#c1">01 파이프라인 개요</a>
     <a href="#c2">02 세그멘테이션</a>
     <a href="#c3">03 6D 자세 추정</a>
@@ -142,6 +147,29 @@
 </nav>
 
 <main class="wrap">
+
+  <!-- ══════════ C0 용어 ══════════ -->
+  <section id="c0">
+    <div class="sec-head"><span class="sec-no">SEC 00</span><h2>먼저 알아둘 용어</h2></div>
+    <div class="sec-body">
+      <p class="lead">비전·파지 분야는 약어가 특히 많습니다. 본문에 반복해서 나오는 용어를 먼저 정리해 둡니다.</p>
+      <div class="tbl-scroll">
+      <table>
+        <tr><th style="width:24%">용어</th><th style="width:54%">쉬운 설명</th><th style="width:22%">자세히</th></tr>
+        <tr><td><b>인스턴스 세그멘테이션</b></td><td>영상에서 물체 하나하나의 영역(마스크)을 픽셀 단위로 오려내는 일. "어디까지가 한 개인가"를 정한다</td><td>SEC 02</td></tr>
+        <tr><td><b>RGB-D · 점군</b></td><td>RGB-D는 색상과 깊이(거리)를 함께 찍는 카메라 영상. 점군(point cloud)은 그 깊이값을 3차원 점들의 집합으로 펼친 것</td><td>SEC 02 · 04</td></tr>
+        <tr><td><b>6D 자세</b></td><td>위치(x·y·z) 3개 + 회전 3개 = 숫자 6개로 표현한 물체의 놓임새</td><td>SEC 03</td></tr>
+        <tr><td><b>파지 생성</b></td><td>"어디를 어느 방향으로 집을지" 후보를 만들어 점수를 매기는 단계</td><td>SEC 04</td></tr>
+        <tr><td><b>제로샷</b></td><td>그 물체를 학습한 적이 없어도 처음 보고 바로 처리하는 능력</td><td>SEC 03</td></tr>
+        <tr><td><b>파운데이션 모델</b></td><td>초대규모 데이터로 미리 학습해 두고 여러 작업에 그대로 갖다 쓰는 범용 모델 (예: SAM)</td><td>SEC 02</td></tr>
+        <tr><td><b>합성 데이터</b></td><td>시뮬레이터가 렌더링으로 만들어낸 학습 데이터. 정확한 라벨이 자동으로 함께 나온다</td><td><a class="term" href="glossary_ai_data.html#synthetic">용어사전</a></td></tr>
+        <tr><td><b>도메인 랜덤화</b></td><td>합성 장면의 조명·질감·배치를 일부러 다양하게 흔들어, 모델이 현실의 편차에도 버티게 만드는 기법</td><td><a class="term" href="glossary_robotics.html#sim2real">용어사전</a></td></tr>
+        <tr><td><b>mAP · AP</b></td><td>검출·파지 정확도의 표준 점수(mean Average Precision). 높을수록 정확</td><td>SEC 02 · 04</td></tr>
+        <tr><td><b>HITL</b></td><td>자동 시스템이 못 푸는 예외를 사람이 넘겨받아 처리하는 운영 방식(Human-in-the-Loop)</td><td><a class="term" href="glossary_ai_data.html#hitl">용어사전</a></td></tr>
+      </table>
+      </div>
+    </div>
+  </section>
 
   <!-- ══════════ C1 파이프라인 개요 ══════════ -->
   <section id="c1">
@@ -187,19 +215,19 @@
         </tr>
         <tr>
           <td><b>파운데이션 모델</b></td>
-          <td><a href="https://segment-anything.com/">SAM</a> 계열 — 프롬프트 기반 범용 세그멘테이션, 미세조정 없이 사용 가능</td>
+          <td><a href="https://segment-anything.com/">SAM</a>(Segment Anything Model) 계열 — 클릭·박스 같은 힌트(프롬프트)를 주면 어떤 영역이든 오려주는 범용 세그멘테이션, 미세조정 없이 사용 가능</td>
           <td>범용성은 최고. 다만 "물체 단위"가 아니라 "영역 단위"로 쪼개는 경향(과분할)이 있어 후처리 필요, 추론 비용도 큼</td>
         </tr>
         <tr>
           <td><b>지도학습 미세조정</b></td>
-          <td>Mask R-CNN·YOLO-seg류를 합성 데이터로 미세조정 — "상자/파우치/마대" 같은 <b>범주 수준</b> 분류를 함께 얻는다</td>
+          <td>Mask R-CNN·<a class="term" href="glossary_ai_data.html#yolo">YOLO</a>-seg류를 합성 데이터로 미세조정 — "상자/파우치/마대" 같은 <b>범주 수준</b> 분류를 함께 얻는다</td>
           <td>이형물 분기(심화 A SEC 04)에 필요한 범주 정보를 주는 실용 노선. 합성 데이터 품질이 성능을 좌우 — SEC 06</td>
         </tr>
       </table>
       </div>
       <ul class="rules">
         <li><b>데이터셋</b> — 학습: 합성(SEC 06) 위주. 평가: <a href="https://www.acin.tuwien.ac.at/en/vision-for-robotics/software-tools/object-clutter-indoor-dataset/">OCID</a>(겹침 장면), <a href="https://www.amazon.science/code-and-datasets/amazon-robotic-manipulation-benchmark-armbench">ARMBench</a>(실제 물류센터 장면)</li>
-        <li><b>지표</b> — 인스턴스 마스크 mAP, 경계 품질(Boundary F-measure). 파지로 이어지므로 <b>과분할/미분할 비율</b>을 따로 보고하는 것이 실용적</li>
+        <li><b>지표</b> — 인스턴스 마스크 mAP(평균 정밀도)와 경계선 정확도 점수인 Boundary F-measure. 파지로 이어지므로 <b>과분할(한 물체를 여러 개로)·미분할(여러 물체를 한 개로) 비율</b>을 따로 보고하는 것이 실용적</li>
         <li><b>난점 대비</b> — 반사(비닐)로 깊이가 깨지는 픽셀은 마스크 신뢰도에 반영해, 신뢰도 낮은 물체는 파지 후보에서 후순위로 미룬다</li>
       </ul>
     </div>
@@ -222,7 +250,7 @@
         </tr>
         <tr>
           <td><b>제로샷 (novel object)</b></td>
-          <td>CAD 모델 또는 참조 이미지만 주면 학습 없이 새 물체의 자세를 추정 — <a href="https://nvlabs.github.io/FoundationPose/">FoundationPose</a> (NVIDIA, 합성 대규모 학습)</td>
+          <td>CAD 모델(3D 설계 형상) 또는 참조 이미지만 주면 그 물체를 학습한 적 없이 자세를 추정 — <a href="https://nvlabs.github.io/FoundationPose/">FoundationPose</a> (NVIDIA, 합성 대규모 학습)</td>
           <td>현재 실용 관점의 유력 노선. 상자는 "가로×세로×높이 파라미터만 다른 직육면체"라 CAD 생성이 쉬워 잘 맞는다</td>
         </tr>
         <tr>
@@ -235,7 +263,7 @@
       <ul class="rules">
         <li><b>벤치마크</b> — 6D 자세의 표준 평가장은 <a href="https://bop.felk.cvut.cz/">BOP Benchmark</a>. 데이터 포맷(BOP format)을 따라 두면 자작 합성 데이터도 표준 도구로 평가할 수 있다</li>
         <li><b>지표</b> — ADD/ADD-S(모델 정점 평균 거리), BOP의 AR(평균 재현율). 대칭 물체(정육면체 상자)는 ADD-S 계열을 써야 회전 대칭이 공정하게 처리된다</li>
-        <li><b>실용 절충</b> — 하차 파지에는 완전한 6D가 필요 없을 때가 많다(윗면 중심 + 법선이면 흡착 가능). "필요한 최소 자세 정보"를 먼저 정의하고 방법을 고를 것</li>
+        <li><b>실용 절충</b> — 하차 파지에는 완전한 6D가 필요 없을 때가 많다(윗면의 중심 위치 + 법선, 즉 면에 수직인 방향만 알면 흡착 가능). "필요한 최소 자세 정보"를 먼저 정의하고 방법을 고를 것</li>
       </ul>
     </div>
   </section>
@@ -255,7 +283,7 @@
         </tr>
         <tr>
           <td><b>핑거 (2지)</b></td>
-          <td>점군에서 6-DoF 파지 자세를 직접 검출 — <a href="https://graspnet.net/">GraspNet-1Billion</a>(표준 벤치마크), <a href="https://github.com/NVlabs/contact_graspnet">Contact-GraspNet</a>(NVIDIA, 장면 단위 검출)</td>
+          <td>점군에서 6-DoF(위치 3 + 방향 3의 6자유도) 파지 자세를 직접 검출 — <a href="https://graspnet.net/">GraspNet-1Billion</a>(표준 벤치마크), <a href="https://github.com/NVlabs/contact_graspnet">Contact-GraspNet</a>(NVIDIA, 장면 단위 검출)</td>
           <td>AP(마찰계수별), 실기 성공률. 밀착 더미에서는 넣을 틈이 없어 물류 하차엔 보조적</td>
         </tr>
         <tr>
@@ -272,10 +300,11 @@
   <section id="c5">
     <div class="sec-head"><span class="sec-no">SEC 05</span><h2>단계 4 — 실행과 실패 복구</h2></div>
     <div class="sec-body">
+      <p class="lead">인식·파지 계산이 성공해도 실제 실행에서는 반드시 실패가 생긴다. 이 절은 실패를 전제로 한 실행 설계다.</p>
       <ul class="rules">
         <li><b>모션 계획</b> — <a href="https://moveit.picknik.ai/">MoveIt2</a>로 파지 자세까지의 충돌 없는 경로를 계획한다. 장면 점군을 충돌 환경(planning scene)으로 갱신하는 주기가 실무 품질을 좌우</li>
         <li><b>파지 검증</b> — 흡착이면 진공 압력, 핑거면 그리퍼 폭·힘으로 "실제로 잡혔는지"를 확인한다. 잡힌 척 이동하다 낙하하는 것이 최악의 실패</li>
-        <li><b>실패 복구 순서</b> — 재흡착(같은 지점) → 다른 파지점 → 재인식(장면이 변했으므로) → 해당 물체 건너뛰기 → 사람 호출(HITL). 각 단계의 시도 횟수 상한을 정해 무한 재시도를 막는다</li>
+        <li><b>실패 복구 순서</b> — 재흡착(같은 지점) → 다른 파지점 → 재인식(장면이 변했으므로) → 해당 물체 건너뛰기 → 사람 호출(<a class="term" href="glossary_ai_data.html#hitl">HITL</a>). 각 단계의 시도 횟수 상한을 정해 무한 재시도를 막는다</li>
         <li><b>사이클 타임 회계</b> — 인식·계획·이동·파지·이송 각 구간의 시간을 기록한다. 처리율(심화 B의 핵심 변수)은 이 합으로 결정되므로, 어느 구간을 줄일지의 근거가 된다</li>
       </ul>
     </div>
@@ -291,15 +320,15 @@
         <tr><th style="width:20%">랜덤화 축</th><th style="width:46%">항목</th><th style="width:34%">이유</th></tr>
         <tr><td><b>물체</b></td><td>상자 치수 분포(소형 90% 반영), 종횡비, 파우치·마대 메시 혼입 비율</td><td>실제 물량 구성과 맞춰야 평가가 의미를 가짐</td></tr>
         <tr><td><b>배치</b></td><td>물리 낙하(physics drop)로 자연 적재 생성 — 적재 높이·밀도·기울기 랜덤</td><td>손으로 배치한 장면은 실제 더미의 접촉·기울기 통계와 다르다</td></tr>
-        <tr><td><b>외관</b></td><td>골판지 텍스처·인쇄·테이프·라벨 위치, 오염·손상 데칼</td><td>모델이 "특정 상자 디자인"에 과적합하는 것을 방지</td></tr>
+        <tr><td><b>외관</b></td><td>골판지 텍스처·인쇄·테이프·라벨 위치, 오염·손상 데칼(표면에 입히는 이미지 스티커)</td><td>모델이 "특정 상자 디자인"에 과적합하는 것을 방지</td></tr>
         <tr><td><b>조명·카메라</b></td><td>광원 수·색온도·역광, 카메라 자세·초점거리, 깊이 노이즈 주입</td><td>짐칸 내부의 열악한 조명 조건(심화 A SEC 02-①) 대비</td></tr>
         <tr><td><b>방해 요소</b></td><td>배경(짐칸 벽·컨베이어), 무관 물체(distractor) 혼입</td><td>배경-전경 분리 능력 강화</td></tr>
-        <tr><td><b>라벨 출력</b></td><td>인스턴스 마스크 + 2D/3D 박스 + 6D 자세 + 가림률 — Replicator annotator로 자동 생성. 자세는 BOP 포맷으로 저장</td><td>한 번의 렌더로 SEC 02·03·04의 학습 데이터를 동시에 확보</td></tr>
+        <tr><td><b>라벨 출력</b></td><td>인스턴스 마스크 + 2D/3D 박스 + 6D 자세 + 가림률 — Replicator annotator(라벨 자동 생성 기능)로 자동 생성. 자세는 BOP 포맷으로 저장</td><td>한 번의 렌더로 SEC 02·03·04의 학습 데이터를 동시에 확보</td></tr>
       </table>
       </div>
       <ul class="rules">
         <li><b>규모 가이드</b> — 세그멘테이션 미세조정은 수천~수만 장 수준에서 시작해 학습 곡선으로 증분을 결정한다. 무작정 수십만 장을 만들지 않는다</li>
-        <li><b>검증 세트 분리</b> — 랜덤화 파라미터가 다른 held-out 합성 세트 + 소량의 실사(공개셋) 세트를 함께 두어, "합성 안에서만 잘 되는" 과적합을 조기에 잡는다</li>
+        <li><b>검증 세트 분리</b> — 랜덤화 파라미터가 다른 held-out(학습에 쓰지 않고 떼어둔) 합성 세트 + 소량의 실사(공개셋) 세트를 함께 두어, "합성 안에서만 잘 되는" 과적합을 조기에 잡는다</li>
         <li><b>ARMBench의 교훈</b> — 실제 물류센터 데이터(ARMBench)가 공개돼 있으므로, 합성 학습 모델의 최종 성적표는 반드시 실사 데이터에서 낸다 — SEC 07</li>
       </ul>
     </div>
@@ -309,6 +338,7 @@
   <section id="c7">
     <div class="sec-head"><span class="sec-no">SEC 07</span><h2>평가 전략 — 합성으로 배우고 실사로 증명한다</h2></div>
     <div class="sec-body">
+      <p class="lead">"어디에서 점수를 재느냐"에 따라 평가의 의미가 달라진다. 세 층위를 구분해 각각 다른 질문에 답하게 한다.</p>
       <div class="patterns">
         <div class="pat">
           <h4>합성 내부 평가 <small>개발 루프</small></h4>

@@ -26,7 +26,7 @@
     background:var(--bg);
     background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
     background-size:32px 32px;
-    color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:15px;
+    color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px;
   }
   a{color:var(--steel)}
   a.term{color:inherit;text-decoration:underline;text-decoration-style:dotted;text-decoration-color:var(--steel);text-underline-offset:3px}
@@ -60,16 +60,17 @@
   h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
   h3::before{content:"";width:8px;height:8px;background:var(--amber)}
   p{margin-bottom:10px}
+  .sec-body p{max-width:76ch}
   .lead{font-size:15.5px}
   .soft{color:var(--ink-soft)}
-  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:13.5px;line-height:1.8}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
   .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
   .tagline{font-size:16px;font-weight:600;background:var(--ink);color:#fff;padding:16px 20px;margin:14px 0;border-left:6px solid var(--amber)}
   .tagline small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#9AA7B4;margin-bottom:6px;font-weight:400}
 
-  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
   th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
-  td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top}
+  td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
   tr:last-child td{border-bottom:none}
   .num{font-family:var(--mono)}
 
@@ -178,22 +179,36 @@
 <section id="o1">
   <div class="sec-head"><span class="sec-no">SEC 01</span><h2>비전과 서비스 정의</h2></div>
   <div class="sec-body">
-    <div class="plain"><span class="pl-tag">쉽게 말하면</span>우리는 '가상의 물류센터'와 그것을 운영하는 '진짜 웹 서비스'를 함께 만듭니다. 화면 속 3D 창고에서 로봇이 상품을 나르고, 운영자는 우리가 만든 웹사이트에서 주문을 넣고 로봇을 지켜보고 문제가 생기면 알림을 받습니다. 물리 세계만 가상일 뿐, 쿠팡 물류센터의 축소판이라고 생각하면 됩니다.</div>
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>본 프로젝트는 '가상의 물류센터'와 그것을 운영하는 '진짜 웹 서비스'를 함께 만듭니다. 화면 속 3D 창고에서 로봇이 상품을 나르고, 운영자는 이 프로젝트가 만드는 웹사이트에서 주문을 넣고 로봇을 지켜보고 문제가 생기면 알림을 받습니다. 물리 세계만 가상일 뿐, 쿠팡 물류센터의 축소판이라고 생각하면 됩니다.</div>
     <div class="tagline"><small>WHAT WE BUILD</small>시뮬레이션 물류센터(AMR 여러 대 + 피킹 로봇팔) 위에 산업 표준 데이터 연동·AI 검수·운영 관제 웹 서비스를 통합한 스마트 물류 시스템</div>
     <p class="lead">단순 로봇 데모가 아니라 <b>운영자가 실제로 쓰는 서비스</b>가 최종 산출물이다. 물리 세계만 시뮬레이션일 뿐, 데이터 흐름·백엔드·서비스는 실제 <a class="term" href="glossary_industrial.html#smartfactory">스마트 물류센터</a>와 동일한 구조로 만든다.</p>
     <p class="soft">이 문서가 처음이라면 <a href="project_intro.html"><b>안내 문서(DOC 00)</b></a>를 먼저 읽는 것을 권합니다. 처음 보는 용어는 용어사전에서 그래픽과 함께 설명 — <a href="glossary_robotics.html">A 로보틱스·시뮬레이션</a> · <a href="glossary_industrial.html">B 물류센터·표준</a> · <a href="glossary_ai_data.html">C AI·데이터·서비스</a></p>
+
+    <h3>먼저 알아둘 용어 — 이 문서 전체에서 반복해서 나옵니다</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:170px">용어</th><th>뜻</th></tr>
+      <tr><td><b>웨이브</b> Wave</td><td>여러 주문을 묶어 한 번에 처리하는 작업 단위. WMS가 주문들을 웨이브로 묶어 로봇들에게 나눠준다</td></tr>
+      <tr><td><b>토트</b> Tote</td><td>상품을 담아 나르는 규격 플라스틱 상자. AMR이 나르고 로봇팔이 그 안에서 상품을 집는다</td></tr>
+      <tr><td><b>UPH · 리드타임 · KPI</b></td><td>UPH = 시간당 처리 상품 수. 리드타임 = 주문부터 출고까지 걸린 시간. KPI = 이런 핵심 성과 지표들의 총칭</td></tr>
+      <tr><td><b>WES</b></td><td>Warehouse Execution System — WMS가 만든 일감을 실제 로봇·설비에 나눠 실행시키는 계층. 본 프로젝트는 WMS와 합쳐 "WMS/WES-lite"로 만든다</td></tr>
+      <tr><td><b>mock</b> (목)</td><td>진짜 로봇이 완성되기 전까지 그 역할을 대신하는 가짜 데이터 발행기. 상세는 SEC 04</td></tr>
+      <tr><td><b>수직 슬라이스</b></td><td>모든 파트를 최소 구성으로 "주문 1건이 처음부터 끝까지" 한 번 연결해 보는 것. 통합 문제를 초반에 드러낸다</td></tr>
+      <tr><td><b>L0~L3</b></td><td><a class="term" href="glossary_industrial.html#isa95">ISA-95</a> 표준의 계층 번호. 숫자가 낮을수록 물리 설비(L0), 높을수록 계획·관리 시스템(L3=WMS/MES)에 가깝다</td></tr>
+      <tr><td><b>SPA · REST · WebRTC</b></td><td>SPA = 새로고침 없이 동작하는 단일 페이지 웹앱. REST = 서버와 데이터를 주고받는 표준 API 방식. WebRTC = 웹에서 영상을 실시간 전송하는 기술</td></tr>
+      <tr><td><b>역할 코드</b></td><td>R1·R2 = 로보틱스, A1·A2 = AI, B1·B2 = 백엔드 담당자. 정의는 SEC 03</td></tr>
+    </table></div>
     <h3>서비스: 물류센터 운영 관제 포털 (Operations Center) + PWA</h3>
     <table>
       <tr><th style="width:140px">영역</th><th>내용</th></tr>
-      <tr><td><b>관제 Operations</b></td><td><b>실시간 3D 물류센터 뷰 (필수 요구·대표 화면)</b> — Isaac Sim WebRTC 스트림을 포털에 임베드해 가상 물류센터의 3D 화면을 웹에서 실시간으로 확인 (스트레치: Three.js 자체 3D 트윈)<br>+ <b>2D 관제 맵</b> — <a class="term" href="glossary_industrial.html#amr">AMR</a> 위치/궤적, <a class="term" href="glossary_industrial.html#vda5050">VDA 5050</a> order의 node/edge 시각화 + 점진적 엣지 릴리스, 설비 온라인/오프라인(<a class="term" href="glossary_industrial.html#sparkplug">Sparkplug B</a> BIRTH/DEATH), <a class="term" href="glossary_industrial.html#andon">Andon</a> 알림 스트림</td></tr>
+      <tr><td><b>관제 Operations</b></td><td><b>① 실시간 3D 물류센터 뷰 (필수 요구·대표 화면)</b><br>Isaac Sim의 3D 화면을 WebRTC로 포털에 띄워 가상 물류센터를 웹에서 실시간 확인 (스트레치: Three.js — 웹 3D 라이브러리 — 로 자체 3D 트윈 제작)<br><b>② 2D 관제 맵</b><br><a class="term" href="glossary_industrial.html#amr">AMR</a> 위치·궤적 표시. <a class="term" href="glossary_industrial.html#vda5050">VDA 5050</a> 주행 명령(order)의 경로를 노드·엣지로 시각화. 설비 온라인/오프라인 상태(<a class="term" href="glossary_industrial.html#sparkplug">Sparkplug B</a>의 BIRTH/DEATH 신호). <a class="term" href="glossary_industrial.html#andon">Andon</a>(이상 발생 알림) 스트림</td></tr>
       <tr><td><b>주문 Orders</b></td><td>주문·<a class="term" href="glossary_industrial.html#fulfillment">웨이브</a> 라이프사이클, 재고/로케이션 조회, 배차 현황(의사결정 로그 노출), 피킹 스테이션별 큐 상태</td></tr>
       <tr><td><b>검수 Inspection</b></td><td>검수 이미지 + AI 판정(오피킹·파손) + 승인/오버라이드 (<a class="term" href="glossary_ai_data.html#hitl">human-in-the-loop</a>) → 오버라이드를 재학습 데이터로 축적</td></tr>
-      <tr><td><b>분석 Analytics</b></td><td>UPH·피킹 정확도·주문 리드타임 KPI 대시보드, 설비 <a class="term" href="glossary_industrial.html#oee">OEE</a>, 병목 분석<br>+ <b>What-if 예측 화면 (필수 시연 요소)</b> — <a class="term" href="glossary_industrial.html#des">SimPy 이산사건 시뮬레이션</a>으로 "주문이 2배로 몰리면? AMR을 1대 추가하면?"을 즉석에서 차트로 예측. 백그라운드에서 돌던 DES 레이어를 화면으로 보여주는 기능</td></tr>
+      <tr><td><b>분석 Analytics</b></td><td>UPH·피킹 정확도·주문 리드타임 등 KPI 대시보드. 설비 가동 효율 <a class="term" href="glossary_industrial.html#oee">OEE</a>. 병목 분석<br><b>+ What-if 예측 화면 (필수 시연 요소)</b><br><a class="term" href="glossary_industrial.html#des">SimPy 이산사건 시뮬레이션</a>으로 "주문이 2배로 몰리면? AMR을 1대 추가하면?"을 즉석에서 차트로 예측. 백그라운드에서 돌던 DES 레이어를 화면으로 보여주는 기능</td></tr>
     </table>
     <ul class="rules">
       <li>사용자 시나리오 = 시연 시나리오: 로그인 → 주문 등록 → 웨이브 생성 → 3D 뷰·맵에서 AMR 배차·이동 확인 → <b>장애 주입(AMR 1대 고장·통로 폐쇄) → 경로 재계획·재배차로 스스로 복구</b> → 오피킹/파손 Andon 수신 → AI 판정 확인·오버라이드 → <b>What-if 예측(주문 폭증 시나리오)</b> → 출고 실적 리포트</li>
       <li><b>시연 우선순위</b> — 정상 동작보다 <b>"고장에서 스스로 복구"(장애 주입)</b>와 <b>"미래를 예측"(What-if)</b>이 기억에 남는다. 두 하이라이트는 신규 개발이 거의 없고(주입 버튼 + 화면 1개), 이미 만든 시스템의 능력을 보여주는 장치다</li>
-      <li><b>(스트레치) 키팅 스테이션</b> — 수직 슬라이스가 5주차 전 안정되면 착수. 로봇팔이 여러 SKU를 세트 상품으로 조립하는 경공정으로, BOM·작업지시·생산 실적까지 붙이면 <a class="term" href="glossary_industrial.html#mes">MES</a> 기능이 실제로 추가된다 (필수 아님 — WMS/WES가 이미 물류 도메인의 L3/MES 계층)</li>
+      <li><b>(스트레치) 키팅 스테이션</b> — 수직 슬라이스가 5주차 전 안정되면 착수. 로봇팔이 여러 상품을 세트 상품으로 조립하는 간단한 공정으로, BOM(자재 명세서)·작업지시·생산 실적까지 붙이면 <a class="term" href="glossary_industrial.html#mes">MES</a> 기능이 실제로 추가된다 (필수 아님 — WMS/WES가 이미 물류 도메인의 L3/MES 계층)</li>
       <li>Grafana는 엔지니어용 내부 관측 도구로 분리 — 서비스는 "데이터를 본다"가 아니라 <b>"물류센터를 운영한다"</b></li>
       <li>모바일은 네이티브 앱 대신 <b><a class="term" href="glossary_ai_data.html#pwa">PWA</a></b>(반응형 + 웹 푸시 불량 알림)로 충족</li>
     </ul>
@@ -218,7 +233,7 @@
       <div class="flowdown">▼ ▲</div>
       <div class="layer"><div class="tag">L0~2 · 물리<small>Gazebo → Isaac Sim</small></div><div class="desc">가상 물류센터: 랙·토트 + 피킹 스테이션(로봇팔 1~2) + 컨베이어/소터 + <a class="term" href="glossary_robotics.html#omni">옴니휠</a> AMR 2대+ + 검수 스테이션 — 개발은 <a class="term" href="glossary_robotics.html#gazebo">Gazebo</a>, 시연은 <a class="term" href="glossary_robotics.html#isaac">Isaac</a></div><div class="owner c-amber">R1 · R2<br>+A1 씬·에셋</div></div>
     </div>
-    <p class="soft">오너 색상: <span class="chip c-amber">로보틱스 R1·R2</span> <span class="chip c-green">AI A1·A2</span> <span class="chip c-steel">백엔드 B1·B2</span> <span class="chip c-slate">공통(파트별 분담)</span> — 역할 상세는 SEC 03</p>
+    <p class="soft">층 이름의 L0~L3은 <a class="term" href="glossary_industrial.html#isa95">ISA-95</a> 표준의 계층 번호입니다 — 숫자가 낮을수록 물리 설비, 높을수록 계획·관리 시스템. 오너 색상: <span class="chip c-amber">로보틱스 R1·R2</span> <span class="chip c-green">AI A1·A2</span> <span class="chip c-steel">백엔드 B1·B2</span> <span class="chip c-slate">공통(파트별 분담)</span> — 역할 상세는 SEC 03</p>
   </div>
 </section>
 <!-- ── 03 팀 구성 ── -->
@@ -232,8 +247,8 @@
         <span class="role-tag">ROBOTICS · R1</span>
         <h4>주행/AMR 트랙</h4>
         <ul>
-          <li>베이스 URDF · ros2_control(velocity) · Nav2 + EKF · 도킹 시퀀스</li>
-          <li>VDA 5050 커넥터: order 수신 → Nav2 액션 변환 → state 보고</li>
+          <li>베이스 <a class="term" href="glossary_robotics.html#urdf">URDF</a> · ros2_control(속도 제어) · Nav2 + EKF · 도킹(작업대에 정확히 접안하는 동작) 시퀀스</li>
+          <li><a class="term" href="glossary_industrial.html#vda5050">VDA 5050</a> 커넥터: order 수신 → Nav2 액션 변환 → state 보고</li>
           <li>Isaac 포팅 — 주행 측 (센서·물리 파라미터 정합)</li>
         </ul>
         <div class="note"><b>겸임 · 통합 주관</b> — 통합 #1~3 이벤트의 리허설·체크리스트 오너</div>
@@ -242,7 +257,7 @@
         <span class="role-tag">ROBOTICS · R2</span>
         <h4>로봇팔 트랙</h4>
         <ul>
-          <li>팔 URDF · ros2_control(position) · MoveIt2 피스 피킹 (bin→토트)</li>
+          <li>팔 URDF · ros2_control(위치 제어) · MoveIt2 피스 피킹(낱개 상품을 하나씩 집기, 보관함→토트)</li>
           <li>behavior tree 오케스트레이션 (주행→도킹→피킹 시퀀스)</li>
           <li>Isaac 포팅 — 피킹 스테이션 측 · (스트레치) SKU 파지 RL 1태스크</li>
         </ul>
@@ -252,7 +267,7 @@
         <span class="role-tag">AI · A1</span>
         <h4>합성 데이터 트랙</h4>
         <ul>
-          <li>Replicator 씬·도메인 랜덤화 설계 (합성 데이터: SKU 다양성·파손 박스·라벨 변형)</li>
+          <li>Replicator 씬·도메인 랜덤화(조명·배치를 무작위로 바꿔 데이터 다양성 확보) 설계 — 합성 데이터: SKU 다양성·파손 박스·라벨 변형</li>
           <li>Gazebo/Isaac 월드·에셋 공동 소유 (R1·R2와) — 로보틱스 실질 +0.5인</li>
           <li>발표 핵심: 공개 데이터 베이스라인 vs 합성 데이터 정량 비교</li>
         </ul>
@@ -262,7 +277,7 @@
         <span class="role-tag">AI · A2</span>
         <h4>모델/서빙 트랙</h4>
         <ul>
-          <li>검수 모델 선정 — SKU 인식·오피킹 검증·파손 검출 (YOLO/PatchCore·PaDiM) → ONNX 추론 서비스</li>
+          <li>검수 모델 선정 — SKU 인식·오피킹(잘못 집기) 검증·파손 검출 (<a class="term" href="glossary_ai_data.html#yolo">YOLO</a> / PatchCore·PaDiM 등 <a class="term" href="glossary_ai_data.html#anomaly">이상 탐지</a> 모델) → ONNX 추론 서비스</li>
           <li>Phase 0~1: 공개 결함 데이터셋(MVTec AD 등) 베이스라인 선구축</li>
           <li>오버라이드 → 재학습 데이터 축적 루프 (MLOps 서사)</li>
         </ul>
@@ -301,7 +316,7 @@
       <li><b>아키텍트(R2)</b>: 데이터 계약·아키텍처 결정의 승인권 (기술 타당성 판단)</li>
       <li><b>PM(B2)</b>: 일정·리소스·범위 조정의 승인권 (일정 영향 판단)</li>
       <li>계약 변경 요청 = 두 키 모두 통과해야 반영. "필드 하나만 추가"로 계약이 조용히 부식되는 것을 차단</li>
-      <li>특정 1인 의존(버스 팩터) 완화: 주요 결정은 ADR로 짧게 기록하고, 서기는 주간 순환</li>
+      <li>특정 1인 의존(버스 팩터) 완화: 주요 결정은 <a class="term" href="glossary_ai_data.html#adr">ADR</a>(결정과 이유를 남기는 짧은 기록 문서)로 남기고, 서기는 주간 순환</li>
     </ul>
   </div>
 </section>
@@ -353,7 +368,7 @@
       <div class="ms"><span class="ms-tag">WEEK 2~3</span><h4>통합 #1 — mock → 웹 맵</h4><p>가짜 AMR이 웹 관제 맵에서 움직임 · 백엔드 order 발행 → mock 반응 확인</p></div>
       <div class="ms"><span class="ms-tag">PHASE 1 말</span><h4>통합 #2 — Gazebo → 전체</h4><p>실제 ROS2 스택(Nav2+MoveIt2)이 mock을 대체 · 주행→도킹→피킹이 웹에서 관찰됨</p></div>
       <div class="ms"><span class="ms-tag">PHASE 2</span><h4>통합 #3 — Isaac → 전체 (수직 슬라이스 완성)</h4><p>Isaac 피킹 스테이션 1 + AMR 1 라이브 · Replicator→검수 모델→오버라이드 폐루프 · 이 시점부터 "시연 가능한 서비스" 상시 유지</p></div>
-      <div class="ms"><span class="ms-tag">PHASE 3~4</span><h4>격주 통합 — 수평 확장</h4><p>스테이션/AMR 추가(하이브리드) · RL 태스크 · KPI 분석 · Jenkins headless 시뮬 회귀 CI</p></div>
+      <div class="ms"><span class="ms-tag">PHASE 3~4</span><h4>격주 통합 — 수평 확장</h4><p>스테이션/AMR 추가(하이브리드) · RL(강화학습) 태스크 · KPI 분석 · Jenkins(자동화 서버)로 화면 없이(headless) 시뮬 회귀 테스트를 반복 실행하는 CI</p></div>
     </div>
     <p class="soft">원칙: 통합 #3 이후에는 어떤 순간에도 데모가 가능한 상태(main 브랜치 = 시연 가능)를 유지한다. 기능 추가보다 이 상태 유지가 우선.</p>
   </div>
@@ -371,7 +386,7 @@
       <tr><td><b>오너십 명시</b></td><td>모든 컴포넌트에 오너 1인. "전원 분담" 영역(인프라)도 플랫폼 오너(B2) + 파트별 배포 책임으로 분해</td></tr>
       <tr><td><b>AI 에이전트 운용</b></td><td>프론트는 에이전트 산출물 허용, 단 발주 오너가 스펙·검수·연동 책임. 검수 없는 머지 금지</td></tr>
       <tr><td><b>기성품 우선</b></td><td>월드·에셋·레퍼런스 설정·컴포넌트 라이브러리는 가져다 쓴다. 직접 만드는 것은 각 파트의 차별화 지점뿐</td></tr>
-      <tr><td><b>기록 습관</b></td><td>주요 결정은 ADR/Decision Log로. 버스 팩터 1 완화 + 발표 자료의 원천</td></tr>
+      <tr><td><b>기록 습관</b></td><td>주요 결정은 <a class="term" href="glossary_ai_data.html#adr">ADR</a>/Decision Log로 남긴다. 특정 1인 의존 완화 + 발표 자료의 원천</td></tr>
     </table>
   </div>
 </section>

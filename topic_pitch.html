@@ -26,7 +26,7 @@
     background:var(--bg);
     background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
     background-size:32px 32px;
-    color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:15px;
+    color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px;
   }
   a{color:var(--steel)}
   a.term{color:inherit;text-decoration:underline;text-decoration-style:dotted;text-decoration-color:var(--steel);text-underline-offset:3px}
@@ -60,17 +60,18 @@
   h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
   h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
   p{margin-bottom:10px}
+  .sec-body p{max-width:76ch}
   .lead{font-size:15.5px}
   .soft{color:var(--ink-soft)}
-  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:13.5px;line-height:1.8}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
   .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
   .tagline{font-size:16px;font-weight:600;background:var(--ink);color:#fff;padding:16px 20px;margin:14px 0;border-left:6px solid var(--amber)}
   .tagline small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#9AA7B4;margin-bottom:6px;font-weight:400}
   .tagline b{color:var(--amber)}
 
-  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
   th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
-  td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top}
+  td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
   tr:last-child td{border-bottom:none}
   .tbl-scroll{overflow-x:auto}
 
@@ -178,6 +179,19 @@
         </div>
       </div>
       <p class="soft">축 1은 어차피 만들어야 하는 기반입니다. 축 2는 그 위에 장애 주입 버튼 하나를 더한 것이고, 축 3은 이미 설계에 포함된 <a class="term" href="glossary_industrial.html#des">DES 시뮬레이션</a> 레이어를 보여주는 화면 하나입니다. 즉 <b>세 기능을 모두 채택해도 추가 개발 비용은 거의 없습니다</b> (근거는 SEC 05).</p>
+
+      <h3>먼저 알아둘 용어 — 아래 장면 설명에 반복해서 나옵니다</h3>
+      <div class="tbl-scroll"><table>
+        <tr><th style="width:180px">용어</th><th>뜻</th></tr>
+        <tr><td><b>웨이브</b> Wave</td><td>여러 주문을 묶어 한 번에 처리하는 작업 단위. 주문이 5건 들어오면 서버가 이를 웨이브 1개로 묶고 로봇들에게 나눠준다. <a class="term" href="glossary_industrial.html#wms">WMS</a>가 만든다</td></tr>
+        <tr><td><b>토트</b> Tote</td><td>상품을 담아 나르는 규격 플라스틱 상자. AMR이 나르는 것도, 로봇팔이 상품을 집어내는 대상도 이 상자다</td></tr>
+        <tr><td><b>피킹 · 피스 피킹</b></td><td>선반·상자에서 주문된 상품을 집어내는 일. "피스 피킹"은 낱개 단위로 하나씩 집는 것(로봇팔이 가장 어려워하는 작업)</td></tr>
+        <tr><td><b>UPH</b></td><td>Units Per Hour — 한 시간에 처리한 상품 개수. 물류센터 성능의 대표 지표</td></tr>
+        <tr><td><b>리드타임</b></td><td>주문 접수부터 출고까지 걸린 시간</td></tr>
+        <tr><td><b>수직 슬라이스</b></td><td>모든 파트를 최소 구성으로 "주문 1건이 처음부터 끝까지" 한 번 연결해 보는 것. 통합 문제를 초반에 드러내는 안전장치</td></tr>
+        <tr><td><b>GTP</b></td><td>Goods-to-Person — 사람(또는 로봇팔)이 걸어다니지 않고, 로봇이 상품을 작업대 앞까지 가져다주는 방식</td></tr>
+        <tr><td><b>역할 코드</b></td><td>R1·R2 = 로보틱스, A1·A2 = AI, B1·B2 = 백엔드 담당자. 정의는 <a href="smart_factory_overview.html#o3">DOC 01 · SEC 03</a></td></tr>
+      </table></div>
     </div>
   </section>
 
@@ -202,7 +216,7 @@
         <div class="ms">
           <span class="ms-tag">장면 3</span>
           <h4>피킹 · AI 검수</h4>
-          <p>로봇팔이 토트에서 상품을 집어 주문 박스에 담는다. 일부러 틀린 상품 하나를 섞어 AI 검수가 오피킹을 잡아내고 <a class="term" href="glossary_industrial.html#andon">Andon</a>이 울린다 → 관리자가 판정을 확인·오버라이드한다.</p>
+          <p>로봇팔이 토트에서 상품을 집어 주문 박스에 담는다. 일부러 틀린 상품 하나를 섞어 AI 검수가 오피킹(주문과 다른 상품을 집는 실수)을 잡아내고 <a class="term" href="glossary_industrial.html#andon">Andon</a>(이상 발생 알림)이 울린다 → 관리자가 판정을 확인하고 필요하면 뒤집는다(오버라이드).</p>
           <span class="cast">담당:R2 (피킹 팔) · A1 (모델을 만든 합성데이터) · A2 (AI 판정·HITL)</span>
         </div>
         <div class="ms hl">
@@ -224,7 +238,11 @@
           <span class="cast">담당:B1 (실적 집계) · A2 (시연 총괄)</span>
         </div>
       </div>
-      <p class="soft">부속 제안(운반 방식): AMR이 <b>토트(빈)를 운반하는 GTP(Goods-to-Person)</b> 방식을 제안한다. 선반을 통째로 드는 Kiva형과 달리 리프트 기구를 시뮬레이션할 필요가 없고, 로봇팔이 눕혀진 토트 위에서 집으므로 파지 난이도도 낮다. 이 프로젝트의 가장 큰 리스크(로봇팔 파지)를 줄이는 선택이다. 세부 수치(맵 크기·대수·SKU)는 채택 후 팀이 확정한다.</p>
+      <h3>부속 제안 — 운반 방식은 토트 GTP로</h3>
+      <p class="soft">AMR이 <b>토트를 운반하는 GTP 방식</b>을 제안한다. 대안은 아마존 Kiva처럼 선반을 통째로 들어 나르는 방식인데, 두 가지 이유로 토트 방식이 유리하다.<br>
+      ① 선반을 드는 리프트 기구를 시뮬레이션할 필요가 없다.<br>
+      ② 로봇팔이 눕혀진 토트 위에서 상품을 집으므로 파지(잡기) 난이도가 낮다 — 이 프로젝트의 가장 큰 리스크(로봇팔 파지)를 줄이는 선택.<br>
+      세부 수치(맵 크기·로봇 대수·상품 종류 수)는 주제 채택 후 팀이 확정한다.</p>
     </div>
   </section>
 
@@ -239,25 +257,25 @@
         <tr>
           <td><b>1. 무인 풀필먼트</b></td>
           <td>"주문 버튼부터 출고까지, 사람 제로"</td>
-          <td>시나리오가 직관적이고 6명 전원의 파트가 한 흐름에 보임 / 단독으로는 "자동화 데모"라 차별성이 약함. 어느 팀이든 시도하는 방향</td>
+          <td><b>강점:</b> 시나리오가 직관적이고 6명 전원의 파트가 한 흐름에 보인다<br><b>약점:</b> 단독으로는 "자동화 데모"라 차별성이 약하다. 어느 팀이든 시도하는 방향</td>
           <td><span class="chip c-steel">채택 · 기본</span></td>
         </tr>
         <tr>
           <td><b>2. 자가 복구</b></td>
           <td>"자율보다 어려운 것은 회복이다"</td>
-          <td>시연 효과가 가장 큼 — 일부러 고장 냈는데 복구되는 장면은 기억에 남음. 추가 개발 거의 없음 / 후보 1이 먼저 완성돼야 성립</td>
+          <td><b>강점:</b> 시연 효과가 가장 크다. 일부러 고장 냈는데 복구되는 장면은 기억에 남고, 추가 개발이 거의 없다<br><b>약점:</b> 후보 1이 먼저 완성돼야 성립한다</td>
           <td><span class="chip c-amber">채택 · 차별화</span></td>
         </tr>
         <tr>
           <td><b>3. 디지털 트윈 의사결정</b></td>
           <td>"시뮬레이션은 보기용이 아니라 의사결정 도구다"</td>
-          <td>가장 신선한 주장 + 실무 활용성 어필 / 단독 주제로 삼으면 화면 중심이 되어 로봇 파트 2명의 비중이 줄어듦. 팀 구성과 맞지 않음</td>
+          <td><b>강점:</b> 가장 신선한 주장이고 실무 활용성을 어필할 수 있다<br><b>약점:</b> 단독 주제로 삼으면 화면 중심이 되어 로봇 파트 2명의 비중이 줄어든다. 팀 구성과 맞지 않음</td>
           <td><span class="chip c-green">채택 · 마무리</span></td>
         </tr>
         <tr>
           <td><b>4. 학습하는 물류센터</b></td>
           <td>"규칙 기반 vs 강화학습, 배차 성능 대결"</td>
-          <td>AI 기술 깊이 증명에 최적 / RL이 규칙 기반을 못 이기면 주제 전체가 무너짐. 7주 안에서 실패 위험이 가장 큼</td>
+          <td><b>강점:</b> AI 기술 깊이 증명에 최적<br><b>약점:</b> RL(강화학습)이 규칙 기반을 못 이기면 주제 전체가 무너진다. 7주 안에서 실패 위험이 가장 크다</td>
           <td><span class="chip c-slate">스트레치</span></td>
         </tr>
       </table>
@@ -277,8 +295,8 @@
         <tr><th style="width:18%">역할</th><th style="width:52%">담당 산출물</th><th style="width:30%">등장 장면</th></tr>
         <tr><td><b>R1</b> <span class="soft">주행·AMR</span></td><td>AMR 군집의 주행·배차·복구 — 장면 2의 주행과 장면 4의 복구</td><td><span class="chip c-amber">장면 2</span><span class="chip c-amber">장면 4 ★</span></td></tr>
         <tr><td><b>R2</b> <span class="soft">로봇팔</span></td><td>토트에서 상품을 집어 옮기는 피스 피킹 로봇팔 — 장면 3의 핵심</td><td><span class="chip c-amber">장면 3</span></td></tr>
-        <tr><td><b>A1</b> <span class="soft">합성데이터·시뮬 CI</span></td><td>검수 모델을 학습시킨 합성 데이터 파이프라인</td><td><span class="chip c-green">장면 3</span></td></tr>
-        <tr><td><b>A2</b> <span class="soft">모델·서빙·시연</span></td><td>오피킹·파손 판정과 HITL 오버라이드, 데모 시연 총괄</td><td><span class="chip c-green">장면 3</span><span class="chip c-green">장면 6</span></td></tr>
+        <tr><td><b>A1</b> <span class="soft">합성데이터·시뮬 CI</span></td><td>검수 모델을 학습시킨 <a class="term" href="glossary_ai_data.html#synthetic">합성 데이터</a>(가상 카메라로 자동 생성한 학습 이미지) 파이프라인</td><td><span class="chip c-green">장면 3</span></td></tr>
+        <tr><td><b>A2</b> <span class="soft">모델·서빙·시연</span></td><td>오피킹(잘못 집기)·파손 판정과 <a class="term" href="glossary_ai_data.html#hitl">HITL</a>(사람이 최종 확인) 오버라이드, 데모 시연 총괄</td><td><span class="chip c-green">장면 3</span><span class="chip c-green">장면 6</span></td></tr>
         <tr><td><b>B1</b> <span class="soft">WMS·물류</span></td><td>주문·웨이브·재고·실적 — 장면 1(주문)과 장면 6(실적), What-if의 데이터</td><td><span class="chip c-steel">장면 1</span><span class="chip c-steel">장면 5 ★</span><span class="chip c-steel">장면 6</span></td></tr>
         <tr><td><b>B2</b> <span class="soft">플랫폼·프론트</span></td><td>관제 화면·장애 주입 버튼·What-if 화면 — 시연에서 보이는 모든 화면</td><td><span class="chip c-steel">장면 1·2</span><span class="chip c-steel">장면 4·5 ★</span></td></tr>
       </table>
@@ -292,11 +310,11 @@
     <div class="sec-body">
       <p class="lead">이 제안은 새 계획이 아니라, <b>이미 세워 둔 실행 계획(DOC 02)에 주제를 붙이는 일</b>입니다. 근거는 다음과 같습니다.</p>
       <ul class="rules">
-        <li><b>장애 주입의 추가 개발 ≈ 0</b> — 경로 재계획(<a class="term" href="glossary_robotics.html#nav2">Nav2</a>)과 작업 재배차(WES)는 정상 운영에 이미 필요한 기능. 시연을 위해 새로 만드는 것은 "주입 버튼"뿐이다.</li>
+        <li><b>장애 주입의 추가 개발 ≈ 0</b> — 경로 재계획(<a class="term" href="glossary_robotics.html#nav2">Nav2</a>)과 작업 재배차(WES — Warehouse Execution System, 작업을 로봇에 나눠 실행시키는 계층)는 정상 운영에 이미 필요한 기능. 시연을 위해 새로 만드는 것은 "주입 버튼"뿐이다.</li>
         <li><b>What-if는 화면 1개</b> — <a class="term" href="glossary_industrial.html#des">SimPy DES</a> 레이어는 아키텍처(DOC 02)에 이미 설계되어 있다. 백그라운드에서 돌던 레이어를 화면으로 보여주는 일이다.</li>
-        <li><b>3D 뷰는 확정된 결정</b> — Isaac Sim WebRTC 스트림의 포털 임베드는 필수 요구로 이미 채택되어 있다 (DOC 02 · Decision Log).</li>
+        <li><b>3D 뷰는 확정된 결정</b> — Isaac Sim의 3D 화면을 WebRTC(웹 실시간 영상 전송 기술)로 포털에 띄우는 것은 필수 요구로 이미 채택되어 있다 (DOC 02 · Decision Log).</li>
         <li><b>로드맵에 그대로 대응</b> — Phase 0(데이터 백본) → 1(ROS2 코어) → 2(Isaac 포팅·수직 슬라이스) → 4(시연 하이라이트 2종)의 기존 단계와 1:1로 맞아떨어진다 (<a href="smart_factory_tech_plan.html">DOC 02 · 로드맵</a>).</li>
-        <li><b>실패 안전판</b> — 두 하이라이트는 시드 고정·스크립트화로 리허설을 반복할 수 있는 결정적 시나리오로 만들고, 백업 영상을 상시 준비한다. 스트레치(키팅 스테이션·RL 배차)는 수직 슬라이스가 안정된 뒤에만 착수한다.</li>
+        <li><b>실패 안전판</b> — 두 하이라이트는 난수 시드를 고정해 매번 같은 결과가 재현되는 결정적 시나리오로 만들고, 리허설을 반복하며, 백업 영상을 상시 준비한다. 스트레치 과제(키팅 스테이션 — 여러 상품을 세트로 조립하는 작업대, RL 배차)는 수직 슬라이스가 안정된 뒤에만 착수한다.</li>
       </ul>
     </div>
   </section>
@@ -305,6 +323,7 @@
   <section id="p6">
     <div class="sec-head"><span class="sec-no">SEC 06</span><h2>예상 질문과 답 — 토론 대비</h2></div>
     <div class="sec-body">
+      <p class="lead">주제 토론에서 나올 만한 반론 5가지와 답을 미리 정리했습니다. 답의 근거는 대부분 DOC 01·02에 이미 있는 내용입니다.</p>
       <h3>Q1. 제조 프로젝트가 아닌데 완성도가 인정될까? (MES가 없다)</h3>
       <p><a class="term" href="glossary_industrial.html#wms">WMS/WES</a>는 물류 도메인에서 <a class="term" href="glossary_industrial.html#isa95">ISA-95</a> L3, 즉 <a class="term" href="glossary_industrial.html#mes">MES</a>와 같은 계층의 시스템이다. 주문 접수→작업 분해→설비 배분→실행 추적→실적 집계라는 기능 골격이 동일하다. 발표 자료에 기능 대응표로 정리하고, 여유가 생기면 키팅 스테이션(경공정) 선택 과제로 실제 제조 공정까지 추가한다.</p>
       <h3>Q2. 실물 로봇이 없는데 로봇 프로젝트로 인정받을 수 있나?</h3>

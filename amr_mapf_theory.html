@@ -26,7 +26,7 @@
     background:var(--bg);
     background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
     background-size:32px 32px;
-    color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:15px;
+    color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px;
   }
   a{color:var(--steel)}
   a.term{color:inherit;text-decoration:underline;text-decoration-style:dotted;text-decoration-color:var(--steel);text-underline-offset:3px}
@@ -59,20 +59,22 @@
   h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
   h3::before{content:"";width:8px;height:8px;background:var(--machine);flex:none}
   p{margin-bottom:10px}
+  .sec-body p{max-width:76ch}
   .lead{font-size:15.5px}
   .soft{color:var(--ink-soft)}
 
-  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:13.5px;line-height:1.8}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
   .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
 
   pre{font-family:var(--mono);font-size:12px;line-height:1.7;background:#F5F7F8;border:1px solid var(--panel-edge);border-left:4px solid var(--steel);padding:12px 16px;overflow-x:auto;margin:12px 0}
   code{font-family:var(--mono);font-size:.92em;background:#F0F3F5;padding:1px 5px;border:1px solid var(--grid)}
   pre code{background:none;border:none;padding:0}
 
-  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
   th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
-  td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top}
+  td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
   tr:last-child td{border-bottom:none}
+  table tr:nth-child(even) td{background:#F8FAFB}
   .tbl-scroll{overflow-x:auto}
 
   .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px}
@@ -123,6 +125,7 @@
 <nav aria-label="문서 내 탐색">
   <div class="wrap">
     <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a href="#t0">읽는 법</a>
     <a href="#t1">01 왜 경로계획인가</a>
     <a href="#t2">02 MAPF 스펙트럼</a>
     <a href="#t3">03 TAPF·데드락</a>
@@ -135,15 +138,45 @@
 
 <main class="wrap">
 
+<!-- ══════════ T0 읽는 법 ══════════ -->
+<section id="t0">
+  <div class="sec-head"><span class="sec-no">READ ME</span><h2>이 문서를 읽는 법</h2></div>
+  <div class="sec-body">
+    <p class="lead">이 문서는 AMR 견적 시뮬레이션이 내놓는 숫자의 <b>이론적 근거</b>를 정리한 학습 자료입니다.
+    구현 결정은 <a href="amr_decision_inventory.html">DOC 07 결정 인벤토리</a>가 담당하고,
+    여기서는 "그 결정이 왜 타당한가"를 뒷받침하는 이론과 원 논문을 다룹니다. SEC 01~04는 이론, SEC 05는 문헌, SEC 06은 학습 순서입니다.</p>
+
+    <h3>먼저 알아둘 용어 — 경로계획 문헌의 기본 어휘</h3>
+    <p>MAPF 문헌은 아래 용어를 당연하다는 듯 씁니다. 본문을 읽기 전에 한 번 훑어 두세요.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th>용어</th><th>쉬운 설명</th></tr>
+      <tr><td><b>에이전트(agent)</b></td><td>경로를 계획해야 하는 주체. 이 프로젝트에서는 AMR 한 대가 에이전트 하나</td></tr>
+      <tr><td><b>그리드 / 노드-엣지</b></td><td>창고 바닥을 표현하는 두 방식. 그리드는 바둑판 격자, 노드-엣지는 지점(노드)과 그 사이 길(엣지)의 그래프. 서로 변환 가능</td></tr>
+      <tr><td><b>sum-of-costs / makespan</b></td><td>계획의 좋고 나쁨을 재는 두 잣대. 전자는 모든 로봇의 이동시간 합, 후자는 마지막 로봇이 도착하는 시각</td></tr>
+      <tr><td><b>최적(optimal) / 준최적(suboptimal)</b></td><td>수학적으로 가장 좋은 답을 보장하는가(느림) vs 조금 손해 보더라도 빠르게 답을 내는가. 실무는 대부분 준최적을 쓴다</td></tr>
+      <tr><td><b>lifelong</b></td><td>작업이 한 번 끝나면 종료가 아니라, 끝나는 즉시 새 작업이 발급되는 "끝없는 운영" 조건. 실제 창고가 이 조건이다</td></tr>
+      <tr><td><b>경합(congestion)</b></td><td>여러 로봇이 같은 통로·교차로를 원해서 생기는 정체·대기. 이 문서 전체의 주인공</td></tr>
+    </table></div>
+  </div>
+</section>
+
 <!-- ══════════ T1 ══════════ -->
 <section id="t1">
   <div class="sec-head"><span class="sec-no">SEC 01</span><h2>왜 경로계획이 견적의 핵심인가</h2></div>
   <div class="sec-body">
-    <p class="lead">AMR 견적 시뮬레이션의 헤드라인은 대수–처리량 곡선입니다. 그 곡선의 한계효용 체감은
-    <b>경로 경합(congestion)</b> — 통로 정체, 교차로 대기, 데드락 — 때문에 발생합니다.</p>
+    <p class="lead">AMR 견적 시뮬레이션이 고객에게 내미는 핵심 그림은 <b>대수–처리량 곡선</b>입니다.
+    이 절에서는 그 곡선이 왜 경로계획 이론 없이는 그려질 수 없는지 설명합니다.</p>
+
+    <div class="plain"><span class="pl-tag">대수–처리량 곡선이란</span>
+    가로축은 투입한 로봇 대수, 세로축은 시간당 처리한 작업 수입니다.
+    로봇이 적을 때는 1대를 더 넣으면 처리량이 거의 1대만큼 늘어납니다.
+    그런데 어느 시점부터 통로가 붐비기 시작하면 곡선이 눕고(한계효용 체감), 심하면 서로 길을 막아 <b>오히려 줄어듭니다</b>.
+    "몇 대가 최적인가"라는 견적 질문의 답은 이 곡선이 꺾이는 지점에 있습니다.</div>
+
+    <p>곡선이 꺾이는 원인이 바로 <b>경로 경합</b> — 통로 정체, 교차로 대기, 데드락(교착)입니다. 그래서:</p>
     <ul class="rules">
-      <li>경합을 모델링하지 못하면 견적이 <b>낙관 편향</b> → "투명한 견적" 주장과 정면 충돌</li>
-      <li>즉 경로계획 이론은 장식이 아니라 <b>곡선의 모양을 결정하는 물리학</b></li>
+      <li>경합을 모델링하지 못하는 시뮬레이션은 "로봇을 넣은 만큼 늘어난다"는 <b>낙관 편향</b> 견적을 내놓는다. "투명한 견적"이라는 서비스 주장과 정면 충돌</li>
+      <li>즉 경로계획 이론은 장식이 아니라 <b>곡선의 모양을 결정하는 물리학</b>이다</li>
     </ul>
 
     <h3>용어 3계층 — 혼용 금지</h3>
@@ -160,25 +193,28 @@
 <section id="t2">
   <div class="sec-head"><span class="sec-no">SEC 02</span><h2>핵심 기반이론 — MAPF</h2></div>
   <div class="sec-body">
-    <p class="lead"><b>MAPF(Multi-Agent Path Finding)</b>: 그리드/그래프 위에서 N개 에이전트의 무충돌 경로 집합을 찾되,
-    sum-of-costs 또는 makespan을 최소화하는 문제. 창고 AMR이 대표 응용이며 Amazon 물류로봇 연구가 분야를 견인했습니다.</p>
+    <p class="lead"><a class="term" href="glossary_robotics.html#mapf"><b>MAPF(Multi-Agent Path Finding)</b></a>:
+    그리드/그래프 위에서 N개 에이전트의 서로 충돌하지 않는 경로 집합을 찾되, sum-of-costs 또는 makespan을 최소화하는 문제.
+    창고 AMR이 대표 응용이며 Amazon 물류로봇 연구가 이 분야를 견인했습니다.</p>
 
     <h3>알고리즘 스펙트럼 — 학습 순서대로</h3>
+    <p>단순한 것부터 실전형까지 7단계입니다. 각 단계는 앞 단계의 한계를 하나씩 해결하며,
+    앞 단계를 이해해야 다음이 이해되는 구조라 학습 순서 그대로 배치했습니다.</p>
     <div class="milestones">
       <div class="ms"><span class="ms-tag">STEP 1 · A*</span><h4>단일 에이전트 최단경로</h4>
-      <p>모든 것의 출발점.</p></div>
+      <p>로봇 한 대의 최단경로 탐색. "지금까지 온 거리 + 남은 거리 어림값"이 가장 작은 칸부터 넓혀가며 찾는다. 모든 것의 출발점.</p></div>
       <div class="ms"><span class="ms-tag">STEP 2 · 시공간 예약 테이블</span><h4>Space-Time Reservation</h4>
-      <p>시간축 포함 3차원 그리드에 경로를 "예약". 모든 방법의 기저 프리미티브. 원류는 Silver의 Cooperative A*/WHCA* (2005).</p></div>
+      <p>공간(x, y)에 시간축을 더한 3차원 그리드에 경로를 "예약"한다. 예: 로봇1이 (3,4) 칸을 t=7초에 지나가기로 찜하면, 로봇2는 그 시각 그 칸을 피해 계획한다. 뒤에 나오는 모든 방법의 기저 부품. 원류는 Silver의 Cooperative A*/WHCA* (2005).</p></div>
       <div class="ms"><span class="ms-tag">STEP 3 · Prioritized Planning</span><h4>우선순위 순차 계획 <span class="chip c-amber">v1 구현 타겟</span></h4>
-      <p>로봇에 우선순위를 매기고 앞 로봇 경로를 시공간 장애물로 취급해 순차 계획. 최적성 없음, 빠름, 실무 최다 사용.</p></div>
-      <div class="ms"><span class="ms-tag">STEP 4 · CBS</span><h4>Conflict-Based Search — 최적 알고리즘의 대표</h4>
-      <p>충돌 발생 시 제약을 추가해 Conflict Tree를 분기하는 2단 구조. 로봇 수 증가 시 폭발.</p></div>
+      <p>로봇에 순번을 매기고 차례로 계획한다: 1번이 먼저 계획 → 2번은 1번의 예약을 피해서 → 3번은 1·2번을 피해서. 뒤 순번일수록 손해라 최적성은 없지만 빠르고 단순해서 실무에서 가장 많이 쓴다.</p></div>
+      <div class="ms"><span class="ms-tag">STEP 4 · CBS</span><h4><a class="term" href="glossary_robotics.html#cbs">Conflict-Based Search</a> — 최적 알고리즘의 대표</h4>
+      <p>일단 각자 최단경로로 계획하고, 충돌이 발견되면 "로봇A는 그 시각 그 칸 금지"와 "로봇B는 금지"라는 두 세계로 나눠 각각 다시 푼다(Conflict Tree). 수학적 최적을 보장하지만 로봇 수가 늘면 분기가 폭발한다.</p></div>
       <div class="ms"><span class="ms-tag">STEP 5 · ECBS / EECBS</span><h4>유계 준최적(bounded-suboptimal) 변형</h4>
-      <p>최적성과 속도 사이의 실용선.</p></div>
+      <p>"최적 대비 x% 이내"만 보장하는 대신 속도를 버는 절충. 최적성과 계산 시간 사이의 실용선이다.</p></div>
       <div class="ms"><span class="ms-tag">STEP 6 · Lifelong MAPF</span><h4>일회성 가정을 깬 연속 운영 문제</h4>
-      <p>도착 즉시 새 작업이 재발급되는 조건 — 창고의 실제 운영 조건.</p></div>
-      <div class="ms"><span class="ms-tag">STEP 7 · RHCR</span><h4>Rolling-Horizon Collision Resolution <span class="chip c-green">직접 기반 문헌</span></h4>
-      <p>lifelong 문제를 "앞 W스텝만 충돌 해소 + 주기적 재계획"으로 분해. 대규모 창고 플릿의 사실상 표준 프레임.</p></div>
+      <p>표준 MAPF는 "전원 도착하면 끝"을 가정하지만, 실제 창고는 작업이 끝나는 즉시 새 작업이 발급된다. 이 끝없는 조건을 다루는 문제 설정이 lifelong.</p></div>
+      <div class="ms"><span class="ms-tag">STEP 7 · RHCR</span><h4><a class="term" href="glossary_robotics.html#rhcr">Rolling-Horizon Collision Resolution</a> <span class="chip c-green">직접 기반 문헌</span></h4>
+      <p>무한한 미래를 다 계획하는 대신 "앞 W스텝만 충돌 없이 계획하고, 주기적으로 다시 계획"한다. lifelong 문제를 감당 가능한 크기로 자르는 프레임으로, 대규모 창고의 사실상 표준이자 본 프로젝트 재계획 구조(DOC 07 B4)의 원형.</p></div>
     </div>
   </div>
 </section>
@@ -187,16 +223,22 @@
 <section id="t3">
   <div class="sec-head"><span class="sec-no">SEC 03</span><h2>결합 문제와 데드락 이론</h2></div>
   <div class="sec-body">
+    <p class="lead">경로계획만 잘해서는 부족한 두 가지 — "누가 맡을지"와 결합하는 문제(TAPF),
+    그리고 충돌과는 다른 실패 모드인 교착(데드락)을 다룹니다.</p>
+
     <h3>TAPF — 할당·경로의 결합 최적화</h3>
-    <p>할당(1층)과 경로(2층)를 분리해서 풀면 준최적 — "가장 가까운 로봇"이 경합 구간을 지나야 한다면 실제로는 먼 로봇이 빠를 수 있습니다.
-    이 결합 최적화가 <b>TAPF</b>(Combined Target Assignment and Path Finding)로 정립되어 있습니다.</p>
+    <p>할당("누가")과 경로("어떻게")를 따로 풀면 준최적입니다.
+    예: 작업장 바로 옆에 있는 로봇이 "가장 가깝다"고 뽑혔는데 그 사이에 정체 구간이 있다면,
+    멀리 있지만 한산한 우회로를 가진 로봇이 실제로는 먼저 도착합니다.
+    이 둘을 묶어 최적화하는 문제가 <a class="term" href="glossary_robotics.html#tapf"><b>TAPF</b></a>(Combined Target Assignment and Path Finding)로 정립되어 있습니다.</p>
     <div class="plain"><span class="pl-tag">v1 절충 설계</span>
     분리해서 풀되, <b>경합 페널티를 포함한 경로 비용을 할당 비용행렬에 피드백</b>한다.
     RL 디스패처 상태에 경합 정보를 포함시키는 것도 같은 맥락.</div>
 
     <h3>데드락 이론 — AGV 고전 문헌</h3>
-    <p>MAPF가 충돌(collision)을 다룬다면, 좁은 통로·단방향 구간의 <b>교착(deadlock)</b>은 별도 이론입니다.
-    1990년대 AGV 시스템 문헌 + OS 자원 할당 이론이 원류.</p>
+    <p>충돌과 교착은 다릅니다. 좁은 외길에서 마주 보고 멈춘 두 로봇은 부딪히지 않았지만 <b>영원히 움직이지 못합니다</b> — 이것이 교착(deadlock)입니다.
+    MAPF가 충돌을 다룬다면 교착은 별도 이론으로, 1990년대 AGV(바닥 유도선을 따라가는 구세대 무인 운반차) 시스템 문헌과
+    운영체제의 자원 할당 이론이 원류입니다.</p>
     <ul class="rules">
       <li><b>Zone Control</b> — 구역당 1대만 허용 (반도체 팹 OHT 방식). 단순·보수적</li>
       <li><b>Banker's Algorithm 계열</b> — 구역 요청 시 안전 상태 검사 후 승인</li>
@@ -210,16 +252,24 @@
 <section id="t4">
   <div class="sec-head"><span class="sec-no">SEC 04</span><h2>SimPy 계층의 집계 이론 — 대기행렬 &amp; 흐름</h2></div>
   <div class="sec-body">
-    <p class="lead"><b>결정 사항</b>: 360회 스윕에서 매 틱 CBS는 불가 → SimPy 계층은 두 선택지 중 (a)를 채택하되 (b)의 언어로 결과를 해석합니다.</p>
+    <p class="lead">시뮬레이션이 뱉은 숫자를 검산하고 해석하는 도구들입니다.
+    배경이 되는 결정: 수백 회 스윕에서 매 틱 CBS를 돌리는 것은 계산량상 불가능하므로,
+    SimPy 계층은 아래 두 선택지 중 (a)를 채택하되 (b)의 언어로 결과를 해석합니다.</p>
     <div class="tbl-scroll"><table>
       <tr><th>선택지</th><th>내용</th><th>판단</th></tr>
       <tr><td>(a) 경량 MAPF</td><td>Prioritized Planning + 예약 테이블 — DES 내에서 충분히 빠르고 경합이 창발</td><td><b>기본 채택</b></td></tr>
       <tr><td>(b) 흐름 근사</td><td>통로를 용량 있는 SimPy <code>Resource</code>로, 정체를 대기행렬로 근사</td><td>해석의 언어로 활용</td></tr>
     </table></div>
+    <h3>해석에 쓰는 세 가지 이론</h3>
     <ul class="rules">
-      <li><b>대기행렬 이론</b> — M/M/c, Jackson network</li>
-      <li><b>Little's Law</b> (L = λW) — 시뮬레이션 산출 리드타임의 검산 도구 → VDI 3633 verification 활동에 연결</li>
-      <li><b>교통류의 fundamental diagram</b> (흐름–밀도 관계) — "밀도가 임계치를 넘으면 처리량이 오히려 감소" = 대수–처리량 포화의 이론적 설명</li>
+      <li><b>대기행렬 이론 (M/M/c, Jackson network)</b> — "창구 c개에 손님이 무작위로 도착하면 평균 몇 명이 기다리는가"를 계산하는 수학.
+      피킹 스테이션 앞에 로봇이 줄 서는 상황이 정확히 이 모형이다</li>
+      <li><b><a class="term" href="glossary_industrial.html#littleslaw">Little's Law</a> (L = λW)</b> — "시스템 안에 머무는 평균 개수 = 도착률 × 평균 체류시간".
+      예: 시간당 주문 100건이 들어오고 평균 30분 머문다면 시스템 안에는 평균 50건이 떠 있어야 한다.
+      시뮬레이션 집계가 이 등식에서 어긋나면 어딘가 버그가 있다는 뜻 — 검산 도구이자 VDI 3633 verification 활동의 실체</li>
+      <li><b>교통류의 fundamental diagram (흐름–밀도 관계)</b> — 도로에 차가 적당히 있을 땐 밀도가 늘수록 흐름도 늘지만,
+      임계 밀도를 넘으면 서로 막혀 흐름이 오히려 줄어든다는 교통공학의 기본 곡선.
+      "로봇을 더 넣었더니 처리량이 줄었다"는 대수–처리량 포화 현상의 이론적 설명이 이것이다</li>
     </ul>
   </div>
 </section>
@@ -228,6 +278,8 @@
 <section id="t5">
   <div class="sec-head"><span class="sec-no">SEC 05</span><h2>핵심 문헌 리스트</h2></div>
   <div class="sec-body">
+    <p class="lead">학습·인용에 쓸 원 논문 목록입니다. 읽는 요령: ①은 알고리즘의 기준점, ②는 본 프로젝트 구조의 원형,
+    ③은 용어·벤치마크의 표준 — 이 셋만 읽어도 프로젝트 서사를 논문 근거로 말할 수 있습니다. 전부 무료 공개본 링크가 있습니다.</p>
     <h3>필독 — 프로젝트 직결</h3>
     <div class="tbl-scroll"><table>
       <tr><th>#</th><th>논문</th><th>왜 읽나</th><th>링크</th></tr>

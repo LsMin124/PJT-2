@@ -26,9 +26,11 @@
     background:var(--bg);
     background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
     background-size:32px 32px;
-    color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:15px;
+    color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px;
   }
   a{color:var(--steel)}
+  a.term{color:inherit;text-decoration:underline;text-decoration-style:dotted;text-decoration-color:var(--steel);text-underline-offset:3px}
+  a.term:hover{color:var(--steel);text-decoration-style:solid}
   .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
 
   header{border-bottom:3px solid var(--ink);background:var(--panel)}
@@ -58,14 +60,16 @@
   h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
   h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
   p{margin-bottom:10px}
+  .sec-body p{max-width:76ch}
   .lead{font-size:15.5px}
   .soft{color:var(--ink-soft)}
-  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:13.5px;line-height:1.8}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
   .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
 
-  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
   th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
-  td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top}
+  td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
+  table tr:nth-child(even) td{background:#F8FAFB}
   tr:last-child td{border-bottom:none}
   .tbl-scroll{overflow-x:auto}
   .num{font-family:var(--mono)}
@@ -73,7 +77,7 @@
   .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)} .c-slate{color:var(--slate)}
 
   ul.rules{list-style:none;margin:10px 0}
-  ul.rules li{padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--grid);font-size:13.5px}
+  ul.rules li{padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--grid);font-size:14px}
   ul.rules li:last-child{border-bottom:none}
   ul.rules li::before{content:"▸";position:absolute;left:6px;color:var(--amber);font-weight:700}
 
@@ -114,6 +118,7 @@
 <nav aria-label="섹션 이동">
   <div class="wrap">
     <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a href="#a0">00 용어</a>
     <a href="#a1">01 작업의 실제</a>
     <a href="#a2">02 난점 분해</a>
     <a href="#a3">03 상용 로봇 비교</a>
@@ -127,6 +132,29 @@
 </nav>
 
 <main class="wrap">
+
+  <!-- ══════════ A0 용어 ══════════ -->
+  <section id="a0">
+    <div class="sec-head"><span class="sec-no">SEC 00</span><h2>먼저 알아둘 용어</h2></div>
+    <div class="sec-body">
+      <p class="lead">본문에서 반복해서 나오는 핵심 용어입니다. 읽다가 낯선 단어가 나오면 여기로 돌아와 확인하세요.</p>
+      <div class="tbl-scroll">
+      <table>
+        <tr><th style="width:20%">용어</th><th style="width:56%">쉬운 설명</th><th style="width:24%">자세히</th></tr>
+        <tr><td><b>벌크 적재</b></td><td>파렛트 없이 상자를 낱개로 빽빽하게 쌓아 싣는 방식. 실을 때는 공간 효율이 좋지만, 내릴 때는 하나씩 꺼내야 한다</td><td>SEC 01</td></tr>
+        <tr><td><b>이형물</b></td><td>정형 골판지 상자가 아닌 화물 — 비닐 파우치, 마대(여러 소형 물량을 담은 자루), 초대형 화물 등. 자동화가 가장 어려운 대상</td><td>SEC 04</td></tr>
+        <tr><td><b>인덕션 / 소터</b></td><td>인덕션은 상자 무더기를 한 줄로 정렬해 투입하는 공정, 소터는 그 상자를 목적지별로 자동 분류하는 설비</td><td><a href="deep_dive_induction.html">심화 B</a></td></tr>
+        <tr><td><b>흡착 그리퍼</b></td><td>진공 빨판으로 상자의 윗면·앞면을 붙여서 드는 로봇 손. 밀착된 더미에서도 접근할 수 있어 물류 하차의 표준</td><td>SEC 02-②</td></tr>
+        <tr><td><b>세그멘테이션</b></td><td>카메라 영상에서 물체 하나하나의 영역을 픽셀 단위로 오려내는 인식 기술</td><td><a href="deep_dive_perception_grasp.html#c2">심화 C</a></td></tr>
+        <tr><td><b>6D 자세</b></td><td>물체의 위치(x·y·z 3개)와 기울어진 방향(3축 회전)을 합친 숫자 6개. 이것을 알면 원하는 면을 노려 집을 수 있다</td><td><a href="deep_dive_perception_grasp.html#c3">심화 C</a></td></tr>
+        <tr><td><b>SKU</b></td><td>Stock Keeping Unit — 재고 관리의 최소 단위, 곧 "상품 종류 하나"</td><td>—</td></tr>
+        <tr><td><b>HITL</b></td><td>Human-in-the-Loop — 자동 시스템이 못 푸는 예외를 사람이 넘겨받아 처리하도록 흐름에 사람을 끼워 넣는 운영 방식</td><td><a class="term" href="glossary_ai_data.html#hitl">용어사전</a></td></tr>
+        <tr><td><b>택트 타임</b></td><td>라인 속도에 맞추기 위해 화물 1개 처리에 허용되는 시간. 이보다 느리면 뒤 공정이 빈 채로 돌아간다</td><td>SEC 02-④</td></tr>
+        <tr><td><b>개입률</b></td><td>자동 설비가 멈춰서 사람이 손대야 했던 빈도(회/시간). 낮을수록 실질적인 자동화</td><td>SEC 06</td></tr>
+      </table>
+      </div>
+    </div>
+  </section>
 
   <!-- ══════════ A1 작업의 실제 ══════════ -->
   <section id="a1">
@@ -142,7 +170,7 @@
         <tr><td><b>작업 환경</b></td><td>윙바디·탑차 짐칸 내부. 좁고 어둡고, 여름철 고온. 상자 더미 높이는 사람 키를 넘는다</td></tr>
         <tr><td><b>취급 대상</b></td><td>골판지 상자(다양한 크기·무게) + 비닐 파우치 + 마대(자루) + 초대형·초소형 혼재</td></tr>
         <tr><td><b>작업 방식</b></td><td>텔레스코픽 컨베이어(짐칸 안까지 늘어나는 컨베이어)를 걸치고, 사람이 상자를 꺼내 올린다</td></tr>
-        <tr><td><b>부담 요인</b></td><td>허브 가동이 심야에 집중되는 야간 작업, 중량물 반복 취급으로 인한 근골격계 부담, 상시적인 인력 수급 불안정</td></tr>
+        <tr><td><b>부담 요인</b></td><td>① 허브 가동이 심야에 집중되어 야간 작업이 기본<br>② 중량물을 반복해서 드는 근골격계 부담<br>③ 그 결과로 상시적인 인력 수급 불안정</td></tr>
         <tr><td><b>후속 공정과의 관계</b></td><td>하차 속도가 곧 인덕션 라인의 공급 속도 — 하차가 늦으면 뒤 전체가 논다 (연결 분석은 <a href="deep_dive_induction.html">심화 B</a>)</td></tr>
       </table>
       </div>
@@ -180,7 +208,7 @@
       <ul class="rules">
         <li><b>택트 타임</b> — 후속 컨베이어 속도와 동기화되어야 한다. 한 번 파지 실패로 수 초를 잃으면 라인 전체 처리량이 깎인다</li>
         <li><b>진입 기구</b> — 짐칸 깊숙이 들어가려면 로봇 자체가 이동 플랫폼 위에 있어야 한다 (상용 제품들이 모두 자주식인 이유)</li>
-        <li><b>예외 전달</b> — 로봇이 못 다루는 물체(마대·파손물)를 사람에게 넘기는 흐름(HITL)이 설계에 포함되어야 한다</li>
+        <li><b>예외 전달</b> — 로봇이 못 다루는 물체(마대·파손물)를 사람에게 넘기는 흐름(<a class="term" href="glossary_ai_data.html#hitl">HITL</a>, 사람 개입)이 설계에 포함되어야 한다</li>
       </ul>
     </div>
   </section>
@@ -195,7 +223,7 @@
         <tr><th style="width:18%">제품/과제</th><th style="width:24%">방식</th><th style="width:30%">공개 성능·도입처</th><th style="width:28%">한계</th></tr>
         <tr>
           <td><b><a href="https://bostondynamics.com/products/stretch/">Stretch</a></b><br><span class="soft num" style="font-size:11px">Boston Dynamics</span></td>
-          <td>자주식 이동 베이스 + 팔 + 흡착 컵 어레이. 컨테이너 안으로 진입해 벽면처럼 쌓인 상자를 뜯어낸다</td>
+          <td>자주식(스스로 굴러서 짐칸 안까지 들어가는) 이동 베이스 + 팔 + 흡착 컵 어레이. 컨테이너 안으로 진입해 벽면처럼 쌓인 상자를 뜯어낸다</td>
           <td>제조사 공개 기준 시간당 수백 개(최대 800개 수준). DHL이 최초 고객으로 대규모 도입</td>
           <td>정형 골판지 상자 위주. 마대·비닐 등 비정형 대응은 공개 자료 기준 제한적</td>
         </tr>
@@ -219,7 +247,7 @@
         </tr>
         <tr>
           <td><b>AI 디팔레타이저</b><br><span class="soft num" style="font-size:11px">CJ대한통운 · 2021 상용화</span></td>
-          <td>파렛트 위 상자를 비전으로 인식해 컨베이어로 이적</td>
+          <td>파렛트 위에 정렬돼 쌓인 상자를 비전으로 인식해 컨베이어로 옮긴다 (디팔레타이저 = 파렛트 하차 로봇)</td>
           <td>업계 최초 상용화 (<a href="https://news.mt.co.kr/mtview.php?no=2021042208505994216">기사</a>)</td>
           <td><b>정형(파렛트) 하차</b>에 해당 — 벌크 하차와는 난이도가 다르다</td>
         </tr>
@@ -251,7 +279,7 @@
         </tr>
         <tr>
           <td><b>초대형·장척물</b></td>
-          <td>소터 규격 초과. 한 팔 가반하중·리치를 넘는다</td>
+          <td>소터(자동 분류기)의 규격을 넘는 크기. 로봇 한 팔의 가반하중(들 수 있는 최대 무게)과 리치(팔이 닿는 거리)도 넘는다</td>
           <td>양팔 협조 조작 또는 별도 설비 — 자동화 대신 사전 분기(체적 기준 하차대분류)로 우회하는 것이 현재 산업 해법</td>
         </tr>
         <tr>
@@ -277,7 +305,7 @@
       <table>
         <tr><th style="width:30%">작업</th><th style="width:20%">시뮬 충실도</th><th style="width:50%">설명</th></tr>
         <tr><td>벌크 더미 생성 (강체 상자)</td><td><span class="chip c-green">잘 됨</span></td><td>다양한 크기의 상자를 물리 낙하(physics drop)로 쌓으면 자연스러운 벌크 적재가 만들어진다 — 인식용 데이터 생성의 핵심</td></tr>
-        <tr><td>세그멘테이션·자세 라벨 자동 생성</td><td><span class="chip c-green">잘 됨</span></td><td><a href="https://docs.omniverse.nvidia.com/extensions/latest/ext_replicator.html">Replicator</a>의 annotator가 인스턴스 마스크·3D 박스·자세를 자동 출력</td></tr>
+        <tr><td>세그멘테이션·자세 라벨 자동 생성</td><td><span class="chip c-green">잘 됨</span></td><td><a href="https://docs.omniverse.nvidia.com/extensions/latest/ext_replicator.html">Replicator</a>의 annotator(라벨 자동 생성 기능)가 인스턴스 마스크·3D 박스·자세를 자동 출력</td></tr>
         <tr><td>흡착 파지</td><td><span class="chip c-amber">근사</span></td><td>흡착은 표면 실링 물리를 단순화한 모델(surface gripper류)로 시뮬레이션한다. 성공/실패 경향 검증에는 쓸 수 있으나 절대 성공률은 실물과 다르다</td></tr>
         <tr><td>더미 붕괴·지지 관계</td><td><span class="chip c-amber">근사</span></td><td>강체 물리로 붕괴 자체는 재현되나, 실제 골판지의 변형·마찰 편차까지는 못 담는다. 파지 순서 알고리즘 비교에는 충분</td></tr>
         <tr><td>비닐·마대 (변형체)</td><td><span class="chip c-slate">제한적</span></td><td>변형체 시뮬레이션은 비용이 크고 정확도 한계가 뚜렷하다. 인식(외형) 데이터 생성까지가 현실적</td></tr>
@@ -293,6 +321,7 @@
   <section id="a6">
     <div class="sec-head"><span class="sec-no">SEC 06</span><h2>평가 지표 — 무엇을 재야 하는가</h2></div>
     <div class="sec-body">
+      <p class="lead">하차 자동화를 비교·평가할 때 재야 하는 지표 5개다. 시뮬레이션 실험(SEC 05)의 관측 항목도 이 표를 따른다.</p>
       <div class="tbl-scroll">
       <table>
         <tr><th style="width:26%">지표</th><th style="width:44%">정의</th><th style="width:30%">참고 기준</th></tr>

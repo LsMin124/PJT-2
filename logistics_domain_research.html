@@ -26,7 +26,7 @@
     background:var(--bg);
     background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
     background-size:32px 32px;
-    color:var(--ink);font-family:var(--sans);line-height:1.65;font-size:15px;
+    color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px;
   }
   a{color:var(--steel)}
   a.term{color:inherit;text-decoration:underline;text-decoration-style:dotted;text-decoration-color:var(--steel);text-underline-offset:3px}
@@ -57,21 +57,23 @@
   .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
   h2{font-size:20px;font-weight:800;letter-spacing:-.01em}
   .sec-body{padding:16px 26px 26px}
+  .sec-body>p{max-width:76ch}
   h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
   h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
   p{margin-bottom:10px}
   .lead{font-size:15.5px}
   .soft{color:var(--ink-soft)}
-  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:13.5px;line-height:1.8}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#EAF3EE;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
   .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
   .tagline{font-size:16px;font-weight:600;background:var(--ink);color:#fff;padding:16px 20px;margin:14px 0;border-left:6px solid var(--amber)}
   .tagline small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#9AA7B4;margin-bottom:6px;font-weight:400}
   .tagline b{color:var(--amber)}
 
-  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
   th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
-  td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top}
+  td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
   tr:last-child td{border-bottom:none}
+  table.zebra tr:nth-child(even) td{background:#F8FAFB}
   .tbl-scroll{overflow-x:auto}
   .num{font-family:var(--mono)}
 
@@ -177,16 +179,33 @@
         국내 택배는 <b>허브앤스포크(Hub &amp; Spoke)</b> 구조입니다. 자전거 바퀴처럼, 전국의 작은 터미널(스포크)들이 물량을 모아 중앙의 대형 허브(축)로 보내고, 허브가 한꺼번에 분류해 다시 각 지역으로 흩어보냅니다. 어디서 보내든 대부분 대형 허브를 한 번 거칩니다.
       </div>
       <div class="tagline"><small>FLOW</small>집화 → 발송 서브터미널 → <b>메가허브 (하차 → 인덕션 → 스캔·계측 → 자동 분류 → 상차)</b> → 도착 서브터미널 → 라스트마일 배송</div>
+
+      <h3>먼저 알아둘 현장 용어</h3>
+      <p class="soft">택배 허브에서 실제로 쓰는 말들이다. 이 표만 훑고 내려가면 아래 9단계 흐름이 바로 읽힌다.</p>
+      <table class="zebra">
+        <tr><th style="width:150px">용어</th><th>쉬운 설명</th></tr>
+        <tr><td><b>서브터미널</b></td><td>각 지역의 소형 터미널. 지역 물량을 모아 허브로 보내고, 허브에서 온 물량을 받아 기사별로 나눈다</td></tr>
+        <tr><td><b>간선차량</b></td><td>터미널과 터미널 사이를 오가는 11톤급 대형 화물차</td></tr>
+        <tr><td><b>인덕션</b></td><td>겹치고 뒤섞인 상자를 낱개로 정리해 분류기 컨베이어에 올리는 투입 공정</td></tr>
+        <tr><td><b>싱귤레이션</b></td><td>붙거나 겹친 상자를 한 개씩 떼어놓는 작업 (singulation, 낱개화)</td></tr>
+        <tr><td><b>소터 / 슈트</b></td><td>소터(sorter)는 자동 분류기, 슈트(chute)는 분류된 상자가 미끄러져 모이는 출구</td></tr>
+        <tr><td><b>DWS</b></td><td>무게(Weight)·체적(Dimension)을 자동으로 재고 바코드를 읽는(Scanning) 계측 장비</td></tr>
+        <tr><td><b>디밴닝 (하차)</b></td><td>devanning — 차량·컨테이너에 실린 짐을 꺼내는 작업. 벌크(낱개로 쌓인) 상태면 가장 힘든 수작업</td></tr>
+        <tr><td><b>이형물</b></td><td>규격 상자가 아닌 화물 — 마대·비닐포장·초대형·초소형 등. 자동 분류기가 처리하지 못한다</td></tr>
+        <tr><td><b>풀필먼트</b></td><td>보관·포장·출고까지 판매자 대신 처리해 주는 물류 서비스 (<a class="term" href="glossary_industrial.html#fulfillment">용어사전</a>)</td></tr>
+        <tr><td><b>GTP</b></td><td>Goods-to-Person — 사람이 선반으로 가는 대신, 로봇이 선반을 사람 앞으로 가져오는 방식</td></tr>
+      </table>
+
       <div class="milestones">
         <div class="ms">
           <span class="ms-tag">1 · 집화</span>
           <h4>화주에게서 물량 수거</h4>
-          <p>택배기사·집화점이 화주로부터 물량을 수거하고 운송장을 발행한다.</p>
+          <p>택배기사·집화점이 화주(짐을 보내는 개인·업체)로부터 물량을 수거하고 운송장을 발행한다.</p>
         </div>
         <div class="ms">
           <span class="ms-tag">2 · 발송 서브터미널</span>
           <h4>지역 물량을 모아 허브로 발송</h4>
-          <p>지역 물량을 모아 간선차량(11톤급 등)에 싣고 허브로 보낸다.</p>
+          <p>지역 물량을 모아 간선차량(터미널 사이를 오가는 11톤급 대형 화물차)에 싣고 허브로 보낸다.</p>
         </div>
         <div class="ms hl">
           <span class="ms-tag">3 · 허브 도착·하차</span>
@@ -201,12 +220,12 @@
         <div class="ms">
           <span class="ms-tag">5 · 스캔·계측</span>
           <h4>운송장 인식 + 무게·체적 측정</h4>
-          <p>다면 스캐너(CJ대한통운은 ITS라 부름)가 바코드를 읽고, DWS 장비가 무게·체적을 잰다.</p>
+          <p>다면 스캐너(여러 방향에서 동시에 읽는 스캐너 — CJ대한통운은 ITS라 부른다)가 바코드를 읽고, DWS 장비가 무게·체적을 잰다.</p>
         </div>
         <div class="ms">
           <span class="ms-tag">6 · 자동 분류</span>
           <h4>도착지별 슈트로 분기</h4>
-          <p>크로스벨트 소터·휠소터가 도착지 서브터미널별 슈트(미끄럼틀 형태의 출구)로 상자를 밀어낸다.</p>
+          <p>크로스벨트 소터(상자를 실은 벨트가 옆으로 움직여 밀어내는 방식)·휠소터(바닥 바퀴의 방향을 틀어 경로를 바꾸는 방식)가 도착지 서브터미널별 슈트(미끄럼틀 형태의 출구)로 상자를 밀어낸다.</p>
         </div>
         <div class="ms">
           <span class="ms-tag">7 · 상차</span>
@@ -224,7 +243,7 @@
           <p>기사가 적재 순서와 경로를 정해 최종 배송한다. 현재까지 전 구간 인력.</p>
         </div>
       </div>
-      <p class="soft">풀필먼트 센터가 허브와 같은 건물에 있는 경우(곤지암 2~4층), 앞단에 <b>입고 → 보관 → 피킹 → 패킹 → 출고</b>가 추가되고 그 출고 물량이 바로 1층 허브 분류로 이어진다. 본 프로젝트가 다루는 범위가 이 앞단과 같은 구조다.</p>
+      <p class="soft"><a class="term" href="glossary_industrial.html#fulfillment">풀필먼트</a> 센터가 허브와 같은 건물에 있는 경우(곤지암 2~4층), 앞단에 <b>입고 → 보관 → 피킹 → 패킹 → 출고</b>가 추가되고 그 출고 물량이 바로 1층 허브 분류로 이어진다. 본 프로젝트가 다루는 범위가 이 앞단과 같은 구조다.</p>
 
       <h3>기준 사례와 시장 규모 (조사로 확인한 수치)</h3>
       <div class="tbl-scroll">
@@ -259,14 +278,14 @@
             <li><b>스캔·계측</b> — 다면 바코드 스캐너, 무게·체적 측정(DWS)</li>
             <li><b>메인 분류</b> — 크로스벨트 소터·휠소터·틸트트레이</li>
             <li><b>이송</b> — 컨베이어, 합류/분기(merge/divert) 제어</li>
-            <li><b>풀필먼트 내부</b> — GTP(Goods-to-Person), AGV/AMR 선반 이송</li>
-            <li><b>물량 배분 로직</b> — WMS/TMS와 소터 제어(WCS)</li>
+            <li><b>풀필먼트 내부</b> — GTP(선반이 사람 앞으로 오는 방식), AGV(유도선을 따르는 무인 운반차)/<a class="term" href="glossary_industrial.html#amr">AMR</a>(스스로 경로를 찾는 자율 이동 로봇) 선반 이송</li>
+            <li><b>물량 배분 로직</b> — <a class="term" href="glossary_industrial.html#wms">WMS</a>(창고 관리)·TMS(운송 관리)와 소터 제어(WCS)</li>
           </ul>
         </div>
         <div class="vcard manual">
           <h4>인력이 처리하는 구간 (자동화 공백)</h4>
           <ul>
-            <li><b>하차(디밴닝)</b> — 벌크 적재 상자를 차량에서 꺼내는 작업</li>
+            <li><b>하차(디밴닝, devanning)</b> — 벌크(낱개로 쌓인) 적재 상자를 차량에서 꺼내는 작업</li>
             <li><b>인덕션 투입</b> — 겹친 상자 낱개 분리, 운송장 면 정렬</li>
             <li><b>이형물 처리</b> — 마대·비닐포장·초대형/초소형·파손 위험물</li>
             <li><b>상차 적재</b> — 차량 내부에 빈틈없이 쌓기</li>
@@ -285,13 +304,14 @@
   <section id="r3">
     <div class="sec-head"><span class="sec-no">SEC 03</span><h2>인력 구간의 페인포인트와 개선 방향</h2></div>
     <div class="sec-body">
+      <p class="lead">인력 구간마다 "무엇이 힘든가"와 "어떤 기술이 대안인가"를 짝지었다. 가운데 열이 현장의 문제, 오른쪽 열이 기술적 개선 방향이다.</p>
       <div class="tbl-scroll">
       <table>
         <tr><th style="width:13%">구간</th><th style="width:40%">페인포인트</th><th style="width:47%">개선 방향 (기술)</th></tr>
         <tr>
           <td><b>하차</b></td>
           <td>야간·고강도 반복 작업, 근골격계 부상, 인력 수급 불안정</td>
-          <td>로봇 디팔레타이징, 트럭 언로더(비전 + 로봇팔), 텔레스코픽 컨베이어</td>
+          <td>로봇 디팔레타이징(파렛트에 쌓인 상자를 층별로 내리는 로봇), 트럭 언로더(비전+로봇팔 하차 로봇), 텔레스코픽 컨베이어(차량 안까지 길이가 늘어나는 컨베이어)</td>
         </tr>
         <tr>
           <td><b>인덕션</b></td>
@@ -306,12 +326,12 @@
         <tr>
           <td><b>스캔 예외</b></td>
           <td>운송장 훼손·가림 → 미출고·지연. 수동 스캔 의존 터미널은 물량이 몰리면 스캔 누락 발생</td>
-          <td>OCR + 딥러닝 다중 인식, 리젝트율 예측</td>
+          <td>OCR(광학 문자 인식) + 딥러닝 다중 인식, 리젝트율(자동 처리 실패 비율) 예측</td>
         </tr>
         <tr>
           <td><b>상차 적재</b></td>
           <td>적재율·적재 순서가 작업자 숙련도에 의존</td>
-          <td>3D bin packing 최적화, 적재 가이드 시스템, 팔레타이징 로봇</td>
+          <td>3D bin packing(한정된 공간에 상자를 최적으로 채우는 문제) 최적화, 적재 가이드 시스템, 팔레타이징 로봇</td>
         </tr>
         <tr>
           <td><b>물량 피크</b></td>
@@ -336,7 +356,7 @@
   <section id="r4">
     <div class="sec-head"><span class="sec-no">SEC 04</span><h2>프로젝트 기술 스택과의 대응</h2></div>
     <div class="sec-body">
-      <p class="lead">하차·인덕션·이형물은 결국 <b>비정형 물체의 인식(세그멘테이션·6D 자세 추정) + 파지(grasping)</b> 문제다. 이 프로젝트에서 구축하는 기술 스택이 이 문제에 그대로 대응된다.</p>
+      <p class="lead">하차·인덕션·이형물은 결국 <b>비정형 물체의 인식과 파지(grasping, 집기)</b> 문제다. 인식은 두 단계로 나뉜다 — 세그멘테이션(이미지에서 물체 영역을 픽셀 단위로 구분)과 6D 자세 추정(물체의 위치 3축 + 방향 3축 계산). 본 프로젝트에서 구축하는 기술 스택이 이 문제에 그대로 대응된다.</p>
       <div class="tbl-scroll">
       <table>
         <tr><th style="width:32%">프로젝트 기술 스택</th><th style="width:38%">대응되는 허브 문제</th><th style="width:30%">전이 방법</th></tr>
@@ -356,7 +376,7 @@
           <td>허브 1개 라인(하차→인덕션→소터→슈트)을 공정 모델로 구성</td>
         </tr>
         <tr>
-          <td><b>MQTT·VDA 5050·Sparkplug B</b> 데이터 연동</td>
+          <td><b><a class="term" href="glossary_industrial.html#mqtt">MQTT</a>·<a class="term" href="glossary_industrial.html#vda5050">VDA 5050</a>·<a class="term" href="glossary_industrial.html#sparkplug">Sparkplug B</a></b> 데이터 연동</td>
           <td>설비·로봇·제어 시스템(WCS) 간 표준 연동</td>
           <td>프로젝트 채택 표준과 동일 — 허브 설비도 같은 계층 구조</td>
         </tr>
@@ -375,13 +395,14 @@
   <section id="r5">
     <div class="sec-head"><span class="sec-no">SEC 05</span><h2>활용 가능한 데이터셋과 자료</h2></div>
     <div class="sec-body">
+      <p class="lead">바로 내려받아 쓸 수 있는 공개 데이터셋과, 시뮬레이션 수치의 근거가 되는 공식 자료를 용도별 세 묶음으로 정리했다. 각 표의 오른쪽 "활용" 열이 본 프로젝트에서의 쓰임새다.</p>
 
       <h3>비전·파지 — 하차·인덕션·이형물 문제용</h3>
       <div class="tbl-scroll">
-      <table>
+      <table class="zebra">
         <tr><th style="width:24%">이름</th><th style="width:46%">내용</th><th style="width:30%">활용</th></tr>
         <tr><td><b><a href="https://www.amazon.science/code-and-datasets/amazon-robotic-manipulation-benchmark-armbench">ARMBench</a></b> <span class="soft">(Amazon, 2023)</span></td><td>실제 아마존 물류센터에서 수집한 로봇 조작 데이터셋 — 픽 대상 세그멘테이션, 물체 식별, 파손 검출 (<a href="https://arxiv.org/abs/2303.16382">논문</a>)</td><td>세그멘테이션·파손 검출 벤치마크. 물류 검수 문제와 가장 가까운 공개셋</td></tr>
-        <tr><td><b><a href="https://graspnet.net/">GraspNet-1Billion</a></b></td><td>RGB-D 약 9.7만 장 + 대규모 파지 자세 라벨. 파지 검출의 표준 벤치마크</td><td>파지 모델 학습·평가</td></tr>
+        <tr><td><b><a href="https://graspnet.net/">GraspNet-1Billion</a></b></td><td>RGB-D(색상+깊이) 이미지 약 9.7만 장 + 대규모 파지 자세 라벨. 파지 검출의 표준 벤치마크</td><td>파지 모델 학습·평가</td></tr>
         <tr><td><b><a href="https://www.acin.tuwien.ac.at/en/vision-for-robotics/software-tools/object-clutter-indoor-dataset/">OCID</a></b></td><td>복잡하게 쌓인(clutter) 실내 물체의 세그멘테이션 데이터셋</td><td>겹침 상황 세그멘테이션 사전 학습</td></tr>
         <tr><td><b><a href="https://github.com/eg4000/SKU110K_CVPR19">SKU-110K</a></b></td><td>매대에 밀집 진열된 상품 검출 데이터셋</td><td>밀집 소형 물체 검출 보조</td></tr>
         <tr><td><b><a href="https://developer.nvidia.com/omniverse/replicator">Replicator</a> 합성 데이터</b></td><td>Isaac Sim에서 벌크 적재 상자를 무작위 배치·렌더 → 세그멘테이션/자세 라벨 자동 생성</td><td>공개셋에 없는 "국내 택배 상자·벌크 적재" 상황을 직접 생성 (합성 결함 데이터 생성과 동일한 방법론)</td></tr>
@@ -391,9 +412,9 @@
 
       <h3>공정 시뮬레이션·최적화 — 병목·스케줄링 문제용</h3>
       <div class="tbl-scroll">
-      <table>
+      <table class="zebra">
         <tr><th style="width:24%">이름</th><th style="width:46%">내용</th><th style="width:30%">활용</th></tr>
-        <tr><td><b><a href="https://simpy.readthedocs.io/">SimPy</a></b></td><td>파이썬 기반 이산사건 시뮬레이션 프레임워크</td><td>허브 라인 처리량·병목 시뮬레이션</td></tr>
+        <tr><td><b><a href="https://simpy.readthedocs.io/">SimPy</a></b></td><td>파이썬 기반 <a class="term" href="glossary_industrial.html#des">이산사건 시뮬레이션(DES)</a> 프레임워크 — 사건이 일어나는 순간만 계산해 긴 시간을 빠르게 돌린다</td><td>허브 라인 처리량·병목 시뮬레이션</td></tr>
         <tr><td><b><a href="https://www.nlic.go.kr/">NLIC 생활물류통계</a></b></td><td>국가물류통합정보센터 — 월별 택배 물동량, 1인당 이용 횟수 등 공식 통계</td><td>시뮬레이션의 도착 물량 분포·피크 설정 근거</td></tr>
         <tr><td><b><a href="https://www.data.go.kr/">공공데이터포털</a></b></td><td>택배 물동량·생활물류 관련 공공 데이터</td><td>물량 예측 모델 학습 데이터</td></tr>
         <tr><td><b><a href="http://people.brunel.ac.uk/~mastjjb/jeb/orlib/thpackinfo.html">BR1–BR15 벤치마크</a></b></td><td>Bischoff &amp; Ratcliff의 컨테이너 적재(3D bin packing) 표준 문제 세트 — OR-Library 수록</td><td>상차 적재 최적화 알고리즘 검증</td></tr>
@@ -407,7 +428,7 @@
       <table>
         <tr><th style="width:24%">이름</th><th style="width:46%">내용</th><th style="width:30%">활용</th></tr>
         <tr><td><b><a href="https://cslc.koti.re.kr/">스마트물류센터 인증 기준</a></b> <span class="soft">(국토부)</span></td><td>물류 과정별 자동화 수준 평가 항목, 1~5등급 (기능영역 + 기반영역)</td><td>기술 체크리스트이자 발표의 공식 근거</td></tr>
-        <tr><td><b><a href="https://github.com/VDA5050/VDA5050">VDA 5050</a></b></td><td>AMR 군집 통신 표준 — 공식 JSON 스키마·문서 공개</td><td>허브 내 AMR·설비 연동 표준</td></tr>
+        <tr><td><b><a href="https://github.com/VDA5050/VDA5050">VDA 5050</a></b></td><td>AMR 군집 통신 표준(여러 대의 AMR과 중앙 관제가 주고받는 명령·상태 형식) — 공식 JSON 스키마·문서 공개</td><td>허브 내 AMR·설비 연동 표준</td></tr>
         <tr><td><b>소터 벤더 기술자료</b></td><td><a href="https://www.interroll.com/">Interroll</a> · <a href="https://www.vanderlande.com/">Vanderlande</a> · <a href="https://www.beumer.com/">BEUMER</a> · <a href="https://www.daifuku.com/">Daifuku</a> 등의 크로스벨트 소터·컨베이어 기술백서</td><td>설비 사양·처리량 수치의 근거</td></tr>
         <tr><td><b><a href="https://www.mhi.org/">MHI 리포트</a></b></td><td>Material Handling Institute의 물류 자동화 산업 동향 연례 보고서</td><td>글로벌 기술 동향 파악</td></tr>
         <tr><td><b><a href="https://koila.or.kr/">KILA</a> · <a href="https://www.klnews.co.kr/">물류신문</a> 등</b></td><td>한국통합물류협회 통계, 국내 물류 전문지 기사</td><td>국내 허브 운영 실태·사례 파악</td></tr>
@@ -424,7 +445,7 @@
       <div class="patterns">
         <div class="pat">
           <h4>허브 라인 DES 모델링 <small>SimPy · 병목 정량화</small></h4>
-          <p>허브 1개 라인(하차 → 인덕션 → 스캔 → 소터 → 슈트)을 SimPy로 모델링한다. NLIC 통계로 도착 물량 분포를 설정하고, "인덕션 처리율이 얼마 이하로 떨어지면 소터가 굶는가"를 수치로 만든다. 산출물: 병목 분석 차트와 What-if 실험 (인덕션 1개 증설 시 처리량 변화 등).</p>
+          <p>허브 1개 라인(하차 → 인덕션 → 스캔 → 소터 → 슈트)을 SimPy로 모델링한다. NLIC 통계로 도착 물량 분포를 설정하고, "인덕션 처리율이 얼마 이하로 떨어지면 소터에 공급이 끊겨 노는 시간이 생기는가"를 수치로 만든다. 산출물: 병목 분석 차트와 What-if 실험 (인덕션 1개 증설 시 처리량 변화 등).</p>
         </div>
         <div class="pat">
           <h4>벌크 상자 합성 데이터 생성 <small>Replicator · 데이터 확보</small></h4>

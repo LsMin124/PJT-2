@@ -39,7 +39,7 @@
   h2{font-size:19px;font-weight:800;letter-spacing:-.01em;margin-bottom:12px}
   h2 .q{color:var(--amber);margin-right:8px}
   p{margin-bottom:12px}
-  .note{margin-top:10px;padding:12px 16px;background:#F5F7F8;border-left:3px solid var(--steel);font-size:13.5px}
+  .note{margin-top:10px;padding:12px 16px;background:#F5F7F8;border-left:3px solid var(--steel);font-size:14px}
   /* 주문 처리 과정 */
   .journey{counter-reset:st;display:grid;gap:0;margin:16px 0;border-left:3px solid var(--amber)}
   .st{position:relative;padding:12px 16px 12px 52px;border-bottom:1px dashed var(--grid)}
@@ -54,7 +54,7 @@
   /* 역할 표 */
   table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
   th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#F5F7F8}
-  td{padding:11px 12px;border-bottom:1px solid var(--grid);vertical-align:top}
+  td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
   tr:last-child td{border-bottom:none}
   td b{font-weight:700}
   /* 용어 미리보기 */
@@ -103,7 +103,7 @@
 <main class="wrap">
 
 <section id="i1">
-  <h2><span class="q">Q.</span>우리는 무엇을 만드나요?</h2>
+  <h2><span class="q">Q.</span>무엇을 만드는 프로젝트인가요?</h2>
   <p>쿠팡 같은 온라인 쇼핑몰에서 주문 버튼을 누르면, 어딘가의 물류센터에서 로봇과 사람이 그 상품을 찾아 포장하고 내보냅니다. 이 프로젝트는 <b>그 물류센터 하나를 통째로 만드는 것</b>입니다. 로봇이 상품을 나르고, 로봇팔이 상품을 집고, 카메라와 AI가 상품에 문제가 없는지 확인하고, 운영자는 웹사이트에서 이 모든 것을 지켜보며 지시를 내립니다.</p>
   <p>단 하나 다른 점이 있다면 — 창고 건물과 로봇이 <b>컴퓨터 속 가상 공간</b>에 존재한다는 것입니다. 3D 게임 속 세계처럼 화면 안에 선반과 로봇이 있고, 물리 법칙에 따라 실제처럼 움직입니다. 하지만 그 가상 창고를 움직이는 <b>소프트웨어(서버, 데이터베이스, 웹 화면, AI)는 전부 진짜</b>이고, 실제 물류센터가 쓰는 것과 같은 구조로 만듭니다.</p>
   <div class="note">한 줄 요약: <b>"가상의 물류센터 + 그것을 운영하는 진짜 소프트웨어"</b>를 6명이 7주 동안 만든다.</div>
@@ -115,7 +115,7 @@
   <div class="journey">
     <div class="st"><b>운영자가 웹 화면에서 주문을 등록한다</b><p>"A상품 2개, B상품 1개" — 우리가 만드는 관제 웹사이트에서 입력합니다.</p></div>
     <div class="st"><b>두뇌(서버)가 일감을 만든다</b><p>주문을 받은 서버가 "어느 선반에 그 상품이 있는지" 찾아보고, 로봇에게 시킬 일의 목록을 만듭니다.</p></div>
-    <div class="st"><b>운반 로봇이 선반으로 간다</b><p>바퀴 달린 로봇(AMR)이 스스로 길을 찾아 창고 안을 달려가, 상품이 담긴 상자를 싣고 작업대로 가져옵니다.</p></div>
+    <div class="st"><b>운반 로봇이 선반으로 간다</b><p>바퀴 달린 로봇 <a href="glossary_industrial.html#amr">AMR</a>(Autonomous Mobile Robot, 스스로 길을 찾는 자율주행 운반 로봇)이 창고 안을 달려가, 상품이 담긴 상자를 싣고 작업대로 가져옵니다.</p></div>
     <div class="st"><b>로봇팔이 상품을 집는다</b><p>작업대의 로봇팔이 상자 안에서 주문된 상품을 하나씩 집어 배송용 바구니로 옮깁니다.</p></div>
     <div class="st"><b>카메라와 AI가 검사한다</b><p>"주문한 상품이 맞나? 파손되지는 않았나?"를 AI가 사진으로 판별합니다. 애매하면 사람(운영자)에게 물어봅니다.</p></div>
     <div class="st"><b>문제가 있으면 자동으로 되돌린다</b><p>잘못 집었거나 파손된 상품은 운반 로봇이 별도 라인으로 옮기고, 다시 집도록 지시가 내려갑니다.</p></div>
@@ -155,7 +155,7 @@
     <dt>피킹<span class="en">Picking</span></dt>
     <dd>선반이나 상자에서 주문된 상품을 "집어내는" 일. 물류센터 일의 핵심이자 로봇팔의 임무. <a href="glossary_industrial.html#fulfillment">자세히 →</a></dd>
     <dt>WMS<span class="en">물류센터의 두뇌</span></dt>
-    <dd>"뭐가 어디에 몇 개 있고, 지금 누가 뭘 할 차례인지"를 관리하는 서버 프로그램. 우리가 Spring으로 만든다. <a href="glossary_industrial.html#wms">자세히 →</a></dd>
+    <dd>"뭐가 어디에 몇 개 있고, 지금 누가 뭘 할 차례인지"를 관리하는 서버 프로그램. 본 프로젝트에서는 Spring(자바 서버 프레임워크)으로 만든다. <a href="glossary_industrial.html#wms">자세히 →</a></dd>
     <dt>MQTT<span class="en">메시지 우체국</span></dt>
     <dd>로봇·설비·서버·웹이 서로 소식을 주고받는 통신 방식. 모두가 중앙 우체국(브로커)에 편지를 보내고 받아본다. <a href="glossary_industrial.html#mqtt">자세히 →</a></dd>
     <dt>시뮬레이터<span class="en">Gazebo · Isaac Sim</span></dt>
