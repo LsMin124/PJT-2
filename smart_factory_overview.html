@@ -162,18 +162,63 @@
 <nav aria-label="섹션 이동">
   <div class="wrap">
     <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a href="#o0">00 한눈에</a>
     <a href="#o1">01 비전·서비스</a>
     <a href="#o2">02 시스템 구조</a>
     <a href="#o3">03 팀 구성·역할</a>
     <a href="#o4">04 데이터 계약</a>
     <a href="#o5">05 통합 일정</a>
     <a href="#o6">06 협업 규칙</a>
+    <a href="#o7">07 다음으로</a>
     <a class="nav-cross" href="smart_factory_tech_plan.html">TECH PLAN ↗</a>
     <a class="nav-x2" href="glossary_robotics.html">용어사전 ↗</a>
   </div>
 </nav>
 
 <main class="wrap">
+
+<!-- ── 00 한눈에 보기 ── -->
+<section id="o0">
+  <div class="sec-head"><span class="sec-no">SEC 00</span><h2>한눈에 보기 — 이 문서가 답하는 질문</h2></div>
+  <div class="sec-body">
+    <p class="lead">이 문서는 팀 전원이 공유하는 프로젝트의 전체 지도입니다. 끝까지 읽으면 아래 세 질문에 답할 수 있습니다.</p>
+    <ul class="rules">
+      <li>본 프로젝트가 만드는 시스템의 전체 구조는 어떻게 생겼는가? (SEC 01·02)</li>
+      <li>여섯 명은 각자 무엇을 맡고, 서로 어떻게 맞물리는가? (SEC 03·04)</li>
+      <li>7주 동안 어떤 순서로 만들고 합치는가? (SEC 05·06)</li>
+    </ul>
+    <p style="margin-top:14px">먼저 전체 시스템을 그림 한 장으로 요약합니다. 위에서 사람이 지시를 내리면 아래로 전달되고, 아래의 로봇 세계에서 일어난 일이 다시 위로 올라와 화면에 보이는 구조입니다.</p>
+
+    <svg viewBox="0 0 900 340" role="img" aria-label="시스템 전체 구조: 운영 웹 화면, 두뇌 서버, 로봇 제어와 AI 검수, 가상 3D 물류센터의 4개 층과 지시·상태의 상하 흐름">
+      <defs><marker id="ov-ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
+      <rect x="120" y="18" width="560" height="56" fill="#F5F7F8" stroke="#33506B" stroke-width="1.5"/>
+      <text x="400" y="42" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">① 운영 웹 화면</text>
+      <text x="400" y="62" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">사람이 주문을 넣고, 3D 뷰·지도로 전체를 지켜본다</text>
+      <rect x="120" y="98" width="560" height="56" fill="#F5F7F8" stroke="#33506B" stroke-width="1.5"/>
+      <text x="400" y="122" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">② 두뇌 서버(WMS)와 메시지 인프라</text>
+      <text x="400" y="142" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">주문을 일감으로 쪼개 로봇에 지시하고, 모든 데이터를 기록한다</text>
+      <rect x="120" y="178" width="560" height="56" fill="#FDF1E5" stroke="#E8720C" stroke-width="1.5"/>
+      <text x="400" y="202" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">③ 로봇 제어(ROS2) + AI 검수</text>
+      <text x="400" y="222" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">지시대로 로봇을 움직이고, 카메라 사진으로 상품을 검사한다</text>
+      <rect x="120" y="258" width="560" height="56" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="1.5"/>
+      <text x="400" y="282" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">④ 가상 3D 물류센터</text>
+      <text x="400" y="302" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">물리 법칙이 적용된 시뮬레이션 세계 — 선반·상자·로봇이 여기 있다</text>
+      <line x1="330" y1="74" x2="330" y2="94" stroke="#33506B" stroke-width="2" marker-end="url(#ov-ar)"/>
+      <line x1="330" y1="154" x2="330" y2="174" stroke="#33506B" stroke-width="2" marker-end="url(#ov-ar)"/>
+      <line x1="330" y1="234" x2="330" y2="254" stroke="#33506B" stroke-width="2" marker-end="url(#ov-ar)"/>
+      <line x1="470" y1="94" x2="470" y2="74" stroke="#1F7A4D" stroke-width="2" marker-end="url(#ov-ar)"/>
+      <line x1="470" y1="174" x2="470" y2="154" stroke="#1F7A4D" stroke-width="2" marker-end="url(#ov-ar)"/>
+      <line x1="470" y1="254" x2="470" y2="234" stroke="#1F7A4D" stroke-width="2" marker-end="url(#ov-ar)"/>
+      <text x="240" y="90" text-anchor="end" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">지시가 내려가고 ▼</text>
+      <text x="560" y="90" text-anchor="start" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">▲ 상태가 올라온다</text>
+      <text x="710" y="46" font-family="JetBrains Mono, monospace" font-size="12" fill="#33506B">담당 B2</text>
+      <text x="710" y="126" font-family="JetBrains Mono, monospace" font-size="12" fill="#33506B">담당 B1·B2</text>
+      <text x="710" y="206" font-family="JetBrains Mono, monospace" font-size="12" fill="#E8720C">담당 R1·R2·A1·A2</text>
+      <text x="710" y="286" font-family="JetBrains Mono, monospace" font-size="12" fill="#1F7A4D">담당 R1·R2+A1</text>
+    </svg>
+    <p class="soft">그림 1 · 시스템 큰 그림. 층별 기술 스택·프로토콜·담당의 상세는 SEC 02의 상세 스택에서 다룹니다.</p>
+  </div>
+</section>
 
 <!-- ── 01 비전·서비스 ── -->
 <section id="o1">
@@ -242,6 +287,30 @@
   <div class="sec-body">
     <div class="plain"><span class="pl-tag">쉽게 말하면</span>여섯 명이 각자 하나의 큰 덩어리(트랙)를 책임지고, 추가로 팀 전체를 위한 역할(일정 관리, 문서 관리 등)을 하나씩 겸합니다. "보조"는 없습니다 — 전원이 시연 화면에 자기 결과물을 하나씩 올립니다. 누가 어느 자리를 맡을지는 킥오프에서 정합니다.</div>
     <p class="lead">특정 개인을 전제하지 않는 <b>역할 설계도</b>다. 전원이 ① 데모에 보이는 트랙 하나를 맡고 ② 팀 전체를 위한 역할(PM·아키텍트·통합 등) 하나를 겸임한다. "보조" 역할은 없다. 실제 배정은 킥오프 때 각자의 강점과 지망으로 정한다.</p>
+
+    <svg viewBox="0 0 900 280" role="img" aria-label="세 파트(로보틱스, AI, 백엔드)가 가운데의 동결된 데이터 계약을 통해서만 연결되는 협업 구조">
+      <defs><marker id="ov-ar2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8A96A3"/></marker></defs>
+      <rect x="330" y="95" width="240" height="96" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <text x="450" y="124" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">동결된 데이터 계약</text>
+      <text x="450" y="146" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#33506B">VDA 5050 · Sparkplug B · OpenAPI</text>
+      <text x="450" y="170" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">약속만 지키면 서로 기다릴 일 없음</text>
+      <rect x="30" y="90" width="230" height="106" fill="#FDF1E5" stroke="#E8720C" stroke-width="1.5"/>
+      <text x="145" y="116" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#1B2430">로보틱스</text>
+      <text x="145" y="140" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12.5" fill="#1B2430">R1 주행·AMR / R2 로봇팔</text>
+      <text x="145" y="162" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">로봇 상태를 표준 형식으로 발행</text>
+      <rect x="640" y="18" width="230" height="96" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="1.5"/>
+      <text x="755" y="44" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#1B2430">AI</text>
+      <text x="755" y="66" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12.5" fill="#1B2430">A1 합성 데이터 / A2 검수 모델</text>
+      <text x="755" y="88" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">이미지를 받아 판정을 발행</text>
+      <rect x="640" y="168" width="230" height="96" fill="#F5F7F8" stroke="#33506B" stroke-width="1.5"/>
+      <text x="755" y="194" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#1B2430">백엔드</text>
+      <text x="755" y="216" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12.5" fill="#1B2430">B1 WMS 서버 / B2 플랫폼·웹</text>
+      <text x="755" y="238" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">일감 지시(order)를 발행</text>
+      <line x1="262" y1="143" x2="326" y2="143" stroke="#8A96A3" stroke-width="2" marker-end="url(#ov-ar2)"/>
+      <line x1="638" y1="70" x2="574" y2="112" stroke="#8A96A3" stroke-width="2" marker-end="url(#ov-ar2)"/>
+      <line x1="638" y1="214" x2="574" y2="176" stroke="#8A96A3" stroke-width="2" marker-end="url(#ov-ar2)"/>
+    </svg>
+    <p class="soft">그림 2 · 협업 구조. 파트끼리 직접 코드를 맞추는 것이 아니라, 가운데의 얼려 둔 약속(계약)을 통해서만 대화한다 — 상세는 SEC 04.</p>
     <div class="team">
       <div class="member m-robot">
         <span class="role-tag">ROBOTICS · R1</span>
@@ -363,6 +432,32 @@
   <div class="sec-head"><span class="sec-no">SEC 05</span><h2>통합 일정 — 막판 일괄 통합 금지</h2></div>
   <div class="sec-body">
     <div class="plain"><span class="pl-tag">쉽게 말하면</span>마지막 주에 한꺼번에 합치면 반드시 사고가 납니다. 그래서 2~3주에 한 번씩 전체를 미리 연결해보는 날을 정해두고, 그날마다 "실제로 돌아가는 모습"을 확인합니다. 중반 이후로는 언제 시연 요청이 와도 보여줄 수 있는 상태를 유지하는 게 목표입니다.</div>
+
+    <svg viewBox="0 0 900 215" role="img" aria-label="7주 일정: 계약 동결, Gazebo 코어 개발, Isaac 포팅, 확장의 네 구간과 통합 이벤트 세 번의 시점">
+      <rect x="60" y="28" width="234" height="26" fill="#F5F7F8" stroke="#33506B" stroke-width="1.5"/>
+      <text x="70" y="46" font-family="Pretendard, sans-serif" font-size="12.5" fill="#1B2430">계약 동결 · 환경 · mock</text>
+      <rect x="177" y="68" width="351" height="26" fill="#FDF1E5" stroke="#E8720C" stroke-width="1.5"/>
+      <text x="187" y="86" font-family="Pretendard, sans-serif" font-size="12.5" fill="#1B2430">ROS2 코어 개발 (Gazebo에서 빠르게)</text>
+      <rect x="411" y="108" width="234" height="26" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="1.5"/>
+      <text x="421" y="126" font-family="Pretendard, sans-serif" font-size="12.5" fill="#1B2430">Isaac 포팅 · 수직 슬라이스</text>
+      <rect x="645" y="108" width="234" height="26" fill="#F5F7F8" stroke="#8A96A3" stroke-width="1.5"/>
+      <text x="655" y="126" font-family="Pretendard, sans-serif" font-size="12.5" fill="#1B2430">확장·연마 — 상시 시연 가능</text>
+      <line x1="60" y1="170" x2="879" y2="170" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="118" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#5A6673">1주</text>
+      <text x="235" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#5A6673">2주</text>
+      <text x="352" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#5A6673">3주</text>
+      <text x="469" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#5A6673">4주</text>
+      <text x="586" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#5A6673">5주</text>
+      <text x="703" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#5A6673">6주</text>
+      <text x="820" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#5A6673">7주</text>
+      <path d="M352 162 L360 170 L352 178 L344 170 z" fill="#E8720C"/>
+      <path d="M528 162 L536 170 L528 178 L520 170 z" fill="#E8720C"/>
+      <path d="M645 162 L653 170 L645 178 L637 170 z" fill="#E8720C"/>
+      <text x="352" y="152" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" font-weight="700" fill="#1B2430">통합 #1</text>
+      <text x="528" y="152" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" font-weight="700" fill="#1B2430">통합 #2</text>
+      <text x="645" y="152" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" font-weight="700" fill="#1B2430">통합 #3</text>
+    </svg>
+    <p class="soft">그림 3 · 7주 타임라인. 주황 마름모가 전체를 연결해 보는 통합 이벤트 — 각 이벤트에서 무엇을 확인하는지는 아래 목록 참조.</p>
     <div class="milestones">
       <div class="ms"><span class="ms-tag">WEEK 1~2</span><h4>계약 동결 + 셀프서비스 환경</h4><p>토픽 스키마·OpenAPI v1.0 확정 · docker compose 전 스택 · mock publisher 가동</p></div>
       <div class="ms"><span class="ms-tag">WEEK 2~3</span><h4>통합 #1 — mock → 웹 맵</h4><p>가짜 AMR이 웹 관제 맵에서 움직임 · 백엔드 order 발행 → mock 반응 확인</p></div>
@@ -388,6 +483,19 @@
       <tr><td><b>기성품 우선</b></td><td>월드·에셋·레퍼런스 설정·컴포넌트 라이브러리는 가져다 쓴다. 직접 만드는 것은 각 파트의 차별화 지점뿐</td></tr>
       <tr><td><b>기록 습관</b></td><td>주요 결정은 <a class="term" href="glossary_ai_data.html#adr">ADR</a>/Decision Log로 남긴다. 특정 1인 의존 완화 + 발표 자료의 원천</td></tr>
     </table>
+  </div>
+</section>
+
+<!-- ── 07 다음으로 읽기 ── -->
+<section id="o7">
+  <div class="sec-head"><span class="sec-no">SEC 07</span><h2>다음으로 읽기</h2></div>
+  <div class="sec-body">
+    <p class="lead">이 문서로 전체 그림을 잡았다면, 다음 순서로 이어 읽으면 됩니다.</p>
+    <ul class="rules">
+      <li><a href="smart_factory_tech_plan.html"><b>DOC 02 실행 계획서</b></a> — 여기서 요약한 구조의 기술적 근거와 단계별 로드맵. 자기 파트와 관련된 섹션부터 읽어도 된다</li>
+      <li><a href="topic_pitch.html"><b>DOC 03 주제 제안서</b></a> — 이 시스템으로 최종 시연에서 무엇을 보여줄지(장면 6개)에 대한 제안</li>
+      <li>읽다가 낯선 용어가 나오면 그때그때 — <a href="glossary_robotics.html">용어사전 A(로봇·시뮬레이션)</a> · <a href="glossary_industrial.html">B(물류·표준)</a> · <a href="glossary_ai_data.html">C(AI·데이터)</a></li>
+    </ul>
   </div>
 </section>
 

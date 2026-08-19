@@ -137,18 +137,69 @@
 <nav aria-label="섹션 이동">
   <div class="wrap">
     <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a href="#p0">00 한눈에</a>
     <a href="#p1">01 한 문장 제안</a>
     <a href="#p2">02 핵심 시나리오</a>
     <a href="#p3">03 대안 비교</a>
     <a href="#p4">04 역할별 장면</a>
     <a href="#p5">05 실현 근거</a>
     <a href="#p6">06 예상 질문</a>
+    <a href="#p7">07 다음으로</a>
     <a class="nav-cross" href="smart_factory_overview.html">OVERVIEW ↗</a>
     <a class="nav-x2" href="smart_factory_tech_plan.html">TECH PLAN ↗</a>
   </div>
 </nav>
 
 <main class="wrap">
+
+  <!-- ══════════ P0 한눈에 보기 ══════════ -->
+  <section id="p0">
+    <div class="sec-head"><span class="sec-no">SEC 00</span><h2>한눈에 보기 — 이 제안의 전부</h2></div>
+    <div class="sec-body">
+      <p class="lead">이 문서는 주제 토론용 제안서입니다. 읽고 나면 아래 세 질문에 답할 수 있습니다.</p>
+      <ul class="rules">
+        <li>최종 시연에서 무엇을 보여주자는 제안인가? (SEC 01·02)</li>
+        <li>다른 후보 대신 왜 이 조합인가? (SEC 03·05)</li>
+        <li>내 파트의 결과물은 어느 장면에 나오는가? (SEC 04)</li>
+      </ul>
+      <p style="margin-top:14px">제안의 전부는 <b>아래 그림의 시연 장면 6개</b>입니다. 이 여섯 장면이 곧 개발 범위이고, 여기 없는 것은 만들지 않습니다.
+      번호 순서대로 읽으면 시연 당일의 진행 순서가 됩니다.</p>
+
+      <svg viewBox="0 0 900 290" role="img" aria-label="시연 시나리오 6장면 스토리보드: 주문 등록부터 실적 리포트까지, 장면 4와 5가 하이라이트">
+        <defs><marker id="tp-ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
+        <rect x="20" y="28" width="260" height="92" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+        <text x="36" y="54" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#33506B">장면 1</text>
+        <text x="36" y="78" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">주문 등록</text>
+        <text x="36" y="100" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">포털에서 주문 3건을 등록한다</text>
+        <rect x="320" y="28" width="260" height="92" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+        <text x="336" y="54" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#33506B">장면 2</text>
+        <text x="336" y="78" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">무인 운영 — AMR 반송</text>
+        <text x="336" y="100" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">로봇들이 상자를 작업대로 나른다</text>
+        <rect x="620" y="28" width="260" height="92" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+        <text x="636" y="54" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#33506B">장면 3</text>
+        <text x="636" y="78" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">피킹 · AI 검수</text>
+        <text x="636" y="100" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">로봇팔이 집고, AI가 잘못 집기를 잡아낸다</text>
+        <rect x="620" y="170" width="260" height="92" fill="#FDF1E5" stroke="#E8720C" stroke-width="2"/>
+        <text x="636" y="196" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8720C">장면 4 ★</text>
+        <text x="636" y="220" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">장애 주입 · 자가 복구</text>
+        <text x="636" y="242" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">일부러 고장 내도 스스로 회복한다</text>
+        <rect x="320" y="170" width="260" height="92" fill="#FDF1E5" stroke="#E8720C" stroke-width="2"/>
+        <text x="336" y="196" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8720C">장면 5 ★</text>
+        <text x="336" y="220" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">What-if 수요 예측</text>
+        <text x="336" y="242" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">"주문 2배면?" 즉석 시뮬레이션</text>
+        <rect x="20" y="170" width="260" height="92" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+        <text x="36" y="196" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#33506B">장면 6</text>
+        <text x="36" y="220" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">실적 리포트</text>
+        <text x="36" y="242" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">처리 이력을 숫자로 보여주며 마무리</text>
+        <line x1="282" y1="74" x2="316" y2="74" stroke="#33506B" stroke-width="2" marker-end="url(#tp-ar)"/>
+        <line x1="582" y1="74" x2="616" y2="74" stroke="#33506B" stroke-width="2" marker-end="url(#tp-ar)"/>
+        <line x1="750" y1="122" x2="750" y2="166" stroke="#33506B" stroke-width="2" marker-end="url(#tp-ar)"/>
+        <line x1="616" y1="216" x2="584" y2="216" stroke="#33506B" stroke-width="2" marker-end="url(#tp-ar)"/>
+        <line x1="316" y1="216" x2="284" y2="216" stroke="#33506B" stroke-width="2" marker-end="url(#tp-ar)"/>
+      </svg>
+      <p class="soft">그림 1 · 시연 스토리보드. 주황 테두리(★)가 이 제안의 두 하이라이트 — 자가 복구와 수요 예측. 장면별 상세와 담당은 SEC 02·04에서 다룹니다.</p>
+    </div>
+  </section>
 
   <!-- ══════════ P1 한 문장 제안 ══════════ -->
   <section id="p1">
@@ -334,6 +385,19 @@
       <p>물류센터의 업무 중 <b>출고 주문 처리 한 흐름</b>만 다룬다. 입고·반품·소터(분류기)·검수 외 품질 공정은 명시적으로 범위 밖이다. 넓어 보이는 것은 한 흐름을 끝까지 다루기 때문이지, 여러 흐름을 벌였기 때문이 아니다.</p>
       <h3>Q5. 시연 중 의도하지 않은 진짜 고장이 나면?</h3>
       <p>장애 주입 시나리오는 시드를 고정해 매번 같은 결과가 나오게 만들고, 리허설을 반복한다. 또한 이 주제는 "고장에서 회복하는 시스템"이므로 예상 못 한 문제가 생겨도 복구 과정 자체를 보여줄 수 있다. 최악의 경우에 대비한 백업 영상은 상시 준비한다.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ P7 다음으로 읽기 ══════════ -->
+  <section id="p7">
+    <div class="sec-head"><span class="sec-no">SEC 07</span><h2>다음으로 읽기</h2></div>
+    <div class="sec-body">
+      <p class="lead">토론 전후로 함께 보면 좋은 문서입니다.</p>
+      <ul class="rules">
+        <li><a href="smart_factory_overview.html"><b>DOC 01 전체 조망</b></a> — 이 제안이 올라탈 시스템 구조와 역할 분담. 특히 SEC 03(역할)·SEC 05(일정)</li>
+        <li><a href="smart_factory_tech_plan.html"><b>DOC 02 실행 계획서</b></a> — "추가 개발이 거의 없다"(SEC 05)는 주장의 기술적 근거</li>
+        <li>채택이 결정되면 — 세부 수치(맵 크기·로봇 대수·상품 종류)를 팀이 확정하고 DOC 01·02에 반영한다</li>
+      </ul>
     </div>
   </section>
 

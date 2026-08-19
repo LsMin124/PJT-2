@@ -135,6 +135,7 @@
 <nav aria-label="섹션 이동">
   <div class="wrap">
     <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a href="#bov">한눈에</a>
     <a href="#b0">00 용어</a>
     <a href="#b1">01 인덕션이란</a>
     <a href="#b2">02 처리량 체인</a>
@@ -149,6 +150,61 @@
 </nav>
 
 <main class="wrap">
+
+  <!-- ══════════ BOV 한눈에 보기 ══════════ -->
+  <section id="bov">
+    <div class="sec-head"><span class="sec-no">한눈에 보기</span><h2>이 문서가 답하는 질문</h2></div>
+    <div class="sec-body">
+      <ul class="rules">
+        <li><b>소터(자동 분류기)는 빠른데 왜 허브 전체가 막히는가?</b> — 병목은 소터가 아니라 그 앞의 인덕션에 있다 (SEC 01·02)</li>
+        <li><b>피크 시간대는 왜 그렇게 치명적인가?</b> — 혼잡은 용량에 가까워질수록 비선형으로 폭발한다 (SEC 03)</li>
+        <li><b>이 병목을 시뮬레이션으로 어떻게 정량화하나?</b> — SimPy 모델 설계와 실험 4종 (SEC 05·06)</li>
+      </ul>
+
+      <h3>배경이 되는 장면 — 인덕션에서 소터까지</h3>
+      <svg viewBox="0 0 900 330" role="img" aria-label="하차 무더기에서 인덕션을 거쳐 소터 루프와 슈트로 이어지는 흐름 도해" style="max-width:100%;height:auto;display:block;margin:14px 0">
+        <defs><marker id="arrB1" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
+        <g fill="#FFFFFF" stroke="#8A96A3" stroke-width="1">
+          <rect x="52" y="128" width="34" height="26" transform="rotate(-8 69 141)"/>
+          <rect x="90" y="118" width="40" height="28" transform="rotate(6 110 132)"/>
+          <rect x="62" y="158" width="44" height="28"/>
+          <rect x="110" y="152" width="34" height="30" transform="rotate(-5 127 167)"/>
+          <rect x="82" y="188" width="52" height="26" transform="rotate(3 108 201)"/>
+        </g>
+        <text x="95" y="240" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="13" fill="#5A6673">하차된 무더기</text>
+        <text x="95" y="258" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#8A96A3">(겹치고 붙은 상태)</text>
+        <line x1="150" y1="165" x2="196" y2="165" stroke="#33506B" stroke-width="1.8" marker-end="url(#arrB1)"/>
+        <rect x="202" y="140" width="168" height="52" fill="#FDF1E5" stroke="#E8720C" stroke-width="2"/>
+        <text x="286" y="162" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">인덕션</text>
+        <text x="286" y="181" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">낱개 분리 · 정렬 · 간격</text>
+        <text x="286" y="212" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12.5" font-weight="700" fill="#E8720C">◀ 병목 — 사람 손 속도가 상한</text>
+        <line x1="370" y1="165" x2="408" y2="165" stroke="#33506B" stroke-width="1.8" marker-end="url(#arrB1)"/>
+        <g fill="#FFFFFF" stroke="#8A96A3" stroke-width="1">
+          <rect x="414" y="154" width="20" height="22"/><rect x="444" y="154" width="20" height="22"/><rect x="474" y="154" width="20" height="22"/>
+        </g>
+        <text x="454" y="196" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">한 줄 · 한 개씩 · 간격 맞춤</text>
+        <line x1="500" y1="165" x2="530" y2="165" stroke="#33506B" stroke-width="1.8" marker-end="url(#arrB1)"/>
+        <rect x="536" y="140" width="96" height="52" fill="#F5F7F8" stroke="#33506B" stroke-width="1.5"/>
+        <text x="584" y="162" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1B2430">스캔·계측</text>
+        <text x="584" y="181" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">DWS</text>
+        <line x1="632" y1="165" x2="662" y2="165" stroke="#33506B" stroke-width="1.8" marker-end="url(#arrB1)"/>
+        <rect x="668" y="82" width="212" height="150" rx="70" fill="none" stroke="#33506B" stroke-width="2.5"/>
+        <g fill="#FFFFFF" stroke="#33506B" stroke-width="1.2">
+          <rect x="706" y="76" width="16" height="12"/><rect x="746" y="76" width="16" height="12"/><rect x="786" y="76" width="16" height="12"/><rect x="826" y="76" width="16" height="12"/>
+          <rect x="706" y="226" width="16" height="12"/><rect x="766" y="226" width="16" height="12"/><rect x="826" y="226" width="16" height="12"/>
+        </g>
+        <text x="774" y="150" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">소터 (순환 분류기)</text>
+        <text x="774" y="170" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">캐리어가 상자를 싣고 돈다</text>
+        <path d="M840 100 C 870 70, 740 48, 700 88" fill="none" stroke="#E8720C" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#arrB1)"/>
+        <text x="770" y="46" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12.5" fill="#E8720C">분류 실패 → 재순환 (한 바퀴 더 = 용량 낭비)</text>
+        <g stroke="#1F7A4D" stroke-width="1.8" fill="none">
+          <line x1="700" y1="238" x2="678" y2="288"/><line x1="760" y1="238" x2="752" y2="288"/><line x1="820" y1="238" x2="836" y2="288"/>
+        </g>
+        <text x="757" y="312" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12.5" fill="#1F7A4D">슈트 — 목적지(행선지)별 출구</text>
+      </svg>
+      <p class="soft">그림: 무더기 상태의 상자를 "한 줄, 한 개씩"으로 바꾸는 인덕션이 유일하게 사람 손에 묶인 구간이다. 소터는 기계 용량이 커서, 인덕션이 느리면 <b>빈 캐리어가 도는(소터가 굶는)</b> 형태로 병목이 나타난다.</p>
+    </div>
+  </section>
 
   <!-- ══════════ B0 용어 ══════════ -->
   <section id="b0">
@@ -248,6 +304,32 @@
         <tr><td class="num"><b>ρ</b> (로)</td><td>가동률 = λ ÷ (c×μ) — 전체 처리 능력 중 얼마나 차 있는가</td><td>9,000 ÷ (5×2,000) = <b>0.9</b> → 능력의 90%를 쓰는 중</td></tr>
       </table>
       </div>
+      <h3>곡선으로 보면 — 가동률과 대기의 관계</h3>
+      <svg viewBox="0 0 900 310" role="img" aria-label="가동률이 1에 가까워질수록 평균 대기가 비선형으로 폭발하는 곡선 차트" style="max-width:100%;height:auto;display:block;margin:14px 0">
+        <g stroke="#DDE2E6" stroke-width="1">
+          <line x1="60" y1="187" x2="850" y2="187"/><line x1="60" y1="113" x2="850" y2="113"/><line x1="60" y1="40" x2="850" y2="40"/>
+        </g>
+        <g font-family="JetBrains Mono, monospace" font-size="12" fill="#5A6673">
+          <text x="52" y="191" text-anchor="end">10×</text><text x="52" y="117" text-anchor="end">20×</text><text x="52" y="44" text-anchor="end">30×</text>
+          <text x="450" y="282" text-anchor="middle">0.5</text><text x="606" y="282" text-anchor="middle">0.7</text><text x="762" y="282" text-anchor="middle">0.9</text><text x="840" y="282" text-anchor="middle">1.0</text>
+        </g>
+        <line x1="60" y1="30" x2="60" y2="260" stroke="#1B2430" stroke-width="1.5"/>
+        <line x1="60" y1="260" x2="850" y2="260" stroke="#1B2430" stroke-width="1.5"/>
+        <line x1="840" y1="36" x2="840" y2="260" stroke="#8A96A3" stroke-width="1.2" stroke-dasharray="5 4"/>
+        <polyline points="60,253 216,251 372,249 450,246 528,242 606,236 645,231 684,224 723,211 762,187 781,165 793,140 801,113 809,74 813,47" fill="none" stroke="#E8720C" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <line x1="606" y1="236" x2="606" y2="260" stroke="#33506B" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <circle cx="606" cy="236" r="4.5" fill="#FFFFFF" stroke="#33506B" stroke-width="2"/>
+        <text x="606" y="222" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">ρ=0.7 → 약 3배</text>
+        <line x1="762" y1="187" x2="762" y2="260" stroke="#33506B" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <circle cx="762" cy="187" r="4.5" fill="#FFFFFF" stroke="#33506B" stroke-width="2"/>
+        <text x="742" y="172" text-anchor="end" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">ρ=0.9 → 10배</text>
+        <text x="806" y="34" text-anchor="end" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">ρ=0.99 → 100배 (차트 밖)</text>
+        <text x="846" y="300" text-anchor="end" font-family="Pretendard, sans-serif" font-size="13" fill="#8A96A3">ρ=1: 대기 무한대</text>
+        <text x="455" y="302" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="13.5" fill="#1B2430">가동률 ρ = 도착량 ÷ 처리 능력</text>
+        <text x="76" y="26" font-family="Pretendard, sans-serif" font-size="13.5" fill="#1B2430">평균 대기 (한산할 때 대비 배수)</text>
+      </svg>
+      <p class="soft">그림: 가동률 70%까지는 대기가 완만하게 늘지만, 90%를 넘으면 급격히 치솟고 100%에서는 이론상 무한대가 된다. "물량이 10%만 늘었는데 왜 마비되나"의 답이 이 곡선이다.</p>
+
       <ul class="rules">
         <li><b>대기의 비선형 폭발</b> — 대기 시간은 대략 <code>1/(1−ρ)</code>에 비례한다(M/M/c — 도착과 처리가 모두 무작위인 창구 c개짜리 표준 대기행렬 모형의 성질). 위 예시로 계산하면 ρ=0.9일 때 1/(1−0.9)=<b>10배</b>, ρ=0.99면 <b>100배</b>. 물량이 10% 늘었을 뿐인데 대기는 10배로 뛴다</li>
         <li><b>비정상 도착</b> — 택배 도착은 하루 안에서 심하게 출렁인다(간선차 도착 스케줄에 따라 몰림). 평균으로 계산하면 안전해 보여도 피크 구간에서는 ρ&gt;1이 되어 대기열이 무한정 자란다 — 버퍼(컨베이어)가 차면 하차까지 거꾸로 막힌다(blocking)</li>
@@ -354,6 +436,18 @@ def box_flow(env, box, buffer, induction, sorter, stats):
         <li><b>검증 규율</b> — 각 실험은 난수 시드를 바꿔 반복(replication)하고 평균±신뢰구간으로 보고한다. 1회 실행 결과로 결론 내리지 않는다</li>
         <li><b>캘리브레이션</b> — 공개 수치(일 175만 개 등)와 총량이 대략 맞는지로 모델의 스케일을 점검한다. 맞지 않으면 파라미터 가정을 문서에 남기고 수정한다</li>
         <li><b>산출물</b> — "인덕션 처리율 vs 소터 공회전율" 곡선 1장이 이 심화 문서 전체의 결론을 요약하는 그림이 된다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══════════ 다음으로 읽기 ══════════ -->
+  <section id="bnext">
+    <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
+    <div class="sec-body">
+      <ul class="rules">
+        <li><a href="deep_dive_unloading.html"><b>심화 A — 벌크 하차</b></a> : 인덕션의 공급 상류. 하차 속도가 이 문서의 도착률 λ를 만든다</li>
+        <li><a href="deep_dive_perception_grasp.html"><b>심화 C — 비정형 인식·파지</b></a> : 로봇식 싱귤레이션(SEC 04)이 성립하려면 풀어야 하는 인식 문제의 방법론</li>
+        <li><a href="logistics_domain_research.html"><b>DOC 05 — 도메인 리서치</b></a> : 인덕션이 허브 전체 흐름 중 어디에 있는지 큰 그림으로 돌아가고 싶을 때</li>
       </ul>
     </div>
   </section>

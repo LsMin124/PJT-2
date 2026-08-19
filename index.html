@@ -56,6 +56,11 @@
   .tagline small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#9AA7B4;margin-bottom:6px;font-weight:400}
   .tagline b{color:var(--amber)}
 
+  /* ── 문서 여정 지도 ── */
+  .journey{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);padding:20px 24px 16px;margin:0 0 28px}
+  .journey svg{max-width:100%;height:auto;display:block}
+  .journey-cap{font-size:13.5px;color:var(--ink-soft);margin-top:10px;line-height:1.7}
+
   /* ── 문서 카드: 도면 목록표 ── */
   .register-label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:12px}
   .docs{display:grid;grid-template-columns:1fr 1fr;gap:22px}
@@ -144,7 +149,55 @@
     <small>DOC 00 · INTRO — 읽는 데 약 10분</small>
     <b>처음이신가요? 전문용어 없이 프로젝트 전체를 설명하는 안내 문서부터 시작하세요</b><span class="go">읽으러 가기 →</span>
   </a>
-  <div class="tagline"><small>READING ORDER</small>읽는 순서: <b>00 안내</b> → <b>01 전체 조망</b> → <b>02 실행 계획서</b> · 진행 중 주제(AMR 견적 시뮬레이션)는 <b>05 리서치</b> → <b>06 이론</b> → <b>07 결정</b> 순. 모르는 용어는 각 문서 도입부의 "먼저 알아둘 용어" 표와 <b>REF A–C 용어사전</b> 참고.</div>
+  <div class="journey">
+    <div class="register-label">READING MAP · 무엇을 어떤 순서로 읽나</div>
+    <svg viewBox="0 0 900 264" role="img" aria-label="문서 읽기 순서 지도 — 트랙 1은 처음 읽는 순서, 트랙 2는 진행 중 주제, 트랙 3은 참고 문서">
+      <defs><marker id="jm-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
+      <text x="20" y="40" font-family="JetBrains Mono, monospace" font-size="12" fill="#5A6673">TRACK 1</text>
+      <text x="20" y="60" font-family="Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#1B2430">처음이라면</text>
+      <rect x="190" y="22" width="190" height="50" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="204" y="43" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8720C">DOC 00</text>
+      <text x="204" y="62" font-family="Pretendard, sans-serif" font-size="14" fill="#1B2430">안내 — 전문용어 없음</text>
+      <line x1="380" y1="47" x2="424" y2="47" stroke="#33506B" stroke-width="2" marker-end="url(#jm-arr)"/>
+      <rect x="430" y="22" width="190" height="50" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="444" y="43" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8720C">DOC 01</text>
+      <text x="444" y="62" font-family="Pretendard, sans-serif" font-size="14" fill="#1B2430">전체 조망 — 큰 그림</text>
+      <line x1="620" y1="47" x2="664" y2="47" stroke="#33506B" stroke-width="2" marker-end="url(#jm-arr)"/>
+      <rect x="670" y="22" width="200" height="50" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="684" y="43" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8720C">DOC 02</text>
+      <text x="684" y="62" font-family="Pretendard, sans-serif" font-size="14" fill="#1B2430">실행 계획서 — 기술 상세</text>
+      <text x="20" y="128" font-family="JetBrains Mono, monospace" font-size="12" fill="#5A6673">TRACK 2</text>
+      <text x="20" y="148" font-family="Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#1B2430">진행 중 주제</text>
+      <text x="20" y="166" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">AMR 견적 시뮬레이션</text>
+      <rect x="190" y="110" width="190" height="50" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="204" y="131" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8720C">DOC 05</text>
+      <text x="204" y="150" font-family="Pretendard, sans-serif" font-size="14" fill="#1B2430">도메인 리서치 — 현장</text>
+      <line x1="380" y1="135" x2="424" y2="135" stroke="#33506B" stroke-width="2" marker-end="url(#jm-arr)"/>
+      <rect x="430" y="110" width="190" height="50" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="444" y="131" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8720C">DOC 06</text>
+      <text x="444" y="150" font-family="Pretendard, sans-serif" font-size="14" fill="#1B2430">경로계획 이론 — 근거</text>
+      <line x1="620" y1="135" x2="664" y2="135" stroke="#33506B" stroke-width="2" marker-end="url(#jm-arr)"/>
+      <rect x="670" y="110" width="200" height="50" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="684" y="131" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8720C">DOC 07</text>
+      <text x="684" y="150" font-family="Pretendard, sans-serif" font-size="14" fill="#1B2430">구현 결정 — 팀 합의</text>
+      <text x="20" y="216" font-family="JetBrains Mono, monospace" font-size="12" fill="#5A6673">TRACK 3</text>
+      <text x="20" y="236" font-family="Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#1B2430">필요할 때 참고</text>
+      <rect x="190" y="198" width="160" height="50" fill="#F5F7F8" stroke="#8A96A3" stroke-width="1.5"/>
+      <text x="202" y="219" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#5A6673">DOC 03·04</text>
+      <text x="202" y="238" font-family="Pretendard, sans-serif" font-size="13.5" fill="#1B2430">제안서 · 랩 노트</text>
+      <rect x="370" y="198" width="160" height="50" fill="#F5F7F8" stroke="#8A96A3" stroke-width="1.5"/>
+      <text x="382" y="219" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#5A6673">DEEP-DIVE A–C</text>
+      <text x="382" y="238" font-family="Pretendard, sans-serif" font-size="13.5" fill="#1B2430">구간별 심화 분석</text>
+      <rect x="550" y="198" width="160" height="50" fill="#F5F7F8" stroke="#8A96A3" stroke-width="1.5"/>
+      <text x="562" y="219" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#5A6673">REF A–C</text>
+      <text x="562" y="238" font-family="Pretendard, sans-serif" font-size="13.5" fill="#1B2430">용어사전 3부</text>
+      <rect x="730" y="198" width="140" height="50" fill="#F5F7F8" stroke="#8A96A3" stroke-width="1.5"/>
+      <text x="742" y="219" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#5A6673">용어 표</text>
+      <text x="742" y="238" font-family="Pretendard, sans-serif" font-size="13.5" fill="#1B2430">각 문서 도입부</text>
+    </svg>
+    <p class="journey-cap">화살표 순서대로 읽으면 됩니다. 처음이면 트랙 1, 지금 진행 중인 주제를 따라가려면 트랙 2.
+    읽다가 모르는 용어가 나오면 그 문서 도입부의 "먼저 알아둘 용어" 표를 먼저 보고, 더 깊은 설명이 필요하면 용어사전(REF A–C)의 해당 항목으로 이동하세요.</p>
+  </div>
 
   <div class="register-label">Documents · 7 Active</div>
   <div class="docs">

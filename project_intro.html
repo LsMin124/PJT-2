@@ -73,6 +73,12 @@
   .order a:hover{border-left-color:var(--amber);background:#FDF4EC}
   .order a b{display:block;font-size:14.5px}
   .order a small{color:var(--ink-soft);font-size:13px}
+  .qs{list-style:none;margin:10px 0 4px}
+  .qs li{padding:7px 0 7px 30px;position:relative;border-bottom:1px dashed var(--grid);font-size:14.5px}
+  .qs li:last-child{border-bottom:none}
+  .qs li::before{content:"Q";position:absolute;left:6px;top:7px;font-family:var(--mono);font-weight:700;color:var(--amber)}
+  .caption{font-size:12.5px;color:var(--ink-soft);margin:2px 0 10px}
+  svg{max-width:100%;height:auto;display:block;margin:14px 0}
   footer{border-top:3px solid var(--ink);padding:18px 0 44px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
   @media (max-width:760px){body{font-size:14.5px} section{padding:18px}}
 </style>
@@ -91,6 +97,7 @@
 <nav aria-label="문서 이동">
   <div class="wrap">
     <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a href="#i0">한눈에 보기</a>
     <a href="#i1">무엇을 만드나</a>
     <a href="#i2">주문 처리 과정</a>
     <a href="#i3">왜 시뮬레이션인가</a>
@@ -101,6 +108,54 @@
 </nav>
 
 <main class="wrap">
+
+<section id="i0">
+  <h2><span class="q">▣</span>한눈에 보기</h2>
+  <p>이 문서는 프로젝트를 처음 접하는 사람을 위한 안내서입니다. 끝까지 읽으면 아래 세 가지 질문에 답할 수 있게 됩니다.</p>
+  <ul class="qs">
+    <li>이 프로젝트는 결국 무엇을 만드는가?</li>
+    <li>왜 진짜 로봇 대신 시뮬레이션으로 만드는가?</li>
+    <li>여섯 명은 각자 어떤 조각을 맡는가?</li>
+  </ul>
+  <p style="margin-top:14px">먼저 완성된 시스템의 전체 그림 한 장부터 보겠습니다. <b>주문 한 건이 왼쪽에서 오른쪽으로 흘러가고</b>, 그 모든 과정을 운영자가 웹 화면에서 실시간으로 지켜봅니다.</p>
+
+  <svg viewBox="0 0 900 210" role="img" aria-label="주문 처리 전체 흐름: 주문 접수부터 출고까지 여섯 단계와 이를 지켜보는 관제 웹 화면">
+    <defs><marker id="pi-ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
+    <rect x="20" y="34" width="120" height="64" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+    <text x="80" y="61" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#1B2430">① 주문 접수</text>
+    <text x="80" y="81" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">웹에서 등록</text>
+    <rect x="168" y="34" width="120" height="64" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+    <text x="228" y="61" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#1B2430">② 두뇌 서버</text>
+    <text x="228" y="81" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">일감으로 분해</text>
+    <rect x="316" y="34" width="120" height="64" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+    <text x="376" y="61" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#1B2430">③ AMR 운반</text>
+    <text x="376" y="81" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">상자를 작업대로</text>
+    <rect x="464" y="34" width="120" height="64" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+    <text x="524" y="61" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#1B2430">④ 로봇팔 피킹</text>
+    <text x="524" y="81" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">상품 집어 담기</text>
+    <rect x="612" y="34" width="120" height="64" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+    <text x="672" y="61" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#1B2430">⑤ AI 검수</text>
+    <text x="672" y="81" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">파손·오류 확인</text>
+    <rect x="760" y="34" width="120" height="64" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+    <text x="820" y="61" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#1B2430">⑥ 출고</text>
+    <text x="820" y="81" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673">실적 기록</text>
+    <line x1="142" y1="66" x2="164" y2="66" stroke="#33506B" stroke-width="2" marker-end="url(#pi-ar)"/>
+    <line x1="290" y1="66" x2="312" y2="66" stroke="#33506B" stroke-width="2" marker-end="url(#pi-ar)"/>
+    <line x1="438" y1="66" x2="460" y2="66" stroke="#33506B" stroke-width="2" marker-end="url(#pi-ar)"/>
+    <line x1="586" y1="66" x2="608" y2="66" stroke="#33506B" stroke-width="2" marker-end="url(#pi-ar)"/>
+    <line x1="734" y1="66" x2="756" y2="66" stroke="#33506B" stroke-width="2" marker-end="url(#pi-ar)"/>
+    <line x1="80" y1="98" x2="80" y2="140" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <line x1="228" y1="98" x2="228" y2="140" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <line x1="376" y1="98" x2="376" y2="140" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <line x1="524" y1="98" x2="524" y2="140" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <line x1="672" y1="98" x2="672" y2="140" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <line x1="820" y1="98" x2="820" y2="140" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <rect x="20" y="140" width="860" height="44" fill="#FDF1E5" stroke="#E8720C" stroke-width="1.5"/>
+    <text x="450" y="167" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#1B2430">관제 웹 화면 — 위 여섯 단계가 3D 화면과 지도에 실시간으로 보인다</text>
+  </svg>
+  <p class="caption">그림 1 · 주문 한 건이 처리되는 전체 흐름. 각 단계는 아래 "주문 처리 과정"에서 하나씩 풀어 설명합니다.</p>
+  <div class="note">낯선 단어(AMR, 피킹 등)가 보여도 괜찮습니다 — 아래에서 전부 처음부터 설명합니다.</div>
+</section>
 
 <section id="i1">
   <h2><span class="q">Q.</span>무엇을 만드는 프로젝트인가요?</h2>
@@ -128,6 +183,27 @@
   <h2><span class="q">Q.</span>왜 진짜 로봇이 아니라 시뮬레이션인가요?</h2>
   <p>첫째, <b>돈과 시간</b> 때문입니다. 진짜 로봇과 창고를 구하려면 수백만 원과 몇 달이 필요하고, 로봇이 고장 나면 프로젝트가 멈춥니다. 가상 공간에서는 로봇이 부서져도 버튼 하나로 되살아나고, 로봇 10대가 필요하면 복사해서 붙여넣으면 됩니다.</p>
   <p>둘째, <b>실제 산업계가 이렇게 일하기 때문</b>입니다. 아마존, BMW 같은 회사들도 진짜 공장을 짓기 전에 컴퓨터 속에 먼저 지어보고(이걸 '디지털 트윈'이라 부릅니다), 로봇 AI도 가상 공간에서 수천 번 연습시킨 뒤 실물에 옮깁니다. 즉 시뮬레이션은 "진짜의 대용품"이 아니라 <b>업계의 표준 개발 방식</b>입니다.</p>
+
+  <svg viewBox="0 0 900 235" role="img" aria-label="가상 물류센터에서 먼저 검증하고 검증된 소프트웨어를 현실로 옮기는 개발 방식의 비교">
+    <defs><marker id="pi-ar2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#1F7A4D"/></marker></defs>
+    <rect x="20" y="24" width="380" height="156" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="1.5"/>
+    <text x="40" y="54" font-family="Pretendard, sans-serif" font-size="14.5" font-weight="700" fill="#1B2430">가상 물류센터 — 이 프로젝트</text>
+    <text x="40" y="84" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">· 로봇이 고장 나면 → 버튼 하나로 복구</text>
+    <text x="40" y="110" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">· 로봇 10대가 필요하면 → 복사해서 붙여넣기</text>
+    <text x="40" y="136" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">· 위험한 실험(고장·정체)도 마음껏 반복</text>
+    <text x="40" y="162" font-family="Pretendard, sans-serif" font-size="13" fill="#5A6673">단, 움직이는 소프트웨어는 전부 진짜</text>
+    <rect x="500" y="24" width="380" height="156" fill="#F5F7F8" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+    <text x="520" y="54" font-family="Pretendard, sans-serif" font-size="14.5" font-weight="700" fill="#1B2430">현실 물류센터 — 바로 지었다면</text>
+    <text x="520" y="84" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">· 로봇 1대 = 수천만 원, 조달에 수개월</text>
+    <text x="520" y="110" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">· 고장 = 프로젝트 전체 중단</text>
+    <text x="520" y="136" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430">· "로봇을 늘리면?" 실험 한 번에 큰 비용</text>
+    <text x="520" y="162" font-family="Pretendard, sans-serif" font-size="13" fill="#5A6673">그래서 업계도 가상 검증을 먼저 한다</text>
+    <line x1="404" y1="102" x2="494" y2="102" stroke="#1F7A4D" stroke-width="2.5" marker-end="url(#pi-ar2)"/>
+    <text x="450" y="90" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" font-weight="700" fill="#1B2430">검증된 소프트웨어를</text>
+    <text x="450" y="122" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" font-weight="700" fill="#1B2430">그대로 이식</text>
+    <text x="450" y="215" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">아마존·BMW도 쓰는 "디지털 트윈" 방식 — 가상에서 검증하고 현실로 옮긴다</text>
+  </svg>
+  <p class="caption">그림 2 · 가상에서 먼저, 현실은 나중에. 왼쪽 세계에서 개발해도 소프트웨어는 오른쪽 세계의 것과 동일합니다.</p>
   <p>셋째, 그래도 아쉬움이 남는 사람을 위해 — 마지막 단계에 <b>작은 실물 로봇(로봇팔 + 바퀴 베이스)을 사서 가상 세계에 연결해보는 선택 과제</b>를 열어뒀습니다. 시간이 허락하면 도전합니다.</p>
 </section>
 

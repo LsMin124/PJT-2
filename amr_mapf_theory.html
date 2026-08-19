@@ -146,6 +146,13 @@
     구현 결정은 <a href="amr_decision_inventory.html">DOC 07 결정 인벤토리</a>가 담당하고,
     여기서는 "그 결정이 왜 타당한가"를 뒷받침하는 이론과 원 논문을 다룹니다. SEC 01~04는 이론, SEC 05는 문헌, SEC 06은 학습 순서입니다.</p>
 
+    <h3>이 문서가 답하는 질문</h3>
+    <ul class="rules">
+      <li>① 로봇을 늘리면 처리량은 왜 정비례로 늘지 않는가? — SEC 01</li>
+      <li>② 여러 로봇의 길찾기(MAPF)는 어떤 알고리즘 계보로 발전해 왔고, 본 프로젝트는 그중 무엇을 쓰는가? — SEC 02·03</li>
+      <li>③ 시뮬레이션이 낸 숫자가 맞다는 것을 무슨 이론으로 검산하는가? — SEC 04</li>
+    </ul>
+
     <h3>먼저 알아둘 용어 — 경로계획 문헌의 기본 어휘</h3>
     <p>MAPF 문헌은 아래 용어를 당연하다는 듯 씁니다. 본문을 읽기 전에 한 번 훑어 두세요.</p>
     <div class="tbl-scroll"><table>
@@ -167,6 +174,30 @@
     <p class="lead">AMR 견적 시뮬레이션이 고객에게 내미는 핵심 그림은 <b>대수–처리량 곡선</b>입니다.
     이 절에서는 그 곡선이 왜 경로계획 이론 없이는 그려질 수 없는지 설명합니다.</p>
 
+    <svg viewBox="0 0 880 330" role="img" aria-label="로봇 대수와 처리량의 관계 곡선 — 선형 구간, 포화 구간, 과밀 구간" style="max-width:100%;height:auto;display:block;margin:14px 0">
+      <line x1="70" y1="100" x2="850" y2="100" stroke="#DDE2E6" stroke-width="1"/>
+      <line x1="70" y1="160" x2="850" y2="160" stroke="#DDE2E6" stroke-width="1"/>
+      <line x1="70" y1="220" x2="850" y2="220" stroke="#DDE2E6" stroke-width="1"/>
+      <line x1="390" y1="48" x2="390" y2="280" stroke="#8A96A3" stroke-width="1" stroke-dasharray="4 4"/>
+      <line x1="640" y1="48" x2="640" y2="280" stroke="#8A96A3" stroke-width="1" stroke-dasharray="4 4"/>
+      <line x1="70" y1="280" x2="850" y2="280" stroke="#1B2430" stroke-width="1.5"/>
+      <line x1="70" y1="40" x2="70" y2="280" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="70" y="28" font-family="Pretendard, sans-serif" font-size="13" fill="#5A6673">시간당 처리량 ↑</text>
+      <text x="850" y="304" text-anchor="end" font-family="Pretendard, sans-serif" font-size="13" fill="#5A6673">투입 로봇 대수 →</text>
+      <text x="140" y="66" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1B2430">① 선형 구간</text>
+      <text x="140" y="84" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">1대 더 = 1대 몫</text>
+      <text x="440" y="66" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1B2430">② 포화 구간</text>
+      <text x="440" y="84" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">경합 시작 — 곡선이 눕는다</text>
+      <text x="680" y="66" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1B2430">③ 과밀 구간</text>
+      <text x="680" y="84" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">서로 길을 막아 오히려 감소</text>
+      <path d="M80,272 C180,230 300,160 390,122 C470,90 530,86 585,87 C650,89 730,108 830,142" fill="none" stroke="#33506B" stroke-width="2.5"/>
+      <line x1="575" y1="92" x2="575" y2="280" stroke="#E8720C" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <circle cx="575" cy="87" r="6" fill="#E8720C" stroke="#FFFFFF" stroke-width="2"/>
+      <text x="560" y="130" text-anchor="end" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1B2430">견적의 답 — 이 부근이 최적 대수</text>
+      <text x="575" y="300" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#E8720C">N*</text>
+    </svg>
+    <p class="soft">같은 창고에서 로봇을 늘려갈 때의 전형적인 곡선. 이 문서의 이론은 전부 "왜 ②와 ③이 생기는가"에 대한 설명입니다.</p>
+
     <div class="plain"><span class="pl-tag">대수–처리량 곡선이란</span>
     가로축은 투입한 로봇 대수, 세로축은 시간당 처리한 작업 수입니다.
     로봇이 적을 때는 1대를 더 넣으면 처리량이 거의 1대만큼 늘어납니다.
@@ -186,6 +217,23 @@
       <tr><td>2. Path Planning / <b>MAPF</b></td><td>충돌 없는 경로 집합</td><td><b>본 문서의 본체</b>, 견적 엔진</td></tr>
       <tr><td>3. Motion Planning / Control</td><td>속도·가감속 프로파일 추종</td><td><a class="term" href="glossary_robotics.html#nav2">Nav2</a> 담당, 에뮬레이션 검증 계층</td></tr>
     </table></div>
+
+    <svg viewBox="0 0 900 252" role="img" aria-label="할당·경로·주행 3계층 구조 — 이 문서는 2층 경로 계획을 다룬다" style="max-width:100%;height:auto;display:block;margin:14px 0">
+      <defs><marker id="tl-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
+      <rect x="150" y="14" width="600" height="56" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="170" y="38" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">1층 · 작업 할당 (Task Allocation)</text>
+      <text x="170" y="58" font-family="Pretendard, sans-serif" font-size="13" fill="#5A6673">어느 로봇이 어느 작업을 맡을까 — 디스패처 (DOC 07 SEC C)</text>
+      <line x1="450" y1="70" x2="450" y2="94" stroke="#33506B" stroke-width="2" marker-end="url(#tl-arr)"/>
+      <rect x="150" y="100" width="600" height="56" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="2"/>
+      <text x="170" y="124" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">2층 · 경로 계획 (MAPF)</text>
+      <text x="170" y="144" font-family="Pretendard, sans-serif" font-size="13" fill="#5A6673">서로 부딪히지 않는 경로 집합 — 이 문서의 본체, 견적 엔진의 핵심</text>
+      <text x="770" y="132" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#1F7A4D">★ 이 문서</text>
+      <line x1="450" y1="156" x2="450" y2="180" stroke="#33506B" stroke-width="2" marker-end="url(#tl-arr)"/>
+      <rect x="150" y="186" width="600" height="56" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="170" y="210" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">3층 · 주행 제어 (Motion Control)</text>
+      <text x="170" y="230" font-family="Pretendard, sans-serif" font-size="13" fill="#5A6673">정해진 경로를 실제로 따라감 — Nav2, 3D 검증 계층 담당</text>
+    </svg>
+    <p class="soft">위에서 아래로 명령이 흐릅니다. 층을 섞어 부르면 대화가 꼬이므로, 팀 안에서는 이 세 이름을 구분해서 씁니다.</p>
   </div>
 </section>
 
@@ -328,6 +376,18 @@
 
     <p class="soft">다음 설계 과제: SimPy 이산사건 세계에서 Prioritized Planning + 예약 테이블을 어떻게 구현할지 — 연속 시간 vs 틱 기반의 절충 설계
     (→ <a href="amr_decision_inventory.html">DOC 07 결정 인벤토리</a> B1·D 계열에서 결정).</p>
+  </div>
+</section>
+
+<!-- ══════════ 다음으로 ══════════ -->
+<section id="tnext">
+  <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
+  <div class="sec-body">
+    <ul class="rules">
+      <li><a href="amr_decision_inventory.html"><b>DOC 07 구현 결정 인벤토리</b></a> — 이 이론이 실제 구현 결정(시간 모델·플래너 선택·재계획 주기)으로 어떻게 번역되는지</li>
+      <li><a href="glossary_robotics.html#mapf"><b>REF A 용어사전 · MAPF 계열 항목</b></a> — MAPF·CBS·RHCR을 그림 도해와 함께 한 번 더 복습</li>
+      <li><a href="deep_dive_induction.html"><b>DEEP-DIVE B 인덕션 병목</b></a> — 같은 대기행렬 이론이 소터 병목 분석에 쓰이는 실제 사례</li>
+    </ul>
   </div>
 </section>
 

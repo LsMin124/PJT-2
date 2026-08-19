@@ -39,6 +39,7 @@
   .toc-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px}
   .toc-chips a{font-family:var(--mono);font-size:11px;text-decoration:none;color:var(--steel);border:1px solid var(--panel-edge);background:var(--panel);padding:4px 10px}
   .toc-chips a:hover{border-color:var(--amber);color:var(--amber)}
+  .howto{background:var(--panel);border:1px solid var(--panel-edge);border-left:4px solid var(--steel);padding:12px 16px;margin-bottom:16px;font-size:13.5px;line-height:1.8}
   section.term{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:26px;padding:22px 26px;scroll-margin-top:56px}
   .term h2{font-size:19px;font-weight:800;letter-spacing:-.01em}
   .term h2 .en{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-soft);letter-spacing:.06em;margin-left:10px}
@@ -75,6 +76,9 @@
 </nav>
 
 <main class="wrap">
+
+<div class="howto"><b>이 사전 읽는 법</b> — 다른 문서에서 점선 밑줄 용어를 눌러 넘어왔다면 해당 항목만 읽고 뒤로가기로 돌아가면 됩니다.
+물류 도메인이 처음이라면 <b>IT/OT 융합 → 풀필먼트 → WMS·WES</b> 세 항목을 먼저 읽는 것을 권장합니다 — 나머지 용어들이 이 셋 위에 서 있습니다.</div>
 
 <div class="toc-chips">
   <a href="#smartfactory">IT/OT 융합</a><a href="#fulfillment">풀필먼트 프로세스</a><a href="#wms">WMS · WES · WCS</a>
@@ -213,6 +217,26 @@
 <section class="term" id="digitaltwin">
   <h2>디지털 트윈<span class="en">Digital Twin</span></h2>
   <p class="def">실제 공장·설비의 상태를 반영하는 가상 복제본. 현실을 관찰하는 거울이자, "이렇게 바꾸면 어떻게 될까"를 미리 실험해 보는 공간이다.</p>
+  <figure>
+    <svg viewBox="0 0 720 165" role="img" aria-label="디지털 트윈의 양방향 동기화">
+      <rect x="40" y="50" width="210" height="70" fill="#F5F7F8" stroke="#1B2430" stroke-width="2"/>
+      <text x="145" y="80" text-anchor="middle" font-family="monospace" font-size="12" fill="#1B2430">현실 물류센터</text>
+      <text x="145" y="100" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">설비 · 로봇 · 사람</text>
+      <rect x="470" y="50" width="210" height="70" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="2"/>
+      <text x="575" y="80" text-anchor="middle" font-family="monospace" font-size="12" fill="#1F7A4D">가상 트윈</text>
+      <text x="575" y="100" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#5A6673">시뮬레이션 모델</text>
+      <path d="M250 68 L 466 68" stroke="#1F7A4D" stroke-width="2" marker-end="url(#dt1)"/>
+      <text x="360" y="58" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#1F7A4D">측정 데이터로 계속 보정 (사이클 타임·고장률)</text>
+      <path d="M470 104 L 254 104" stroke="#E8720C" stroke-width="2" marker-end="url(#dt2)"/>
+      <text x="360" y="126" text-anchor="middle" font-family="monospace" font-size="9.5" fill="#E8720C">실험 결과로 의사결정 (증설·정책 변경)</text>
+      <text x="360" y="155" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">이 양방향 고리가 없으면 그냥 3D 모형이다</text>
+      <defs>
+        <marker id="dt1" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#1F7A4D" stroke-width="1.5"/></marker>
+        <marker id="dt2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#E8720C" stroke-width="1.5"/></marker>
+      </defs>
+    </svg>
+    <figcaption>거울(관찰)이자 실험실(what-if) — 두 방향의 데이터 흐름이 모두 있어야 트윈이라 부를 수 있다</figcaption>
+  </figure>
   <p>단순 3D 모형과의 차이는 <b>데이터 동기화</b>다. 진짜 디지털 트윈은 현실의 측정값(사이클 타임·고장률)으로 계속 보정되고, 반대로 트윈에서의 실험 결과(배차 정책 변경, 설비 증설)가 현실 의사결정에 반영된다. 산업계에서는 물리 시뮬레이션과 통계 모델(이산사건 시뮬레이션)을 결합한 하이브리드 구조가 표준적이다.</p>
   <div class="ctx"><b>이 프로젝트에서</b> — Isaac에서 실측한 작업 시간 분포를 SimPy 공장 모델에 주입하는 "캘리브레이션 결합"이 정확히 이 구조다. 물리 셀과 통계 셀이 공존하는 하이브리드가 최종형.</div>
 </section>
@@ -371,6 +395,25 @@
 <section class="term" id="amr">
   <h2>AMR vs AGV<span class="en">Autonomous Mobile Robot · Automated Guided Vehicle</span></h2>
   <p class="def">AGV는 바닥의 자기 테이프·QR 등 정해진 선로만 따라가는 운송 로봇, AMR은 지도와 센서로 스스로 경로를 계획하고 장애물을 피하는 운송 로봇이다.</p>
+  <figure>
+    <svg viewBox="0 0 720 180" role="img" aria-label="AGV와 AMR의 이동 방식 비교">
+      <text x="170" y="28" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#8A96A3">AGV — 정해진 선로만 (기차)</text>
+      <rect x="50" y="45" width="240" height="100" fill="none" stroke="#8A96A3" stroke-width="2" stroke-dasharray="7 5"/>
+      <rect x="140" y="36" width="34" height="18" fill="#8A96A3"/>
+      <line x1="238" y1="132" x2="262" y2="158" stroke="#E8720C" stroke-width="3"/>
+      <line x1="262" y1="132" x2="238" y2="158" stroke="#E8720C" stroke-width="3"/>
+      <text x="170" y="168" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">선로가 막히면 그 자리에 정지</text>
+      <text x="545" y="28" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#1F7A4D">AMR — 스스로 우회 (택시)</text>
+      <circle cx="420" cy="130" r="14" fill="#1F7A4D"/>
+      <text x="420" y="135" text-anchor="middle" font-family="monospace" font-size="9" fill="#fff">AMR</text>
+      <path d="M690 55 l6 12 13 2 -9 9 2 13 -12 -6 -12 6 2 -13 -9 -9 13 -2 z" fill="#E8720C"/>
+      <rect x="530" y="80" width="55" height="45" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="557" y="107" text-anchor="middle" font-family="monospace" font-size="9" fill="#5A6673">장애물</text>
+      <path d="M436 125 C 490 145, 560 145, 610 120 C 650 100, 670 80, 683 68" fill="none" stroke="#1F7A4D" stroke-width="2.5" stroke-dasharray="1 0"/>
+      <text x="545" y="168" text-anchor="middle" font-family="monospace" font-size="10" fill="#5A6673">장애물을 감지하면 실시간으로 돌아간다</text>
+    </svg>
+    <figcaption>같은 운송 로봇이지만 소프트웨어 자율성의 수준이 다르다 — AMR일수록 경로계획·관제 소프트웨어의 비중이 커진다</figcaption>
+  </figure>
   <p>AGV는 기차(선로 이탈 불가), AMR은 택시(목적지만 주면 알아서 감)에 비유된다. AMR은 레이아웃 변경에 유연하고 사람과 공존할 수 있어 물류·제조 현장에서 빠르게 AGV를 대체하는 중이다. 그만큼 소프트웨어(위치 추정·경로 계획·군집 관제)의 비중이 압도적으로 커진다. 여러 대의 경로를 부딪히지 않게 함께 푸는 문제는 <a href="glossary_robotics.html#mapf">MAPF</a>, 관제와 로봇 사이의 통신 표준은 <a href="#vda5050">VDA 5050</a> 참조.</p>
   <div class="ctx"><b>이 프로젝트에서</b> — 옴니휠 AMR 여러 대가 랙/토트 운송(Goods-to-Person)과 예외품 리젝트 운송을 담당한다. 주행은 Nav2, 군집 관제는 VDA 5050.</div>
 </section>

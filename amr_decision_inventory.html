@@ -150,6 +150,55 @@
       <li>결정이 끝난 항목은 ADR(Architecture Decision Record, "무엇을 왜 그렇게 정했나"를 남기는 짧은 기록 문서)로 저장소에 남깁니다(J3 참조).</li>
     </ul>
 
+    <h3>시스템 지도 — 각 섹션(A~J)이 시스템의 어디를 결정하는가</h3>
+    <p>아래 그림이 만들려는 시스템의 전체 모습입니다. 상자 안 괄호의 알파벳이 이 문서의 섹션 번호와 일치하므로,
+    자기 파트의 상자를 찾으면 읽어야 할 섹션이 보입니다.</p>
+    <svg viewBox="0 0 900 400" role="img" aria-label="AMR 견적 시뮬레이션 시스템 구조 — 고객 화면부터 시뮬레이션 엔진, 3D 검증까지의 데이터 흐름" style="max-width:100%;height:auto;display:block;margin:14px 0">
+      <defs><marker id="da-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
+      <rect x="16" y="16" width="264" height="64" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="32" y="42" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">고객 화면 <tspan fill="#E8720C" font-family="JetBrains Mono, monospace">(G)</tspan></text>
+      <text x="32" y="62" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">맵을 그리고, 견적 결과를 본다</text>
+      <line x1="280" y1="48" x2="334" y2="48" stroke="#33506B" stroke-width="2" marker-end="url(#da-arr)"/>
+      <rect x="340" y="16" width="200" height="64" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="356" y="42" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">Scenario API <tspan fill="#E8720C" font-family="JetBrains Mono, monospace">(E)</tspan></text>
+      <text x="356" y="62" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">시나리오 접수 → 잡 생성</text>
+      <line x1="540" y1="48" x2="594" y2="48" stroke="#33506B" stroke-width="2" marker-end="url(#da-arr)"/>
+      <rect x="600" y="16" width="284" height="64" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="616" y="42" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">K8s Indexed Job ×N <tspan fill="#E8720C" font-family="JetBrains Mono, monospace">(E)</tspan></text>
+      <text x="616" y="62" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">시뮬레이션 수백 런을 병렬 실행</text>
+      <rect x="16" y="150" width="264" height="72" fill="#FDF1E5" stroke="#E8720C" stroke-width="2"/>
+      <text x="32" y="176" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">입력 스키마 <tspan fill="#E8720C" font-family="JetBrains Mono, monospace">(A)</tspan></text>
+      <text x="32" y="196" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">맵·주문·로봇의 데이터 정의</text>
+      <text x="32" y="213" font-family="Pretendard, sans-serif" font-size="12.5" font-weight="700" fill="#1B2430">= 시스템 전체의 계약</text>
+      <line x1="280" y1="186" x2="334" y2="186" stroke="#33506B" stroke-width="2" marker-end="url(#da-arr)"/>
+      <line x1="742" y1="80" x2="742" y2="122" stroke="#33506B" stroke-width="2" marker-end="url(#da-arr)"/>
+      <rect x="340" y="128" width="544" height="116" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="356" y="152" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">SimPy 견적 엔진 <tspan fill="#E8720C" font-family="JetBrains Mono, monospace">(B)</tspan> — 빠른 이산사건 시뮬레이션</text>
+      <rect x="360" y="168" width="240" height="56" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="374" y="190" font-family="Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#1B2430">디스패처 <tspan fill="#E8720C" font-family="JetBrains Mono, monospace">(C)</tspan></text>
+      <text x="374" y="209" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">누가 어떤 작업을 맡을지</text>
+      <line x1="600" y1="196" x2="624" y2="196" stroke="#33506B" stroke-width="2" marker-end="url(#da-arr)"/>
+      <rect x="630" y="168" width="234" height="56" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="644" y="190" font-family="Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#1B2430">MAPF 플래너 <tspan fill="#E8720C" font-family="JetBrains Mono, monospace">(D)</tspan></text>
+      <text x="644" y="209" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">충돌 없는 경로 계산</text>
+      <line x1="742" y1="244" x2="742" y2="302" stroke="#33506B" stroke-width="2" marker-end="url(#da-arr)"/>
+      <line x1="450" y1="244" x2="450" y2="302" stroke="#33506B" stroke-width="2" marker-end="url(#da-arr)"/>
+      <rect x="620" y="308" width="264" height="64" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="636" y="334" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">결과 저장 <tspan fill="#E8720C" font-family="JetBrains Mono, monospace">(E)</tspan> → 리포트 <tspan fill="#E8720C" font-family="JetBrains Mono, monospace">(G·H)</tspan></text>
+      <text x="636" y="354" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">집계 → 대수–처리량 곡선·히트맵</text>
+      <rect x="340" y="308" width="220" height="64" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="356" y="334" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">VDA 5050 어댑터 <tspan fill="#E8720C" font-family="JetBrains Mono, monospace">(F)</tspan></text>
+      <text x="356" y="354" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">표준 형식의 주행 지시</text>
+      <line x1="334" y1="340" x2="286" y2="340" stroke="#33506B" stroke-width="2" marker-end="url(#da-arr)"/>
+      <rect x="16" y="308" width="264" height="64" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+      <text x="32" y="334" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430">Isaac Sim 3D 검증 <tspan fill="#E8720C" font-family="JetBrains Mono, monospace">(F)</tspan></text>
+      <text x="32" y="354" font-family="Pretendard, sans-serif" font-size="12.5" fill="#5A6673">물리엔진으로 소수 로봇 정밀 재현</text>
+      <line x1="270" y1="312" x2="344" y2="250" stroke="#1F7A4D" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#da-arr)"/>
+      <text x="252" y="278" text-anchor="end" font-family="Pretendard, sans-serif" font-size="12.5" font-weight="700" fill="#1F7A4D">실측으로 보정 (F8)</text>
+    </svg>
+    <p class="soft">실선은 데이터가 흐르는 방향, 초록 점선은 3D 검증 결과가 시뮬레이션의 속도 계수를 보정하는 되먹임입니다.
+    실험 규칙(H)·검증(I)·운영(J)은 특정 상자가 아니라 이 그림 전체에 걸리는 규칙입니다.</p>
+
     <h3>먼저 알아둘 용어 — 본문에 반복해서 나오는 것들</h3>
     <p>아래 용어들은 본문 표 안에서 설명 없이 등장합니다. 낯설면 여기서 확인하고 들어가세요.</p>
     <div class="tbl-scroll"><table>
@@ -433,6 +482,18 @@
     <div class="plain"><span class="pl-tag">이 문서를 쓰는 법</span>
     각 표의 "권고"는 논의 기반 기본값 제안이지 확정이 아니다. 팀 회의에서 <span class="star">★</span> 6건(SEC 00)부터 순서대로 확정하고,
     확정된 결정은 J3에 따라 ADR로 저장소에 남긴다.</div>
+  </div>
+</section>
+
+<!-- ══════════ 다음으로 ══════════ -->
+<section id="dnext">
+  <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
+  <div class="sec-body">
+    <ul class="rules">
+      <li><a href="amr_mapf_theory.html"><b>DOC 06 경로계획 이론 기반</b></a> — 이 문서의 B·D 결정들이 왜 그런 권고가 됐는지, MAPF 이론과 원 논문으로 확인</li>
+      <li><a href="logistics_domain_research.html"><b>DOC 05 도메인 리서치</b></a> — 이 시스템이 다루는 물류 현장이 실제로 어떻게 생겼는지</li>
+      <li><a href="glossary_industrial.html"><b>REF B 용어사전</b></a> — AMR·VDA 5050·WMS 같은 산업 용어를 그림과 함께</li>
+    </ul>
   </div>
 </section>
 

@@ -158,6 +158,7 @@
 <nav aria-label="섹션 이동">
   <div class="wrap">
     <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a href="#r0">00 한눈에</a>
     <a href="#r1">01 전체 흐름</a>
     <a href="#r2">02 자동화 vs 인력</a>
     <a href="#r3">03 페인포인트</a>
@@ -170,6 +171,53 @@
 </nav>
 
 <main class="wrap">
+
+  <!-- ══════════ R0 한눈에 보기 ══════════ -->
+  <section id="r0">
+    <div class="sec-head"><span class="sec-no">SEC 00</span><h2>한눈에 보기 — 이 문서가 답하는 질문</h2></div>
+    <div class="sec-body">
+      <ul class="rules">
+        <li><b>국내 택배는 어떤 구조로 흘러가나?</b> — 허브앤스포크. 전국 물량 대부분이 대형 허브 한 곳을 거친다 (SEC 01)</li>
+        <li><b>허브 안에서 무엇이 자동이고 무엇이 사람 몫인가?</b> — 흐르는 상자는 기계가, 집고 옮기고 쌓는 일은 사람이 (SEC 02·03)</li>
+        <li><b>본 프로젝트 기술은 어디에 꽂히나?</b> — 비정형 물체의 인식·파지와 공정 시뮬레이션 (SEC 04~06)</li>
+      </ul>
+
+      <h3>허브앤스포크 — 국내 택배의 기본 구조</h3>
+      <svg viewBox="0 0 900 250" role="img" aria-label="허브앤스포크 구조도" style="max-width:100%;height:auto;display:block;margin:14px 0">
+        <defs><marker id="hsarr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
+        <text x="105" y="26" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1B2430" text-anchor="middle">① 집화·발송</text>
+        <text x="450" y="26" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1B2430" text-anchor="middle">② 허브 — 한곳에서 분류</text>
+        <text x="795" y="26" font-family="Pretendard, sans-serif" font-size="13" font-weight="700" fill="#1B2430" text-anchor="middle">③ 배송 — 다시 흩어보낸다</text>
+        <rect x="20" y="46" width="170" height="44" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+        <text x="105" y="73" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430" text-anchor="middle">발송 서브터미널</text>
+        <rect x="20" y="110" width="170" height="44" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+        <text x="105" y="137" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430" text-anchor="middle">발송 서브터미널</text>
+        <rect x="20" y="174" width="170" height="44" fill="#FFFFFF" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <text x="105" y="201" font-family="Pretendard, sans-serif" font-size="13" fill="#5A6673" text-anchor="middle">⋯ 전국 수십 곳</text>
+        <rect x="330" y="66" width="240" height="140" fill="#FDF1E5" stroke="#1B2430" stroke-width="2"/>
+        <text x="450" y="98" font-family="Pretendard, sans-serif" font-size="16" font-weight="800" fill="#1B2430" text-anchor="middle">메가 허브</text>
+        <text x="450" y="126" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430" text-anchor="middle">전국 물량을 한꺼번에 분류</text>
+        <text x="450" y="150" font-family="JetBrains Mono, monospace" font-size="12" fill="#5A6673" text-anchor="middle">하차→인덕션→분류→상차</text>
+        <text x="450" y="182" font-family="Pretendard, sans-serif" font-size="12" fill="#E8720C" text-anchor="middle" font-weight="700">하루 100만 개 이상</text>
+        <line x1="192" y1="68" x2="326" y2="100" stroke="#33506B" stroke-width="2" marker-end="url(#hsarr)"/>
+        <line x1="192" y1="132" x2="326" y2="136" stroke="#33506B" stroke-width="2" marker-end="url(#hsarr)"/>
+        <line x1="192" y1="196" x2="326" y2="172" stroke="#33506B" stroke-width="2" marker-end="url(#hsarr)"/>
+        <text x="258" y="112" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">간선차량</text>
+        <rect x="710" y="46" width="170" height="44" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+        <text x="795" y="73" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430" text-anchor="middle">도착 서브터미널</text>
+        <rect x="710" y="110" width="170" height="44" fill="#F5F7F8" stroke="#1B2430" stroke-width="1.5"/>
+        <text x="795" y="137" font-family="Pretendard, sans-serif" font-size="13" fill="#1B2430" text-anchor="middle">도착 서브터미널</text>
+        <rect x="710" y="174" width="170" height="44" fill="#FFFFFF" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <text x="795" y="201" font-family="Pretendard, sans-serif" font-size="13" fill="#5A6673" text-anchor="middle">⋯ 기사별 배송</text>
+        <line x1="574" y1="100" x2="706" y2="68" stroke="#33506B" stroke-width="2" marker-end="url(#hsarr)"/>
+        <line x1="574" y1="136" x2="706" y2="132" stroke="#33506B" stroke-width="2" marker-end="url(#hsarr)"/>
+        <line x1="574" y1="172" x2="706" y2="196" stroke="#33506B" stroke-width="2" marker-end="url(#hsarr)"/>
+        <text x="642" y="112" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">간선차량</text>
+      </svg>
+      <p class="soft">자전거 바퀴처럼 살(스포크)이 축(허브)에 모이는 모양이라 "허브앤스포크"라 부른다.
+      어디서 보내든 대부분 허브를 한 번 거치므로, <b>허브의 분류 속도가 곧 전국 택배의 속도</b>가 된다 — 이 문서가 허브 내부를 파고드는 이유다.</p>
+    </div>
+  </section>
 
   <!-- ══════════ R1 전체 흐름 ══════════ -->
   <section id="r1">
@@ -195,6 +243,37 @@
         <tr><td><b>풀필먼트</b></td><td>보관·포장·출고까지 판매자 대신 처리해 주는 물류 서비스 (<a class="term" href="glossary_industrial.html#fulfillment">용어사전</a>)</td></tr>
         <tr><td><b>GTP</b></td><td>Goods-to-Person — 사람이 선반으로 가는 대신, 로봇이 선반을 사람 앞으로 가져오는 방식</td></tr>
       </table>
+
+      <h3>허브 내부 5개 공정 — 자동화 구간과 인력 구간</h3>
+      <svg viewBox="0 0 900 132" role="img" aria-label="허브 내부 처리 흐름 — 자동화 구간과 인력 구간 구분" style="max-width:100%;height:auto;display:block;margin:14px 0">
+        <defs><marker id="flarr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#33506B"/></marker></defs>
+        <rect x="20" y="12" width="14" height="14" fill="#FDF1E5" stroke="#E8720C" stroke-width="1.5"/>
+        <text x="42" y="24" font-family="Pretendard, sans-serif" font-size="12" fill="#1B2430">사람이 하는 구간 (자동화 공백)</text>
+        <rect x="270" y="12" width="14" height="14" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="1.5"/>
+        <text x="292" y="24" font-family="Pretendard, sans-serif" font-size="12" fill="#1B2430">자동 설비 구간</text>
+        <rect x="16" y="46" width="150" height="64" fill="#FDF1E5" stroke="#E8720C" stroke-width="1.5"/>
+        <text x="91" y="72" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430" text-anchor="middle">① 하차</text>
+        <text x="91" y="94" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">차에서 꺼내기</text>
+        <line x1="168" y1="78" x2="184" y2="78" stroke="#33506B" stroke-width="2" marker-end="url(#flarr)"/>
+        <rect x="188" y="46" width="150" height="64" fill="#FDF1E5" stroke="#E8720C" stroke-width="1.5"/>
+        <text x="263" y="72" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430" text-anchor="middle">② 인덕션</text>
+        <text x="263" y="94" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">낱개로 정리해 투입</text>
+        <line x1="340" y1="78" x2="356" y2="78" stroke="#33506B" stroke-width="2" marker-end="url(#flarr)"/>
+        <rect x="360" y="46" width="150" height="64" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="1.5"/>
+        <text x="435" y="72" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430" text-anchor="middle">③ 스캔·계측</text>
+        <text x="435" y="94" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">바코드·무게·체적</text>
+        <line x1="512" y1="78" x2="528" y2="78" stroke="#33506B" stroke-width="2" marker-end="url(#flarr)"/>
+        <rect x="532" y="46" width="150" height="64" fill="#EAF3EE" stroke="#1F7A4D" stroke-width="1.5"/>
+        <text x="607" y="72" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430" text-anchor="middle">④ 자동 분류</text>
+        <text x="607" y="94" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">도착지별로 밀어내기</text>
+        <line x1="684" y1="78" x2="700" y2="78" stroke="#33506B" stroke-width="2" marker-end="url(#flarr)"/>
+        <rect x="704" y="46" width="150" height="64" fill="#FDF1E5" stroke="#E8720C" stroke-width="1.5"/>
+        <text x="779" y="72" font-family="Pretendard, sans-serif" font-size="14" font-weight="700" fill="#1B2430" text-anchor="middle">⑤ 상차</text>
+        <text x="779" y="94" font-family="Pretendard, sans-serif" font-size="12" fill="#5A6673" text-anchor="middle">차에 빈틈없이 쌓기</text>
+      </svg>
+      <p class="soft">허브의 5개 공정 중 <b>양 끝(하차·상차)과 투입(인덕션)이 여전히 사람 몫</b>이다.
+      가운데 자동화 구간(스캔·분류)이 아무리 빨라도 주황 구간이 따라가지 못하면 전체가 느려진다 — 이것이 이 문서의 주제인 "자동화 공백"이다.
+      아래 9단계 타임라인은 이 그림을 허브 밖 구간까지 펼친 것이다.</p>
 
       <div class="milestones">
         <div class="ms">
@@ -480,6 +559,20 @@
         <li><a href="https://www.aihub.or.kr/">AI허브</a> — OCR 데이터(공공) · 다양한 형태의 한글 문자 OCR · 금융/물류 문서 OCR</li>
       </ul>
       <p class="soft">데이터셋(ARMBench·GraspNet-1Billion·OCID·SKU-110K·BR1–BR15·OR-Tools)은 각 프로젝트 공식 페이지 기준. 수치는 2026-08 조사 시점의 공개 자료 기준이며, 발표 인용 시 원 출처를 재확인할 것.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ 다음으로 읽기 ══════════ -->
+  <section id="r8">
+    <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
+    <div class="sec-body">
+      <p class="lead">이 조사가 흥미로웠다면, 구간별 심화 3부가 각 문제를 기술 수준까지 파고듭니다.</p>
+      <ul class="rules">
+        <li><a href="deep_dive_unloading.html"><b>심화 A — 벌크 하차·이형물</b></a> : 하차는 왜 아직 사람이 하는가를 4가지 난점으로 분해</li>
+        <li><a href="deep_dive_induction.html"><b>심화 B — 인덕션 병목 정량 분석</b></a> : 인덕션이 전체를 막는 이유를 수식과 시뮬레이션 설계로</li>
+        <li><a href="deep_dive_perception_grasp.html"><b>심화 C — 비정형 인식·파지</b></a> : 상자를 "보고 집는" AI 파이프라인 4단계</li>
+        <li><a href="smart_factory_tech_plan.html"><b>DOC 02 실행 계획서</b></a> : 이 현장 문제에 대응하는 본 프로젝트의 기술 계획으로 돌아가기</li>
+      </ul>
     </div>
   </section>
 
