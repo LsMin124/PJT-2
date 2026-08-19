@@ -86,9 +86,9 @@
 <div class="toc-chips">
   <a href="#smartfactory">IT/OT 융합</a><a href="#fulfillment">풀필먼트 프로세스</a><a href="#wms">WMS · WES · WCS</a>
   <a href="#isa95">ISA-95</a><a href="#mes">MES</a><a href="#digitaltwin">디지털 트윈</a>
-  <a href="#des">이산사건 시뮬레이션 · SimPy</a><a href="#littleslaw">Little's Law</a><a href="#mqtt">MQTT</a><a href="#sparkplug">Sparkplug B</a>
-  <a href="#vda5050">VDA 5050</a><a href="#amr">AMR vs AGV</a><a href="#andon">Andon</a>
-  <a href="#oee">OEE</a><a href="#closedloop">폐루프 품질관리</a>
+  <a href="#des">이산사건 시뮬레이션 · SimPy</a><a href="#littleslaw">Little's Law</a><a href="#vdi3633">VDI 3633</a><a href="#mqtt">MQTT</a><a href="#sparkplug">Sparkplug B</a>
+  <a href="#vda5050">VDA 5050</a><a href="#amr">AMR vs AGV</a><a href="#gtp">GTP</a><a href="#andon">Andon</a>
+  <a href="#oee">OEE</a><a href="#tco">TCO · ROI</a><a href="#closedloop">폐루프 품질관리</a>
 </div>
 
 <section class="term" id="smartfactory">
@@ -115,7 +115,7 @@
     <figcaption>전통 현장에서는 IT와 OT가 단절되어 있었다 — 이 단절을 잇는 것이 본 프로젝트의 핵심 주제</figcaption>
   </figure>
   <p>OT(Operational Technology)는 물리 세계를 직접 움직이는 기술이고, IT는 정보를 다루는 기술이다. 두 세계는 쓰는 프로토콜·시간 단위·안정성 요구가 완전히 달라서 오랫동안 분리되어 있었다. 스마트팩토리·스마트 물류센터는 이 사이에 표준화된 데이터 파이프라인을 놓아 "현장에서 일어나는 일"을 실시간으로 위(경영·분석)까지 올리고, "위의 결정"을 현장까지 내리는 것이다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 물리 레이어(OT)만 시뮬레이션일 뿐, IT/OT를 잇는 데이터 플로우·백엔드·서비스는 실제 스마트 물류센터와 동일한 구조로 만든다. 이것이 "로봇 데모"와 다른 점이다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — IT(견적 SaaS의 웹·백엔드·분석)와 OT(가상 AMR·Isaac Sim)를 VDA 5050·Sparkplug B 표준으로 잇는다. 물리 계층만 가상일 뿐 그 위의 소프트웨어는 실제 배포될 스택 그대로다 — 이것이 검증 트랙(SIL)의 요지다(개괄 §4).</div>
 </section>
 
 <section class="term" id="fulfillment">
@@ -139,12 +139,12 @@
       <text x="575" y="58" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">분류</text>
       <rect x="622" y="30" width="78" height="46" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
       <text x="661" y="58" text-anchor="middle" font-family="monospace" font-size="11" fill="#E8ECF1">출고</text>
-      <text x="360" y="100" text-anchor="middle" font-family="monospace" font-size="10" fill="#F08A32">강조 구간 = 본 프로젝트 데모의 중심 (AMR 운송 · 로봇팔 피킹 · AI가 여기 모인다)</text>
+      <text x="360" y="100" text-anchor="middle" font-family="monospace" font-size="10" fill="#F08A32">강조 구간 = AMR이 투입되는 반송·피킹 보조 구간 — 본 서비스가 견적하는 대상</text>
     </svg>
     <figcaption>주문 이행의 8단계 — 각 단계 사이를 AMR과 컨베이어가 잇는다</figcaption>
   </figure>
   <p>핵심 파생 용어: <b>SKU</b>(Stock Keeping Unit — 재고 관리의 최소 단위, "품목 한 종류"), <b>웨이브</b>(주문 여러 건을 묶어 한 번에 처리하는 배치 단위), <b>슬로팅</b>(어떤 상품을 어느 로케이션에 둘지 정하는 배치 전략 — 잘 하면 이동 거리가 급감), <b>Goods-to-Person</b>(작업자가 선반으로 걸어가는 대신 AMR이 선반/토트를 작업자·로봇 앞으로 가져오는 방식 — Amazon Kiva가 대중화).</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 주문 등록부터 출고 실적까지 이 흐름 전체가 시연 시나리오다. AMR이 Goods-to-Person 운송을, 로봇팔이 피스 피킹을, AI가 검수를 담당한다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 고객 창고의 이 흐름 가운데 반송/피킹 보조 구간이 v1 견적 대상이다(개괄 §2). 고객이 올린 주문 로그(엑셀 템플릿)에서 이 흐름의 수요 프로파일을 자동 추출하는 것이 인테이크 T2다(개괄 §5).</div>
 </section>
 
 <section class="term" id="isa95">
@@ -167,14 +167,14 @@
       <text x="620" y="128" font-family="monospace" font-size="10" fill="#9AA7B4">밀리초 · 초</text>
       <text x="620" y="173" font-family="monospace" font-size="10" fill="#9AA7B4">µs · ms</text>
       <text x="620" y="218" font-family="monospace" font-size="10" fill="#F08A32">물리 시간</text>
-      <text x="80" y="83" font-family="monospace" font-size="10" fill="#9AA7B4">← 본 프로젝트의</text>
-      <text x="80" y="98" font-family="monospace" font-size="10" fill="#9AA7B4">   WMS/WES-lite 위치</text>
-      <text x="80" y="218" font-family="monospace" font-size="10" fill="#F08A32">← Isaac Sim이 대체</text>
+      <text x="80" y="83" font-family="monospace" font-size="10" fill="#9AA7B4">← 고객사 WMS가 있는 층</text>
+      <text x="80" y="98" font-family="monospace" font-size="10" fill="#9AA7B4">   (주문 로그 데이터의 출처)</text>
+      <text x="80" y="218" font-family="monospace" font-size="10" fill="#F08A32">← 검증 트랙: Isaac이 대체</text>
     </svg>
     <figcaption>위로 갈수록 타이밍이 느슨해진다 — 층마다 요구되는 실시간성이 다르다는 것이 아키텍처 설계의 근거</figcaption>
   </figure>
   <p>웹의 프론트–백–DB 계층처럼, 제조 SW에도 표준 계층이 있다. 각 층은 바로 위·아래하고만 대화하는 것이 원칙이며, 이 규율이 시스템을 교체 가능하게 만든다. 면접·실무에서 제조 IT를 논할 때의 공용어이기도 하다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 계층적 사고의 틀로 사용한다. L0~2를 Isaac Sim(가상 물류센터)이 담당하고, L3 자리에 물류의 실행 계층인 WMS/WES-lite + SimPy 오케스트레이터가 놓인다(<a href="#wms">WMS·WES·WCS</a> 참조).</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 계층적 사고의 참고 틀. v1 제품은 실시간 통합이 아닌 분석 서비스라 ISA-95/OPC UA 통합은 v2 백로그다(개괄 §10). 검증 트랙에서는 L1~2 자리에 Isaac Sim + Nav2가, 그 위에 VDA 5050 경계가 놓인다.</div>
 </section>
 
 <section class="term" id="wms">
@@ -201,20 +201,20 @@
       <line x1="282" y1="58" x2="298" y2="58" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#ww)"/>
       <line x1="420" y1="58" x2="436" y2="58" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#ww)"/>
       <line x1="558" y1="58" x2="574" y2="58" stroke="#9AA7B4" stroke-width="1.5" marker-end="url(#ww)"/>
-      <text x="360" y="110" text-anchor="middle" font-family="monospace" font-size="10" fill="#9AA7B4">어두운 박스 = 본 프로젝트가 구현하는 범위 (WMS/WES-lite)</text>
+      <text x="360" y="110" text-anchor="middle" font-family="monospace" font-size="10" fill="#9AA7B4">밝은 박스(WMS·WES) = 견적 시뮬레이션이 모형으로 흉내내는 계층 — 고객사 WMS 주문 로그가 입력</text>
       <defs><marker id="ww" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#9AA7B4" stroke-width="1.5"/></marker></defs>
     </svg>
     <figcaption>제조 ISA-95 계층의 물류 버전 — 제조의 MES 실행 기능에 해당하는 것이 WES다</figcaption>
   </figure>
   <p>제조의 MES(<a href="#mes">별도 항목</a>)가 하던 역할이 물류에서는 WMS(장부)와 WES(실행)로 나뉜다. 최근 로봇 도입이 늘며 WES의 비중이 커지는 추세다 — 사람·AMR·소터에게 실시간으로 일을 나눠주는 계층이기 때문이다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — Spring Boot로 WMS+WES를 합친 <b>WMS/WES-lite</b>를 구현한다. 주문 접수 → 웨이브 생성 → 피킹 태스크 할당 → AMR 배차(VDA 5050 마스터 컨트롤) → 출고 실적 집계가 범위이고, SimPy 오케스트레이터가 배차 두뇌로 결합된다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — v1은 WMS를 구현하지 않는다. 고객 WMS가 내보낸 주문 로그(자체 엑셀 템플릿: 주문시각/주문ID/SKU/수량)를 읽어 수요 프로파일을 추출하는 <b>입력원</b>이며(인테이크 T2), WMS API 직접 연동은 T3 로드맵이다(개괄 §5).</div>
 </section>
 
 <section class="term" id="mes">
   <h2>MES<span class="en">Manufacturing Execution System — 생산 실행 시스템</span></h2>
   <p class="def">"오늘 무엇을 몇 개 만들지"(작업지시)를 받아 현장에 배분하고, 실제로 몇 개가 만들어졌는지(실적)를 집계하는 공장 운영의 두뇌.</p>
   <p>이커머스의 주문 관리 시스템(OMS)과 구조가 유사하다. 주문(작업지시)이 들어오면 → 처리 가능한 자원(스테이션·로봇)에 할당하고 → 진행 상태를 추적하고 → 완료 실적을 집계한다. 실무 MES는 거대한 패키지 소프트웨어지만, 핵심 로직(작업지시 라이프사이클 + 자원 할당 + 실적 집계)은 웹 백엔드 기술로 충분히 구현 가능하다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 제조 도메인의 개념 참고용 항목. 물류센터인 본 프로젝트에서 이 자리는 <a href="#wms">WMS/WES</a>가 담당한다 — "지시 접수 → 자원 할당 → 실적 집계"라는 구조는 동일하다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 제조 도메인의 개념 참고용 항목. 본 프로젝트는 물류센터 대상 분석 서비스라 MES가 직접 등장하지 않지만, "지시 접수 → 자원 할당 → 실적 집계"라는 구조는 시뮬레이션이 흉내내는 창고 운영의 뼈대와 같다.</div>
 </section>
 
 <section class="term" id="digitaltwin">
@@ -241,7 +241,7 @@
     <figcaption>거울(관찰)이자 실험실(what-if) — 두 방향의 데이터 흐름이 모두 있어야 트윈이라 부를 수 있다</figcaption>
   </figure>
   <p>단순 3D 모형과의 차이는 <b>데이터 동기화</b>다. 진짜 디지털 트윈은 현실의 측정값(사이클 타임·고장률)으로 계속 보정되고, 반대로 트윈에서의 실험 결과(배차 정책 변경, 설비 증설)가 현실 의사결정에 반영된다. 산업계에서는 물리 시뮬레이션과 통계 모델(이산사건 시뮬레이션)을 결합한 하이브리드 구조가 표준적이다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — Isaac에서 실측한 작업 시간 분포를 SimPy 공장 모델에 주입하는 "캘리브레이션 결합"이 정확히 이 구조다. 물리 셀과 통계 셀이 공존하는 하이브리드가 최종형.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — Isaac 에뮬레이션에서 실측한 엣지 주행시간을 SimPy 모델의 유효속도 계수로 되먹이는 <b>보정 루프</b>(개괄 §4)가 정확히 이 구조다. 물리 시뮬과 통계 시뮬이 서로를 보정하는 2계층이 본 프로젝트의 디지털 트윈 해석이다.</div>
 </section>
 
 <section class="term" id="des">
@@ -278,7 +278,7 @@
     <figcaption>사건 사이 구간은 계산하지 않고 건너뜀 — 센터 하루치를 몇 초 만에, 수천 번 반복 실험 가능</figcaption>
   </figure>
   <p>물리 시뮬레이션이 "로봇이 어떻게 움직이는가"에 답한다면, DES는 "센터 전체가 얼마나 잘 흘러가는가"에 답한다. AMR을 3대에서 4대로 늘리면 처리량이 얼마나 오르는지, 어느 스테이션이 병목인지 같은 질문은 DES로 수천 번 돌려 통계로 확인한다. <b>물류센터는 DES의 대표 적용 분야</b>다. 창고 설계·운영 분석의 표준 방법론이 바로 이것이다. 시뮬레이션 결과가 말이 되는지 검산하는 짝꿍 도구는 <a href="#littleslaw">Little's Law</a>다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — SimPy가 센터 물류·배차의 두뇌다. Isaac 실측치로 보정(캘리브레이션)한 뒤, 라이브 모드에서는 실시간 이벤트 기반 잡 스케줄러로 승격된다. 개발 초기의 mock publisher도 SimPy로 만든다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — SimPy DES가 <b>견적 엔진의 본체</b>다. 기종 × 대수 × 시드 스윕을 K8s에서 수백 런 병렬 실행하고, 내장 경량 MAPF(틱 기반, 1틱=1셀)가 경합을 만들어 대수–처리량 곡선의 모양을 결정한다(개괄 §4·8).</div>
 </section>
 
 <section class="term" id="littleslaw">
@@ -302,7 +302,14 @@
     <figcaption>세 숫자 중 두 개를 알면 나머지가 정해진다 — 세 개가 동시에 안 맞으면 어딘가 버그가 있는 것</figcaption>
   </figure>
   <p>숫자로 보면 단순하다. 주문이 시간당 100건 도착하고(λ=100건/시간) 주문 하나가 창고 안에 평균 0.5시간 머문다면(W=0.5시간), 창고 안에는 언제나 평균 L = 100 × 0.5 = 50건이 처리 중이어야 한다. 분포·순서·정책과 무관하게 거의 모든 안정 시스템에 성립하기 때문에, 시뮬레이션이 뱉은 세 숫자(재공 수량·처리율·리드타임)가 이 등식을 만족하는지만 봐도 모델의 버그를 즉시 잡아낼 수 있다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 시뮬레이션 검증(V&amp;V)의 1차 관문. <a href="#des">SimPy</a> 결과에서 L·λ·W를 뽑아 등식 성립을 확인하는 것이 VDI 3633 verification 활동의 구체적 실행이다(DOC 07 I1).</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 시뮬레이션 검증(V&amp;V)의 1차 관문. <a href="#des">SimPy</a> 결과에서 L·λ·W를 뽑아 등식 성립을 확인하는 것이 <a href="#vdi3633">VDI 3633</a> verification 활동의 구체적 실행이다(DOC 07 I1).</div>
+</section>
+
+<section class="term" id="vdi3633">
+  <h2>VDI 3633<span class="en">시뮬레이션 프로젝트의 절차·검증 지침</span></h2>
+  <p class="def">물류·생산 시스템 시뮬레이션을 어떤 절차로 수행하고 어떻게 검증해야 하는지를 정리한 독일엔지니어협회(VDI)의 공학 지침.</p>
+  <p>핵심 요구는 단순하다 — 모든 가정을 명시하고, 모델을 올바르게 구현했는지(Verification)와 모델이 현실을 닮았는지(Validation)를 별도 활동으로 검증하며, 그 과정을 문서로 남겨라. "시뮬레이션 결과를 왜 믿어야 하나"라는 질문에 표준의 언어로 답하게 해주는 장치다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — "투명한 견적" 주장의 표준 준거(개괄 §10·11). 보존 법칙 체크와 <a href="#littleslaw">Little's Law</a> 검산이 Verification, MAPF 공개 벤치마크 대조와 SimPy vs 에뮬레이션 오차 비교가 Validation이다. 가정 명세서를 리포트 부록으로 공개하는 것이 이 지침의 실천이다.</div>
 </section>
 
 <section class="term" id="mqtt">
@@ -332,7 +339,7 @@
     <figcaption>발행자와 구독자는 서로를 모른다 — 결합도가 낮아 시스템을 자유롭게 추가·교체할 수 있다</figcaption>
   </figure>
   <p>HTTP가 "요청하면 응답"(1:1, 클라이언트가 물어봐야 함)이라면, MQTT는 "일어난 일을 방송"(1:N, 상태가 바뀌면 즉시 전파)이다. 헤더가 몇 바이트로 극단적으로 가볍고, 불안정한 네트워크를 견디도록 설계되어 제조·IoT의 사실상 표준이 됐다. 메시지 안에 뭘 담을지는 정하지 않기 때문에, 그 위에 Sparkplug B나 VDA 5050 같은 페이로드 표준이 얹힌다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 로봇(ROS 2)과 IT 세계(WMS·DB·웹)를 잇는 중추 신경. EMQX 브로커를 쓰고, 웹 관제 화면도 MQTT-over-WebSocket으로 같은 토픽을 직접 구독한다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 검증 트랙의 전송 계층. 플랫폼 코어의 VDA 5050 지시가 MQTT(EMQX 브로커) 위로 흐르고, 가상 AMR의 Sparkplug B 텔레메트리도 같은 브로커를 쓴다(개괄 §4).</div>
 </section>
 
 <section class="term" id="sparkplug">
@@ -361,7 +368,7 @@
     <figcaption>접속 시 전체 상태를 선언(BIRTH), 이후엔 변경분만(DATA), 끊기면 브로커가 대신 부고(DEATH)를 발행</figcaption>
   </figure>
   <p>MQTT만 쓰면 팀마다 토픽 구조와 JSON 형식을 제각각 정하게 된다. Sparkplug B는 네임스페이스(<code>spBv1.0/그룹/메시지타입/노드/디바이스</code>), 데이터 형식(Protobuf), 상태 관리(BIRTH/DEATH)를 표준화해서, 처음 보는 설비도 구독만 하면 바로 해석할 수 있게 만든다. "설비가 지금 온라인인가"라는 제조 현장의 핵심 질문에 프로토콜 차원에서 답하는 것이 특징이다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 설비(컨베이어·소터·피킹/검수 스테이션) 텔레메트리에 적용한다. 관제 화면의 설비 온라인/오프라인 표시가 BIRTH/DEATH를 그대로 시각화한 것이다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 가상 AMR 텔레메트리에 적용한다. 제품 정체성이 "로봇을 움직이는 시스템"에서 "신뢰할 수 있는 분석"으로 이동하면서 역할은 얇아졌지만(개괄 §10, '축소'), 검증 트랙의 상태 스트림 표준으로 유지된다.</div>
 </section>
 
 <section class="term" id="vda5050">
@@ -392,7 +399,7 @@
     <figcaption>점진적 엣지 릴리스 — 여러 AMR이 같은 통로를 쓸 때의 교통 정리가 표준 안에 내장되어 있다</figcaption>
   </figure>
   <p>독일 자동차공업협회(VDA)가 만든 표준으로, 서로 다른 제조사의 AMR을 하나의 관제로 묶기 위해 만들어졌다. 본래 물류·창고의 AMR 관제가 주 용도라, 물류센터 도메인에서는 중심 표준이다. 관제와 로봇의 책임 분리가 명확하다: 관제는 "어디로 갈지"(경로 그래프)를 정하고, 로봇은 "어떻게 갈지"(실제 주행·회피)를 알아서 한다. 공식 JSON 스키마가 공개되어 있어 웹 개발자에게도 친숙한 형태다. 관제가 내려줄 경로 자체를 계산하는 알고리즘 계열은 <a href="glossary_robotics.html#mapf">MAPF</a> 참조.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — WMS/WES-lite가 마스터 컨트롤로서 order를 발행하고, AMR 쪽 커넥터가 이를 Nav2 목표로 변환해 실행한 뒤 state를 보고한다. 관제 맵의 노드·엣지 시각화가 이 표준을 그대로 그린 것이다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 플랫폼 코어가 order(노드/엣지 경로)를 발행하고, ROS2 어댑터가 이를 Nav2 구간 주행으로 실행한 뒤 state를 보고한다(v2.0, order/state/connection + instantActions). <b>이 경계선 위의 코드는 가상↔현실 전환 시 불변</b> — v2 실관제 확장이 아키텍처에 내장된다는 주장의 근거다(개괄 §4).</div>
 </section>
 
 <section class="term" id="amr">
@@ -418,14 +425,21 @@
     <figcaption>같은 운송 로봇이지만 소프트웨어 자율성의 수준이 다르다 — AMR일수록 경로계획·관제 소프트웨어의 비중이 커진다</figcaption>
   </figure>
   <p>AGV는 기차(선로 이탈 불가), AMR은 택시(목적지만 주면 알아서 감)에 비유된다. AMR은 레이아웃 변경에 유연하고 사람과 공존할 수 있어 물류·제조 현장에서 빠르게 AGV를 대체하는 중이다. 그만큼 소프트웨어(위치 추정·경로 계획·군집 관제)의 비중이 압도적으로 커진다. 여러 대의 경로를 부딪히지 않게 함께 푸는 문제는 <a href="glossary_robotics.html#mapf">MAPF</a>, 관제와 로봇 사이의 통신 표준은 <a href="#vda5050">VDA 5050</a> 참조.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 옴니휠 AMR 여러 대가 랙/토트 운송(Goods-to-Person)과 예외품 리젝트 운송을 담당한다. 주행은 Nav2, 군집 관제는 VDA 5050.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — v1 견적 대상이 <b>반송/피킹 보조 AMR 카테고리</b>다(개괄 §2). 인프라 변경 없이 3~15대를 점진 도입하는 세그먼트라 "견적 의사결정"이 실제로 일어난다. 검증 기종은 iw.hub 메인 + MiR 250 서브이며, 시뮬레이션 안에서 여러 대의 경합이 대수–처리량 곡선의 모양을 만든다.</div>
+</section>
+
+<section class="term" id="gtp">
+  <h2>GTP<span class="en">Goods-to-Person — 물건이 사람에게 오는 방식</span></h2>
+  <p class="def">작업자가 선반으로 걸어가는 대신, 로봇이 선반·토트를 작업자 앞까지 가져다주는 창고 자동화 방식. Amazon Kiva 시스템이 원형이다.</p>
+  <p>사람의 이동 시간을 없애 피킹 생산성을 크게 올리지만, 전용 선반·스테이션·관제 소프트웨어까지 통째로 새로 까는 대규모 공사가 필요하다. 그래서 GTP 도입은 벤더가 설계부터 견적까지 도맡는 턴키(turn-key) 거래로 이뤄진다. 시장 매출 1위 세그먼트(약 38%)이지만, 바로 그 구매 구조 때문에 제3자 중립 견적이 끼어들 틈이 구조적으로 좁다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — v1 정밀 견적에서 의도적으로 제외한 카테고리(개괄 §2·6). 대신 카테고리 게이트가 "GTP가 더 적합한 고객"을 판별해 배제 사유와 함께 벤더 직행을 안내한다 — 중립 라우팅 서사의 근거. "왜 시장 1위를 안 했나"라는 발표 예상 질문의 답이 이 구매 경로 논리다. GTP 전용 공정 모델은 v2 로드맵.</div>
 </section>
 
 <section class="term" id="andon">
   <h2>Andon<span class="en">안돈 — 이상 알림 체계</span></h2>
   <p class="def">생산 라인에 이상이 생기면 즉시 불빛·알림으로 알려 대응을 촉구하는 체계. 도요타 생산방식에서 나온 용어로, 현장 위 신호등이 원형이다.</p>
   <p>핵심 사상은 "문제를 숨기지 말고 그 자리에서 드러내라"다. 현대의 스마트 공장·물류센터에서는 물리적 경광등을 넘어 대시보드 알림·모바일 푸시로 확장됐다. 웹 서비스의 장애 알림(PagerDuty·Slack 알림)과 정확히 같은 역할이다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 오피킹·파손 검출, 설비 이상 시 관제 포털에 Andon 알림 스트림이 뜨고, PWA 웹 푸시로 모바일에도 전달된다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 직접 구현 범위 밖의 참고 개념. 스윕 실행 화면에서 잡 실패·부분 실패를 숨기지 않고 "미완료 조합"으로 드러내는 정책(DOC 07 E3)이 같은 사상 — 문제를 숨기지 말고 그 자리에서 보여라 — 을 따른다.</div>
 </section>
 
 <section class="term" id="oee">
@@ -451,7 +465,14 @@
     <figcaption>세 가지 손실을 차례로 곱해 남는 것이 OEE — 어디서 깎였는지가 개선 포인트를 알려준다</figcaption>
   </figure>
   <p>예를 들어 가용성 90% × 성능 85% × 품질 95% = OEE 72.7%. 세계적 수준의 공장이 85% 정도다. 단순 가동률보다 강력한 이유는 "돌고는 있는데 느리게 돈다", "빨리 도는데 불량을 만든다" 같은 숨은 손실이 다 드러나기 때문이다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 컨베이어·소터 등 설비 지표로 사용. 센터 전체의 중심 지표는 <b>UPH(시간당 처리량)·피킹 정확도·주문 리드타임</b> 같은 물류 KPI이며, 분석 화면에서 OEE와 함께 보여준다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 리포트 KPI의 참고 배경. 본 서비스 리포트의 중심 지표는 <b>시간당 처리량·주문 리드타임·로봇 가동률</b>이며, KPI 정의는 ISO 22400을 준거로 삼아 용어 혼선을 막는다(개괄 §10).</div>
+</section>
+
+<section class="term" id="tco">
+  <h2>TCO · ROI<span class="en">Total Cost of Ownership · Return on Investment</span></h2>
+  <p class="def">TCO는 구매비뿐 아니라 운영·유지보수·충전 인프라까지 합친 총소유비용. ROI는 그 투자가 언제, 얼마나 이익으로 돌아오는지의 수익률이다.</p>
+  <p>로봇을 더 넣으면 처리량은 늘지만 체감하며 늘고, 비용은 대수에 거의 비례해 늘어난다. 처리량 곡선 위에 TCO 곡선을 겹치면 서로 다른 두 최적점이 드러난다 — "처리량 목표를 만족하는 최소 대수"와 "ROI가 최대가 되는 대수". 어느 쪽을 고를지는 고객의 경영 판단이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 리포트의 핵심 화면(개괄 §7). 대수–처리량 곡선에 TCO를 중첩해 ROI 최적점을 표시하고, 곡선 위를 클릭하면 그 구성의 상세 리포트가 열린다. 두 최적점을 모두 제시하고 선택은 고객에게 맡긴다 — "선택은 고객이, 근거는 시스템이".</div>
 </section>
 
 <section class="term" id="closedloop">
@@ -482,7 +503,7 @@
     <figcaption>판정이 물리적 행동(운송·격리)으로 되돌아와야 루프가 "닫힌" 것 — 대시보드에 표시만 하면 열린 루프다</figcaption>
   </figure>
   <p>많은 데모가 "AI가 문제를 찾았다"에서 끝난다(열린 루프). 진짜 스마트 물류센터의 가치는 그 판정이 자동으로 조치까지 이어지는 데 있다. 시스템 전 계층(비전 → AI → WMS → 배차 → 로봇)이 실제로 연결되어야만 가능하므로, 통합 완성도의 증명이기도 하다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 최종 데모의 대표 장면. Replicator로 만든 파손/오피킹 상황 → AI 검출 → WMS 판정 → AMR이 예외품을 리젝트 라인으로 옮기는 전 과정이 자동으로 이어진다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 품질관리 자체는 범위 밖이지만, "감지 → 판정 → 조치"가 자동으로 닫히는 구조는 본 프로젝트의 <b>보정 루프</b>와 동형이다: 에뮬레이션 실측(감지) → SimPy 유효속도 계수 갱신(판정) → 재스윕(조치)의 고리가 자동으로 닫힌다(개괄 §4).</div>
 </section>
 
 </main>

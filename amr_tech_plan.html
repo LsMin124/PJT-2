@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<title>실행 계획서 — 기술 결정과 로드맵 (Tech Plan)</title>
+<style>
+  :root{
+    --bg:#14181D;
+    --panel:#1C2229;
+    --panel-edge:#2C343D;
+    --ink:#E8ECF1;
+    --ink-soft:#9AA7B4;
+    --amber:#F08A32;
+    --machine:#3BAF77;
+    --steel:#8FB4D9;
+    --slate:#8A96A3;
+    --grid:#2A323B;
+    --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important;animation:none!important}}
+  body{
+    background:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:32px 32px;
+    color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px;
+  }
+  a{color:var(--steel)}
+  a.term{color:inherit;text-decoration:underline;text-decoration-style:dotted;text-decoration-color:var(--steel);text-underline-offset:3px}
+  a.term:hover{color:var(--steel);text-decoration-style:solid}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+  header{border-bottom:3px solid var(--ink);background:var(--panel)}
+  .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
+  .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
+  .doc-eyebrow b{color:var(--steel);font-weight:600}
+  h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
+  h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
+  .meta b{color:var(--ink);font-weight:600}
+
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav .wrap{display:flex;gap:2px;padding:0 20px}
+  nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
+  nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--steel);outline:none}
+  nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
+  nav a.nav-cross{margin-left:auto;color:var(--amber);font-weight:700}
+
+  main{padding:44px 0 80px}
+  section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
+  .sec-no{font-family:var(--mono);font-size:12px;color:var(--steel);font-weight:700;letter-spacing:.1em}
+  h2{font-size:20px;font-weight:800;letter-spacing:-.01em}
+  .sec-body{padding:16px 26px 26px}
+  h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+  h3::before{content:"";width:8px;height:8px;background:var(--steel);flex:none}
+  p{margin-bottom:10px}
+  .sec-body p{max-width:76ch}
+  .lead{font-size:15.5px}
+  .soft{color:var(--ink-soft)}
+
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#1A222B;border-left:4px solid var(--steel);font-size:14px;line-height:1.8}
+  .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--steel);font-weight:700;margin-bottom:4px}
+  .plain.warn{background:#2A2019;border-left-color:var(--amber)}
+  .plain.warn .pl-tag{color:var(--amber)}
+
+  code{font-family:var(--mono);font-size:.92em;background:#232B34;padding:1px 5px;border:1px solid var(--grid)}
+
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F}
+  td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
+  tr:last-child td{border-bottom:none}
+  table tr:nth-child(even) td{background:#1E252D}
+  .tbl-scroll{overflow-x:auto}
+
+  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px}
+  .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)}
+
+  ul.rules{list-style:none;margin:10px 0}
+  ul.rules li{padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--grid);font-size:13.5px}
+  ul.rules li:last-child{border-bottom:none}
+  ul.rules li::before{content:"▸";position:absolute;left:6px;color:var(--steel);font-weight:700}
+
+  .milestones{display:grid;gap:0;margin:14px 0;border-left:3px solid var(--ink)}
+  .ms{position:relative;padding:12px 18px 12px 28px;border-bottom:1px dashed var(--grid)}
+  .ms:last-child{border-bottom:none}
+  .ms::before{content:"";position:absolute;left:-8px;top:18px;width:13px;height:13px;background:var(--panel);border:3px solid var(--steel)}
+  .ms .ms-tag{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--steel);letter-spacing:.08em}
+  .ms h4{font-size:14px;font-weight:700;margin:2px 0 2px}
+  .ms p{font-size:12.5px;color:var(--ink-soft);margin:0}
+
+  footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+
+  @media (max-width:820px){
+    .titleblock{grid-template-columns:1fr}
+    .meta{border-left:none;padding-left:0;text-align:left}
+    body{font-size:14px}
+    .sec-head,.sec-body{padding-left:16px;padding-right:16px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap titleblock">
+    <div>
+      <div class="doc-eyebrow">DOC 02 · TECH-PLAN · <b>REV C</b> · 2026-08</div>
+      <h1>실행 계획서 — 기술 결정과 로드맵
+        <span class="sub">AMR 견적 시뮬레이션 서비스를 어떤 기술로, 어떤 순서로 만들 것인가</span>
+      </h1>
+    </div>
+    <div class="meta">
+      BASE · <b>DOC 01 전체 조망</b><br>
+      DETAIL · <b>DOC 07 결정 인벤토리</b><br>
+      THEORY · <b>DOC 06 경로계획 이론</b><br>
+      SOURCE · <b>전체 개괄 (Master Overview)</b>
+    </div>
+  </div>
+</header>
+
+<nav aria-label="문서 내 탐색">
+  <div class="wrap">
+    <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a href="#s0">00 한눈에</a>
+    <a href="#s1">01 아키텍처</a>
+    <a href="#s2">02 이론 기반</a>
+    <a href="#s3">03 AI 파트</a>
+    <a href="#s4">04 표준 스택</a>
+    <a href="#s5">05 V&amp;V</a>
+    <a href="#s6">06 크리티컬 패스</a>
+    <a href="#s7">07 로드맵</a>
+    <a href="#s8">08 발표 메시지</a>
+    <a class="nav-cross" href="amr_overview.html">전체 조망 ↗</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ══════════ S0 한눈에 ══════════ -->
+<section id="s0">
+  <div class="sec-head"><span class="sec-no">SEC 00</span><h2>한눈에 보기</h2></div>
+  <div class="sec-body">
+    <p class="lead">이 문서는 <a href="amr_overview.html">전체 조망(DOC 01)</a>의 시스템을 실제로 만들기 위한
+    <b>기술 결정의 근거와 실행 순서</b>를 담습니다. 개별 결정의 전수 목록은 <a href="amr_decision_inventory.html">DOC 07</a>이 맡고,
+    여기서는 뼈대가 되는 큰 결정들만 다룹니다.</p>
+
+    <h3>이 문서가 답하는 질문</h3>
+    <ul class="rules">
+      <li>① 왜 시뮬레이션이 두 계층이고, 그 사이 경계는 무엇인가? — SEC 01</li>
+      <li>② 견적 숫자의 근거가 되는 이론과 AI는 무엇인가? — SEC 02 · 03</li>
+      <li>③ 어떤 산업 표준을 따르고, 결과를 어떻게 검증하며, 8주를 어떤 순서로 쓰는가? — SEC 04 · 05 · 07</li>
+    </ul>
+
+    <h3>핵심 구조 — 2계층 시뮬레이션과 보정 루프</h3>
+    <svg viewBox="0 0 900 320" role="img" aria-label="SimPy 견적 계층과 ROS2+Isaac 검증 계층의 분업, 그리고 보정 루프" style="max-width:100%;height:auto;display:block;margin:14px 0">
+      <defs><marker id="tp-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker><marker id="tp-arr-g" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#3BAF77"/></marker></defs>
+      <rect x="16" y="30" width="400" height="150" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="32" y="58" font-family="IBM Plex Sans KR, sans-serif" font-size="15" font-weight="700" fill="#E8ECF1">SimPy DES — 견적 본체</text>
+      <text x="32" y="84" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">질문: 몇 대가 최적인가 (정량 스윕)</text>
+      <text x="32" y="106" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">속도: 수백~수천 배속 · 수백 런 (K8s)</text>
+      <text x="32" y="128" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">내장: 경량 MAPF 플래너 (고정 틱 · 1틱=1셀)</text>
+      <text x="32" y="150" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">출력: 대수–처리량–TCO 곡선</text>
+      <rect x="484" y="30" width="400" height="150" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="500" y="58" font-family="IBM Plex Sans KR, sans-serif" font-size="15" font-weight="700" fill="#E8ECF1">ROS2 + Isaac SIL — 검증 트랙</text>
+      <text x="500" y="84" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">질문: 그 답이 실제 스택에서 성립하는가</text>
+      <text x="500" y="106" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">속도: RTF ≈ 1 · 최적 구성 1~2개만</text>
+      <text x="500" y="128" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">구성: ROS2 어댑터 + Nav2 구간 주행</text>
+      <text x="500" y="150" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">기종: iw.hub 메인 · MiR 250 서브</text>
+      <line x1="416" y1="80" x2="478" y2="80" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-arr)"/>
+      <text x="447" y="70" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#E8ECF1">최적 구성 전달</text>
+      <line x1="478" y1="140" x2="422" y2="140" stroke="#3BAF77" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#tp-arr-g)"/>
+      <text x="450" y="162" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" font-weight="700" fill="#3BAF77">실측 주행시간 → 보정</text>
+      <rect x="16" y="216" width="868" height="52" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="450" y="238" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">VDA 5050 경계 — 이 선 위의 플랫폼 코드는 가상↔현실 전환 시 불변</text>
+      <text x="450" y="258" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">테스트한 코드가 그대로 배포된다 = v2(실로봇 관제) 확장이 아키텍처에 내장</text>
+      <line x1="216" y1="180" x2="216" y2="210" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-arr)"/>
+      <line x1="684" y1="180" x2="684" y2="210" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-arr)"/>
+      <text x="450" y="296" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">보정 루프: 에뮬레이션 실측 엣지 주행시간 → SimPy 유효속도 계수 캘리브레이션 → 재스윕</text>
+    </svg>
+    <p class="soft">두 계층 모두 같은 VDA 5050 경계 위에서 동작합니다. 경로는 중앙에서 하달하고 Nav2는 구간 주행만 맡아야
+    두 계층이 "같은 시스템"을 시뮬레이션하게 됩니다 — 오차 비교가 성립하는 조건입니다.</p>
+
+    <h3>먼저 알아둘 용어</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th>용어</th><th>쉬운 설명</th></tr>
+      <tr><td><b>SIL</b></td><td>Software-In-the-Loop. 실제 소프트웨어 스택을 가상 하드웨어에 물려 검증하는 방식. 본 프로젝트 검증 트랙의 정체</td></tr>
+      <tr><td><b>VDI 3633</b></td><td>시뮬레이션 프로젝트의 절차와 검증(V&amp;V)을 정리한 독일 공학 지침. "투명한 견적" 주장의 표준 준거</td></tr>
+      <tr><td><b>ISO 22400 · ISO 3691-4</b></td><td>제조 운영 KPI 정의 표준(리포트 용어의 출처) · 무인 운반차 안전 표준(안전 거동 파라미터의 출처)</td></tr>
+      <tr><td><b><a class="term" href="glossary_industrial.html#sparkplug">Sparkplug B</a></b></td><td>MQTT 위에서 장비 상태를 구조화해 보내는 규약. 가상 AMR 텔레메트리에 사용(역할은 얇게)</td></tr>
+      <tr><td><b>sim-to-sim 분리</b></td><td>RL 학습은 빠른 SimPy-Gymnasium에서, 검증은 정밀한 Isaac에서 — 학습과 검증 시뮬레이터를 분리하는 설계</td></tr>
+      <tr><td><b>Gymnasium</b></td><td>강화학습 환경의 표준 인터페이스. SimPy 시뮬레이션을 RL이 학습할 수 있는 형태로 감싼다</td></tr>
+      <tr><td><b>OAT · CI</b></td><td>변수 하나씩 흔드는 민감도 분석(One-At-a-Time) · 95% 신뢰구간(Confidence Interval). 통계적 정직함의 도구</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- ══════════ S1 아키텍처 ══════════ -->
+<section id="s1">
+  <div class="sec-head"><span class="sec-no">SEC 01</span><h2>아키텍처 상세 — 흐름과 결정</h2></div>
+  <div class="sec-body">
+    <p class="lead">전체 그림은 <a href="amr_overview.html#o0">DOC 01 SEC 00의 시스템 지도</a>에 있습니다.
+    여기서는 그 그림을 성립시키는 기술 결정 세 가지를 설명합니다.</p>
+    <ul class="rules">
+      <li><b>단일 내부 표현이 계약</b> — 인테이크가 어떤 형태(에디터·엑셀·설문)로 들어와도 어댑터 계층이
+      "시맨틱 그리드 + 수요 프로파일 JSON" 하나로 변환한다. 이후 모든 컴포넌트는 이 표현만 바라본다</li>
+      <li><b>스윕은 K8s Indexed Job</b> — 스윕 1회 = 잡 1벌, 인덱스 = (기종 × 대수 × 시드) 조합. Kafka → TimescaleDB로 집계가 흐르고, Redis → WebSocket으로 진행률이 흐른다</li>
+      <li><b>경로 지시는 중앙 하달</b> — 플랫폼 코어가 VDA 5050 노드/엣지 경로를 내려보내고 <a class="term" href="glossary_robotics.html#nav2">Nav2</a>는 구간 주행만.
+      로봇이 스스로 경로를 고르면 두 시뮬레이션 계층이 서로 다른 시스템이 되어 정합성 비교가 무너진다</li>
+    </ul>
+    <div class="plain"><span class="pl-tag">의사결정 여정 — 왜 이 제품이 되었나</span>
+    디스패처 비교 연구 → 인력 배치 전환 검토 → 관제탑 포장(ROS 조연화 모순 발견) → FMS 제품화 → 견적 서비스 →
+    <b>최종: 견적 서비스(v1) + SIL 에뮬레이션 검증 계층, 실시간 관제(FMS)는 v2 백로그.</b><br>
+    교훈 세 가지 — ① 로봇 데모는 웹 서비스로 포장되어야 임팩트가 생긴다
+    ② 제품 카테고리를 로봇 도메인 안에서 고르면 "서비스 포장 vs ROS 주연"이 양립한다
+    ③ v1에서 ROS의 정직한 역할은 검증 계층이다.</div>
+  </div>
+</section>
+
+<!-- ══════════ S2 이론 기반 ══════════ -->
+<section id="s2">
+  <div class="sec-head"><span class="sec-no">SEC 02</span><h2>이론 기반 요약 — 경합이 곡선의 모양을 결정한다</h2></div>
+  <div class="sec-body">
+    <p class="lead">견적의 헤드라인인 대수–처리량 곡선이 꺾이는 이유는 <b>경로 경합</b>이고, 그 수학이
+    <a class="term" href="glossary_robotics.html#mapf">MAPF</a>입니다. 전체 이론은 <a href="amr_mapf_theory.html">DOC 06</a>에 풀어 두었고, 요약만 적습니다.</p>
+    <ul class="rules">
+      <li><b>MAPF 계보</b> — A* → 시공간 예약 테이블 → <b>Prioritized Planning(v1 플래너)</b> → CBS/ECBS → <b><a class="term" href="glossary_robotics.html#rhcr">Lifelong MAPF/RHCR</a></b>(직접 기반 문헌, Li et al. AAAI 2021)</li>
+      <li><b>TAPF 절충</b> — 할당과 경로를 따로 풀되, 경합 페널티를 할당 비용행렬에 피드백</li>
+      <li><b>데드락 이론</b> — Zone Control, Banker's Algorithm 계열</li>
+      <li><b>집계 이론</b> — <a class="term" href="glossary_industrial.html#littleslaw">Little's Law</a> 검산, M/M/c 대기행렬, 교통류 fundamental diagram(포화의 이론적 설명)</li>
+      <li><b>SimPy 계층 결정</b> — 경량 MAPF 내장(고정 틱, 1틱=1셀 이동). 매 틱 CBS는 배속을 파괴하므로 배제</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════ S3 AI 파트 ══════════ -->
+<section id="s3">
+  <div class="sec-head"><span class="sec-no">SEC 03</span><h2>AI 파트 — 디스패처 3단 비교와 RL 리스크 관리</h2></div>
+  <div class="sec-body">
+    <p class="lead">"어느 로봇이 어느 작업을"을 정하는 디스패처를 세 단계로 만들어 같은 조건에서 비교합니다 —
+    이것이 서비스의 연구적 차별점이자, 유일하게 실패 가능성이 있는 요소입니다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th>단계</th><th>방식</th><th>역할</th></tr>
+      <tr><td><b>규칙</b></td><td>FIFO + 최근접</td><td>기준선(baseline). 주 1~2차 E2E 루프의 기본</td></tr>
+      <tr><td><b>휴리스틱</b></td><td>헝가리안 배치 매칭</td><td>제품 기본 탑재 후보 — 안정적이고 설명 가능</td></tr>
+      <tr><td><b>RL</b></td><td>PPO + Stable-Baselines3</td><td>연구 요소 — 성능 상한 탐색</td></tr>
+    </table></div>
+    <ul class="rules">
+      <li><b>학습·검증 분리(sim-to-sim)</b> — RL 학습은 SimPy-Gymnasium 환경에서, Isaac은 검증만</li>
+      <li><b>평가 규칙</b> — 동일 시드 쌍대 비교, 학습/평가 시나리오 완전 분리</li>
+    </ul>
+    <div class="plain warn"><span class="pl-tag">최대 연구 리스크 — RL 맵 일반화</span>
+    견적 서비스는 고객마다 맵이 다릅니다. 특정 맵에서만 통하는 정책이면 제품이 성립하지 않습니다.
+    대응: 맵 불변 관측(작업까지의 경로비용·구역 혼잡도) 설계 + 랜덤 레이아웃 학습.
+    실패 시 후퇴선(사전 합의): <b>"RL은 연구 항목, 제품 기본은 휴리스틱"</b>.</div>
+  </div>
+</section>
+
+<!-- ══════════ S4 표준 스택 ══════════ -->
+<section id="s4">
+  <div class="sec-head"><span class="sec-no">SEC 04</span><h2>표준 스택 — 프로토콜에서 방법론 중심으로</h2></div>
+  <div class="sec-body">
+    <p class="lead">제품 정체성이 "로봇을 움직이는 시스템"에서 <b>"신뢰할 수 있는 분석"</b>으로 이동하면서,
+    따르는 표준도 통신 프로토콜 중심에서 <b>방법론(검증·KPI·안전) 중심</b>으로 재편했습니다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th>표준</th><th>역할</th><th>채택 수준</th></tr>
+      <tr><td><b>VDI 3633</b></td><td>DES 절차·V&amp;V — 투명성 주장의 표준 준거</td><td><span class="chip c-green">필수</span></td></tr>
+      <tr><td><b>ISO 22400</b></td><td>KPI 정의 — 리포트 용어집의 출처</td><td><span class="chip c-green">필수</span></td></tr>
+      <tr><td><b>ISO 3691-4</b></td><td>안전 거동 → 시뮬 파라미터 출처 (낙관 편향 방지)</td><td><span class="chip c-steel">강추</span></td></tr>
+      <tr><td><b><a class="term" href="glossary_industrial.html#vda5050">VDA 5050</a></b> (2.0)</td><td>검증 트랙 인터페이스 + v2 호환. order/state/connection + instantActions</td><td><span class="chip c-steel">유지</span></td></tr>
+      <tr><td><b>Sparkplug B</b></td><td>가상 AMR 텔레메트리 — 역할이 얇음을 인정하고 축소</td><td><span class="chip c-amber">축소</span></td></tr>
+      <tr><td><b>MassRobotics / OPC UA·ISA-95</b></td><td>비교 검토 후 기각 / v2 백로그</td><td><span class="chip c-amber">지식·백로그</span></td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- ══════════ S5 V&V ══════════ -->
+<section id="s5">
+  <div class="sec-head"><span class="sec-no">SEC 05</span><h2>V&amp;V 체계 — 이 숫자를 왜 믿어야 하는가</h2></div>
+  <div class="sec-body">
+    <p class="lead">"투명한 견적"이라는 주장은 검증 체계가 있어야 실체가 됩니다.
+    Verification은 "모델을 올바르게 구현했는가", Validation은 "모델이 현실을 닮았는가"입니다.</p>
+    <ul class="rules">
+      <li><b>Verification</b> — 보존 법칙(생성 주문 수 = 완료+미완료), Little's Law 검산, 로봇 1대 극한 케이스의 해석해 대조</li>
+      <li><b>Validation</b> — MAPF 공개 벤치마크 대조, SimPy vs 에뮬레이션 정합성(엣지 주행시간 → 사이클타임 → 처리량 3단 오차), 예측 오차 N% 공개</li>
+      <li><b>문서화</b> — 모든 가정·분포·보정 계수를 리포트 부록의 "가정 명세서"로 — 투명성 주장의 실체</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════ S6 크리티컬 패스 ══════════ -->
+<section id="s6">
+  <div class="sec-head"><span class="sec-no">SEC 06</span><h2>크리티컬 패스 — 주 1~2차에 동결할 결정 7건</h2></div>
+  <div class="sec-body">
+    <p class="lead">다른 모든 작업이 이 결정들 위에 서 있습니다. 상세 배경은 <a href="amr_decision_inventory.html">DOC 07</a>의 해당 섹션 참조.</p>
+    <div class="milestones">
+      <div class="ms"><span class="ms-tag">CP 1</span><h4>맵 표현 · 셀 크기 · 좌표계 단일 소스</h4><p>미터 좌표를 원본으로, 1로봇 = 1셀. 전 컴포넌트가 종속되는 결정.</p></div>
+      <div class="ms"><span class="ms-tag">CP 2</span><h4>시간 모델 — 고정 틱</h4><p>1틱 = 1셀 이동. MAPF 예약 테이블·재계획·통계의 전제.</p></div>
+      <div class="ms"><span class="ms-tag">CP 3</span><h4>경로 지시 — 중앙 하달</h4><p>두 시뮬레이션 계층의 정합성이 성립하는 조건.</p></div>
+      <div class="ms"><span class="ms-tag">CP 4</span><h4>RL 일반화 전략 + 후퇴선</h4><p>맵 불변 관측 + 랜덤 레이아웃. 실패 시 휴리스틱 기본 탑재로 후퇴(사전 합의).</p></div>
+      <div class="ms"><span class="ms-tag">CP 5</span><h4>K8s Indexed Job + 결과 저장 정책</h4><p>집계 기본, 상세 로그는 대표 런만. 인프라 골격.</p></div>
+      <div class="ms"><span class="ms-tag">CP 6</span><h4>RTX 5080 RTF 실측</h4><p>검증 트랙이 감당할 수 있는 로봇 대수의 물리적 상한 확정.</p></div>
+      <div class="ms"><span class="ms-tag">CP 7</span><h4>4대 계약 동결</h4><p>입력 스키마 / Kafka 스키마 / 디스패처 인터페이스 / VDA 5050 서브셋 (<a href="amr_overview.html#o4">DOC 01 SEC 04</a>).</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ S7 로드맵 ══════════ -->
+<section id="s7">
+  <div class="sec-head"><span class="sec-no">SEC 07</span><h2>로드맵 — 8주와 생존 원칙</h2></div>
+  <div class="sec-body">
+    <p class="lead">타임라인 그림은 <a href="amr_overview.html#o5">DOC 01 SEC 08</a>에 있습니다. 여기서는 주차별 산출물과 순서의 이유를 적습니다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th>주차</th><th>산출물</th><th>이 순서인 이유</th></tr>
+      <tr><td><b>주 1–2</b></td><td>4대 계약 동결 + SimPy DES + 규칙 디스패처 (E2E 최소 루프) + RTF 실측</td><td>계약이 동결돼야 4트랙이 병렬로 출발. RTF 실측이 검증 스코프의 상한을 정한다</td></tr>
+      <tr><td><b>주 3</b></td><td>Kafka→DB→차트 + Scenario API + 에디터 골격</td><td>데이터가 끝까지 흐르는 배관을 먼저 뚫는다</td></tr>
+      <tr><td><b>주 4–5</b></td><td>휴리스틱+RL 디스패처, K8s 스윕, 곡선/리포트 화면, 카테고리 게이트</td><td>견적 본체의 완성 — 여기까지가 "최악에도 남는 데모"</td></tr>
+      <tr><td><b>주 6–7</b></td><td>에뮬레이션 검증 트랙 + 보정 루프 1회전 + 오차 분석</td><td>완성된 견적을 검증으로 보강. Isaac이 마지막인 이유</td></tr>
+      <tr><td><b>주 8</b></td><td>통합, VDI 3633 준거 리포트, 발표</td><td>—</td></tr>
+    </table></div>
+    <div class="plain"><span class="pl-tag">생존 원칙</span>
+    ① Plan(견적) 먼저 완성 — 최악의 경우에도 완결된 데모가 남는다
+    ② Isaac은 마지막 — 검증은 보강이지 본체가 아니다
+    ③ what-if 라이브는 사수, 나머지(스윕·에뮬레이션)는 캐시·녹화 폴백을 준비한다.</div>
+  </div>
+</section>
+
+<!-- ══════════ S8 발표 메시지 ══════════ -->
+<section id="s8">
+  <div class="sec-head"><span class="sec-no">SEC 08</span><h2>발표·면접 핵심 메시지</h2></div>
+  <div class="sec-body">
+    <p class="lead">같은 시스템을 청중에 따라 다른 층위로 설명합니다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th>청중</th><th>메시지</th></tr>
+      <tr><td><b>비전문가</b></td><td>"로봇 업체의 블랙박스 견적을 중립 시뮬레이션으로 — 곡선에서 직접 선택하세요." + T1 3분 체험 + 스윕 매트릭스가 실시간으로 채워지는 화면</td></tr>
+      <tr><td><b>기술 면접관</b></td><td>2계층 분리의 물리적 필연성 / VDA 5050 경계 불변("테스트한 코드가 배포된다") / SimPy vs Isaac 오차 분석(디지털 트윈 정합성) / RHCR·MAPF 이론 정합 / VDI 3633 V&amp;V / CI·민감도의 통계적 정직함</td></tr>
+      <tr><td><b>트랙별</b></td><td>대기업 생산기술 지원 → DES·반송 최적화·V&amp;V 중심 / AMR 기업 지원 → VDA 5050·Isaac 검증 트랙 중심</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- ══════════ 다음으로 ══════════ -->
+<section id="snext">
+  <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
+  <div class="sec-body">
+    <ul class="rules">
+      <li><a href="amr_decision_inventory.html"><b>DOC 07 구현 결정 인벤토리</b></a> — 이 계획의 각 항목을 실제 결정 60여 개로 분해한 전수 목록</li>
+      <li><a href="amr_mapf_theory.html"><b>DOC 06 경로계획 이론</b></a> — SEC 02 요약의 원본: MAPF 계보·문헌·학습 로드맵</li>
+      <li><a href="logistics_domain_research.html"><b>DOC 05 도메인 리서치</b></a> — 이 서비스가 다루는 물류 현장의 실제 모습</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">DOC 02 · TECH PLAN — 원천: AMR_프로젝트_전체개괄.md (2026-08-19) · REV C: 주제 확정(AMR 견적 시뮬레이션)에 따른 전면 개정</div>
+</footer>
+
+</body>
+</html>

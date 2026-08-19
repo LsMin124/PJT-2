@@ -632,22 +632,23 @@ ros2 run arm101 moveit_demo          # ← 이 터미널만 ~/ros2_ws/install/se
     </table></div>
 
     <div class="plain"><span class="pl-tag">이 노트가 프로젝트로 이어지는 곳</span>
-    여기서 익힌 배선이 본편에서 그대로 확장됩니다: joint_wave·mock hardware의 자리에 <b>Isaac Sim</b>이,
-    Foxglove의 자리에 <b>운영 대시보드·3D 뷰</b>가, moveit_demo·ik_goto의 자리에 <b>피킹 오케스트레이션</b>이 들어옵니다.
-    구조는 이미 한 번 손으로 만들어봤으므로, 이제는 규모의 문제입니다.</div>
+    본편(AMR 견적 시뮬레이션)에서 ROS2 역량이 투입되는 곳은 <b>검증 트랙</b>입니다:
+    VDA 5050 어댑터 · Nav2 구간 주행 · Isaac Sim 에뮬레이션 · RTF 실측 · 보정 루프(개괄 §4·13).
+    여기서 익힌 노드·토픽·컨트롤러·launch의 감각이 그대로 그 배선의 기초가 됩니다.
+    MoveIt2·IK 자체는 v1 범위 밖이지만(견적 대상 AMR엔 로봇팔이 없음), 로봇팔 카테고리로 확장할 때를 위한 ROS2 생태계 근육으로 남습니다.</div>
 
     <div class="plain try"><span class="pl-tag">다음으로 읽기</span>
-    로봇팔 <b>한 대</b>를 손으로 다뤄봤다면, 다음은 <b>여러 대</b>의 세계입니다.<br>
+    로봇 <b>한 대</b>를 손으로 다뤄봤다면, 다음은 본편의 <b>여러 대 + 검증 트랙</b>입니다.<br>
     ① <a href="amr_mapf_theory.html">DOC 06 — AMR 경로계획 이론</a>: 여러 대가 서로 부딪히지 않게 움직이는 법(MAPF)<br>
-    ② <a href="amr_decision_inventory.html">DOC 07 — 구현 결정 인벤토리</a>: 그것을 실제 시스템으로 만들 때의 결정들<br>
-    막히는 용어는 <a href="glossary_robotics.html">REF A 용어사전</a>이 그림과 함께 설명합니다.</div>
+    ② <a href="amr_decision_inventory.html#df">DOC 07 SEC F — 에뮬레이션 계층</a>: 이 노트의 ROS2 역량이 실제로 투입되는 검증 트랙의 결정들<br>
+    막히는 용어는 <a href="glossary_robotics.html">REF A 용어사전</a>이 그림과 함께 설명합니다(<a class="term" href="glossary_robotics.html#sil">SIL</a> 항목이 검증 트랙의 개념 정리).</div>
   </div>
 </section>
 
 </main>
 
 <footer>
-  <div class="wrap">DOC 04 · LAB NOTE — ~/ros2_ws 실습과 병행해서 읽는 문서 · REV B(2026-08-18): 인터랙티브 IK 장(SEC 06) 추가 · 다음 확장: planning scene 장애물 · Isaac 연동</div>
+  <div class="wrap">DOC 04 · LAB NOTE — ~/ros2_ws 실습과 병행해서 읽는 문서 · REV B(2026-08-18): 인터랙티브 IK 장(SEC 06) 추가 · 다음 확장: Nav2 · VDA 5050 어댑터 실습(본편 검증 트랙 예습)</div>
 </footer>
 
 </body>

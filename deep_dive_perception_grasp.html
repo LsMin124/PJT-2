@@ -118,9 +118,9 @@
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow">DEEP-DIVE C · REV A · <b>DOC 05 심화 3부</b> · 2026-08</div>
+      <div class="doc-eyebrow">DEEP-DIVE C · <b>ARCHIVE</b> · 이전 주제 검토 · 2026-08</div>
       <h1>비정형 인식·파지 파이프라인
-        <span class="sub">세그멘테이션 → 6D 자세 추정 → 파지 생성 → 실행의 4단계를 단계별 대표 방법·데이터셋·지표로 정리하고, 합성 데이터 설계까지 구체화한다</span>
+        <span class="sub">세그멘테이션 → 6D 자세 → 파지 → 실행 4단계와 합성 데이터 설계. 이전 주제(허브 자동화) 검토 기록으로 보존된 문서</span>
       </h1>
     </div>
     <div class="meta">
@@ -156,6 +156,12 @@
   <section id="cov">
     <div class="sec-head"><span class="sec-no">한눈에 보기</span><h2>이 문서가 답하는 질문</h2></div>
     <div class="sec-body">
+      <div class="plain"><span class="pl-tag">아카이브 안내 — 이전 주제 검토 기록</span>
+      이 문서는 이전 주제(택배 허브 자동화)를 검토하던 과정에서 작성됐고, 최종 주제는 <b>AMR 도입 견적 시뮬레이션</b>으로
+      확정됐습니다(전체 개괄 §3). 새 주제에 로봇팔 파지는 등장하지 않지만,
+      여기서 다룬 <b>합성 데이터와 sim-to-real(시뮬레이션에서 만든 것이 현실에서 통하는가) 관점은
+      현행 주제의 Isaac 검증 트랙과 맞닿아</b> 있어 기록으로 보존합니다.
+      현행 주제 문서는 <a href="amr_overview.html">DOC 01 전체 개괄</a>부터 읽으세요.</div>
       <ul class="rules">
         <li><b>로봇은 처음 보는 물체를 어떻게 "보고", 어떻게 "집는가"?</b> — 4단계 파이프라인으로 분해한다 (SEC 01~05)</li>
         <li><b>학습 데이터가 없는데 어떻게 모델을 만드나?</b> — 시뮬레이터로 라벨까지 자동 생성하는 합성 데이터 (SEC 06)</li>
@@ -437,7 +443,8 @@
     <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
     <div class="sec-body">
       <ul class="rules">
-        <li><a href="deep_dive_unloading.html"><b>심화 A — 벌크 하차</b></a> : 이 파이프라인이 풀어야 할 현장 문제. 난점 ①②가 여기 방법론의 입력이다</li>
+        <li><a href="amr_decision_inventory.html"><b>DOC 07 — 구현 결정 인벤토리</b></a> : 이 문서의 합성 데이터·sim-to-real 관점이 현행 주제의 Isaac 검증 트랙(SEC F)과 맞닿는 곳</li>
+        <li><a href="deep_dive_unloading.html"><b>심화 A — 벌크 하차 (아카이브)</b></a> : 이 파이프라인이 풀어야 할 현장 문제. 난점 ①②가 여기 방법론의 입력이다</li>
         <li><a href="deep_dive_induction.html"><b>심화 B — 인덕션 병목</b></a> : 파지 사이클 타임이 라인 처리량으로 환산되는 곳. SEC 05의 사이클 타임 회계가 이 문서의 μ가 된다</li>
         <li><a href="ros2_arm_lab.html"><b>DOC 04 — ROS2 랩 노트</b></a> : 실행 단계(③④)에서 쓰는 로봇팔 제어(MoveIt2·IK)를 직접 실습으로 익히고 싶을 때</li>
       </ul>
@@ -461,7 +468,7 @@
 </main>
 
 <footer>
-  <div class="wrap">DEEP-DIVE C · REV A — 상위 문서 <a href="logistics_domain_research.html">DOC 05 도메인 리서치</a> · 같은 시리즈 <a href="deep_dive_unloading.html">A 벌크 하차</a>·<a href="deep_dive_induction.html">B 인덕션 병목</a> · <a href="index.html">문서 인덱스로</a></div>
+  <div class="wrap">DEEP-DIVE C · ARCHIVE — 상위 문서 <a href="logistics_domain_research.html">DOC 05 도메인 리서치</a> · 같은 시리즈 <a href="deep_dive_unloading.html">A 벌크 하차</a>·<a href="deep_dive_induction.html">B 인덕션 병목</a> · <a href="index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>

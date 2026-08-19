@@ -144,16 +144,16 @@
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow">DOMAIN RESEARCH · REV A · <b>SIM-FIRST SMART LOGISTICS</b> · 2026-08</div>
+      <div class="doc-eyebrow">DOMAIN RESEARCH · REV B · <b>배경 자료 · 주제 검토 기록</b> · 2026-08</div>
       <h1>국내 택배 물류 도메인 리서치
-        <span class="sub">허브앤스포크 구조 · 자동화 공백 구간 · 활용 가능한 데이터셋 — 프로젝트를 실제 산업 문제에 연결하기 위한 조사 문서</span>
+        <span class="sub">허브앤스포크 구조 · 자동화 공백 구간 · 활용 가능한 데이터셋 — 이전 주제(허브 자동화) 검토 과정의 조사이며, 물류 현장 이해의 배경 자료로 유효</span>
       </h1>
     </div>
     <div class="meta">
       TYPE · <b>조사 문서 (RESEARCH)</b><br>
       BASIS · <b>공개 자료·기사·통계 (출처 명기)</b><br>
       CASE · <b>CJ대한통운 곤지암 메가허브</b><br>
-      USE · <b>주제 심화 · 데이터 확보 계획</b>
+      USE · <b>도메인 배경 · 검토 기록</b>
     </div>
   </div>
 </header>
@@ -168,8 +168,8 @@
     <a href="#r4">04 프로젝트 연결</a>
     <a href="#r5">05 데이터셋·자료</a>
     <a href="#r6">06 접근 순서</a>
-    <a class="nav-cross" href="topic_pitch.html">TOPIC PITCH ↗</a>
-    <a class="nav-x2" href="smart_factory_tech_plan.html">TECH PLAN ↗</a>
+    <a class="nav-cross" href="topic_journey.html">TOPIC PITCH ↗</a>
+    <a class="nav-x2" href="amr_tech_plan.html">TECH PLAN ↗</a>
   </div>
 </nav>
 
@@ -179,10 +179,15 @@
   <section id="r0">
     <div class="sec-head"><span class="sec-no">SEC 00</span><h2>한눈에 보기 — 이 문서가 답하는 질문</h2></div>
     <div class="sec-body">
+      <div class="plain"><span class="pl-tag">이 문서의 위상 — 먼저 읽어주세요</span>
+      이 조사는 <b>이전 주제(택배 허브 자동화)를 검토하던 과정의 산물</b>입니다. 최종 주제는
+      <b>이커머스/3PL 창고의 AMR 도입 견적 시뮬레이션</b>으로 확정됐습니다(전체 개괄 §2·3).
+      다만 물류 현장이 어떻게 돌아가는지에 대한 배경 지식으로는 그대로 유효하며,
+      무엇이 새 주제로 계승됐는지는 SEC 04에 정리했습니다. 현행 주제 문서는 <a href="amr_overview.html">DOC 01 전체 개괄</a>부터 읽으세요.</div>
       <ul class="rules">
         <li><b>국내 택배는 어떤 구조로 흘러가나?</b> — 허브앤스포크. 전국 물량 대부분이 대형 허브 한 곳을 거친다 (SEC 01)</li>
         <li><b>허브 안에서 무엇이 자동이고 무엇이 사람 몫인가?</b> — 흐르는 상자는 기계가, 집고 옮기고 쌓는 일은 사람이 (SEC 02·03)</li>
-        <li><b>본 프로젝트 기술은 어디에 꽂히나?</b> — 비정형 물체의 인식·파지와 공정 시뮬레이션 (SEC 04~06)</li>
+        <li><b>이 조사는 확정된 주제(AMR 견적)와 어떻게 이어지나?</b> — 계승 3건 · 아카이브 2건 (SEC 04)</li>
       </ul>
 
       <h3>허브앤스포크 — 국내 택배의 기본 구조</h3>
@@ -436,37 +441,28 @@
 
   <!-- ══════════ R4 프로젝트 연결 ══════════ -->
   <section id="r4">
-    <div class="sec-head"><span class="sec-no">SEC 04</span><h2>프로젝트 기술 스택과의 대응</h2></div>
+    <div class="sec-head"><span class="sec-no">SEC 04</span><h2>확정된 주제와의 연결 — 계승과 아카이브</h2></div>
     <div class="sec-body">
-      <p class="lead">하차·인덕션·이형물은 결국 <b>비정형 물체의 인식과 파지(grasping, 집기)</b> 문제다. 인식은 두 단계로 나뉜다 — 세그멘테이션(이미지에서 물체 영역을 픽셀 단위로 구분)과 6D 자세 추정(물체의 위치 3축 + 방향 3축 계산). 본 프로젝트에서 구축하는 기술 스택이 이 문제에 그대로 대응된다.</p>
+      <p class="lead">이 조사의 무대는 택배 "허브"였지만, 확정된 주제(AMR 도입 견적 시뮬레이션)의 무대는
+      <b>이커머스/3PL "창고"</b>입니다. 그래도 여기서 얻은 것의 상당수가 새 주제로 계승됩니다 —
+      무엇이 이어지고 무엇이 기록으로 보존되는지 구분합니다.</p>
+
+      <div class="plain"><span class="pl-tag">왜 택배 허브가 아닌가 (전체 개괄 §2)</span>
+      견적 의사결정이 실제로 일어나는 시장은 <b>반송/피킹 보조 카테고리(시장의 약 25~27%)</b>입니다 —
+      인프라 변경 없이 2~4주 배치, 3~15대 점진 도입이라 "로봇 업체 말만 믿기 불안한" 고객이 중립 견적을 찾는 구간입니다.
+      국내 수요의 본체도 이커머스/3PL(수도권 A급 센터 임차면적의 79%)입니다.
+      반면 택배 허브의 하차·인덕션은 로봇팔(비정형 파지) 문제라 AMR 견적과 기술 계열이 다르고,
+      시장 1위인 GTP(~38%)는 턴키 거래라 중립 견적 서비스가 끼어들 틈이 구조적으로 좁습니다.</div>
+
+      <h3>이 조사에서 계승되는 것 / 기록으로 남는 것</h3>
       <div class="tbl-scroll">
-      <table>
-        <tr><th style="width:32%">프로젝트 기술 스택</th><th style="width:38%">대응되는 허브 문제</th><th style="width:30%">전이 방법</th></tr>
-        <tr>
-          <td><b>Isaac Sim + Replicator</b> 합성 데이터 파이프라인 (검수 모델 학습용)</td>
-          <td>벌크 적재 상자·이형물의 세그멘테이션/자세 라벨 데이터 부족</td>
-          <td>SKU·파손 랜덤화 대신 <b>벌크 적재 랜덤화</b>로 씬만 교체 — 방법론 동일</td>
-        </tr>
-        <tr>
-          <td><b>6D 자세 추정</b> + MoveIt2 피스 피킹</td>
-          <td>겹친 상자 중 "어느 것을 어떤 자세로 집을지" 결정</td>
-          <td>토트 내 피킹과 같은 파이프라인 (인식 → 파지 계획 → 실행)</td>
-        </tr>
-        <tr>
-          <td><b>SimPy DES</b> 물류 오케스트레이터</td>
-          <td>인덕션 처리율이 소터 전체의 병목 — 정량화 필요</td>
-          <td>허브 1개 라인(하차→인덕션→소터→슈트)을 공정 모델로 구성</td>
-        </tr>
-        <tr>
-          <td><b><a class="term" href="glossary_industrial.html#mqtt">MQTT</a>·<a class="term" href="glossary_industrial.html#vda5050">VDA 5050</a>·<a class="term" href="glossary_industrial.html#sparkplug">Sparkplug B</a></b> 데이터 연동</td>
-          <td>설비·로봇·제어 시스템(WCS) 간 표준 연동</td>
-          <td>프로젝트 채택 표준과 동일 — 허브 설비도 같은 계층 구조</td>
-        </tr>
-        <tr>
-          <td><b>AI 검수·리젝트 폐루프</b></td>
-          <td>미스캔·오분류 예외 처리 라인</td>
-          <td>검수 판정 → 예외품 운송 흐름과 동일 구조</td>
-        </tr>
+      <table class="zebra">
+        <tr><th style="width:34%">리서치에서 얻은 것</th><th style="width:15%">계승 여부</th><th style="width:51%">어디로 이어지나</th></tr>
+        <tr><td>대기행렬·병목의 시각 (인덕션 정량 분석)</td><td><span class="chip c-green">계승</span></td><td>AMR 견적 엔진(SimPy)의 이론 기반 그대로 — M/M/c·Little's Law (<a href="amr_mapf_theory.html">DOC 06</a> SEC 04)</td></tr>
+        <tr><td>현장 프로세스 감각 (공정 흐름·피크·인력 배치)</td><td><span class="chip c-green">계승</span></td><td>인테이크의 수요 프로파일·운영 설문 설계에 반영</td></tr>
+        <tr><td>물류 표준·시스템 감각 (<a class="term" href="glossary_industrial.html#wms">WMS</a>·<a class="term" href="glossary_industrial.html#vda5050">VDA 5050</a>·인증제)</td><td><span class="chip c-green">계승</span></td><td>표준 스택(전체 개괄 §10)과 T3 WMS 연동 로드맵</td></tr>
+        <tr><td>하차·인덕션 로봇 (비정형 인식·파지)</td><td><span class="chip c-amber">아카이브</span></td><td>심화 A·C에 이전 주제 검토 기록으로 보존 — 의사결정 여정의 근거(전체 개괄 §3)</td></tr>
+        <tr><td>허브 소터 설비 자동화</td><td><span class="chip c-slate">범위 밖</span></td><td>고정 설비라 AMR 견적의 대상이 아님</td></tr>
       </table>
       </div>
       <p class="soft">참고: 국토부 <b>스마트물류센터 인증</b>(2020년 물류시설법 개정으로 도입, 1~5등급)은 입고·보관·피킹·출고 등 과정별 자동화 정도를 평가한다. 이 평가 항목이 곧 "물류센터에서 어떤 기술이 값어치 있는가"의 공식 체크리스트이므로, 발표에서 프로젝트 기능을 이 기준에 대응시켜 설명할 수 있다.</p>
@@ -523,7 +519,8 @@
   <section id="r6">
     <div class="sec-head"><span class="sec-no">SEC 06</span><h2>접근 순서 제안 — 3단계</h2></div>
     <div class="sec-body">
-      <p class="lead">세 단계 모두 <b>같은 도구 체인(SimPy · Isaac Sim · Replicator)</b>으로 진행할 수 있어 도입 비용이 적다.</p>
+      <p class="lead">세 단계 모두 <b>같은 도구 체인(SimPy · Isaac Sim · Replicator)</b>으로 진행할 수 있어 도입 비용이 적다.
+      <span class="soft">— 이 접근 순서는 이전 주제 검토 시점의 제안이다. 1단계(DES 모델링)의 사고방식만 현 주제의 SimPy 견적 엔진으로 계승됐고, 2~3단계는 아카이브(심화 C)로 보존된다.</span></p>
       <div class="patterns">
         <div class="pat">
           <h4>허브 라인 DES 모델링 <small>SimPy · 병목 정량화</small></h4>
@@ -569,12 +566,12 @@
   <section id="r8">
     <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
     <div class="sec-body">
-      <p class="lead">이 조사가 흥미로웠다면, 구간별 심화 3부가 각 문제를 기술 수준까지 파고듭니다.</p>
+      <p class="lead">확정된 주제 기준의 다음 문서입니다. 심화 3부(A·B·C)는 이전 주제 검토 기록(아카이브)으로 보존되어 있습니다.</p>
       <ul class="rules">
-        <li><a href="deep_dive_unloading.html"><b>심화 A — 벌크 하차·이형물</b></a> : 하차는 왜 아직 사람이 하는가를 4가지 난점으로 분해</li>
-        <li><a href="deep_dive_induction.html"><b>심화 B — 인덕션 병목 정량 분석</b></a> : 인덕션이 전체를 막는 이유를 수식과 시뮬레이션 설계로</li>
-        <li><a href="deep_dive_perception_grasp.html"><b>심화 C — 비정형 인식·파지</b></a> : 상자를 "보고 집는" AI 파이프라인 4단계</li>
-        <li><a href="smart_factory_tech_plan.html"><b>DOC 02 실행 계획서</b></a> : 이 현장 문제에 대응하는 본 프로젝트의 기술 계획으로 돌아가기</li>
+        <li><a href="amr_overview.html"><b>DOC 01 — 프로젝트 전체 개괄</b></a> : 확정된 주제(AMR 도입 견적 시뮬레이션)의 제품 정의·아키텍처·마일스톤</li>
+        <li><a href="amr_mapf_theory.html"><b>DOC 06 — 경로계획 이론 기반</b></a> : 이 조사의 대기행렬 시각이 견적 엔진의 이론으로 이어지는 곳</li>
+        <li><a href="amr_decision_inventory.html"><b>DOC 07 — 구현 결정 인벤토리</b></a> : 새 주제를 실제로 만들기 위해 팀이 합의할 결정 60여 개</li>
+        <li><a href="deep_dive_induction.html"><b>심화 B (아카이브)</b></a> : 대기행렬 이론의 원 적용 사례 — 병목 수식화 과정이 궁금할 때</li>
       </ul>
     </div>
   </section>
@@ -582,7 +579,7 @@
 </main>
 
 <footer>
-  <div class="wrap">DOMAIN RESEARCH · REV A — 본 프로젝트 문서는 <a href="smart_factory_overview.html">DOC 01</a>·<a href="smart_factory_tech_plan.html">DOC 02</a>·<a href="topic_pitch.html">DOC 03</a> · <a href="index.html">문서 인덱스로</a></div>
+  <div class="wrap">DOMAIN RESEARCH · REV B (배경 자료·검토 기록) — 현행 주제 문서는 <a href="amr_overview.html">DOC 01</a>·<a href="amr_mapf_theory.html">DOC 06</a>·<a href="amr_decision_inventory.html">DOC 07</a> · <a href="index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>

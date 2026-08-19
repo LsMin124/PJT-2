@@ -121,9 +121,9 @@
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow">DEEP-DIVE B · REV A · <b>DOC 05 심화 3부</b> · 2026-08</div>
+      <div class="doc-eyebrow">DEEP-DIVE B · <b>ARCHIVE</b> · 이전 주제 검토 · 2026-08</div>
       <h1>인덕션 병목의 정량 분석
-        <span class="sub">소터는 빠른데 왜 허브가 막히는가 — 처리량 체인과 대기열 이론으로 병목을 수식화하고, SimPy 모델 설계까지 구체화한다</span>
+        <span class="sub">소터는 빠른데 왜 허브가 막히는가 — 처리량 체인과 대기열 이론의 수식화. 이론 부분은 현행 주제의 SimPy 계층으로 계승된, 검토 기록 문서</span>
       </h1>
     </div>
     <div class="meta">
@@ -158,6 +158,11 @@
   <section id="bov">
     <div class="sec-head"><span class="sec-no">한눈에 보기</span><h2>이 문서가 답하는 질문</h2></div>
     <div class="sec-body">
+      <div class="plain"><span class="pl-tag">아카이브 안내 — 단, 이론은 현행 주제로 그대로 계승</span>
+      이 문서는 이전 주제(택배 허브 자동화) 검토 과정에서 작성됐고, 최종 주제는 <b>AMR 도입 견적 시뮬레이션</b>으로
+      확정됐습니다(전체 개괄 §3). 다만 시리즈 셋 중 이 문서의 계승도가 가장 높습니다 —
+      여기서 다루는 <b>대기행렬·병목 이론(M/M/c·Little's Law)과 SimPy 모델링 사고방식은 AMR 견적 엔진의 SimPy 계층에 그대로 계승</b>됩니다
+      (<a href="amr_mapf_theory.html">DOC 06</a> SEC 04). 무대가 "소터 앞 인덕션"에서 "창고 통로와 피킹 스테이션"으로 바뀔 뿐, 수학은 같습니다.</div>
       <ul class="rules">
         <li><b>소터(자동 분류기)는 빠른데 왜 허브 전체가 막히는가?</b> — 병목은 소터가 아니라 그 앞의 인덕션에 있다 (SEC 01·02)</li>
         <li><b>피크 시간대는 왜 그렇게 치명적인가?</b> — 혼잡은 용량에 가까워질수록 비선형으로 폭발한다 (SEC 03)</li>
@@ -448,7 +453,8 @@ def box_flow(env, box, buffer, induction, sorter, stats):
     <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
     <div class="sec-body">
       <ul class="rules">
-        <li><a href="deep_dive_unloading.html"><b>심화 A — 벌크 하차</b></a> : 인덕션의 공급 상류. 하차 속도가 이 문서의 도착률 λ를 만든다</li>
+        <li><a href="amr_mapf_theory.html"><b>DOC 06 — 경로계획 이론 기반</b></a> : 이 문서의 대기행렬 이론이 현행 주제(AMR 견적)의 견적 엔진 이론으로 그대로 이어지는 곳 — 가장 먼저 읽을 다음 문서</li>
+        <li><a href="deep_dive_unloading.html"><b>심화 A — 벌크 하차 (아카이브)</b></a> : 인덕션의 공급 상류. 하차 속도가 이 문서의 도착률 λ를 만든다</li>
         <li><a href="deep_dive_perception_grasp.html"><b>심화 C — 비정형 인식·파지</b></a> : 로봇식 싱귤레이션(SEC 04)이 성립하려면 풀어야 하는 인식 문제의 방법론</li>
         <li><a href="logistics_domain_research.html"><b>DOC 05 — 도메인 리서치</b></a> : 인덕션이 허브 전체 흐름 중 어디에 있는지 큰 그림으로 돌아가고 싶을 때</li>
       </ul>
@@ -473,7 +479,7 @@ def box_flow(env, box, buffer, induction, sorter, stats):
 </main>
 
 <footer>
-  <div class="wrap">DEEP-DIVE B · REV A — 상위 문서 <a href="logistics_domain_research.html">DOC 05 도메인 리서치</a> · 같은 시리즈 <a href="deep_dive_unloading.html">A 벌크 하차</a>·<a href="deep_dive_perception_grasp.html">C 인식·파지</a> · <a href="index.html">문서 인덱스로</a></div>
+  <div class="wrap">DEEP-DIVE B · ARCHIVE — 상위 문서 <a href="logistics_domain_research.html">DOC 05 도메인 리서치</a> · 같은 시리즈 <a href="deep_dive_unloading.html">A 벌크 하차</a>·<a href="deep_dive_perception_grasp.html">C 인식·파지</a> · <a href="index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>

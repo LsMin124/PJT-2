@@ -146,9 +146,11 @@
   <div class="sec-body">
     <p class="lead">이 문서는 AMR 견적 시뮬레이션 서비스를 실제로 만들기 전에 <b>팀이 합의해야 할 결정 항목 60여 개</b>를
     컴포넌트별로 모은 목록입니다. 각 항목에는 선택지와 함께 "권고"를 달아 두었는데,
-    권고는 논의를 시작하기 위한 기본값 제안일 뿐 확정이 아닙니다.</p>
+    권고는 논의를 시작하기 위한 기본값 제안일 뿐 확정이 아닙니다.
+    2026-08-19 전체 개괄(<a href="amr_overview.html">DOC 01 전체 조망</a>) 확정으로 상당수 권고가 팀 방향으로 승격되었습니다 —
+    이 문서와 개괄의 서술이 다르면 <b>개괄이 우선</b>합니다.</p>
     <ul class="rules">
-      <li>표의 <span class="star">★</span> 표시는 <b>크리티컬 패스</b> — 이 결정이 먼저 정해져야 다른 결정들을 진행할 수 있다는 뜻입니다. 아래 SEC 00에 6건을 모아 두었습니다.</li>
+      <li>표의 <span class="star">★</span> 표시는 <b>크리티컬 패스</b> — 이 결정이 먼저 정해져야 다른 결정들을 진행할 수 있다는 뜻입니다. 아래 SEC 00에 7건을 모아 두었습니다.</li>
       <li>회의에서 쓸 때: SEC 00의 6건부터 확정 → 이후 각 파트 담당자가 자기 섹션(A~J)을 읽고 담당 항목을 결정합니다.</li>
       <li>결정이 끝난 항목은 ADR(Architecture Decision Record, "무엇을 왜 그렇게 정했나"를 남기는 짧은 기록 문서)로 저장소에 남깁니다(J3 참조).</li>
     </ul>
@@ -160,18 +162,18 @@
       <defs><marker id="da-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
       <rect x="16" y="16" width="264" height="64" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
       <text x="32" y="42" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">고객 화면 <tspan fill="#F08A32" font-family="JetBrains Mono, monospace">(G)</tspan></text>
-      <text x="32" y="62" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">맵을 그리고, 견적 결과를 본다</text>
+      <text x="32" y="62" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">인테이크: 에디터·엑셀 템플릿·설문</text>
       <line x1="280" y1="48" x2="334" y2="48" stroke="#8FB4D9" stroke-width="2" marker-end="url(#da-arr)"/>
       <rect x="340" y="16" width="200" height="64" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
       <text x="356" y="42" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">Scenario API <tspan fill="#F08A32" font-family="JetBrains Mono, monospace">(E)</tspan></text>
-      <text x="356" y="62" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">시나리오 접수 → 잡 생성</text>
+      <text x="356" y="62" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">카테고리 게이트 → 잡 생성</text>
       <line x1="540" y1="48" x2="594" y2="48" stroke="#8FB4D9" stroke-width="2" marker-end="url(#da-arr)"/>
       <rect x="600" y="16" width="284" height="64" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
       <text x="616" y="42" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">K8s Indexed Job ×N <tspan fill="#F08A32" font-family="JetBrains Mono, monospace">(E)</tspan></text>
       <text x="616" y="62" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">시뮬레이션 수백 런을 병렬 실행</text>
       <rect x="16" y="150" width="264" height="72" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
       <text x="32" y="176" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">입력 스키마 <tspan fill="#F08A32" font-family="JetBrains Mono, monospace">(A)</tspan></text>
-      <text x="32" y="196" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">맵·주문·로봇의 데이터 정의</text>
+      <text x="32" y="196" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">시맨틱 그리드 + 수요 프로파일</text>
       <text x="32" y="213" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" font-weight="700" fill="#E8ECF1">= 시스템 전체의 계약</text>
       <line x1="280" y1="186" x2="334" y2="186" stroke="#8FB4D9" stroke-width="2" marker-end="url(#da-arr)"/>
       <line x1="742" y1="80" x2="742" y2="122" stroke="#8FB4D9" stroke-width="2" marker-end="url(#da-arr)"/>
@@ -225,7 +227,7 @@
 <section id="d0">
   <div class="sec-head"><span class="sec-no">SEC 00</span><h2>크리티컬 패스 요약 — 1~2주차에 반드시 확정</h2></div>
   <div class="sec-body">
-    <p class="lead">다른 결정들이 줄줄이 걸려 있는 결정 6건입니다. 이것부터 팀 합의로 동결해야 나머지 항목들을 파트별로 병렬 진행할 수 있습니다.
+    <p class="lead">다른 결정들이 줄줄이 걸려 있는 결정 7건입니다. 이것부터 팀 합의로 동결해야 나머지 항목들을 파트별로 병렬 진행할 수 있습니다.
     각 항목이 왜 크리티컬한지 이유를 함께 적었습니다.</p>
     <div class="milestones">
       <div class="ms"><span class="ms-tag">CP 1 · A1–A3</span><h4>맵 표현 · 셀 크기 · 좌표계</h4><p>맵을 격자로 볼지 그래프로 볼지, 칸 하나를 몇 m로 할지, 좌표의 기준 원본을 무엇으로 삼을지. 이 셋이 정해져야 맵 에디터·시뮬레이션·3D 검증이 같은 세계를 두고 말할 수 있다. 여기가 흔들리면 전 컴포넌트를 다시 고친다.</p></div>
@@ -234,6 +236,7 @@
       <div class="ms"><span class="ms-tag">CP 4 · C4</span><h4>RL 일반화 전략</h4><p>고객마다 다른 맵에서도 통하는 강화학습 디스패처를 만들 수 있는가. 이 프로젝트에서 유일하게 "실패할 수도 있는" 연구 요소라서, 실패 시 휴리스틱으로 후퇴한다는 합의를 미리 해 둔다.</p></div>
       <div class="ms"><span class="ms-tag">CP 5 · E2/E5</span><h4>잡 오케스트레이션 · 저장 정책</h4><p>수백 개의 시뮬레이션 잡을 어떤 방식으로 병렬 실행하고, 결과를 어느 수준까지 저장할지. 인프라 파트가 골격을 잡는 데 필요한 첫 결정.</p></div>
       <div class="ms"><span class="ms-tag">CP 6 · F5</span><h4>RTF 실측</h4><p>3D 시뮬레이터가 이 프로젝트 장비에서 로봇 몇 대까지 실시간 속도를 유지하는지 초반에 실측한다. 이 숫자가 검증 계층이 감당할 수 있는 범위의 물리적 상한이 된다.</p></div>
+      <div class="ms"><span class="ms-tag">CP 7 · J1</span><h4>4대 계약 동결</h4><p>입력 JSON 스키마 · Kafka 이벤트 스키마 · 디스패처 인터페이스 · VDA 5050 서브셋. 이 네 가지가 팀 간 경계이므로 주 1~2 안에 동결해야 4개 트랙이 병렬로 달릴 수 있다(개괄 §12·14).</p></div>
     </div>
   </div>
 </section>

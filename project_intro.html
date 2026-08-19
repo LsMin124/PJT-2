@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-<title>처음 읽는 사람을 위한 안내 — 스마트 물류센터 프로젝트</title>
+<title>처음 읽는 사람을 위한 안내 — AMR 도입 견적 시뮬레이션</title>
 <style>
   :root{
     --bg:#14181D;--panel:#1C2229;--panel-edge:#2C343D;--ink:#E8ECF1;--ink-soft:#9AA7B4;
@@ -43,7 +43,7 @@
   h2 .q{color:var(--amber);margin-right:8px}
   p{margin-bottom:12px}
   .note{margin-top:10px;padding:12px 16px;background:#20272F;border-left:3px solid var(--steel);font-size:14px}
-  /* 주문 처리 과정 */
+  /* 고객 사용 여정 */
   .journey{counter-reset:st;display:grid;gap:0;margin:16px 0;border-left:3px solid var(--amber)}
   .st{position:relative;padding:12px 16px 12px 52px;border-bottom:1px dashed var(--grid)}
   .st:last-child{border-bottom:none}
@@ -90,7 +90,7 @@
 
 <header>
   <div class="wrap titleblock">
-    <div class="doc-eyebrow">DOC 00 · INTRO · <b>SIM-FIRST SMART LOGISTICS</b> · 읽는 데 약 10분</div>
+    <div class="doc-eyebrow">DOC 00 · INTRO · <b>AMR QUOTE SIMULATION</b> · 읽는 데 약 10분</div>
     <h1>처음 읽는 사람을 위한 안내
       <span class="sub">전문용어 없이, 이 프로젝트가 무엇을 만드는지부터 차근차근 설명합니다</span>
     </h1>
@@ -102,9 +102,9 @@
     <a class="nav-home" href="index.html">⌂ INDEX</a>
     <a href="#i0">한눈에 보기</a>
     <a href="#i1">무엇을 만드나</a>
-    <a href="#i2">주문 처리 과정</a>
-    <a href="#i3">왜 시뮬레이션인가</a>
-    <a href="#i4">여섯 명의 역할</a>
+    <a href="#i2">고객은 어떻게 쓰나</a>
+    <a href="#i3">왜 필요한가</a>
+    <a href="#i4">어떻게 믿나</a>
     <a href="#i5">자주 나오는 말</a>
     <a href="#i6">읽는 순서</a>
   </div>
@@ -117,112 +117,101 @@
   <p>이 문서는 프로젝트를 처음 접하는 사람을 위한 안내서입니다. 끝까지 읽으면 아래 세 가지 질문에 답할 수 있게 됩니다.</p>
   <ul class="qs">
     <li>이 프로젝트는 결국 무엇을 만드는가?</li>
-    <li>왜 진짜 로봇 대신 시뮬레이션으로 만드는가?</li>
-    <li>여섯 명은 각자 어떤 조각을 맡는가?</li>
+    <li>이런 서비스가 왜 필요한가? (누가, 어떤 문제로 쓰는가)</li>
+    <li>컴퓨터가 계산한 견적을 어떻게 믿을 수 있는가?</li>
   </ul>
-  <p style="margin-top:14px">먼저 완성된 시스템의 전체 그림 한 장부터 보겠습니다. <b>주문 한 건이 왼쪽에서 오른쪽으로 흘러가고</b>, 그 모든 과정을 운영자가 웹 화면에서 실시간으로 지켜봅니다.</p>
+  <p style="margin-top:14px">먼저 완성된 서비스의 전체 그림 한 장부터 보겠습니다. <b>고객의 창고 데이터가 왼쪽에서 들어와서,
+  가상 창고 시뮬레이션을 거쳐, 오른쪽의 "곡선" 화면이 되어 나옵니다.</b> 고객은 그 곡선 위에서 직접 로봇 도입 규모를 고릅니다.</p>
 
-  <svg viewBox="0 0 900 210" role="img" aria-label="주문 처리 전체 흐름: 주문 접수부터 출고까지 여섯 단계와 이를 지켜보는 관제 웹 화면">
+  <svg viewBox="0 0 900 210" role="img" aria-label="서비스 전체 흐름: 고객 데이터 입력, 가상 창고 시뮬레이션 수백 번, 곡선 위에서 선택">
     <defs><marker id="pi-ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
-    <rect x="20" y="34" width="120" height="64" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
-    <text x="80" y="61" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">① 주문 접수</text>
-    <text x="80" y="81" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">웹에서 등록</text>
-    <rect x="168" y="34" width="120" height="64" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
-    <text x="228" y="61" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">② 두뇌 서버</text>
-    <text x="228" y="81" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">일감으로 분해</text>
-    <rect x="316" y="34" width="120" height="64" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
-    <text x="376" y="61" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">③ AMR 운반</text>
-    <text x="376" y="81" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">상자를 작업대로</text>
-    <rect x="464" y="34" width="120" height="64" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
-    <text x="524" y="61" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">④ 로봇팔 피킹</text>
-    <text x="524" y="81" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">상품 집어 담기</text>
-    <rect x="612" y="34" width="120" height="64" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
-    <text x="672" y="61" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">⑤ AI 검수</text>
-    <text x="672" y="81" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">파손·오류 확인</text>
-    <rect x="760" y="34" width="120" height="64" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
-    <text x="820" y="61" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">⑥ 출고</text>
-    <text x="820" y="81" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4">실적 기록</text>
-    <line x1="142" y1="66" x2="164" y2="66" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pi-ar)"/>
-    <line x1="290" y1="66" x2="312" y2="66" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pi-ar)"/>
-    <line x1="438" y1="66" x2="460" y2="66" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pi-ar)"/>
-    <line x1="586" y1="66" x2="608" y2="66" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pi-ar)"/>
-    <line x1="734" y1="66" x2="756" y2="66" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pi-ar)"/>
-    <line x1="80" y1="98" x2="80" y2="140" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="3 3"/>
-    <line x1="228" y1="98" x2="228" y2="140" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="3 3"/>
-    <line x1="376" y1="98" x2="376" y2="140" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="3 3"/>
-    <line x1="524" y1="98" x2="524" y2="140" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="3 3"/>
-    <line x1="672" y1="98" x2="672" y2="140" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="3 3"/>
-    <line x1="820" y1="98" x2="820" y2="140" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="3 3"/>
-    <rect x="20" y="140" width="860" height="44" fill="#2A2019" stroke="#F08A32" stroke-width="1.5"/>
-    <text x="450" y="167" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">관제 웹 화면 — 위 여섯 단계가 3D 화면과 지도에 실시간으로 보인다</text>
+    <rect x="20" y="30" width="250" height="110" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+    <text x="40" y="60" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14.5" font-weight="700" fill="#E8ECF1">① 고객이 데이터를 넣는다</text>
+    <text x="40" y="86" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">· 창고 도면을 그리거나 올리고</text>
+    <text x="40" y="108" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">· 주문 기록 엑셀을 업로드</text>
+    <line x1="272" y1="85" x2="316" y2="85" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pi-ar)"/>
+    <rect x="322" y="30" width="250" height="110" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+    <text x="342" y="60" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14.5" font-weight="700" fill="#E8ECF1">② 가상 창고에서 실험한다</text>
+    <text x="342" y="86" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">· 로봇 대수·기종을 바꿔가며</text>
+    <text x="342" y="108" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">· 시뮬레이션을 수백 번 반복</text>
+    <line x1="574" y1="85" x2="618" y2="85" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pi-ar)"/>
+    <rect x="624" y="30" width="256" height="110" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+    <text x="644" y="60" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14.5" font-weight="700" fill="#E8ECF1">③ 곡선 위에서 고른다</text>
+    <text x="644" y="86" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">· 대수별 처리량·비용·회수 기간</text>
+    <text x="644" y="108" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">· 선택은 고객이, 근거는 시스템이</text>
+    <text x="450" y="185" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">계산 과정과 가정을 전부 공개하는 "중립 견적" — 로봇 판매 업체의 견적과 근본적으로 다른 점</text>
   </svg>
-  <p class="caption">그림 1 · 주문 한 건이 처리되는 전체 흐름. 각 단계는 아래 "주문 처리 과정"에서 하나씩 풀어 설명합니다.</p>
-  <div class="note">낯선 단어(AMR, 피킹 등)가 보여도 괜찮습니다 — 아래에서 전부 처음부터 설명합니다.</div>
+  <p class="caption">그림 1 · 서비스의 전체 흐름. 이 세 단계를 아래에서 하나씩 풀어 설명합니다.</p>
+  <div class="note">낯선 단어(AMR, 시뮬레이션, ROI 등)가 보여도 괜찮습니다 — 아래에서 전부 처음부터 설명합니다.</div>
 </section>
 
 <section id="i1">
   <h2><span class="q">Q.</span>무엇을 만드는 프로젝트인가요?</h2>
-  <p>쿠팡 같은 온라인 쇼핑몰에서 주문 버튼을 누르면, 어딘가의 물류센터에서 로봇과 사람이 그 상품을 찾아 포장하고 내보냅니다. 이 프로젝트는 <b>그 물류센터 하나를 통째로 만드는 것</b>입니다. 로봇이 상품을 나르고, 로봇팔이 상품을 집고, 카메라와 AI가 상품에 문제가 없는지 확인하고, 운영자는 웹사이트에서 이 모든 것을 지켜보며 지시를 내립니다.</p>
-  <p>단 하나 다른 점이 있다면 — 창고 건물과 로봇이 <b>컴퓨터 속 가상 공간</b>에 존재한다는 것입니다. 3D 게임 속 세계처럼 화면 안에 선반과 로봇이 있고, 물리 법칙에 따라 실제처럼 움직입니다. 하지만 그 가상 창고를 움직이는 <b>소프트웨어(서버, 데이터베이스, 웹 화면, AI)는 전부 진짜</b>이고, 실제 물류센터가 쓰는 것과 같은 구조로 만듭니다.</p>
-  <div class="note">한 줄 요약: <b>"가상의 물류센터 + 그것을 운영하는 진짜 소프트웨어"</b>를 6명이 7주 동안 만든다.</div>
+  <p>창고를 운영하는 회사가 요즘 가장 많이 하는 고민 중 하나는 이것입니다 — <b>"운반 로봇(AMR)을 들이면 좋다는데,
+  우리 창고에는 몇 대가 맞을까? 그 돈이 언제 회수될까?"</b> 로봇은 대당 가격이 높아, 감으로 정하기에는 너무 큰 결정입니다.</p>
+  <p>이 프로젝트가 만드는 것은 그 질문에 답해 주는 <b>웹 서비스</b>입니다. 고객이 자기 창고의 모양과 주문 데이터를 넣으면,
+  컴퓨터 속에 그 창고를 그대로 지어 놓고 로봇 대수를 바꿔가며 수백 번 가동해 봅니다. 그 결과를
+  <b>"로봇 대수별 처리량–비용–투자 회수" 곡선</b>으로 보여주고, 고객이 곡선 위에서 직접 도입 규모를 선택하게 합니다.</p>
+  <div class="note">공식 한 줄 정의: <b>"물류센터의 시설·물류 데이터를 받아, 시뮬레이션으로 AMR 대수별 처리량–비용–ROI를
+  투명하게 산출하고, 고객이 곡선 위에서 직접 도입 규모를 선택하게 하는 중립 견적 SaaS."</b>
+  제품 철학은 열 글자로 요약됩니다 — <b>선택은 고객이, 근거는 시스템이.</b></div>
 </section>
 
 <section id="i2">
-  <h2><span class="q">Q.</span>주문 하나가 들어오면 무슨 일이 벌어지나요?</h2>
-  <p>완성된 모습을 상상하는 가장 쉬운 방법은, 주문 한 건을 따라가 보는 것입니다.</p>
+  <h2><span class="q">Q.</span>고객은 이 서비스를 어떻게 쓰나요?</h2>
+  <p>완성된 모습을 상상하는 가장 쉬운 방법은, 고객 한 명의 사용 과정을 따라가 보는 것입니다.</p>
   <div class="journey">
-    <div class="st"><b>운영자가 웹 화면에서 주문을 등록한다</b><p>"A상품 2개, B상품 1개" — 우리가 만드는 관제 웹사이트에서 입력합니다.</p></div>
-    <div class="st"><b>두뇌(서버)가 일감을 만든다</b><p>주문을 받은 서버가 "어느 선반에 그 상품이 있는지" 찾아보고, 로봇에게 시킬 일의 목록을 만듭니다.</p></div>
-    <div class="st"><b>운반 로봇이 선반으로 간다</b><p>바퀴 달린 로봇 <a href="glossary_industrial.html#amr">AMR</a>(Autonomous Mobile Robot, 스스로 길을 찾는 자율주행 운반 로봇)이 창고 안을 달려가, 상품이 담긴 상자를 싣고 작업대로 가져옵니다.</p></div>
-    <div class="st"><b>로봇팔이 상품을 집는다</b><p>작업대의 로봇팔이 상자 안에서 주문된 상품을 하나씩 집어 배송용 바구니로 옮깁니다.</p></div>
-    <div class="st"><b>카메라와 AI가 검사한다</b><p>"주문한 상품이 맞나? 파손되지는 않았나?"를 AI가 사진으로 판별합니다. 애매하면 사람(운영자)에게 물어봅니다.</p></div>
-    <div class="st"><b>문제가 있으면 자동으로 되돌린다</b><p>잘못 집었거나 파손된 상품은 운반 로봇이 별도 라인으로 옮기고, 다시 집도록 지시가 내려갑니다.</p></div>
-    <div class="st"><b>이 모든 과정이 실시간으로 화면에 보인다</b><p>웹 화면 속 3D 영상으로 물류센터가 돌아가는 모습을 그대로 볼 수 있고, 지도에는 로봇 위치와 진행 상황이 실시간으로 움직이며, 문제가 생기면 알림이 울립니다.</p></div>
+    <div class="st"><b>창고 모양을 알려준다</b><p>웹 화면에서 직접 그리거나, 가지고 있는 도면(PDF·이미지)을 올려 그 위에 선반·통로·작업대 위치를 표시합니다.</p></div>
+    <div class="st"><b>주문 기록을 올린다</b><p>"언제 어떤 상품이 몇 개 주문됐는지"가 담긴 엑셀 파일을 올리면, 시스템이 주문 패턴(바쁜 시간대, 잘 나가는 상품)을 자동으로 읽어냅니다. 데이터가 없으면 숫자 몇 개만 입력해 대략적인 견적부터 받아볼 수도 있습니다.</p></div>
+    <div class="st"><b>시스템이 어울리는 로봇 방식을 거른다</b><p>"이 창고는 통로 폭·취급 물량 조건상 이 방식은 맞지 않습니다"처럼, 조건에 맞지 않는 로봇 방식을 <b>배제 사유와 함께</b> 걸러냅니다. 맞지 않는 것을 맞다고 하지 않는 것 — 이것도 중립 견적의 일부입니다.</p></div>
+    <div class="st"><b>가상 창고가 수백 번 돌아간다</b><p>컴퓨터 속에 지어진 고객의 창고에서, 로봇 기종과 대수를 바꿔가며 운영을 수백 번 반복 실험합니다. 여러 대의 서버가 나눠서 병렬로 계산합니다.</p></div>
+    <div class="st"><b>곡선을 보고 직접 고른다</b><p>"5대면 시간당 이만큼, 7대면 이만큼, 그 이상부터는 로봇끼리 길이 막혀 효과가 줄어듭니다" — 이 관계가 곡선 그래프로 나타나고, 비용 곡선과 겹쳐 <b>투자 대비 최적 지점</b>이 보입니다. 곡선 위 한 점을 클릭하면 그 구성의 상세 리포트가 열립니다.</p></div>
+    <div class="st"><b>"만약에?"를 바로 실험한다</b><p>"주문이 몰리면? 작업대를 하나 늘리면?" 조건을 바꿔 즉시 다시 계산해 봅니다. 로봇을 더 사는 것보다 배치를 바꾸는 게 나은 경우("7대 대신 스테이션 증설")도 여기서 드러납니다.</p></div>
   </div>
-  <p>최종 발표에서 보여줄 장면이 바로 이 흐름 전체입니다. 각 팀원이 만드는 것은 이 과정의 한 구간씩입니다.</p>
+  <p>최종 발표에서 보여줄 것이 바로 이 흐름입니다 — 실제 고객이 되어 데이터를 넣고, 잠시 뒤 곡선에서 답을 고르는 체험.</p>
 </section>
 
 <section id="i3">
-  <h2><span class="q">Q.</span>왜 진짜 로봇이 아니라 시뮬레이션인가요?</h2>
-  <p>첫째, <b>돈과 시간</b> 때문입니다. 진짜 로봇과 창고를 구하려면 수백만 원과 몇 달이 필요하고, 로봇이 고장 나면 프로젝트가 멈춥니다. 가상 공간에서는 로봇이 부서져도 버튼 하나로 되살아나고, 로봇 10대가 필요하면 복사해서 붙여넣으면 됩니다.</p>
-  <p>둘째, <b>실제 산업계가 이렇게 일하기 때문</b>입니다. 아마존, BMW 같은 회사들도 진짜 공장을 짓기 전에 컴퓨터 속에 먼저 지어보고(이걸 '디지털 트윈'이라 부릅니다), 로봇 AI도 가상 공간에서 수천 번 연습시킨 뒤 실물에 옮깁니다. 즉 시뮬레이션은 "진짜의 대용품"이 아니라 <b>업계의 표준 개발 방식</b>입니다.</p>
+  <h2><span class="q">Q.</span>이런 서비스가 왜 필요한가요?</h2>
+  <p>지금 로봇 도입을 검토하는 회사가 견적을 받을 곳은 사실상 <b>로봇 판매 업체뿐</b>입니다. 그런데 판매 업체의 견적은
+  자기 로봇을 파는 쪽의 계산이고, 어떤 가정으로 그 숫자가 나왔는지 보여주지 않는 경우가 많습니다. 말하자면 <b>"블랙박스 견적"</b>입니다.</p>
+  <p>고객 입장에서는 "업체 말만 믿기는 불안한데, 직접 검증할 역량도 없는" 상황이 됩니다. 이 프로젝트는 그 사이에
+  <b>어느 로봇 업체와도 이해관계가 없는 중립 계산기</b>를 놓겠다는 것입니다.</p>
 
-  <svg viewBox="0 0 900 235" role="img" aria-label="가상 물류센터에서 먼저 검증하고 검증된 소프트웨어를 현실로 옮기는 개발 방식의 비교">
-    <defs><marker id="pi-ar2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#3BAF77"/></marker></defs>
-    <rect x="20" y="24" width="380" height="156" fill="#17251E" stroke="#3BAF77" stroke-width="1.5"/>
-    <text x="40" y="54" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14.5" font-weight="700" fill="#E8ECF1">가상 물류센터 — 이 프로젝트</text>
-    <text x="40" y="84" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">· 로봇이 고장 나면 → 버튼 하나로 복구</text>
-    <text x="40" y="110" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">· 로봇 10대가 필요하면 → 복사해서 붙여넣기</text>
-    <text x="40" y="136" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">· 위험한 실험(고장·정체)도 마음껏 반복</text>
-    <text x="40" y="162" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4">단, 움직이는 소프트웨어는 전부 진짜</text>
-    <rect x="500" y="24" width="380" height="156" fill="#20272F" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
-    <text x="520" y="54" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14.5" font-weight="700" fill="#E8ECF1">현실 물류센터 — 바로 지었다면</text>
-    <text x="520" y="84" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">· 로봇 1대 = 수천만 원, 조달에 수개월</text>
-    <text x="520" y="110" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">· 고장 = 프로젝트 전체 중단</text>
-    <text x="520" y="136" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">· "로봇을 늘리면?" 실험 한 번에 큰 비용</text>
-    <text x="520" y="162" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4">그래서 업계도 가상 검증을 먼저 한다</text>
-    <line x1="404" y1="102" x2="494" y2="102" stroke="#3BAF77" stroke-width="2.5" marker-end="url(#pi-ar2)"/>
-    <text x="450" y="90" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" font-weight="700" fill="#E8ECF1">검증된 소프트웨어를</text>
-    <text x="450" y="122" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" font-weight="700" fill="#E8ECF1">그대로 이식</text>
-    <text x="450" y="215" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">아마존·BMW도 쓰는 "디지털 트윈" 방식 — 가상에서 검증하고 현실로 옮긴다</text>
+  <svg viewBox="0 0 900 205" role="img" aria-label="판매 업체의 블랙박스 견적과 중립 시뮬레이션 견적의 비교">
+    <rect x="20" y="24" width="410" height="130" fill="#20272F" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+    <text x="40" y="54" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14.5" font-weight="700" fill="#E8ECF1">지금 — 판매 업체의 견적</text>
+    <text x="40" y="82" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">· 파는 쪽이 계산한다 (이해관계 있음)</text>
+    <text x="40" y="106" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">· 계산 근거는 보여주지 않는다</text>
+    <text x="40" y="130" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">· 고객은 믿거나, 포기하거나</text>
+    <rect x="470" y="24" width="410" height="130" fill="#17251E" stroke="#3BAF77" stroke-width="1.5"/>
+    <text x="490" y="54" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14.5" font-weight="700" fill="#E8ECF1">이 서비스 — 중립 시뮬레이션 견적</text>
+    <text x="490" y="82" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">· 어느 업체와도 이해관계가 없다</text>
+    <text x="490" y="106" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">· 가정·계산 과정·불확실성을 전면 공개</text>
+    <text x="490" y="130" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">· 고객이 근거를 보고 직접 고른다</text>
+    <text x="450" y="185" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">주 고객층: 창고를 이미 운영 중이고, 로봇 소수 대를 점진적으로 들여볼까 검토하는 회사 (국내는 이커머스·3PL이 수요의 중심)</text>
   </svg>
-  <p class="caption">그림 2 · 가상에서 먼저, 현실은 나중에. 왼쪽 세계에서 개발해도 소프트웨어는 오른쪽 세계의 것과 동일합니다.</p>
-  <p>셋째, 그래도 아쉬움이 남는 사람을 위해 — 마지막 단계에 <b>작은 실물 로봇(로봇팔 + 바퀴 베이스)을 사서 가상 세계에 연결해보는 선택 과제</b>를 열어뒀습니다. 시간이 허락하면 도전합니다.</p>
+  <p class="caption">그림 2 · 이 서비스가 서 있는 자리. "중립"과 "투명"이 판매 업체 견적과의 근본적인 차이입니다.</p>
+  <p>참고로, 로봇이 상품 선반을 통째로 작업대까지 가져다주는 대형 방식(GTP)은 처음부터 로봇 업체가 창고 설계까지 통째로 맡는
+  턴키 거래라, 중립 견적이 끼어들 자리가 구조적으로 좁습니다. 그래서 이 서비스의 첫 버전은 <b>기존 창고를 바꾸지 않고
+  로봇 3~15대를 점진적으로 들이는 방식</b>(반송·피킹 보조)에 집중합니다 — 견적 고민이 실제로 일어나는 곳이 여기이기 때문입니다.</p>
 </section>
 
 <section id="i4">
-  <h2><span class="q">Q.</span>여섯 명은 각자 무엇을 만드나요?</h2>
-  <p>여섯 명이 각자 하나의 큰 덩어리를 책임지고(오너), 추가로 팀 전체를 위한 역할을 하나씩 겸합니다. 누가 어떤 자리를 맡을지는 킥오프 때 정합니다.</p>
+  <h2><span class="q">Q.</span>컴퓨터가 계산한 견적을 어떻게 믿나요?</h2>
+  <p>좋은 질문이고, 이 프로젝트의 기술적 핵심이 바로 이 질문에 대한 답입니다. 세 겹의 장치가 있습니다.</p>
   <table>
-    <tr><th style="width:120px">자리</th><th>만드는 것 (쉬운 말로)</th><th style="width:150px">팀 역할 겸임</th></tr>
-    <tr><td><b>로봇 · 주행</b></td><td>운반 로봇이 스스로 길을 찾아 달리고, 목적지에 정확히 멈추게 만들기</td><td>전체 연결 테스트 진행</td></tr>
-    <tr><td><b>로봇 · 팔</b></td><td>로봇팔이 상자에서 상품을 집어 옮기게 만들기</td><td>기술 설계 총괄</td></tr>
-    <tr><td><b>AI · 데이터</b></td><td>AI 공부용 '가짜 상품 사진' 수천 장을 가상 카메라로 자동 생성하기</td><td>자동 테스트 관리</td></tr>
-    <tr><td><b>AI · 모델</b></td><td>사진을 보고 "맞는 상품인가, 파손됐나"를 판별하는 AI 만들기</td><td>시연·발표 준비</td></tr>
-    <tr><td><b>서버 · 물류</b></td><td>주문을 받아 일감으로 쪼개고 로봇에게 나눠주는 두뇌(서버) 만들기</td><td>데이터 약속 문서 관리</td></tr>
-    <tr><td><b>서버 · 화면</b></td><td>개발 공용 인프라 구축 + 운영자가 쓰는 웹 화면 만들기(AI 도구 활용)</td><td>일정 관리 (PM)</td></tr>
+    <tr><th style="width:150px">장치</th><th>내용</th></tr>
+    <tr><td><b>빠른 계산 + 정밀 검증</b></td><td>수백 번의 반복 실험은 빠른 수학적 시뮬레이션이 하고, 그중 최적으로 뽑힌 한두 구성은
+    <b>물리 법칙이 적용되는 3D 가상 세계</b>(실제 로봇 소프트웨어를 그대로 얹은 환경)에서 실제 속도로 다시 돌려 봅니다.
+    빠른 계산의 답이 정밀 세계에서도 성립하는지 확인하고, 차이가 나면 그만큼 빠른 계산 쪽을 보정합니다.</td></tr>
+    <tr><td><b>가정의 전면 공개</b></td><td>"로봇 속도·작업 시간을 어떤 값으로 가정했는지"를 리포트에 전부 명시하고, 고객이 가정을
+    수정하면 결과도 다시 계산됩니다. 숨기는 숫자가 없다는 것이 곧 신뢰의 근거입니다.</td></tr>
+    <tr><td><b>통계적 정직함</b></td><td>같은 조건도 무작위 요소 때문에 결과가 조금씩 다릅니다. 그래서 조건마다 여러 번 돌린 결과의
+    <b>오차 범위(95% 신뢰구간)를 함께</b> 보여주고, 가정이 흔들리면 결과가 얼마나 달라지는지(민감도)도 공개합니다.
+    이런 절차는 시뮬레이션 검증에 관한 공학 지침(VDI 3633)을 따릅니다.</td></tr>
   </table>
-  <div class="note">"보조" 역할은 없습니다. 전원이 시연 화면에 자기 이름을 걸 수 있는 결과물 하나씩을 가집니다. 정식 역할 정의는 <a href="smart_factory_overview.html#o3">전체 조망 문서의 SEC 03</a>에 있습니다.</div>
+  <div class="note">한 줄 요약: 이 견적은 "믿어 달라"가 아니라 <b>"계산 과정을 다 보여줄 테니 직접 확인하라"</b>는 방식으로 신뢰를 만듭니다.</div>
 </section>
 
 <section id="i5">
@@ -230,36 +219,37 @@
   <p>아래 일곱 개만 감을 잡아두면 다른 문서를 읽는 난이도가 크게 내려갑니다. 더 자세한 설명은 각 링크(용어사전)에 그림과 함께 있습니다.</p>
   <dl>
     <dt>AMR<span class="en">운반 로봇</span></dt>
-    <dd>정해진 선로 없이 스스로 길을 찾아다니는 바퀴 달린 운반 로봇. 이 프로젝트의 중심 장비. <a href="glossary_industrial.html#amr">자세히 →</a></dd>
-    <dt>피킹<span class="en">Picking</span></dt>
-    <dd>선반이나 상자에서 주문된 상품을 "집어내는" 일. 물류센터 일의 핵심이자 로봇팔의 임무. <a href="glossary_industrial.html#fulfillment">자세히 →</a></dd>
-    <dt>WMS<span class="en">물류센터의 두뇌</span></dt>
-    <dd>"뭐가 어디에 몇 개 있고, 지금 누가 뭘 할 차례인지"를 관리하는 서버 프로그램. 본 프로젝트에서는 Spring(자바 서버 프레임워크)으로 만든다. <a href="glossary_industrial.html#wms">자세히 →</a></dd>
-    <dt>MQTT<span class="en">메시지 우체국</span></dt>
-    <dd>로봇·설비·서버·웹이 서로 소식을 주고받는 통신 방식. 모두가 중앙 우체국(브로커)에 편지를 보내고 받아본다. <a href="glossary_industrial.html#mqtt">자세히 →</a></dd>
-    <dt>시뮬레이터<span class="en">Gazebo · Isaac Sim</span></dt>
-    <dd>물리 법칙이 적용되는 가상 3D 공간. 개발용(Gazebo)과 시연용(Isaac, 실사에 가까운 화질) 두 가지를 쓴다. <a href="glossary_robotics.html#isaac">자세히 →</a></dd>
-    <dt>합성 데이터<span class="en">AI 공부용 가짜 사진</span></dt>
-    <dd>가상 카메라로 자동 생성한 학습용 이미지. 진짜 불량품 사진은 구하기 어려우니 가상으로 만들어 AI를 가르친다. <a href="glossary_ai_data.html#synthetic">자세히 →</a></dd>
-    <dt>디지털 트윈<span class="en">Digital Twin</span></dt>
-    <dd>현실의 공장·창고를 그대로 본뜬 가상 쌍둥이. "로봇을 한 대 늘리면 어떻게 될까?"를 현실 대신 여기서 실험한다. <a href="glossary_industrial.html#digitaltwin">자세히 →</a></dd>
+    <dd>바닥 선로 없이 스스로 길을 찾아다니는 바퀴 달린 운반 로봇. 이 서비스가 견적을 내주는 대상. <a href="glossary_industrial.html#amr">자세히 →</a></dd>
+    <dt>견적 SaaS<span class="en">웹으로 쓰는 견적 서비스</span></dt>
+    <dd>설치 없이 웹사이트에서 쓰는 소프트웨어 서비스(SaaS). 이 프로젝트의 제품 형태 — 고객이 브라우저에서 데이터를 넣고 견적을 받는다.</dd>
+    <dt>시뮬레이션<span class="en">DES · SimPy</span></dt>
+    <dd>컴퓨터 속 가상 창고에서 운영을 빠르게 재현해 보는 것. 이 프로젝트는 "사건이 일어나는 순간만 건너뛰며 계산"하는 방식(DES)을 써서 수백 배속으로 돌린다. <a href="glossary_industrial.html#des">자세히 →</a></dd>
+    <dt>처리량<span class="en">Throughput</span></dt>
+    <dd>시간당 처리한 주문·상품 수. 견적 곡선의 세로축. 로봇을 늘리면 늘다가, 로봇끼리 길이 막히면 꺾인다 — 그 꺾이는 지점을 찾는 것이 이 서비스의 핵심.</dd>
+    <dt>ROI · TCO<span class="en">투자 회수 · 총비용</span></dt>
+    <dd>ROI는 투자한 돈이 언제 회수되는가, TCO는 구매비+운영비를 합친 총소유비용. 처리량 곡선에 비용 곡선을 겹치면 "몇 대가 경제적으로 최적인가"가 보인다.</dd>
+    <dt>디지털 트윈<span class="en">3D 검증 세계</span></dt>
+    <dd>현실을 본뜬 가상 쌍둥이. 이 프로젝트에서는 물리엔진이 있는 3D 시뮬레이터(Isaac Sim)에 실제 로봇 소프트웨어를 얹어, 빠른 계산의 답을 정밀 검증하는 데 쓴다. <a href="glossary_robotics.html#isaac">자세히 →</a></dd>
+    <dt>What-if<span class="en">만약에 실험</span></dt>
+    <dd>"주문이 2배로 늘면? 배치를 바꾸면?"처럼 조건을 바꿔 즉시 다시 계산해 보는 기능. 이 서비스의 핵심 사용 경험.</dd>
   </dl>
 </section>
 
 <section id="i6">
   <h2><span class="q">Q.</span>다음엔 어떤 문서를 읽으면 되나요?</h2>
   <div class="order">
-    <a href="smart_factory_overview.html"><b>① 전체 조망 (TEAM OVERVIEW)</b><small>팀 전체의 그림 — 무엇을 만들고, 누가 맡고, 어떻게 협업하는지. 모든 팀원의 필독 문서.</small></a>
-    <a href="smart_factory_tech_plan.html"><b>② 기술 실행 계획서 (TECH PLAN)</b><small>기술적인 상세와 "왜 이렇게 정했는지"의 근거. 자기 트랙과 관련된 섹션부터 읽으면 된다.</small></a>
-    <a href="glossary_robotics.html"><b>③ 용어사전 A · B · C (REFERENCE)</b><small>읽다가 모르는 용어가 나오면 그때그때 열어보는 사전. 처음부터 정독할 필요 없음.</small></a>
+    <a href="topic_journey.html"><b>① 주제 확정 여정 (TOPIC JOURNEY)</b><small>이 주제가 어떤 논의 끝에 확정됐는지 — 거쳐 온 후보들과 기각 이유, 시장 근거.</small></a>
+    <a href="amr_mapf_theory.html"><b>② AMR 경로계획 이론 (THEORY)</b><small>"로봇을 늘리면 왜 정비례로 빨라지지 않는가"의 이론적 근거. 견적 곡선의 수학.</small></a>
+    <a href="amr_decision_inventory.html"><b>③ 구현 결정 인벤토리 (DECISIONS)</b><small>실제로 만들 때 정해야 할 60여 가지 결정 목록. 팀 회의의 기준 문서.</small></a>
   </div>
-  <p>①·②의 각 섹션 첫머리에는 <b>"쉽게 말하면"</b> 상자가 있습니다. 상자만 먼저 훑고 나서 본문을 읽으면 부담이 훨씬 적습니다.</p>
+  <p>읽다가 모르는 용어가 나오면 각 문서 도입부의 <b>"먼저 알아둘 용어"</b> 표를 먼저 보고,
+  더 깊은 설명이 필요하면 용어사전(<a href="glossary_robotics.html">REF A</a> · <a href="glossary_industrial.html">REF B</a> · <a href="glossary_ai_data.html">REF C</a>)으로 이동하세요.</p>
 </section>
 
 </main>
 
 <footer>
-  <div class="wrap">SIM-FIRST SMART LOGISTICS · DOC 00 INTRO — <a href="index.html">문서 인덱스로 돌아가기</a></div>
+  <div class="wrap">AMR QUOTE SIMULATION · DOC 00 INTRO — <a href="index.html">문서 인덱스로 돌아가기</a></div>
 </footer>
 
 </body>

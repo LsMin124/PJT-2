@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<title>주제 확정 여정 — AMR 도입 견적 시뮬레이션 (Topic Journey)</title>
+<style>
+  :root{
+    --bg:#14181D;
+    --panel:#1C2229;
+    --panel-edge:#2C343D;
+    --ink:#E8ECF1;
+    --ink-soft:#9AA7B4;
+    --amber:#F08A32;
+    --machine:#3BAF77;
+    --steel:#8FB4D9;
+    --slate:#8A96A3;
+    --grid:#2A323B;
+    --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important;animation:none!important}}
+  body{
+    background:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:32px 32px;
+    color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px;
+  }
+  a{color:var(--steel)}
+  a.term{color:inherit;text-decoration:underline;text-decoration-style:dotted;text-decoration-color:var(--steel);text-underline-offset:3px}
+  a.term:hover{color:var(--steel);text-decoration-style:solid}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+  header{border-bottom:3px solid var(--ink);background:var(--panel)}
+  .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
+  .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
+  .doc-eyebrow b{color:var(--amber);font-weight:600}
+  h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
+  h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
+  .meta b{color:var(--ink);font-weight:600}
+
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav .wrap{display:flex;gap:2px;padding:0 20px}
+  nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
+  nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--amber);outline:none}
+  nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
+  nav a.nav-cross{margin-left:auto;color:var(--amber);font-weight:700}
+
+  main{padding:44px 0 80px}
+  section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
+  .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
+  h2{font-size:20px;font-weight:800;letter-spacing:-.01em}
+  .sec-body{padding:16px 26px 26px}
+  h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+  h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
+  p{margin-bottom:10px}
+  .sec-body p{max-width:76ch}
+  .lead{font-size:15.5px}
+  .soft{color:var(--ink-soft)}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
+  .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
+  .tagline{font-size:16px;font-weight:600;background:#0E1318;color:#fff;padding:16px 20px;margin:14px 0;border-left:6px solid var(--amber)}
+  .tagline small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#9AA7B4;margin-bottom:6px;font-weight:400}
+  .tagline b{color:var(--amber)}
+
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F}
+  td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
+  tr:last-child td{border-bottom:none}
+  table tr:nth-child(even) td{background:#1E252D}
+  .tbl-scroll{overflow-x:auto}
+
+  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px}
+  .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)} .c-slate{color:var(--slate)}
+
+  ul.rules{list-style:none;margin:10px 0}
+  ul.rules li{padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--grid);font-size:13.5px}
+  ul.rules li:last-child{border-bottom:none}
+  ul.rules li::before{content:"▸";position:absolute;left:6px;color:var(--amber);font-weight:700}
+
+  /* 세 개의 축 카드 */
+  .axes{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:16px 0}
+  .axis{border:1px solid var(--panel-edge);border-top:4px solid var(--slate);padding:16px 18px}
+  .axis.x-body{border-top-color:var(--steel)}
+  .axis.x-head{border-top-color:var(--amber)}
+  .axis.x-close{border-top-color:var(--machine)}
+  .axis .role-tag{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-soft);margin-bottom:6px;display:block}
+  .axis h4{font-size:14.5px;font-weight:800;margin-bottom:6px}
+  .axis p{font-size:12.5px;color:var(--ink-soft);margin:0}
+
+  /* 여정 타임라인 */
+  .milestones{display:grid;gap:0;margin:14px 0;border-left:3px solid var(--ink)}
+  .ms{position:relative;padding:12px 18px 12px 28px;border-bottom:1px dashed var(--grid)}
+  .ms:last-child{border-bottom:none}
+  .ms::before{content:"";position:absolute;left:-8px;top:18px;width:13px;height:13px;background:var(--panel);border:3px solid var(--machine)}
+  .ms.hl::before{border-color:var(--amber)}
+  .ms .ms-tag{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--machine);letter-spacing:.08em}
+  .ms.hl .ms-tag{color:var(--amber)}
+  .ms h4{font-size:14px;font-weight:700;margin:2px 0 2px}
+  .ms p{font-size:12.5px;color:var(--ink-soft);margin:0}
+
+  footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+
+  @media (max-width:820px){
+    .titleblock{grid-template-columns:1fr}
+    .meta{border-left:none;padding-left:0;text-align:left}
+    body{font-size:14px}
+    .sec-head,.sec-body{padding-left:16px;padding-right:16px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap titleblock">
+    <div>
+      <div class="doc-eyebrow">DOC 03 · TOPIC JOURNEY · <b>REV B</b> · AMR QUOTE SIMULATION</div>
+      <h1>주제 확정 여정
+        <span class="sub">어떤 후보들을 거쳐 "AMR 도입 견적 시뮬레이션"에 도달했는가 — 최종 제안과 그 근거의 기록</span>
+      </h1>
+    </div>
+    <div class="meta">
+      TYPE · <b>주제 확정 기록</b><br>
+      FINAL · <b>견적 서비스 v1 + 검증 계층</b><br>
+      FORMAT · <b>여정 → 근거 → Q&amp;A</b><br>
+      BASIS · <b>전체 개괄 (Master Overview)</b>
+    </div>
+  </div>
+</header>
+
+<nav aria-label="섹션 이동">
+  <div class="wrap">
+    <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a href="#p0">00 한눈에</a>
+    <a href="#p1">01 최종 제안</a>
+    <a href="#p2">02 확정 여정</a>
+    <a href="#p3">03 시장 근거</a>
+    <a href="#p4">04 기각된 이전 제안</a>
+    <a href="#p5">05 발표 메시지</a>
+    <a href="#p6">06 예상 질문</a>
+    <a href="#p7">07 다음으로</a>
+    <a class="nav-cross" href="amr_decision_inventory.html">결정 인벤토리 ↗</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- ══════════ P0 한눈에 보기 ══════════ -->
+  <section id="p0">
+    <div class="sec-head"><span class="sec-no">SEC 00</span><h2>한눈에 보기 — 주제는 어떻게 확정됐나</h2></div>
+    <div class="sec-body">
+      <p class="lead">이 문서는 주제가 확정되기까지의 논의 과정과 최종 제안을 기록한 문서입니다. 읽고 나면 아래 세 질문에 답할 수 있습니다.</p>
+      <ul class="rules">
+        <li>최종 주제는 정확히 무엇인가? (SEC 01)</li>
+        <li>어떤 후보들을 거쳐, 왜 각각을 접고 여기에 도달했는가? (SEC 02·04)</li>
+        <li>왜 시장 1위 세그먼트(GTP)가 아니라 반송·피킹 보조를 노리는가? (SEC 03)</li>
+      </ul>
+      <p style="margin-top:14px">주제는 한 번에 나온 것이 아니라 <b>다섯 단계의 검토와 기각</b>을 거쳤습니다. 아래 그림이 그 여정 전체입니다.</p>
+
+      <svg viewBox="0 0 900 320" role="img" aria-label="주제 확정 여정: 디스패처 비교 연구부터 최종 견적 서비스까지 다섯 단계" style="max-width:100%;height:auto;display:block;margin:14px 0">
+        <defs><marker id="tj-ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
+        <rect x="20" y="28" width="260" height="96" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="36" y="54" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#8FB4D9">단계 1</text>
+        <text x="36" y="78" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">디스패처 비교 연구</text>
+        <text x="36" y="100" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">배차 알고리즘 성능 대결 — 연구로 출발</text>
+        <line x1="282" y1="76" x2="316" y2="76" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tj-ar)"/>
+        <rect x="320" y="28" width="260" height="96" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="336" y="54" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#8FB4D9">단계 2</text>
+        <text x="336" y="78" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">인력 배치 전환 검토</text>
+        <text x="336" y="100" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">응용 문제로의 확장을 모색</text>
+        <line x1="582" y1="76" x2="616" y2="76" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tj-ar)"/>
+        <rect x="620" y="28" width="260" height="96" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="636" y="54" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#8FB4D9">단계 3</text>
+        <text x="636" y="78" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">관제탑 포장</text>
+        <text x="636" y="100" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">웹 관제로 포장 — ROS 조연화 모순 발견</text>
+        <line x1="750" y1="128" x2="750" y2="168" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tj-ar)"/>
+        <rect x="620" y="174" width="260" height="96" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="636" y="200" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#8FB4D9">단계 4</text>
+        <text x="636" y="224" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">FMS 제품화</text>
+        <text x="636" y="246" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">실시간 관제 제품 — v2 백로그로 이동</text>
+        <line x1="616" y1="222" x2="586" y2="222" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tj-ar)"/>
+        <rect x="20" y="174" width="560" height="96" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+        <text x="36" y="200" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#F08A32">단계 5 · 최종 확정 ★</text>
+        <text x="36" y="224" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14.5" font-weight="700" fill="#E8ECF1">AMR 도입 견적 시뮬레이션 서비스 (v1)</text>
+        <text x="36" y="246" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">+ SIL 에뮬레이션 검증 계층 · 실시간 관제(FMS)는 v2 백로그</text>
+        <text x="450" y="300" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">각 단계에서 무엇이 걸렸고 왜 다음으로 넘어갔는지는 SEC 02에서 하나씩 풀어 설명합니다</text>
+      </svg>
+      <p class="soft">그림 1 · 주제 확정 여정. 다섯 번의 방향 전환은 시행착오가 아니라, 매번 "제품으로 성립하는가"를 물은 결과입니다.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ P1 최종 제안 ══════════ -->
+  <section id="p1">
+    <div class="sec-head"><span class="sec-no">SEC 01</span><h2>최종 제안 — 한 문장과 세 개의 축</h2></div>
+    <div class="sec-body">
+      <div class="tagline"><small>ONE-SENTENCE DEFINITION</small>
+        물류센터의 시설·물류 데이터를 받아, 시뮬레이션으로 AMR 대수별 처리량–비용–ROI를 <b>투명하게</b> 산출하고,
+        고객이 곡선 위에서 <b>직접 도입 규모를 선택</b>하게 하는 중립 견적 SaaS.
+      </div>
+      <div class="plain"><span class="pl-tag">쉽게 말하면</span>
+        로봇 도입을 고민하는 창고 회사에게, 로봇 판매 업체가 아닌 <b>중립적인 제3자의 계산기</b>를 주는 것입니다.
+        가정과 계산 과정을 전부 공개하고("투명"), 결론을 강요하는 대신 곡선을 보여주고 고르게 합니다.
+        제품 철학: <b>선택은 고객이, 근거는 시스템이.</b>
+      </div>
+      <p class="lead">제안의 뼈대는 세 개의 축입니다.</p>
+      <div class="axes">
+        <div class="axis x-head">
+          <span class="role-tag">축 1 · 차별점</span>
+          <h4>중립 · 투명</h4>
+          <p>판매자의 블랙박스 견적에 맞서, 가정·과정·불확실성을 전면 공개하는 제3자 견적. 맞지 않는 로봇 방식은 배제 사유와 함께 걸러준다.</p>
+        </div>
+        <div class="axis x-body">
+          <span class="role-tag">축 2 · 사용 경험</span>
+          <h4>곡선 위에서 선택</h4>
+          <p>대수–처리량 한계효용 곡선에 TCO 곡선을 겹쳐 ROI 최적점을 보여주고, 곡선 위 클릭으로 구성 상세 리포트를 연다. What-if 재실행 포함.</p>
+        </div>
+        <div class="axis x-close">
+          <span class="role-tag">축 3 · 신뢰 장치</span>
+          <h4>SIL 검증 계층</h4>
+          <p>빠른 시뮬레이션(SimPy)이 낸 최적 구성 1~2개를, 실제 로봇 소프트웨어를 얹은 3D 세계(ROS2+Isaac)에서 재검증하고 오차만큼 보정한다.</p>
+        </div>
+      </div>
+
+      <h3>먼저 알아둘 용어 — 이 문서에 반복해서 나옵니다</h3>
+      <div class="tbl-scroll"><table>
+        <tr><th style="width:190px">용어</th><th>뜻</th></tr>
+        <tr><td><b>견적 SaaS</b></td><td>설치 없이 웹에서 쓰는 소프트웨어 서비스 형태의 견적 도구. 이 프로젝트의 제품 형태</td></tr>
+        <tr><td><b>GTP</b> Goods-to-Person</td><td>로봇이 상품 선반을 통째로 작업대까지 가져다주는 방식. 창고 전체를 로봇 중심으로 재설계하는 대형 도입</td></tr>
+        <tr><td><b>반송/피킹 보조</b></td><td>기존 창고 구조를 바꾸지 않고, 상자 운반과 피킹 이동을 로봇이 대신해 주는 소규모·점진 도입 방식. 이 서비스의 v1 타겟</td></tr>
+        <tr><td><b>3PL</b></td><td>Third-Party Logistics — 다른 회사의 물류를 대신 수행하는 물류 전문 기업. 국내 AMR 수요의 중심축</td></tr>
+        <tr><td><b>ROI · TCO</b></td><td>투자 회수(언제 본전을 뽑나) · 총소유비용(구매비+운영비). 견적 곡선의 경제성 축</td></tr>
+        <tr><td><b>스윕(sweep)</b></td><td>기종·대수·시드를 바꿔가며 시뮬레이션을 수백 번 돌리는 것. 곡선 한 장이 나오기까지의 계산량</td></tr>
+        <tr><td><b>SIL 에뮬레이션</b></td><td>Software-in-the-Loop — 실제 소프트웨어(ROS2·Nav2)를 가상 환경(Isaac Sim)에 물려 돌리는 검증 방식</td></tr>
+        <tr><td><b>FMS</b></td><td>Fleet Management System — 여러 AMR을 실시간으로 지휘하는 관제 시스템. 이번 여정에서 v2 백로그로 미뤄진 후보</td></tr>
+        <tr><td><b>디스패처</b></td><td>"어느 로봇이 어느 작업을 맡을지" 정하는 할당 로직. 여정의 출발점이었던 연구 대상</td></tr>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- ══════════ P2 확정 여정 ══════════ -->
+  <section id="p2">
+    <div class="sec-head"><span class="sec-no">SEC 02</span><h2>확정 여정 — 다섯 단계의 검토와 이동</h2></div>
+    <div class="sec-body">
+      <p class="lead">각 단계에서 무엇을 검토했고, 무엇이 걸려서 다음으로 넘어갔는지의 기록입니다.
+      이 이동의 논리가 곧 "왜 이 주제인가"에 대한 답이기도 합니다.</p>
+      <div class="milestones">
+        <div class="ms">
+          <span class="ms-tag">단계 1</span>
+          <h4>디스패처 비교 연구</h4>
+          <p>규칙 기반 vs 휴리스틱 vs 강화학습의 배차 성능 비교에서 출발. 기술적으로 흥미롭지만, 비교 연구 자체는 서비스가 아니라는 벽에 부딪힘.</p>
+        </div>
+        <div class="ms">
+          <span class="ms-tag">단계 2</span>
+          <h4>인력 배치 전환 검토</h4>
+          <p>같은 할당 기술을 사람 배치 문제로 돌려보는 방향을 검토. 응용처는 넓어졌지만 로봇 프로젝트로서의 정체성이 흐려짐.</p>
+        </div>
+        <div class="ms">
+          <span class="ms-tag">단계 3</span>
+          <h4>관제탑 포장</h4>
+          <p>로봇 운영을 웹 관제 화면으로 포장하는 방향. 여기서 <b>"ROS 조연화 모순"</b>이 발견됨 — 서비스를 주인공으로 만들수록 로봇 스택(ROS)의 역할이 조연으로 밀리는데, 제품 카테고리를 로봇 도메인 안에서 고르는 한 이 모순이 반복된다.</p>
+        </div>
+        <div class="ms">
+          <span class="ms-tag">단계 4</span>
+          <h4>FMS 제품화</h4>
+          <p>여러 AMR을 실시간 지휘하는 관제 시스템(FMS)을 제품으로 만드는 방향. 그러나 견적이라는 더 명확한 구매 맥락이 발견되면서 <b>v2 백로그로 이동</b> — 버린 것이 아니라 순서를 미룬 것.</p>
+        </div>
+        <div class="ms hl">
+          <span class="ms-tag">단계 5 · 최종 ★</span>
+          <h4>견적 서비스 (v1) + SIL 에뮬레이션 검증 계층</h4>
+          <p>제품 정체성을 "로봇을 움직이는 시스템"에서 <b>"신뢰할 수 있는 분석"</b>으로 옮기면서 모순이 해소됨. ROS는 검증 계층이라는 정직한 역할을 얻고, 웹 서비스는 온전히 주인공이 된다.</p>
+        </div>
+      </div>
+
+      <div class="plain"><span class="pl-tag">여정에서 얻은 핵심 교훈 3가지</span>
+        ① 로봇 데모는 <b>웹 서비스로 포장되어야</b> 임팩트가 생긴다.<br>
+        ② 제품 카테고리를 <b>로봇 도메인 안에서</b> 고르면 "서비스 포장 vs ROS 주연"이 양립할 수 없다 — 도메인 밖(견적·분석)에서 골라야 둘 다 산다.<br>
+        ③ v1에서 ROS의 정직한 역할은 <b>검증 계층</b>이다.
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ P3 시장 근거 ══════════ -->
+  <section id="p3">
+    <div class="sec-head"><span class="sec-no">SEC 03</span><h2>시장 근거 — 왜 반송·피킹 보조인가</h2></div>
+    <div class="sec-body">
+      <p class="lead">"왜 시장 1위 세그먼트를 안 하나"는 반드시 나올 질문입니다.
+      답은 매출 크기가 아니라 <b>구매 경로</b>에 있습니다 — 중립 견적이 끼어들 자리가 있는 세그먼트는 따로 있습니다.</p>
+      <div class="tbl-scroll"><table>
+        <tr><th style="width:20%">세그먼트</th><th style="width:16%">시장 비중</th><th style="width:34%">거래 방식</th><th style="width:30%">중립 견적의 자리</th></tr>
+        <tr>
+          <td><b>GTP</b> (선반 운반형)</td>
+          <td>~38% · 매출 1위</td>
+          <td>벤더가 창고 설계부터 견적까지 통째로 맡는 턴키 토탈 솔루션 거래</td>
+          <td><span class="chip c-slate">구조적으로 좁음</span> 벤더가 직접 설계·견적하므로 제3자 견적이 개입할 틈이 없다 → v1 제외</td>
+        </tr>
+        <tr>
+          <td><b>반송/피킹 보조</b></td>
+          <td>~25–27%</td>
+          <td>인프라 변경 없이 2~4주 배치, 소수 대(3~15대)씩 점진 도입</td>
+          <td><span class="chip c-amber">v1 타겟</span> "업체 말만 믿기 불안한데 자체 검증 역량이 없는" 고객층 — 견적 의사결정이 실제로 일어나는 곳</td>
+        </tr>
+      </table></div>
+      <ul class="rules">
+        <li><b>국내 수요의 본체는 이커머스/3PL</b> — 수도권 A급 센터 임차면적의 79%를 차지. 타겟 페르소나는 "기존 센터를 보유하고 점진 도입을 검토하는 단계"의 회사</li>
+        <li>카테고리 판단(게이트)은 v1부터 전 카테고리를 커버하되, <b>정밀 견적은 반송/피킹 보조에 집중</b> — "판단은 넓게, 정밀 견적은 좁게". GTP가 적합한 고객에게는 벤더 직행을 안내한다(중립 라우팅)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══════════ P4 기각된 이전 제안 ══════════ -->
+  <section id="p4">
+    <div class="sec-head"><span class="sec-no">SEC 04</span><h2>기각된 이전 제안 — "불 꺼진 물류센터"</h2></div>
+    <div class="sec-body">
+      <p class="lead">이 문서의 이전 판(REV A)은 전혀 다른 제안이었습니다. 기록으로 남깁니다.</p>
+      <p>이전 제안 <b>"불 꺼진 물류센터"</b>는 무인 풀필먼트 센터를 시뮬레이션으로 만들어
+      무인 운영·자가 복구·What-if 예측의 6장면 시연을 보여주자는 것이었습니다.
+      주제 논의가 진행되면서 질문이 <b>"무엇을 보여줄까(데모)"에서 "누가 왜 쓰는가(제품)"로</b> 이동했고,
+      이 제안은 완성도 높은 자동화 데모일 수는 있어도 명확한 사용자와 구매 맥락을 갖기 어렵다는 판단으로 기각됐습니다.</p>
+      <p class="soft">다만 남긴 것이 있습니다 — "로봇 데모는 웹 서비스로 포장되어야 임팩트가 생긴다"는 교훈(SEC 02 ①),
+      그리고 What-if 시뮬레이션 같은 요소는 형태를 바꿔 최종 주제(견적 스윕·What-if 재실행)에 흡수됐습니다.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ P5 발표 메시지 ══════════ -->
+  <section id="p5">
+    <div class="sec-head"><span class="sec-no">SEC 05</span><h2>발표 · 면접 핵심 메시지</h2></div>
+    <div class="sec-body">
+      <p class="lead">같은 프로젝트라도 듣는 사람에 따라 앞세울 메시지가 다릅니다. 청중별 정리입니다.</p>
+      <div class="tbl-scroll"><table>
+        <tr><th style="width:20%">청중</th><th>앞세울 메시지</th></tr>
+        <tr>
+          <td><b>비전문가</b></td>
+          <td>"로봇 업체의 블랙박스 견적을 중립 시뮬레이션으로 — 곡선에서 직접 선택."<br>+ 3분 체험(간단 입력 → 러프 견적) + 스윕 매트릭스가 실시간으로 채워지는 화면</td>
+        </tr>
+        <tr>
+          <td><b>기술 면접관</b></td>
+          <td>2계층 시뮬레이션 분리의 필연성 / VDA 5050 경계 불변("테스트한 코드가 배포된다") / SimPy vs Isaac 오차 분석(디지털 트윈 정합성) / RHCR·MAPF 이론 정합 / VDI 3633 V&amp;V / CI·민감도의 통계적 정직함</td>
+        </tr>
+        <tr>
+          <td><b>트랙별</b></td>
+          <td>대기업 생산기술 직무 → DES·반송 최적화·V&amp;V 중심으로 / AMR 기업 → VDA 5050·Isaac 검증 트랙 중심으로</td>
+        </tr>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- ══════════ P6 예상 질문 ══════════ -->
+  <section id="p6">
+    <div class="sec-head"><span class="sec-no">SEC 06</span><h2>예상 질문과 답</h2></div>
+    <div class="sec-body">
+      <p class="lead">발표·면접에서 나올 만한 질문 4가지와 답을 미리 정리했습니다.</p>
+      <h3>Q1. 왜 시장 1위 세그먼트(GTP)를 타겟하지 않았나?</h3>
+      <p>GTP는 벤더가 창고 설계부터 견적까지 통째로 맡는 턴키 거래라, 중립 견적 서비스가 끼어들 틈이 구조적으로 좁다.
+      반면 반송/피킹 보조는 기존 창고에 소수 대를 점진 도입하는 방식이라 "업체 말만 믿기 불안한" 고객의 견적 의사결정이
+      실제로 일어난다. 매출 크기가 아니라 <b>구매 경로</b>로 타겟을 골랐다 (SEC 03).</p>
+      <h3>Q2. 견적 서비스면 로봇 프로젝트가 아니지 않나?</h3>
+      <p>v1에서 ROS의 정직한 역할은 검증 계층이다. 최적 구성 1~2개를 실제 로봇 스택(ROS2·Nav2·VDA 5050)을 얹은
+      Isaac Sim에서 재검증하며, <b>VDA 5050 경계선 위의 플랫폼 코드는 가상↔현실 전환 시 불변</b>이므로
+      "테스트한 코드가 그대로 배포된다"는 주장이 성립한다. v2(실시간 관제 FMS) 확장도 이 아키텍처에 내장되어 있다.</p>
+      <h3>Q3. 시뮬레이션이 낸 숫자를 어떻게 믿나?</h3>
+      <p>세 겹의 장치 — ① 2계층 분리: 빠른 SimPy 스윕(수백 런)과 정밀 SIL 에뮬레이션(RTF≈1, 최적 구성만)을 나누고,
+      에뮬레이션 실측 주행시간으로 SimPy를 보정하는 루프를 돈다. ② VDI 3633 준거 V&amp;V: 보존 법칙·Little's Law 검산,
+      MAPF 공개 벤치마크 대조, 예측 오차 공개. ③ 통계적 정직함: 조건당 다중 시드 + 95% CI 병기, 민감도 분석(OAT).</p>
+      <h3>Q4. 실시간 관제(FMS)는 왜 안 만드나?</h3>
+      <p>안 만드는 것이 아니라 v2 백로그다. v1의 생존 원칙은 "Plan(견적)을 먼저 완성 — 최악의 경우에도 완결된 데모가 남는다"이고,
+      VDA 5050 인터페이스를 v1부터 쓰기 때문에 v2 확장이 아키텍처에 이미 내장되어 있다.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ P7 다음으로 읽기 ══════════ -->
+  <section id="p7">
+    <div class="sec-head"><span class="sec-no">SEC 07</span><h2>다음으로 읽기</h2></div>
+    <div class="sec-body">
+      <p class="lead">주제가 확정됐으니, 다음은 "어떻게 만드는가"입니다.</p>
+      <ul class="rules">
+        <li><a href="amr_decision_inventory.html"><b>DOC 07 구현 결정 인벤토리</b></a> — 이 주제를 실제로 만들 때 정해야 할 60여 개 결정과 크리티컬 패스</li>
+        <li><a href="amr_mapf_theory.html"><b>DOC 06 경로계획 이론 기반</b></a> — 견적 곡선이 꺾이는 이유(경합)의 이론과 문헌</li>
+        <li><a href="project_intro.html"><b>DOC 00 처음 읽는 사람을 위한 안내</b></a> — 이 주제를 비전문가에게 설명해야 할 때의 언어</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">DOC 03 · TOPIC JOURNEY · REV B — 원천: AMR_프로젝트_전체개괄.md · 이전 판(REV A · 불 꺼진 물류센터 제안)은 SEC 04에 기록 · <a href="index.html">문서 인덱스로</a></div>
+</footer>
+
+</body>
+</html>
