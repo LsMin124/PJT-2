@@ -323,16 +323,27 @@ if (typeof document !== 'undefined') (function () {
     }
     cellCounts();
   }
-  function paint(e) {
-    const i = e.target.dataset && e.target.dataset.i;
-    if (i === undefined) return;
-    cells[i] = (tool === cells[i]) ? EMPTY : tool;
-    e.target.className = 'cell c' + cells[i];
+  // 좌표 기반 페인팅: 셀 간극·빠른 드래그에서도 항상 명중, 도구는 항상 해당 값으로 설정(지우기는 지우개)
+  function cellIndexAt(e) {
+    const r = gridEl.getBoundingClientRect();
+    const x = Math.floor((e.clientX - r.left) / r.width * W);
+    const y = Math.floor((e.clientY - r.top) / r.height * H);
+    return (x < 0 || x >= W || y < 0 || y >= H) ? -1 : y * W + x;
+  }
+  function paintAt(i) {
+    if (i < 0 || cells[i] === tool) return;
+    cells[i] = tool;
+    gridEl.children[i].className = 'cell c' + tool;
     cellCounts();
   }
-  gridEl.addEventListener('mousedown', e => { painting = true; paint(e); e.preventDefault(); });
-  gridEl.addEventListener('mouseover', e => { if (painting) paint(e); });
-  window.addEventListener('mouseup', () => { painting = false; });
+  gridEl.addEventListener('pointerdown', e => {
+    painting = true;
+    try { gridEl.setPointerCapture(e.pointerId); } catch (_) {}
+    paintAt(cellIndexAt(e));
+    e.preventDefault();
+  });
+  gridEl.addEventListener('pointermove', e => { if (painting) paintAt(cellIndexAt(e)); });
+  window.addEventListener('pointerup', () => { painting = false; });
   document.querySelectorAll('[data-tool]').forEach(b => b.addEventListener('click', () => {
     tool = +b.dataset.tool;
     document.querySelectorAll('[data-tool]').forEach(x => x.classList.toggle('on', x === b));
