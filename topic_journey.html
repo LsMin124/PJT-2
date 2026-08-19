@@ -107,6 +107,11 @@
   .ms h4{font-size:14px;font-weight:700;margin:2px 0 2px}
   .ms p{font-size:12.5px;color:var(--ink-soft);margin:0}
 
+  .flow-nav{display:flex;justify-content:space-between;gap:14px;margin:8px 0 40px}
+  .flow-nav a{flex:1;max-width:420px;background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
+  .flow-nav a:hover{border-color:var(--amber)}
+  .flow-nav .next{text-align:right;margin-left:auto}
+  .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
   footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
 
   @media (max-width:820px){
@@ -122,7 +127,7 @@
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow">DOC 03 · TOPIC JOURNEY · <b>REV B</b> · AMR QUOTE SIMULATION</div>
+      <div class="doc-eyebrow">APPENDIX A · TOPIC-JOURNEY · <b>REV B</b> · 2026-08</div>
       <h1>주제 확정 여정
         <span class="sub">어떤 후보들을 거쳐 "AMR 도입 견적 시뮬레이션"에 도달했는가 — 최종 제안과 그 근거의 기록</span>
       </h1>
@@ -381,17 +386,22 @@
     <div class="sec-body">
       <p class="lead">주제가 확정됐으니, 다음은 "어떻게 만드는가"입니다.</p>
       <ul class="rules">
-        <li><a href="amr_decision_inventory.html"><b>DOC 07 구현 결정 인벤토리</b></a> — 이 주제를 실제로 만들 때 정해야 할 60여 개 결정과 크리티컬 패스</li>
-        <li><a href="amr_mapf_theory.html"><b>DOC 06 경로계획 이론 기반</b></a> — 견적 곡선이 꺾이는 이유(경합)의 이론과 문헌</li>
-        <li><a href="project_intro.html"><b>DOC 00 처음 읽는 사람을 위한 안내</b></a> — 이 주제를 비전문가에게 설명해야 할 때의 언어</li>
+        <li><a href="amr_decision_inventory.html"><b>MAIN 05 구현 결정 인벤토리</b></a> — 이 주제를 실제로 만들 때 정해야 할 60여 개 결정과 크리티컬 패스</li>
+        <li><a href="amr_mapf_theory.html"><b>MAIN 04 경로계획 이론 기반</b></a> — 견적 곡선이 꺾이는 이유(경합)의 이론과 문헌</li>
+        <li><a href="project_intro.html"><b>MAIN 01 처음 읽는 사람을 위한 안내</b></a> — 이 주제를 비전문가에게 설명해야 할 때의 언어</li>
       </ul>
     </div>
   </section>
 
 </main>
 
+<div class="wrap flow-nav">
+  <a class="prev" href="amr_decision_inventory.html"><small>← 이전</small>MAIN 05 · 결정 인벤토리</a>
+  <a class="next" href="logistics_domain_research.html"><small>다음 →</small>APPENDIX B · 도메인 배경</a>
+</div>
+
 <footer>
-  <div class="wrap">DOC 03 · TOPIC JOURNEY · REV B — 원천: AMR_프로젝트_전체개괄.md · 이전 판(REV A · 불 꺼진 물류센터 제안)은 SEC 04에 기록 · <a href="index.html">문서 인덱스로</a></div>
+  <div class="wrap">APPENDIX A · TOPIC JOURNEY · REV B — 원천: AMR_프로젝트_전체개괄.md · 이전 판(REV A · 불 꺼진 물류센터 제안)은 SEC 04에 기록 · <a href="index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>

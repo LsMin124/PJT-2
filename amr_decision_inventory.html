@@ -40,6 +40,11 @@
   .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
   .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
   .doc-eyebrow b{color:var(--amber);font-weight:600}
+  .flow-nav{display:flex;justify-content:space-between;gap:14px;margin:8px 0 40px}
+  .flow-nav a{flex:1;max-width:420px;background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
+  .flow-nav a:hover{border-color:var(--amber)}
+  .flow-nav .next{text-align:right;margin-left:auto}
+  .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
   h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
   h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
   .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
@@ -106,7 +111,7 @@
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow">DOC 07 · DECISION-INVENTORY · <b>REV A</b> · 2026-08</div>
+      <div class="doc-eyebrow">MAIN 05 / 05 · DECISION-INVENTORY · <b>REV A</b> · 2026-08</div>
       <h1>AMR 견적 시뮬레이션 — 구현 결정 인벤토리
         <span class="sub">실제 구현 전 결정해야 할 사항의 전수 목록 (End-to-End)</span>
       </h1>
@@ -115,7 +120,7 @@
       SCOPE · <b>전 컴포넌트 결정 항목</b><br>
       표기 · <b><span class="star">★</span> = 크리티컬 패스</b><br>
       권고 · <b>논의 기반 기본값 제안</b><br>
-      PAIR · <b>DOC 06 이론 기반</b>
+      PAIR · <b>MAIN 04 이론 기반</b>
     </div>
   </div>
 </header>
@@ -147,7 +152,7 @@
     <p class="lead">이 문서는 AMR 견적 시뮬레이션 서비스를 실제로 만들기 전에 <b>팀이 합의해야 할 결정 항목 60여 개</b>를
     컴포넌트별로 모은 목록입니다. 각 항목에는 선택지와 함께 "권고"를 달아 두었는데,
     권고는 논의를 시작하기 위한 기본값 제안일 뿐 확정이 아닙니다.
-    2026-08-19 전체 개괄(<a href="amr_overview.html">DOC 01 전체 조망</a>) 확정으로 상당수 권고가 팀 방향으로 승격되었습니다 —
+    2026-08-19 전체 개괄(<a href="amr_overview.html">MAIN 02 전체 조망</a>) 확정으로 상당수 권고가 팀 방향으로 승격되었습니다 —
     이 문서와 개괄의 서술이 다르면 <b>개괄이 우선</b>합니다.</p>
     <ul class="rules">
       <li>표의 <span class="star">★</span> 표시는 <b>크리티컬 패스</b> — 이 결정이 먼저 정해져야 다른 결정들을 진행할 수 있다는 뜻입니다. 아래 SEC 00에 7건을 모아 두었습니다.</li>
@@ -350,7 +355,7 @@
       <li><b>시공간 예약 테이블</b> — "(칸, 시각)" 조합을 먼저 찜한 로봇이 임자가 되는 장부. 뒤 순번 로봇은 찜된 조합을 피해서 경로를 찾는다. 충돌이 원천적으로 안 나는 이유</li>
       <li><b>우선순위 순차 계획(Prioritized Planning)</b> — 로봇에 순번을 매기고 1번부터 차례로 계획하는 방식. 빠르지만 뒤 순번일수록 손해를 본다</li>
     </ul>
-    <p class="soft">알고리즘별 원리와 비교(예약 테이블·CBS·RHCR)는 <a href="amr_mapf_theory.html">DOC 06 이론 기반</a> SEC 02에 풀어 두었습니다.</p>
+    <p class="soft">알고리즘별 원리와 비교(예약 테이블·CBS·RHCR)는 <a href="amr_mapf_theory.html">MAIN 04 이론 기반</a> SEC 02에 풀어 두었습니다.</p>
   </div>
 </section>
 
@@ -496,8 +501,8 @@
   <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
   <div class="sec-body">
     <ul class="rules">
-      <li><a href="amr_mapf_theory.html"><b>DOC 06 경로계획 이론 기반</b></a> — 이 문서의 B·D 결정들이 왜 그런 권고가 됐는지, MAPF 이론과 원 논문으로 확인</li>
-      <li><a href="logistics_domain_research.html"><b>DOC 05 도메인 리서치</b></a> — 이 시스템이 다루는 물류 현장이 실제로 어떻게 생겼는지</li>
+      <li><a href="topic_journey.html"><b>APPENDIX A 주제 확정 여정</b></a> — 메인 트랙 완주 후, 이 주제가 어떤 논의 끝에 확정됐는지의 기록과 발표 메시지</li>
+      <li><a href="amr_mapf_theory.html"><b>MAIN 04 경로계획 이론 기반</b></a> — 이 문서의 B·D 결정들이 왜 그런 권고가 됐는지, MAPF 이론과 원 논문으로 확인</li>
       <li><a href="glossary_industrial.html"><b>REF B 용어사전</b></a> — AMR·VDA 5050·WMS 같은 산업 용어를 그림과 함께</li>
     </ul>
   </div>
@@ -505,8 +510,13 @@
 
 </main>
 
+<div class="wrap flow-nav">
+  <a class="prev" href="amr_mapf_theory.html"><small>← 이전</small>MAIN 04 · 이론 기반</a>
+  <a class="next" href="topic_journey.html"><small>다음 →</small>APPENDIX A · 주제 확정 여정</a>
+</div>
+
 <footer>
-  <div class="wrap">DOC 07 · DECISION-INVENTORY — 원본: AMR_구현_결정_인벤토리.md (2026-08-19) · 짝 문서: <a href="amr_mapf_theory.html">DOC 06 이론 기반</a></div>
+  <div class="wrap">MAIN 05 · DECISION-INVENTORY — 원본: AMR_구현_결정_인벤토리.md (2026-08-19) · 짝 문서: <a href="amr_mapf_theory.html">MAIN 04 이론 기반</a></div>
 </footer>
 
 </body>

@@ -62,7 +62,7 @@
 
 <header>
   <div class="wrap titleblock">
-    <div class="doc-eyebrow">REFERENCE B · <b>용어사전 — 스마트 물류센터 · 산업 표준</b> · SIM-FIRST SMART LOGISTICS</div>
+    <div class="doc-eyebrow">REFERENCE B · <b>용어사전 — 스마트 물류센터 · 산업 표준</b> · AMR QUOTE SIMULATION</div>
     <h1>스마트 물류센터 · 산업 표준 용어
       <span class="sub">물류 도메인이 처음인 팀원을 위한 설명 — 계획서·오버뷰 본문에서 하이퍼링크로 연결됨</span>
     </h1>
@@ -302,7 +302,7 @@
     <figcaption>세 숫자 중 두 개를 알면 나머지가 정해진다 — 세 개가 동시에 안 맞으면 어딘가 버그가 있는 것</figcaption>
   </figure>
   <p>숫자로 보면 단순하다. 주문이 시간당 100건 도착하고(λ=100건/시간) 주문 하나가 창고 안에 평균 0.5시간 머문다면(W=0.5시간), 창고 안에는 언제나 평균 L = 100 × 0.5 = 50건이 처리 중이어야 한다. 분포·순서·정책과 무관하게 거의 모든 안정 시스템에 성립하기 때문에, 시뮬레이션이 뱉은 세 숫자(재공 수량·처리율·리드타임)가 이 등식을 만족하는지만 봐도 모델의 버그를 즉시 잡아낼 수 있다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 시뮬레이션 검증(V&amp;V)의 1차 관문. <a href="#des">SimPy</a> 결과에서 L·λ·W를 뽑아 등식 성립을 확인하는 것이 <a href="#vdi3633">VDI 3633</a> verification 활동의 구체적 실행이다(DOC 07 I1).</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 시뮬레이션 검증(V&amp;V)의 1차 관문. <a href="#des">SimPy</a> 결과에서 L·λ·W를 뽑아 등식 성립을 확인하는 것이 <a href="#vdi3633">VDI 3633</a> verification 활동의 구체적 실행이다(MAIN 05 I1).</div>
 </section>
 
 <section class="term" id="vdi3633">
@@ -439,7 +439,7 @@
   <h2>Andon<span class="en">안돈 — 이상 알림 체계</span></h2>
   <p class="def">생산 라인에 이상이 생기면 즉시 불빛·알림으로 알려 대응을 촉구하는 체계. 도요타 생산방식에서 나온 용어로, 현장 위 신호등이 원형이다.</p>
   <p>핵심 사상은 "문제를 숨기지 말고 그 자리에서 드러내라"다. 현대의 스마트 공장·물류센터에서는 물리적 경광등을 넘어 대시보드 알림·모바일 푸시로 확장됐다. 웹 서비스의 장애 알림(PagerDuty·Slack 알림)과 정확히 같은 역할이다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 직접 구현 범위 밖의 참고 개념. 스윕 실행 화면에서 잡 실패·부분 실패를 숨기지 않고 "미완료 조합"으로 드러내는 정책(DOC 07 E3)이 같은 사상 — 문제를 숨기지 말고 그 자리에서 보여라 — 을 따른다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 직접 구현 범위 밖의 참고 개념. 스윕 실행 화면에서 잡 실패·부분 실패를 숨기지 않고 "미완료 조합"으로 드러내는 정책(MAIN 05 E3)이 같은 사상 — 문제를 숨기지 말고 그 자리에서 보여라 — 을 따른다.</div>
 </section>
 
 <section class="term" id="oee">
@@ -509,7 +509,7 @@
 </main>
 
 <footer>
-  <div class="wrap">SIM-FIRST SMART LOGISTICS · REFERENCE B — <a href="glossary_robotics.html">A 로보틱스·시뮬레이션</a> · <a href="glossary_ai_data.html">C AI·데이터·서비스</a> · <a href="index.html">문서 인덱스</a></div>
+  <div class="wrap">AMR QUOTE SIMULATION · REFERENCE B — <a href="glossary_robotics.html">A 로보틱스·시뮬레이션</a> · <a href="glossary_ai_data.html">C AI·데이터·서비스</a> · <a href="index.html">문서 인덱스</a></div>
 </footer>
 
 </body>

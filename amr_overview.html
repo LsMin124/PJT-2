@@ -40,6 +40,11 @@
   .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
   .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
   .doc-eyebrow b{color:var(--amber);font-weight:600}
+  .flow-nav{display:flex;justify-content:space-between;gap:14px;margin:8px 0 40px}
+  .flow-nav a{flex:1;max-width:420px;background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
+  .flow-nav a:hover{border-color:var(--amber)}
+  .flow-nav .next{text-align:right;margin-left:auto}
+  .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
   h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
   h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
   .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
@@ -111,7 +116,7 @@
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow">DOC 01 · TEAM-OVERVIEW · <b>REV C</b> · 2026-08</div>
+      <div class="doc-eyebrow">MAIN 02 / 05 · MASTER-OVERVIEW · <b>REV C</b> · 2026-08</div>
       <h1>전체 조망 — AMR 견적 시뮬레이션 서비스
         <span class="sub">무엇을 만들고, 여섯 명이 어떻게 나눠 만드는가 — 팀 공유 기준 문서</span>
       </h1>
@@ -294,7 +299,7 @@
       <tr><td><b>백엔드</b></td><td>Scenario API, K8s Indexed Job, Kafka·Redis·TimescaleDB, WebSocket 진행률</td></tr>
       <tr><td><b>프론트</b></td><td>레이아웃 에디터(축척 보정·실시간 검증), 곡선·히트맵·리플레이, 진행률 매트릭스</td></tr>
     </table></div>
-    <p class="soft">세부 기술 결정은 <a href="amr_tech_plan.html">DOC 02 실행 계획서</a>, 결정 항목의 전수 목록은 <a href="amr_decision_inventory.html">DOC 07</a> 참조.</p>
+    <p class="soft">세부 기술 결정은 <a href="amr_tech_plan.html">MAIN 03 실행 계획서</a>, 결정 항목의 전수 목록은 <a href="amr_decision_inventory.html">MAIN 05 결정 인벤토리</a> 참조.</p>
   </div>
 </section>
 
@@ -365,7 +370,7 @@
   <div class="sec-body">
     <p class="lead">최종 산출물은 숫자 하나가 아니라 <b>선택할 수 있는 곡선</b>입니다.</p>
     <ul class="rules">
-      <li><b>대수–처리량 한계효용 곡선</b> — 곡선이 꺾이는 지점은 병목이 이동했다는 뜻. "로봇 추가 대신 스테이션 증설" 같은 컨설팅적 조언으로 이어진다 (곡선의 원리는 <a href="amr_mapf_theory.html">DOC 06</a> SEC 01의 그림 참조)</li>
+      <li><b>대수–처리량 한계효용 곡선</b> — 곡선이 꺾이는 지점은 병목이 이동했다는 뜻. "로봇 추가 대신 스테이션 증설" 같은 컨설팅적 조언으로 이어진다 (곡선의 원리는 <a href="amr_mapf_theory.html">MAIN 04</a> SEC 01의 그림 참조)</li>
       <li><b>TCO 곡선 중첩 → ROI 최적점</b> — 곡선 위를 클릭하면 그 구성의 상세 리포트</li>
       <li><b>통계적 정직함</b> — 조건당 다중 시드 + 95% 신뢰구간 병기, 워밍업 절단, 민감도 분석(OAT)</li>
       <li><b>투명성 3겹</b> — 가정 명세(수정 가능) / 과정(병목·대기열 분해) / 불확실성(신뢰구간·민감도)</li>
@@ -411,17 +416,22 @@
   <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
   <div class="sec-body">
     <ul class="rules">
-      <li><a href="amr_tech_plan.html"><b>DOC 02 실행 계획서</b></a> — 이 조망의 각 상자를 어떤 기술 결정으로 채우는지 (표준 스택·V&amp;V·크리티컬 패스)</li>
-      <li><a href="amr_decision_inventory.html"><b>DOC 07 구현 결정 인벤토리</b></a> — 파트별로 결정해야 할 항목 60여 개의 전수 목록</li>
-      <li><a href="amr_mapf_theory.html"><b>DOC 06 경로계획 이론</b></a> — 대수–처리량 곡선이 왜 꺾이는지의 이론적 근거</li>
+      <li><a href="amr_tech_plan.html"><b>MAIN 03 실행 계획서</b></a> — 이 조망의 각 상자를 어떤 기술 결정으로 채우는지 (표준 스택·V&amp;V·크리티컬 패스) — 메인 트랙의 다음 문서</li>
+      <li><a href="amr_mapf_theory.html"><b>MAIN 04 경로계획 이론</b></a> — 대수–처리량 곡선이 왜 꺾이는지의 이론적 근거</li>
+      <li><a href="amr_decision_inventory.html"><b>MAIN 05 구현 결정 인벤토리</b></a> — 파트별로 결정해야 할 항목 60여 개의 전수 목록</li>
     </ul>
   </div>
 </section>
 
 </main>
 
+<div class="wrap flow-nav">
+  <a class="prev" href="project_intro.html"><small>← 이전</small>MAIN 01 · 서비스 소개</a>
+  <a class="next" href="amr_tech_plan.html"><small>다음 →</small>MAIN 03 · 실행 계획서</a>
+</div>
+
 <footer>
-  <div class="wrap">DOC 01 · TEAM OVERVIEW — 원천: AMR_프로젝트_전체개괄.md (2026-08-19) · REV C: 주제 확정(AMR 견적 시뮬레이션)에 따른 전면 개정</div>
+  <div class="wrap">MAIN 02 · MASTER OVERVIEW — 원천: AMR_프로젝트_전체개괄.md (2026-08-19) · REV C: 주제 확정(AMR 견적 시뮬레이션)에 따른 전면 개정</div>
 </footer>
 
 </body>

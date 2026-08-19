@@ -40,6 +40,11 @@
   .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
   .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
   .doc-eyebrow b{color:var(--steel);font-weight:600}
+  .flow-nav{display:flex;justify-content:space-between;gap:14px;margin:8px 0 40px}
+  .flow-nav a{flex:1;max-width:420px;background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
+  .flow-nav a:hover{border-color:var(--amber)}
+  .flow-nav .next{text-align:right;margin-left:auto}
+  .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
   h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
   h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
   .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
@@ -111,15 +116,15 @@
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow">DOC 02 · TECH-PLAN · <b>REV C</b> · 2026-08</div>
+      <div class="doc-eyebrow">MAIN 03 / 05 · TECH-PLAN · <b>REV C</b> · 2026-08</div>
       <h1>실행 계획서 — 기술 결정과 로드맵
         <span class="sub">AMR 견적 시뮬레이션 서비스를 어떤 기술로, 어떤 순서로 만들 것인가</span>
       </h1>
     </div>
     <div class="meta">
-      BASE · <b>DOC 01 전체 조망</b><br>
-      DETAIL · <b>DOC 07 결정 인벤토리</b><br>
-      THEORY · <b>DOC 06 경로계획 이론</b><br>
+      BASE · <b>MAIN 02 전체 조망</b><br>
+      DETAIL · <b>MAIN 05 결정 인벤토리</b><br>
+      THEORY · <b>MAIN 04 경로계획 이론</b><br>
       SOURCE · <b>전체 개괄 (Master Overview)</b>
     </div>
   </div>
@@ -147,8 +152,8 @@
 <section id="s0">
   <div class="sec-head"><span class="sec-no">SEC 00</span><h2>한눈에 보기</h2></div>
   <div class="sec-body">
-    <p class="lead">이 문서는 <a href="amr_overview.html">전체 조망(DOC 01)</a>의 시스템을 실제로 만들기 위한
-    <b>기술 결정의 근거와 실행 순서</b>를 담습니다. 개별 결정의 전수 목록은 <a href="amr_decision_inventory.html">DOC 07</a>이 맡고,
+    <p class="lead">이 문서는 <a href="amr_overview.html">전체 조망(MAIN 02)</a>의 시스템을 실제로 만들기 위한
+    <b>기술 결정의 근거와 실행 순서</b>를 담습니다. 개별 결정의 전수 목록은 <a href="amr_decision_inventory.html">MAIN 05</a>가 맡고,
     여기서는 뼈대가 되는 큰 결정들만 다룹니다.</p>
 
     <h3>이 문서가 답하는 질문</h3>
@@ -205,7 +210,7 @@
 <section id="s1">
   <div class="sec-head"><span class="sec-no">SEC 01</span><h2>아키텍처 상세 — 흐름과 결정</h2></div>
   <div class="sec-body">
-    <p class="lead">전체 그림은 <a href="amr_overview.html#o0">DOC 01 SEC 00의 시스템 지도</a>에 있습니다.
+    <p class="lead">전체 그림은 <a href="amr_overview.html#o0">MAIN 02 SEC 00의 시스템 지도</a>에 있습니다.
     여기서는 그 그림을 성립시키는 기술 결정 세 가지를 설명합니다.</p>
     <ul class="rules">
       <li><b>단일 내부 표현이 계약</b> — 인테이크가 어떤 형태(에디터·엑셀·설문)로 들어와도 어댑터 계층이
@@ -228,7 +233,7 @@
   <div class="sec-head"><span class="sec-no">SEC 02</span><h2>이론 기반 요약 — 경합이 곡선의 모양을 결정한다</h2></div>
   <div class="sec-body">
     <p class="lead">견적의 헤드라인인 대수–처리량 곡선이 꺾이는 이유는 <b>경로 경합</b>이고, 그 수학이
-    <a class="term" href="glossary_robotics.html#mapf">MAPF</a>입니다. 전체 이론은 <a href="amr_mapf_theory.html">DOC 06</a>에 풀어 두었고, 요약만 적습니다.</p>
+    <a class="term" href="glossary_robotics.html#mapf">MAPF</a>입니다. 전체 이론은 <a href="amr_mapf_theory.html">MAIN 04</a>에 풀어 두었고, 요약만 적습니다.</p>
     <ul class="rules">
       <li><b>MAPF 계보</b> — A* → 시공간 예약 테이블 → <b>Prioritized Planning(v1 플래너)</b> → CBS/ECBS → <b><a class="term" href="glossary_robotics.html#rhcr">Lifelong MAPF/RHCR</a></b>(직접 기반 문헌, Li et al. AAAI 2021)</li>
       <li><b>TAPF 절충</b> — 할당과 경로를 따로 풀되, 경합 페널티를 할당 비용행렬에 피드백</li>
@@ -298,7 +303,7 @@
 <section id="s6">
   <div class="sec-head"><span class="sec-no">SEC 06</span><h2>크리티컬 패스 — 주 1~2차에 동결할 결정 7건</h2></div>
   <div class="sec-body">
-    <p class="lead">다른 모든 작업이 이 결정들 위에 서 있습니다. 상세 배경은 <a href="amr_decision_inventory.html">DOC 07</a>의 해당 섹션 참조.</p>
+    <p class="lead">다른 모든 작업이 이 결정들 위에 서 있습니다. 상세 배경은 <a href="amr_decision_inventory.html">MAIN 05</a>의 해당 섹션 참조.</p>
     <div class="milestones">
       <div class="ms"><span class="ms-tag">CP 1</span><h4>맵 표현 · 셀 크기 · 좌표계 단일 소스</h4><p>미터 좌표를 원본으로, 1로봇 = 1셀. 전 컴포넌트가 종속되는 결정.</p></div>
       <div class="ms"><span class="ms-tag">CP 2</span><h4>시간 모델 — 고정 틱</h4><p>1틱 = 1셀 이동. MAPF 예약 테이블·재계획·통계의 전제.</p></div>
@@ -306,7 +311,7 @@
       <div class="ms"><span class="ms-tag">CP 4</span><h4>RL 일반화 전략 + 후퇴선</h4><p>맵 불변 관측 + 랜덤 레이아웃. 실패 시 휴리스틱 기본 탑재로 후퇴(사전 합의).</p></div>
       <div class="ms"><span class="ms-tag">CP 5</span><h4>K8s Indexed Job + 결과 저장 정책</h4><p>집계 기본, 상세 로그는 대표 런만. 인프라 골격.</p></div>
       <div class="ms"><span class="ms-tag">CP 6</span><h4>RTX 5080 RTF 실측</h4><p>검증 트랙이 감당할 수 있는 로봇 대수의 물리적 상한 확정.</p></div>
-      <div class="ms"><span class="ms-tag">CP 7</span><h4>4대 계약 동결</h4><p>입력 스키마 / Kafka 스키마 / 디스패처 인터페이스 / VDA 5050 서브셋 (<a href="amr_overview.html#o4">DOC 01 SEC 04</a>).</p></div>
+      <div class="ms"><span class="ms-tag">CP 7</span><h4>4대 계약 동결</h4><p>입력 스키마 / Kafka 스키마 / 디스패처 인터페이스 / VDA 5050 서브셋 (<a href="amr_overview.html#o4">MAIN 02 SEC 04</a>).</p></div>
     </div>
   </div>
 </section>
@@ -315,7 +320,7 @@
 <section id="s7">
   <div class="sec-head"><span class="sec-no">SEC 07</span><h2>로드맵 — 8주와 생존 원칙</h2></div>
   <div class="sec-body">
-    <p class="lead">타임라인 그림은 <a href="amr_overview.html#o5">DOC 01 SEC 08</a>에 있습니다. 여기서는 주차별 산출물과 순서의 이유를 적습니다.</p>
+    <p class="lead">타임라인 그림은 <a href="amr_overview.html#o5">MAIN 02 SEC 08</a>에 있습니다. 여기서는 주차별 산출물과 순서의 이유를 적습니다.</p>
     <div class="tbl-scroll"><table>
       <tr><th>주차</th><th>산출물</th><th>이 순서인 이유</th></tr>
       <tr><td><b>주 1–2</b></td><td>4대 계약 동결 + SimPy DES + 규칙 디스패처 (E2E 최소 루프) + RTF 실측</td><td>계약이 동결돼야 4트랙이 병렬로 출발. RTF 실측이 검증 스코프의 상한을 정한다</td></tr>
@@ -350,17 +355,22 @@
   <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
   <div class="sec-body">
     <ul class="rules">
-      <li><a href="amr_decision_inventory.html"><b>DOC 07 구현 결정 인벤토리</b></a> — 이 계획의 각 항목을 실제 결정 60여 개로 분해한 전수 목록</li>
-      <li><a href="amr_mapf_theory.html"><b>DOC 06 경로계획 이론</b></a> — SEC 02 요약의 원본: MAPF 계보·문헌·학습 로드맵</li>
-      <li><a href="logistics_domain_research.html"><b>DOC 05 도메인 리서치</b></a> — 이 서비스가 다루는 물류 현장의 실제 모습</li>
+      <li><a href="amr_mapf_theory.html"><b>MAIN 04 경로계획 이론</b></a> — SEC 02 요약의 원본: MAPF 계보·문헌·학습 로드맵 — 메인 트랙의 다음 문서</li>
+      <li><a href="amr_decision_inventory.html"><b>MAIN 05 구현 결정 인벤토리</b></a> — 이 계획의 각 항목을 실제 결정 60여 개로 분해한 전수 목록</li>
+      <li><a href="logistics_domain_research.html"><b>APPENDIX B 도메인 리서치</b></a> — 이 서비스가 다루는 물류 현장의 실제 모습</li>
     </ul>
   </div>
 </section>
 
 </main>
 
+<div class="wrap flow-nav">
+  <a class="prev" href="amr_overview.html"><small>← 이전</small>MAIN 02 · 전체 조망</a>
+  <a class="next" href="amr_mapf_theory.html"><small>다음 →</small>MAIN 04 · 이론 기반</a>
+</div>
+
 <footer>
-  <div class="wrap">DOC 02 · TECH PLAN — 원천: AMR_프로젝트_전체개괄.md (2026-08-19) · REV C: 주제 확정(AMR 견적 시뮬레이션)에 따른 전면 개정</div>
+  <div class="wrap">MAIN 03 · TECH PLAN — 원천: AMR_프로젝트_전체개괄.md (2026-08-19) · REV C: 주제 확정(AMR 견적 시뮬레이션)에 따른 전면 개정</div>
 </footer>
 
 </body>

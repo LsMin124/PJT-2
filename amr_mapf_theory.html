@@ -40,6 +40,11 @@
   .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
   .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
   .doc-eyebrow b{color:var(--machine);font-weight:600}
+  .flow-nav{display:flex;justify-content:space-between;gap:14px;margin:8px 0 40px}
+  .flow-nav a{flex:1;max-width:420px;background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
+  .flow-nav a:hover{border-color:var(--amber)}
+  .flow-nav .next{text-align:right;margin-left:auto}
+  .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
   h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
   h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
   .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
@@ -111,7 +116,7 @@
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow">DOC 06 · THEORY-BASE · <b>REV A</b> · 2026-08</div>
+      <div class="doc-eyebrow">MAIN 04 / 05 · THEORY-BASE · <b>REV A</b> · 2026-08</div>
       <h1>AMR 경로계획 이론 기반 — MAPF
         <span class="sub">"대수–처리량 곡선이 왜 꺾이는가"를 설명하는 이론 체계와 핵심 문헌</span>
       </h1>
@@ -119,7 +124,7 @@
     <div class="meta">
       SCOPE · <b>AMR 견적 시뮬레이션의 이론층</b><br>
       FORMAT · <b>이론 → 문헌 → 학습 로드맵</b><br>
-      PAIR · <b>DOC 07 구현 결정 인벤토리</b><br>
+      PAIR · <b>MAIN 05 구현 결정 인벤토리</b><br>
       USE · <b>설계 근거 · 면접 대비</b>
     </div>
   </div>
@@ -146,8 +151,8 @@
   <div class="sec-head"><span class="sec-no">READ ME</span><h2>이 문서를 읽는 법</h2></div>
   <div class="sec-body">
     <p class="lead">이 문서는 AMR 도입 견적 시뮬레이션 서비스가 내놓는 숫자의 <b>이론적 근거</b>를 정리한 학습 자료입니다.
-    제품 전체 그림은 <a href="amr_overview.html">DOC 01 전체 조망(마스터 개괄)</a>에 있습니다.
-    구현 결정은 <a href="amr_decision_inventory.html">DOC 07 결정 인벤토리</a>가 담당하고,
+    제품 전체 그림은 <a href="amr_overview.html">MAIN 02 전체 조망(마스터 개괄)</a>에 있습니다.
+    구현 결정은 <a href="amr_decision_inventory.html">MAIN 05 결정 인벤토리</a>가 담당하고,
     여기서는 "그 결정이 왜 타당한가"를 뒷받침하는 이론과 원 논문을 다룹니다. SEC 01~04는 이론, SEC 05는 문헌, SEC 06은 학습 순서입니다.</p>
 
     <h3>이 문서가 답하는 질문</h3>
@@ -226,7 +231,7 @@
       <defs><marker id="tl-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
       <rect x="150" y="14" width="600" height="56" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
       <text x="170" y="38" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">1층 · 작업 할당 (Task Allocation)</text>
-      <text x="170" y="58" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4">어느 로봇이 어느 작업을 맡을까 — 디스패처 (DOC 07 SEC C)</text>
+      <text x="170" y="58" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4">어느 로봇이 어느 작업을 맡을까 — 디스패처 (MAIN 05 SEC C)</text>
       <line x1="450" y1="70" x2="450" y2="94" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tl-arr)"/>
       <rect x="150" y="100" width="600" height="56" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
       <text x="170" y="124" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">2층 · 경로 계획 (MAPF)</text>
@@ -266,7 +271,7 @@
       <div class="ms"><span class="ms-tag">STEP 6 · Lifelong MAPF</span><h4>일회성 가정을 깬 연속 운영 문제</h4>
       <p>표준 MAPF는 "전원 도착하면 끝"을 가정하지만, 실제 창고는 작업이 끝나는 즉시 새 작업이 발급된다. 이 끝없는 조건을 다루는 문제 설정이 lifelong.</p></div>
       <div class="ms"><span class="ms-tag">STEP 7 · RHCR</span><h4><a class="term" href="glossary_robotics.html#rhcr">Rolling-Horizon Collision Resolution</a> <span class="chip c-green">직접 기반 문헌</span></h4>
-      <p>무한한 미래를 다 계획하는 대신 "앞 W스텝만 충돌 없이 계획하고, 주기적으로 다시 계획"한다. lifelong 문제를 감당 가능한 크기로 자르는 프레임으로, 대규모 창고의 사실상 표준이자 본 프로젝트 재계획 구조(DOC 07 B4)의 원형.</p></div>
+      <p>무한한 미래를 다 계획하는 대신 "앞 W스텝만 충돌 없이 계획하고, 주기적으로 다시 계획"한다. lifelong 문제를 감당 가능한 크기로 자르는 프레임으로, 대규모 창고의 사실상 표준이자 본 프로젝트 재계획 구조(MAIN 05 B4)의 원형.</p></div>
     </div>
   </div>
 </section>
@@ -379,7 +384,7 @@
     검증 수준 — 공개 MAPF 벤치마크 + Little's Law 검산 + <a class="term" href="glossary_robotics.html#isaac">Isaac Sim</a> 교차검증 = VDI 3633 V&amp;V 체계의 구체적 실행</div>
 
     <p class="soft">다음 설계 과제: SimPy 이산사건 세계에서 Prioritized Planning + 예약 테이블을 어떻게 구현할지 — 연속 시간 vs 틱 기반의 절충 설계
-    (→ <a href="amr_decision_inventory.html">DOC 07 결정 인벤토리</a> B1·D 계열에서 결정).</p>
+    (→ <a href="amr_decision_inventory.html">MAIN 05 결정 인벤토리</a> B1·D 계열에서 결정).</p>
   </div>
 </section>
 
@@ -388,17 +393,22 @@
   <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
   <div class="sec-body">
     <ul class="rules">
-      <li><a href="amr_decision_inventory.html"><b>DOC 07 구현 결정 인벤토리</b></a> — 이 이론이 실제 구현 결정(시간 모델·플래너 선택·재계획 주기)으로 어떻게 번역되는지</li>
+      <li><a href="amr_decision_inventory.html"><b>MAIN 05 구현 결정 인벤토리</b></a> — 이 이론이 실제 구현 결정(시간 모델·플래너 선택·재계획 주기)으로 어떻게 번역되는지 — 메인 트랙의 다음 문서</li>
       <li><a href="glossary_robotics.html#mapf"><b>REF A 용어사전 · MAPF 계열 항목</b></a> — MAPF·CBS·RHCR을 그림 도해와 함께 한 번 더 복습</li>
-      <li><a href="deep_dive_induction.html"><b>DEEP-DIVE B 인덕션 병목</b></a> — 같은 대기행렬 이론이 소터 병목 분석에 쓰이는 실제 사례</li>
+      <li><a href="archive.html#induction"><b>APPENDIX D 검토 아카이브 · 인덕션 병목</b></a> — 같은 대기행렬 이론이 소터 병목 분석에 쓰이는 실제 사례</li>
     </ul>
   </div>
 </section>
 
 </main>
 
+<div class="wrap flow-nav">
+  <a class="prev" href="amr_tech_plan.html"><small>← 이전</small>MAIN 03 · 실행 계획서</a>
+  <a class="next" href="amr_decision_inventory.html"><small>다음 →</small>MAIN 05 · 결정 인벤토리</a>
+</div>
+
 <footer>
-  <div class="wrap">DOC 06 · THEORY-BASE — 원본: AMR_경로계획_기반이론_정리.md (2026-08-19) · 짝 문서: <a href="amr_decision_inventory.html">DOC 07 구현 결정 인벤토리</a></div>
+  <div class="wrap">MAIN 04 · THEORY-BASE — 원본: AMR_경로계획_기반이론_정리.md (2026-08-19) · 짝 문서: <a href="amr_decision_inventory.html">MAIN 05 구현 결정 인벤토리</a></div>
 </footer>
 
 </body>
