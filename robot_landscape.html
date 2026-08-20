@@ -100,8 +100,8 @@
     </div>
     <div class="meta">
       DOC. <b>ROBOT-LANDSCAPE</b><br>
-      REV. <b>A</b> · 조사일 <b>2026-08-20</b><br>
-      상태 <b>카탈로그 후보 — 팀 확정 대기</b>
+      REV. <b>B</b> · 조사일 <b>2026-08-20</b><br>
+      상태 <b>카탈로그 5종 확정 (2026-08-20)</b>
     </div>
   </div>
 </header>
@@ -113,8 +113,9 @@
   <a href="#l2">02 도메인 매핑</a>
   <a href="#l3">03 국내 지형</a>
   <a href="#l4">04 공개 모델</a>
-  <a href="#l5">05 카탈로그 후보</a>
-  <a href="#l6">06 다음으로</a>
+  <a href="#l5">05 카탈로그 확정</a>
+  <a href="#l6">06 파라미터 시트</a>
+  <a href="#l7">07 다음으로</a>
   <a class="nav-cross" href="topic_journey.html">시장 근거 ↗</a>
 </div></nav>
 
@@ -269,31 +270,67 @@
 
   <!-- ══════════ L5 카탈로그 후보 ══════════ -->
   <section id="l5">
-    <div class="sec-head"><span class="sec-no">SEC 05 · 카탈로그 후보</span><h2>후보 5종: 풀스택 검증 2 + 파라미터 기반 3</h2></div>
+    <div class="sec-head"><span class="sec-no">SEC 05 · 카탈로그 확정</span><h2>확정 5종: 풀스택 검증 2 + 파라미터 기반 3</h2></div>
     <div class="sec-body">
-      <p class="lead">카탈로그 기준(카테고리 커버리지 4~6종 + 국내 기종 포함 + 배지 구분)에 맞춘 후보안입니다. 팀 확정 후 개괄과 결정 인벤토리에 반영합니다.</p>
+      <p class="lead">2026-08-20 팀 확정. 개괄 §6에 반영됐으며, 기종별 사양은 아래 SEC 06 파라미터 시트에 정리했습니다.</p>
       <div class="tbl-scroll"><table>
         <tr><th style="width:190px">기종</th><th style="width:100px">카테고리</th><th style="width:140px">배지</th><th>역할과 파라미터 출처</th></tr>
         <tr><td><b>iw.hub</b></td><td>반송</td><td><span class="chip c-green">풀스택 검증</span></td><td>검증 메인 — Isaac 내장 USD + SimPy 파라미터. 보정 루프의 기준 기종</td></tr>
         <tr><td><b>MiR 250</b></td><td>반송</td><td><span class="chip c-green">풀스택 검증</span></td><td>검증 서브 — 공개 URDF로 이기종 데모. 제조사 스펙시트 파라미터</td></tr>
-        <tr><td><b>Omron LD 또는 OTTO 100</b></td><td>반송</td><td><span class="chip c-steel">파라미터 기반</span></td><td>반송 교차 비교 3번째 축. OTTO 선택 시 Boxer URDF로 검증 승격 여지</td></tr>
+        <tr><td><b>OTTO 100</b></td><td>반송</td><td><span class="chip c-steel">파라미터 기반</span></td><td>반송 교차 비교 3번째 축 — Boxer 공개 URDF로 검증 승격 여지가 있고 공개 사양(급속충전·도킹 정확도)이 상세해 확정. Omron LD는 대체 후보로 유지</td></tr>
         <tr><td><b>Locus 계열</b></td><td>피킹 보조</td><td><span class="chip c-steel">파라미터 기반</span></td><td>피킹 보조 글로벌 대표 — 공개 자료 기반 파라미터</td></tr>
         <tr><td><b>트위니 나르고 오더피킹</b></td><td>피킹 보조</td><td><span class="chip c-steel">파라미터 기반</span></td><td><b>국내 기종 요건 충족</b> — 컬리 사례 공개 자료. 국내 고객 견적의 체감 기종</td></tr>
       </table></div>
-      <p class="soft">6종으로 늘릴 경우 후보: RB-THERON(공식 URDF, 검증 가능) 또는 KUKA KMP(브랜드 인지도, 파라미터만). 교차 기종 등처리량 곡선("A 5대 = B 7대") 데모는 이 카탈로그의 반송 3종으로 구성하는 것이 가장 자연스럽습니다.</p>
+      <p class="soft">6종 확장 시 후보: Omron LD·RB-THERON(공식 URDF). 교차 기종 등처리량 곡선("A 5대 = B 7대") 데모는 반송 3종(iw.hub·MiR 250·OTTO 100)으로 구성합니다.</p>
     </div>
   </section>
 
-  <!-- ══════════ L6 다음으로 ══════════ -->
+  <!-- ══════════ L6 파라미터 시트 ══════════ -->
   <section id="l6">
-    <div class="sec-head"><span class="sec-no">SEC 06 · 다음으로 읽기</span><h2>이 지형도가 먹여 살리는 결정 세 가지</h2></div>
+    <div class="sec-head"><span class="sec-no">SEC 06 · 파라미터 시트</span><h2>공식 사양은 출처와 함께, 빈칸은 추정임을 밝히고 채운다</h2></div>
+    <div class="sec-body">
+      <p class="lead">확정 5종의 SimPy 입력 파라미터(로봇 파라미터 스키마 A10 기준)입니다. 제조사 공개 값과, 스펙시트에 없어 추정·역산한 값을 분리해 표기합니다 — 추정값은 전부 가정 명세서에 실리고 보정 루프의 갱신 대상입니다.</p>
+
+      <h3>공식 사양 — 제조사 공개 값</h3>
+      <div class="tbl-scroll"><table>
+        <tr><th style="width:118px">항목</th><th>iw.hub</th><th>MiR 250</th><th>OTTO 100</th><th>Locus Origin</th><th>나르고 오더피킹</th></tr>
+        <tr><td>카테고리</td><td>반송</td><td>반송</td><td>반송</td><td>피킹 보조</td><td>피킹 보조</td></tr>
+        <tr><td>크기 L×W×H (mm)</td><td>1,440×641×220</td><td>800×580×300</td><td>740×550×308</td><td>558×558×1,468</td><td>700×550×1,500</td></tr>
+        <tr><td>자중</td><td>175 kg</td><td>—</td><td>107 kg</td><td>45 kg</td><td>—</td></tr>
+        <tr><td>최대 적재</td><td>1,000 kg</td><td>250 kg</td><td>150 kg</td><td>36 kg</td><td>100 kg</td></tr>
+        <tr><td>최대 속도</td><td>2.2 m/s</td><td>2.0 m/s</td><td>2.0 m/s</td><td>약 2.2 m/s*</td><td>1.5 m/s</td></tr>
+        <tr><td>배터리·런타임</td><td>8h (1교대)</td><td>47.7V 34.2Ah Li-NMC · 만적 13h</td><td>26.4V 35Ah · 약 6h</td><td>12h</td><td>8h 이상</td></tr>
+        <tr><td>충전</td><td>미공개</td><td>0→80% 1h · 충전비 1:16</td><td>10→90% 18분 급속</td><td>미공개 (RaaS 운영)</td><td>미공개</td></tr>
+        <tr><td>비고</td><td>Isaac 내장 USD</td><td>공개 URDF</td><td>Boxer URDF 대역 · 도킹 ±1cm/±1°</td><td>RaaS — 구매가 대신 월 구독</td><td>WiFi/LTE · 국내 18개 센터 운영</td></tr>
+        <tr><td>출처</td><td><a href="https://qviro.com/product/idealworks/iw-hub/specifications">사양</a> · <a href="https://idealworks.com/en/iw-hub-e/">제조사</a></td><td><a href="https://mobile-industrial-robots.com/products/robots/mir250/specifications">공식 사양</a></td><td><a href="https://ottomotors.com/resources/downloads/100-data-sheet/">공식 데이터시트</a></td><td><a href="https://www.barcodesinc.com/solutions/locus-origin/">유통사 사양</a></td><td><a href="https://twinny.ai/orderpicking">제조사</a> · <a href="https://www.k-robot.co.kr/k-robot/view.php?idx=172815&amp;page=1">로봇산업협회</a></td></tr>
+      </table></div>
+      <p class="soft">* Locus Origin의 속도는 자료 간 표기가 갈립니다 — 일부 유통사 자료의 "5 m/s"는 5 mph(≈2.2 m/s)의 오기로 추정하며, 도입 검토 시 재확인 항목으로 남깁니다. "—"와 "미공개"는 지어내지 않고 빈칸으로 둔 값입니다.</p>
+
+      <h3>추정·역산 파라미터 — 스펙시트에 없는 A10 필드</h3>
+      <div class="tbl-scroll"><table>
+        <tr><th style="width:160px">파라미터</th><th style="width:220px">초기값</th><th>근거</th></tr>
+        <tr><td>가속/감속</td><td>0.5 m/s² (보수)</td><td>전 기종 스펙시트 미공개 — ISO 3691-4 안전 거동을 감안한 보수 추정. 낙관 편향 방지</td></tr>
+        <tr><td>회전 시간 (180°)</td><td>3~4 s</td><td>차동구동 제자리 회전 관례 추정. 회전 비용 반영은 결정 D4</td></tr>
+        <tr><td>픽/드롭 시간</td><td>로그정규, 중앙값 ≈15 s</td><td>도킹·이적재 포함 현장 관례. 분포 선택은 결정 B6(픽 시간 로그정규)</td></tr>
+        <tr><td>배터리 소모율</td><td>용량 ÷ 런타임 역산</td><td>A11 선형 방전 모델 — 예: MiR 250은 만적 13h 기준</td></tr>
+        <tr><td>충전율</td><td>충전 데이터 역산</td><td>A11 상수 충전율 — MiR 1:16, OTTO 18분(10→90%)에서 역산. 미공개 기종은 충전 1h : 주행 8h 보수 가정</td></tr>
+        <tr><td>유효속도 계수</td><td>0.7 × 최대 속도</td><td>결정 B3 — 가감속·혼잡 반영 초기 계수. 에뮬레이션 실측으로 캘리브레이션</td></tr>
+      </table></div>
+
+      <div class="note"><span class="pl-tag">가격 필드</span>구매가·유지비는 카탈로그 고정값이 아닙니다 — 벤더 협상가라 공개 자료가 없고, 견적 요청 시 사용자 입력(purchase_price·maintenance_cost)으로 받습니다. Locus는 RaaS(구독) 모델이라 구매가 대신 월 구독료로 입력합니다. 처리량·가동률 결과는 가격과 무관하게 성립하고, 가격은 비용 곡선 단계에서만 곱해집니다.</div>
+    </div>
+  </section>
+
+  <!-- ══════════ L7 다음으로 ══════════ -->
+  <section id="l7">
+    <div class="sec-head"><span class="sec-no">SEC 07 · 다음으로 읽기</span><h2>이 지형도가 먹여 살리는 결정 세 가지</h2></div>
     <div class="sec-body">
       <div class="kcards">
         <div class="kcard"><b><a href="topic_journey.html" style="color:inherit">주제 확정 여정 — 시장 근거</a></b><span>GTP를 피한 이유가 점유율 데이터로 실증되는 맥락 (APPENDIX A)</span></div>
         <div class="kcard s"><b><a href="amr_tech_plan.html" style="color:inherit">실행 계획 — 검증 트랙</a></b><span>iw.hub·MiR 250이 Isaac SIL에서 어떻게 쓰이는지 (MAIN 03)</span></div>
         <div class="kcard g"><b><a href="amr_decision_inventory.html" style="color:inherit">결정 인벤토리 — F4·A10</a></b><span>검증 기종·로봇 파라미터 스키마 결정과 대조 (MAIN 05)</span></div>
       </div>
-      <p class="soft">이 문서의 후속 작업: ① 카탈로그 5종 팀 확정 → 개괄 §6 반영 ② 카테고리 게이트 룰 테이블에 SEC 02 매핑 편입 ③ 기종별 스펙시트 파라미터 시트 작성(A10 스키마 기준).</p>
+      <p class="soft">후속 작업 현황: ① 카탈로그 5종 확정 + 개괄 §6 반영 — <b>완료(2026-08-20)</b> ② 카테고리 게이트 룰 테이블에 SEC 02 매핑 편입 — 대기 ③ 파라미터 시트 — <b>SEC 06으로 완료</b>, 추정값은 보정 루프에서 갱신.</p>
     </div>
   </section>
 
@@ -305,7 +342,7 @@
 </div>
 
 <footer>
-  <div class="wrap">APPENDIX E · ROBOT LANDSCAPE · REV A — 조사일 2026-08-20 · 점유율 출처: Interact Analysis(Geek+ 인용)·36kr·The Robot Report · 모델 출처는 본문 링크 · <a href="index.html">문서 인덱스로</a></div>
+  <div class="wrap">APPENDIX E · ROBOT LANDSCAPE · REV B — 조사 2026-08-20 · REV B에서 카탈로그 5종 확정 + 파라미터 시트(SEC 06) 추가 · 점유율 출처: Interact Analysis(Geek+ 인용)·36kr·The Robot Report · 모델·사양 출처는 본문 링크 · <a href="index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>
