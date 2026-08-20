@@ -76,6 +76,20 @@
 | 보조금 생태계의 유상 컨설팅·문서 시장 | [KCL](https://kcl.re.kr/site/homepage/menu/viewMenu.do?menuid=001014002004) · [bizinfo](https://www.bizinfo.go.kr/web/lay1/bbs/S1T122C128/AS/74/view.do?pblancId=PBLN_000000000101948) · [크몽](https://kmong.com/gig/395672) |
 | 복수(비교) 견적 요구 — 공공은 법령, 민간은 관행 | [생활법령정보](https://easylaw.go.kr/CSP/CnpClsMain.laf?popMenu=ov&csmSeq=519&ccfNo=3&cciNo=2&cnpClsNo=1) · [관행 기사](https://mix.campaigns.do/g/fdsc/news/638/1886) |
 
+### 🌐 해외 근거 — "국내 관행 특수론" 반박용
+
+| 주장 | 출처 |
+|---|---|
+| **"영업용 시뮬레이션"은 해외에서 이미 상용 카테고리다** | Visual Components가 아예 [Sales Acceleration 솔루션](https://www.visualcomponents.com/solutions/sales-acceleration/)으로 판매 — RFQ/RFP 대응·제안서 콘텐츠 자동화. 스웨덴 자동화 업체 [Sejfo가 CAD·PPT를 시뮬레이션으로 교체해 수주율 개선](https://www.visualcomponents.com/case-studies/sejfo-transforms-automation-sales-with-visual-components-simulation/) 사례 공개 |
+| 창고 설비 업계도 동일 — "판매를 위한 시뮬레이션" 제품 계보 존재 | Rockwell [Emulate3D/Demo3D](https://www.demo3d.com/) — "자동화 물류 시스템의 시연·이해·**판매**를 위한 소프트웨어", "주요 창고 자동화 공급사·통합업체 대부분이 사용", 2019년 Rockwell 인수 ([Material Handling 제품군](https://www.emulate3d.com/material-handling/)) |
+| 구매자 측 무(無)벤더편향 유상 자문 시장은 해외가 더 크다 | [St. Onge Company](https://stonge.com/) — 1983년 설립, "no vendor-bias" 독립 물류 엔지니어링(설계·사양·구현 관리, Fortune 500 다수) · [enVista MH 컨설팅](https://envistacorp.com/automation/material-handling-consulting/) · MWPVL(§4 기존) |
+| 보조금-컨설팅 결합 제도는 한국 특수가 아니라 국제 공통 패턴 | 독일 [Digital Jetzt](https://digital-skills-jobs.europa.eu/en/opportunities/funding/digital-jetzt-programme) — 중소기업 디지털화 보조, [컨설팅 비용 50~80% 보조](https://blog.provenexpert.com/en/digital-funding-opportunities-in-germany) · 미국 [NIST MEP](https://www.nist.gov/mep) — 연방·주 매칭 기금으로 중소 제조사 컨설팅 지원 |
+
+**함의 3가지:**
+1. **카테고리 창조가 아니라 검증된 카테고리의 재편이다** — "시뮬레이션으로 판다"는 명제는 해외에서 이미 상업적으로 증명됨. 기획 리스크가 낮아진다.
+2. **단, Demo3D·Visual Components는 산출물 A의 잠재 경쟁자다** — 정직하게 명시할 것. 둘 다 고가 데스크톱 라이선스 + 시뮬레이션 전문가 전제 + 컨베이어·고정 설비 중심. 우리의 차별점: **AMR 수직 특화(MAPF·플릿 사이징) + 비전문가 영업 담당자용 SaaS + 통계적 정직성(CI·민감도)·물리 검증(SIL) 내장**. "Demo3D의 AMR·롱테일 버전"이 가장 정확한 자기 위치.
+3. **시장이 국내 한정이 아니다** — 산출물 A·B 모두 해외 선례 위에 있으므로, TAM 서사를 국내 벤더 수에 가둘 필요가 없다(단 §6의 보수 원칙 유지).
+
 ### ⚠️ 간접 근거 (인터뷰로 확정할 것)
 
 - "벤더는 이길 만한 딜에만 정밀 제안 엔지니어링을 투자한다" — 2단계 견적 구조와 공수 구조상 자명하나 직접 출처 없음
@@ -107,7 +121,8 @@
 
 ## 6. 정직한 한계와 남은 검증
 
-- **TAM은 수수하다.** 이중 산출물을 합쳐도 니치 B2B 도구다. 상방 주장은 두 개만 허용: ① 데이터 플라이휠(견적 사례 축적 = 벤더 독립적 지식 자산) ② 엔진의 도메인 이식성(병원·공항·주차 로봇 등 사이징 질문이 있는 곳). 이를 넘는 주장은 다시 억지가 된다.
+- **TAM은 수수하다.** 이중 산출물을 합쳐도 니치 B2B 도구다. 상방 주장은 세 개만 허용: ① 데이터 플라이휠(견적 사례 축적 = 벤더 독립적 지식 자산) ② 엔진의 도메인 이식성(병원·공항·주차 로봇 등 사이징 질문이 있는 곳) ③ 해외 확장 여지(§4 해외 근거 — 카테고리 선례 실재). 이를 넘는 주장은 다시 억지가 된다.
+- **해외에는 기존 강자가 있다.** Demo3D·Visual Components가 산출물 A의 상위 시장을 이미 점유 — 우리는 그들이 비워 둔 AMR 수직·SaaS 가격대·롱테일 자리를 주장할 수 있을 뿐이다(§4 함의 2).
 - **프로젝트 목적 함수 기준으로는 상위권 기획이다.** 평가·면접에서 요구되는 것은 유니콘 서사가 아니라 지불자·페인·데이터 경로가 설명되는 기획이며, 본 제안은 셋 다 답이 있다. "이 사업의 크기를 정확히 안다"를 약점이 아니라 앞세울 것.
 - **검증 액션 2건**: ① 벤더/SI 영업 1곳 인터뷰 — 정밀 제안 투자 기준과 시뮬 역량 실태 ② 구매 경험자 1명 인터뷰 — 품의서에 제3자 비교 자료가 실제로 쓰이는지. SSAFY 네트워크로 접근 가능.
 
