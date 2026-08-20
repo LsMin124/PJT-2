@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<title>물류로봇 지형과 공개 시뮬레이션 자산 (Robot Landscape)</title>
+<style>
+  :root{
+    --bg:#14181D; --panel:#1C2229; --panel-edge:#2C343D; --ink:#E8ECF1; --ink-soft:#9AA7B4;
+    --amber:#F08A32; --machine:#3BAF77; --steel:#8FB4D9; --slate:#8A96A3; --grid:#2A323B;
+    --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important;animation:none!important}}
+  body{
+    background:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:32px 32px;
+    color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px;
+  }
+  a{color:var(--steel)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+  header{border-bottom:3px solid var(--ink);background:var(--panel)}
+  .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
+  .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
+  .doc-eyebrow b{color:var(--amber);font-weight:600}
+  h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
+  h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
+  .meta b{color:var(--ink);font-weight:600}
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav .wrap{display:flex;gap:2px;padding:0 20px}
+  nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
+  nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--amber);outline:none}
+  nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
+  nav a.nav-cross{margin-left:auto;color:var(--amber);font-weight:700}
+  main{padding:44px 0 80px}
+  section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
+  .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
+  h2{font-size:clamp(19px,2.2vw,27px);font-weight:800;line-height:1.3;letter-spacing:-.025em}
+  .sec-body{padding:16px 26px 26px}
+  h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+  h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
+  p{margin-bottom:10px}
+  .sec-body p{max-width:76ch}
+  .lead{font-size:15.5px}
+  .soft{color:var(--ink-soft)}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
+  .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
+  .note{margin:14px 0 8px;padding:12px 16px;background:#2A2019;border-left:4px solid var(--amber);font-size:14px;line-height:1.8}
+  .note .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--amber);font-weight:700;margin-bottom:4px}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F}
+  td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
+  tr:last-child td{border-bottom:none}
+  table tr:nth-child(even) td{background:#1E252D}
+  .tbl-scroll{overflow-x:auto}
+  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px;white-space:nowrap}
+  .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)} .c-slate{color:var(--slate)}
+  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
+  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
+  .kcard b{display:block;font-size:15px;margin-bottom:4px}
+  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
+  details.more{border:1px solid var(--panel-edge);background:#20272F;margin:12px 0}
+  details.more summary{cursor:pointer;padding:11px 14px;font-weight:700;font-size:13px;list-style:none}
+  details.more summary::-webkit-details-marker{display:none}
+  details.more summary::before{content:"\25B8 ";color:var(--amber)}
+  details.more[open] summary::before{content:"\25BE "}
+  details.more>*:not(summary){margin-left:14px;margin-right:14px}
+  details.more>*:last-child{margin-bottom:14px}
+  .flow-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px auto 40px}
+  .flow-nav a{background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
+  .flow-nav a:hover{border-color:var(--amber)}
+  .flow-nav .prev{grid-column:1}
+  .flow-nav .next{grid-column:2;text-align:right}
+  .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
+  @media(max-width:640px){.flow-nav{grid-template-columns:1fr}.flow-nav .prev,.flow-nav .next{grid-column:auto;text-align:left}}
+  footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+  @media (max-width:820px){ .titleblock{grid-template-columns:1fr} .meta{border-left:none;padding-left:0;text-align:left} }
+  :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap titleblock">
+    <div>
+      <div class="doc-eyebrow"><b>APPENDIX E</b> · LANDSCAPE · MARKET &amp; SIM ASSETS</div>
+      <h1>물류로봇 지형과 공개 시뮬레이션 자산
+        <span class="sub">점유율 순 시장 지도 · 도메인별 주력 기종 · 공개 URDF/USD 가용성 — 카탈로그와 검증 기종 결정의 근거 자료</span>
+      </h1>
+    </div>
+    <div class="meta">
+      DOC. <b>ROBOT-LANDSCAPE</b><br>
+      REV. <b>A</b> · 조사일 <b>2026-08-20</b><br>
+      상태 <b>카탈로그 후보 — 팀 확정 대기</b>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a class="nav-home" href="index.html">⌂ INDEX</a>
+  <a href="#l0">00 한눈에</a>
+  <a href="#l1">01 시장 지형</a>
+  <a href="#l2">02 도메인 매핑</a>
+  <a href="#l3">03 국내 지형</a>
+  <a href="#l4">04 공개 모델</a>
+  <a href="#l5">05 카탈로그 후보</a>
+  <a href="#l6">06 다음으로</a>
+  <a class="nav-cross" href="topic_journey.html">시장 근거 ↗</a>
+</div></nav>
+
+<main class="wrap">
+
+  <!-- ══════════ L0 한눈에 보기 ══════════ -->
+  <section id="l0">
+    <div class="sec-head"><span class="sec-no">SEC 00 · 한눈에 보기</span><h2>시장 상위는 전부 GTP, 공개 모델은 반송 쪽에 몰려 있다</h2></div>
+    <div class="sec-body">
+      <p class="lead">견적 카탈로그와 물리 검증 기종을 정하려면 두 지도가 필요합니다 — 누가 시장을 갖고 있는가, 그리고 어떤 로봇이 시뮬레이터 안으로 들어올 수 있는가.</p>
+      <div class="kcards">
+        <div class="kcard"><b>누가 시장을 갖고 있나</b><span>Geek+ 7년 연속 1위, 중국 3강 — SEC 01</span></div>
+        <div class="kcard s"><b>도메인별 주력 기종은</b><span>카테고리 게이트 룰의 원천 — SEC 02·03</span></div>
+        <div class="kcard g"><b>어떤 로봇이 시뮬 가능한가</b><span>공개 URDF/USD 가용성 표 — SEC 04·05</span></div>
+      </div>
+
+      <svg viewBox="0 0 900 330" role="img" aria-label="물류로봇 6개 카테고리와 각 카테고리의 리더 기업, v1 타겟은 반송과 피킹 보조" style="max-width:100%;height:auto;display:block;margin:14px 0">
+        <text x="20" y="24" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#9AA7B4">카테고리 지도 — 상자 안은 세그먼트 리더</text>
+        <rect x="20" y="40" width="275" height="115" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="36" y="66" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#8FB4D9">GTP 선반운송 · 매출 1위</text>
+        <text x="36" y="90" font-family="IBM Plex Sans KR, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">Geek+ · Hikrobot · Quicktron</text>
+        <text x="36" y="112" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">이커머스 풀필먼트 · 턴키 거래</text>
+        <text x="36" y="134" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">벤더 직접 설계·견적 → v2</text>
+        <rect x="312" y="40" width="275" height="115" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="328" y="66" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#8FB4D9">ACR 토트 단위</text>
+        <text x="328" y="90" font-family="IBM Plex Sans KR, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">HAI Robotics · Geek+ RS</text>
+        <text x="328" y="112" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">고밀도 SKU · 의류/리테일</text>
+        <text x="328" y="134" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">공개 모델 없음 → 게이트 안내</text>
+        <rect x="604" y="40" width="275" height="115" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="620" y="66" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#8FB4D9">무인 지게차 · 팔레트</text>
+        <text x="620" y="90" font-family="IBM Plex Sans KR, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">VisionNav · Balyo · 도요타</text>
+        <text x="620" y="112" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">팔레트 입출고 · 중량물</text>
+        <text x="620" y="134" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">v1.5 팔레트 모델과 연결</text>
+        <rect x="20" y="175" width="275" height="115" fill="#2A2019" stroke="#F08A32" stroke-width="2.5"/>
+        <text x="36" y="201" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#F08A32">반송 AMR · V1 타겟</text>
+        <text x="36" y="225" font-family="IBM Plex Sans KR, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">MiR · Omron · OTTO · iw.hub</text>
+        <text x="36" y="247" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">제조·창고 공정 간 이동</text>
+        <text x="36" y="269" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">벤더 파편화 → 교차 비교 수요</text>
+        <rect x="312" y="175" width="275" height="115" fill="#2A2019" stroke="#F08A32" stroke-width="2.5"/>
+        <text x="328" y="201" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#F08A32">피킹 보조 · V1 타겟</text>
+        <text x="328" y="225" font-family="IBM Plex Sans KR, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">Locus · 트위니 나르고</text>
+        <text x="328" y="247" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">3PL · 기존 센터 점진 도입</text>
+        <text x="328" y="269" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">"집는 것은 사람, 나르는 것은 로봇"</text>
+        <rect x="604" y="175" width="275" height="115" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="620" y="201" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#8FB4D9">소팅 로봇</text>
+        <text x="620" y="225" font-family="IBM Plex Sans KR, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">Libiao · Geek+ S</text>
+        <text x="620" y="247" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">허브 분류 · 택배</text>
+        <text x="620" y="269" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">별도 공정 모델 필요 → 범위 외</text>
+        <text x="20" y="318" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">주황 테두리 = 본 프로젝트 v1 정밀 견적 대상. 나머지는 카테고리 게이트가 판단만 하고 정밀 견적은 하지 않는다.</text>
+      </svg>
+
+      <details class="more"><summary>먼저 알아둘 용어 — 5개</summary>
+        <table>
+          <tr><th style="width:150px">용어</th><th>쉬운 설명</th></tr>
+          <tr><td>GTP (Goods-to-Person)</td><td>로봇이 선반째 들고 와 사람 앞에 대령하는 방식. 사람이 걷지 않는다.</td></tr>
+          <tr><td>ACR</td><td>Autonomous Case-handling Robot. 선반이 아니라 토트(상자) 단위로 뽑아오는 로봇. HAI Robotics가 만든 카테고리.</td></tr>
+          <tr><td>URDF</td><td>Unified Robot Description Format. ROS 생태계의 로봇 형상·관절 기술 파일. 이게 있으면 Gazebo·Isaac에서 그 로봇을 굴릴 수 있다.</td></tr>
+          <tr><td>USD</td><td>Universal Scene Description. NVIDIA Omniverse/Isaac Sim의 3D 자산 형식. Isaac 내장 로봇은 이 형식으로 제공된다.</td></tr>
+          <tr><td>스펙시트 파라미터</td><td>3D 모델 없이 제조사 공식 사양(속도·가감속·적재량·배터리)만으로 DES 시뮬레이션 파라미터를 채우는 방식.</td></tr>
+        </table>
+      </details>
+    </div>
+  </section>
+
+  <!-- ══════════ L1 시장 지형 ══════════ -->
+  <section id="l1">
+    <div class="sec-head"><span class="sec-no">SEC 01 · 시장 지형</span><h2>1위부터 3위까지 전부 GTP 턴키 벤더다</h2></div>
+    <div class="sec-body">
+      <p class="lead">중국 벤더가 글로벌 모바일 로봇 매출의 약 절반, 출하량의 3분의 2를 차지합니다(<a href="https://www.therobotreport.com/interact-analysis-downgrades-mobile-robot-forecast-by-18/">Interact Analysis, 2023</a>). 상위권은 다음과 같습니다.</p>
+      <div class="tbl-scroll"><table>
+        <tr><th style="width:60px">순위권</th><th style="width:170px">업체</th><th>근거 수치</th><th style="width:180px">주력</th><th style="width:100px">공개 모델</th></tr>
+        <tr><td><b>1</b></td><td><b>Geek+</b> <span class="soft">(중국)</span></td><td>AMR 점유율 <b>7년 연속 세계 1위</b> · 주문 풀필먼트 시장 <b>23%</b> · 선반운송만 보면 <b>48.5%</b> (<a href="https://www.geekplus.com/resources/news/global-warehouse-automation-surges-as-geekplus-extends-no.1-amr-leadership-for-seven-consecutive-years">Interact Analysis 2025 인용</a>)</td><td>GTP 선반운송 + 풀라인(피킹·소팅·지게차)</td><td><span class="chip c-slate">없음</span></td></tr>
+        <tr><td><b>2</b></td><td><b>Hikrobot</b> <span class="soft">(중국)</span></td><td>누적 출하 <b>15만 대+, 업계 최대</b> (<a href="https://eu.36kr.com/en/p/3340509136746758">36kr</a>)</td><td>잠입식 AGV/AMR, 제조+창고</td><td><span class="chip c-slate">없음</span></td></tr>
+        <tr><td><b>3</b></td><td><b>Quicktron</b> <span class="soft">(중국)</span></td><td>초기 대규모 GTP 상용화 주역, 이커머스·택배 다수</td><td>GTP, 알리바바 생태계</td><td><span class="chip c-slate">없음</span></td></tr>
+        <tr><td rowspan="5">세그먼트<br>리더</td><td><b>HAI Robotics</b></td><td>ACR 카테고리 창시·리더, 1,500+ 프로젝트/30개국 (<a href="https://www.therobotreport.com/hai-robotics-raises-200m-autonomous-case-handling-robots/">The Robot Report</a>)</td><td>ACR 토트 단위</td><td><span class="chip c-slate">없음</span></td></tr>
+        <tr><td><b>Locus Robotics</b></td><td>피킹 보조 AMR 대표, 3PL·이커머스 고처리량 창고</td><td>피킹 보조</td><td><span class="chip c-slate">없음</span></td></tr>
+        <tr><td><b>MiR</b> <span class="soft">(Teradyne)</span></td><td>반송 AMR 대표, 1만 대+ 배치, 유럽 중심</td><td>제조·창고 반송</td><td><span class="chip c-green">URDF</span></td></tr>
+        <tr><td><b>VisionNav · Balyo</b> + 도요타·린데·융하인리히</td><td>무인 지게차 리더군 (VisionNav 750+ 프로젝트)</td><td>팔레트</td><td><span class="chip c-slate">없음</span></td></tr>
+        <tr><td><b>Omron · OTTO · KUKA</b>(+Swisslog) · Exotec · AutoStore · Libiao</td><td>반송·큐브 ASRS·소팅 상위권</td><td>혼합</td><td><span class="chip c-steel">일부</span></td></tr>
+      </table></div>
+
+      <div class="plain"><span class="pl-tag">별도 기준점</span><b>Amazon Robotics — 누적 100만 대 배치</b>(<a href="https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model">Amazon, 2025</a>), 세계 최대 플릿. 단 자사 물류센터 전용으로 판매하지 않으므로 견적 시장 밖입니다. "왜 아마존처럼 안 하나"라는 질문의 답: 아마존이 될 수 없는 나머지 시장 전부가 본 서비스의 고객입니다.</div>
+
+      <div class="note"><span class="pl-tag">v1 타겟 논리의 실증</span>시장 1~3위가 전부 GTP 턴키 벤더라는 사실은 <a href="topic_journey.html">시장 근거</a>의 주장 — "GTP는 벤더가 직접 설계·견적하므로 중립 견적의 틈이 구조적으로 좁다" — 을 점유율 데이터로 뒷받침합니다. 반면 v1 타겟인 반송·피킹 보조는 MiR·Omron·OTTO·Locus·국내 다수로 벤더가 파편화되어 있어, "A 5대 = B 7대" 교차 비교가 실제로 필요한 세그먼트입니다.</div>
+    </div>
+  </section>
+
+  <!-- ══════════ L2 도메인 매핑 ══════════ -->
+  <section id="l2">
+    <div class="sec-head"><span class="sec-no">SEC 02 · 도메인 매핑</span><h2>도메인이 카테고리를 고르고, 카테고리가 기종을 고른다</h2></div>
+    <div class="sec-body">
+      <p class="lead">이 표가 카테고리 게이트 룰 테이블의 원천입니다 — 반송 단위와 도메인이 정해지면 카테고리가 정해지고, 게이트는 배제 카테고리의 리더 벤더를 실명으로 안내할 수 있습니다.</p>
+      <div class="tbl-scroll"><table>
+        <tr><th>도메인</th><th style="width:130px">카테고리</th><th>대표 기종</th><th style="width:190px">게이트 신호 (반송 단위)</th></tr>
+        <tr><td>이커머스 풀필먼트 — 다품종 소량 B2C</td><td>GTP 선반운송</td><td>Geek+ P시리즈 · Quicktron · Hikrobot 잠입식</td><td>선반째 이동 · 전면 재설계 수용</td></tr>
+        <tr><td>고밀도 SKU 창고 — 의류·리테일</td><td>ACR</td><td>HAIPICK A42 · Geek+ RoboShuttle</td><td>토트 단위 · 고층 랙</td></tr>
+        <tr><td><b>3PL·기존 센터 점진 도입</b></td><td><b>피킹 보조</b></td><td>Locus · 트위니 나르고 오더피킹</td><td>카트/토트 동행 · 인프라 무변경</td></tr>
+        <tr><td><b>제조·창고 공정 간 이동</b></td><td><b>반송</b></td><td>MiR 250/600 · Omron LD · OTTO 100 · KUKA KMP · iw.hub</td><td>토트~대차 · 인프라 무변경</td></tr>
+        <tr><td>팔레트 입출고 — 중량물</td><td>무인 지게차</td><td>VisionNav · Balyo · 도요타/린데 계열</td><td>팔레트 · 포크 필요</td></tr>
+        <tr><td>택배 허브 분류</td><td>소팅</td><td>Libiao t-Sort · Geek+ S시리즈</td><td>소형 단품 · 별도 공정 모델</td></tr>
+      </table></div>
+      <p class="soft">굵은 두 행이 v1 정밀 견적 대상입니다. 나머지 카테고리는 게이트가 "권장/배제 + 사유"만 판정하고 벤더 직행을 안내합니다 — 판단은 넓게, 정밀 견적은 좁게.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ L3 국내 지형 ══════════ -->
+  <section id="l3">
+    <div class="sec-head"><span class="sec-no">SEC 03 · 국내 지형</span><h2>국내는 통계가 없고, 도입 사례가 지도다</h2></div>
+    <div class="sec-body">
+      <p class="lead">국내 물류로봇 점유율의 공표 통계는 사실상 없습니다. 대신 대형 화주·3PL의 도입 사례가 지형을 보여줍니다 (<a href="https://www.klnews.co.kr/news/articleView.html?idxno=308210">물류신문</a> · <a href="https://www.hellot.net/news/article.html?no=69119">헬로티</a>).</p>
+      <div class="tbl-scroll"><table>
+        <tr><th style="width:150px">업체</th><th>기종/제품</th><th>대표 사례</th></tr>
+        <tr><td><b>트위니</b></td><td>나르고(반송) · 따르고(추종) · 나르고 오더피킹(피킹 보조)</td><td><a href="https://meatinsight.co.kr/bbs/board.php?bo_table=w3_1&amp;wr_id=121">컬리 평택 물류센터 투입</a> — 국내 피킹 보조 대표 사례</td></tr>
+        <tr><td><b>LG전자</b></td><td>클로이 캐리봇</td><td>CJ대한통운 곤지암 메가허브 공급</td></tr>
+        <tr><td><b>마로로봇테크</b></td><td>M3-300/500/1000</td><td>QR 기반 정밀 주행(오차 ±5mm 수준)</td></tr>
+        <tr><td><b>로보티즈</b></td><td>AI 워커(휴머노이드)</td><td>CJ대한통운·통합물류협회 실증</td></tr>
+        <tr><td><b>현대무벡스 · 시스콘</b></td><td>AGV 계열</td><td>제조·물류 현장 공급</td></tr>
+        <tr><td><b>쿠팡</b></td><td>자체 운영(AGV/AMR 혼합)</td><td>자동화 센터 확대 — 아마존형 내재화 경로</td></tr>
+      </table></div>
+      <p class="soft">견적 카탈로그의 "국내 기종 포함" 요건은 트위니 나르고 오더피킹이 가장 유력합니다 — v1 타겟 카테고리(피킹 보조)에 정확히 속하고, 컬리 사례로 공개 자료가 존재합니다.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ L4 공개 모델 ══════════ -->
+  <section id="l4">
+    <div class="sec-head"><span class="sec-no">SEC 04 · 공개 시뮬레이션 자산</span><h2>공개 모델이 있는 로봇만 물리 검증까지 간다</h2></div>
+    <div class="sec-body">
+      <p class="lead">2계층 구조에서 SimPy 스윕은 스펙시트 파라미터만으로 충분하지만, Isaac 물리 검증은 URDF/USD 모델이 있어야 합니다. 조사 결과 — 공개 모델은 반송 카테고리에 몰려 있고, GTP·ACR·피킹 보조 상용 기종은 전부 비공개입니다.</p>
+      <div class="tbl-scroll"><table>
+        <tr><th style="width:170px">기종</th><th style="width:90px">카테고리</th><th style="width:110px">형식</th><th>출처</th><th style="width:120px">판정</th></tr>
+        <tr><td><b>iw.hub</b> <span class="soft">(idealworks)</span></td><td>반송</td><td>USD (센서 포함)</td><td>Isaac Sim 내장 자산 — <a href="https://docs.isaacsim.omniverse.nvidia.com/4.5.0/assets/usd_assets_robots.html">Robot Assets 문서</a>. 1,000kg · 2.2m/s, 센서 버전(iw_hub_sensors.usd) 제공</td><td><span class="chip c-green">검증 메인</span></td></tr>
+        <tr><td><b>MiR 100/250</b></td><td>반송</td><td>URDF + Gazebo</td><td><a href="https://github.com/DFKI-NI/mir_robot">DFKI-NI/mir_robot</a> — 커뮤니티(독일 인공지능연구소 DFKI), ROS1/ROS2 브랜치, mir_type:=mir_250 지원</td><td><span class="chip c-green">검증 서브</span></td></tr>
+        <tr><td><b>Nova Carter</b> <span class="soft">(NVIDIA)</span></td><td>레퍼런스</td><td>USD + ROS2</td><td>Isaac Sim 내장 — <a href="https://docs.isaacsim.omniverse.nvidia.com/5.1.0/assets/nova_carter_landing_page.html">Nova Carter 문서</a>, Nav2 연동 튜토리얼 완비</td><td><span class="chip c-green">스모크 테스트</span></td></tr>
+        <tr><td><b>Clearpath Boxer</b></td><td>반송</td><td>URDF + STL</td><td><a href="https://github.com/boxer-cpr/boxer">boxer-cpr/boxer</a> — <b>OTTO 100 기반 연구 플랫폼</b>. OTTO 파라미터의 물리 대역으로 활용 가능</td><td><span class="chip c-steel">확장 후보</span></td></tr>
+        <tr><td><b>Robotnik RB-THERON</b></td><td>반송</td><td>URDF + ROS2 시뮬</td><td><a href="https://github.com/RobotnikAutomation/robotnik_description">RobotnikAutomation</a> — 제조사 공식 공개, Gazebo 월드 포함</td><td><span class="chip c-steel">확장 후보</span></td></tr>
+        <tr><td><b>Fetch Freight</b></td><td>피킹 보조 베이스</td><td>URDF</td><td><a href="https://github.com/fetchrobotics/fetch_ros">fetchrobotics/fetch_ros</a> — 공개이나 단종 기종(Zebra 인수)</td><td><span class="chip c-steel">참고용</span></td></tr>
+        <tr><td><b>KUKA KMP/KMR</b></td><td>반송</td><td>커뮤니티 일부</td><td>모바일 베이스 공식 공개 없음. 로봇팔 중심 공개만(<a href="https://github.com/kroshu/kuka_robot_descriptions">kroshu</a>)</td><td><span class="chip c-slate">파라미터만</span></td></tr>
+        <tr><td><b>Geek+ · Hikrobot · Quicktron · HAI · Locus · Omron · 트위니</b></td><td>혼합</td><td>—</td><td>공개 모델 없음. 제조사 공식 스펙시트로 파라미터만 소싱</td><td><span class="chip c-slate">파라미터만</span></td></tr>
+      </table></div>
+
+      <h3>환경·보조 자산</h3>
+      <div class="tbl-scroll"><table>
+        <tr><th style="width:230px">자산</th><th>내용</th></tr>
+        <tr><td>Isaac Sim 창고 씬 + 지게차</td><td>창고 환경 씬과 리프트가 동작하는 범용 지게차 USD가 내장 — 맵→USD 자동 생성의 배경 참조로 활용</td></tr>
+        <tr><td><a href="https://github.com/aws-robotics/aws-robomaker-small-warehouse-world">AWS RoboMaker Small Warehouse World</a></td><td>Gazebo용 공개 창고 월드(ROS1/ROS2) — Isaac 밖 경량 테스트용 대안</td></tr>
+        <tr><td><a href="https://github.com/Daniella1/urdf_files_dataset">urdf_files_dataset</a></td><td>공개 URDF 집대성 저장소 — 추가 기종 탐색 시 1차 검색처</td></tr>
+      </table></div>
+
+      <div class="plain"><span class="pl-tag">기존 결정의 재확인</span>결정 인벤토리 F4(검증 기종: <b>iw.hub 메인 + MiR 250 서브 + Nova Carter 스모크</b>)는 이 가용성 지형과 정확히 일치합니다 — Isaac 내장 USD 1종 + 공개 URDF 1종 + 파이프라인 점검용 1종. 조사 결과 이 조합 외의 현실적 대안은 Boxer(OTTO 대역)와 RB-THERON 정도이며, 둘 다 확장 후보로만 둡니다.</div>
+    </div>
+  </section>
+
+  <!-- ══════════ L5 카탈로그 후보 ══════════ -->
+  <section id="l5">
+    <div class="sec-head"><span class="sec-no">SEC 05 · 카탈로그 후보</span><h2>후보 5종: 풀스택 검증 2 + 파라미터 기반 3</h2></div>
+    <div class="sec-body">
+      <p class="lead">카탈로그 기준(카테고리 커버리지 4~6종 + 국내 기종 포함 + 배지 구분)에 맞춘 후보안입니다. 팀 확정 후 개괄과 결정 인벤토리에 반영합니다.</p>
+      <div class="tbl-scroll"><table>
+        <tr><th style="width:190px">기종</th><th style="width:100px">카테고리</th><th style="width:140px">배지</th><th>역할과 파라미터 출처</th></tr>
+        <tr><td><b>iw.hub</b></td><td>반송</td><td><span class="chip c-green">풀스택 검증</span></td><td>검증 메인 — Isaac 내장 USD + SimPy 파라미터. 보정 루프의 기준 기종</td></tr>
+        <tr><td><b>MiR 250</b></td><td>반송</td><td><span class="chip c-green">풀스택 검증</span></td><td>검증 서브 — 공개 URDF로 이기종 데모. 제조사 스펙시트 파라미터</td></tr>
+        <tr><td><b>Omron LD 또는 OTTO 100</b></td><td>반송</td><td><span class="chip c-steel">파라미터 기반</span></td><td>반송 교차 비교 3번째 축. OTTO 선택 시 Boxer URDF로 검증 승격 여지</td></tr>
+        <tr><td><b>Locus 계열</b></td><td>피킹 보조</td><td><span class="chip c-steel">파라미터 기반</span></td><td>피킹 보조 글로벌 대표 — 공개 자료 기반 파라미터</td></tr>
+        <tr><td><b>트위니 나르고 오더피킹</b></td><td>피킹 보조</td><td><span class="chip c-steel">파라미터 기반</span></td><td><b>국내 기종 요건 충족</b> — 컬리 사례 공개 자료. 국내 고객 견적의 체감 기종</td></tr>
+      </table></div>
+      <p class="soft">6종으로 늘릴 경우 후보: RB-THERON(공식 URDF, 검증 가능) 또는 KUKA KMP(브랜드 인지도, 파라미터만). 교차 기종 등처리량 곡선("A 5대 = B 7대") 데모는 이 카탈로그의 반송 3종으로 구성하는 것이 가장 자연스럽습니다.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ L6 다음으로 ══════════ -->
+  <section id="l6">
+    <div class="sec-head"><span class="sec-no">SEC 06 · 다음으로 읽기</span><h2>이 지형도가 먹여 살리는 결정 세 가지</h2></div>
+    <div class="sec-body">
+      <div class="kcards">
+        <div class="kcard"><b><a href="topic_journey.html" style="color:inherit">주제 확정 여정 — 시장 근거</a></b><span>GTP를 피한 이유가 점유율 데이터로 실증되는 맥락 (APPENDIX A)</span></div>
+        <div class="kcard s"><b><a href="amr_tech_plan.html" style="color:inherit">실행 계획 — 검증 트랙</a></b><span>iw.hub·MiR 250이 Isaac SIL에서 어떻게 쓰이는지 (MAIN 03)</span></div>
+        <div class="kcard g"><b><a href="amr_decision_inventory.html" style="color:inherit">결정 인벤토리 — F4·A10</a></b><span>검증 기종·로봇 파라미터 스키마 결정과 대조 (MAIN 05)</span></div>
+      </div>
+      <p class="soft">이 문서의 후속 작업: ① 카탈로그 5종 팀 확정 → 개괄 §6 반영 ② 카테고리 게이트 룰 테이블에 SEC 02 매핑 편입 ③ 기종별 스펙시트 파라미터 시트 작성(A10 스키마 기준).</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="wrap flow-nav">
+  <a class="prev" href="archive.html"><small>← 이전</small>APPENDIX D · 검토 아카이브</a>
+  <a class="next" href="index.html"><small>다음 →</small>문서 인덱스</a>
+</div>
+
+<footer>
+  <div class="wrap">APPENDIX E · ROBOT LANDSCAPE · REV A — 조사일 2026-08-20 · 점유율 출처: Interact Analysis(Geek+ 인용)·36kr·The Robot Report · 모델 출처는 본문 링크 · <a href="index.html">문서 인덱스로</a></div>
+</footer>
+
+</body>
+</html>
