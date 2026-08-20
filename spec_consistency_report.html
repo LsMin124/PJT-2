@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>명세서 정합성 대조 — 명세서모음 × 개괄</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#14181D;--panel:#1C2229;--edge:#2C343D;--ink:#E8ECF1;--ink-soft:#9AA7B4;
+  --amber:#F08A32;--machine:#3BAF77;--steel:#8FB4D9;--warn:#E06A5A;--grid:#2A323B;
+  --tint-g:#17251E;--tint-a:#2A2019;--tint-s:#1A222B;--tint-r:#2A1B18;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans KR",system-ui,sans-serif;line-height:1.75;font-size:15px}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px 80px}
+.mono{font-family:"JetBrains Mono",monospace}
+header.top{background:#0E1318;border-bottom:1px solid var(--edge);padding:34px 0 26px;margin-bottom:36px}
+header.top .wrap{padding-bottom:0}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;color:var(--amber);text-transform:uppercase}
+h1{font-size:clamp(24px,3vw,32px);margin:8px 0 10px;line-height:1.3;text-wrap:balance}
+.sub{color:var(--ink-soft);font-size:13.5px;max-width:72ch}
+.meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--ink-soft)}
+.meta b{color:var(--ink);font-weight:600}
+h2{font-size:clamp(18px,2.1vw,24px);margin:52px 0 6px;line-height:1.35;text-wrap:balance}
+.sec-no{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;color:var(--ink-soft);text-transform:uppercase;margin-top:44px}
+.sec-no+h2{margin-top:4px}
+p{margin:8px 0;max-width:76ch}
+p.lead{color:var(--ink-soft)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:14px 0}
+th{background:#10151B;color:var(--ink-soft);font-weight:600;text-align:left;font-size:12px;letter-spacing:.04em}
+th,td{border:1px solid var(--grid);padding:9px 12px;vertical-align:top;line-height:1.65}
+tbody tr:nth-child(even){background:#181E25}
+.tblwrap{overflow-x:auto}
+.chip{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:600;letter-spacing:.06em;padding:2px 9px;border-radius:3px;white-space:nowrap;vertical-align:1px}
+.chip.ok{background:var(--tint-g);color:#5FCF9A;border:1px solid #2A5A42}
+.chip.part{background:var(--tint-a);color:var(--amber);border:1px solid #6B4520}
+.kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:18px 0}
+.kcard{background:var(--panel);border:1px solid var(--edge);border-top:3px solid var(--warn);border-radius:4px;padding:14px 16px}
+.kcard .kno{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--warn);letter-spacing:.1em}
+.kcard b{display:block;margin:4px 0 4px;font-size:14.5px;line-height:1.45}
+.kcard span{color:var(--ink-soft);font-size:12.5px;line-height:1.6;display:block}
+.verdict{background:var(--panel);border:1px solid var(--edge);border-left:4px solid var(--amber);border-radius:4px;padding:16px 20px;margin:20px 0;max-width:none}
+.verdict b{color:var(--amber)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+@media(max-width:680px){.pair{grid-template-columns:1fr}}
+.quote{background:var(--panel);border:1px solid var(--edge);border-radius:4px;padding:12px 15px;font-size:13px;line-height:1.7}
+.quote .src{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;display:block;margin-bottom:6px}
+.quote.side-a .src{color:var(--amber)}
+.quote.side-b .src{color:var(--steel)}
+.quote.side-a{border-top:2px solid var(--amber)}
+.quote.side-b{border-top:2px solid var(--steel)}
+.impact{font-size:13px;color:var(--ink-soft);border-left:3px solid var(--grid);padding:2px 0 2px 14px;margin:10px 0 26px;max-width:74ch}
+.impact b{color:var(--ink)}
+code{font-family:"JetBrains Mono",monospace;font-size:12.5px;background:#10151B;border:1px solid var(--edge);border-radius:3px;padding:1px 6px;color:var(--steel)}
+ul{padding-left:22px;margin:8px 0}
+li{margin:4px 0;max-width:74ch}
+.foot{margin-top:60px;border-top:1px solid var(--edge);padding-top:16px;color:var(--ink-soft);font-size:12.5px}
+.scoregrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:18px 0}
+.score{background:var(--panel);border:1px solid var(--edge);border-radius:4px;padding:14px 16px;text-align:center}
+.score .n{font-family:"JetBrains Mono",monospace;font-size:30px;font-weight:600;display:block;line-height:1.2}
+.score .l{font-size:12px;color:var(--ink-soft)}
+.score.ok .n{color:#5FCF9A}.score.part .n{color:var(--amber)}.score.conf .n{color:#F08A7A}.score.new .n{color:var(--steel)}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <div class="eyebrow">Consistency Report · PJT-2</div>
+  <h1>명세서 모음 × 기존 논의 — 정합성 대조 보고</h1>
+  <p class="sub">업로드된 <span class="mono">명세서모음.zip</span>(Notion 내보내기 「설계 및 계획 예시」, 6,142줄)을 기존 논의의 사실 원천(<span class="mono">AMR_프로젝트_전체개괄.md</span>, 결정 인벤토리, 사이트 문서, 데모)과 대조했다. 양쪽 모두 수정하지 않았다.</p>
+  <div class="meta">
+    <span>작성 <b>2026-08-20</b></span>
+    <span>기준 A <b class="mono" style="color:var(--amber)">개괄·결정 인벤토리·사이트</b></span>
+    <span>기준 B <b class="mono" style="color:var(--steel)">명세서모음(스펙)</b></span>
+  </div>
+</div></header>
+
+<main class="wrap">
+
+<div class="sec-no">한눈에 보기</div>
+<h2>골격은 같은 제품이다. 그러나 4곳에서 노선이 갈렸다</h2>
+<p class="lead">제품 정의(대수별 처리량·비용 시뮬레이션 → 적정 대수 추천)와 2계층 구조(SimPy 대량 스윕 + Isaac 대표 검증)는 정확히 일치한다. 반면 아래 4건은 표현 차이가 아니라 <b>결정 자체가 뒤집힌</b> 항목이다.</p>
+
+<div class="kcards">
+  <div class="kcard"><span class="kno">C-1 · AI</span><b>RL 디스패처 폐기 → 지도 회귀 예측으로 대체</b><span>개괄의 "디스패처 3단 비교(규칙/헝가리안/PPO)"가 스펙에서는 "강화학습 사용 안 함 + XGBoost류 KPI 예측"으로 교체됨</span></div>
+  <div class="kcard"><span class="kno">C-2 · 검증 경계</span><b>VDA 5050이 스펙에서 완전히 사라짐</b><span>4대 계약·발표 핵심 메시지("경계 불변")·F1★ 중앙 하달 결정이 스펙에 0회 등장. 커스텀 텔레메트리 스키마로 대체</span></div>
+  <div class="kcard"><span class="kno">C-3 · 시뮬 코어</span><b>고정 틱·1m 셀 → 연속 시간·0.5m 그래프</b><span>A2★·B1★·D3에서 확정한 시간·점유 모델과 스펙의 Navigation Graph + Edge Reservation 모델이 상충</span></div>
+  <div class="kcard"><span class="kno">C-4 · 인프라</span><b>K8s Indexed Job → RabbitMQ 워커 큐</b><span>E2★가 "별도 큐 시스템 추가는 과잉"이라며 배제한 바로 그 방식을 스펙이 채택</span></div>
+</div>
+
+<div class="verdict"><b>종합 판정</b> — 스펙은 개괄보다 구현 해상도가 훨씬 높다(메시징 3종 분리, ERD 14테이블, REST 명세, 장애 정책). 배터리·저장 정책·시드 재현 등 여러 결정은 결정 인벤토리와 정확히 일치한다. 그러나 위 4건과 통계·인테이크 등 고위험 5건은 <b>어느 쪽이 맞는지 팀이 명시적으로 결정</b>해야 하며, 그 전까지 두 문서는 서로 다른 시스템을 서술하고 있는 상태다.</div>
+
+<div class="scoregrid">
+  <div class="score ok"><span class="n">14</span><span class="l">일치</span></div>
+  <div class="score part"><span class="n">6</span><span class="l">부분 일치</span></div>
+  <div class="score conf"><span class="n">9</span><span class="l">충돌 (중대 4)</span></div>
+  <div class="score new"><span class="n">7</span><span class="l">스펙 신규</span></div>
+</div>
+
+<div class="sec-no">비교 방법</div>
+<h2>무엇을 무엇과 대조했나</h2>
+<div class="tblwrap"><table>
+<thead><tr><th>측</th><th>대상</th><th>비고</th></tr></thead>
+<tbody>
+<tr><td><b style="color:var(--amber)">A 기존 논의</b></td><td>AMR_프로젝트_전체개괄.md(§1~16) · AMR_구현_결정_인벤토리.md(A1~J3) · AMR_경로계획_기반이론_정리.md · 사이트 MAIN 5부 · demo.html/demo.js</td><td>개괄이 사실의 유일한 원천이라는 기존 합의 기준</td></tr>
+<tr><td><b style="color:var(--steel)">B 스펙</b></td><td>명세서모음.zip → 「설계 및 계획 예시」 1파일: 요구사항(FR-01~38, NFR-01~15) · UseCase · System/Data/Interface Flow · REST/RabbitMQ/MQTT/Kafka/WebSocket/AI/Planner/Telemetry/Worker/KPI 명세 · ERD 14테이블 · System Architecture</td><td>중첩 zip(Notion Export). 파일명 인코딩 깨짐(CP437) 있으나 본문은 정상 UTF-8</td></tr>
+</tbody></table></div>
+<p class="lead">항목별로 양측 원문을 병기하고 일치 / 부분 일치 / 충돌 / 스펙 신규 4단계로 판정했다. 저장소·스펙 파일 모두 변경 0건.</p>
+
+<div class="sec-no">정합 확인</div>
+<h2>골격과 다수의 세부 결정은 이미 맞물려 있다</h2>
+<div class="tblwrap"><table>
+<thead><tr><th style="width:26%">항목</th><th>기존 논의 (A)</th><th>스펙 (B)</th><th style="width:80px">판정</th></tr></thead>
+<tbody>
+<tr><td>제품 정의</td><td>대수별 처리량–비용 산출, 곡선 위 선택 (§1)</td><td>Fleet Size별 처리량·혼잡·가동률·비용 분석 → 적정 대수 추천 (§1)</td><td><span class="chip ok">일치</span></td></tr>
+<tr><td>2계층 시뮬레이션</td><td>SimPy 대량 스윕 + Isaac 최적 구성 1~2개 검증 (§4)</td><td>"대량 Fleet Sweep은 SimPy, 대표 Scenario는 Isaac Sim 검증" + ROS2/Nav2</td><td><span class="chip ok">일치</span></td></tr>
+<tr><td>백엔드 관제</td><td>Scenario API = Spring Boot (§4)</td><td>Spring Boot가 Job/Task 생성·상태 관리, 직접 시뮬 수행 안 함</td><td><span class="chip ok">일치</span></td></tr>
+<tr><td>Kafka 역할</td><td>결과 이벤트 스트림 → 집계 (§4)</td><td>Domain Event Streaming → KPI Consumer. 이벤트 목록(TASK/EDGE/WAIT/DEADLOCK…) 구체화</td><td><span class="chip ok">일치</span></td></tr>
+<tr><td>Redis·WebSocket</td><td>잡 상태·진행률 → WebSocket (§4)</td><td>Redis 진행률·캐시, WebSocket 실시간 전달</td><td><span class="chip ok">일치</span></td></tr>
+<tr><td>시드 재현성</td><td>A7: 확률 생성 + 시드 고정 목록화</td><td>NFR-05 동일 Seed 동일 결과, Task Generator Seed 고정</td><td><span class="chip ok">일치</span></td></tr>
+<tr><td>저장 정책</td><td>E5★: 집계 기본, raw 로그 미보존</td><td>"대량 Raw Event·Telemetry는 RDB에 저장하지 않음", 메타데이터+최종 결과 중심</td><td><span class="chip ok">일치</span></td></tr>
+<tr><td>배터리 모델</td><td>A10·A11: 용량/소모율/충전율 포함, 선형 방전+상수 충전</td><td>AMR_SPEC에 battery_capacity·charging_time·energy_consumption_rate, 충전 상태 시뮬</td><td><span class="chip ok">일치</span></td></tr>
+<tr><td>데드락</td><td>B5: 탐지 카운터 유지</td><td>FR-15 감지 + DEADLOCK_DETECTED 이벤트 + KPI 집계</td><td><span class="chip ok">일치</span></td></tr>
+<tr><td>플래너 초기 구성</td><td>D1·D2: 경량 우선(A*+예약 dict), 문헌 확장 로드맵</td><td>A* + Reservation 경량 플래너 우선, 확장 후보로 Space-Time A*/Prioritized/SIPP/RHCR/CBS 명시</td><td><span class="chip ok">일치</span></td></tr>
+<tr><td>로컬/배포 환경</td><td>E7: 개발 docker-compose, 스윕 데모 k3d(로컬 k3s)</td><td>로컬 Docker Compose, 통합·배포 k3s</td><td><span class="chip ok">일치</span></td></tr>
+<tr><td>비동기 잡·부분 실패</td><td>E1 비동기 제출→진행률, E3 부분 실패는 "미완료 조합" 명시</td><td>202 Accepted 비동기, NFR-04 부분 실패 격리, 실패 조건 표시 후 재실행</td><td><span class="chip ok">일치</span></td></tr>
+<tr><td>최적점 복수 제시</td><td>H5: 목표 충족 최소 대수 vs ROI 최대점 "둘 다 제시, 선택은 고객"</td><td>optimizationTarget 4종(MIN_FLEET_SIZE/MIN_COST/MAX_THROUGHPUT/BEST_COST_PER_THROUGHPUT) + 추천 사유 문장</td><td><span class="chip ok">일치</span></td></tr>
+<tr><td>출력 곡선·한계효용</td><td>§7 대수–처리량 한계효용 곡선, 병목 이동 해설</td><td>FR-23 곡선 + "추가 AMR 투입 시 한계효용" + 병목 구간</td><td><span class="chip ok">일치</span></td></tr>
+<tr><td>기종=파라미터</td><td>§6: 카테고리=템플릿, 기종=파라미터</td><td>AMR_SPEC = 속도·크기·적재량·배터리·가격 파라미터 등록</td><td><span class="chip part">부분</span></td></tr>
+<tr><td>2D 탑뷰 시각화</td><td>G1: React+Konva 2D 탑뷰</td><td>FR-30 2D 화면 Multi-AMR 상태</td><td><span class="chip part">부분</span></td></tr>
+</tbody></table></div>
+<p class="lead">"부분"의 결손 내용은 아래 충돌·신규 절에서 다룬다. 특히 배터리·저장 정책·플래너 확장 로드맵은 스펙이 결정 인벤토리를 그대로 계승한 흔적이 뚜렷하다 — 두 문서가 같은 뿌리에서 나왔다는 근거다.</p>
+
+<div class="sec-no">중대 충돌 · C-1</div>
+<h2>AI 파트의 정체성이 통째로 바뀌었다</h2>
+<div class="pair">
+  <div class="quote side-a"><span class="src">A · 개괄 §9 / 인벤토리 C4★</span>"디스패처 3단 비교: 규칙(FIFO+최근접) / 휴리스틱(헝가리안 배치 매칭) / RL(PPO+SB3)" · "최대 연구 리스크 = RL 맵 일반화 … 실패 시 'RL은 연구 항목, 제품 기본은 휴리스틱'으로 후퇴 (사전 합의)"</div>
+  <div class="quote side-b"><span class="src">B · 스펙 §4 AI / 결정표</span>"강화학습은 사용하지 않는다"(3개 명세에서 반복 명시) · AI = Supervised Regression으로 Fleet Size별 KPI 예측 (Linear 베이스라인 + XGBoost/LightGBM/RF/MLP, MAE·RMSE·R²) · 디스패처는 Rule/Heuristic/간단 Optimization</div>
+</div>
+<p class="impact"><b>해석</b> — 이것은 C4★가 합의해 둔 후퇴선 (c)보다 한 걸음 더 나간 결정이다. 후퇴선은 "RL을 옵션 연구로 축소"였지, AI 파트를 <b>성능 예측 서러게이트 모델</b>로 대체하는 것이 아니었다. 스펙 방향이 확정이면 개괄 §9, 사이트의 기술 계획·결정 인벤토리·주제 여정 서술, 발표 서사("디스패처 3단 비교")가 전부 개정 대상이 된다. 역으로 RL이 살아 있다면 스펙의 AI 명세·AI_MODEL/AI_PREDICTION ERD가 개정 대상이다. 참고로 예측 서러게이트는 개괄에 아예 없던 신규 기능이므로, "대체"가 아니라 "축소+신설"의 조합일 가능성도 있다 — 결정 경위가 어느 문서에도 없다.</p>
+
+<div class="sec-no">중대 충돌 · C-2</div>
+<h2>VDA 5050이 사라지면 "경계 불변" 서사도 사라진다</h2>
+<div class="pair">
+  <div class="quote side-a"><span class="src">A · 개괄 §4·§10·§12·§15 / 인벤토리 F1★·F2·F9</span>"VDA 5050 경계선 위 플랫폼 코드는 가상↔현실 전환 시 불변" (발표 핵심 메시지) · 4대 계약 중 하나 = VDA 5050 서브셋 · F1★ "경로는 중앙 하달(VDA 5050 노드/엣지), Nav2는 구간 주행만 — (a) 필수" · F9 vda5050_connector 이식 · 검증 기종 iw.hub 메인 + MiR 250 서브</div>
+  <div class="quote side-b"><span class="src">B · 스펙 전문 검색 결과</span>VDA 5050 · Sparkplug B · 기종명(iw.hub/MiR) 언급 <b>0회</b>. Isaac 연동 = "ROS2/Nav2 기반 주행을 고려" + 커스텀 Telemetry Adapter → MQTT → 동일 대시보드. "SimPy와 Isaac Sim은 가능한 한 동일한 Telemetry Schema 사용"</div>
+</div>
+<p class="impact"><b>해석</b> — 스펙은 두 계층을 "같은 텔레메트리 스키마"로만 묶는다. 이는 <b>화면 공유</b>는 보장하지만, 개괄이 주장한 <b>플랫폼 코드 불변</b>(주문·상태 인터페이스 차원의 경계)은 보장하지 않는다. 더 위험한 것은 F1★ 미결정 상태다: 스펙의 Isaac은 Nav2 "주행"만 언급할 뿐 경로를 중앙 하달할지 Nav2 자율 계획에 맡길지 침묵한다. F1★의 논거대로, 이 결정 없이는 SimPy와 Isaac이 서로 다른 시스템을 시뮬레이션하게 되어 정합성 비교(F7 3단 오차) 자체가 무의미해진다. VDA 5050을 버리는 것이 팀 결정이라면 발표 메시지·검증 트랙 서사·데모 HUD 라벨(VDA 5050 ORDER #, Sparkplug B)까지 연쇄 개정이 필요하다.</p>
+
+<div class="sec-no">중대 충돌 · C-3</div>
+<h2>시간·공간 모델: 확정했던 틱·셀 체계와 다른 코어가 서술돼 있다</h2>
+<div class="pair">
+  <div class="quote side-a"><span class="src">A · 인벤토리 A2★·B1★·B2·D3 / 개괄 §12</span>A2★ 셀 크기 = "로봇 풋프린트 ≒ 1셀(예: 1m)" — 0.5m를 선택지에서 검토 후 기각 · B1★ "고정 틱. 연속 이벤트 아님 — MAPF 예약 테이블이 이산 타임스텝 전제" · B2 셀 단위 이동 · D3 1로봇=1셀 · CP2 "1틱=1셀 이동"</div>
+  <div class="quote side-b"><span class="src">B · 스펙 Layout·Planner 명세</span>"0.5m/cell 기준 Grid" (기본값, ERD grid_resolution) · Grid → Navigation Graph 자동 생성, 플래너는 그래프의 Node/Edge Reservation · Route에 <code>arrivalTime: 142.7</code> — 연속 시간 이벤트 모델 · 재계획은 트리거 기반(막힘·충돌·임계 초과)</div>
+</div>
+<p class="impact"><b>해석</b> — 방향이 일치하는 부분도 있다: A1★ 권고가 이미 "그리드 기반이되 내부적으로 그래프 변환, 그래프가 최종 공용어"였으므로 Navigation Graph 자체는 계승이다. 충돌은 세 가지다. ① 셀 크기 0.5m vs 1m(풋프린트) — 0.5m 셀에 1로봇=1셀 점유를 적용하면 로봇이 실제보다 작아져 처리량이 낙관 편향된다. ② 고정 틱 vs 연속 시간 — 예약 테이블·경합 통계·재현성 검산(Little's Law)의 전제가 달라진다. ③ B4★ RHCR 고정 윈도우 재계획 vs 스펙의 이벤트 트리거 재계획. 셋 다 크리티컬 패스 1·2번(1~2주차 동결 대상)이라, 지금이 정확히 결정 시점이다.</p>
+
+<div class="sec-no">중대 충돌 · C-4</div>
+<h2>잡 오케스트레이션: "과잉"이라 배제했던 큐 방식을 스펙이 채택했다</h2>
+<div class="pair">
+  <div class="quote side-a"><span class="src">A · 인벤토리 E2★ / 개괄 §4·§12 / 사이트 기술 계획</span>"Scenario API가 K8s Indexed Job 생성(스윕 1개=Job 1벌, 인덱스=기종×대수×시드). <b>별도 큐 시스템 추가는 과잉</b>" · 사이트: "스윕 = K8s Indexed Job … Kafka→TimescaleDB 집계"</div>
+  <div class="quote side-b"><span class="src">B · 스펙 RabbitMQ 명세 / NFR</span>RabbitMQ = Simulation Job Queue (simulation.task/result/failed + DLQ, Manual ACK, 재시도 3회) · 상주 Simulation Worker Pod × N이 큐를 소비, k3s로 Scale-out · 결과도 RabbitMQ로 회신</div>
+</div>
+<p class="impact"><b>해석</b> — 정면 충돌이다. 다만 스펙 방식은 장애 복구(ACK 재전달·DLQ)와 상시 서비스형 운영에 유리하고, Indexed Job은 스윕 1회성 배치에 단순하다 — 둘 다 성립하는 설계라 기술 우열보다 <b>어느 그림으로 발표·구현할지의 단일화</b>가 문제다. 부속 충돌: 저장소도 TimescaleDB(hypertable, E6·사이트 다수 서술) vs 순정 PostgreSQL로 갈린다.</p>
+
+<div class="sec-no">고위험 충돌</div>
+<h2>인테이크·통계·실시간 화면은 그대로 두면 발표에서 잡힌다</h2>
+<div class="tblwrap"><table>
+<thead><tr><th style="width:52px">#</th><th style="width:19%">항목</th><th>기존 논의 (A)</th><th>스펙 (B)</th><th>영향</th></tr></thead>
+<tbody>
+<tr><td class="mono">H-1</td><td>레이아웃 인테이크</td><td>§5 3티어: T1 직접 작도 / T2 PDF 오버레이+2점 축척+트레이싱 / T3 DXF. "CAD 자동 파싱 v1 제외 — 진짜 비용은 시맨틱 복원". G2 에디터 실시간 검증</td><td>FR-02~05: 설계도 업로드 → 0.5m Grid <b>자동 변환</b> → 벽/설비 <b>자동 구분</b> → 그래프 자동 생성. 에디터 없음</td><td>개괄이 v1에서 명시적으로 배제한 자동 시맨틱 복원을 스펙이 v1 전제로 삼음. 8주 안에 가장 실패 확률 높은 지점</td></tr>
+<tr><td class="mono">H-2</td><td>수요 입력</td><td>T2 엑셀 주문 템플릿(주문시각/주문ID/SKU/수량) → 프로파일 자동 추출. A7 NHPP 시간대 프로파일. 데모에 이미 구현</td><td>SCENARIO.order_rate 단일 값 + 정의 없는 "Task Arrival Pattern"</td><td>피크 계수·시간대 분포가 사라지면 "정밀 견적" 차별화가 러프 견적 수준으로 후퇴</td></tr>
+<tr><td class="mono">H-3</td><td>통계적 정직함</td><td>§7·H2 95% CI 병기(기결정) · B7★ 워밍업 절단 필수 · H3 OAT 민감도 · B8 8h×20시드</td><td>Mean+Std만. 워밍업·CI·민감도 언급 0회. 반복 예시 10회</td><td>"투명성 3겹" 서사의 통계 축이 소실. VDI 3633 준거 리포트와도 연결 끊김</td></tr>
+<tr><td class="mono">H-4</td><td>실시간 화면의 시간 기준</td><td>SimPy는 수백~수천 배속(§4). G3·E5: 사후 "대표 런 리플레이"(중앙값 시드 상세 보존)</td><td>시뮬 도중 2Hz 텔레메트리 → MQTT → WebSocket "실시간" 2D</td><td>배속 실행과 실시간 중계는 정의 없이는 모순(2Hz가 벽시계 기준인지 sim-time 기준인지 미정). 리플레이용 상세 보존 정책도 스펙에 없음</td></tr>
+<tr><td class="mono">H-5</td><td>제품 차별화 층</td><td>§6 카테고리 게이트(배제 사유 명시)·중립 라우팅·카탈로그 4~6종 / §7 TCO·ROI·가정 명세서 / §10 VDI 3633·ISO 22400 필수</td><td>전부 없음. 견적 = 구매+유지+전력 합산. 단일 카테고리 암묵 전제</td><td>"중립·투명 견적"이라는 제품 철학의 실체 장치들이 스펙 범위 밖 — 의도된 범위 축소인지 누락인지 확인 필요</td></tr>
+</tbody></table></div>
+
+<div class="sec-no">중간 수준 차이</div>
+<h2>규모 감각·팀 구획·용어의 어긋남</h2>
+<div class="tblwrap"><table>
+<thead><tr><th style="width:52px">#</th><th style="width:22%">항목</th><th>기존 논의 (A)</th><th>스펙 (B)</th></tr></thead>
+<tbody>
+<tr><td class="mono">M-1</td><td>플릿 규모 예시</td><td>§2 v1 타겟 = 소수 대(3~15대) 점진 도입 — 시장 논리의 근거. 데모도 3~15대</td><td>SCENARIO 예시 "Fleet Size 10~60, Step 5" — 대형 플릿 규모감</td></tr>
+<tr><td class="mono">M-2</td><td>팀 구획</td><td>§13 4트랙: 로봇/시뮬 · AI(SimPy+MAPF 플래너 담당) · 백엔드 · 프론트</td><td>3파트: Fullstack / AI(예측만) / Robot(Layout→Graph·SimPy·플래너·Isaac). SimPy·플래너 소속이 AI→Robot으로 이동</td></tr>
+<tr><td class="mono">M-3</td><td>Sparkplug B</td><td>§10 "축소" 판정으로 유지</td><td>소멸(방향은 연속). 단 데모 HUD의 "ROS2·Sparkplug B" 라벨은 스펙 채택 시 수정 대상</td></tr>
+<tr><td class="mono">M-4</td><td>주문 구조 용어</td><td>물류 도메인 언어: 주문·SKU·피킹 스테이션·도크, A8 단일 반송 작업, A9 ABC 존</td><td>일반화된 Task(Pickup Node → Delivery Node). SKU·ABC 존 개념 없음</td></tr>
+</tbody></table></div>
+
+<div class="sec-no">스펙 신규</div>
+<h2>개괄이 비워 뒀던 곳을 스펙이 채운 항목 — 충돌이 아니라 진전이다</h2>
+<ul>
+<li><b>메시징 3종 역할 분리</b>: RabbitMQ(작업)/Kafka(도메인 이벤트)/MQTT(텔레메트리) + WebSocket. 개괄엔 Kafka만 있었다. 오케스트레이션 충돌(C-4)과 별개로, 역할 분리 원칙 자체는 유효한 설계 자산.</li>
+<li><b>장애 정책 전반</b>: Manual ACK·재시도 3회·DLQ·부분 실패 격리·Pod 재생성 — E3의 한 줄 권고를 실행 수준으로 구체화.</li>
+<li><b>ERD 14테이블</b>: Layout 버전 관리, Job–Task–Result 계층, 관계 카디널리티까지 명세. E6의 골격과 호환(단 hypertable 제외).</li>
+<li><b>REST API 명세</b>: 자원 경로·상태코드·비동기 202 패턴 — 개괄 "다음 액션 1(입력 JSON 스키마 확정)"의 상당 부분을 선반영.</li>
+<li><b>에너지 소비 KPI + 전력비 견적 반영</b>: 개괄에 없던 축. AMR_SPEC의 energy_consumption_rate와 일관.</li>
+<li><b>Telemetry 스키마·2Hz 샘플링·Mosquitto·QoS 0</b>: 텔레메트리 계층의 구체화(시간 기준 정의만 H-4로 남음).</li>
+<li><b>AI 모델 버저닝·독립 서비스 배포</b>: NFR-10(모델 교체 용이)의 실행 설계.</li>
+</ul>
+
+<div class="sec-no">결정 요청</div>
+<h2>팀이 답해야 두 문서가 한 시스템이 된다</h2>
+<p class="lead">아래는 수정 작업이 아니라 결정 목록이다. 각 항목에서 A/B 중 한쪽을 고르면 반대쪽 문서의 개정 범위가 자동으로 정해진다.</p>
+<div class="tblwrap"><table>
+<thead><tr><th style="width:52px">#</th><th>질문</th><th>A를 고르면</th><th>B를 고르면</th></tr></thead>
+<tbody>
+<tr><td class="mono">Q1</td><td>AI = RL 포함 3단 비교인가, 회귀 예측 서러게이트인가? (혹은 축소+신설 병행인가)</td><td>스펙 AI 명세·ERD 개정</td><td>개괄 §9 + 사이트 3개 문서 + 발표 서사 개정</td></tr>
+<tr><td class="mono">Q2</td><td>VDA 5050 경계를 유지하는가? 경로 지시는 중앙 하달인가?(F1★)</td><td>스펙에 VDA 서브셋·어댑터·기종 명세 추가</td><td>발표 핵심 메시지·검증 서사·데모 HUD 재구성</td></tr>
+<tr><td class="mono">Q3</td><td>시간 모델: 고정 틱(1틱=1셀)인가 연속 이벤트+그래프인가? 셀 크기 0.5m vs 1m?</td><td>스펙 Layout·Planner 명세 개정</td><td>인벤토리 A2·B1·B2·D3 + 이론 문서 정합 논거 재작성</td></tr>
+<tr><td class="mono">Q4</td><td>스윕 실행: K8s Indexed Job인가 RabbitMQ 워커 큐인가? DB는 TimescaleDB인가?</td><td>스펙 RabbitMQ 명세 폐기</td><td>개괄 §4·§12 + 사이트 기술 계획 개정</td></tr>
+<tr><td class="mono">Q5</td><td>레이아웃 인테이크: 에디터+오버레이 트레이싱(3티어)인가 업로드 자동 변환인가?</td><td>스펙 FR-03~05·Layout 명세 개정</td><td>개괄 §5의 "자동 파싱 배제" 논거 폐기 — 실패 리스크 재평가 필수</td></tr>
+<tr><td class="mono">Q6</td><td>CI·워밍업·민감도를 스펙 KPI 명세에 넣는가?</td><td colspan="2">이 항목은 방향 충돌이 아니라 누락 — H2·B7★·H3 기결정이므로 스펙 측 보강이 자연스러움</td></tr>
+<tr><td class="mono">Q7</td><td>시뮬 도중 실시간 스트리밍인가, 사후 대표 런 리플레이인가, 둘 다인가?</td><td colspan="2">둘 다라면 2Hz의 시간 기준(sim-time 재생 배속)과 대표 런 상세 보존 정책을 명세에 정의해야 함</td></tr>
+</tbody></table></div>
+
+<div class="foot">
+비교 기준: A = AMR_프로젝트_전체개괄.md·AMR_구현_결정_인벤토리.md·AMR_경로계획_기반이론_정리.md·사이트 문서·demo / B = 명세서모음.zip 「설계 및 계획 예시」. 본 보고서 작성 과정에서 양측 파일 수정 0건 — 저장소에는 본 보고서 파일만 추가. 스펙 원문은 zip 그대로 유지. <a href="index.html" style="color:var(--steel)">문서 인덱스로 →</a>
+</div>
+
+</main>
+</body>
+</html>
