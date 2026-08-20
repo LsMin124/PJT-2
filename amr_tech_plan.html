@@ -131,15 +131,15 @@
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow">MAIN 03 / 05 · TECH-PLAN · <b>REV C</b> · 2026-08</div>
+      <div class="doc-eyebrow">TECH 02 / 04 · TECH-PLAN · <b>REV C</b> · 2026-08</div>
       <h1>실행 계획서 — 기술 결정과 로드맵
         <span class="sub">AMR 견적 시뮬레이션 서비스를 어떤 기술로, 어떤 순서로 만들 것인가</span>
       </h1>
     </div>
     <div class="meta">
-      BASE · <b>MAIN 02 전체 조망</b><br>
-      DETAIL · <b>MAIN 05 결정 인벤토리</b><br>
-      THEORY · <b>MAIN 04 경로계획 이론</b><br>
+      BASE · <b>TECH 01 전체 조망</b><br>
+      DETAIL · <b>TECH 04 결정 인벤토리</b><br>
+      THEORY · <b>TECH 03 경로계획 이론</b><br>
       SOURCE · <b>전체 개괄 (Master Overview)</b>
     </div>
   </div>
@@ -167,7 +167,7 @@
 <section id="s0">
   <div class="sec-head"><span class="sec-no">SEC 00 · 한눈에 보기</span><h2>테스트한 코드가 그대로 배포된다</h2></div>
   <div class="sec-body">
-    <p class="lead"><a href="amr_overview.html">전체 조망(MAIN 02)</a>의 시스템을 성립시키는 큰 기술 결정과 실행 순서 — 결정의 전수 목록은 <a href="amr_decision_inventory.html">MAIN 05</a>가 맡습니다.</p>
+    <p class="lead"><a href="amr_overview.html">전체 조망(TECH 01)</a>의 시스템을 성립시키는 큰 기술 결정과 실행 순서 — 결정의 전수 목록은 <a href="amr_decision_inventory.html">TECH 04</a>가 맡습니다.</p>
 
     <h3>이 문서가 답하는 질문</h3>
     <ul class="rules">
@@ -224,13 +224,13 @@
 <section id="s1">
   <div class="sec-head"><span class="sec-no">SEC 01 · 아키텍처</span><h2>모든 컴포넌트는 하나의 계약만 바라본다</h2></div>
   <div class="sec-body">
-    <p class="lead">전체 그림은 <a href="amr_overview.html#o0">MAIN 02 시스템 지도</a> — 여기서는 그 그림을 성립시키는 결정 세 가지입니다.</p>
+    <p class="lead">전체 그림은 <a href="amr_overview.html#o0">TECH 01 시스템 지도</a> — 여기서는 그 그림을 성립시키는 결정 세 가지입니다.</p>
     <div class="kcards">
       <div class="kcard"><b>단일 내부 표현 = 계약</b><span>인테이크가 어떤 형태로 들어와도 "시맨틱 그리드 + 수요 프로파일 JSON" 하나로 변환 — 이후 전부 이것만 바라본다</span></div>
       <div class="kcard s"><b>스윕 = K8s Indexed Job</b><span>스윕 1회 = 잡 1벌, 인덱스 = 기종×대수×시드. Kafka→TimescaleDB 집계, Redis→WebSocket 진행률</span></div>
       <div class="kcard g"><b>경로는 중앙 하달</b><span>VDA 5050 노드/엣지를 내려보내고 <a class="term" href="glossary_robotics.html#nav2">Nav2</a>는 구간 주행만 — 아니면 두 계층의 정합성 비교가 무너진다</span></div>
     </div>
-    <p class="soft">이 제품에 이르게 된 5단계 의사결정 여정과 교훈은 <a href="topic_journey.html#p2">APPENDIX A · 확정 여정</a>에 있습니다.</p>
+    <p class="soft">이 제품에 이르게 된 5단계 의사결정 여정과 교훈은 <a href="topic_journey.html#p2">PLAN 02 · 확정 여정</a>에 있습니다.</p>
   </div>
 </section>
 
@@ -240,30 +240,40 @@
   <div class="sec-body">
     <p class="lead">대수–처리량 곡선이 꺾이는 이유는 <b>경로 경합</b>이고, 그 수학이
     <a class="term" href="glossary_robotics.html#mapf">MAPF</a>입니다. 계보(A*→예약 테이블→Prioritized→CBS→RHCR)·문헌·집계 이론 전체는
-    <b><a href="amr_mapf_theory.html">MAIN 04 경로계획 이론</a></b> 한 곳에서 다룹니다.
+    <b><a href="amr_mapf_theory.html">TECH 03 경로계획 이론</a></b> 한 곳에서 다룹니다.
     이 계획서에 남는 결정은 하나 — <b>SimPy 계층에는 경량 MAPF를 내장</b>(고정 틱, 1틱=1셀)하며, 매 틱 CBS는 배속을 파괴하므로 배제.</p>
   </div>
 </section>
 
 <!-- ══════════ S3 AI 파트 ══════════ -->
 <section id="s3">
-  <div class="sec-head"><span class="sec-no">SEC 03 · AI 파트</span><h2>휴리스틱이 기본, RL은 후퇴선 있는 연구다</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 03 · AI 의사결정 엔진</span><h2>시뮬이 곡선을 그리고, AI가 곡선 위의 답을 찾는다</h2></div>
   <div class="sec-body">
-    <p class="lead">디스패처 세 단계를 같은 조건에서 겨루게 합니다 — 유일하게 실패 가능성이 있는 연구 요소입니다.</p>
+    <p class="lead">시뮬레이션은 물리 엔진, AI는 그 위의 의사결정 엔진입니다 — 역할은 네 가지입니다 (2026-08-20 확장).</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:170px">역할</th><th>하는 일</th><th style="width:110px">티어</th></tr>
+      <tr><td><b>① 역방향 구성 최적화</b></td><td>그 고객 도면의 스윕 결과로 학습한 서러게이트가 구성 공간(대수 × 스테이션 수 × 통로 단방향)을 초 단위로 스코어링하고, 상위 후보만 시뮬로 재검증 → <b>"7대 대신 6대 + 스테이션 증설이 더 쌉니다"</b> 같은 설계 제안</td><td>확장 (추천)</td></tr>
+      <tr><td><b>② 액티브 러닝 스윕</b></td><td>예측 불확실성(앙상블 분산)이 큰 지점 — 곡선이 꺾이는 근처 — 에 시뮬 예산을 집중 배분. 같은 정확도를 더 적은 런으로</td><td>확장 (추천)</td></tr>
+      <tr><td><b>③ SHAP 설명 계층</b></td><td>서러게이트의 기여도 분해로 병목 진단을 자동 문장화("제약 1순위: 스테이션 용량 42%"). 투명성이 철학인 서비스에서 AI만 블랙박스면 모순 — 그 구멍을 막는 장치</td><td>확실</td></tr>
+      <tr><td><b>④ 지능형 배차 옵션 축</b></td><td>디스패처 3단 비교를 견적서의 옵션 축으로 — 기본 배차 곡선과 지능형 배차 곡선을 겹쳐 <b>"기본 9대 vs 지능형 7대"</b>로 CAPEX 절감을 환산</td><td>확실 (RL은 연구)</td></tr>
+    </table></div>
+    <p class="soft">①②③은 별개 기능이 아니라 <b>하나의 서러게이트 파이프라인</b>(그 도면의 스윕 데이터 → 지도 회귀 → 탐색·배분·설명)을 셋이 나눠 쓰는 구조입니다 — 8주 안에 가능한 이유. 서러게이트는 T1 러프 견적의 몇 초 즉답에도 쓰입니다.</p>
+
+    <details class="more"><summary>④ 디스패처 3단 비교 — 상세</summary>
     <div class="tbl-scroll"><table>
       <tr><th>단계</th><th>방식</th><th>역할</th></tr>
       <tr><td><b>규칙</b></td><td>FIFO + 최근접</td><td>기준선(baseline). 주 1~2차 E2E 루프의 기본</td></tr>
-      <tr><td><b>휴리스틱</b></td><td>헝가리안 배치 매칭</td><td>제품 기본 탑재 후보 — 안정적이고 설명 가능</td></tr>
+      <tr><td><b>휴리스틱</b></td><td>헝가리안 배치 매칭</td><td>제품 기본 탑재 — 안정적이고 설명 가능</td></tr>
       <tr><td><b>RL</b></td><td>PPO + Stable-Baselines3</td><td>연구 요소 — 성능 상한 탐색</td></tr>
     </table></div>
     <ul class="rules">
       <li><b>학습·검증 분리(sim-to-sim)</b> — RL 학습은 SimPy-Gymnasium 환경에서, Isaac은 검증만</li>
       <li><b>평가 규칙</b> — 동일 시드 쌍대 비교, 학습/평가 시나리오 완전 분리</li>
     </ul>
-    <div class="plain warn"><span class="pl-tag">최대 연구 리스크 — RL 맵 일반화</span>
-    견적 서비스는 고객마다 맵이 다릅니다. 특정 맵에서만 통하는 정책이면 제품이 성립하지 않습니다.
-    대응: 맵 불변 관측(작업까지의 경로비용·구역 혼잡도) 설계 + 랜덤 레이아웃 학습.
-    실패 시 후퇴선(사전 합의): <b>"RL은 연구 항목, 제품 기본은 휴리스틱"</b>.</div>
+    </details>
+
+    <div class="plain warn"><span class="pl-tag">맵 일반화 리스크 — 관리 방식이 역할별로 다르다</span>
+    ①②는 <b>해당 고객 도면 안</b>에서만 작동합니다 — 학습 데이터가 그 도면의 스윕 결과라 분포 밖 예측이 없습니다. 교차 도면 예측은 T1 러프 견적 전용(틀려도 되는 자리). RL만 진짜 일반화 문제를 가지며, 대응은 기존 합의 그대로: 맵 불변 관측(경로비용·구역 혼잡도) + 랜덤 레이아웃 학습, 실패 시 후퇴선 <b>"RL은 연구 항목, 제품 기본은 휴리스틱"</b>.</div>
   </div>
 </section>
 
@@ -301,7 +311,7 @@
 <section id="s6">
   <div class="sec-head"><span class="sec-no">SEC 06 · 크리티컬 패스</span><h2>이 7건을 동결해야 병렬이 시작된다</h2></div>
   <div class="sec-body">
-    <p class="lead">다른 모든 작업이 이 결정들 위에 서 있습니다. 상세 배경은 <a href="amr_decision_inventory.html">MAIN 05</a>의 해당 섹션 참조.</p>
+    <p class="lead">다른 모든 작업이 이 결정들 위에 서 있습니다. 상세 배경은 <a href="amr_decision_inventory.html">TECH 04</a>의 해당 섹션 참조.</p>
     <div class="milestones">
       <div class="ms"><span class="ms-tag">CP 1</span><h4>맵 표현 · 셀 크기 · 좌표계 단일 소스</h4><p>미터 좌표를 원본으로, 1로봇 = 1셀. 전 컴포넌트가 종속되는 결정.</p></div>
       <div class="ms"><span class="ms-tag">CP 2</span><h4>시간 모델 — 고정 틱</h4><p>1틱 = 1셀 이동. MAPF 예약 테이블·재계획·통계의 전제.</p></div>
@@ -309,7 +319,7 @@
       <div class="ms"><span class="ms-tag">CP 4</span><h4>RL 일반화 전략 + 후퇴선</h4><p>맵 불변 관측 + 랜덤 레이아웃. 실패 시 휴리스틱 기본 탑재로 후퇴(사전 합의).</p></div>
       <div class="ms"><span class="ms-tag">CP 5</span><h4>K8s Indexed Job + 결과 저장 정책</h4><p>집계 기본, 상세 로그는 대표 런만. 인프라 골격.</p></div>
       <div class="ms"><span class="ms-tag">CP 6</span><h4>RTX 5080 RTF 실측</h4><p>검증 트랙이 감당할 수 있는 로봇 대수의 물리적 상한 확정.</p></div>
-      <div class="ms"><span class="ms-tag">CP 7</span><h4>4대 계약 동결</h4><p>입력 스키마 / Kafka 스키마 / 디스패처 인터페이스 / VDA 5050 서브셋 (<a href="amr_overview.html#o4">MAIN 02 SEC 04</a>).</p></div>
+      <div class="ms"><span class="ms-tag">CP 7</span><h4>4대 계약 동결</h4><p>입력 스키마 / Kafka 스키마 / 디스패처 인터페이스 / VDA 5050 서브셋 (<a href="amr_overview.html#o4">TECH 01 SEC 04</a>).</p></div>
     </div>
   </div>
 </section>
@@ -318,7 +328,7 @@
 <section id="s7">
   <div class="sec-head"><span class="sec-no">SEC 07 · 로드맵</span><h2>최악의 경우에도 완결된 데모가 남는다</h2></div>
   <div class="sec-body">
-    <p class="lead">타임라인 그림은 <a href="amr_overview.html#o5">MAIN 02 SEC 08</a>에 있습니다. 여기서는 주차별 산출물과 순서의 이유를 적습니다.</p>
+    <p class="lead">타임라인 그림은 <a href="amr_overview.html#o5">TECH 01 SEC 08</a>에 있습니다. 여기서는 주차별 산출물과 순서의 이유를 적습니다.</p>
     <div class="tbl-scroll"><table>
       <tr><th>주차</th><th>산출물</th><th>이 순서인 이유</th></tr>
       <tr><td><b>주 1–2</b></td><td>4대 계약 동결 + SimPy DES + 규칙 디스패처 (E2E 최소 루프) + RTF 실측</td><td>계약이 동결돼야 4트랙이 병렬로 출발. RTF 실측이 검증 스코프의 상한을 정한다</td></tr>
@@ -355,9 +365,9 @@
   <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
   <div class="sec-body">
     <ul class="rules">
-      <li><a href="amr_mapf_theory.html"><b>MAIN 04 경로계획 이론</b></a> — SEC 02 요약의 원본: MAPF 계보·문헌·학습 로드맵 — 메인 트랙의 다음 문서</li>
-      <li><a href="amr_decision_inventory.html"><b>MAIN 05 구현 결정 인벤토리</b></a> — 이 계획의 각 항목을 실제 결정 60여 개로 분해한 전수 목록</li>
-      <li><a href="logistics_domain_research.html"><b>APPENDIX B 도메인 리서치</b></a> — 이 서비스가 다루는 물류 현장의 실제 모습</li>
+      <li><a href="amr_mapf_theory.html"><b>TECH 03 경로계획 이론</b></a> — SEC 02 요약의 원본: MAPF 계보·문헌·학습 로드맵 — 메인 트랙의 다음 문서</li>
+      <li><a href="amr_decision_inventory.html"><b>TECH 04 구현 결정 인벤토리</b></a> — 이 계획의 각 항목을 실제 결정 60여 개로 분해한 전수 목록</li>
+      <li><a href="logistics_domain_research.html"><b>ARCHIVE 01 도메인 리서치</b></a> — 이 서비스가 다루는 물류 현장의 실제 모습</li>
     </ul>
   </div>
 </section>
@@ -365,12 +375,12 @@
 </main>
 
 <div class="wrap flow-nav">
-  <a class="prev" href="amr_overview.html"><small>← 이전</small>MAIN 02 · 전체 조망</a>
-  <a class="next" href="amr_mapf_theory.html"><small>다음 →</small>MAIN 04 · 이론 기반</a>
+  <a class="prev" href="amr_overview.html"><small>← 이전</small>TECH 01 · 전체 조망</a>
+  <a class="next" href="amr_mapf_theory.html"><small>다음 →</small>TECH 03 · 이론 기반</a>
 </div>
 
 <footer>
-  <div class="wrap">MAIN 03 · TECH PLAN — 원천: AMR_프로젝트_전체개괄.md (2026-08-19) · REV C: 주제 확정(AMR 견적 시뮬레이션)에 따른 전면 개정</div>
+  <div class="wrap">TECH 02 · TECH PLAN — 원천: AMR_프로젝트_전체개괄.md (2026-08-19) · REV C: 주제 확정(AMR 견적 시뮬레이션)에 따른 전면 개정</div>
 </footer>
 
 </body>

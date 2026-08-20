@@ -132,7 +132,7 @@
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow">MAIN 04 / 05 · THEORY-BASE · <b>REV A</b> · 2026-08</div>
+      <div class="doc-eyebrow">TECH 03 / 04 · THEORY-BASE · <b>REV A</b> · 2026-08</div>
       <h1>AMR 경로계획 이론 기반 — MAPF
         <span class="sub">"대수–처리량 곡선이 왜 꺾이는가"를 설명하는 이론 체계와 핵심 문헌</span>
       </h1>
@@ -140,7 +140,7 @@
     <div class="meta">
       SCOPE · <b>AMR 견적 시뮬레이션의 이론층</b><br>
       FORMAT · <b>이론 → 문헌 → 학습 로드맵</b><br>
-      PAIR · <b>MAIN 05 구현 결정 인벤토리</b><br>
+      PAIR · <b>TECH 04 구현 결정 인벤토리</b><br>
       USE · <b>설계 근거 · 면접 대비</b>
     </div>
   </div>
@@ -166,8 +166,8 @@
 <section id="t0">
   <div class="sec-head"><span class="sec-no">READ ME · 이 문서를 읽는 법</span><h2>이론은 견적의 물리학이다</h2></div>
   <div class="sec-body">
-    <p class="lead">견적 숫자의 이론적 근거만 다룹니다 — 제품 전체는 <a href="amr_overview.html">MAIN 02</a>,
-    구현 결정은 <a href="amr_decision_inventory.html">MAIN 05</a> 담당입니다.</p>
+    <p class="lead">견적 숫자의 이론적 근거만 다룹니다 — 제품 전체는 <a href="amr_overview.html">TECH 01</a>,
+    구현 결정은 <a href="amr_decision_inventory.html">TECH 04</a> 담당입니다.</p>
 
     <div class="kcards">
       <div class="kcard"><b>Q1 · 왜 정비례로 안 느는가</b><span>로봇을 늘려도 처리량이 꺾이는 이유 → SEC 01</span></div>
@@ -225,7 +225,7 @@
       <defs><marker id="tl-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
       <rect x="150" y="14" width="600" height="56" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
       <text x="170" y="38" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">1층 · 작업 할당 (Task Allocation)</text>
-      <text x="170" y="58" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4">어느 로봇이 어느 작업을 맡을까 — 디스패처 (MAIN 05 SEC C)</text>
+      <text x="170" y="58" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4">어느 로봇이 어느 작업을 맡을까 — 디스패처 (TECH 04 SEC C)</text>
       <line x1="450" y1="70" x2="450" y2="94" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tl-arr)"/>
       <rect x="150" y="100" width="600" height="56" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
       <text x="170" y="124" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">2층 · 경로 계획 (MAPF)</text>
@@ -262,7 +262,7 @@
       <div class="ms"><span class="ms-tag">STEP 6 · Lifelong MAPF</span><h4>끝없는 운영 조건</h4>
       <p>작업이 끝나는 즉시 새 작업이 발급되는, 실제 창고의 문제 설정.</p></div>
       <div class="ms"><span class="ms-tag">STEP 7 · RHCR</span><h4><a class="term" href="glossary_robotics.html#rhcr">Rolling-Horizon Collision Resolution</a> <span class="chip c-green">직접 기반 문헌</span></h4>
-      <p>앞 W스텝만 충돌 해소 + 주기적 재계획. 대규모 창고의 사실상 표준이자 본 프로젝트 재계획 구조(MAIN 05 B4)의 원형.</p></div>
+      <p>앞 W스텝만 충돌 해소 + 주기적 재계획. 대규모 창고의 사실상 표준이자 본 프로젝트 재계획 구조(TECH 04 B4)의 원형.</p></div>
     </div>
   </div>
 </section>
@@ -370,7 +370,7 @@
     검증 수준 — 공개 MAPF 벤치마크 + Little's Law 검산 + <a class="term" href="glossary_robotics.html#isaac">Isaac Sim</a> 교차검증 = VDI 3633 V&amp;V 체계의 구체적 실행</div>
 
     <p class="soft">다음 설계 과제: SimPy 이산사건 세계에서 Prioritized Planning + 예약 테이블을 어떻게 구현할지 — 연속 시간 vs 틱 기반의 절충 설계
-    (→ <a href="amr_decision_inventory.html">MAIN 05 결정 인벤토리</a> B1·D 계열에서 결정).</p>
+    (→ <a href="amr_decision_inventory.html">TECH 04 결정 인벤토리</a> B1·D 계열에서 결정).</p>
   </div>
 </section>
 
@@ -379,9 +379,9 @@
   <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
   <div class="sec-body">
     <ul class="rules">
-      <li><a href="amr_decision_inventory.html"><b>MAIN 05 구현 결정 인벤토리</b></a> — 이 이론이 실제 구현 결정(시간 모델·플래너 선택·재계획 주기)으로 어떻게 번역되는지 — 메인 트랙의 다음 문서</li>
+      <li><a href="amr_decision_inventory.html"><b>TECH 04 구현 결정 인벤토리</b></a> — 이 이론이 실제 구현 결정(시간 모델·플래너 선택·재계획 주기)으로 어떻게 번역되는지 — 메인 트랙의 다음 문서</li>
       <li><a href="glossary_robotics.html#mapf"><b>REF A 용어사전 · MAPF 계열 항목</b></a> — MAPF·CBS·RHCR을 그림 도해와 함께 한 번 더 복습</li>
-      <li><a href="archive.html#induction"><b>APPENDIX D 검토 아카이브 · 인덕션 병목</b></a> — 같은 대기행렬 이론이 소터 병목 분석에 쓰이는 실제 사례</li>
+      <li><a href="archive.html#induction"><b>ARCHIVE 03 검토 아카이브 · 인덕션 병목</b></a> — 같은 대기행렬 이론이 소터 병목 분석에 쓰이는 실제 사례</li>
     </ul>
   </div>
 </section>
@@ -389,12 +389,12 @@
 </main>
 
 <div class="wrap flow-nav">
-  <a class="prev" href="amr_tech_plan.html"><small>← 이전</small>MAIN 03 · 실행 계획서</a>
-  <a class="next" href="amr_decision_inventory.html"><small>다음 →</small>MAIN 05 · 결정 인벤토리</a>
+  <a class="prev" href="amr_tech_plan.html"><small>← 이전</small>TECH 02 · 실행 계획서</a>
+  <a class="next" href="amr_decision_inventory.html"><small>다음 →</small>TECH 04 · 결정 인벤토리</a>
 </div>
 
 <footer>
-  <div class="wrap">MAIN 04 · THEORY-BASE — 원본: AMR_경로계획_기반이론_정리.md (2026-08-19) · 짝 문서: <a href="amr_decision_inventory.html">MAIN 05 구현 결정 인벤토리</a></div>
+  <div class="wrap">TECH 03 · THEORY-BASE — 원본: AMR_경로계획_기반이론_정리.md (2026-08-19) · 짝 문서: <a href="amr_decision_inventory.html">TECH 04 구현 결정 인벤토리</a></div>
 </footer>
 
 </body>

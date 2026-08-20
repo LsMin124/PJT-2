@@ -131,7 +131,7 @@
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow">MAIN 02 / 05 · MASTER-OVERVIEW · <b>REV C</b> · 2026-08</div>
+      <div class="doc-eyebrow">TECH 01 / 04 · MASTER-OVERVIEW · <b>REV C</b> · 2026-08</div>
       <h1>전체 조망 — AMR 견적 시뮬레이션 서비스
         <span class="sub">무엇을 만들고, 여섯 명이 어떻게 나눠 만드는가 — 팀 공유 기준 문서</span>
       </h1>
@@ -272,7 +272,7 @@
     <h3>왜 v1 타겟이 반송/피킹 보조 카테고리인가</h3>
     <p>시장 1위인 GTP(~38%)는 벤더 턴키 거래라 중립 견적의 자리가 없고, <b>반송/피킹 보조(~25~27%)</b>는
     기존 창고에 3~15대를 점진 도입하는 구조라 <b>견적 의사결정이 실제로 일어납니다</b>.
-    시장 근거와 "왜 GTP가 아닌가" 문답의 상세는 <a href="topic_journey.html#p3">APPENDIX A · 시장 근거</a> 참조.</p>
+    시장 근거와 "왜 GTP가 아닌가" 문답의 상세는 <a href="topic_journey.html#p3">PLAN 02 · 시장 근거</a> 참조.</p>
   </div>
 </section>
 
@@ -303,11 +303,11 @@
     <div class="tbl-scroll"><table>
       <tr><th>트랙</th><th>담당 산출물</th></tr>
       <tr><td><b>로봇/시뮬</b></td><td>ROS2 어댑터, Nav2 구간 주행, Isaac 에뮬레이션, RTF 실측, 보정 루프</td></tr>
-      <tr><td><b>AI</b></td><td>SimPy DES + MAPF 플래너, Gymnasium 환경, 디스패처 3종(규칙·휴리스틱·RL), 스윕 설계</td></tr>
+      <tr><td><b>AI</b></td><td>SimPy DES + MAPF 플래너, 서러게이트 파이프라인(역방향 구성 최적화·액티브 러닝·SHAP 설명), 디스패처 3종(규칙·휴리스틱·RL), 스윕 설계 — 상세는 <a href="amr_tech_plan.html#s3">실행 계획 SEC 03</a></td></tr>
       <tr><td><b>백엔드</b></td><td>Scenario API, K8s Indexed Job, Kafka·Redis·TimescaleDB, WebSocket 진행률</td></tr>
       <tr><td><b>프론트</b></td><td>레이아웃 에디터(축척 보정·실시간 검증), 곡선·히트맵·리플레이, 진행률 매트릭스</td></tr>
     </table></div>
-    <p class="soft">세부 기술 결정은 <a href="amr_tech_plan.html">MAIN 03 실행 계획서</a>, 결정 항목의 전수 목록은 <a href="amr_decision_inventory.html">MAIN 05 결정 인벤토리</a> 참조.</p>
+    <p class="soft">세부 기술 결정은 <a href="amr_tech_plan.html">TECH 02 실행 계획서</a>, 결정 항목의 전수 목록은 <a href="amr_decision_inventory.html">TECH 04 결정 인벤토리</a> 참조.</p>
   </div>
 </section>
 
@@ -365,7 +365,7 @@
       <tr><th>항목</th><th>결정</th></tr>
       <tr><td>정밀 모델 범위</td><td>v1 반송/피킹 보조 · v1.5 팔레트 · v2 GTP — 게이트는 v1부터 전 카테고리 커버("판단은 넓게, 정밀 견적은 좁게"), GTP 적합 고객은 벤더 직행 안내</td></tr>
       <tr><td>검증 기종</td><td><b>iw.hub 메인</b> · <b>MiR 250 서브</b>(이기종 데모) · Nova Carter는 스모크 테스트용</td></tr>
-      <tr><td>견적 카탈로그</td><td>5종 확정(2026-08-20) — 풀스택 검증: iw.hub·MiR 250 / 파라미터 기반: OTTO 100·Locus·트위니 나르고 오더피킹. 사양·추정 파라미터는 <a href="robot_landscape.html#l6">APPENDIX E 파라미터 시트</a></td></tr>
+      <tr><td>견적 카탈로그</td><td>5종 확정(2026-08-20) — 풀스택 검증: iw.hub·MiR 250 / 파라미터 기반: OTTO 100·Locus·트위니 나르고 오더피킹. 사양·추정 파라미터는 <a href="robot_landscape.html#l6">PLAN 03 파라미터 시트</a></td></tr>
     </table></div>
   </div>
 </section>
@@ -376,7 +376,7 @@
   <div class="sec-body">
     <p class="lead">최종 산출물은 숫자 하나가 아니라 <b>선택할 수 있는 곡선</b>입니다.</p>
     <div class="kcards">
-      <div class="kcard"><b>한계효용 곡선</b><span>곡선이 꺾이는 지점 = 병목의 이동 → "로봇 추가 대신 스테이션 증설" 조언으로 (원리: <a href="amr_mapf_theory.html">MAIN 04</a>)</span></div>
+      <div class="kcard"><b>한계효용 곡선</b><span>곡선이 꺾이는 지점 = 병목의 이동 → "로봇 추가 대신 스테이션 증설" 조언으로 (원리: <a href="amr_mapf_theory.html">TECH 03</a>)</span></div>
       <div class="kcard s"><b>TCO 중첩 → ROI 최적점</b><span>비용 곡선을 겹치고, 곡선 위 클릭 = 그 구성의 상세 리포트</span></div>
       <div class="kcard g"><b>통계적 정직함</b><span>다중 시드 + 95% 신뢰구간 병기 · 워밍업 절단 · 민감도(OAT)</span></div>
       <div class="kcard"><b>투명성 3겹</b><span>가정 명세(수정 가능) / 과정(병목·대기열 분해) / 불확실성(신뢰구간·민감도)</span></div>
@@ -411,7 +411,7 @@
       <text x="820" y="206" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">8</text>
     </svg>
     <p class="soft">파랑 = 견적 본체 구축, 초록 = 검증 트랙, 주황 = 통합·발표. 검증(M4)이 견적(M1~M3) 뒤에 오는 것이 생존 전략입니다 —
-    주차별 산출물과 생존 원칙 상세는 <a href="amr_tech_plan.html#s7">MAIN 03 · 로드맵</a> 참조.</p>
+    주차별 산출물과 생존 원칙 상세는 <a href="amr_tech_plan.html#s7">TECH 02 · 로드맵</a> 참조.</p>
   </div>
 </section>
 
@@ -420,9 +420,9 @@
   <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
   <div class="sec-body">
     <ul class="rules">
-      <li><a href="amr_tech_plan.html"><b>MAIN 03 실행 계획서</b></a> — 이 조망의 각 상자를 어떤 기술 결정으로 채우는지 (표준 스택·V&amp;V·크리티컬 패스) — 메인 트랙의 다음 문서</li>
-      <li><a href="amr_mapf_theory.html"><b>MAIN 04 경로계획 이론</b></a> — 대수–처리량 곡선이 왜 꺾이는지의 이론적 근거</li>
-      <li><a href="amr_decision_inventory.html"><b>MAIN 05 구현 결정 인벤토리</b></a> — 파트별로 결정해야 할 항목 60여 개의 전수 목록</li>
+      <li><a href="amr_tech_plan.html"><b>TECH 02 실행 계획서</b></a> — 이 조망의 각 상자를 어떤 기술 결정으로 채우는지 (표준 스택·V&amp;V·크리티컬 패스) — 메인 트랙의 다음 문서</li>
+      <li><a href="amr_mapf_theory.html"><b>TECH 03 경로계획 이론</b></a> — 대수–처리량 곡선이 왜 꺾이는지의 이론적 근거</li>
+      <li><a href="amr_decision_inventory.html"><b>TECH 04 구현 결정 인벤토리</b></a> — 파트별로 결정해야 할 항목 60여 개의 전수 목록</li>
     </ul>
   </div>
 </section>
@@ -430,12 +430,12 @@
 </main>
 
 <div class="wrap flow-nav">
-  <a class="prev" href="project_intro.html"><small>← 이전</small>MAIN 01 · 서비스 소개</a>
-  <a class="next" href="amr_tech_plan.html"><small>다음 →</small>MAIN 03 · 실행 계획서</a>
+  <a class="prev" href="robot_landscape.html"><small>← 이전</small>PLAN 03 · 물류로봇 지형</a>
+  <a class="next" href="amr_tech_plan.html"><small>다음 →</small>TECH 02 · 실행 계획서</a>
 </div>
 
 <footer>
-  <div class="wrap">MAIN 02 · MASTER OVERVIEW — 원천: AMR_프로젝트_전체개괄.md (2026-08-19) · REV C: 주제 확정(AMR 견적 시뮬레이션)에 따른 전면 개정</div>
+  <div class="wrap">TECH 01 · MASTER OVERVIEW — 원천: AMR_프로젝트_전체개괄.md (2026-08-19) · REV C: 주제 확정(AMR 견적 시뮬레이션)에 따른 전면 개정</div>
 </footer>
 
 </body>
