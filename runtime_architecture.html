@@ -69,9 +69,8 @@
   .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
   .kcard b{display:block;font-size:15px;margin-bottom:4px}
   .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
-  .diagram{font-family:var(--mono);font-size:12.5px;line-height:1.65;background:#0E1318;border:1px solid var(--panel-edge);padding:16px 20px;margin:14px 0;overflow-x:auto;color:#C7D1DB}
-  .diagram b{color:var(--amber)}
-  .diagram i{color:var(--machine);font-style:normal}
+  .viz{background:#0E1318;border:1px solid var(--panel-edge);padding:12px 14px;margin:14px 0;overflow-x:auto}
+  .viz svg{display:block;min-width:780px;width:100%;height:auto}
   footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
   @media (max-width:820px){ .titleblock{grid-template-columns:1fr} .meta{border-left:none;padding-left:0;text-align:left} }
   :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
@@ -89,7 +88,7 @@
     </div>
     <div class="meta">
       DOC. <b>RUNTIME-ARCH</b><br>
-      REV. <b>A</b> · 작성 <b>2026-08-25</b><br>
+      REV. <b>B</b> · 작성 <b>2026-08-25</b><br>
       상태 <b>배치안 제안 · 팀 결정 대기</b>
     </div>
   </div>
@@ -135,11 +134,26 @@
     <div class="sec-head"><span class="sec-no">SEC 01 · 프로세스 기초</span><h2>ROS2에는 "안"이 없다 — 마스터 없는 피어들의 그래프</h2></div>
     <div class="sec-body">
       <p><a href="glossary_robotics.html">ROS2</a>에는 ROS1의 roscore 같은 중심 런타임이 없다. 여러 개의 평범한 리눅스 프로세스가 <b>DDS</b>라는 공용 버스로 서로를 자동 발견하고 토픽·서비스로 통신할 뿐이다(<a href="https://docs.ros.org/en/jazzy/Concepts.html">ROS 2 Concepts</a>). 그래서 무언가가 무언가 "안에서" 도는 그림 자체가 성립하지 않는다.</p>
-      <div class="diagram">            ────────────── DDS 버스 (토픽 / 서비스 / TF) ──────────────
-                 │                    │                     │
-        <b>[Isaac Sim 프로세스]</b>   <b>[Nav2 프로세스들 ×N]</b>    <b>[에이전트 프로세스 ×N]</b>
-         물리·센서 담당 노드        경로 추종·국지 회피        <i>VDA 5050 어댑터</i>
-         (브리지 확장 내장)         (로봇 1대당 1묶음)         (로봇 1대당 1개)</div>
+      <div class="viz"><svg viewBox="0 0 900 236" role="img" aria-label="DDS 버스에 동등하게 참여하는 세 종류의 프로세스">
+        <text x="450" y="34" text-anchor="middle" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">DDS 버스 — 토픽 · 서비스 · TF</text>
+        <text x="450" y="54" text-anchor="middle" fill="#9AA7B4" font-size="11">중심 런타임(마스터) 없음 · 모든 참여자 동등 · 같은 호스트에선 공유메모리 전송</text>
+        <line x1="60" y1="72" x2="840" y2="72" stroke="#F08A32" stroke-width="2.5"/>
+        <line x1="190" y1="72" x2="190" y2="122" stroke="#5A6672" stroke-width="1.5"/>
+        <line x1="450" y1="72" x2="450" y2="122" stroke="#5A6672" stroke-width="1.5"/>
+        <line x1="710" y1="72" x2="710" y2="122" stroke="#5A6672" stroke-width="1.5"/>
+        <rect x="85" y="122" width="210" height="92" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+        <text x="190" y="148" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">Isaac Sim 프로세스</text>
+        <text x="190" y="172" text-anchor="middle" fill="#9AA7B4" font-size="11">물리·센서 담당 노드</text>
+        <text x="190" y="192" text-anchor="middle" fill="#9AA7B4" font-size="11">ROS2 브리지 확장 내장 · ×1</text>
+        <rect x="345" y="122" width="210" height="92" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+        <text x="450" y="148" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">Nav2 프로세스들</text>
+        <text x="450" y="172" text-anchor="middle" fill="#9AA7B4" font-size="11">경로 추종 · 국지 회피</text>
+        <text x="450" y="192" text-anchor="middle" fill="#9AA7B4" font-size="11">로봇 1대당 1묶음 · ×N</text>
+        <rect x="605" y="122" width="210" height="92" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+        <text x="710" y="148" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">에이전트 프로세스</text>
+        <text x="710" y="172" text-anchor="middle" fill="#3BAF77" font-size="11">VDA 5050 어댑터</text>
+        <text x="710" y="192" text-anchor="middle" fill="#9AA7B4" font-size="11">로봇 1대당 1개 · ×N</text>
+      </svg></div>
       <table>
         <tr><th style="width:210px">참여자</th><th>정체</th></tr>
         <tr><td><b>Isaac Sim</b></td><td>ROS2 그래프에 참여하는 프로세스 하나. 내부의 ROS2 브리지 확장이 노드 역할로 /clock·TF·센서 토픽을 발행하고 조인트 명령을 구독한다. 6.0은 브리지가 ROS2 라이브러리를 자체 내장해 시스템에 ROS2가 없어도 DDS로 통신한다(<a href="https://docs.isaacsim.omniverse.nvidia.com/">Isaac Sim Docs</a>)</td></tr>
@@ -177,6 +191,20 @@
         <tr><td>FMS 내부</td><td>AMQP(RabbitMQ)·Kafka</td><td>스윕 잡 큐·도메인 이벤트 — 서비스 섬 내부</td><td>섬 내부에 유지</td></tr>
         <tr><td>프론트 ↔ 백엔드</td><td>REST / WebSocket</td><td>견적 요청·결과 조회</td><td><span class="chip c-green">가능</span></td></tr>
       </table></div>
+      <h3>미들웨어 구성 — 표준 채택 (2026-08-25)</h3>
+      <table>
+        <tr><th style="width:150px">계층</th><th>선택</th><th style="width:320px">근거</th></tr>
+        <tr><td>ROS2 배포판</td><td><b>Humble</b></td><td>팀 환경(/opt/ros/humble) 기설치 · Isaac Sim 6.0 브리지 지원 쌍(Humble/Jazzy)에 포함</td></tr>
+        <tr><td>RMW (미들웨어)</td><td><b>rmw_fastrtps_cpp</b> (Fast DDS)</td><td>Isaac 기본·권장값 — 미설정 시 자동 선택 (<a href="https://docs.isaacsim.omniverse.nvidia.com/6.0.0/installation/install_ros_other_platforms.html">Isaac ROS 설치 문서</a>)</td></tr>
+        <tr><td>전송</td><td>같은 호스트 공유메모리</td><td>시뮬 섬 뭉치기 배치(SEC 05)의 전제 — 별도 설정 불요</td></tr>
+      </table>
+      <p class="soft">비DDS 대안은 채택하지 않고 예비 경로로만 기록한다. ROS2의 RMW 계층은 교체 가능하고 비DDS인 rmw_zenoh가 Kilted(2025-05)에서 Tier 1이 됐지만(<a href="https://docs.ros.org/en/kilted/Releases/Release-Kilted-Kaiju.html">릴리스 노트</a>), Isaac은 Fast DDS·Cyclone DDS만 번들한다 — zenoh는 시스템 ROS2 소싱 시 가능하다는 <a href="https://github.com/isaac-sim/IsaacSim/discussions/540">공식 논의</a>만 존재하며 미검증이다.</p>
+      <table>
+        <tr><th style="width:280px">예비 경로 트리거</th><th>대안</th></tr>
+        <tr><td>ROS 트래픽을 WAN 너머로 보내야 할 때</td><td>zenoh-bridge-ros2dds — 로컬 DDS 무변경, 구간만 터널링</td></tr>
+        <tr><td>D-5에서 경량 추종기로 결정될 때</td><td>Isaac standalone Python 직결 MQTT 어댑터 — ROS2·DDS 의존 소멸</td></tr>
+        <tr><td>DDS 자체 교체 요구가 생길 때</td><td>rmw_zenoh — 비번들·검증 부담을 안는 최후 선택지</td></tr>
+      </table>
       <table>
         <tr><th style="width:230px">DDS를 WAN에 태우면 안 되는 이유</th><th>내용</th></tr>
         <tr><td><b>디스커버리</b></td><td>멀티캐스트 기반 상호 발견이라 tailscale·VPN 너머로는 그냥 붙지 않는다(디스커버리 서버 별도 구성 필요). 참가자 수가 늘면 디스커버리 트래픽이 O(N²)로 증가</td></tr>
@@ -194,7 +222,7 @@
       <div class="tbl-scroll"><table>
         <tr><th style="width:110px">섬</th><th style="width:230px">구성요소</th><th style="width:150px">RAM</th><th>근거</th></tr>
         <tr><td rowspan="3">시뮬 섬</td><td>Isaac Sim 1인스턴스</td><td><b>~16GB</b></td><td><span class="chip c-green">실측</span> 2026-08-24, RTX 5080 · full_warehouse + iw.hub 주행 데모 기준</td></tr>
-        <tr><td>Nav2 풀스택 × SIL 3~5대</td><td>0.5~1GB /대</td><td><span class="chip c-amber">추정</span> 통상 실측 범위(코스트맵·맵 크기 지배) — 프로젝트 실측 예정</td></tr>
+        <tr><td>Nav2(컨트롤러 모드) × 보정 3~5대</td><td>0.5~1GB /대</td><td><span class="chip c-amber">추정</span> 통상 실측 범위(코스트맵·맵 크기 지배) — 프로젝트 실측 예정. 검증 런 대수 확대 시 경량화·혼합 충실도(SEC 05)</td></tr>
         <tr><td>rclpy 노드·VDA 5050 어댑터</td><td>80~150MB /개</td><td><span class="chip c-amber">추정</span> rclpy + DDS 참가자 기준</td></tr>
         <tr><td rowspan="8">서비스 섬</td><td>k3s 서버</td><td>0.6~1GB</td><td>공식 최소 서버 512MB / 에이전트 256MB (<a href="https://docs.k3s.io/installation/requirements">k3s Docs</a>)</td></tr>
         <tr><td>RabbitMQ (워커 큐+DLQ)</td><td>0.2~0.5GB</td><td>유휴 기준 (<a href="https://www.rabbitmq.com/docs/memory-use">RabbitMQ Memory Use</a>)</td></tr>
@@ -213,24 +241,101 @@
   <section id="r5">
     <div class="sec-head"><span class="sec-no">SEC 05 · 배치 토폴로지</span><h2>시뮬 섬은 홈서버에 뭉치고, 서비스 섬만 클라우드로</h2></div>
     <div class="sec-body">
-      <div class="diagram"><b>[홈서버 32GB · RTX 5080]</b>  개발 전용 · 시뮬 섬
-   Isaac Sim + Nav2×3~5 + VDA 5050 어댑터        점유 20~24GB
-        │
-        │  <i>MQTT (VDA 5050) — 유일한 절단선, WAN 통과 가능</i>
-        ▼
-<b>[EC2 16GB]</b>  상시 서비스 · 서비스 섬
-   FMS·백엔드·RabbitMQ·Kafka·MQTT·DB + 경량 에이전트 + 간이 DES    점유 ~8GB
-        │
-        │  <i>AMQP 잡 큐 — 워커는 어디서 붙어도 무방</i>
-        ▼
-<b>[옵션 워커]</b>  스윕 잡 있을 때만 기동 (c계열 EC2 or RunPod)</div>
+      <div class="viz"><svg viewBox="0 0 960 648" role="img" aria-label="시뮬 섬(홈서버)과 서비스 섬(EC2)의 배치 다이어그램">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8FB4D9"/></marker>
+          <marker id="arg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3BAF77"/></marker>
+        </defs>
+        <rect x="30" y="24" width="620" height="254" fill="#171D24" stroke="#8FB4D9" stroke-width="1.5"/>
+        <text x="46" y="52" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">홈서버 · 32GB · RTX 5080 — 시뮬 섬</text>
+        <text x="634" y="52" text-anchor="end" fill="#9AA7B4" font-size="11">개발 전용 · 점유 20~24GB</text>
+        <text x="340" y="86" text-anchor="middle" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="11.5" font-weight="700">DDS 버스 (Fast DDS · 공유메모리)</text>
+        <line x1="60" y1="100" x2="620" y2="100" stroke="#F08A32" stroke-width="2"/>
+        <line x1="155" y1="100" x2="155" y2="128" stroke="#5A6672" stroke-width="1.5"/>
+        <line x1="342" y1="100" x2="342" y2="128" stroke="#5A6672" stroke-width="1.5"/>
+        <line x1="532" y1="100" x2="532" y2="128" stroke="#5A6672" stroke-width="1.5"/>
+        <rect x="70" y="128" width="170" height="104" fill="#1C2229" stroke="#2C343D"/>
+        <text x="155" y="152" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">Isaac Sim ×1</text>
+        <text x="155" y="174" text-anchor="middle" fill="#9AA7B4" font-size="10.5">물리·센서 노드</text>
+        <text x="155" y="192" text-anchor="middle" fill="#9AA7B4" font-size="10.5">브리지·Fast DDS 내장</text>
+        <text x="155" y="212" text-anchor="middle" fill="#3BAF77" font-size="10.5" font-weight="700">~16GB 실측</text>
+        <rect x="262" y="128" width="160" height="104" fill="#1C2229" stroke="#2C343D"/>
+        <text x="342" y="152" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">Nav2 ×N</text>
+        <text x="342" y="174" text-anchor="middle" fill="#9AA7B4" font-size="10.5">컨트롤러 모드 · 기본 3~5</text>
+        <text x="342" y="192" text-anchor="middle" fill="#9AA7B4" font-size="10.5">글로벌 플래너 OFF</text>
+        <text x="342" y="212" text-anchor="middle" fill="#9AA7B4" font-size="10.5">0.5~1GB/대 추정</text>
+        <rect x="444" y="128" width="176" height="104" fill="#1C2229" stroke="#2C343D"/>
+        <text x="532" y="152" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">VDA 5050 어댑터 ×N</text>
+        <text x="532" y="174" text-anchor="middle" fill="#9AA7B4" font-size="10.5">ROS2 ↔ MQTT 변환</text>
+        <text x="532" y="192" text-anchor="middle" fill="#9AA7B4" font-size="10.5">로봇 1대당 1개</text>
+        <text x="532" y="212" text-anchor="middle" fill="#9AA7B4" font-size="10.5">80~150MB/개 추정</text>
+        <line x1="30" y1="312" x2="930" y2="312" stroke="#3BAF77" stroke-width="1.5" stroke-dasharray="7 6"/>
+        <text x="46" y="302" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="11.5" font-weight="700">✂ MQTT (VDA 5050) — 유일한 절단선 · WAN 통과 가능</text>
+        <line x1="580" y1="232" x2="580" y2="384" stroke="#3BAF77" stroke-width="2" marker-end="url(#arg)"/>
+        <rect x="30" y="346" width="620" height="252" fill="#20211C" stroke="#F08A32" stroke-width="1.5"/>
+        <text x="46" y="374" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">EC2 · 16GB — 서비스 섬</text>
+        <text x="634" y="374" text-anchor="end" fill="#9AA7B4" font-size="11">상시 · 점유 ~8GB</text>
+        <rect x="58" y="386" width="170" height="86" fill="#1C2229" stroke="#F08A32"/>
+        <text x="143" y="410" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">FMS — 자체 구현</text>
+        <text x="143" y="432" text-anchor="middle" fill="#F08A32" font-size="10.5" font-weight="700">MAPF · RHCR · 디스패칭</text>
+        <text x="143" y="452" text-anchor="middle" fill="#9AA7B4" font-size="10.5">코어 자산 · DES와 로직 공유</text>
+        <rect x="248" y="386" width="130" height="86" fill="#1C2229" stroke="#2C343D"/>
+        <text x="313" y="410" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">백엔드 API</text>
+        <text x="313" y="432" text-anchor="middle" fill="#9AA7B4" font-size="10.5">견적 요청·결과</text>
+        <text x="313" y="452" text-anchor="middle" fill="#9AA7B4" font-size="10.5">0.5~1GB 추정</text>
+        <rect x="398" y="386" width="110" height="86" fill="#1C2229" stroke="#2C343D"/>
+        <text x="453" y="410" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="11.5" font-weight="700">PostgreSQL</text>
+        <text x="453" y="432" text-anchor="middle" fill="#9AA7B4" font-size="10.5">견적·잡 상태</text>
+        <text x="453" y="452" text-anchor="middle" fill="#9AA7B4" font-size="10.5">0.3~1GB 추정</text>
+        <rect x="528" y="386" width="104" height="86" fill="#1C2229" stroke="#2C343D"/>
+        <text x="580" y="410" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">Mosquitto</text>
+        <text x="580" y="432" text-anchor="middle" fill="#9AA7B4" font-size="10.5">MQTT 브로커</text>
+        <text x="580" y="452" text-anchor="middle" fill="#9AA7B4" font-size="10.5">~10MB 추정</text>
+        <rect x="58" y="496" width="150" height="86" fill="#1C2229" stroke="#2C343D"/>
+        <text x="133" y="520" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">경량 에이전트 ×15</text>
+        <text x="133" y="542" text-anchor="middle" fill="#9AA7B4" font-size="10.5">가상 로봇 상태기계</text>
+        <text x="133" y="562" text-anchor="middle" fill="#9AA7B4" font-size="10.5">30~80MB/개 추정</text>
+        <rect x="228" y="496" width="140" height="86" fill="#1C2229" stroke="#2C343D"/>
+        <text x="298" y="520" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">RabbitMQ</text>
+        <text x="298" y="542" text-anchor="middle" fill="#9AA7B4" font-size="10.5">스윕 잡 큐 + DLQ</text>
+        <text x="298" y="562" text-anchor="middle" fill="#9AA7B4" font-size="10.5">0.2~0.5GB</text>
+        <rect x="388" y="496" width="110" height="86" fill="#1C2229" stroke="#2C343D"/>
+        <text x="443" y="520" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">Kafka</text>
+        <text x="443" y="542" text-anchor="middle" fill="#9AA7B4" font-size="10.5">도메인 이벤트</text>
+        <text x="443" y="562" text-anchor="middle" fill="#9AA7B4" font-size="10.5">1.5~2GB</text>
+        <rect x="518" y="496" width="114" height="86" fill="#1C2229" stroke="#2C343D"/>
+        <text x="575" y="520" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">DES 워커 ×n</text>
+        <text x="575" y="542" text-anchor="middle" fill="#9AA7B4" font-size="10.5">SimPy 스윕</text>
+        <text x="575" y="562" text-anchor="middle" fill="#9AA7B4" font-size="10.5">~0.2GB/개 추정</text>
+        <rect x="700" y="386" width="230" height="72" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+        <text x="815" y="412" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">사용자 브라우저</text>
+        <text x="815" y="436" text-anchor="middle" fill="#9AA7B4" font-size="10.5">견적 요청 · 결과 조회</text>
+        <text x="696" y="412" text-anchor="end" fill="#8FB4D9" font-size="10.5" font-family="'JetBrains Mono',monospace">REST/WS</text>
+        <line x1="700" y1="422" x2="654" y2="422" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#ar)"/>
+        <rect x="700" y="496" width="230" height="96" fill="#171D24" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 5"/>
+        <text x="815" y="522" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">옵션 워커</text>
+        <text x="815" y="546" text-anchor="middle" fill="#9AA7B4" font-size="10.5">스팟 EC2(c계열) / RunPod</text>
+        <text x="815" y="566" text-anchor="middle" fill="#9AA7B4" font-size="10.5">전체 스윕 잡 · 발표 주간만 기동</text>
+        <text x="696" y="532" text-anchor="end" fill="#8A96A3" font-size="10.5" font-family="'JetBrains Mono',monospace">AMQP</text>
+        <line x1="700" y1="540" x2="654" y2="540" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+        <text x="30" y="634" fill="#9AA7B4" font-size="10.5">초록 굵은 수치 = 실측(2026-08-24) · 나머지 용량 수치 = 추정 — 근거와 출처는 SEC 04 표</text>
+      </svg></div>
       <table>
         <tr><th style="width:210px">머신</th><th>역할</th><th style="width:190px">비고</th></tr>
         <tr><td><b>홈서버</b> 32GB+5080</td><td>개발·SIL 검증·라이브 시연 1순위(tailscale 스트리밍 검증 경로)</td><td>서비스 트래픽은 받지 않음</td></tr>
         <tr><td><b>EC2</b> 16GB</td><td>상시 서비스 본체 — 도메인·HTTPS가 물리는 곳</td><td>~8GB 사용, 8GB 여유</td></tr>
         <tr><td><b>옵션 워커</b></td><td>전체 스윕 잡 전용, 큐에서 수령</td><td>발표 주간만 기동</td></tr>
       </table>
-      <p class="soft">분리를 재검토할 조건: SIL 대수를 3~5대 이상으로 늘리고 전부 Nav2를 물릴 때. 그때도 해법의 순서는 ① SIL 대수 축소(스케일은 DES 담당) ② 일부를 경량 추종기로 대체 ③ 그래도 부족하면 외부 GPU — "ROS만 다른 기기로"는 SEC 03의 이유로 마지막까지 선택지가 아니다.</p>
+      <h3>최적 대수 검증 런 — 대수가 커질 때의 스케일 사다리</h3>
+      <p>SIL은 두 종류가 돈다. <b>보정 루프</b>(3~5대, 반복 실행)와, DES가 뽑은 <b>최적 구성의 검증 런</b>(단발성)이다. 후자는 최적 대수가 10대를 넘어도 그 대수 그대로 돌아야 한다. 홈서버 예산은 32GB에서 Isaac ~16GB와 OS ~2GB를 빼면 ROS 몫이 약 14GB다.</p>
+      <div class="tbl-scroll"><table>
+        <tr><th style="width:150px">최적 대수 N</th><th>구성</th><th style="width:190px">ROS 몫 RAM (추정)</th></tr>
+        <tr><td><b>~5대</b></td><td>전 로봇 Nav2 컨트롤러 모드 — 풀 충실도</td><td>1.5~5GB <span class="chip c-green">여유</span></td></tr>
+        <tr><td><b>6~10대</b></td><td>Nav2 유지 + 경량화 — 위치는 시뮬 그라운드 트루스 사용(AMCL 제거), 로컬 코스트맵 축소, 무거운 센서는 관심 로봇에만 장착</td><td>2~5GB (대당 0.3~0.5GB) <span class="chip c-green">수용</span></td></tr>
+        <tr><td><b>11~15대</b></td><td><b>혼합 충실도</b> — 병목 구간의 관심 로봇 2~3대만 Nav2, 나머지는 경량 추종기(FMS 하달 경로 추종만)</td><td>1~2.5GB <span class="chip c-green">수용</span></td></tr>
+        <tr><td>15대 초과 · 전대수 풀 충실도 요구</td><td>외부 GPU 머신으로 검증 런만 이관(SEC 06 RunPod — RAM 여유가 큰 pod 선택). 단발 실행이라 초 단위 과금과 궁합이 맞는다</td><td>홈서버 밖</td></tr>
+      </table></div>
+      <p class="soft">검증 런은 스윕이 아니라 1개 구성의 단발 실행이라 실시간성 요구가 없다 — CPU 경합으로 RTF가 떨어져도 결과는 유효하다(SEC 03). 혼합 충실도의 논리: 검증 런의 목적은 전 로봇의 물리 정확도가 아니라 병목 지점의 물리 검증이다. "ROS만 다른 기기로 분리"는 SEC 03의 이유로 마지막까지 선택지가 아니다.</p>
     </div>
   </section>
 
@@ -273,8 +378,8 @@
         <tr><td><b>D-1 추가 EC2 증설</b></td><td>증설 없음 / 프로덕션 미러 분리</td><td>증설 없음 — 서비스 경로가 기존 16GB에 수용됨. 스테이징 분리 욕구가 생기면 그때 미러</td></tr>
         <tr><td><b>D-2 스윕 워커</b></td><td>없음 / c계열 스팟 / RunPod</td><td>발표 주간만 기동하는 c7i.xlarge 스팟 — 잡 큐 구조라 나중에 붙여도 무변경</td></tr>
         <tr><td><b>D-3 Kafka v1 포함</b></td><td>유지 / RabbitMQ로 임시 통합</td><td>명세서 스택 준수가 평가 항목이면 유지(16GB 내 문제없음). 아니면 통합 시 −2GB</td></tr>
-        <tr><td><b>D-4 SIL 로봇 대수</b></td><td>3~5대 / 그 이상</td><td>3~5대 — 스케일 검증은 DES 몫, SIL은 보정 깊이 우선(<a href="amr_model_selection.html">기준 기종</a>과 동일 논리)</td></tr>
-        <tr><td><b>D-5 로봇 레벨 실행기</b></td><td>Nav2 풀스택 / 경량 추종기</td><td>실측 후 결정 — FMS가 경로를 하달하므로 추종+국지 회피만으로 충분할 수 있음(SEC 02)</td></tr>
+        <tr><td><b>D-4 SIL 로봇 대수</b></td><td>보정 3~5대 / 검증 런은 최적 대수 N</td><td>보정 루프는 3~5대(<a href="amr_model_selection.html">기준 기종</a>과 동일 논리). 단 DES가 뽑은 최적 구성의 검증 런은 N 그대로 돈다 — 대수가 크면 SEC 05 스케일 사다리(경량화→혼합 충실도→외부 GPU) 적용</td></tr>
+        <tr><td><b>D-5 로봇 레벨 실행기</b></td><td>Nav2(표준) / 경량 추종기</td><td>표준 스택인 Nav2 컨트롤러 모드로 출발(2026-08-25 기본 채택). RAM 실측 후 압박 시 경량 추종기로 다운그레이드 — 그 경우 SIL의 ROS2 의존 자체가 제거됨(SEC 03 예비 경로)</td></tr>
         <tr><td><b>D-6 시연 백업 리허설</b></td><td>실시 / 생략</td><td>발표 2주 전 RunPod noVNC 경로 1회 리허설(~$3) — 당일 회선 리스크 보험</td></tr>
       </table>
       <div class="kcards">
@@ -288,7 +393,7 @@
 </main>
 
 <footer>
-  <div class="wrap">WORKING · RUNTIME-ARCH · REV A — 작성 2026-08-25 · Isaac 수치는 프로젝트 장비(RTX 5080 · Isaac Sim 6.0.1) 실측, 표기 없는 수치는 추정으로 명기 · 시세는 조사 시점 기준 변동 가능 · <a href="index.html">문서 인덱스로</a></div>
+  <div class="wrap">WORKING · RUNTIME-ARCH · REV B — 작성 2026-08-25 (B: 표준 미들웨어 Humble+Fast DDS 확정 · SVG 다이어그램 · 검증 런 스케일 사다리) · Isaac 수치는 프로젝트 장비(RTX 5080 · Isaac Sim 6.0.1) 실측, 표기 없는 수치는 추정으로 명기 · 시세는 조사 시점 기준 변동 가능 · <a href="index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>
