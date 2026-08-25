@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<title>SIL 구현 로드맵</title>
+<style>
+  :root{
+    --bg:#14181D; --panel:#1C2229; --panel-edge:#2C343D; --ink:#E8ECF1; --ink-soft:#9AA7B4;
+    --amber:#F08A32; --machine:#3BAF77; --steel:#8FB4D9; --slate:#8A96A3; --grid:#2A323B;
+    --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important;animation:none!important}}
+  body{
+    background:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:32px 32px;
+    color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px;
+  }
+  a{color:var(--steel)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+  header{border-bottom:3px solid var(--ink);background:var(--panel)}
+  .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
+  .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
+  .doc-eyebrow b{color:var(--amber);font-weight:600}
+  h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
+  h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
+  .meta b{color:var(--ink);font-weight:600}
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav .wrap{display:flex;gap:2px;padding:0 20px}
+  nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
+  nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--amber);outline:none}
+  nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
+  nav a.nav-cross{margin-left:auto;color:var(--amber);font-weight:700}
+  main{padding:44px 0 80px}
+  section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
+  .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
+  h2{font-size:clamp(19px,2.2vw,27px);font-weight:800;line-height:1.3;letter-spacing:-.025em}
+  .sec-body{padding:16px 26px 26px}
+  h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+  h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
+  p{margin-bottom:10px}
+  .sec-body p{max-width:76ch}
+  .lead{font-size:15.5px}
+  .soft{color:var(--ink-soft)}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
+  .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
+  .note{margin:14px 0 8px;padding:12px 16px;background:#2A2019;border-left:4px solid var(--amber);font-size:14px;line-height:1.8}
+  .note .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--amber);font-weight:700;margin-bottom:4px}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F}
+  td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
+  tr:last-child td{border-bottom:none}
+  table tr:nth-child(even) td{background:#1E252D}
+  .tbl-scroll{overflow-x:auto}
+  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px;white-space:nowrap}
+  .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)} .c-slate{color:var(--slate)}
+  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
+  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
+  .kcard b{display:block;font-size:15px;margin-bottom:4px}
+  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
+  .viz{background:#0E1318;border:1px solid var(--panel-edge);padding:12px 14px;margin:14px 0;overflow-x:auto}
+  .viz svg{display:block;min-width:780px;width:100%;height:auto}
+  code{font-family:var(--mono);font-size:12.5px;background:#0E1318;border:1px solid var(--panel-edge);padding:1px 6px;white-space:nowrap}
+  footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+  @media (max-width:820px){ .titleblock{grid-template-columns:1fr} .meta{border-left:none;padding-left:0;text-align:left} }
+  :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap titleblock">
+    <div>
+      <div class="doc-eyebrow"><b>WORKING · IMPLEMENTATION</b> · SIL BRING-UP · 4 TASKS</div>
+      <h1>SIL 구현 로드맵 — Teleop 한 대에서 다중 로봇 FMS 결합까지
+        <span class="sub">ROS2–Isaac Sim 구현 4태스크 · 매 태스크가 DES 보정 수치로 끝난다</span>
+      </h1>
+    </div>
+    <div class="meta">
+      DOC. <b>SIL-ROADMAP</b><br>
+      REV. <b>A</b> · 작성 <b>2026-08-25</b><br>
+      상태 <b>T1 착수 전</b>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a class="nav-home" href="index.html">⌂ INDEX</a>
+  <a href="#s0">00 한눈에</a>
+  <a href="#s1">01 왜 이 트랙인가</a>
+  <a href="#s2">02 공통 기반</a>
+  <a href="#s3">03 T1 Teleop</a>
+  <a href="#s4">04 T2 Nav2</a>
+  <a href="#s5">05 T3 물류 씬</a>
+  <a href="#s6">06 T4 다중 로봇</a>
+  <a href="#s7">07 리스크·축소선</a>
+  <a class="nav-cross" href="runtime_architecture.html">런타임 아키텍처 ↗</a>
+</div></nav>
+
+<main class="wrap">
+
+  <!-- ══════════ S0 한눈에 ══════════ -->
+  <section id="s0">
+    <div class="sec-head"><span class="sec-no">SEC 00 · 한눈에</span><h2>4태스크 사다리 — 한 대의 손 조작에서 함대의 중앙 하달까지</h2></div>
+    <div class="sec-body">
+      <div class="viz"><svg viewBox="0 0 920 258" role="img" aria-label="4태스크 사다리와 DES 환류 구조">
+        <defs><marker id="sr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A96A3"/></marker>
+        <marker id="sg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3BAF77"/></marker></defs>
+        <rect x="40" y="36" width="180" height="76" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+        <text x="130" y="62" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">T1 · Teleop</text>
+        <text x="130" y="84" text-anchor="middle" fill="#9AA7B4" font-size="10.5">iw.hub 1대 · /cmd_vel</text>
+        <text x="130" y="102" text-anchor="middle" fill="#9AA7B4" font-size="10.5">브리지 개통</text>
+        <line x1="220" y1="74" x2="260" y2="74" stroke="#8A96A3" stroke-width="1.5" marker-end="url(#sr)"/>
+        <rect x="262" y="36" width="180" height="76" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+        <text x="352" y="62" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">T2 · Nav2 자율주행</text>
+        <text x="352" y="84" text-anchor="middle" fill="#9AA7B4" font-size="10.5">1대 · 맵 · 목표점 주행</text>
+        <text x="352" y="102" text-anchor="middle" fill="#9AA7B4" font-size="10.5">간단 씬</text>
+        <line x1="442" y1="74" x2="482" y2="74" stroke="#8A96A3" stroke-width="1.5" marker-end="url(#sr)"/>
+        <rect x="484" y="36" width="180" height="76" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+        <text x="574" y="62" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">T3 · 물류 씬 투입</text>
+        <text x="574" y="84" text-anchor="middle" fill="#9AA7B4" font-size="10.5">full_warehouse</text>
+        <text x="574" y="102" text-anchor="middle" fill="#9AA7B4" font-size="10.5">반송 사이클 실측</text>
+        <line x1="664" y1="74" x2="704" y2="74" stroke="#8A96A3" stroke-width="1.5" marker-end="url(#sr)"/>
+        <rect x="706" y="36" width="180" height="76" fill="#1C2229" stroke="#F08A32" stroke-width="1.5"/>
+        <text x="796" y="62" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">T4 · 다중 로봇</text>
+        <text x="796" y="84" text-anchor="middle" fill="#F08A32" font-size="10.5" font-weight="700">3~5대 + FMS 스텁</text>
+        <text x="796" y="102" text-anchor="middle" fill="#9AA7B4" font-size="10.5">중앙 하달 첫 결합</text>
+        <line x1="130" y1="112" x2="130" y2="168" stroke="#3BAF77" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#sg)"/>
+        <line x1="352" y1="112" x2="352" y2="168" stroke="#3BAF77" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#sg)"/>
+        <line x1="574" y1="112" x2="574" y2="168" stroke="#3BAF77" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#sg)"/>
+        <line x1="796" y1="112" x2="796" y2="168" stroke="#3BAF77" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#sg)"/>
+        <rect x="40" y="170" width="846" height="48" fill="#17251E" stroke="#3BAF77" stroke-width="1.5"/>
+        <text x="463" y="199" text-anchor="middle" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">DES 견적 엔진 — 매 태스크의 실측 수치가 파라미터 보정으로 환류</text>
+        <text x="40" y="244" fill="#9AA7B4" font-size="10.5">가속·감속(T1) · 주행시간 오차(T2) · 사이클 타임 분해(T3) · 간섭 계수(T4) — 환류가 없는 태스크는 완료로 치지 않는다</text>
+      </svg></div>
+      <div class="kcards">
+        <div class="kcard s"><b>원칙 1</b><span>각 태스크는 독립 체크포인트 — 어디서 멈춰도 그 지점까지의 산출은 유효</span></div>
+        <div class="kcard g"><b>원칙 2</b><span>모든 태스크는 DES로 돌려주는 실측 수치 ≥ 1건으로 끝난다 (겉치레 방지)</span></div>
+        <div class="kcard"><b>원칙 3</b><span>표준 스택 준수 — Humble + Fast DDS + Nav2, <a href="runtime_architecture.html" style="color:inherit">런타임 아키텍처</a> REV B의 채택 그대로</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ S1 왜 이 트랙인가 ══════════ -->
+  <section id="s1">
+    <div class="sec-head"><span class="sec-no">SEC 01 · 왜 이 트랙인가</span><h2>"시뮬+ROS2는 조연 아닌가"에 대한 답 — 맞다, 그리고 그게 설계다</h2></div>
+    <div class="sec-body">
+      <p class="lead">제품의 주연은 견적 엔진(DES 스윕 + 원가 모델)이다. 물리 시뮬+ROS2는 조연이 맞고, 아키텍처 원칙("물리는 좁고 깊게, 견적은 넓고 얕게")이 처음부터 그렇게 배역을 나눴다. 문제는 조연이 필요하냐가 아니라, 조연이 <b>소품으로 전락하지 않게 하는 규율</b>이다.</p>
+      <table>
+        <tr><th style="width:200px">역할</th><th>내용</th></tr>
+        <tr><td><b>① 견적의 증거 층</b></td><td>DES 숫자는 가정 위의 숫자다. 벤더도 아닌 우리가 "이 대수면 이 처리량"을 주장하려면 근거가 필요하고, 물리 검증은 그 근거를 <b>직접 측정한 오차 모델</b>로 만든다. 벤더 공개 수치로 보정하는 대안도 있으나, 그 수치는 판매용이라 중립·검증 서사와 충돌한다</td></tr>
+        <tr><td><b>② 발표·영업 자산</b></td><td>제안서 생성기의 차별점은 "고객 도면 위에서 실물 상용 기종이 굴러가는 장면"이다. 팀 관점에서도 6인 구성(로봇/시뮬 트랙 보유)과 발표 평가에서 웹앱+수식만으로는 기술 볼륨이 부족하다</td></tr>
+        <tr><td><b>③ 성장 경로</b></td><td>VDA 5050 어댑터는 견적 도구가 훗날 실로봇·실FMS와 붙는 인터페이스다. 견적 → 도입 검증 → 운영 보조로 자라는 길이 이 트랙에 있다</td></tr>
+      </table>
+      <div class="note"><span class="pl-tag">전락 조건과 방어</span>영상만 찍고 수치를 돌려주지 않는 순간 이 트랙은 장식이 된다. 방어는 SEC 00 원칙 2 — <b>매 태스크가 DES 보정 수치로 끝난다</b>. 반대로 시간이 부족하면 축소선도 명확하다: T4를 잘라 T3까지만 해도 제품(견적+단일 로봇 물리 검증)은 성립한다(SEC 07)</div>
+    </div>
+  </section>
+
+  <!-- ══════════ S2 공통 기반 ══════════ -->
+  <section id="s2">
+    <div class="sec-head"><span class="sec-no">SEC 02 · 공통 기반 (T0)</span><h2>제로에서 시작하지 않는다 — 검증된 자산 위에서 출발</h2></div>
+    <div class="sec-body">
+      <table>
+        <tr><th style="width:190px">항목</th><th>내용</th></tr>
+        <tr><td><b>실행 환경</b></td><td>홈서버 (32GB · RTX 5080) · Isaac Sim 6.0.1 (~/isaacsim) · ROS2 Humble (/opt/ros/humble) · <span class="chip c-amber">Isaac 동시 1인스턴스 규칙</span></td></tr>
+        <tr><td><b>브리지</b></td><td>isaacsim.ros2.bridge 확장 — 시스템 Humble을 소싱한 뒤 Isaac 기동(외부 노드와 같은 DDS 도메인). RMW는 미설정 = Fast DDS 기본, ROS_DOMAIN_ID 통일</td></tr>
+        <tr><td><b>검증된 자산</b></td><td>iw.hub 공식 USD(조인트 구조 확인: 차동 2륜 + 캐스터 4 + 리프트) · full_warehouse 씬(전 메시 콜라이더 확인) · 주행 데모 스크립트(WheeledRobot + DifferentialController, 2026-08-24 실구동) — <a href="amr_model_selection.html">기준 기종 문서</a></td></tr>
+        <tr><td><b>학습 전이</b></td><td>colcon·launch·URDF 경험은 <a href="ros2_arm_lab.html">ROS2 랩 노트</a>에서 계승. 시뮬 시간 규율: 전 노드 use_sim_time, /clock은 Isaac이 발행</td></tr>
+        <tr><td><b>시각화 (헤드리스 제약)</b></td><td>이 서버는 X 없음 → RViz2 직접 실행 불가. 대안 2개: ① Isaac 뷰포트를 WebRTC 스트리밍으로(검증 경로) ② <b>foxglove_bridge</b>(웹소켓 8765)를 띄우고 노트북 브라우저에서 토픽 시각화 — tailscale 경유</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══════════ S3 T1 ══════════ -->
+  <section id="s3">
+    <div class="sec-head"><span class="sec-no">SEC 03 · TASK 1</span><h2>Teleop — 키보드로 iw.hub 한 대를 몬다</h2></div>
+    <div class="sec-body">
+      <table>
+        <tr><th style="width:150px">항목</th><th>내용</th></tr>
+        <tr><td><b>목표</b></td><td>기존 데모의 스크립트 직접 제어를 <b>ROS2 토픽 제어로 교체</b> — 브리지 파이프라인 개통이 본질</td></tr>
+        <tr><td><b>구현 골자</b></td><td>간단 씬에 iw.hub 로드 → OmniGraph 액션 그래프 구성: /cmd_vel 구독 → 차동 컨트롤러(바퀴 반경 0.115m·축간 0.413m, 실측 확인값) → 아티큘레이션, 그리고 /odom·/tf·/clock 발행. 외부에서 <code>teleop_twist_keyboard</code>로 조종(터미널 기반이라 SSH만으로 충분)</td></tr>
+        <tr><td><b>완료 기준</b></td><td>SSH 키 입력으로 전진·후진·회전 동작 / <code>ros2 topic hz</code>로 /odom·/clock 주기 확인 / 스트리밍 클라이언트 육안 확인</td></tr>
+        <tr><td><b>DES 환류</b></td><td><span class="chip c-green">필수</span> 최고 속도·가감속 곡선 실측 → robot_landscape 파라미터 시트의 iw.hub 추정값 1차 보정</td></tr>
+        <tr><td><b>예상 함정</b></td><td>/clock 미발행 시 외부 노드 시간 정지(use_sim_time 확인) · cmd_vel 부호/좌표계 뒤집힘 · 브리지가 시스템 Humble 대신 내장 라이브러리를 잡는 소싱 순서 문제</td></tr>
+        <tr><td><b>예상 소요</b></td><td>2~3일 (추정)</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══════════ S4 T2 ══════════ -->
+  <section id="s4">
+    <div class="sec-head"><span class="sec-no">SEC 04 · TASK 2</span><h2>Nav2 자율주행 — 목표점을 주면 알아서 간다</h2></div>
+    <div class="sec-body">
+      <table>
+        <tr><th style="width:150px">항목</th><th>내용</th></tr>
+        <tr><td><b>목표</b></td><td>간단 씬(장애물 몇 개)에서 NavigateToPose로 A→B 자율주행. Nav2 풀스택을 한 번 온전히 돌려 스택을 이해하는 학습 단계</td></tr>
+        <tr><td><b>구현 골자</b></td><td>iw_hub_sensors 변형 USD(라이다 포함) 사용 → 라이다 토픽 발행 추가 → Isaac 오큐펀시 맵 생성기로 맵 추출(PNG+YAML) → nav2_bringup(map_server·planner·controller·bt_navigator). 위치는 1차로 그라운드 트루스(map→odom 고정)로 단순화, AMCL은 여력 시 비교 실험</td></tr>
+        <tr><td><b>완료 기준</b></td><td>목표점 5곳 연속 도달 / 경로상 장애물 회피 확인 / foxglove로 코스트맵·경로 시각 확인</td></tr>
+        <tr><td><b>DES 환류</b></td><td><span class="chip c-green">필수</span> 직선·코너 구간별 주행시간 실측 vs DES 1m 셀 이동 모델 → 오차율 첫 데이터</td></tr>
+        <tr><td><b>예상 함정</b></td><td>TF 트리 구성(map→odom→base_link 책임 분리) · 라이다 토픽 타입(LaserScan vs PointCloud2)과 Nav2 설정 불일치 · 이 단계는 글로벌 플래너 ON이 정상 — T4에서 OFF로 전환됨을 미리 인지</td></tr>
+        <tr><td><b>예상 소요</b></td><td>4~5일 (추정)</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══════════ S5 T3 ══════════ -->
+  <section id="s5">
+    <div class="sec-head"><span class="sec-no">SEC 05 · TASK 3</span><h2>물류 씬 투입 — 창고에서 반송 사이클을 돈다</h2></div>
+    <div class="sec-body">
+      <table>
+        <tr><th style="width:150px">항목</th><th>내용</th></tr>
+        <tr><td><b>목표</b></td><td>full_warehouse에서 스테이션 A↔B 반복 반송 — 데모(demo.html)의 파킹·스테이션 개념과 좌표 체계를 맞춘다</td></tr>
+        <tr><td><b>구현 골자</b></td><td>창고 오큐펀시 맵 생성 → 스테이션·파킹 좌표 정의 → 왕복 반송 루프(NavigateToPose 연쇄) → 사이클 타임 로거. 리프트 조인트 적재·하역 연출은 옵션(발표 장면용)</td></tr>
+        <tr><td><b>완료 기준</b></td><td>왕복 반송 20회 무충돌 완주 / 사이클 타임 로그 자동 수집</td></tr>
+        <tr><td><b>DES 환류</b></td><td><span class="chip c-green">필수</span> 사이클 타임 분해(주행/회전/정지·재출발) → DES의 속도·회전 페널티 파라미터 보정. 여기서 나온 값이 견적 엔진 신뢰도의 첫 실증</td></tr>
+        <tr><td><b>예상 함정</b></td><td>3,473 콜라이더 씬에서 코스트맵 해상도·갱신 주기 튜닝 · 좁은 랙 통로의 팽창 반경 설정 · RAM은 Isaac 16GB + Nav2 1대라 여유(<a href="runtime_architecture.html">SEC 04</a>)</td></tr>
+        <tr><td><b>예상 소요</b></td><td>3~4일 (추정)</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══════════ S6 T4 ══════════ -->
+  <section id="s6">
+    <div class="sec-head"><span class="sec-no">SEC 06 · TASK 4</span><h2>다중 로봇 — 표준 아키텍처(중앙 하달)로 전환한다</h2></div>
+    <div class="sec-body">
+      <table>
+        <tr><th style="width:150px">항목</th><th>내용</th></tr>
+        <tr><td><b>목표</b></td><td>3~5대 + FMS 스텁의 첫 결합 — 여기서부터가 우리 아키텍처의 본 모습이다. 로봇의 자율 경로계획을 끄고 <b>중앙이 경로를 하달</b>한다</td></tr>
+        <tr><td><b>구현 골자</b></td><td>네임스페이스 분리(/robot1…) · 로봇별 Nav2를 <b>컨트롤러 모드</b>로 전환(글로벌 플래너 OFF, FollowPath/NavigateThroughPoses로 경로 주입) · FMS 스텁(간단 중앙 하달기 — 팀 MAPF 로직이 붙기 전의 대체) · VDA 5050 어댑터 초판(order 하달·state 보고, MQTT)</td></tr>
+        <tr><td><b>완료 기준</b></td><td>3대가 교차 경로에서 중앙 하달 경로로 무충돌 운행 / 어댑터 경유로 상태가 MQTT에 올라옴 / 경로 막힘 시 재계획 없이 FMS 보고 동작</td></tr>
+        <tr><td><b>DES 환류</b></td><td><span class="chip c-green">필수</span> 다중 로봇 간섭 실측(합류 대기·양보 시간) → DES 간섭 계수 보정. 부가로 Nav2 대당 RAM/CPU 실측 → <a href="runtime_architecture.html">런타임 아키텍처</a> SEC 04 추정치를 실측 칩으로 교체</td></tr>
+        <tr><td><b>예상 함정</b></td><td>네임스페이스별 TF 충돌(frame 이름 접두) · /clock 단일화 · DDS 참가자 수 증가 시 디스커버리 지연 · 대수 확대는 스케일 사다리(런타임 아키텍처 SEC 05) 적용</td></tr>
+        <tr><td><b>예상 소요</b></td><td>5~7일 (추정)</td></tr>
+      </table>
+      <div class="plain"><span class="pl-tag">T4가 끝나면</span>SIL 트랙이 팀 FMS(MAPF)와 결합할 소켓이 완성된다 — FMS 스텁 자리에 실제 디스패처를 꽂으면 검증 런 파이프라인이 된다. 이후는 로드맵 밖: 보정 루프 반복, 최적 구성 검증 런, 발표 장면 촬영.</div>
+    </div>
+  </section>
+
+  <!-- ══════════ S7 리스크·축소선 ══════════ -->
+  <section id="s7">
+    <div class="sec-head"><span class="sec-no">SEC 07 · 리스크와 축소선</span><h2>어디서 멈춰도 제품은 성립한다</h2></div>
+    <div class="sec-body">
+      <table>
+        <tr><th style="width:220px">시간 압박 시나리오</th><th>축소선</th><th style="width:250px">그때도 남는 것</th></tr>
+        <tr><td>T4 진입 불가</td><td>T3까지 — 단일 로봇 물리 검증 체제</td><td>견적 + 사이클 타임 보정 + 창고 주행 영상. 다중 로봇 수치는 DES 단독 + 문헌 근거로 대체</td></tr>
+        <tr><td>T3 진입 불가</td><td>T2까지 — 간단 씬 검증</td><td>견적 + 주행시간 오차 데이터 + 자율주행 시연</td></tr>
+        <tr><td>Nav2 자체가 막힘</td><td>T1 + 경량 추종기 직행(런타임 아키텍처 D-5의 다운그레이드 경로)</td><td>견적 + 가감속 보정 + 중앙 하달 데모(물리 충실도만 낮음)</td></tr>
+      </table>
+      <table>
+        <tr><th style="width:220px">기술 리스크</th><th>대응</th></tr>
+        <tr><td>브리지·Humble 소싱 충돌</td><td>T1에서 가장 먼저 부딪히는 이유 — 사다리의 맨 아래 단에 배치해 조기 검출</td></tr>
+        <tr><td>헤드리스 시각화 병목</td><td>foxglove_bridge를 T2 시작 전에 셋업(공통 기반) — RViz 부재를 상수로 취급</td></tr>
+        <tr><td>Isaac 인스턴스 충돌</td><td>동시 1인스턴스 규칙(OOM 실측 사고 기록) — 개발 중 스크립트 재실행 전 기존 프로세스 종료 습관화</td></tr>
+        <tr><td>일정 전체</td><td>4태스크 합산 추정 14~19일 — 주차 배정은 팀 마일스톤 확정 후 이 문서에 기입</td></tr>
+      </table>
+      <div class="kcards">
+        <div class="kcard s"><b><a href="runtime_architecture.html" style="color:inherit">런타임 아키텍처</a></b><span>표준 스택 채택·배치·스케일 사다리 (WORKING)</span></div>
+        <div class="kcard"><b><a href="amr_tech_plan.html" style="color:inherit">기술 실행 계획</a></b><span>2계층 구조와 SIL 검증 트랙의 원 설계 (TECH 02)</span></div>
+        <div class="kcard g"><b><a href="amr_model_selection.html" style="color:inherit">기준 기종 선정</a></b><span>iw.hub 고정 근거와 실구동 검증 기록 (RESEARCH 04)</span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">WORKING · SIL-ROADMAP · REV A — 작성 2026-08-25 · 소요 기간은 전부 추정, 주차 배정은 팀 마일스톤 확정 후 기입 · 기술 전제는 런타임 아키텍처 REV B 준수 · <a href="index.html">문서 인덱스로</a></div>
+</footer>
+
+</body>
+</html>
