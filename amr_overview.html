@@ -169,6 +169,7 @@
   <div class="sec-body">
     <p class="lead"><b>"물류센터의 시설·물류 데이터를 받아, 시뮬레이션으로 AMR 대수별 처리량–비용–ROI를 투명하게 산출하고,
     고객이 곡선 위에서 직접 도입 규모를 선택하게 하는 중립 견적 SaaS."</b> — 제품 한 줄 정의</p>
+    <div class="note"><span class="pl-tag">기준선 개정 (2026-08-26)</span>실제 벤더 도입 프로세스(현장 매핑 → 플릿 설계 → 가상 시운전 → 견적)를 공개 표준으로 재현하는 <b>2단계 시뮬레이션 파이프라인</b>으로 재정의 — DES=개략 검토, SIL=가상 시운전. 타겟 시장은 <b>계약물류 중견 3PL</b>로 확정(근거: <a href="3pl_industry.html">3PL 업계 구조</a> SEC 06, 제외: 대형 3PL·이커머스 풀필먼트 특화). 로봇 실행기는 자체 추종기 확정(<a href="runtime_architecture.html">런타임 아키텍처</a> REV C).</div>
 
     <h3>이 문서가 답하는 질문</h3>
     <ul class="rules">
@@ -230,7 +231,7 @@
       <line x1="216" y1="475" x2="330" y2="475" stroke="#8FB4D9" stroke-width="2" marker-end="url(#ov-arr)"/>
       <text x="273" y="466" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#F08A32">VDA 5050</text>
       <rect x="336" y="446" width="240" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
-      <text x="350" y="470" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">ROS2 어댑터 + Nav2</text>
+      <text x="350" y="470" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">ROS2 어댑터 + 추종기</text>
       <text x="350" y="490" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">구간 주행만 담당</text>
       <line x1="576" y1="475" x2="630" y2="475" stroke="#8FB4D9" stroke-width="2" marker-end="url(#ov-arr)"/>
       <rect x="636" y="446" width="248" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
@@ -290,7 +291,7 @@
     <div class="kcards">
       <div class="kcard"><b>VDA 5050 경계 불변</b><span><a class="term" href="glossary_industrial.html#vda5050">VDA 5050</a> 경계선 위의 플랫폼 코드는 가상↔현실 전환 시 바뀌지 않는다 — v2(실로봇 관제) 확장이 아키텍처에 내장</span></div>
       <div class="kcard g"><b>보정 루프</b><span>에뮬레이션 실측 구간 주행시간 → SimPy 유효속도 계수 보정 → 재스윕</span></div>
-      <div class="kcard s"><b>정합성 결정</b><span>경로는 중앙 하달, <a class="term" href="glossary_robotics.html#nav2">Nav2</a>는 구간 주행만 — 두 계층이 같은 시스템을 시뮬레이션해야 오차 비교가 성립</span></div>
+      <div class="kcard s"><b>정합성 결정</b><span>경로는 중앙 하달, 로봇은 자체 추종기로 구간 주행만(<a class="term" href="glossary_robotics.html#nav2">Nav2</a>·AMCL은 부록 실험) — 두 계층이 같은 시스템을 시뮬레이션해야 오차 비교가 성립</span></div>
     </div>
   </div>
 </section>
@@ -302,7 +303,7 @@
     <p class="lead">여섯 명이 4개 트랙으로 나뉩니다. 각 트랙의 산출물이 시스템 지도(SEC 00)의 상자들과 1:1로 대응합니다.</p>
     <div class="tbl-scroll"><table>
       <tr><th>트랙</th><th>담당 산출물</th></tr>
-      <tr><td><b>로봇/시뮬</b></td><td>ROS2 어댑터, Nav2 구간 주행, Isaac 에뮬레이션, RTF 실측, 보정 루프</td></tr>
+      <tr><td><b>로봇/시뮬</b></td><td>ROS2 어댑터, 자체 추종기·SLAM 매핑, Isaac 에뮬레이션, RTF 실측, 보정 루프</td></tr>
       <tr><td><b>AI</b></td><td>SimPy DES + MAPF 플래너, 서러게이트 파이프라인(역방향 구성 최적화·액티브 러닝·SHAP 설명), 디스패처 3종(규칙·휴리스틱·RL), 스윕 설계 — 상세는 <a href="amr_tech_plan.html#s3">실행 계획 SEC 03</a></td></tr>
       <tr><td><b>백엔드</b></td><td>Scenario API, K8s Indexed Job, Kafka·Redis·TimescaleDB, WebSocket 진행률</td></tr>
       <tr><td><b>프론트</b></td><td>레이아웃 에디터(축척 보정·실시간 검증), 곡선·히트맵·리플레이, 진행률 매트릭스</td></tr>

@@ -189,7 +189,7 @@
       <text x="500" y="58" font-family="IBM Plex Sans KR, sans-serif" font-size="15" font-weight="700" fill="#E8ECF1">ROS2 + Isaac SIL — 검증 트랙</text>
       <text x="500" y="84" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">질문: 그 답이 실제 스택에서 성립하는가</text>
       <text x="500" y="106" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">속도: RTF ≈ 1 · 최적 구성 1~2개만</text>
-      <text x="500" y="128" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">구성: ROS2 어댑터 + Nav2 구간 주행</text>
+      <text x="500" y="128" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">구성: ROS2 어댑터 + 자체 추종기</text>
       <text x="500" y="150" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">기종: iw.hub 메인 · MiR 250 서브</text>
       <line x1="416" y1="80" x2="478" y2="80" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-arr)"/>
       <text x="447" y="70" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#E8ECF1">최적 구성 전달</text>
@@ -202,7 +202,7 @@
       <line x1="684" y1="180" x2="684" y2="210" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-arr)"/>
       <text x="450" y="296" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">보정 루프: 에뮬레이션 실측 엣지 주행시간 → SimPy 유효속도 계수 캘리브레이션 → 재스윕</text>
     </svg>
-    <p class="soft">두 계층 모두 같은 VDA 5050 경계 위에서 동작합니다. 경로는 중앙에서 하달하고 Nav2는 구간 주행만 맡아야
+    <p class="soft">두 계층 모두 같은 VDA 5050 경계 위에서 동작합니다. 경로는 중앙에서 하달하고 로봇 추종기는 구간 주행만 맡아야
     두 계층이 "같은 시스템"을 시뮬레이션하게 됩니다 — 오차 비교가 성립하는 조건입니다.</p>
 
     <details class="more"><summary>먼저 알아둘 용어 7개 — 펼쳐 보기</summary>
@@ -228,8 +228,9 @@
     <div class="kcards">
       <div class="kcard"><b>단일 내부 표현 = 계약</b><span>인테이크가 어떤 형태로 들어와도 "시맨틱 그리드 + 수요 프로파일 JSON" 하나로 변환 — 이후 전부 이것만 바라본다</span></div>
       <div class="kcard s"><b>스윕 = K8s Indexed Job</b><span>스윕 1회 = 잡 1벌, 인덱스 = 기종×대수×시드. Kafka→TimescaleDB 집계, Redis→WebSocket 진행률</span></div>
-      <div class="kcard g"><b>경로는 중앙 하달</b><span>VDA 5050 노드/엣지를 내려보내고 <a class="term" href="glossary_robotics.html#nav2">Nav2</a>는 구간 주행만 — 아니면 두 계층의 정합성 비교가 무너진다</span></div>
+      <div class="kcard g"><b>경로는 중앙 하달</b><span>VDA 5050 노드/엣지를 내려보내고 로봇은 자체 추종기로 구간 주행만(<a class="term" href="glossary_robotics.html#nav2">Nav2</a>·AMCL은 부록 실험) — 아니면 두 계층의 정합성 비교가 무너진다</span></div>
     </div>
+    <div class="note"><span class="pl-tag">기준선 반영 (2026-08-26)</span>① 정합성 지표를 <b>"엣지 통과시간 분포의 일치"</b>로 정량화 — SIL 실측 분포(통과시간·도킹)를 DES 입력으로 역주입하는 캘리브레이션은 오프라인 캠페인 1회로 수행해 파라미터 라이브러리화. ② 차량 파라미터 입력은 <b>VDA 5050 factsheet 포맷</b>(사양 원문에 planning·dimensioning·simulation 용도 명시) — 타 VDA 5050 차량으로의 일반화가 포맷 수준에서 보장. ③ 도면 파싱은 v2 로드맵 이관 — v1 입력은 SLAM 스캔 지도 또는 파라메트릭 사양 + 지도 위 그래프 에디터. ④ MAPF v1은 Prioritized Planning + space-time 예약, 솔버 스왑 벤치(PP/CBS/ECBS/PIBT/LaCAM)는 부록. 원천: 기획 보충자료 v2.</div>
     <p class="soft">이 제품에 이르게 된 5단계 의사결정 여정과 교훈은 <a href="topic_journey.html#p2">PLAN 02 · 확정 여정</a>에 있습니다.</p>
   </div>
 </section>
@@ -352,7 +353,7 @@
     <details class="more"><summary>청중별 핵심 메시지 — 펼쳐 보기</summary>
     <div class="tbl-scroll"><table>
       <tr><th>청중</th><th>메시지</th></tr>
-      <tr><td><b>비전문가</b></td><td>"로봇 업체의 블랙박스 견적을 중립 시뮬레이션으로 — 곡선에서 직접 선택하세요." + T1 3분 체험 + 스윕 매트릭스가 실시간으로 채워지는 화면</td></tr>
+      <tr><td><b>비전문가</b></td><td>"입찰 마감은 2주, 벤더 견적은 4주 — 중립적인 답을 당일에 냅니다." + T1 3분 체험 + 스윕 매트릭스가 실시간으로 채워지는 화면</td></tr>
       <tr><td><b>기술 면접관</b></td><td>2계층 분리의 물리적 필연성 / VDA 5050 경계 불변("테스트한 코드가 배포된다") / SimPy vs Isaac 오차 분석(디지털 트윈 정합성) / RHCR·MAPF 이론 정합 / VDI 3633 V&amp;V / CI·민감도의 통계적 정직함</td></tr>
       <tr><td><b>트랙별</b></td><td>대기업 생산기술 지원 → DES·반송 최적화·V&amp;V 중심 / AMR 기업 지원 → VDA 5050·Isaac 검증 트랙 중심</td></tr>
     </table></div>

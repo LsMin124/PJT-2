@@ -93,7 +93,7 @@
     </div>
     <div class="meta">
       DOC. <b>AMR-SELECTION</b><br>
-      REV. <b>A</b> · 결정일 <b>2026-08-24</b><br>
+      REV. <b>B</b> · 결정 <b>08-24 · 개정 08-26</b><br>
       상태 <b>기준 기종 확정: iw.hub</b>
     </div>
   </div>
@@ -160,8 +160,17 @@
 
   <!-- ══════════ M3 선정 근거 ══════════ -->
   <section id="m3">
-    <div class="sec-head"><span class="sec-no">SEC 03 · 선정 근거</span><h2>iw.hub을 고르는 다섯 가지 이유</h2></div>
+    <div class="sec-head"><span class="sec-no">SEC 03 · 선정 근거</span><h2>iw.hub 선정 논리 — 상위 4단과 실행 근거</h2></div>
     <div class="sec-body">
+      <p class="lead">2026-08-26 기준선에서 선정 논리를 자산 가용성 중심에서 <b>문제 정합 중심의 4단 논리</b>로 격상했다. 아래 실행 근거 ①~⑤는 그 하위 증거로 유지된다.</p>
+      <table>
+        <tr><th style="width:210px">상위 논리</th><th>내용</th></tr>
+        <tr><td><b>1. 문제 범위 정합</b></td><td>본 서비스의 대상은 기존 레이아웃 유지 하의 팔레트·토트 운송(브라운필드) — 타겟(계약물류 중견 3PL)과 일치. 시장 1위 Geek+의 GTP 그리드는 레이아웃을 재설계하는 그린필드 문제라 <b>후보군에 애초에 없다</b></td></tr>
+        <tr><td><b>2. 제어 아키텍처 정합</b></td><td>확정 뼈대가 VDA 5050 중앙 하달인데, idealworks(BMW 스핀오프)는 VDA 5050 진영의 핵심이고 iw.hub은 사실상 레퍼런스 구현체다. 비공개 수직통합 생태계는 디스패치 로직을 추측으로 재구성해야 해 그 순간 V&amp;V가 무너진다</td></tr>
+        <tr><td><b>3. 벤더 중립 일반화</b></td><td>차량 파라미터를 VDA 5050 factsheet 포맷(사양 원문에 planning·dimensioning·simulation 용도 명시)으로 받으면, 결과가 "iw.hub의 예측"이 아니라 <b>VDA 5050 호환 AMR 일반의 예측</b>으로 일반화된다 — MiR 등 파라미터 교체 적용</td></tr>
+        <tr><td><b>4. 자산 출처 타당성</b></td><td>Isaac 에셋이 BMW–NVIDIA 디지털 트윈 협업(iFactory/Omniverse) 유래의 제조사 연계 공식 자산 — 모델 데이터 타당성을 출처로 보증</td></tr>
+      </table>
+      <h3>실행 근거 ①~⑤</h3>
       <table>
         <tr><th style="width:230px">근거</th><th>내용</th></tr>
         <tr><td><b>① 공식 물리 모델의 유일성</b></td><td>카탈로그 5종 중 제조사(idealworks)·NVIDIA 협업으로 <b>Isaac 공식 USD가 배포되는 유일한 기종</b>. 임포트 변환·튜닝 리스크가 0에서 시작한다 (에셋 경로: <span style="font-family:var(--mono);font-size:12px">Isaac/Robots/Idealworks/iwhub/</span>)</td></tr>
@@ -216,7 +225,7 @@
 </div>
 
 <footer>
-  <div class="wrap">RESEARCH 03 · AMR SELECTION · REV A — 결정 2026-08-24 · 실구동 검증은 프로젝트 장비(RTX 5080 · Isaac Sim 6.0.1) 실측 · 사양 출처는 파라미터 시트 참조 · <a href="index.html">문서 인덱스로</a></div>
+  <div class="wrap">RESEARCH 03 · AMR SELECTION · REV B — 결정 08-24 · 개정 08-26 (B: 4단 상위 논리 병합·타겟 정합) · 실구동 검증은 프로젝트 장비(RTX 5080 · Isaac Sim 6.0.1) 실측 · 사양 출처는 파라미터 시트 참조 · <a href="index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>
