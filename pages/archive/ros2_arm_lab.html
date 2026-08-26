@@ -150,7 +150,7 @@
 
 <nav aria-label="문서 내 탐색">
   <div class="wrap">
-    <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a class="nav-home" href="../../index.html">⌂ INDEX</a>
     <a href="#l0">한눈에</a>
     <a href="#l1">01 전체 지도</a>
     <a href="#l2">02 빌드</a>
@@ -160,7 +160,7 @@
     <a href="#l6">06 인터랙티브 IK</a>
     <a href="#l7">07 장애 복기</a>
     <a href="#l8">08 재현 과제</a>
-    <a class="nav-cross" href="glossary_robotics.html">용어사전 ↗</a>
+    <a class="nav-cross" href="../ref/glossary_robotics.html">용어사전 ↗</a>
   </div>
 </nav>
 
@@ -197,7 +197,7 @@
       </svg>
       <figcaption>4단계 여정 — 본문 SEC 01~06이 이 순서를 그대로 따라간다</figcaption>
     </figure>
-    <p class="soft">사전 지식이 필요하면 <a href="glossary_robotics.html">REF A 용어사전</a>의 ROS 2 · URDF · MoveIt2 항목을 먼저 읽고 오세요.
+    <p class="soft">사전 지식이 필요하면 <a href="../ref/glossary_robotics.html">REF A 용어사전</a>의 ROS 2 · URDF · MoveIt2 항목을 먼저 읽고 오세요.
     본문 곳곳의 점선 밑줄 용어를 눌러도 같은 곳으로 연결됩니다.</p>
   </div>
 </section>
@@ -269,9 +269,9 @@
 
     <div class="tbl-scroll"><table>
       <tr><th>단계</th><th>만든 것</th><th>여기서 배우는 개념</th></tr>
-      <tr><td><b>101 — 자작 팔</b></td><td>프리미티브 3관절 URDF + <code>joint_wave</code>(사인파 각도 발행)</td><td><a class="term" href="glossary_robotics.html#urdf">URDF</a> · /joint_states · TF · <a class="term" href="glossary_robotics.html#ros2">ROS2</a> 토픽</td></tr>
+      <tr><td><b>101 — 자작 팔</b></td><td>프리미티브 3관절 URDF + <code>joint_wave</code>(사인파 각도 발행)</td><td><a class="term" href="../ref/glossary_robotics.html#urdf">URDF</a> · /joint_states · TF · <a class="term" href="../ref/glossary_robotics.html#ros2">ROS2</a> 토픽</td></tr>
       <tr><td><b>101.5 — 진짜 팔</b></td><td>UR 공식 description 재사용, UR5e를 Foxglove에 렌더</td><td>오픈소스 재사용 · xacro · 메시 전송(fetchAsset)</td></tr>
-      <tr><td><b>201 — 제어</b></td><td>UR 드라이버(mock) + MoveIt2 + <code>moveit_demo</code></td><td><a class="term" href="glossary_robotics.html#ros2control">ros2_control</a> · <a class="term" href="glossary_robotics.html#moveit2">MoveIt2</a> · 액션</td></tr>
+      <tr><td><b>201 — 제어</b></td><td>UR 드라이버(mock) + MoveIt2 + <code>moveit_demo</code></td><td><a class="term" href="../ref/glossary_robotics.html#ros2control">ros2_control</a> · <a class="term" href="../ref/glossary_robotics.html#moveit2">MoveIt2</a> · 액션</td></tr>
       <tr><td><b>202 — 인터랙티브 IK</b></td><td><code>ik_goto</code>(클릭·타이핑 목표) + <code>servo_jog</code>(실시간 조그)</td><td>위치 IK · 미분 IK · MoveIt Servo · 컨트롤러 전환</td></tr>
     </table></div>
 
@@ -336,7 +336,7 @@
 <section id="l3">
   <div class="sec-head"><span class="sec-no">SEC 03 · URDF · TF</span><h2>구조 × 자세 = 화면</h2></div>
   <div class="sec-body">
-    <p class="lead">로봇팔은 "강체(link)를 관절(joint)로 이어붙인 나무"입니다. <a class="term" href="glossary_robotics.html#urdf">URDF</a>가 그 나무를 적는 형식이고, 우리 <code>arm101.urdf</code>는 링크 5개·회전 관절 3개짜리 최소 예제입니다.</p>
+    <p class="lead">로봇팔은 "강체(link)를 관절(joint)로 이어붙인 나무"입니다. <a class="term" href="../ref/glossary_robotics.html#urdf">URDF</a>가 그 나무를 적는 형식이고, 우리 <code>arm101.urdf</code>는 링크 5개·회전 관절 3개짜리 최소 예제입니다.</p>
 
     <details class="more"><summary>URDF 해부 · joint_wave · 실습 · 점검</summary>
 
@@ -355,7 +355,7 @@
 
     <h3>joint_wave — 각도를 지어내는 노드</h3>
     <p><code>joint_wave.py</code>는 30Hz 타이머로 사인파 각도를 만들어 /joint_states에 발행합니다. 진짜 로봇이라면 모터 엔코더가 할 일을 흉내내는 것 —
-    <b>같은 자리에 SEC 05에서는 mock hardware가, 최종 프로젝트에서는 <a class="term" href="glossary_robotics.html#isaac">Isaac Sim</a>이 들어옵니다.</b>
+    <b>같은 자리에 SEC 05에서는 mock hardware가, 최종 프로젝트에서는 <a class="term" href="../ref/glossary_robotics.html#isaac">Isaac Sim</a>이 들어옵니다.</b>
     joints·amplitudes_rad·periods_sec·offsets_rad를 파라미터로 받도록 일반화해서 자작 팔에도 UR5e에도 같은 노드를 씁니다.</p>
 
     <div class="plain try"><span class="pl-tag">직접 해보기</span>
@@ -375,7 +375,7 @@
 <section id="l4">
   <div class="sec-head"><span class="sec-no">SEC 04 · 원격 시각화</span><h2>PC는 계산만, 그림은 노트북에서</h2></div>
   <div class="sec-body">
-    <p class="lead">이 PC는 SSH로만 접근하는 헤드리스 환경입니다. <a class="term" href="glossary_robotics.html#gazebo">Gazebo</a> GUI 대신 "PC는 계산만, 그림은 노트북에서"로 갔고 —
+    <p class="lead">이 PC는 SSH로만 접근하는 헤드리스 환경입니다. <a class="term" href="../ref/glossary_robotics.html#gazebo">Gazebo</a> GUI 대신 "PC는 계산만, 그림은 노트북에서"로 갔고 —
     이 구조는 최종 프로젝트의 <b>Isaac 헤드리스 + 원격 뷰</b>와 같은 패턴의 예행연습입니다.</p>
 
     <details class="more"><summary>브리지 특성 · 전송 메커니즘 3종 · xacro · 실습 · 점검</summary>
@@ -449,9 +449,9 @@
     </figure>
 
     <div class="plain"><span class="pl-tag">쉽게 말하면</span>
-    <a class="term" href="glossary_robotics.html#ros2control">ros2_control</a>은 "모터 추상화 계층"입니다. 진짜 UR이든, mock이든, Isaac이든
+    <a class="term" href="../ref/glossary_robotics.html#ros2control">ros2_control</a>은 "모터 추상화 계층"입니다. 진짜 UR이든, mock이든, Isaac이든
     hardware interface만 갈아끼우면 위쪽(컨트롤러·MoveIt·우리 코드)은 그대로입니다. 오늘 mock으로 배운 코드가 그대로 시뮬레이터·실기로 이어지는 이유이고,
-    이것이 <a class="term" href="glossary_robotics.html#sim2real">Sim-to-Real</a>의 소프트웨어적 토대입니다.</div>
+    이것이 <a class="term" href="../ref/glossary_robotics.html#sim2real">Sim-to-Real</a>의 소프트웨어적 토대입니다.</div>
 
     <h3>ros2_control 등장인물</h3>
     <div class="tbl-scroll"><table>
@@ -675,9 +675,9 @@ ros2 run arm101 moveit_demo          # ← 이 터미널만 ~/ros2_ws/install/se
 
     <div class="plain try"><span class="pl-tag">다음으로 읽기</span>
     로봇 <b>한 대</b>를 손으로 다뤄봤다면, 다음은 본편의 <b>여러 대 + 검증 트랙</b>입니다.<br>
-    ① <a href="amr_mapf_theory.html">TECH 03 — AMR 경로계획 이론</a>: 여러 대가 서로 부딪히지 않게 움직이는 법(MAPF)<br>
-    ② <a href="amr_decision_inventory.html#df">TECH 04 SEC F — 에뮬레이션 계층</a>: 이 노트의 ROS2 역량이 실제로 투입되는 검증 트랙의 결정들<br>
-    막히는 용어는 <a href="glossary_robotics.html">REF A 용어사전</a>이 그림과 함께 설명합니다(<a class="term" href="glossary_robotics.html#sil">SIL</a> 항목이 검증 트랙의 개념 정리).</div>
+    ① <a href="../tech/amr_mapf_theory.html">TECH 03 — AMR 경로계획 이론</a>: 여러 대가 서로 부딪히지 않게 움직이는 법(MAPF)<br>
+    ② <a href="../tech/amr_decision_inventory.html#df">TECH 04 SEC F — 에뮬레이션 계층</a>: 이 노트의 ROS2 역량이 실제로 투입되는 검증 트랙의 결정들<br>
+    막히는 용어는 <a href="../ref/glossary_robotics.html">REF A 용어사전</a>이 그림과 함께 설명합니다(<a class="term" href="../ref/glossary_robotics.html#sil">SIL</a> 항목이 검증 트랙의 개념 정리).</div>
   </div>
 </section>
 

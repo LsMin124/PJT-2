@@ -95,7 +95,7 @@
 </header>
 
 <nav><div class="wrap">
-  <a class="nav-home" href="index.html">⌂ INDEX</a>
+  <a class="nav-home" href="../../index.html">⌂ INDEX</a>
   <a href="#r0">00 한눈에</a>
   <a href="#r1">01 프로세스 기초</a>
   <a href="#r2">02 경로계획 두 층</a>
@@ -104,7 +104,7 @@
   <a href="#r5">05 배치 토폴로지</a>
   <a href="#r6">06 견적 시나리오</a>
   <a href="#r7">07 결정 현황</a>
-  <a class="nav-cross" href="amr_tech_plan.html">기술 계획 ↗</a>
+  <a class="nav-cross" href="../tech/amr_tech_plan.html">기술 계획 ↗</a>
 </div></nav>
 
 <main class="wrap">
@@ -133,7 +133,7 @@
   <section id="r1">
     <div class="sec-head"><span class="sec-no">SEC 01 · 프로세스 기초</span><h2>ROS2에는 "안"이 없다 — 마스터 없는 피어들의 그래프</h2></div>
     <div class="sec-body">
-      <p><a href="glossary_robotics.html">ROS2</a>에는 ROS1의 roscore 같은 중심 런타임이 없다. 여러 개의 평범한 리눅스 프로세스가 <b>DDS</b>라는 공용 버스로 서로를 자동 발견하고 토픽·서비스로 통신할 뿐이다(<a href="https://docs.ros.org/en/jazzy/Concepts.html">ROS 2 Concepts</a>). 그래서 무언가가 무언가 "안에서" 도는 그림 자체가 성립하지 않는다.</p>
+      <p><a href="../ref/glossary_robotics.html">ROS2</a>에는 ROS1의 roscore 같은 중심 런타임이 없다. 여러 개의 평범한 리눅스 프로세스가 <b>DDS</b>라는 공용 버스로 서로를 자동 발견하고 토픽·서비스로 통신할 뿐이다(<a href="https://docs.ros.org/en/jazzy/Concepts.html">ROS 2 Concepts</a>). 그래서 무언가가 무언가 "안에서" 도는 그림 자체가 성립하지 않는다.</p>
       <div class="viz"><svg viewBox="0 0 900 236" role="img" aria-label="DDS 버스에 동등하게 참여하는 세 종류의 프로세스">
         <text x="450" y="34" text-anchor="middle" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">DDS 버스 — 토픽 · 서비스 · TF</text>
         <text x="450" y="54" text-anchor="middle" fill="#9AA7B4" font-size="11">중심 런타임(마스터) 없음 · 모든 참여자 동등 · 같은 호스트에선 공유메모리 전송</text>
@@ -169,13 +169,13 @@
     <div class="sec-body">
       <div class="tbl-scroll"><table>
         <tr><th></th><th>FMS 레벨 (함대)</th><th>로봇 레벨 (개체)</th></tr>
-        <tr><td><b>하는 일</b></td><td>작업 할당(디스패칭) + 다중 로봇 경로 조정 — <a href="amr_mapf_theory.html">MAPF</a>, RHCR 윈도우, 충돌·교착 회피</td><td>받은 경로의 물리적 수행 — 경로 추종, 국지 장애물 회피, 속도 명령 생성</td></tr>
+        <tr><td><b>하는 일</b></td><td>작업 할당(디스패칭) + 다중 로봇 경로 조정 — <a href="../tech/amr_mapf_theory.html">MAPF</a>, RHCR 윈도우, 충돌·교착 회피</td><td>받은 경로의 물리적 수행 — 경로 추종, 국지 장애물 회피, 속도 명령 생성</td></tr>
         <tr><td><b>구현</b></td><td><span class="chip c-amber">자체 구현</span> 이 프로젝트의 코어 자산 — DES 스윕과 SIL 검증이 같은 로직을 공유</td><td><span class="chip c-steel">자체 추종기</span> 노드 시퀀스 보간 + Pure Pursuit + 안전 필드 정지 — SIL 트랙에서만 등장 (2026-08-26 확정)</td></tr>
         <tr><td><b>다루는 단위</b></td><td>로봇 N대 전체 · 1m 셀 그리드 · 고정 틱</td><td>로봇 1대 · 연속 공간 · 센서</td></tr>
       </table></div>
       <p><a href="https://docs.nav2.org/">Nav2</a>는 태생이 로봇 1대의 내비게이션 스택이라 다중 로봇 조정 개념이 없다. 네임스페이스로 여러 대를 띄울 수는 있으나 서로의 경로를 모른 채 각자 계획할 뿐이어서, 교차로 교착·협로 양보를 풀지 못한다 — 그것이 FMS/MAPF 층이 존재하는 이유다.</p>
       <h3>VDA 5050이 이 분업을 프로토콜로 강제한다</h3>
-      <p><a href="https://github.com/VDA5050/VDA5050">VDA 5050</a>의 order 메시지는 경로 자체(노드·엣지 시퀀스)를 담아 하달된다. "경로를 정하는 것은 중앙, 따라가는 것은 로봇"이 표준 수준에서 갈리며, 우리 설계의 중앙 하달 원칙(<a href="amr_overview.html">개괄</a>)과 일치한다. 상용 AMR도 동일 구조다 — 온보드 내비와 FMS 트래픽 관리는 분리되고, 그 경계가 VDA 5050이다.</p>
+      <p><a href="https://github.com/VDA5050/VDA5050">VDA 5050</a>의 order 메시지는 경로 자체(노드·엣지 시퀀스)를 담아 하달된다. "경로를 정하는 것은 중앙, 따라가는 것은 로봇"이 표준 수준에서 갈리며, 우리 설계의 중앙 하달 원칙(<a href="../tech/amr_overview.html">개괄</a>)과 일치한다. 상용 AMR도 동일 구조다 — 온보드 내비와 FMS 트래픽 관리는 분리되고, 그 경계가 VDA 5050이다.</p>
       <div class="note"><span class="pl-tag">로봇 실행기 확정 (2026-08-26)</span>로봇 레벨은 Nav2가 아니라 <b>자체 경량 추종기</b>로 확정한다. 산업 AMR의 장애물 대응은 로컬 회피가 아니라 감속→정지→대기→재개라서, Nav2의 로컬 회피는 오히려 실제 거동과 다른 움직임을 만든다. 글로벌 플래너는 FMS가 대체하고 복구 비헤이비어도 산업 관행(정지·보고)상 불필요하다. 경로가 막히면 로봇이 재계획하지 않고 FMS에 보고해 중앙이 다시 푼다. Nav2·AMCL은 "알고 배제했다"의 물증으로 <a href="sil_roadmap.html">부록 비교 실험</a>에만 등장한다.</div>
     </div>
   </section>
@@ -389,9 +389,9 @@
         <tr><td><b>D-6 시연 백업 리허설</b></td><td>실시 / 생략</td><td>발표 2주 전 RunPod noVNC 경로 1회 리허설(~$3) — 당일 회선 리스크 보험</td></tr>
       </table>
       <div class="kcards">
-        <div class="kcard"><b><a href="amr_tech_plan.html" style="color:inherit">기술 실행 계획</a></b><span>2계층(DES+SIL) 구조와 검증 트랙의 원 설계 (TECH 02)</span></div>
+        <div class="kcard"><b><a href="../tech/amr_tech_plan.html" style="color:inherit">기술 실행 계획</a></b><span>2계층(DES+SIL) 구조와 검증 트랙의 원 설계 (TECH 02)</span></div>
         <div class="kcard s"><b><a href="sil_roadmap.html" style="color:inherit">SIL 구현 로드맵</a></b><span>이 아키텍처의 구현 순서 — 4태스크·부록 실험 (WORKING)</span></div>
-        <div class="kcard g"><b><a href="amr_mapf_theory.html" style="color:inherit">MAPF 이론</a></b><span>FMS 층이 푸는 문제의 이론 배경 (TECH 03)</span></div>
+        <div class="kcard g"><b><a href="../tech/amr_mapf_theory.html" style="color:inherit">MAPF 이론</a></b><span>FMS 층이 푸는 문제의 이론 배경 (TECH 03)</span></div>
       </div>
     </div>
   </section>
@@ -399,7 +399,7 @@
 </main>
 
 <footer>
-  <div class="wrap">WORKING · RUNTIME-ARCH · REV C — 개정 2026-08-26 (C: 로봇 실행기 = 자체 추종기 확정, Nav2는 부록 실험으로 · 스케일 사다리 축소 / B: 표준 미들웨어 확정 · SVG · 사다리) · Isaac 수치는 프로젝트 장비(RTX 5080 · Isaac Sim 6.0.1) 실측, 표기 없는 수치는 추정으로 명기 · 시세는 조사 시점 기준 변동 가능 · <a href="index.html">문서 인덱스로</a></div>
+  <div class="wrap">WORKING · RUNTIME-ARCH · REV C — 개정 2026-08-26 (C: 로봇 실행기 = 자체 추종기 확정, Nav2는 부록 실험으로 · 스케일 사다리 축소 / B: 표준 미들웨어 확정 · SVG · 사다리) · Isaac 수치는 프로젝트 장비(RTX 5080 · Isaac Sim 6.0.1) 실측, 표기 없는 수치는 추정으로 명기 · 시세는 조사 시점 기준 변동 가능 · <a href="../../index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>

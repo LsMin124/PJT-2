@@ -147,7 +147,7 @@
 
 <nav aria-label="문서 내 탐색">
   <div class="wrap">
-    <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a class="nav-home" href="../../index.html">⌂ INDEX</a>
     <a href="#s0">00 한눈에</a>
     <a href="#s1">01 아키텍처</a>
     <a href="#s2">02 이론 기반</a>
@@ -211,7 +211,7 @@
       <tr><td><b>SIL</b></td><td>Software-In-the-Loop. 실제 소프트웨어 스택을 가상 하드웨어에 물려 검증하는 방식. 본 프로젝트 검증 트랙의 정체</td></tr>
       <tr><td><b>VDI 3633</b></td><td>시뮬레이션 프로젝트의 절차와 검증(V&amp;V)을 정리한 독일 공학 지침. "투명한 견적" 주장의 표준 준거</td></tr>
       <tr><td><b>ISO 22400 · ISO 3691-4</b></td><td>제조 운영 KPI 정의 표준(리포트 용어의 출처) · 무인 운반차 안전 표준(안전 거동 파라미터의 출처)</td></tr>
-      <tr><td><b><a class="term" href="glossary_industrial.html#sparkplug">Sparkplug B</a></b></td><td>MQTT 위에서 장비 상태를 구조화해 보내는 규약. 가상 AMR 텔레메트리에 사용(역할은 얇게)</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#sparkplug">Sparkplug B</a></b></td><td>MQTT 위에서 장비 상태를 구조화해 보내는 규약. 가상 AMR 텔레메트리에 사용(역할은 얇게)</td></tr>
       <tr><td><b>sim-to-sim 분리</b></td><td>RL 학습은 빠른 SimPy-Gymnasium에서, 검증은 정밀한 Isaac에서 — 학습과 검증 시뮬레이터를 분리하는 설계</td></tr>
       <tr><td><b>Gymnasium</b></td><td>강화학습 환경의 표준 인터페이스. SimPy 시뮬레이션을 RL이 학습할 수 있는 형태로 감싼다</td></tr>
       <tr><td><b>OAT · CI</b></td><td>변수 하나씩 흔드는 민감도 분석(One-At-a-Time) · 95% 신뢰구간(Confidence Interval). 통계적 정직함의 도구</td></tr>
@@ -228,10 +228,10 @@
     <div class="kcards">
       <div class="kcard"><b>단일 내부 표현 = 계약</b><span>인테이크가 어떤 형태로 들어와도 "시맨틱 그리드 + 수요 프로파일 JSON" 하나로 변환 — 이후 전부 이것만 바라본다</span></div>
       <div class="kcard s"><b>스윕 = K8s Indexed Job</b><span>스윕 1회 = 잡 1벌, 인덱스 = 기종×대수×시드. Kafka→TimescaleDB 집계, Redis→WebSocket 진행률</span></div>
-      <div class="kcard g"><b>경로는 중앙 하달</b><span>VDA 5050 노드/엣지를 내려보내고 로봇은 자체 추종기로 구간 주행만(<a class="term" href="glossary_robotics.html#nav2">Nav2</a>·AMCL은 부록 실험) — 아니면 두 계층의 정합성 비교가 무너진다</span></div>
+      <div class="kcard g"><b>경로는 중앙 하달</b><span>VDA 5050 노드/엣지를 내려보내고 로봇은 자체 추종기로 구간 주행만(<a class="term" href="../ref/glossary_robotics.html#nav2">Nav2</a>·AMCL은 부록 실험) — 아니면 두 계층의 정합성 비교가 무너진다</span></div>
     </div>
     <div class="note"><span class="pl-tag">기준선 반영 (2026-08-26)</span>① 정합성 지표를 <b>"엣지 통과시간 분포의 일치"</b>로 정량화 — SIL 실측 분포(통과시간·도킹)를 DES 입력으로 역주입하는 캘리브레이션은 오프라인 캠페인 1회로 수행해 파라미터 라이브러리화. ② 차량 파라미터 입력은 <b>VDA 5050 factsheet 포맷</b>(사양 원문에 planning·dimensioning·simulation 용도 명시) — 타 VDA 5050 차량으로의 일반화가 포맷 수준에서 보장. ③ 도면 파싱은 v2 로드맵 이관 — v1 입력은 SLAM 스캔 지도 또는 파라메트릭 사양 + 지도 위 그래프 에디터. ④ MAPF v1은 Prioritized Planning + space-time 예약, 솔버 스왑 벤치(PP/CBS/ECBS/PIBT/LaCAM)는 부록. 원천: 기획 보충자료 v2.</div>
-    <p class="soft">이 제품에 이르게 된 5단계 의사결정 여정과 교훈은 <a href="topic_journey.html#p2">PLAN 02 · 확정 여정</a>에 있습니다.</p>
+    <p class="soft">이 제품에 이르게 된 5단계 의사결정 여정과 교훈은 <a href="../archive/topic_journey.html#p2">PLAN 02 · 확정 여정</a>에 있습니다.</p>
   </div>
 </section>
 
@@ -240,7 +240,7 @@
   <div class="sec-head"><span class="sec-no">SEC 02 · 이론 기반</span><h2>경합이 곡선의 모양을 결정한다</h2></div>
   <div class="sec-body">
     <p class="lead">대수–처리량 곡선이 꺾이는 이유는 <b>경로 경합</b>이고, 그 수학이
-    <a class="term" href="glossary_robotics.html#mapf">MAPF</a>입니다. 계보(A*→예약 테이블→Prioritized→CBS→RHCR)·문헌·집계 이론 전체는
+    <a class="term" href="../ref/glossary_robotics.html#mapf">MAPF</a>입니다. 계보(A*→예약 테이블→Prioritized→CBS→RHCR)·문헌·집계 이론 전체는
     <b><a href="amr_mapf_theory.html">TECH 03 경로계획 이론</a></b> 한 곳에서 다룹니다.
     이 계획서에 남는 결정은 하나 — <b>SimPy 계층에는 경량 MAPF를 내장</b>(고정 틱, 1틱=1셀)하며, 매 틱 CBS는 배속을 파괴하므로 배제.</p>
   </div>
@@ -288,7 +288,7 @@
       <tr><td><b>VDI 3633</b></td><td>DES 절차·V&amp;V — 투명성 주장의 표준 준거</td><td><span class="chip c-green">필수</span></td></tr>
       <tr><td><b>ISO 22400</b></td><td>KPI 정의 — 리포트 용어집의 출처</td><td><span class="chip c-green">필수</span></td></tr>
       <tr><td><b>ISO 3691-4</b></td><td>안전 거동 → 시뮬 파라미터 출처 (낙관 편향 방지)</td><td><span class="chip c-steel">강추</span></td></tr>
-      <tr><td><b><a class="term" href="glossary_industrial.html#vda5050">VDA 5050</a></b> (2.0)</td><td>검증 트랙 인터페이스 + v2 호환. order/state/connection + instantActions</td><td><span class="chip c-steel">유지</span></td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#vda5050">VDA 5050</a></b> (2.0)</td><td>검증 트랙 인터페이스 + v2 호환. order/state/connection + instantActions</td><td><span class="chip c-steel">유지</span></td></tr>
       <tr><td><b>Sparkplug B</b></td><td>가상 AMR 텔레메트리 — 역할이 얇음을 인정하고 축소</td><td><span class="chip c-amber">축소</span></td></tr>
       <tr><td><b>MassRobotics / OPC UA·ISA-95</b></td><td>비교 검토 후 기각 / v2 백로그</td><td><span class="chip c-amber">지식·백로그</span></td></tr>
     </table></div>
@@ -368,7 +368,7 @@
     <ul class="rules">
       <li><a href="amr_mapf_theory.html"><b>TECH 03 경로계획 이론</b></a> — SEC 02 요약의 원본: MAPF 계보·문헌·학습 로드맵 — 메인 트랙의 다음 문서</li>
       <li><a href="amr_decision_inventory.html"><b>TECH 04 구현 결정 인벤토리</b></a> — 이 계획의 각 항목을 실제 결정 60여 개로 분해한 전수 목록</li>
-      <li><a href="logistics_domain_research.html"><b>ARCHIVE 01 도메인 리서치</b></a> — 이 서비스가 다루는 물류 현장의 실제 모습</li>
+      <li><a href="../archive/logistics_domain_research.html"><b>ARCHIVE 01 도메인 리서치</b></a> — 이 서비스가 다루는 물류 현장의 실제 모습</li>
     </ul>
   </div>
 </section>

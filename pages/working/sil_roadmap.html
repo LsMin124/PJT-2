@@ -96,7 +96,7 @@
 </header>
 
 <nav><div class="wrap">
-  <a class="nav-home" href="index.html">⌂ INDEX</a>
+  <a class="nav-home" href="../../index.html">⌂ INDEX</a>
   <a href="#s0">00 한눈에</a>
   <a href="#s1">01 왜 이 트랙인가</a>
   <a href="#s2">02 공통 기반</a>
@@ -176,8 +176,8 @@
         <tr><th style="width:190px">항목</th><th>내용</th></tr>
         <tr><td><b>실행 환경</b></td><td>홈서버 (32GB · RTX 5080) · Isaac Sim 6.0.1 (~/isaacsim) · ROS2 Humble (/opt/ros/humble) · <span class="chip c-amber">Isaac 동시 1인스턴스 규칙</span></td></tr>
         <tr><td><b>브리지</b></td><td>isaacsim.ros2.bridge 확장 — 시스템 Humble을 소싱한 뒤 Isaac 기동(외부 노드와 같은 DDS 도메인). RMW는 미설정 = Fast DDS 기본, ROS_DOMAIN_ID 통일</td></tr>
-        <tr><td><b>검증된 자산</b></td><td>iw.hub 공식 USD(조인트 구조 확인: 차동 2륜 + 캐스터 4 + 리프트) · full_warehouse 씬(전 메시 콜라이더 확인) · 주행 데모 스크립트(WheeledRobot + DifferentialController, 2026-08-24 실구동) — <a href="amr_model_selection.html">기준 기종 문서</a></td></tr>
-        <tr><td><b>학습 전이</b></td><td>colcon·launch·URDF 경험은 <a href="ros2_arm_lab.html">ROS2 랩 노트</a>에서 계승. 시뮬 시간 규율: 전 노드 use_sim_time, /clock은 Isaac이 발행</td></tr>
+        <tr><td><b>검증된 자산</b></td><td>iw.hub 공식 USD(조인트 구조 확인: 차동 2륜 + 캐스터 4 + 리프트) · full_warehouse 씬(전 메시 콜라이더 확인) · 주행 데모 스크립트(WheeledRobot + DifferentialController, 2026-08-24 실구동) — <a href="../research/amr_model_selection.html">기준 기종 문서</a></td></tr>
+        <tr><td><b>학습 전이</b></td><td>colcon·launch·URDF 경험은 <a href="../archive/ros2_arm_lab.html">ROS2 랩 노트</a>에서 계승. 시뮬 시간 규율: 전 노드 use_sim_time, /clock은 Isaac이 발행</td></tr>
         <tr><td><b>시각화 (헤드리스 제약)</b></td><td>이 서버는 X 없음 → RViz2 직접 실행 불가. 대안 2개: ① Isaac 뷰포트를 WebRTC 스트리밍으로(검증 경로) ② <b>foxglove_bridge</b>(웹소켓 8765)를 띄우고 노트북 브라우저에서 토픽 시각화 — tailscale 경유</td></tr>
       </table>
     </div>
@@ -274,8 +274,8 @@
       </table>
       <div class="kcards">
         <div class="kcard s"><b><a href="runtime_architecture.html" style="color:inherit">런타임 아키텍처</a></b><span>표준 스택 채택·배치·스케일 사다리 (WORKING)</span></div>
-        <div class="kcard"><b><a href="amr_tech_plan.html" style="color:inherit">기술 실행 계획</a></b><span>2계층 구조와 SIL 검증 트랙의 원 설계 (TECH 02)</span></div>
-        <div class="kcard g"><b><a href="amr_model_selection.html" style="color:inherit">기준 기종 선정</a></b><span>iw.hub 고정 근거와 실구동 검증 기록 (RESEARCH 04)</span></div>
+        <div class="kcard"><b><a href="../tech/amr_tech_plan.html" style="color:inherit">기술 실행 계획</a></b><span>2계층 구조와 SIL 검증 트랙의 원 설계 (TECH 02)</span></div>
+        <div class="kcard g"><b><a href="../research/amr_model_selection.html" style="color:inherit">기준 기종 선정</a></b><span>iw.hub 고정 근거와 실구동 검증 기록 (RESEARCH 04)</span></div>
       </div>
     </div>
   </section>
@@ -283,7 +283,7 @@
 </main>
 
 <footer>
-  <div class="wrap">WORKING · SIL-ROADMAP · REV B — 개정 2026-08-26 (B: T2를 SLAM 매핑+자체 추종으로 재정의, Nav2는 부록 비교 실험으로, 부록 실험 3종 신설) · 소요는 전부 추정 · 기술 전제는 런타임 아키텍처 REV C 준수 · <a href="index.html">문서 인덱스로</a></div>
+  <div class="wrap">WORKING · SIL-ROADMAP · REV B — 개정 2026-08-26 (B: T2를 SLAM 매핑+자체 추종으로 재정의, Nav2는 부록 비교 실험으로, 부록 실험 3종 신설) · 소요는 전부 추정 · 기술 전제는 런타임 아키텍처 REV C 준수 · <a href="../../index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>

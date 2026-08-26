@@ -179,7 +179,7 @@
 
 <nav aria-label="섹션 이동">
   <div class="wrap">
-    <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a class="nav-home" href="../../index.html">⌂ INDEX</a>
     <a href="#r0">00 한눈에</a>
     <a href="#r1">01 전체 흐름</a>
     <a href="#r2">02 자동화 vs 인력</a>
@@ -188,7 +188,7 @@
     <a href="#r5">05 데이터셋·자료</a>
     <a href="#r6">06 접근 순서</a>
     <a class="nav-cross" href="topic_journey.html">TOPIC PITCH ↗</a>
-    <a class="nav-x2" href="amr_tech_plan.html">TECH PLAN ↗</a>
+    <a class="nav-x2" href="../tech/amr_tech_plan.html">TECH PLAN ↗</a>
   </div>
 </nav>
 
@@ -202,7 +202,7 @@
       이 조사는 <b>이전 주제(택배 허브 자동화)를 검토하던 과정의 산물</b>입니다. 최종 주제는
       <b>이커머스/3PL 창고의 AMR 도입 견적 시뮬레이션</b>으로 확정됐습니다(전체 개괄 §2·3).
       다만 물류 현장이 어떻게 돌아가는지에 대한 배경 지식으로는 그대로 유효하며,
-      무엇이 새 주제로 계승됐는지는 SEC 04에 정리했습니다. 현행 주제 문서는 <a href="amr_overview.html">TECH 01 전체 개괄</a>부터 읽으세요.</div>
+      무엇이 새 주제로 계승됐는지는 SEC 04에 정리했습니다. 현행 주제 문서는 <a href="../tech/amr_overview.html">TECH 01 전체 개괄</a>부터 읽으세요.</div>
       <div class="kcards">
         <div class="kcard"><b>택배는 어떤 구조로 흐르나</b><span>허브앤스포크 — 대부분 대형 허브 한 곳을 거친다 (SEC 01)</span></div>
         <div class="kcard g"><b>무엇이 자동이고 무엇이 사람 몫인가</b><span>흐르는 상자는 기계가, 집고 쌓는 일은 사람이 (SEC 02·03)</span></div>
@@ -264,7 +264,7 @@
         <tr><td><b>DWS</b></td><td>무게(Weight)·체적(Dimension)을 자동으로 재고 바코드를 읽는(Scanning) 계측 장비</td></tr>
         <tr><td><b>디밴닝 (하차)</b></td><td>devanning — 차량·컨테이너에 실린 짐을 꺼내는 작업. 벌크(낱개로 쌓인) 상태면 가장 힘든 수작업</td></tr>
         <tr><td><b>이형물</b></td><td>규격 상자가 아닌 화물 — 마대·비닐포장·초대형·초소형 등. 자동 분류기가 처리하지 못한다</td></tr>
-        <tr><td><b>풀필먼트</b></td><td>보관·포장·출고까지 판매자 대신 처리해 주는 물류 서비스 (<a class="term" href="glossary_industrial.html#fulfillment">용어사전</a>)</td></tr>
+        <tr><td><b>풀필먼트</b></td><td>보관·포장·출고까지 판매자 대신 처리해 주는 물류 서비스 (<a class="term" href="../ref/glossary_industrial.html#fulfillment">용어사전</a>)</td></tr>
         <tr><td><b>GTP</b></td><td>Goods-to-Person — 사람이 선반으로 가는 대신, 로봇이 선반을 사람 앞으로 가져오는 방식</td></tr>
       </table>
       </details>
@@ -348,7 +348,7 @@
           <p>기사가 적재 순서와 경로를 정해 최종 배송한다. 현재까지 전 구간 인력.</p>
         </div>
       </div>
-      <p class="soft"><a class="term" href="glossary_industrial.html#fulfillment">풀필먼트</a> 센터가 허브와 같은 건물에 있는 경우(곤지암 2~4층), 앞단에 <b>입고 → 보관 → 피킹 → 패킹 → 출고</b>가 추가되고 그 출고 물량이 바로 1층 허브 분류로 이어진다. 본 프로젝트가 다루는 범위가 이 앞단과 같은 구조다.</p>
+      <p class="soft"><a class="term" href="../ref/glossary_industrial.html#fulfillment">풀필먼트</a> 센터가 허브와 같은 건물에 있는 경우(곤지암 2~4층), 앞단에 <b>입고 → 보관 → 피킹 → 패킹 → 출고</b>가 추가되고 그 출고 물량이 바로 1층 허브 분류로 이어진다. 본 프로젝트가 다루는 범위가 이 앞단과 같은 구조다.</p>
       </details>
 
       <details class="more"><summary>기준 사례와 시장 규모 — 곤지암 · 이천 MP · 물동량 수치</summary>
@@ -386,8 +386,8 @@
             <li><b>스캔·계측</b> — 다면 바코드 스캐너, 무게·체적 측정(DWS)</li>
             <li><b>메인 분류</b> — 크로스벨트 소터·휠소터·틸트트레이</li>
             <li><b>이송</b> — 컨베이어, 합류/분기(merge/divert) 제어</li>
-            <li><b>풀필먼트 내부</b> — GTP(선반이 사람 앞으로 오는 방식), AGV(유도선을 따르는 무인 운반차)/<a class="term" href="glossary_industrial.html#amr">AMR</a>(스스로 경로를 찾는 자율 이동 로봇) 선반 이송</li>
-            <li><b>물량 배분 로직</b> — <a class="term" href="glossary_industrial.html#wms">WMS</a>(창고 관리)·TMS(운송 관리)와 소터 제어(WCS)</li>
+            <li><b>풀필먼트 내부</b> — GTP(선반이 사람 앞으로 오는 방식), AGV(유도선을 따르는 무인 운반차)/<a class="term" href="../ref/glossary_industrial.html#amr">AMR</a>(스스로 경로를 찾는 자율 이동 로봇) 선반 이송</li>
+            <li><b>물량 배분 로직</b> — <a class="term" href="../ref/glossary_industrial.html#wms">WMS</a>(창고 관리)·TMS(운송 관리)와 소터 제어(WCS)</li>
           </ul>
         </div>
         <div class="vcard manual">
@@ -480,9 +480,9 @@
       <div class="tbl-scroll">
       <table class="zebra">
         <tr><th style="width:34%">리서치에서 얻은 것</th><th style="width:15%">계승 여부</th><th style="width:51%">어디로 이어지나</th></tr>
-        <tr><td>대기행렬·병목의 시각 (인덕션 정량 분석)</td><td><span class="chip c-green">계승</span></td><td>AMR 견적 엔진(SimPy)의 이론 기반 그대로 — M/M/c·Little's Law (<a href="amr_mapf_theory.html">TECH 03</a> SEC 04)</td></tr>
+        <tr><td>대기행렬·병목의 시각 (인덕션 정량 분석)</td><td><span class="chip c-green">계승</span></td><td>AMR 견적 엔진(SimPy)의 이론 기반 그대로 — M/M/c·Little's Law (<a href="../tech/amr_mapf_theory.html">TECH 03</a> SEC 04)</td></tr>
         <tr><td>현장 프로세스 감각 (공정 흐름·피크·인력 배치)</td><td><span class="chip c-green">계승</span></td><td>인테이크의 수요 프로파일·운영 설문 설계에 반영</td></tr>
-        <tr><td>물류 표준·시스템 감각 (<a class="term" href="glossary_industrial.html#wms">WMS</a>·<a class="term" href="glossary_industrial.html#vda5050">VDA 5050</a>·인증제)</td><td><span class="chip c-green">계승</span></td><td>표준 스택(전체 개괄 §10)과 T3 WMS 연동 로드맵</td></tr>
+        <tr><td>물류 표준·시스템 감각 (<a class="term" href="../ref/glossary_industrial.html#wms">WMS</a>·<a class="term" href="../ref/glossary_industrial.html#vda5050">VDA 5050</a>·인증제)</td><td><span class="chip c-green">계승</span></td><td>표준 스택(전체 개괄 §10)과 T3 WMS 연동 로드맵</td></tr>
         <tr><td>하차·인덕션 로봇 (비정형 인식·파지)</td><td><span class="chip c-amber">아카이브</span></td><td>심화 A·C에 이전 주제 검토 기록으로 보존 — 의사결정 여정의 근거(전체 개괄 §3)</td></tr>
         <tr><td>허브 소터 설비 자동화</td><td><span class="chip c-slate">범위 밖</span></td><td>고정 설비라 AMR 견적의 대상이 아님</td></tr>
       </table>
@@ -515,7 +515,7 @@
       <div class="tbl-scroll">
       <table class="zebra">
         <tr><th style="width:24%">이름</th><th style="width:46%">내용</th><th style="width:30%">활용</th></tr>
-        <tr><td><b><a href="https://simpy.readthedocs.io/">SimPy</a></b></td><td>파이썬 기반 <a class="term" href="glossary_industrial.html#des">이산사건 시뮬레이션(DES)</a> 프레임워크 — 사건이 일어나는 순간만 계산해 긴 시간을 빠르게 돌린다</td><td>허브 라인 처리량·병목 시뮬레이션</td></tr>
+        <tr><td><b><a href="https://simpy.readthedocs.io/">SimPy</a></b></td><td>파이썬 기반 <a class="term" href="../ref/glossary_industrial.html#des">이산사건 시뮬레이션(DES)</a> 프레임워크 — 사건이 일어나는 순간만 계산해 긴 시간을 빠르게 돌린다</td><td>허브 라인 처리량·병목 시뮬레이션</td></tr>
         <tr><td><b><a href="https://www.nlic.go.kr/">NLIC 생활물류통계</a></b></td><td>국가물류통합정보센터 — 월별 택배 물동량, 1인당 이용 횟수 등 공식 통계</td><td>시뮬레이션의 도착 물량 분포·피크 설정 근거</td></tr>
         <tr><td><b><a href="https://www.data.go.kr/">공공데이터포털</a></b></td><td>택배 물동량·생활물류 관련 공공 데이터</td><td>물량 예측 모델 학습 데이터</td></tr>
         <tr><td><b><a href="http://people.brunel.ac.uk/~mastjjb/jeb/orlib/thpackinfo.html">BR1–BR15 벤치마크</a></b></td><td>Bischoff &amp; Ratcliff의 컨테이너 적재(3D bin packing) 표준 문제 세트 — OR-Library 수록</td><td>상차 적재 최적화 알고리즘 검증</td></tr>
@@ -595,9 +595,9 @@
     <div class="sec-body">
       <p class="lead">확정된 주제 기준의 다음 문서입니다. 심화 3부(A·B·C)는 이전 주제 검토 기록(아카이브)으로 보존되어 있습니다.</p>
       <ul class="rules">
-        <li><a href="amr_overview.html"><b>TECH 01 — 프로젝트 전체 개괄</b></a> : 확정된 주제(AMR 도입 견적 시뮬레이션)의 제품 정의·아키텍처·마일스톤</li>
-        <li><a href="amr_mapf_theory.html"><b>TECH 03 — 경로계획 이론 기반</b></a> : 이 조사의 대기행렬 시각이 견적 엔진의 이론으로 이어지는 곳</li>
-        <li><a href="amr_decision_inventory.html"><b>TECH 04 — 구현 결정 인벤토리</b></a> : 새 주제를 실제로 만들기 위해 팀이 합의할 결정 60여 개</li>
+        <li><a href="../tech/amr_overview.html"><b>TECH 01 — 프로젝트 전체 개괄</b></a> : 확정된 주제(AMR 도입 견적 시뮬레이션)의 제품 정의·아키텍처·마일스톤</li>
+        <li><a href="../tech/amr_mapf_theory.html"><b>TECH 03 — 경로계획 이론 기반</b></a> : 이 조사의 대기행렬 시각이 견적 엔진의 이론으로 이어지는 곳</li>
+        <li><a href="../tech/amr_decision_inventory.html"><b>TECH 04 — 구현 결정 인벤토리</b></a> : 새 주제를 실제로 만들기 위해 팀이 합의할 결정 60여 개</li>
         <li><a href="archive.html#induction"><b>ARCHIVE 02 아카이브 ②</b></a> : 대기행렬 이론의 원 적용 사례 — 병목 수식화 과정이 궁금할 때</li>
       </ul>
     </div>
@@ -611,7 +611,7 @@
 </div>
 
 <footer>
-  <div class="wrap">ARCHIVE 02 · DOMAIN RESEARCH · REV B (배경 자료·검토 기록) — 현행 주제 문서는 <a href="amr_overview.html">TECH 01</a>·<a href="amr_mapf_theory.html">TECH 03</a>·<a href="amr_decision_inventory.html">TECH 04</a> · <a href="index.html">문서 인덱스로</a></div>
+  <div class="wrap">ARCHIVE 02 · DOMAIN RESEARCH · REV B (배경 자료·검토 기록) — 현행 주제 문서는 <a href="../tech/amr_overview.html">TECH 01</a>·<a href="../tech/amr_mapf_theory.html">TECH 03</a>·<a href="../tech/amr_decision_inventory.html">TECH 04</a> · <a href="../../index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>

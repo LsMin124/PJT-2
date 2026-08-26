@@ -148,7 +148,7 @@
 
 <nav aria-label="문서 내 탐색">
   <div class="wrap">
-    <a class="nav-home" href="index.html">⌂ INDEX</a>
+    <a class="nav-home" href="../../index.html">⌂ INDEX</a>
     <a href="#t0">읽는 법</a>
     <a href="#t1">01 왜 경로계획인가</a>
     <a href="#t2">02 MAPF 스펙트럼</a>
@@ -244,7 +244,7 @@
 <section id="t2">
   <div class="sec-head"><span class="sec-no">SEC 02 · MAPF 스펙트럼</span><h2>A*에서 RHCR까지 — 우리는 실용선을 탄다</h2></div>
   <div class="sec-body">
-    <p class="lead"><a class="term" href="glossary_robotics.html#mapf"><b>MAPF</b></a>는 N대의 무충돌 경로 집합을 찾아
+    <p class="lead"><a class="term" href="../ref/glossary_robotics.html#mapf"><b>MAPF</b></a>는 N대의 무충돌 경로 집합을 찾아
     총 이동시간을 최소화하는 문제 — 창고 AMR이 대표 응용입니다.</p>
 
     <h3>알고리즘 스펙트럼 — 학습 순서대로 7단계</h3>
@@ -255,13 +255,13 @@
       <p>"(칸, 시각)"을 먼저 찜한 로봇이 임자 — 뒤 로봇은 찜된 조합을 피해 계획한다. 모든 방법의 기저 부품.</p></div>
       <div class="ms"><span class="ms-tag">STEP 3 · Prioritized Planning</span><h4>우선순위 순차 계획 <span class="chip c-amber">v1 구현 타겟</span></h4>
       <p>순번대로 앞 로봇의 예약을 피해 계획. 최적성은 없지만 빠르고 단순해 실무 최다 사용.</p></div>
-      <div class="ms"><span class="ms-tag">STEP 4 · CBS</span><h4><a class="term" href="glossary_robotics.html#cbs">Conflict-Based Search</a> — 최적의 대표</h4>
+      <div class="ms"><span class="ms-tag">STEP 4 · CBS</span><h4><a class="term" href="../ref/glossary_robotics.html#cbs">Conflict-Based Search</a> — 최적의 대표</h4>
       <p>충돌마다 금지 제약을 걸어 두 갈래로 나눠 다시 푸는 트리 탐색. 최적 보장, 대신 로봇 수에 지수적으로 느려짐.</p></div>
       <div class="ms"><span class="ms-tag">STEP 5 · ECBS / EECBS</span><h4>유계 준최적 변형</h4>
       <p>"최적 대비 x% 이내" 보장으로 완화해 속도를 버는 실용선.</p></div>
       <div class="ms"><span class="ms-tag">STEP 6 · Lifelong MAPF</span><h4>끝없는 운영 조건</h4>
       <p>작업이 끝나는 즉시 새 작업이 발급되는, 실제 창고의 문제 설정.</p></div>
-      <div class="ms"><span class="ms-tag">STEP 7 · RHCR</span><h4><a class="term" href="glossary_robotics.html#rhcr">Rolling-Horizon Collision Resolution</a> <span class="chip c-green">직접 기반 문헌</span></h4>
+      <div class="ms"><span class="ms-tag">STEP 7 · RHCR</span><h4><a class="term" href="../ref/glossary_robotics.html#rhcr">Rolling-Horizon Collision Resolution</a> <span class="chip c-green">직접 기반 문헌</span></h4>
       <p>앞 W스텝만 충돌 해소 + 주기적 재계획. 대규모 창고의 사실상 표준이자 본 프로젝트 재계획 구조(TECH 04 B4)의 원형.</p></div>
     </div>
   </div>
@@ -274,7 +274,7 @@
     <p class="lead">경로계획만으로는 부족한 두 가지 — 할당과의 결합(TAPF), 그리고 교착(데드락)입니다.</p>
 
     <h3>TAPF — 할당·경로의 결합 최적화</h3>
-    <p><a class="term" href="glossary_robotics.html#tapf"><b>TAPF</b></a>: 할당("누가")과 경로("어떻게")를 따로 풀면 준최적 —
+    <p><a class="term" href="../ref/glossary_robotics.html#tapf"><b>TAPF</b></a>: 할당("누가")과 경로("어떻게")를 따로 풀면 준최적 —
     v1 절충은 <b>경합 페널티를 할당 비용행렬에 피드백</b>하는 것입니다.</p>
     <details class="more"><summary>왜 따로 풀면 손해인가 — 예시와 v1 설계 (펼쳐 보기)</summary>
     <p>예: 작업장 바로 옆에 있는 로봇이 "가장 가깝다"고 뽑혔는데 그 사이에 정체 구간이 있다면,
@@ -302,7 +302,7 @@
     <p class="lead">매 틱 CBS는 배속을 파괴하므로 경량 MAPF를 내장하고, 결과는 아래 세 도구로 검산·해석합니다.</p>
     <div class="kcards">
       <div class="kcard s"><b>대기행렬 M/M/c</b><span>스테이션 앞 로봇 줄서기의 수학 — 대기·병목 해석의 언어</span></div>
-      <div class="kcard g"><b><a class="term" href="glossary_industrial.html#littleslaw">Little's Law</a> (L = λW)</b><span>등식이 어긋나면 버그 — 검산 도구이자 VDI 3633 verification의 실체</span></div>
+      <div class="kcard g"><b><a class="term" href="../ref/glossary_industrial.html#littleslaw">Little's Law</a> (L = λW)</b><span>등식이 어긋나면 버그 — 검산 도구이자 VDI 3633 verification의 실체</span></div>
       <div class="kcard"><b>Fundamental diagram</b><span>임계 밀도를 넘으면 흐름 감소 — 곡선 ③구간(과밀)의 이론적 설명</span></div>
     </div>
   </div>
@@ -367,7 +367,7 @@
     <div class="plain"><span class="pl-tag">프로젝트 서사와의 연결</span>
     현상 수준 — "AMR을 늘렸더니 처리량이 포화됐다"<br>
     이론 수준 — <b>"이것은 MAPF 문헌에서 정립된 경합 구조이며, 우리 모델의 포화 거동은 lifelong MAPF 연구(RHCR) 및 교통류 이론과 정합한다"</b><br>
-    검증 수준 — 공개 MAPF 벤치마크 + Little's Law 검산 + <a class="term" href="glossary_robotics.html#isaac">Isaac Sim</a> 교차검증 = VDI 3633 V&amp;V 체계의 구체적 실행</div>
+    검증 수준 — 공개 MAPF 벤치마크 + Little's Law 검산 + <a class="term" href="../ref/glossary_robotics.html#isaac">Isaac Sim</a> 교차검증 = VDI 3633 V&amp;V 체계의 구체적 실행</div>
 
     <p class="soft">다음 설계 과제: SimPy 이산사건 세계에서 Prioritized Planning + 예약 테이블을 어떻게 구현할지 — 연속 시간 vs 틱 기반의 절충 설계
     (→ <a href="amr_decision_inventory.html">TECH 04 결정 인벤토리</a> B1·D 계열에서 결정).</p>
@@ -380,8 +380,8 @@
   <div class="sec-body">
     <ul class="rules">
       <li><a href="amr_decision_inventory.html"><b>TECH 04 구현 결정 인벤토리</b></a> — 이 이론이 실제 구현 결정(시간 모델·플래너 선택·재계획 주기)으로 어떻게 번역되는지 — 메인 트랙의 다음 문서</li>
-      <li><a href="glossary_robotics.html#mapf"><b>REF A 용어사전 · MAPF 계열 항목</b></a> — MAPF·CBS·RHCR을 그림 도해와 함께 한 번 더 복습</li>
-      <li><a href="archive.html#induction"><b>ARCHIVE 02 검토 아카이브 · 인덕션 병목</b></a> — 같은 대기행렬 이론이 소터 병목 분석에 쓰이는 실제 사례</li>
+      <li><a href="../ref/glossary_robotics.html#mapf"><b>REF A 용어사전 · MAPF 계열 항목</b></a> — MAPF·CBS·RHCR을 그림 도해와 함께 한 번 더 복습</li>
+      <li><a href="../archive/archive.html#induction"><b>ARCHIVE 02 검토 아카이브 · 인덕션 병목</b></a> — 같은 대기행렬 이론이 소터 병목 분석에 쓰이는 실제 사례</li>
     </ul>
   </div>
 </section>
