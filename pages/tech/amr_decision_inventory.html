@@ -294,6 +294,9 @@
 <!-- ══════════ DB ══════════ -->
 <section id="db">
   <div class="sec-head"><span class="sec-no">SEC B · SimPy DES 엔진</span><h2>충실도와 속도의 절충이 엔진이다</h2></div>
+  <div class="sec-body" style="padding-bottom:0">
+    <div class="note"><span class="pl-tag">신규 결정 대상 (2026-08-26 · 미션 모델 2종 확정에 따름)</span>① 주문→토트 <b>배칭 로직</b>(랙당 토트 수, 주문 묶음 규칙) ② <b>사람–로봇 랑데부 대기 모델</b>(피킹 투어에서 로봇 대기 vs 작업자 대기 — 투어 처리량의 지배 요인) ③ 미션 믹스 비율(반송:투어) 입력 파라미터 ④ 리프트 도킹 시간 분포(상수 아닌 분포, SIL 실측 환류 대상)</div>
+  </div>
   <div class="sec-body">
     <p class="lead">모든 항목의 공통 긴장은 "현실 충실도"와 "수백 런을 감당할 속도"의 절충입니다.</p>
     <p><span class="star">★</span> 핵심 — <b>B1</b> 고정 틱(1틱 = 1셀 이동) · <b>B4</b> RHCR식 고정 윈도우 재계획 · <b>B7</b> 워밍업 구간 절단 필수.</p>
