@@ -138,14 +138,14 @@
     <div>
       <div class="doc-eyebrow">DOCUMENT REGISTER · <b>AMR QUOTE SIMULATION</b> · 2026-08</div>
       <h1>AMR 도입 견적 시뮬레이션 서비스
-        <span class="sub">물류센터 데이터 → 시뮬레이션 스윕 → 대수별 처리량·비용·ROI 곡선. 선택은 고객이, 근거는 시스템이 — 프로젝트 문서 인덱스</span>
+        <span class="sub">현장 조건 입력 → DES 스윕(개략 검토) → 가상 시운전(검증) → 적정 대수·비용·리스크 리포트. 타겟: 계약물류 중견 3PL — 프로젝트 문서 인덱스</span>
       </h1>
     </div>
     <div class="meta">
       TEAM · <b>6명 · 8주</b><br>
       TRACKS · <b>로봇/시뮬 · AI · 백엔드 · 프론트</b><br>
-      STACK · <b>SimPy · K8s · ROS2 · Isaac</b><br>
-      STATUS · <b>SPEC FREEZE</b>
+      STACK · <b>SimPy · ROS2 · Isaac · VDA 5050</b><br>
+      STATUS · <b>BASELINE v2 · 08-26</b>
     </div>
   </div>
 </header>
@@ -158,20 +158,16 @@
   </a>
   <div class="journey">
     <div class="register-label">READING MAP · 무엇을 어떤 순서로 읽나</div>
-    <svg viewBox="0 0 900 442" role="img" aria-label="문서 읽기 지도 — 트랙 1 기획 2부, 트랙 2 조사 4부, 트랙 3 기술 4부, 트랙 4 제품 체험, 트랙 5 부록과 참고">
+    <svg viewBox="0 0 900 442" role="img" aria-label="문서 읽기 지도 — 기획 1부, 조사 3부, 기술 4부, 제품 체험, 부록 4부와 용어사전">
     <defs><marker id="jm-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
     <text x="20" y="42" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">TRACK 1</text><text x="20" y="62" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">기획 — 무엇을 왜</text>
     <a href="project_intro.html"><rect x="180" y="22" width="130" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="192" y="43" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F08A32">PLAN 01</text><text x="192" y="62" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">서비스 소개</text></a>
-    <line x1="312" y1="48" x2="321" y2="48" stroke="#8FB4D9" stroke-width="2" marker-end="url(#jm-arr)"/>
-    <a href="topic_journey.html"><rect x="326" y="22" width="130" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="338" y="43" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F08A32">PLAN 02</text><text x="338" y="62" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">주제 여정</text></a>
     <text x="20" y="132" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">TRACK 2</text><text x="20" y="152" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">조사 — 시장과 업계</text>
-    <a href="logistics_domain_research.html"><rect x="180" y="112" width="130" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="192" y="133" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F08A32">RES 01</text><text x="192" y="152" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">도메인 배경</text></a>
+    <a href="robot_landscape.html"><rect x="180" y="112" width="130" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="192" y="133" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F08A32">RES 01</text><text x="192" y="152" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">로봇 지형</text></a>
     <line x1="312" y1="138" x2="321" y2="138" stroke="#8FB4D9" stroke-width="2" marker-end="url(#jm-arr)"/>
-    <a href="robot_landscape.html"><rect x="326" y="112" width="130" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="338" y="133" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F08A32">RES 02</text><text x="338" y="152" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">로봇 지형</text></a>
+    <a href="3pl_industry.html"><rect x="326" y="112" width="130" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="338" y="133" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F08A32">RES 02</text><text x="338" y="152" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">3PL 업계</text></a>
     <line x1="458" y1="138" x2="467" y2="138" stroke="#8FB4D9" stroke-width="2" marker-end="url(#jm-arr)"/>
-    <a href="3pl_industry.html"><rect x="472" y="112" width="130" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="484" y="133" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F08A32">RES 03</text><text x="484" y="152" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">3PL 업계</text></a>
-    <line x1="604" y1="138" x2="613" y2="138" stroke="#8FB4D9" stroke-width="2" marker-end="url(#jm-arr)"/>
-    <a href="amr_model_selection.html"><rect x="618" y="112" width="130" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="630" y="133" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F08A32">RES 04</text><text x="630" y="152" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">기종 선정</text></a>
+    <a href="amr_model_selection.html"><rect x="472" y="112" width="130" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="484" y="133" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F08A32">RES 03</text><text x="484" y="152" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">기종 선정</text></a>
     <text x="20" y="222" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">TRACK 3</text><text x="20" y="242" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">기술 — 어떻게</text>
     <a href="amr_overview.html"><rect x="180" y="202" width="130" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="192" y="223" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F08A32">TECH 01</text><text x="192" y="242" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">전체 조망</text></a>
     <line x1="312" y1="228" x2="321" y2="228" stroke="#8FB4D9" stroke-width="2" marker-end="url(#jm-arr)"/>
@@ -185,19 +181,21 @@
     <line x1="382" y1="318" x2="425" y2="318" stroke="#8FB4D9" stroke-width="2" marker-end="url(#jm-arr)"/>
     <a href="demo.html"><rect x="430" y="292" width="200" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="442" y="313" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F08A32">LIVE DEMO</text><text x="442" y="332" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">견적 시뮬레이터 체험</text></a>
     <text x="20" y="402" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">TRACK 5</text><text x="20" y="422" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">부록·참고 — 필요할 때</text>
-    <a href="ros2_arm_lab.html"><rect x="180" y="382" width="130" height="50" fill="#20272F" stroke="#8A96A3" stroke-width="1.5"/><text x="192" y="403" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#9AA7B4">ARCH 01</text><text x="192" y="422" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">랩 노트</text></a>
-    <a href="archive.html"><rect x="326" y="382" width="130" height="50" fill="#20272F" stroke="#8A96A3" stroke-width="1.5"/><text x="338" y="403" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#9AA7B4">ARCH 02</text><text x="338" y="422" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">검토 아카이브</text></a>
-    <a href="glossary_robotics.html"><rect x="472" y="382" width="130" height="50" fill="#20272F" stroke="#8A96A3" stroke-width="1.5"/><text x="484" y="403" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#9AA7B4">REF A–C</text><text x="484" y="422" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">용어사전 3부</text></a>
+    <a href="topic_journey.html"><rect x="180" y="382" width="130" height="52" fill="#20272F" stroke="#8A96A3" stroke-width="1.5"/><text x="192" y="403" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#9AA7B4">ARCH 01</text><text x="192" y="422" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">주제 여정</text></a>
+    <a href="logistics_domain_research.html"><rect x="326" y="382" width="130" height="52" fill="#20272F" stroke="#8A96A3" stroke-width="1.5"/><text x="338" y="403" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#9AA7B4">ARCH 02</text><text x="338" y="422" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">도메인 배경</text></a>
+    <a href="ros2_arm_lab.html"><rect x="472" y="382" width="130" height="52" fill="#20272F" stroke="#8A96A3" stroke-width="1.5"/><text x="484" y="403" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#9AA7B4">ARCH 03</text><text x="484" y="422" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">랩 노트</text></a>
+    <a href="archive.html"><rect x="618" y="382" width="130" height="52" fill="#20272F" stroke="#8A96A3" stroke-width="1.5"/><text x="630" y="403" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#9AA7B4">ARCH 04</text><text x="630" y="422" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">검토 아카이브</text></a>
+    <a href="glossary_robotics.html"><rect x="764" y="382" width="130" height="52" fill="#20272F" stroke="#8A96A3" stroke-width="1.5"/><text x="776" y="403" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#9AA7B4">REF A–B</text><text x="776" y="422" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">용어사전</text></a>
     </svg>
-    <p class="journey-cap">읽는 순서는 <b>기획 2부 → 조사 4부 → 기술 4부</b>입니다 — 각 문서 맨 아래의 "이전 ← → 다음" 내비가 이 순서를 그대로 안내합니다. 제품이 궁금하면 트랙 4에서 바로 체험하고, 트랙 5는 기록·학습 노트가 필요할 때 꺼내 보는 부록입니다. 모르는 용어는 각 문서 도입부의 "먼저 알아둘 용어" 표를 먼저, 더 깊게는 용어사전(REF A–C)을 참고하세요.</p>
+    <p class="journey-cap">읽는 순서는 <b>기획 1부 → 조사 3부 → 기술 4부</b>입니다 — 각 문서 맨 아래의 "이전 ← → 다음" 내비가 이 순서를 그대로 안내합니다. 제품이 궁금하면 트랙 4에서 바로 체험하세요. 트랙 5는 여정 기록·학습 노트와 용어사전(REF A–B)으로, 필요할 때 꺼내 보는 부록입니다.</p>
   </div>
 
-  <div class="register-label">Plan · 기획 2부 — 무엇을 왜 만드나</div>
+  <div class="register-label">Plan · 기획 1부 — 무엇을 왜 만드나</div>
   <div class="docs">
 
     <a class="doc d-pitch" href="project_intro.html">
       <div class="doc-top">
-        <span class="doc-no">PLAN 01 / 02 · INTRO · REV C</span>
+        <span class="doc-no">PLAN 01 / 01 · INTRO · REV C</span>
         <span class="aud">FOR 처음 읽는 분</span>
       </div>
       <h2>서비스 소개<span class="en">INTRO</span></h2>
@@ -217,56 +215,16 @@
       </div>
     </a>
 
-    <a class="doc d-pitch" href="topic_journey.html">
-      <div class="doc-top">
-        <span class="doc-no">PLAN 02 / 02 · TOPIC-JOURNEY · REV B</span>
-        <span class="aud">FOR 왜 이 주제인가</span>
-      </div>
-      <h2>주제 확정 여정<span class="en">TOPIC JOURNEY</span></h2>
-      <p>다섯 단계의 검토와 기각 사유, 시장 근거("왜 시장 1위 GTP가 아닌가"), 발표 메시지와 예상 질문까지 — 기획의 논리가 모여 있는 문서.</p>
-      <div class="toc">
-        <span><b>00</b>한눈에 보기</span>
-        <span><b>01</b>최종 제안</span>
-        <span><b>02</b>확정 여정</span>
-        <span><b>03</b>시장 근거</span>
-        <span><b>04</b>기각된 제안</span>
-        <span><b>05–06</b>발표·예상 질문</span>
-      </div>
-      <div class="doc-foot">
-        <span class="chips"><span class="chip">WHY THIS</span><span class="chip">MARKET</span><span class="chip">Q&amp;A</span></span>
-        <span class="open">열람</span>
-      </div>
-    </a>
 
   </div>
 
-  <div class="register-label" style="margin-top:34px">Research · 조사 4부 — 시장·업계·기종을 확인하다</div>
+  <div class="register-label" style="margin-top:34px">Research · 조사 3부 — 시장·업계·기종을 확인하다</div>
   <div class="docs">
 
-    <a class="doc d-team" href="logistics_domain_research.html">
-      <div class="doc-top">
-        <span class="doc-no">RESEARCH 01 / 04 · DOMAIN-RESEARCH · REV B</span>
-        <span class="aud">FOR 도메인 배경</span>
-      </div>
-      <h2>도메인 배경<span class="en">DOMAIN RESEARCH</span></h2>
-      <p>택배 물류 전체 흐름과 자동화 공백 조사. 주제 검토기의 배경 자료이자, 공개 데이터셋과 접근 순서까지 담은 물류 도메인 입문.</p>
-      <div class="toc">
-        <span><b>01</b>전체 흐름</span>
-        <span><b>02</b>자동화 vs 인력</span>
-        <span><b>03</b>페인포인트</span>
-        <span><b>04</b>주제 연결</span>
-        <span><b>05</b>데이터셋</span>
-        <span><b>06</b>접근 순서</span>
-      </div>
-      <div class="doc-foot">
-        <span class="chips"><span class="chip">HUB&amp;SPOKE</span><span class="chip">DATASET</span><span class="chip">BACKGROUND</span></span>
-        <span class="open">열람</span>
-      </div>
-    </a>
 
     <a class="doc d-team" href="robot_landscape.html">
       <div class="doc-top">
-        <span class="doc-no">RESEARCH 02 / 04 · LANDSCAPE · REV B</span>
+        <span class="doc-no">RESEARCH 01 / 03 · LANDSCAPE · REV B</span>
         <span class="aud">FOR 시장·기종</span>
       </div>
       <h2>물류로봇 지형<span class="en">ROBOT LANDSCAPE</span></h2>
@@ -287,11 +245,11 @@
 
     <a class="doc d-team" href="3pl_industry.html">
       <div class="doc-top">
-        <span class="doc-no">RESEARCH 03 / 04 · 3PL-INDUSTRY · REV A</span>
+        <span class="doc-no">RESEARCH 02 / 03 · 3PL-INDUSTRY · REV B</span>
         <span class="aud">FOR 고객 업계</span>
       </div>
       <h2>3PL 업계 구조<span class="en">3PL INDUSTRY</span></h2>
-      <p>건당으로 벌고 건당으로 쓰는 업 — 국내·해외 시장 지형, 입고·보관·출고의 건당 요금 구조, 계약 3모델, 화주 획득 사이클. 첫 고객 세그먼트 제안의 근거 조사.</p>
+      <p>건당으로 벌고 건당으로 쓰는 업 — 국내·해외 시장 지형, 입고·보관·출고의 건당 요금 구조, 계약 3모델, 화주 획득 사이클. 타겟 시장(계약물류 중견 3PL) 확정의 근거 조사.</p>
       <div class="toc">
         <span><b>01</b>업계 지형</span>
         <span><b>02</b>요금 구조</span>
@@ -308,7 +266,7 @@
 
     <a class="doc d-team" href="amr_model_selection.html">
       <div class="doc-top">
-        <span class="doc-no">RESEARCH 04 / 04 · AMR-SELECTION · REV A</span>
+        <span class="doc-no">RESEARCH 03 / 03 · AMR-SELECTION · REV B</span>
         <span class="aud">FOR 기준 기종</span>
       </div>
       <h2>기준 기종 선정<span class="en">AMR SELECTION</span></h2>
@@ -439,51 +397,51 @@
     </a>
   </div>
 
-  <div class="register-label" style="margin-top:34px">Archive · 부록 2부 — 기록과 학습 노트</div>
-  <div class="refs">
+  <div class="register-label" style="margin-top:34px">Archive · 부록 4부 — 여정 기록과 학습 노트</div>
+  <div class="refs r4">
+    <a class="ref r-c" href="topic_journey.html">
+      <span class="doc-no">ARCHIVE 01 · JOURNEY</span>
+      <h2>주제 확정 여정</h2>
+      <p>다섯 단계의 검토·기각 사유·시장 근거 — 기획이 여기까지 온 경로의 기록.</p>
+      <span class="terms">5 피벗 · 기각 제안 · 발표 Q&amp;A</span>
+    </a>
+    <a class="ref r-b" href="logistics_domain_research.html">
+      <span class="doc-no">ARCHIVE 02 · DOMAIN</span>
+      <h2>도메인 배경</h2>
+      <p>택배 물류 흐름과 자동화 공백 조사 — 초기 주제 검토기의 배경 자료.</p>
+      <span class="terms">허브&amp;스포크 · 데이터셋</span>
+    </a>
     <a class="ref r-c" href="ros2_arm_lab.html">
-      <span class="doc-no">ARCHIVE 01 · LAB-NOTE</span>
+      <span class="doc-no">ARCHIVE 03 · LAB-NOTE</span>
       <h2>ROS2 랩 노트</h2>
       <p>로봇팔 101→202 학습 기록. ROS2 역량은 검증 트랙으로 계승.</p>
       <span class="terms">colcon · MoveIt2 · 장애 복기 10건</span>
     </a>
     <a class="ref r-a" href="archive.html">
-      <span class="doc-no">ARCHIVE 02 · ARCHIVE</span>
+      <span class="doc-no">ARCHIVE 04 · ARCHIVE</span>
       <h2>검토 아카이브</h2>
       <p>이전 주제 심층 검토 3부 통합본 — 대기행렬 이론 등 일부 계승.</p>
       <span class="terms">하차 · 인덕션 · 인식·파지</span>
     </a>
   </div>
 
-  <div class="register-label" style="margin-top:34px">Working · 작업 문서 — 방침 반영 기록과 기획 제안</div>
+  <div class="register-label" style="margin-top:34px">Working · 작업 문서 — 확정 아키텍처와 구현 로드맵</div>
   <div class="refs">
-    <a class="ref r-c" href="spec_consistency_report.html">
-      <span class="doc-no">WORKING · REPORT · 2026-08-20</span>
-      <h2>명세서 정합성 대조</h2>
-      <p>업로드된 명세서모음과 개괄·결정 인벤토리의 대조 — 일치 14건, 중대 충돌 4건, 팀 결정 질문 7개.</p>
-      <span class="terms">C-1 AI · C-2 VDA 5050 · C-3 시뮬 코어 · C-4 인프라</span>
-    </a>
-    <a class="ref r-c" href="sizing_engine_plan.html">
-      <span class="doc-no">WORKING · PROPOSAL · 2026-08-20 / 08-24</span>
-      <h2>사이징 엔진 기획서</h2>
-      <p>제품 재정의 제안 — 판매사 제안서 생성기(주) + 구매자 비교 리포트(보조). 첫 고객군 3PL·풀필먼트 제안 포함. 팀 결정 대기.</p>
-      <span class="terms">결정 요청 4건 · 근거 지도 · 경쟁 3층 · AI 6조각</span>
-    </a>
     <a class="ref r-b" href="runtime_architecture.html">
-      <span class="doc-no">WORKING · ARCHITECTURE · 2026-08-25</span>
+      <span class="doc-no">WORKING · ARCHITECTURE · REV C</span>
       <h2>런타임 아키텍처와 리소스 견적</h2>
-      <p>무엇이 몇 개 떠서 어디서 도는가 — 프로세스 모델·통신 경계·배치 토폴로지·RAM/비용 견적. 배치안 제안, 팀 결정 대기.</p>
-      <span class="terms">시뮬 섬 vs 서비스 섬 · DDS/MQTT 절단선 · 경로계획 두 층 · 미확정 결정 6건</span>
+      <p>무엇이 몇 개 떠서 어디서 도는가 — 프로세스 모델·통신 경계·배치·RAM/비용. 표준 스택(Humble·Fast DDS·자체 추종기) 확정 반영.</p>
+      <span class="terms">시뮬 섬 vs 서비스 섬 · MQTT 절단선 · 경로계획 두 층</span>
     </a>
     <a class="ref r-a" href="sil_roadmap.html">
-      <span class="doc-no">WORKING · ROADMAP · 2026-08-25</span>
+      <span class="doc-no">WORKING · ROADMAP · REV B</span>
       <h2>SIL 구현 로드맵</h2>
-      <p>ROS2–Isaac 구현 4태스크 — Teleop → Nav2 → 물류 씬 → 다중 로봇+FMS 스텁. 매 태스크가 DES 보정 수치로 환류.</p>
-      <span class="terms">T1 Teleop · T2 Nav2 · T3 창고 반송 · T4 멀티+중앙 하달 · 축소선</span>
+      <p>ROS2–Isaac 구현 4태스크 — Teleop → 매핑·추종 → 물류 씬 → 다중 로봇+FMS. 매 태스크가 DES 보정 수치로 환류.</p>
+      <span class="terms">T1 Teleop · T2 매핑·추종 · T3 창고 반송 · T4 멀티 · 부록 실험</span>
     </a>
   </div>
 
-  <div class="register-label" style="margin-top:34px">Reference · 용어사전 3부 — 용어가 낯설 때</div>
+  <div class="register-label" style="margin-top:34px">Reference · 용어사전 2부 — 용어가 낯설 때</div>
   <div class="refs">
 
     <a class="ref r-a" href="glossary_robotics.html">
@@ -500,18 +458,12 @@
       <span class="terms">IT/OT · 풀필먼트 · WMS/WES · GTP · TCO·ROI · VDI 3633 · 디지털 트윈 · DES/SimPy · Little's Law · MQTT · Sparkplug B · VDA 5050 · AMR · ISA-95 · 폐루프</span>
     </a>
 
-    <a class="ref r-c" href="glossary_ai_data.html">
-      <span class="doc-no">REF C · GLOSSARY</span>
-      <h2>AI · 데이터 · 서비스</h2>
-      <p>검수 파이프라인과 데이터 인프라의 용어.</p>
-      <span class="terms">합성 데이터 · YOLO · 이상 탐지 · ONNX · HITL · EMQX · TimescaleDB · Grafana · PWA · OpenAPI · ADR</span>
-    </a>
 
   </div>
 </main>
 
 <footer>
-  <div class="wrap">AMR QUOTE SIMULATION · DOCUMENT REGISTER — 새 문서 추가 시 이 인덱스에 등록 · 원천 사실: AMR_프로젝트_전체개괄.md</div>
+  <div class="wrap">AMR QUOTE SIMULATION · DOCUMENT REGISTER — 새 문서 추가 시 이 인덱스에 등록 · 원천 사실: AMR_프로젝트_전체개괄.md · 기획 기준선: AMR_시뮬레이션_기획_보충자료_v2.md (2026-08-26) · 폐기 문서는 git 이력 보존</div>
 </footer>
 
 </body>
