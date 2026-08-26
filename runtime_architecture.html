@@ -88,8 +88,8 @@
     </div>
     <div class="meta">
       DOC. <b>RUNTIME-ARCH</b><br>
-      REV. <b>B</b> · 작성 <b>2026-08-25</b><br>
-      상태 <b>배치안 제안 · 팀 결정 대기</b>
+      REV. <b>C</b> · 작성 <b>2026-08-25 / 개정 08-26</b><br>
+      상태 <b>스택·실행기 확정 · 배치 일부 대기</b>
     </div>
   </div>
 </header>
@@ -103,7 +103,7 @@
   <a href="#r4">04 리소스 목록</a>
   <a href="#r5">05 배치 토폴로지</a>
   <a href="#r6">06 견적 시나리오</a>
-  <a href="#r7">07 미확정 결정</a>
+  <a href="#r7">07 결정 현황</a>
   <a class="nav-cross" href="amr_tech_plan.html">기술 계획 ↗</a>
 </div></nav>
 
@@ -123,7 +123,7 @@
       <table>
         <tr><th style="width:290px">오해</th><th>정정</th></tr>
         <tr><td>"시뮬 안에서 ROS2 프로세스가 돈다"</td><td>포함 관계가 아니라 <b>동등한 참여</b>다. Isaac은 ROS2 그래프에 붙는 프로세스 하나이고, Nav2·에이전트는 그 옆의 별도 프로세스다 → <a href="#r1">SEC 01</a></td></tr>
-        <tr><td>"FMS의 경로계획 = Nav2"</td><td>경로계획은 두 층이다. 함대 조정(MAPF)은 자체 구현이 담당하고, Nav2는 로봇 1대의 추종·국지 회피만 담당한다 → <a href="#r2">SEC 02</a></td></tr>
+        <tr><td>"FMS의 경로계획 = Nav2"</td><td>경로계획은 두 층이다. 함대 조정(MAPF)은 자체 구현이 담당하고, 로봇 1대의 경로 추종·정지는 경량 추종기가 담당한다 → <a href="#r2">SEC 02</a></td></tr>
         <tr><td>"로봇을 컨테이너로 띄우면 무겁다"</td><td>컨테이너·k8s의 격리 비용은 수 MB 수준으로 거의 0이다. 무게는 컨테이너 <b>안에 넣는 스택</b>이 결정한다 → <a href="#r4">SEC 04</a></td></tr>
       </table>
     </div>
@@ -146,9 +146,9 @@
         <text x="190" y="172" text-anchor="middle" fill="#9AA7B4" font-size="11">물리·센서 담당 노드</text>
         <text x="190" y="192" text-anchor="middle" fill="#9AA7B4" font-size="11">ROS2 브리지 확장 내장 · ×1</text>
         <rect x="345" y="122" width="210" height="92" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
-        <text x="450" y="148" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">Nav2 프로세스들</text>
-        <text x="450" y="172" text-anchor="middle" fill="#9AA7B4" font-size="11">경로 추종 · 국지 회피</text>
-        <text x="450" y="192" text-anchor="middle" fill="#9AA7B4" font-size="11">로봇 1대당 1묶음 · ×N</text>
+        <text x="450" y="148" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">추종기 프로세스들</text>
+        <text x="450" y="172" text-anchor="middle" fill="#9AA7B4" font-size="11">Pure Pursuit · 안전 필드 정지</text>
+        <text x="450" y="192" text-anchor="middle" fill="#9AA7B4" font-size="11">로봇 1대당 1개 · ×N</text>
         <rect x="605" y="122" width="210" height="92" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
         <text x="710" y="148" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">에이전트 프로세스</text>
         <text x="710" y="172" text-anchor="middle" fill="#3BAF77" font-size="11">VDA 5050 어댑터</text>
@@ -170,13 +170,13 @@
       <div class="tbl-scroll"><table>
         <tr><th></th><th>FMS 레벨 (함대)</th><th>로봇 레벨 (개체)</th></tr>
         <tr><td><b>하는 일</b></td><td>작업 할당(디스패칭) + 다중 로봇 경로 조정 — <a href="amr_mapf_theory.html">MAPF</a>, RHCR 윈도우, 충돌·교착 회피</td><td>받은 경로의 물리적 수행 — 경로 추종, 국지 장애물 회피, 속도 명령 생성</td></tr>
-        <tr><td><b>구현</b></td><td><span class="chip c-amber">자체 구현</span> 이 프로젝트의 코어 자산 — DES 스윕과 SIL 검증이 같은 로직을 공유</td><td><span class="chip c-steel">Nav2</span> SIL 검증 트랙에서만 등장</td></tr>
+        <tr><td><b>구현</b></td><td><span class="chip c-amber">자체 구현</span> 이 프로젝트의 코어 자산 — DES 스윕과 SIL 검증이 같은 로직을 공유</td><td><span class="chip c-steel">자체 추종기</span> 노드 시퀀스 보간 + Pure Pursuit + 안전 필드 정지 — SIL 트랙에서만 등장 (2026-08-26 확정)</td></tr>
         <tr><td><b>다루는 단위</b></td><td>로봇 N대 전체 · 1m 셀 그리드 · 고정 틱</td><td>로봇 1대 · 연속 공간 · 센서</td></tr>
       </table></div>
       <p><a href="https://docs.nav2.org/">Nav2</a>는 태생이 로봇 1대의 내비게이션 스택이라 다중 로봇 조정 개념이 없다. 네임스페이스로 여러 대를 띄울 수는 있으나 서로의 경로를 모른 채 각자 계획할 뿐이어서, 교차로 교착·협로 양보를 풀지 못한다 — 그것이 FMS/MAPF 층이 존재하는 이유다.</p>
       <h3>VDA 5050이 이 분업을 프로토콜로 강제한다</h3>
       <p><a href="https://github.com/VDA5050/VDA5050">VDA 5050</a>의 order 메시지는 경로 자체(노드·엣지 시퀀스)를 담아 하달된다. "경로를 정하는 것은 중앙, 따라가는 것은 로봇"이 표준 수준에서 갈리며, 우리 설계의 중앙 하달 원칙(<a href="amr_overview.html">개괄</a>)과 일치한다. 상용 AMR도 동일 구조다 — 온보드 내비와 FMS 트래픽 관리는 분리되고, 그 경계가 VDA 5050이다.</p>
-      <div class="note"><span class="pl-tag">SIL 구현 주의</span>Nav2의 글로벌 플래너를 살려두면 자체 최단 경로를 다시 계산해 <b>FMS가 하달한 MAPF 경로와 충돌</b>한다(중앙이 일부러 우회시킨 경로를 로봇이 질러가면 조정이 깨짐). FMS 경로를 웨이포인트로 주입(NavigateThroughPoses / FollowPath)하고 Nav2는 컨트롤러+로컬 코스트맵만 담당시킨다. 경로가 막히는 상황은 로봇이 재계획하지 않고 FMS에 보고해 중앙이 다시 푼다.</div>
+      <div class="note"><span class="pl-tag">로봇 실행기 확정 (2026-08-26)</span>로봇 레벨은 Nav2가 아니라 <b>자체 경량 추종기</b>로 확정한다. 산업 AMR의 장애물 대응은 로컬 회피가 아니라 감속→정지→대기→재개라서, Nav2의 로컬 회피는 오히려 실제 거동과 다른 움직임을 만든다. 글로벌 플래너는 FMS가 대체하고 복구 비헤이비어도 산업 관행(정지·보고)상 불필요하다. 경로가 막히면 로봇이 재계획하지 않고 FMS에 보고해 중앙이 다시 푼다. Nav2·AMCL은 "알고 배제했다"의 물증으로 <a href="sil_roadmap.html">부록 비교 실험</a>에만 등장한다.</div>
     </div>
   </section>
 
@@ -196,13 +196,14 @@
         <tr><th style="width:150px">계층</th><th>선택</th><th style="width:320px">근거</th></tr>
         <tr><td>ROS2 배포판</td><td><b>Humble</b></td><td>팀 환경(/opt/ros/humble) 기설치 · Isaac Sim 6.0 브리지 지원 쌍(Humble/Jazzy)에 포함</td></tr>
         <tr><td>RMW (미들웨어)</td><td><b>rmw_fastrtps_cpp</b> (Fast DDS)</td><td>Isaac 기본·권장값 — 미설정 시 자동 선택 (<a href="https://docs.isaacsim.omniverse.nvidia.com/6.0.0/installation/install_ros_other_platforms.html">Isaac ROS 설치 문서</a>)</td></tr>
+        <tr><td>로봇 실행기</td><td><b>자체 추종기 (ROS2 노드)</b></td><td>Pure Pursuit + 안전 필드 정지 — 경로는 FMS 하달, 로봇당 1노드로 ROS2 그래프 참여 (2026-08-26 확정)</td></tr>
         <tr><td>전송</td><td>같은 호스트 공유메모리</td><td>시뮬 섬 뭉치기 배치(SEC 05)의 전제 — 별도 설정 불요</td></tr>
       </table>
       <p class="soft">비DDS 대안은 채택하지 않고 예비 경로로만 기록한다. ROS2의 RMW 계층은 교체 가능하고 비DDS인 rmw_zenoh가 Kilted(2025-05)에서 Tier 1이 됐지만(<a href="https://docs.ros.org/en/kilted/Releases/Release-Kilted-Kaiju.html">릴리스 노트</a>), Isaac은 Fast DDS·Cyclone DDS만 번들한다 — zenoh는 시스템 ROS2 소싱 시 가능하다는 <a href="https://github.com/isaac-sim/IsaacSim/discussions/540">공식 논의</a>만 존재하며 미검증이다.</p>
       <table>
         <tr><th style="width:280px">예비 경로 트리거</th><th>대안</th></tr>
         <tr><td>ROS 트래픽을 WAN 너머로 보내야 할 때</td><td>zenoh-bridge-ros2dds — 로컬 DDS 무변경, 구간만 터널링</td></tr>
-        <tr><td>D-5에서 경량 추종기로 결정될 때</td><td>Isaac standalone Python 직결 MQTT 어댑터 — ROS2·DDS 의존 소멸</td></tr>
+        <tr><td>로봇 노드를 ROS2 없이 더 줄이고 싶을 때</td><td>Isaac 직결 MQTT 어댑터 — 단, 현 확정은 ROS2 노드 유지(주제 정합·멀티로봇 그래프 실증)</td></tr>
         <tr><td>DDS 자체 교체 요구가 생길 때</td><td>rmw_zenoh — 비번들·검증 부담을 안는 최후 선택지</td></tr>
       </table>
       <table>
@@ -222,7 +223,7 @@
       <div class="tbl-scroll"><table>
         <tr><th style="width:110px">섬</th><th style="width:230px">구성요소</th><th style="width:150px">RAM</th><th>근거</th></tr>
         <tr><td rowspan="3">시뮬 섬</td><td>Isaac Sim 1인스턴스</td><td><b>~16GB</b></td><td><span class="chip c-green">실측</span> 2026-08-24, RTX 5080 · full_warehouse + iw.hub 주행 데모 기준</td></tr>
-        <tr><td>Nav2(컨트롤러 모드) × 보정 3~5대</td><td>0.5~1GB /대</td><td><span class="chip c-amber">추정</span> 통상 실측 범위(코스트맵·맵 크기 지배) — 프로젝트 실측 예정. 검증 런 대수 확대 시 경량화·혼합 충실도(SEC 05)</td></tr>
+        <tr><td>자체 추종기 노드 × 3~5대 (검증 런은 N대)</td><td>50~150MB /대</td><td><span class="chip c-amber">추정</span> rclpy Pure Pursuit 기준 — 실측 예정. 부록 Nav2 비교 실험 시에만 일시적으로 0.5~1GB/대</td></tr>
         <tr><td>rclpy 노드·VDA 5050 어댑터</td><td>80~150MB /개</td><td><span class="chip c-amber">추정</span> rclpy + DDS 참가자 기준</td></tr>
         <tr><td rowspan="8">서비스 섬</td><td>k3s 서버</td><td>0.6~1GB</td><td>공식 최소 서버 512MB / 에이전트 256MB (<a href="https://docs.k3s.io/installation/requirements">k3s Docs</a>)</td></tr>
         <tr><td>RabbitMQ (워커 큐+DLQ)</td><td>0.2~0.5GB</td><td>유휴 기준 (<a href="https://www.rabbitmq.com/docs/memory-use">RabbitMQ Memory Use</a>)</td></tr>
@@ -248,7 +249,7 @@
         </defs>
         <rect x="30" y="24" width="620" height="254" fill="#171D24" stroke="#8FB4D9" stroke-width="1.5"/>
         <text x="46" y="52" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">홈서버 · 32GB · RTX 5080 — 시뮬 섬</text>
-        <text x="634" y="52" text-anchor="end" fill="#9AA7B4" font-size="11">개발 전용 · 점유 20~24GB</text>
+        <text x="634" y="52" text-anchor="end" fill="#9AA7B4" font-size="11">개발 전용 · 점유 ~18GB</text>
         <rect x="62" y="116" width="186" height="128" fill="#8FB4D9" fill-opacity="0.07" stroke="#8FB4D9" stroke-width="1" stroke-dasharray="4 4"/>
         <text x="155" y="262" text-anchor="middle" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="10.5" font-weight="700">ISAAC SIM 프로세스</text>
         <rect x="256" y="116" width="372" height="128" fill="#3BAF77" fill-opacity="0.07" stroke="#3BAF77" stroke-width="1" stroke-dasharray="4 4"/>
@@ -264,10 +265,10 @@
         <text x="155" y="192" text-anchor="middle" fill="#9AA7B4" font-size="10.5">브리지·Fast DDS 내장</text>
         <text x="155" y="212" text-anchor="middle" fill="#3BAF77" font-size="10.5" font-weight="700">~16GB 실측</text>
         <rect x="262" y="128" width="160" height="104" fill="#1C2229" stroke="#2C343D"/>
-        <text x="342" y="152" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">Nav2 ×N</text>
-        <text x="342" y="174" text-anchor="middle" fill="#9AA7B4" font-size="10.5">컨트롤러 모드 · 기본 3~5</text>
-        <text x="342" y="192" text-anchor="middle" fill="#9AA7B4" font-size="10.5">글로벌 플래너 OFF</text>
-        <text x="342" y="212" text-anchor="middle" fill="#9AA7B4" font-size="10.5">0.5~1GB/대 추정</text>
+        <text x="342" y="152" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">추종기 ×N</text>
+        <text x="342" y="174" text-anchor="middle" fill="#9AA7B4" font-size="10.5">Pure Pursuit · 기본 3~5</text>
+        <text x="342" y="192" text-anchor="middle" fill="#9AA7B4" font-size="10.5">정지·보고 — 회피 없음</text>
+        <text x="342" y="212" text-anchor="middle" fill="#9AA7B4" font-size="10.5">50~150MB/대 추정</text>
         <rect x="444" y="128" width="176" height="104" fill="#1C2229" stroke="#2C343D"/>
         <text x="532" y="152" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">VDA 5050 어댑터 ×N</text>
         <text x="532" y="174" text-anchor="middle" fill="#9AA7B4" font-size="10.5">ROS2 ↔ MQTT 변환</text>
@@ -330,16 +331,15 @@
         <tr><td><b>EC2</b> 16GB</td><td>상시 서비스 본체 — 도메인·HTTPS가 물리는 곳</td><td>~8GB 사용, 8GB 여유</td></tr>
         <tr><td><b>옵션 워커</b></td><td>전체 스윕 잡 전용, 큐에서 수령</td><td>발표 주간만 기동</td></tr>
       </table>
-      <h3>최적 대수 검증 런 — 대수가 커질 때의 스케일 사다리</h3>
-      <p>SIL은 두 종류가 돈다. <b>보정 루프</b>(3~5대, 반복 실행)와, DES가 뽑은 <b>최적 구성의 검증 런</b>(단발성)이다. 후자는 최적 대수가 10대를 넘어도 그 대수 그대로 돌아야 한다. 홈서버 예산은 32GB에서 Isaac ~16GB와 OS ~2GB를 빼면 ROS 몫이 약 14GB다.</p>
+      <h3>최적 대수 검증 런 — 추종기 확정으로 사다리가 접혔다</h3>
+      <p>SIL은 <b>보정 루프</b>(3~5대 반복)와 DES가 뽑은 <b>최적 구성의 검증 런</b>(단발, 대수 N 그대로) 두 종류가 돈다. 추종기 확정(REV C)으로 로봇당 RAM이 50~150MB로 떨어져, 이전 REV B의 경량화·혼합 충실도 사다리는 대부분 불필요해졌다.</p>
       <div class="tbl-scroll"><table>
-        <tr><th style="width:150px">최적 대수 N</th><th>구성</th><th style="width:190px">ROS 몫 RAM (추정)</th></tr>
-        <tr><td><b>~5대</b></td><td>전 로봇 Nav2 컨트롤러 모드 — 풀 충실도</td><td>1.5~5GB <span class="chip c-green">여유</span></td></tr>
-        <tr><td><b>6~10대</b></td><td>Nav2 유지 + 경량화 — 위치는 시뮬 그라운드 트루스 사용(AMCL 제거), 로컬 코스트맵 축소, 무거운 센서는 관심 로봇에만 장착</td><td>2~5GB (대당 0.3~0.5GB) <span class="chip c-green">수용</span></td></tr>
-        <tr><td><b>11~15대</b></td><td><b>혼합 충실도</b> — 병목 구간의 관심 로봇 2~3대만 Nav2, 나머지는 경량 추종기(FMS 하달 경로 추종만)</td><td>1~2.5GB <span class="chip c-green">수용</span></td></tr>
-        <tr><td>15대 초과 · 전대수 풀 충실도 요구</td><td>외부 GPU 머신으로 검증 런만 이관(SEC 06 RunPod — RAM 여유가 큰 pod 선택). 단발 실행이라 초 단위 과금과 궁합이 맞는다</td><td>홈서버 밖</td></tr>
+        <tr><th style="width:200px">구성</th><th>내용</th><th style="width:170px">ROS 몫 RAM (추정)</th></tr>
+        <tr><td><b>~15대 전 대수</b></td><td>전 로봇 자체 추종기 — 풀 충실도 검증 런 가능</td><td>0.8~2.3GB <span class="chip c-green">여유</span></td></tr>
+        <tr><td>부록 Nav2 비교 실험</td><td>로봇 1대만 Nav2 풀스택 장착</td><td>+0.5~1GB 일시</td></tr>
+        <tr><td>병렬 캘리브레이션 캠페인</td><td>다구성 동시 실행이 필요할 때 외부 GPU 배치(SEC 06 RunPod A5000) — 초 단위 과금과 궁합</td><td>홈서버 밖</td></tr>
       </table></div>
-      <p class="soft">검증 런은 스윕이 아니라 1개 구성의 단발 실행이라 실시간성 요구가 없다 — CPU 경합으로 RTF가 떨어져도 결과는 유효하다(SEC 03). 혼합 충실도의 논리: 검증 런의 목적은 전 로봇의 물리 정확도가 아니라 병목 지점의 물리 검증이다. "ROS만 다른 기기로 분리"는 SEC 03의 이유로 마지막까지 선택지가 아니다.</p>
+      <p class="soft">검증 런은 단발 실행이라 실시간성 요구가 없다 — CPU 경합으로 RTF가 떨어져도 use_sim_time 덕에 결과는 유효하다(SEC 03). "ROS만 다른 기기로 분리"는 SEC 03의 이유로 여전히 선택지가 아니다.</p>
     </div>
   </section>
 
@@ -377,20 +377,20 @@
 
   <!-- ══════════ R7 미확정 결정 ══════════ -->
   <section id="r7">
-    <div class="sec-head"><span class="sec-no">SEC 07 · 미확정 결정</span><h2>팀이 정해야 확정되는 것들</h2></div>
+    <div class="sec-head"><span class="sec-no">SEC 07 · 결정 현황</span><h2>확정된 것과 남은 것</h2></div>
     <div class="sec-body">
       <table>
         <tr><th style="width:230px">결정</th><th>선택지</th><th style="width:270px">이 문서의 기본 권고</th></tr>
         <tr><td><b>D-1 추가 EC2 증설</b></td><td>증설 없음 / 프로덕션 미러 분리</td><td>증설 없음 — 서비스 경로가 기존 16GB에 수용됨. 스테이징 분리 욕구가 생기면 그때 미러</td></tr>
         <tr><td><b>D-2 스윕 워커</b></td><td>없음 / c계열 스팟 / RunPod</td><td>발표 주간만 기동하는 c7i.xlarge 스팟 — 잡 큐 구조라 나중에 붙여도 무변경</td></tr>
         <tr><td><b>D-3 Kafka v1 포함</b></td><td>유지 / RabbitMQ로 임시 통합</td><td>명세서 스택 준수가 평가 항목이면 유지(16GB 내 문제없음). 아니면 통합 시 −2GB</td></tr>
-        <tr><td><b>D-4 SIL 로봇 대수</b></td><td>보정 3~5대 / 검증 런은 최적 대수 N</td><td>보정 루프는 3~5대(<a href="amr_model_selection.html">기준 기종</a>과 동일 논리). 단 DES가 뽑은 최적 구성의 검증 런은 N 그대로 돈다 — 대수가 크면 SEC 05 스케일 사다리(경량화→혼합 충실도→외부 GPU) 적용</td></tr>
-        <tr><td><b>D-5 로봇 레벨 실행기</b></td><td>Nav2(표준) / 경량 추종기</td><td>표준 스택인 Nav2 컨트롤러 모드로 출발(2026-08-25 기본 채택). RAM 실측 후 압박 시 경량 추종기로 다운그레이드 — 그 경우 SIL의 ROS2 의존 자체가 제거됨(SEC 03 예비 경로)</td></tr>
+        <tr><td><b>D-4 SIL 로봇 대수</b></td><td>보정 3~5대 / 검증 런은 최적 대수 N</td><td><span class="chip c-green">확정 08-26</span> 보정 루프 3~5대, 검증 런은 최적 대수 N 그대로 — 추종기 확정으로 15대 풀 충실도까지 홈서버 수용(SEC 05)</td></tr>
+        <tr><td><b>D-5 로봇 레벨 실행기</b></td><td>자체 추종기 / Nav2</td><td><span class="chip c-green">확정 08-26</span> 자체 추종기(ROS2 노드) — 산업 거동 충실(정지·보고) + 리소스 절감. Nav2·AMCL은 부록 비교 실험으로만 수행("알고 배제했다" 물증)</td></tr>
         <tr><td><b>D-6 시연 백업 리허설</b></td><td>실시 / 생략</td><td>발표 2주 전 RunPod noVNC 경로 1회 리허설(~$3) — 당일 회선 리스크 보험</td></tr>
       </table>
       <div class="kcards">
         <div class="kcard"><b><a href="amr_tech_plan.html" style="color:inherit">기술 실행 계획</a></b><span>2계층(DES+SIL) 구조와 검증 트랙의 원 설계 (TECH 02)</span></div>
-        <div class="kcard s"><b><a href="spec_consistency_report.html" style="color:inherit">명세서 정합성 대조</a></b><span>서비스 섬 스택(RabbitMQ·Kafka·MQTT·k3s)의 원천 (WORKING)</span></div>
+        <div class="kcard s"><b><a href="sil_roadmap.html" style="color:inherit">SIL 구현 로드맵</a></b><span>이 아키텍처의 구현 순서 — 4태스크·부록 실험 (WORKING)</span></div>
         <div class="kcard g"><b><a href="amr_mapf_theory.html" style="color:inherit">MAPF 이론</a></b><span>FMS 층이 푸는 문제의 이론 배경 (TECH 03)</span></div>
       </div>
     </div>
@@ -399,7 +399,7 @@
 </main>
 
 <footer>
-  <div class="wrap">WORKING · RUNTIME-ARCH · REV B — 작성 2026-08-25 (B: 표준 미들웨어 Humble+Fast DDS 확정 · SVG 다이어그램 · 검증 런 스케일 사다리) · Isaac 수치는 프로젝트 장비(RTX 5080 · Isaac Sim 6.0.1) 실측, 표기 없는 수치는 추정으로 명기 · 시세는 조사 시점 기준 변동 가능 · <a href="index.html">문서 인덱스로</a></div>
+  <div class="wrap">WORKING · RUNTIME-ARCH · REV C — 개정 2026-08-26 (C: 로봇 실행기 = 자체 추종기 확정, Nav2는 부록 실험으로 · 스케일 사다리 축소 / B: 표준 미들웨어 확정 · SVG · 사다리) · Isaac 수치는 프로젝트 장비(RTX 5080 · Isaac Sim 6.0.1) 실측, 표기 없는 수치는 추정으로 명기 · 시세는 조사 시점 기준 변동 가능 · <a href="index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>

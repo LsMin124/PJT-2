@@ -89,7 +89,7 @@
     </div>
     <div class="meta">
       DOC. <b>SIL-ROADMAP</b><br>
-      REV. <b>A</b> · 작성 <b>2026-08-25</b><br>
+      REV. <b>B</b> · 작성 <b>2026-08-25 / 개정 08-26</b><br>
       상태 <b>T1 착수 전</b>
     </div>
   </div>
@@ -101,7 +101,7 @@
   <a href="#s1">01 왜 이 트랙인가</a>
   <a href="#s2">02 공통 기반</a>
   <a href="#s3">03 T1 Teleop</a>
-  <a href="#s4">04 T2 Nav2</a>
+  <a href="#s4">04 T2 매핑·추종</a>
   <a href="#s5">05 T3 물류 씬</a>
   <a href="#s6">06 T4 다중 로봇</a>
   <a href="#s7">07 리스크·축소선</a>
@@ -123,8 +123,8 @@
         <text x="130" y="102" text-anchor="middle" fill="#9AA7B4" font-size="10.5">브리지 개통</text>
         <line x1="220" y1="74" x2="260" y2="74" stroke="#8A96A3" stroke-width="1.5" marker-end="url(#sr)"/>
         <rect x="262" y="36" width="180" height="76" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
-        <text x="352" y="62" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">T2 · Nav2 자율주행</text>
-        <text x="352" y="84" text-anchor="middle" fill="#9AA7B4" font-size="10.5">1대 · 맵 · 목표점 주행</text>
+        <text x="352" y="62" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">T2 · 매핑·자율 추종</text>
+        <text x="352" y="84" text-anchor="middle" fill="#9AA7B4" font-size="10.5">SLAM 매핑 런 + 추종기</text>
         <text x="352" y="102" text-anchor="middle" fill="#9AA7B4" font-size="10.5">간단 씬</text>
         <line x1="442" y1="74" x2="482" y2="74" stroke="#8A96A3" stroke-width="1.5" marker-end="url(#sr)"/>
         <rect x="484" y="36" width="180" height="76" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
@@ -142,12 +142,12 @@
         <line x1="796" y1="112" x2="796" y2="168" stroke="#3BAF77" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#sg)"/>
         <rect x="40" y="170" width="846" height="48" fill="#17251E" stroke="#3BAF77" stroke-width="1.5"/>
         <text x="463" y="199" text-anchor="middle" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">DES 견적 엔진 — 매 태스크의 실측 수치가 파라미터 보정으로 환류</text>
-        <text x="40" y="244" fill="#9AA7B4" font-size="10.5">가속·감속(T1) · 주행시간 오차(T2) · 사이클 타임 분해(T3) · 간섭 계수(T4) — 환류가 없는 태스크는 완료로 치지 않는다</text>
+        <text x="40" y="244" fill="#9AA7B4" font-size="10.5">가속·감속(T1) · 엣지 통과시간 분포(T2) · 사이클 타임 분해(T3) · 간섭 계수(T4) — 환류가 없는 태스크는 완료로 치지 않는다</text>
       </svg></div>
       <div class="kcards">
         <div class="kcard s"><b>원칙 1</b><span>각 태스크는 독립 체크포인트 — 어디서 멈춰도 그 지점까지의 산출은 유효</span></div>
         <div class="kcard g"><b>원칙 2</b><span>모든 태스크는 DES로 돌려주는 실측 수치 ≥ 1건으로 끝난다 (겉치레 방지)</span></div>
-        <div class="kcard"><b>원칙 3</b><span>표준 스택 준수 — Humble + Fast DDS + Nav2, <a href="runtime_architecture.html" style="color:inherit">런타임 아키텍처</a> REV B의 채택 그대로</span></div>
+        <div class="kcard"><b>원칙 3</b><span>표준 스택 준수 — Humble + Fast DDS + 자체 추종기, <a href="runtime_architecture.html" style="color:inherit">런타임 아키텍처</a> REV C의 채택 그대로</span></div>
       </div>
     </div>
   </section>
@@ -156,7 +156,7 @@
   <section id="s1">
     <div class="sec-head"><span class="sec-no">SEC 01 · 왜 이 트랙인가</span><h2>"시뮬+ROS2는 조연 아닌가"에 대한 답 — 맞다, 그리고 그게 설계다</h2></div>
     <div class="sec-body">
-      <p class="lead">제품의 주연은 견적 엔진(DES 스윕 + 원가 모델)이다. 물리 시뮬+ROS2는 조연이 맞고, 아키텍처 원칙("물리는 좁고 깊게, 견적은 넓고 얕게")이 처음부터 그렇게 배역을 나눴다. 문제는 조연이 필요하냐가 아니라, 조연이 <b>소품으로 전락하지 않게 하는 규율</b>이다.</p>
+      <p class="lead">2026-08-26 기준선에서 두 계층은 각각 실존 산업 프로세스를 맡는다 — DES는 개략 검토(rough planning), SIL은 가상 시운전(virtual commissioning). 제품의 주연은 여전히 견적 엔진(DES 스윕 + 원가 모델)이다. 물리 시뮬+ROS2는 조연이 맞고, 아키텍처 원칙("물리는 좁고 깊게, 견적은 넓고 얕게")이 처음부터 그렇게 배역을 나눴다. 문제는 조연이 필요하냐가 아니라, 조연이 <b>소품으로 전락하지 않게 하는 규율</b>이다.</p>
       <table>
         <tr><th style="width:200px">역할</th><th>내용</th></tr>
         <tr><td><b>① 견적의 증거 층</b></td><td>DES 숫자는 가정 위의 숫자다. 벤더도 아닌 우리가 "이 대수면 이 처리량"을 주장하려면 근거가 필요하고, 물리 검증은 그 근거를 <b>직접 측정한 오차 모델</b>로 만든다. 벤더 공개 수치로 보정하는 대안도 있으나, 그 수치는 판매용이라 중립·검증 서사와 충돌한다</td></tr>
@@ -201,16 +201,16 @@
 
   <!-- ══════════ S4 T2 ══════════ -->
   <section id="s4">
-    <div class="sec-head"><span class="sec-no">SEC 04 · TASK 2</span><h2>Nav2 자율주행 — 목표점을 주면 알아서 간다</h2></div>
+    <div class="sec-head"><span class="sec-no">SEC 04 · TASK 2</span><h2>매핑과 자율 추종 — 커미셔닝 절차를 그대로 재현한다</h2></div>
     <div class="sec-body">
       <table>
         <tr><th style="width:150px">항목</th><th>내용</th></tr>
-        <tr><td><b>목표</b></td><td>간단 씬(장애물 몇 개)에서 NavigateToPose로 A→B 자율주행. Nav2 풀스택을 한 번 온전히 돌려 스택을 이해하는 학습 단계</td></tr>
-        <tr><td><b>구현 골자</b></td><td>iw_hub_sensors 변형 USD(라이다 포함) 사용 → 라이다 토픽 발행 추가 → Isaac 오큐펀시 맵 생성기로 맵 추출(PNG+YAML) → nav2_bringup(map_server·planner·controller·bt_navigator). 위치는 1차로 그라운드 트루스(map→odom 고정)로 단순화, AMCL은 여력 시 비교 실험</td></tr>
-        <tr><td><b>완료 기준</b></td><td>목표점 5곳 연속 도달 / 경로상 장애물 회피 확인 / foxglove로 코스트맵·경로 시각 확인</td></tr>
-        <tr><td><b>DES 환류</b></td><td><span class="chip c-green">필수</span> 직선·코너 구간별 주행시간 실측 vs DES 1m 셀 이동 모델 → 오차율 첫 데이터</td></tr>
-        <tr><td><b>예상 함정</b></td><td>TF 트리 구성(map→odom→base_link 책임 분리) · 라이다 토픽 타입(LaserScan vs PointCloud2)과 Nav2 설정 불일치 · 이 단계는 글로벌 플래너 ON이 정상 — T4에서 OFF로 전환됨을 미리 인지</td></tr>
-        <tr><td><b>예상 소요</b></td><td>4~5일 (추정)</td></tr>
+        <tr><td><b>목표</b></td><td>실제 AMR 설치 절차(설치 시 SLAM 1회 → 지도 고정 → 경로망 위 주행)의 재현 — 간단 씬에서 매핑 런 1회 + 경로망 자율 추종</td></tr>
+        <tr><td><b>구현 골자</b></td><td>iw_hub_sensors(라이다) → <code>slam_toolbox</code>로 2D 점유격자 지도 생성(산출물: 지도 + 씬 그라운드 트루스 대비 오차 = V&amp;V 자료) → 지도 고정 → 노드-엣지 경로망 정의 → <b>추종기 노드</b>(노드 시퀀스 수신 → 경로 보간 → Pure Pursuit → cmd_vel) + 안전 필드 정지(라이다 근접 시 정지→해제 시 재개). 운영 위치는 GT+노이즈</td></tr>
+        <tr><td><b>완료 기준</b></td><td>지도 생성·저장 / 경로망 5개 엣지 왕복 자율 주행 / 장애물 투척 시 정지, 제거 시 재개 / foxglove로 지도·경로 시각 확인</td></tr>
+        <tr><td><b>DES 환류</b></td><td><span class="chip c-green">필수</span> 직선·코너 엣지 통과시간 <b>분포</b> 실측 → DES 엣지 이동 모델 1차 보정 (정합성 지표 = 엣지 통과시간 분포 일치)</td></tr>
+        <tr><td><b>예상 함정</b></td><td>slam_toolbox 스캔 매칭 파라미터 · 추종기 코너 오버슈트 튜닝 · 정지 필드 반경 과소/과대</td></tr>
+        <tr><td><b>예상 소요</b></td><td>3~5일 (추정)</td></tr>
       </table>
     </div>
   </section>
@@ -222,10 +222,10 @@
       <table>
         <tr><th style="width:150px">항목</th><th>내용</th></tr>
         <tr><td><b>목표</b></td><td>full_warehouse에서 스테이션 A↔B 반복 반송 — 데모(demo.html)의 파킹·스테이션 개념과 좌표 체계를 맞춘다</td></tr>
-        <tr><td><b>구현 골자</b></td><td>창고 오큐펀시 맵 생성 → 스테이션·파킹 좌표 정의 → 왕복 반송 루프(NavigateToPose 연쇄) → 사이클 타임 로거. 리프트 조인트 적재·하역 연출은 옵션(발표 장면용)</td></tr>
+        <tr><td><b>구현 골자</b></td><td>창고 오큐펀시 맵 생성 → 스테이션·파킹 좌표 정의 → 경로망 위 스테이션 왕복 order 연쇄 → 사이클 타임 로거. 리프트 조인트 적재·하역 연출은 옵션(발표 장면용)</td></tr>
         <tr><td><b>완료 기준</b></td><td>왕복 반송 20회 무충돌 완주 / 사이클 타임 로그 자동 수집</td></tr>
         <tr><td><b>DES 환류</b></td><td><span class="chip c-green">필수</span> 사이클 타임 분해(주행/회전/정지·재출발) → DES의 속도·회전 페널티 파라미터 보정. 여기서 나온 값이 견적 엔진 신뢰도의 첫 실증</td></tr>
-        <tr><td><b>예상 함정</b></td><td>3,473 콜라이더 씬에서 코스트맵 해상도·갱신 주기 튜닝 · 좁은 랙 통로의 팽창 반경 설정 · RAM은 Isaac 16GB + Nav2 1대라 여유(<a href="runtime_architecture.html">SEC 04</a>)</td></tr>
+        <tr><td><b>예상 함정</b></td><td>3,473 콜라이더 씬에서 통로 폭 대비 경로망 배치 · 랙 근접 구간의 정지 필드 오탐 · RAM은 Isaac 16GB + 추종기 1대라 여유(<a href="runtime_architecture.html">SEC 04</a>)</td></tr>
         <tr><td><b>예상 소요</b></td><td>3~4일 (추정)</td></tr>
       </table>
     </div>
@@ -237,10 +237,10 @@
     <div class="sec-body">
       <table>
         <tr><th style="width:150px">항목</th><th>내용</th></tr>
-        <tr><td><b>목표</b></td><td>3~5대 + FMS 스텁의 첫 결합 — 여기서부터가 우리 아키텍처의 본 모습이다. 로봇의 자율 경로계획을 끄고 <b>중앙이 경로를 하달</b>한다</td></tr>
-        <tr><td><b>구현 골자</b></td><td>네임스페이스 분리(/robot1…) · 로봇별 Nav2를 <b>컨트롤러 모드</b>로 전환(글로벌 플래너 OFF, FollowPath/NavigateThroughPoses로 경로 주입) · FMS 스텁(간단 중앙 하달기 — 팀 MAPF 로직이 붙기 전의 대체) · VDA 5050 어댑터 초판(order 하달·state 보고, MQTT)</td></tr>
+        <tr><td><b>목표</b></td><td>3~5대 + FMS 스텁의 첫 결합 — 여기서부터가 우리 아키텍처의 본 모습이다. <b>중앙이 경로를 하달</b>하고 로봇은 추종한다</td></tr>
+        <tr><td><b>구현 골자</b></td><td>네임스페이스 분리(/robot1…)로 추종기·어댑터 노드 복제 · FMS 스텁(간단 중앙 하달기 — 팀 MAPF 로직이 붙기 전의 대체)이 VDA 5050 order(노드 시퀀스)를 하달 · 어댑터 초판(order 수신·state 보고, MQTT)</td></tr>
         <tr><td><b>완료 기준</b></td><td>3대가 교차 경로에서 중앙 하달 경로로 무충돌 운행 / 어댑터 경유로 상태가 MQTT에 올라옴 / 경로 막힘 시 재계획 없이 FMS 보고 동작</td></tr>
-        <tr><td><b>DES 환류</b></td><td><span class="chip c-green">필수</span> 다중 로봇 간섭 실측(합류 대기·양보 시간) → DES 간섭 계수 보정. 부가로 Nav2 대당 RAM/CPU 실측 → <a href="runtime_architecture.html">런타임 아키텍처</a> SEC 04 추정치를 실측 칩으로 교체</td></tr>
+        <tr><td><b>DES 환류</b></td><td><span class="chip c-green">필수</span> 다중 로봇 간섭 실측(합류 대기·양보 시간) → DES 간섭 계수 보정. 부가로 추종기 대당 RAM/CPU 실측 → <a href="runtime_architecture.html">런타임 아키텍처</a> SEC 04 추정치를 실측 칩으로 교체</td></tr>
         <tr><td><b>예상 함정</b></td><td>네임스페이스별 TF 충돌(frame 이름 접두) · /clock 단일화 · DDS 참가자 수 증가 시 디스커버리 지연 · 대수 확대는 스케일 사다리(런타임 아키텍처 SEC 05) 적용</td></tr>
         <tr><td><b>예상 소요</b></td><td>5~7일 (추정)</td></tr>
       </table>
@@ -256,14 +256,21 @@
         <tr><th style="width:220px">시간 압박 시나리오</th><th>축소선</th><th style="width:250px">그때도 남는 것</th></tr>
         <tr><td>T4 진입 불가</td><td>T3까지 — 단일 로봇 물리 검증 체제</td><td>견적 + 사이클 타임 보정 + 창고 주행 영상. 다중 로봇 수치는 DES 단독 + 문헌 근거로 대체</td></tr>
         <tr><td>T3 진입 불가</td><td>T2까지 — 간단 씬 검증</td><td>견적 + 주행시간 오차 데이터 + 자율주행 시연</td></tr>
-        <tr><td>Nav2 자체가 막힘</td><td>T1 + 경량 추종기 직행(런타임 아키텍처 D-5의 다운그레이드 경로)</td><td>견적 + 가감속 보정 + 중앙 하달 데모(물리 충실도만 낮음)</td></tr>
+        <tr><td>SLAM 매핑이 막힘</td><td>Isaac 오큐펀시 맵 생성기(GT 지도)로 대체 — 주행·환류는 그대로 진행</td><td>V&amp;V 자료 1건(SLAM vs GT 오차)만 손실</td></tr>
       </table>
       <table>
         <tr><th style="width:220px">기술 리스크</th><th>대응</th></tr>
         <tr><td>브리지·Humble 소싱 충돌</td><td>T1에서 가장 먼저 부딪히는 이유 — 사다리의 맨 아래 단에 배치해 조기 검출</td></tr>
         <tr><td>헤드리스 시각화 병목</td><td>foxglove_bridge를 T2 시작 전에 셋업(공통 기반) — RViz 부재를 상수로 취급</td></tr>
         <tr><td>Isaac 인스턴스 충돌</td><td>동시 1인스턴스 규칙(OOM 실측 사고 기록) — 개발 중 스크립트 재실행 전 기존 프로세스 종료 습관화</td></tr>
-        <tr><td>일정 전체</td><td>4태스크 합산 추정 14~19일 — 주차 배정은 팀 마일스톤 확정 후 이 문서에 기입</td></tr>
+        <tr><td>일정 전체</td><td>4태스크 합산 추정 12~17일 — 주차 배정은 팀 마일스톤 확정 후 이 문서에 기입</td></tr>
+      </table>
+      <h3>부록 실험 3종 — "알고 배제했다"의 물증 (본선 완료 후)</h3>
+      <table>
+        <tr><th style="width:230px">실험</th><th>내용</th></tr>
+        <tr><td>AMCL 검증 1대</td><td>지도 고정 + AMCL 위치추정 1대 실험 — GT+노이즈 대체의 타당성 물증</td></tr>
+        <tr><td>Nav2 비교 1대</td><td>추종기 vs Nav2 풀스택 동일 코스 비교 — 로컬 회피가 산업 거동과 다름을 실측으로 제시</td></tr>
+        <tr><td>솔버 스왑 벤치</td><td>PP/CBS/ECBS/PIBT/LaCAM을 동일 DES 위에서 교체 비교(플러그인 설계 증명) — DES 트랙과 공동, 시뮬 트랙은 인터페이스 제공</td></tr>
       </table>
       <div class="kcards">
         <div class="kcard s"><b><a href="runtime_architecture.html" style="color:inherit">런타임 아키텍처</a></b><span>표준 스택 채택·배치·스케일 사다리 (WORKING)</span></div>
@@ -276,7 +283,7 @@
 </main>
 
 <footer>
-  <div class="wrap">WORKING · SIL-ROADMAP · REV A — 작성 2026-08-25 · 소요 기간은 전부 추정, 주차 배정은 팀 마일스톤 확정 후 기입 · 기술 전제는 런타임 아키텍처 REV B 준수 · <a href="index.html">문서 인덱스로</a></div>
+  <div class="wrap">WORKING · SIL-ROADMAP · REV B — 개정 2026-08-26 (B: T2를 SLAM 매핑+자체 추종으로 재정의, Nav2는 부록 비교 실험으로, 부록 실험 3종 신설) · 소요는 전부 추정 · 기술 전제는 런타임 아키텍처 REV C 준수 · <a href="index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>
