@@ -7,6 +7,7 @@ SIL(가상 시운전) 구현 코드가 들어올 자리. 로드맵과 기술 전
 - 실행 환경: 홈서버 Isaac Sim 6.0.1 (~/isaacsim) + /opt/ros/humble — Isaac 동시 1인스턴스 규칙
 
 현재 구성:
+- `sil/t2_mapping/` — **T2-A 완료(2026-08-27)**: SLAM 매핑 런 — GT 방 vs 지도 오차 평균 3.4cm·커버리지 91.6%
 - `sil/t1_teleop/` — **T1 완료(2026-08-27)**: /cmd_vel 텔레옵 + /clock·/odom 발행 + 가감속 실측(DES 환류)
 
 예정 구성:
