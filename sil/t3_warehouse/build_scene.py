@@ -39,9 +39,14 @@ FRAME_USD = ASSETS + "/Isaac/Environments/Simple_Warehouse/Props/SM_RackFrame_03
 MAT_DIR = ASSETS + "/Isaac/Environments/Simple_Warehouse/Materials"
 
 CELL = 0.1                      # m/셀 (map_gen과 동일)
-WALL_H = 8.0                    # 산업 표준고 가정 (도면에 층고 정보 없음 — 시각용, 라이다 무관)
-CEIL_Z = 8.0                    # 천장 슬래브 하단
-CONV_H = 0.9                    # 라이다 평면(0.7m) 위 — 가시
+WALL_H = 12.0                   # 산업 고층고 가정 (도면에 층고 정보 없음 — 시각용, 라이다 무관)
+CONV_H = 0.9                    # 라이다 평면(0.7m) 위 — 가시(콜라이더)
+
+# 컨베이어 비주얼 — ConveyorBelt_A08 직선 섹션 (컴포즈 실측 2.719x1.15x1.17, 피벗 동측 끝)
+CONV_USD = ASSETS + "/Isaac/Props/Conveyors/ConveyorBelt_A08.usd"
+CONV_SEC_L = 2.719
+CONVEYORS_VIS = [(14.6, 38.9, 16.0), (14.6, 70.9, 16.0),
+                 (94.6, 43.1, 15.0), (94.6, 75.1, 15.0)]   # (x시작, y하단, 길이) — map_gen v6.3 동일
 RACK_UNIT_L = 16.13
 RACK_D = 1.08
 BAY = 4.0                       # 베이 피치 (16.13 = 4x4.0 + 0.13 프레임 마진)
@@ -97,6 +102,31 @@ def add_box(stage, path, x, y, w, h, z0, z1, collide=True):
     return cube
 
 
+def add_box_mesh(stage, path, x, y, w, h, z0, z1, uv_scale=4.0):
+    """타일링 UV를 가진 박스 메시(옆 4면+윗면) + 콜라이더 — Cube prim은 UV가 없어
+    텍스처 재질이 단색으로 뭉개진다(실측). 벽·기둥용."""
+    mesh = UsdGeom.Mesh.Define(stage, path)
+    x1, y1 = x + w, y + h
+    pts = [(x, y, z0), (x1, y, z0), (x1, y1, z0), (x, y1, z0),
+           (x, y, z1), (x1, y, z1), (x1, y1, z1), (x, y1, z1)]
+    faces = [(0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7), (4, 5, 6, 7)]
+    mesh.CreatePointsAttr(pts)
+    mesh.CreateFaceVertexCountsAttr([4] * 5)
+    mesh.CreateFaceVertexIndicesAttr([i for f in faces for i in f])
+    mesh.CreateExtentAttr([(x, y, z0), (x1, y1, z1)])
+    mesh.CreateDoubleSidedAttr(True)
+    hz = (z1 - z0) / uv_scale
+    st = []
+    for d in (w, h, w, h):
+        u = d / uv_scale
+        st += [(0, 0), (u, 0), (u, hz), (0, hz)]
+    st += [(0, 0), (w / uv_scale, 0), (w / uv_scale, h / uv_scale), (0, h / uv_scale)]
+    UsdGeom.PrimvarsAPI(mesh).CreatePrimvar(
+        "st", Sdf.ValueTypeNames.TexCoord2fArray, UsdGeom.Tokens.faceVarying).Set(st)
+    UsdPhysics.CollisionAPI.Apply(mesh.GetPrim())
+    return mesh
+
+
 def add_quad(stage, path, x0, y0, x1, y1, z, uv_scale, flip=False):
     """수평 사각 메시 + 타일링 UV (uv_scale m당 텍스처 1회) — 바닥·천장 시각용."""
     mesh = UsdGeom.Mesh.Define(stage, path)
@@ -144,10 +174,11 @@ W, H = COLS * CELL, ROWS * CELL
 add_box(stage, "/World/ground", -5, -5, W + 10, H + 10, -0.11, -0.01)
 floor = add_quad(stage, "/World/floor", -5, -5, W + 5, H + 5, 0.0, uv_scale=4.0)
 bind_mdl(stage, floor, "MI_Floor_01", MAT_DIR + "/MI_Floor_01.mdl")
-ceil = add_quad(stage, "/World/ceiling", 0, 0, W, H, CEIL_Z, uv_scale=6.0, flip=True)
-bind_mdl(stage, ceil, "MI_CeilingA_06b", MAT_DIR + "/MI_CeilingA_06b.mdl")
 
-# 실내 조명 그리드 — 천장 직하 RectLight + 발광 등기구 (전부 z 7.8~7.95, 라이다 밴드 밖)
+# 개방 지붕 — 태양광(그림자·전역 밝기) + 조명 그리드(현수등, z 7.8~7.95 라이다 밴드 밖)
+sun = UsdLux.DistantLight.Define(stage, "/World/sun")
+sun.CreateIntensityAttr(1200)
+UsdGeom.Xformable(sun.GetPrim()).AddRotateXYZOp().Set(Gf.Vec3f(0, -35, 25))
 UsdGeom.Xform.Define(stage, "/World/lights")
 n_light = 0
 for gx in range(18, 111, 12):
@@ -165,23 +196,44 @@ for gx in range(18, 111, 12):
 fixtures = stage.GetPrimAtPath("/World/lights")
 bind_mdl(stage, fixtures, "M_Glow", MAT_DIR + "/M_Glow.mdl")
 dome = UsdLux.DomeLight.Define(stage, "/World/dome")
-dome.CreateIntensityAttr(250)                             # 외부·틈새 보조광
-print(f"[0] 드레싱: 바닥·천장 재질 + 조명 {n_light}기")
+dome.CreateIntensityAttr(250)                             # 하늘 보조광
+print(f"[0] 드레싱: 바닥 재질 + 태양 + 현수등 {n_light}기")
 
 # 1) 벽·기둥 (셀값 1)
 walls = greedy_rects(grid == 1)
 walls_xf = UsdGeom.Xform.Define(stage, "/World/walls")
+cols_xf = UsdGeom.Xform.Define(stage, "/World/columns")
+n_colbox = 0
 for i, (r0, c0, h, w) in enumerate(walls):
-    add_box(stage, f"/World/walls/w_{i}", c0 * CELL, r0 * CELL, w * CELL, h * CELL, 0.0, WALL_H)
+    small = w * CELL < 2.2 and h * CELL < 2.2             # 기둥(심볼 파편) — 별도 재질로 구분
+    parent = "columns" if small else "walls"
+    add_box_mesh(stage, f"/World/{parent}/w_{i}", c0 * CELL, r0 * CELL, w * CELL, h * CELL, 0.0, WALL_H)
+    n_colbox += small
 bind_mdl(stage, walls_xf, "MI_WallA_01", MAT_DIR + "/MI_WallA_01.mdl")
-print(f"[1] 벽·기둥 박스 {len(walls)}개")
+bind_mdl(stage, cols_xf, "MI_WallB_01", MAT_DIR + "/MI_WallB_01.mdl")
+print(f"[1] 벽 {len(walls) - n_colbox} + 기둥 {n_colbox} (타일링 UV 메시)")
 
 # 2) 컨베이어 (셀값 5)
 convs = greedy_rects(grid == 5)
 UsdGeom.Xform.Define(stage, "/World/conveyors")
 for i, (r0, c0, h, w) in enumerate(convs):
-    add_box(stage, f"/World/conveyors/c_{i}", c0 * CELL, r0 * CELL, w * CELL, h * CELL, 0.0, CONV_H)
-print(f"[2] 컨베이어 박스 {len(convs)}개")
+    b = add_box(stage, f"/World/conveyors/c_{i}", c0 * CELL, r0 * CELL, w * CELL, h * CELL, 0.0, CONV_H)
+    UsdGeom.Imageable(b.GetPrim()).MakeInvisible()        # 콜라이더 전용 — 비주얼은 실물 에셋
+# 정적 비주얼 — 기능 없는 모양용 (V&V·플래너는 위 콜라이더 박스 기준 그대로)
+n_sec = 0
+for ci, (cx0, cy0, clen) in enumerate(CONVEYORS_VIS):
+    yc = cy0 + 0.45
+    n = int(clen // CONV_SEC_L)
+    sx = cx0 + (clen - n * CONV_SEC_L) / 2
+    for k in range(n):
+        # A08 루트에 자체 xformOpOrder가 있어 같은 op 추가가 예외 — 래퍼 Xform이 이동 담당
+        w_xf = UsdGeom.Xform.Define(stage, f"/World/conveyors/vis{ci}_{k}")
+        UsdGeom.Xformable(w_xf.GetPrim()).AddTranslateOp().Set(
+            Gf.Vec3d(sx + k * CONV_SEC_L + 2.719, yc, 0.0))   # 에셋 피벗 = 동측 끝(x -2.719~0)
+        c = UsdGeom.Xform.Define(stage, f"/World/conveyors/vis{ci}_{k}/asset")
+        c.GetPrim().GetReferences().AddReference(CONV_USD)
+        n_sec += 1
+print(f"[2] 컨베이어: 콜라이더 박스 {len(convs)}(투명) + 비주얼 섹션 {n_sec}")
 
 # 3) 렉 — 부품 조립 (rack_rows: [x시작, y하단, 유닛수] / 행폭 2xRACK_D 더블)
 UsdGeom.Xform.Define(stage, "/World/racks")
@@ -211,6 +263,26 @@ for bi, (xs, yb, n_units) in enumerate(rack_rows):
                     UsdGeom.Xformable(p.GetPrim()).AddTranslateOp().Set(Gf.Vec3d(cx, yc, dz))
                     n_shelf += 1
 print(f"[3] 렉 조립: 프레임 {n_frame} + 데크 {n_shelf}", flush=True)
+
+# 바닥 마킹 — 렉 블록 안전선(황) + 스테이션 마킹(청): 시인성 + 레이아웃 데이터의 시각화
+UsdGeom.Xform.Define(stage, "/World/markings")
+n_mark = 0
+LW = 0.12
+for bi, (xs, yb, nu) in enumerate(rack_rows):
+    bx0, by0 = xs - 0.27, yb - 0.27
+    bx1, by1 = xs + int(nu) * RACK_UNIT_L + 0.27, yb + 2 * RACK_D + 0.27
+    for j, (qx0, qy0, qx1, qy1) in enumerate([
+            (bx0, by0, bx1, by0 + LW), (bx0, by1 - LW, bx1, by1),
+            (bx0, by0, bx0 + LW, by1), (bx1 - LW, by0, bx1, by1)]):
+        q = add_quad(stage, f"/World/markings/rk{bi}_{j}", qx0, qy0, qx1, qy1, 0.01, 4.0)
+        UsdGeom.Gprim(q.GetPrim()).CreateDisplayColorAttr([(1.0, 0.78, 0.05)])
+        n_mark += 1
+for i, (r0, c0, hh, ww) in enumerate(greedy_rects(grid == 3)):
+    q = add_quad(stage, f"/World/markings/st{i}", c0 * CELL, r0 * CELL,
+                 (c0 + ww) * CELL, (r0 + hh) * CELL, 0.012, 4.0)
+    UsdGeom.Gprim(q.GetPrim()).CreateDisplayColorAttr([(0.15, 0.45, 0.9)])
+    n_mark += 1
+print(f"[3c] 바닥 마킹 {n_mark}개 (안전선·스테이션)")
 
 # 4) 저작 저장 → 완성 파일을 컨텍스트로 오픈 (참조 일괄 로딩)
 stage.GetRootLayer().Save()
@@ -306,12 +378,8 @@ def shoot(pos, rot, fname, focal=18.0):
     print(f"[6] {fname} {'OK' if os.path.exists(path) else '캡처 실패'}")
 
 
-# 탑뷰는 천장을 잠시 숨기고 촬영
-ceil_img = UsdGeom.Imageable(stage.GetPrimAtPath("/World/ceiling"))
-ceil_img.MakeInvisible()
 shoot((COLS * CELL / 2, ROWS * CELL / 2, 120), (0, 0, 0), "scene_top.png", focal=24.0)
-ceil_img.MakeVisible()
-shoot((18, 42, 4.5), (75, 0, -55), "scene_persp.png")    # 실내 조감 (천장 8m 아래)
+shoot((18, 42, 4.5), (75, 0, -55), "scene_persp.png")    # 실내 조감
 shoot((60, 47, 1.2), (87, 0, -90 + 12), "scene_aisle.png", focal=14.0)
 
 app.close()
