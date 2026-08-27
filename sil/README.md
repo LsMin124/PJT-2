@@ -6,6 +6,9 @@ SIL(가상 시운전) 구현 코드가 들어올 자리. 로드맵과 기술 전
 - 아키텍처: `pages/working/runtime_architecture.html` — Humble + Fast DDS + 자체 추종기(Pure Pursuit), VDA 5050/MQTT 경계
 - 실행 환경: 홈서버 Isaac Sim 6.0.1 (~/isaacsim) + /opt/ros/humble — Isaac 동시 1인스턴스 규칙
 
+현재 구성:
+- `sil/t1_teleop/` — **T1 완료(2026-08-27)**: /cmd_vel 텔레옵 + /clock·/odom 발행 + 가감속 실측(DES 환류)
+
 예정 구성:
 - `sil/scenes/` 씬·레이아웃 (파라메트릭 제너레이터 포함)
 - `sil/follower/` 추종기 노드 (Pure Pursuit + 안전 필드 정지)
