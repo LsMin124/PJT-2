@@ -195,8 +195,6 @@ bind_mdl(stage, floor, "MI_Floor_01", MAT_DIR + "/MI_Floor_01.mdl")
 # 개방 지붕 — 태양광(그림자·전역 밝기) + 조명 그리드(현수등, z 7.8~7.95 라이다 밴드 밖)
 sun = UsdLux.DistantLight.Define(stage, "/World/sun")
 sun.CreateIntensityAttr(1200)
-sun.CreateEnableColorTemperatureAttr(True)
-sun.CreateColorTemperatureAttr(5000.0)                    # 약간 따뜻한 주광
 UsdGeom.Xformable(sun.GetPrim()).AddRotateXYZOp().Set(Gf.Vec3f(0, -35, 25))
 UsdGeom.Xform.Define(stage, "/World/lights")
 n_light = 0
@@ -205,8 +203,6 @@ for gx in range(18, 111, 12):
         L = UsdLux.RectLight.Define(stage, f"/World/lights/L_{gx}_{gy}")
         L.CreateIntensityAttr(30000)
         L.CreateExposureAttr(5.0)                         # x32 — 30000 단독으론 실내가 암흑 (실측)
-        L.CreateEnableColorTemperatureAttr(True)
-        L.CreateColorTemperatureAttr(3800.0)              # 온백색(약간 황색) 산업등
         L.CreateWidthAttr(1.2)
         L.CreateHeightAttr(0.6)
         xfl = UsdGeom.Xformable(L.GetPrim())
