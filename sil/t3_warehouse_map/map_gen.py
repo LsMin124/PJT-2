@@ -1,5 +1,5 @@
 # ============================================================
-# DXF 도면 → Occupancy Grid → 렉/AMR 배치 (v6.2 — 검증 반영)
+# DXF 도면 → Occupancy Grid → 렉/AMR 배치 (v6.3 — 크로스-아일)
 #
 # 변경점(v5 → v6):
 #   - 렉 유닛을 NVIDIA 에셋 실측값으로 확정: 16.13 x 1.08 m (4m x 4베이)
@@ -20,6 +20,16 @@
 #     팽창역 내부였음. 새 지점은 동서북 6m+ 여유, 남측 1.4m(도킹 방향)
 #   - 시각화 파일 저장(map_layout.png / map_planner.png) — 헤드리스 서버 대응.
 #     플래너 뷰(팽창 마스크+도달성+스테이션 자가검증) 신설
+#
+# 변경점(v6.2 → v6.3, 경로 위상 개선 2026-08-27):
+#   - 크로스-아일 1개 신설 — 64.5m 무절단 런은 진입구 4곳이 전부 병목이 되는
+#     빗(comb) 위상(정면 조우 시 우회 ~130m). 유닛 2|3 경계를 3.74m 벌려
+#     32.26m 블록 2개로 분할 → 순환 루프 성립, 입구 4→6곳
+#   - 갭 중심을 기둥 중간점 x=65.1에 정렬(기둥 62.1/68.1 사이) — 세로 관통이
+#     기둥 행(y57.3)을 지나므로 기둥 사이로 꿰어야 함. 뱅크 30.97~99.23으로
+#     서측 2.77m 이동(양끝 슬랙 소진, 저장 손실 0), 입구 버퍼 좌표 재계산
+#   - 기둥 갭 측 2개 면(행2 북면·행3 남면)을 리저브(수동 장기보관)로 선언 —
+#     AMR 서빙 불가 면. 가용/리저브 파렛트 분리 집계
 #
 # 셀 값: 0=빈 공간, 1=구조체, 2=렉, 3=AMR 스테이션, 4=출입문, 5=컨베이어
 # ============================================================
@@ -74,8 +84,8 @@ AMR_STATIONS = (
     [(31.6, 40.8), (31.6, 71.35), (93.6, 43.55), (93.6, 75.55)]    # 인계(컨베이어 끝단; W-S는 기둥·컨베이어 팽창역 북측)
     + [(107.8, 50 + i * 3) for i in range(6)]                      # 충전독
     + [(105.5, 50 + i * 3) for i in range(6)]                      # 충전 대기점(독 앞 2.3m)
-    + [(32.2, y) for y in AISLE_Y]                                 # 렉 통로 서측 입구 버퍼
-    + [(99.8, y) for y in AISLE_Y]                                 # 렉 통로 동측 입구 버퍼
+    + [(29.6, y) for y in AISLE_Y]                                 # 렉 통로 서측 입구 버퍼 (뱅크 30.97 서측)
+    + [(100.6, y) for y in AISLE_Y]                                # 렉 통로 동측 입구 버퍼 (뱅크 99.23 동측)
 )
 PALLET_PITCH = 1.15
 RACK_LEVELS = 4
@@ -132,11 +142,20 @@ def add_point(g, x, y, val, s=1.2):
 # 2) 렉 행 배치 (x방향, 기둥 행 회피, 유닛 스냅)
 # ------------------------------------------------------------
 strips = [(BANK[0], COL_ROW_Y - COL_KEEP), (COL_ROW_Y + COL_KEEP, BANK[1])]
-rack_rows = []   # (x_start, y_bottom, n_units)
+rack_rows = []   # (x_start, y_bottom, n_units) — 크로스-아일로 행당 블록 2개
 span = STAGE_R - STAGE_L
 n_units = int(span // RACK_UNIT_L)
-used_x = n_units * RACK_UNIT_L
-xs = STAGE_L + (span - used_x) / 2
+
+# 크로스-아일(v6.3): 유닛 2|3 경계를 CROSS_GAP만큼 벌려 블록 2개로.
+# 갭 중심은 기둥 중간점(62.1/68.1 사이) — 세로 관통이 기둥 행(y57.3)을 지나므로
+# 기둥 팽창역(±1.1m) 사이로 꿰어야 한다. 뱅크는 30.97~99.23 (STAGE 안, 손실 0)
+CROSS_AT = 2                 # 브레이크 앞 유닛 수
+CROSS_GAP = 3.74             # 갭 폭 [m] — 팽창(0.8x2) 후 유효 2.14m
+CROSS_CENTER = 65.1          # 기둥 중간점 x
+w1 = CROSS_AT * RACK_UNIT_L
+w2 = (n_units - CROSS_AT) * RACK_UNIT_L
+xs = CROSS_CENTER - CROSS_GAP / 2 - w1
+assert STAGE_L <= xs and xs + w1 + CROSS_GAP + w2 <= STAGE_R, "뱅크가 스테이지 초과"
 for (s0, s1) in strips:
     H = s1 - s0
     n_rows = int((H + AISLE) // (ROW_W + AISLE))
@@ -144,8 +163,10 @@ for (s0, s1) in strips:
     off = (H - used_y) / 2
     for k in range(n_rows):
         yb = s0 + off + k * (ROW_W + AISLE)
-        add_rect(grid, xs, yb, used_x, ROW_W, 2)
-        rack_rows.append((round(xs, 2), round(yb, 2), n_units))
+        add_rect(grid, xs, yb, w1, ROW_W, 2)
+        add_rect(grid, xs + w1 + CROSS_GAP, yb, w2, ROW_W, 2)
+        rack_rows.append((round(xs, 2), round(yb, 2), CROSS_AT))
+        rack_rows.append((round(xs + w1 + CROSS_GAP, 2), round(yb, 2), n_units - CROSS_AT))
 
 # ------------------------------------------------------------
 # 3) 컨베이어 / 스테이션 / 문
@@ -164,8 +185,12 @@ total_units = sum(n for _, _, n in rack_rows)
 assets = total_units * (2 if DOUBLE_ROW else 1)
 row_len = total_units * RACK_UNIT_L
 pallets = int(row_len / PALLET_PITCH) * 2 * RACK_LEVELS
-print(f"[2] 렉 행 {len(rack_rows)}개(더블), 유닛 {total_units} → 에셋 {assets}개, 연장 {row_len:.1f}m")
-print(f"    파렛트 추정 {pallets:,}개")
+# 기둥 갭 측 2개 면(행2 북면·행3 남면)은 AMR 진입 불가 공간을 향함 → 리저브 선언
+n_rows_total = len(rack_rows) // 2            # 블록 2개 = 행 1개
+dead_len = 2 * (row_len / n_rows_total)
+reserve = int(dead_len / PALLET_PITCH) * RACK_LEVELS
+print(f"[2] 렉 행 {n_rows_total}개(더블) x 블록 2 = 에셋 {assets}개, 연장 {row_len:.1f}m, 크로스-아일 갭 {CROSS_GAP}m@x{CROSS_CENTER}")
+print(f"    파렛트 추정 {pallets:,}개 = 가용 {pallets - reserve:,} + 리저브 {reserve:,} (기둥 갭 측 면 — 수동 장기보관 선언)")
 print(f"    렉통로 {AISLE}m → 팽창({INFLATE}m) 후 유효 {AISLE - 2 * INFLATE:.1f}m (양방향 교행 가능)")
 
 obstacle = binary_dilation((grid == 1) | (grid == 2) | (grid == 5),
