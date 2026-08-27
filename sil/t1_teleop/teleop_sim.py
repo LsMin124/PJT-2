@@ -86,6 +86,8 @@ except Exception as exc:
     print(f"[t1_teleop] camera setup skipped: {exc}")
 
 CAM_OFFSET = np.array([-4.5, -4.5, 3.0])  # 추적 카메라: 로봇 기준 고정 오프셋
+CAM_ALPHA = 0.06  # 프레임당 평활 계수 — 클수록 민첩, 작을수록 부드러움
+_cam = {"eye": None, "target": None}
 
 # ── ROS2 I/O 그래프: cmd_vel 구독, clock·odom 발행 ──
 og.Controller.edit(
@@ -191,10 +193,16 @@ while simulation_app.is_running():
         og.Controller.set(odom_lin, [float(lv[0]), float(lv[1]), float(lv[2])])
         og.Controller.set(odom_ang, [float(av[0]), float(av[1]), float(av[2])])
 
-        # 추적 카메라 — 로봇이 프레임을 벗어나지 않게 15프레임마다 갱신
-        if set_camera_view is not None and frame % 15 == 0:
-            eye = p + CAM_OFFSET
-            set_camera_view(eye=eye.tolist(), target=[float(p[0]), float(p[1]), 0.3])
+        # 추적 카메라 — 매 프레임 지수 평활로 부드럽게 추종
+        if set_camera_view is not None:
+            want_eye = p + CAM_OFFSET
+            want_tgt = np.array([p[0], p[1], 0.3])
+            if _cam["eye"] is None:
+                _cam["eye"], _cam["target"] = want_eye.copy(), want_tgt.copy()
+            else:
+                _cam["eye"] += CAM_ALPHA * (want_eye - _cam["eye"])
+                _cam["target"] += CAM_ALPHA * (want_tgt - _cam["target"])
+            set_camera_view(eye=_cam["eye"].tolist(), target=_cam["target"].tolist())
 
 app_utils.stop()
 simulation_app.close()
