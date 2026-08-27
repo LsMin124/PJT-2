@@ -23,6 +23,7 @@ from isaacsim import SimulationApp
 parser = argparse.ArgumentParser()
 parser.add_argument("--manual", action="store_true", help="패트롤 대신 /cmd_vel 텔레옵")
 parser.add_argument("--laps", type=int, default=2, help="패트롤 바퀴 수")
+parser.add_argument("--spawn", type=float, nargs=2, default=[-1.8, -1.8], help="로봇 시작 위치 x y")
 args, _ = parser.parse_known_args()
 
 CONFIG = {
@@ -81,7 +82,7 @@ ROOM = [
     ("wall_s", (0.0, -4.5, 0.5), (12.4, 0.2, 1.0)),
     ("box_a", (-2.5, 2.5, 0.4), (1.0, 1.0, 0.8)),
     ("box_b", (-3.0, -2.0, 0.4), (0.8, 1.6, 0.8)),
-    ("box_c", (2.0, -3.0, 0.4), (1.2, 0.6, 0.8)),
+    ("box_c", (2.0, -2.6, 0.4), (1.2, 0.6, 0.8)),  # ROOM v2: 남측 회랑 1.5m 확보(1.1m는 통행 불가 실측 판정)
 ]
 
 # 패트롤: 0.6 m/s 전진 360스텝(3.6 m) + π/8 rad/s 좌회전 240스텝(90°) — 회전 중 스캔 왜곡 완화
@@ -104,11 +105,20 @@ for name, pos, dims in ROOM:
     xf.AddScaleOp().Set(Gf.Vec3f(*dims))
     UsdPhysics.CollisionAPI.Apply(cube.GetPrim())
 
+# 토픽 제어 장애물 — /obstacle_cmd (linear.z>0.5일 때 linear.x,y로 순간이동)
+obs = UsdGeom.Cube.Define(stage, "/World/obstacle")
+obs.GetSizeAttr().Set(1.0)
+_obs_xf = UsdGeom.Xformable(obs.GetPrim())
+obs_translate = _obs_xf.AddTranslateOp()
+obs_translate.Set(Gf.Vec3d(20.0, 20.0, 0.7))
+_obs_xf.AddScaleOp().Set(Gf.Vec3f(0.6, 0.6, 1.4))  # 라이다 평면(~0.7m)보다 높게 — 0.6m 큐브는 빔이 위로 지나감(실측)
+UsdPhysics.CollisionAPI.Apply(obs.GetPrim())
+
 robot = WheeledRobot(
     paths="/World/iw_hub",
     wheel_dof_names=["left_wheel_joint", "right_wheel_joint"],
     usd_path=IWHUB_USD,
-    positions=[-1.8, -1.8, 0.05],  # 사각 패트롤(3.6m 변)이 방 중앙에 오도록
+    positions=[args.spawn[0], args.spawn[1], 0.05],  # 기본: 사각 패트롤이 방 중앙에 오도록
 )
 controller = DifferentialController(wheel_radius=WHEEL_RADIUS, wheel_base=WHEEL_BASE)
 
@@ -187,9 +197,11 @@ og.Controller.edit(
             ("pub_odom", "isaacsim.ros2.bridge.ROS2PublishOdometry"),
             ("tf_odom", "isaacsim.ros2.bridge.ROS2PublishRawTransformTree"),
             ("tf_lidar", "isaacsim.ros2.bridge.ROS2PublishRawTransformTree"),
+            ("sub_obs", "isaacsim.ros2.bridge.ROS2SubscribeTwist"),
         ],
         og.Controller.Keys.SET_VALUES: [
             ("sub_twist.inputs:topicName", "cmd_vel"),
+            ("sub_obs.inputs:topicName", "obstacle_cmd"),
             ("pub_clock.inputs:topicName", "clock"),
             ("pub_odom.inputs:topicName", "odom"),
             ("pub_odom.inputs:odomFrameId", "odom"),
@@ -208,11 +220,13 @@ og.Controller.edit(
             ("tick.outputs:tick", "pub_odom.inputs:execIn"),
             ("tick.outputs:tick", "tf_odom.inputs:execIn"),
             ("tick.outputs:tick", "tf_lidar.inputs:execIn"),
+            ("tick.outputs:tick", "sub_obs.inputs:execIn"),
             ("ctx.outputs:context", "sub_twist.inputs:context"),
             ("ctx.outputs:context", "pub_clock.inputs:context"),
             ("ctx.outputs:context", "pub_odom.inputs:context"),
             ("ctx.outputs:context", "tf_odom.inputs:context"),
             ("ctx.outputs:context", "tf_lidar.inputs:context"),
+            ("ctx.outputs:context", "sub_obs.inputs:context"),
         ],
     },
 )
@@ -230,6 +244,7 @@ tfo_ts = attr("tf_odom.inputs:timeStamp")
 tfo_tr = attr("tf_odom.inputs:translation")
 tfo_rot = attr("tf_odom.inputs:rotation")
 tfl_ts = attr("tf_lidar.inputs:timeStamp")
+obs_lin = attr("sub_obs.outputs:linearVelocity")
 
 timeline = omni.timeline.get_timeline_interface()
 
@@ -292,6 +307,10 @@ while simulation_app.is_running():
         og.Controller.set(tfo_tr, p_ros)
         og.Controller.set(tfo_rot, q_ros)
         og.Controller.set(tfl_ts, float(t))
+
+        ocmd = np.asarray(og.Controller.get(obs_lin)).reshape(-1)
+        if ocmd[2] > 0.5:
+            obs_translate.Set(Gf.Vec3d(float(ocmd[0]), float(ocmd[1]), 0.7))
 
         if set_camera_view is not None:
             want_eye = p + CAM_OFFSET
