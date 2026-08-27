@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<title>T2 매핑·추종 학습 가이드</title>
+<style>
+  :root{
+    --bg:#14181D; --panel:#1C2229; --panel-edge:#2C343D; --ink:#E8ECF1; --ink-soft:#9AA7B4;
+    --amber:#F08A32; --machine:#3BAF77; --steel:#8FB4D9; --slate:#8A96A3; --grid:#2A323B;
+    --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important;animation:none!important}}
+  body{
+    background:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:32px 32px;
+    color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px;
+  }
+  a{color:var(--steel)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+  header{border-bottom:3px solid var(--ink);background:var(--panel)}
+  .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
+  .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
+  .doc-eyebrow b{color:var(--amber);font-weight:600}
+  h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
+  h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
+  .meta b{color:var(--ink);font-weight:600}
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav .wrap{display:flex;gap:2px;padding:0 20px}
+  nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
+  nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--amber);outline:none}
+  nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
+  nav a.nav-cross{margin-left:auto;color:var(--amber);font-weight:700}
+  main{padding:44px 0 80px}
+  section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
+  .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
+  h2{font-size:clamp(19px,2.2vw,27px);font-weight:800;line-height:1.3;letter-spacing:-.025em}
+  .sec-body{padding:16px 26px 26px}
+  h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+  h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
+  p{margin-bottom:10px}
+  .sec-body p{max-width:76ch}
+  .lead{font-size:15.5px}
+  .soft{color:var(--ink-soft)}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
+  .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
+  .note{margin:14px 0 8px;padding:12px 16px;background:#2A2019;border-left:4px solid var(--amber);font-size:14px;line-height:1.8}
+  .note .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--amber);font-weight:700;margin-bottom:4px}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F}
+  td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
+  tr:last-child td{border-bottom:none}
+  table tr:nth-child(even) td{background:#1E252D}
+  .tbl-scroll{overflow-x:auto}
+  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px;white-space:nowrap}
+  .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)} .c-slate{color:var(--slate)}
+  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
+  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
+  .kcard b{display:block;font-size:15px;margin-bottom:4px}
+  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
+  .viz{background:#0E1318;border:1px solid var(--panel-edge);padding:12px 14px;margin:14px 0;overflow-x:auto}
+  .viz svg{display:block;min-width:780px;width:100%;height:auto}
+  code{font-family:var(--mono);font-size:12.5px;background:#0E1318;border:1px solid var(--panel-edge);padding:1px 6px;white-space:nowrap}
+  pre{font-family:var(--mono);font-size:12.5px;line-height:1.7;background:#0E1318;border:1px solid var(--panel-edge);padding:14px 16px;margin:12px 0;overflow-x:auto;color:#C7D1DB}
+  pre b{color:var(--amber);font-weight:600}
+  footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+  @media (max-width:820px){ .titleblock{grid-template-columns:1fr} .meta{border-left:none;padding-left:0;text-align:left} }
+  :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap titleblock">
+    <div>
+      <div class="doc-eyebrow"><b>WORKING · GUIDE</b> · T2 SLAM + FOLLOWER · ISAAC × ROS2</div>
+      <h1>T2 매핑·추종 학습 가이드 — 스캔이 지도가 되고, 투어가 데이터가 되기까지
+        <span class="sub">SLAM 커미셔닝 재현 → 자체 추종기(Pure Pursuit + 안전 필드) → 엣지 통과시간 실측 · 개념 → 아키텍처 → 코드 → 실습 → 삽질 사전</span>
+      </h1>
+    </div>
+    <div class="meta">
+      DOC. <b>T2-GUIDE</b><br>
+      REV. <b>A</b> · 작성 <b>2026-08-27</b><br>
+      대상 <b>시뮬 파트 · 전 팀원</b>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a class="nav-home" href="../../index.html">⌂ INDEX</a>
+  <a href="#g0">00 얻는 것</a>
+  <a href="#g1">01 선수 개념 5</a>
+  <a href="#g2">02 아키텍처</a>
+  <a href="#g3">03 코드 워크스루</a>
+  <a href="#g4">04 실습</a>
+  <a href="#g5">05 검증·실측</a>
+  <a href="#g6">06 삽질 사전</a>
+  <a class="nav-cross" href="sil_roadmap.html">SIL 로드맵 ↗</a>
+</div></nav>
+
+<main class="wrap">
+
+  <!-- ══════════ G0 ══════════ -->
+  <section id="g0">
+    <div class="sec-head"><span class="sec-no">SEC 00 · 얻는 것</span><h2>두 스테이지가 하나의 논증이다 — "지도를 만들 수 있고, 그 위를 산업 방식으로 달릴 수 있다"</h2></div>
+    <div class="sec-body">
+      <p class="lead">T2는 두 단계다. <b>스테이지 A(SLAM 매핑)</b>는 실제 AMR 설치 절차(현장 SLAM 1회 → 지도 고정)의 재현이고, <b>스테이지 B(자체 추종기)</b>는 확정 아키텍처의 로봇 레벨 실행기 초판이다 — Nav2를 쓰지 않고 중앙이 준 경로를 추종만 하는 산업 AMR 방식. 이 가이드를 끝내면 아래를 스스로 할 수 있어야 한다.</p>
+      <table>
+        <tr><th style="width:44px">#</th><th>학습 목표</th><th style="width:180px">관련 절</th></tr>
+        <tr><td>1</td><td>TF 트리(map→odom→base_link→lidar_link)에서 각 변환을 누가 발행하는지 말할 수 있다</td><td>SEC 01·02</td></tr>
+        <tr><td>2</td><td>매핑 런을 직접 돌려 지도를 뽑고, GT 대비 오차 수치의 의미를 설명할 수 있다</td><td>SEC 04·05</td></tr>
+        <tr><td>3</td><td>추종기의 제어 상태(정렬·순항·정지·재개)와 안전 필드 로직을 코드에서 짚을 수 있다</td><td>SEC 03</td></tr>
+        <tr><td>4</td><td>장애물을 투척해 정지·재개를 재현하고 엣지 CSV를 해석할 수 있다</td><td>SEC 04·05</td></tr>
+        <tr><td>5</td><td>"엣지 시간은 결정적, 분산은 정지 이벤트"가 DES 모델에 왜 중요한지 설명할 수 있다</td><td>SEC 05</td></tr>
+      </table>
+      <p class="soft">코드 위치: <code>sil/t2_mapping/</code>(스테이지 A) · <code>sil/t2_follower/</code>(스테이지 B)</p>
+    </div>
+  </section>
+
+  <!-- ══════════ G1 ══════════ -->
+  <section id="g1">
+    <div class="sec-head"><span class="sec-no">SEC 01 · 선수 개념 5</span><h2>이 다섯 개만 알면 두 스테이지가 전부 읽힌다</h2></div>
+    <div class="sec-body">
+      <table>
+        <tr><th style="width:200px">개념</th><th>핵심</th><th style="width:230px">T2에서 쓰인 곳</th></tr>
+        <tr><td><b>① 2D 라이다·LaserScan</b></td><td>회전 거울이 한 평면을 훑어 각도별 거리 배열을 만든다. 배열엔 <b>range_min</b>(이보다 가까우면 안 보임 — 블라인드)과 range_max가 있고, 우리 설정은 1.0m / 25m. 스캔 평면 높이(~0.7m)보다 낮은 물체도 안 보인다</td><td>안전 필드 정지 임계(1.2m)가 블라인드(1.0m) 위에 있어야 하는 이유 · 삽질 ⑤</td></tr>
+        <tr><td><b>② TF 트리</b></td><td>좌표계들의 부모-자식 변환 트리. odom→base_link는 시뮬(오도메트리)이, base_link→lidar_link는 고정 변환이, <b>map→odom은 SLAM이 발행</b>한다 — SLAM의 출력이 "지도 좌표계에서 오도메트리 누적 오차를 보정하는 변환"이라는 뜻</td><td>mapping_sim.py의 TF 발행 노드 2개 + slam_toolbox</td></tr>
+        <tr><td><b>③ SLAM·점유 격자</b></td><td>스캔들을 이어 맞추며(스캔 매칭) 지도를 만들고 동시에 자기 위치를 추정한다. 산출물은 점유 격자(5cm 셀 — 점유/자유/미지). slam_toolbox online_async가 Humble 표준</td><td>스테이지 A 전부 · 지도는 경로망 설계의 근거 자료</td></tr>
+        <tr><td><b>④ Pure Pursuit·P 제어</b></td><td>목표점 방위각 오차 α에 비례(K·α)해 각속도를 내고, 오차가 크면 멈춰 서서 정렬부터 한다. 여기에 <b>명령 램프</b>(가속 제한 — T1 실측의 결론)를 걸어 실기 거동을 흉내낸다</td><td>follower.py 제어 루프</td></tr>
+        <tr><td><b>⑤ 보호 필드</b></td><td>산업 AMR의 안전 관행 — 진행 경로 위 영역에 물체가 들면 감속→정지, 벗어나면 재개. 모양이 중요하다: 원뿔(각도 섹터)이 아니라 <b>로봇 폭 기반 사각 대역</b>이어야 통로 옆 물체에 오탐하지 않는다</td><td>cb_scan의 사각 필드 · 삽질 ③</td></tr>
+      </table>
+      <div class="plain"><span class="pl-tag">한 가지 함정 지식</span>회전 라이다의 스캔은 <b>순간 사진이 아니라 1/10초 노출</b>이다. 로봇이 π/4 rad/s로 도는 동안 찍힌 한 바퀴 스캔은 시작과 끝의 방향이 4.5° 다르다 — SLAM은 순간 스캔을 가정하므로 이 스미어가 그대로 지도 오차가 된다. 회전 속도를 절반(π/8)으로 낮춘 것만으로 지도 오차가 18cm → 3.4cm로 떨어졌다(SEC 05).</div>
+      <p class="soft">용어가 낯설면 <a href="../ref/glossary_robotics.html">용어사전 A(로보틱스)</a>부터.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ G2 ══════════ -->
+  <section id="g2">
+    <div class="sec-head"><span class="sec-no">SEC 02 · 아키텍처</span><h2>같은 시뮬, 갈아 끼우는 상대 — 스테이지 A는 SLAM, B는 추종기</h2></div>
+    <div class="sec-body">
+      <div class="viz"><svg viewBox="0 0 920 430" role="img" aria-label="T2 데이터 흐름 — Isaac 시뮬과 slam_toolbox(스테이지 A) 또는 follower(스테이지 B)가 DDS로 대화">
+        <defs><marker id="ga" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8FB4D9"/></marker>
+        <marker id="gg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3BAF77"/></marker></defs>
+        <rect x="30" y="40" width="220" height="118" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+        <text x="140" y="66" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">slam_toolbox</text>
+        <text x="140" y="86" text-anchor="middle" fill="#8FB4D9" font-size="10.5" font-family="'JetBrains Mono',monospace">스테이지 A에서만</text>
+        <text x="140" y="106" text-anchor="middle" fill="#9AA7B4" font-size="10.5">/scan+/tf 구독 → 스캔 매칭</text>
+        <text x="140" y="124" text-anchor="middle" fill="#9AA7B4" font-size="10.5">지도 + map→odom 보정 발행</text>
+        <text x="140" y="142" text-anchor="middle" fill="#9AA7B4" font-size="10.5">지도 저장은 nav2_map_server</text>
+        <rect x="30" y="250" width="220" height="118" fill="#1C2229" stroke="#3BAF77" stroke-width="1.5"/>
+        <text x="140" y="276" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">follower.py</text>
+        <text x="140" y="296" text-anchor="middle" fill="#3BAF77" font-size="10.5" font-family="'JetBrains Mono',monospace">스테이지 B에서만 · rclpy</text>
+        <text x="140" y="316" text-anchor="middle" fill="#9AA7B4" font-size="10.5">/odom·/scan 구독 → 제어 20Hz</text>
+        <text x="140" y="334" text-anchor="middle" fill="#9AA7B4" font-size="10.5">/cmd_vel 발행 · 엣지 CSV 기록</text>
+        <text x="140" y="352" text-anchor="middle" fill="#9AA7B4" font-size="10.5">지도 불필요 — odom 좌표로 순회</text>
+        <rect x="430" y="30" width="460" height="360" fill="#171D24" stroke="#F08A32" stroke-width="1.5"/>
+        <text x="446" y="58" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">Isaac Sim 프로세스 (mapping_sim.py — 양 스테이지 공용)</text>
+        <rect x="450" y="76" width="200" height="140" fill="#20272F" stroke="#2C343D"/>
+        <text x="550" y="100" text-anchor="middle" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="11.5" font-weight="700">OmniGraph + 라이다 라이터</text>
+        <text x="550" y="122" text-anchor="middle" fill="#9AA7B4" font-size="10.5">PublishLaserScan (RTX 라이다)</text>
+        <text x="550" y="140" text-anchor="middle" fill="#9AA7B4" font-size="10.5">TF ×2 (odom→base, base→lidar)</text>
+        <text x="550" y="158" text-anchor="middle" fill="#9AA7B4" font-size="10.5">PublishOdometry · PublishClock</text>
+        <text x="550" y="176" text-anchor="middle" fill="#9AA7B4" font-size="10.5">SubscribeTwist ×2</text>
+        <text x="550" y="198" text-anchor="middle" fill="#5A6672" font-size="10">(/cmd_vel · /obstacle_cmd)</text>
+        <rect x="672" y="76" width="200" height="140" fill="#20272F" stroke="#2C343D"/>
+        <text x="772" y="100" text-anchor="middle" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="11.5" font-weight="700">파이썬 메인 루프</text>
+        <text x="772" y="122" text-anchor="middle" fill="#9AA7B4" font-size="10.5">--laps: 사각 패트롤 (A)</text>
+        <text x="772" y="140" text-anchor="middle" fill="#9AA7B4" font-size="10.5">--manual: Twist 추종 (B)</text>
+        <text x="772" y="158" text-anchor="middle" fill="#9AA7B4" font-size="10.5">장애물 텔레포트 명령 처리</text>
+        <text x="772" y="176" text-anchor="middle" fill="#9AA7B4" font-size="10.5">odom·TF 핀 채우기</text>
+        <rect x="450" y="240" width="422" height="130" fill="#20272F" stroke="#2C343D"/>
+        <text x="661" y="266" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="11.5" font-weight="700">씬 — GT 방(ROOM v2) + iw.hub + 장애물 큐브</text>
+        <text x="661" y="290" text-anchor="middle" fill="#9AA7B4" font-size="10.5">벽 4 · 박스 3 (GT 좌표를 아는 방 — 지도 오차 정량 비교용)</text>
+        <text x="661" y="308" text-anchor="middle" fill="#9AA7B4" font-size="10.5">2D RTX 라이다 — 체시스 링크 하위 · 높이 0.60m · 10Hz</text>
+        <text x="661" y="326" text-anchor="middle" fill="#9AA7B4" font-size="10.5">장애물 큐브(높이 1.4m) — /obstacle_cmd로 순간이동 투척·제거</text>
+        <text x="661" y="348" text-anchor="middle" fill="#5A6672" font-size="10">PhysX 물리 + WebRTC 스트리밍</text>
+        <text x="330" y="80" text-anchor="middle" fill="#8FB4D9" font-size="11" font-family="'JetBrains Mono',monospace">/scan · /tf · /clock</text>
+        <line x1="430" y1="92" x2="250" y2="100" stroke="#8FB4D9" stroke-width="2" marker-end="url(#ga)"/>
+        <text x="330" y="240" text-anchor="middle" fill="#8FB4D9" font-size="11" font-family="'JetBrains Mono',monospace">/odom · /scan</text>
+        <line x1="430" y1="252" x2="250" y2="278" stroke="#8FB4D9" stroke-width="2" marker-end="url(#ga)"/>
+        <text x="330" y="326" text-anchor="middle" fill="#3BAF77" font-size="11" font-family="'JetBrains Mono',monospace">/cmd_vel</text>
+        <line x1="250" y1="336" x2="430" y2="344" stroke="#3BAF77" stroke-width="2" marker-end="url(#gg)"/>
+        <text x="330" y="410" text-anchor="middle" fill="#5A6672" font-size="10.5">모든 화살표 = DDS · 스테이지 B의 추종은 지도 없이 /odom 좌표계에서 이뤄진다</text>
+      </svg></div>
+      <h3>추종기가 지도를 안 쓰는 게 맞나</h3>
+      <table>
+        <tr><th style="width:230px">질문</th><th>답</th></tr>
+        <tr><td>왜 지도 없이 odom으로 추종하나</td><td>확정 아키텍처에서 로봇은 중앙(FMS)이 준 노드 시퀀스를 따라갈 뿐이다. 시뮬의 odom은 드리프트가 없어(물리 pose 직독) 지도 정합 없이도 좌표가 유효하다. 실기의 위치추정(AMCL류) 검증은 부록 실험으로 분리했다</td></tr>
+        <tr><td>그럼 지도는 왜 만들었나</td><td>① 커미셔닝 절차 재현(설치 시 SLAM 1회는 실무 표준) ② 경로망(route.yaml) 설계의 근거 ③ SLAM 지도 vs GT 오차 정량화 — V&amp;V 자료</td></tr>
+        <tr><td>재라우팅은 누가 하나</td><td>로봇이 아니라 중앙. 추종기는 막히면 정지·보고만 한다(막힘 20s+ 경고) — 로컬 회피를 뺀 것이 Nav2 배제 결정의 핵심</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══════════ G3 ══════════ -->
+  <section id="g3">
+    <div class="sec-head"><span class="sec-no">SEC 03 · 코드 워크스루</span><h2>mapping_sim.py의 여섯 블록, follower.py의 한 루프</h2></div>
+    <div class="sec-body">
+      <h3>mapping_sim.py — T1 뼈대에 추가된 것</h3>
+      <table>
+        <tr><th style="width:44px">순서</th><th style="width:260px">블록</th><th>왜 이렇게</th></tr>
+        <tr><td>1</td><td>GT 방 구성 (벽 4·박스 3, ROOM v2)</td><td>좌표를 우리가 아는 방이어야 지도 오차를 정량 비교할 수 있다. box_c는 통로 폭 실측 후 북측 0.4m 이동(삽질 ④)</td></tr>
+        <tr><td>2</td><td><b>체시스 링크 탐색</b></td><td>라이다를 붙일 곳. 루트 Xform이 아니라 움직이는 강체여야 한다(삽질 ①) — left_wheel_joint의 Body 관계에서 "wheel"이 없는 쪽을 골라 체시스를 찾는다</td></tr>
+        <tr><td>3</td><td><code>Lidar.create</code> + LaserScan 라이터</td><td>RTX 라이다(Example_Rotary_2D, 10Hz)를 체시스 하위 높이 0.60m에 생성하고 <code>RtxLidarROS2PublishLaserScan</code> 라이터로 /scan 발행. 메타(스캔 주기·range)는 센서 prim 속성에서 추출</td></tr>
+        <tr><td>4</td><td>TF 발행 노드 2개</td><td>odom→base_link(동적 — 파이썬이 매 프레임 pose를 핀에 기입)와 base_link→lidar_link(고정). SLAM이 요구하는 트리의 하반부</td></tr>
+        <tr><td>5</td><td>장애물 큐브 + /obstacle_cmd 구독</td><td>Twist를 명령 채널로 재활용 — linear.z&gt;0.5면 (x,y)로 순간이동. 높이 1.4m는 라이다 평면 위여야 보이기 때문(삽질 ⑤)</td></tr>
+        <tr><td>6</td><td>모드 분기 — <code>--laps</code>(패트롤) / <code>--manual</code>(Twist 추종) / <code>--spawn</code></td><td>패트롤은 직진 360스텝@0.6 + 회전 240스텝@π/8 — 저속 회전이 스캔 왜곡 완화의 핵심(삽질 ②). manual 모드가 스테이지 B의 씬이 된다</td></tr>
+      </table>
+      <h3>follower.py — 제어 루프 한 장</h3>
+      <pre>매 틱(20Hz, 시뮬 시간 dt):
+  ① 도착 판정: 목표 노드까지 dist &lt; 0.35 → 도착 기록, 다음 노드
+  ② 안전 필드(히스테리시스):
+       front &lt; stop_d(1.2)  → <b>정지 진입</b> (횟수 기록, 20s+ 지속 시 "FMS 보고" 경고)
+       front &gt; stop_d+0.2   → 재개
+       단, 목표 근접(dist&lt;1.2)·정렬 중엔 stop_d를 <b>1.05로 축소</b> — 코너 노드가 벽에
+       가까울 때 필드가 도달을 막는 기하 충돌 방지 (하한은 라이다 블라인드 1.0 바로 위)
+  ③ 속도 결정:
+       정지 중   → v=0, 단 <b>목표 방향 제자리 회전은 허용</b> (데드락 방지, 삽질 ⑥)
+       |α| &gt; 60° → 정렬: v=0, ω=±0.6
+       순항      → v=0.6 (근접 0.2 · 전방 1.5m 내 0.25 감속), ω=2.0·α 클램프
+  ④ <b>명령 램프</b>: v_cmd += clamp(v_des−v_cmd, ±0.5·dt) — T1 실측(물리 즉답형)의 결론
+  ⑤ 완주 → 엣지별 (시작·끝·소요) CSV 저장</pre>
+      <h3>안전 필드 — 사각 대역의 실제 코드</h3>
+      <pre>for r, ang in scan:                     # 전방 ±80° 빔만
+    fx = r·cos(ang)                     # 전방 거리
+    ly = r·sin(ang)                     # 측면 오프셋
+    if 0 &lt; fx and <b>|ly| &lt; 0.45</b>:         # 로봇 반폭 0.33 + 여유 — 진행 대역만
+        front = min(front, fx)</pre>
+      <p>원뿔 섹터(각도 ±25°)로 만들면 가까운 측면 물체가 각도 안에 들어와 통로 옆 박스마다 정지한다(삽질 ③). 산업 보호 필드가 로봇 폭 기반 사각인 이유를 실측으로 재확인한 것.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ G4 ══════════ -->
+  <section id="g4">
+    <div class="sec-head"><span class="sec-no">SEC 04 · 실습</span><h2>핸즈온 — 매핑 30분 + 추종 30분</h2></div>
+    <div class="sec-body">
+      <h3>A. 매핑 런 — 지도 한 장 뽑기</h3>
+      <table>
+        <tr><th style="width:44px">단계</th><th>명령</th><th>기대 결과</th></tr>
+        <tr><td>0</td><td><code>pgrep -f mapping_sim.py</code></td><td>빈 출력 — 이중 기동 금지 (Isaac 동시 1인스턴스)</td></tr>
+        <tr><td>1</td><td><code>source /opt/ros/humble/setup.bash</code> 후 <code>cd ~/isaacsim && ./python.sh &lt;repo&gt;/sil/t2_mapping/mapping_sim.py --laps 3</code></td><td>ready 후 사각 패트롤 자동 시작</td></tr>
+        <tr><td>2</td><td>새 셸: <code>ros2 launch slam_toolbox online_async_launch.py use_sim_time:=true slam_params_file:=&lt;repo&gt;/sil/t2_mapping/slam_params.yaml</code></td><td>스캔 매칭 로그 흐름</td></tr>
+        <tr><td>3</td><td><code>ros2 topic hz /scan</code> · <code>ros2 run tf2_ros tf2_echo map base_link</code></td><td>/scan ~10Hz · map→base 변환 출력(트리 완성 증거)</td></tr>
+        <tr><td>4</td><td>"patrol done" 후 <code>ros2 run nav2_map_server map_saver_cli -f out/map --ros-args -p use_sim_time:=true</code></td><td>map.pgm + map.yaml 생성 (5cm 해상도)</td></tr>
+        <tr><td>5</td><td>map.pgm을 열어 GT 방(12×9m·박스 3)과 비교</td><td>벽 직선·박스 3개 윤곽 — 기울었다면 회전 스미어 의심(SEC 05)</td></tr>
+      </table>
+      <h3>B. 추종 런 — 투어와 장애물</h3>
+      <table>
+        <tr><th style="width:44px">단계</th><th>명령</th><th>기대 결과</th></tr>
+        <tr><td>1</td><td><code>./python.sh &lt;repo&gt;/sil/t2_mapping/mapping_sim.py --manual --spawn -4.5 0</code></td><td>경로 시작점(n1)에 스폰, 명령 대기</td></tr>
+        <tr><td>2</td><td>새 셸: <code>python3 &lt;repo&gt;/sil/t2_follower/follower.py --laps 1 --label practice</code></td><td>"투어 시작 노드 = n1 (최근접)" → 노드 도착 로그 연쇄</td></tr>
+        <tr><td>3</td><td>주행 중: <code>ros2 topic pub -1 /obstacle_cmd geometry_msgs/msg/Twist '{linear: {x: 0.5, y: 3.6, z: 1.0}}'</code></td><td>경로에 큐브 출현 → "안전 정지 (전방 1.2m대)"</td></tr>
+        <tr><td>4</td><td><code>... '{linear: {x: 20.0, y: 20.0, z: 1.0}}'</code>로 큐브 제거</td><td>"재개 (전방 6m대)" → 투어 계속</td></tr>
+        <tr><td>5</td><td>완주 후 <code>out/edge_times_practice.csv</code> 확인</td><td>엣지 5행 — 자신의 수치를 SEC 05 기준선과 비교</td></tr>
+      </table>
+      <h3>도전 과제 3</h3>
+      <table>
+        <tr><th style="width:44px">#</th><th>과제</th><th style="width:280px">확인 포인트</th></tr>
+        <tr><td>1</td><td>패트롤 회전 속도를 π/4로 되돌려 매핑 — 지도 오차가 커지는지</td><td>회전 스미어의 체감 재현 (18cm급 기대)</td></tr>
+        <tr><td>2</td><td>LAT_HALF를 1.0으로 키워 투어 — 어디서 오탐 정지가 나는지</td><td>필드 폭과 통로 기하의 관계</td></tr>
+        <tr><td>3</td><td>장애물을 로봇 20cm 앞에 투척 — 어떻게 되나</td><td>라이다 블라인드(range_min 1.0m) 안은 안 보인다 — 정지 임계가 1.2m인 이유</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══════════ G5 ══════════ -->
+  <section id="g5">
+    <div class="sec-head"><span class="sec-no">SEC 05 · 검증·실측</span><h2>매핑 3런의 수렴, 추종 20엣지의 결정성</h2></div>
+    <div class="sec-body">
+      <h3>스테이지 A — 지도 오차는 어디서 오나</h3>
+      <table>
+        <tr><th style="width:60px">런</th><th>조건</th><th style="width:140px">평균 오차</th><th style="width:110px">커버리지</th><th>교훈</th></tr>
+        <tr><td>2</td><td>구석 시작 · π/4 회전 · 2바퀴</td><td>1.5cm</td><td>41%</td><td>정밀하나 시야 부족</td></tr>
+        <tr><td>3</td><td>중앙 시작 · π/4 회전 · 3바퀴</td><td>18.1cm</td><td>81%</td><td>지도 ~2° 회전 바이어스 — 회전 스미어</td></tr>
+        <tr><td><b>4</b></td><td><b>중앙 시작 · π/8 회전 · 3바퀴</b></td><td><b>3.4cm (95% 7.5cm)</b></td><td><b>91.6%</b></td><td>전 점유셀 10cm 이내</td></tr>
+      </table>
+      <p>스캔 자체는 정지 상태 GT 레이캐스트 대비 잔차 <b>0.2cm</b> — 오차의 원천은 센서가 아니라 <b>운동(회전 스미어)과 매칭</b>이다. 그래서 하드웨어를 바꾸지 않고 운전 방법(저속 회전)만으로 오차가 1/5로 떨어졌다.</p>
+      <h3>스테이지 B — 기준선 4바퀴 20엣지</h3>
+      <table>
+        <tr><th style="width:110px">엣지</th><th style="width:90px">길이</th><th style="width:110px">평균</th><th style="width:120px">표준편차</th><th>해석</th></tr>
+        <tr><td>n1→n2</td><td>3.6m</td><td>12.77s</td><td>1.31</td><td>초기 상태(정렬각) 변동 — 첫 엣지만 유일한 분산원</td></tr>
+        <tr><td>n2→n3</td><td>9.0m</td><td>29.23s</td><td><b>0.17</b></td><td rowspan="4">순항 엣지는 사실상 <b>결정적</b>(±0.2s 미만)</td></tr>
+        <tr><td>n3→n4</td><td>7.1m</td><td>23.74s</td><td><b>0.06</b></td></tr>
+        <tr><td>n4→n5</td><td>9.0m</td><td>28.60s</td><td><b>0.03</b></td></tr>
+        <tr><td>n5→n1</td><td>3.5m</td><td>14.30s</td><td><b>0.01</b></td></tr>
+      </table>
+      <table>
+        <tr><th style="width:190px">DoD 항목</th><th>실측 (2026-08-27)</th></tr>
+        <tr><td>경로망 자율 주행</td><td>5엣지 × 4바퀴 = 20엣지 완주, 막힘 0</td></tr>
+        <tr><td>장애물 투척 정지</td><td>투척 직후 전방 1.18m 정지</td></tr>
+        <tr><td>제거 시 재개</td><td>재개 로그 전방 6.83m(큐브 소멸 증거) → 완주 · 정지 페널티 <b>+7.6s</b></td></tr>
+      </table>
+      <div class="plain"><span class="pl-tag">DES와의 연결</span>엣지 통과시간이 결정적이고 분산의 원천이 정지 이벤트뿐이라는 실측은, DES 엣지 모델을 <b>"결정적 기본 시간 + 정지 이벤트 페널티 분포"</b>로 구성해도 된다는 근거다. 기본 시간은 추종기 파라미터(순항 0.6·램프 0.5)의 함수로 계산 가능하고, 확률성은 정지 빈도·지속에만 넣으면 된다 — 견적 엔진의 엣지 모델 구조가 실측으로 확정된 순간.</div>
+    </div>
+  </section>
+
+  <!-- ══════════ G6 ══════════ -->
+  <section id="g6">
+    <div class="sec-head"><span class="sec-no">SEC 06 · 삽질 사전</span><h2>일곱 번 밟고 일곱 개 규칙을 얻었다</h2></div>
+    <div class="sec-body">
+      <table>
+        <tr><th style="width:44px">#</th><th style="width:250px">증상</th><th>원인</th><th style="width:270px">해법·교훈</th></tr>
+        <tr><td>①</td><td>지도 전체가 회전·오프셋 (평균 269cm)</td><td>라이다를 articulation <b>루트 Xform</b>에 부착 — 물리는 링크만 움직여 센서가 스폰 위치에 고정. GT 레이캐스트 잔차 0.2cm로 "원점 고정" 가설 확정</td><td>센서는 <b>움직이는 링크(체시스)</b> 하위에. 체시스는 바퀴 조인트의 Body 관계로 탐색</td></tr>
+        <tr><td>②</td><td>지도가 ~2° 기울고 벽이 번짐 (18cm)</td><td>π/4 rad/s 회전 중 스캔당 4.5° 스미어 — 10Hz 라이다는 순간 스캔이 아니다</td><td>매핑 주행은 저속 회전(π/8) — 오차 1/5. 실기에서도 매핑 주행 속도는 별도 관리 대상</td></tr>
+        <tr><td>③</td><td>통로 옆 박스마다 오탐 정지</td><td>보호 필드를 원뿔(각도 섹터)로 구현 — 측면 0.3~0.5m 물체가 각도 안에 든다</td><td>필드는 <b>로봇 폭 기반 사각 대역</b>(|측면|&lt;0.45m)</td></tr>
+        <tr><td>④</td><td>특정 회랑에서 항상 정지, 우회 노드로도 실패</td><td>box_c-남벽 통로가 물리 폭 1.1m — 로봇 0.66 + 필드 여유 + 블라인드 마진이 안 나옴</td><td><b>통로 최소 폭 ≈1.5m</b> 규칙 확정, 씬을 ROOM v2로 수정. T3 맵의 통로·크로스-아일 판정에 그대로 사용 중</td></tr>
+        <tr><td>⑤</td><td>로봇이 장애물을 밀며 66초 스톨</td><td>0.6m 큐브가 라이다 평면(~0.7m) 아래 — 빔이 위로 지나가 불가시</td><td><b>장애물은 라이다 평면보다 높아야 보인다</b> — 테스트 큐브 1.4m로. 실물에서도 저상 장애물은 2D 라이다의 사각</td></tr>
+        <tr><td>⑥</td><td>정면 장애물 앞 영구 정지</td><td>정지 상태가 회전까지 차단 — 목표가 옆에 있어도 몸을 못 돌림</td><td>정지 중 <b>제자리 회전은 허용</b>(산업 관행). 막힘 20s+는 경고만 — 재라우팅은 중앙 몫</td></tr>
+        <tr><td>⑦</td><td>코너 노드 앞에서 벽에 막혀 도착 실패</td><td>노드가 벽 0.6m 거리 — 정지 필드(1.2m)가 항상 걸림</td><td>코너 노드는 진행방향 벽에서 ≥1.4m + 근접·회전 중 <b>필드 축소(1.05)</b> — 하한은 라이다 블라인드 위</td></tr>
+      </table>
+      <div class="kcards">
+        <div class="kcard s"><b><a href="t1_guide.html" style="color:inherit">T1 텔레옵 가이드</a></b><span>선행편 — 브리지 개통과 가감속 실측(램프의 유래)</span></div>
+        <div class="kcard"><b><a href="sil_roadmap.html" style="color:inherit">SIL 구현 로드맵</a></b><span>T2의 위치와 다음 단계(T3 물류 씬·리프트 도킹)</span></div>
+        <div class="kcard g"><b><a href="runtime_architecture.html" style="color:inherit">런타임 아키텍처</a></b><span>자체 추종기가 아키텍처에서 차지하는 자리</span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">WORKING · T2-GUIDE · REV A — 작성 2026-08-27 · 전 수치는 프로젝트 장비(RTX 5080 · Isaac Sim 6.0.1 · ROS2 Humble · slam_toolbox) 실측 · 코드: sil/t2_mapping/ · sil/t2_follower/ · <a href="../../index.html">문서 인덱스로</a></div>
+</footer>
+
+</body>
+</html>

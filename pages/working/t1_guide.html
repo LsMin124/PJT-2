@@ -289,7 +289,7 @@ og.Controller.set(odom_ori, <b>[q1,q2,q3,q0]</b>)   # ⑤ wxyz → xyzw 재배�
         <tr><td>③</td><td>가감속 측정치가 뒤죽박죽(시간축 섞임)</td><td>이중 기동 상태에서 두 시뮬의 /odom이 한 토픽에 섞임 — 클록 2개가 교차</td><td>측정 전 인스턴스 개수 확인. CSV 시간축 단조성 검사를 분석에 포함</td></tr>
         <tr><td>④</td><td>기동 로그에 rclpy import 경고</td><td>Isaac 파이썬 3.12 vs Humble rclpy 3.10 바이너리</td><td>무해 — 브리지는 C++ 레벨(SEC 01 함정 지식)</td></tr>
         <tr><td>⑤</td><td>클라이언트 미접속인데 StreamSdk Fatal 로그</td><td>세션 대기 중 상태 전이 소음</td><td>무해 — 앱은 정상 지속</td></tr>
-        <tr><td>⑥</td><td>(예고) 센서를 달았는데 로봇을 안 따라감</td><td>articulation <b>루트 Xform</b>에 부착 — 물리는 링크만 움직인다</td><td>센서는 반드시 <b>움직이는 링크(체시스 강체)</b> 하위에. T2에서 실제로 밟고 해결한 건 — 상세는 T2 가이드에서</td></tr>
+        <tr><td>⑥</td><td>(예고) 센서를 달았는데 로봇을 안 따라감</td><td>articulation <b>루트 Xform</b>에 부착 — 물리는 링크만 움직인다</td><td>센서는 반드시 <b>움직이는 링크(체시스 강체)</b> 하위에. T2에서 실제로 밟고 해결한 건 — 상세는 <a href="t2_guide.html">T2 가이드</a>에서</td></tr>
       </table>
       <div class="kcards">
         <div class="kcard s"><b><a href="sil_roadmap.html" style="color:inherit">SIL 구현 로드맵</a></b><span>T1의 위치와 다음 단계(T2 매핑·자율 추종)</span></div>
