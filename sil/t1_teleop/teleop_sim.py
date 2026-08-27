@@ -82,7 +82,10 @@ try:
 
     set_camera_view(eye=[5.0, 5.0, 3.5], target=[0.0, 0.0, 0.3])
 except Exception as exc:
+    set_camera_view = None
     print(f"[t1_teleop] camera setup skipped: {exc}")
+
+CAM_OFFSET = np.array([-4.5, -4.5, 3.0])  # 추적 카메라: 로봇 기준 고정 오프셋
 
 # ── ROS2 I/O 그래프: cmd_vel 구독, clock·odom 발행 ──
 og.Controller.edit(
@@ -187,6 +190,11 @@ while simulation_app.is_running():
         og.Controller.set(odom_ori, [float(q[1]), float(q[2]), float(q[3]), float(q[0])])
         og.Controller.set(odom_lin, [float(lv[0]), float(lv[1]), float(lv[2])])
         og.Controller.set(odom_ang, [float(av[0]), float(av[1]), float(av[2])])
+
+        # 추적 카메라 — 로봇이 프레임을 벗어나지 않게 15프레임마다 갱신
+        if set_camera_view is not None and frame % 15 == 0:
+            eye = p + CAM_OFFSET
+            set_camera_view(eye=eye.tolist(), target=[float(p[0]), float(p[1]), 0.3])
 
 app_utils.stop()
 simulation_app.close()
