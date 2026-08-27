@@ -37,8 +37,8 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
 | 항목 | 실측값 | 시사점 |
 |---|---|---|
-| 최고 속도 | **0.836 m/s** (명령 1.2 클램프에도 불구) | 에셋 휠 조인트 한계 추정(휠 7.27 rad/s). 공식 스펙과의 괴리 — 보정 루프 의제 |
-| 가속 0→95% | 0.15 시뮬s (~5.3 m/s²) | 즉답형 응답 — 물리에 가속 램프 없음 |
+| 최고 속도 | **0.835 m/s** (명령 1.2 클램프에도 불구) | 에셋 휠 조인트 한계 추정(휠 7.27 rad/s). 공식 스펙과의 괴리 — 보정 루프 의제 |
+| 가속 0→95% | 0.13 시뮬s (~6.0 m/s²) | 즉답형 응답 — 물리에 가속 램프 없음 |
 | 감속 →0 | 0.12 시뮬s (~5.7 m/s²) | 동일 |
 
 **핵심 발견**: 기본 물리 응답이 즉답형이라, 실제 iw.hub의 가감속(통상 ≤1 m/s² 급)은
@@ -53,6 +53,6 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
 ## 운영 메모
 
-- 백그라운드 기동은 하네스 추적 실행으로 — `setsid nohup &` 분리 기동은 세션 정리 시 함께 죽는 것 확인(08-27)
+- **기동 전 기존 인스턴스 확인 필수**: `pgrep -f teleop_sim.py` (주의: `pgrep -x kit`은 python.sh 실행을 못 잡음 — 프로세스명이 python3). 이중 기동 시 두 StreamSDK가 49100을 다투며 `NVST_R_BUSY` 연발 → 스트리밍 접속 불가(08-27 실증)
 - 브리지 기동 시 `[humble.rclpy] Could not import rclpy` 경고는 무해(파이썬 3.12 vs Humble 3.10) — 브리지는 C++ 레벨로 동작
 - livestream `StreamSdk ... INVALID_STATE` Fatal 로그는 클라이언트 미접속 상태의 소음 — 앱은 정상 지속
