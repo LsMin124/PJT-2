@@ -25,7 +25,7 @@ import numpy as np
 import omni.physx
 import omni.timeline
 import omni.usd
-from pxr import Gf, Sdf, Usd, UsdGeom, UsdLux, UsdPhysics
+from pxr import Gf, Sdf, Usd, UsdGeom, UsdLux, UsdPhysics, UsdShade
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MAP_DIR = os.path.join(HERE, "..", "t3_warehouse_map")
@@ -36,8 +36,11 @@ ASSETS = "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets
 SHELF_USD = ASSETS + "/Isaac/Environments/Simple_Warehouse/Props/SM_RackShelf_01.usd"
 FRAME_USD = ASSETS + "/Isaac/Environments/Simple_Warehouse/Props/SM_RackFrame_03.usd"
 
+MAT_DIR = ASSETS + "/Isaac/Environments/Simple_Warehouse/Materials"
+
 CELL = 0.1                      # m/셀 (map_gen과 동일)
-WALL_H = 3.0
+WALL_H = 8.0                    # 산업 표준고 가정 (도면에 층고 정보 없음 — 시각용, 라이다 무관)
+CEIL_Z = 8.0                    # 천장 슬래브 하단
 CONV_H = 0.9                    # 라이다 평면(0.7m) 위 — 가시
 RACK_UNIT_L = 16.13
 RACK_D = 1.08
@@ -82,14 +85,45 @@ def greedy_rects(mask):
     return rects
 
 
-def add_box(stage, path, x, y, w, h, z0, z1):
-    """(x,y)~(x+w,y+h), 높이 z0~z1 박스 + 콜라이더."""
+def add_box(stage, path, x, y, w, h, z0, z1, collide=True):
+    """(x,y)~(x+w,y+h), 높이 z0~z1 박스 (+콜라이더)."""
     cube = UsdGeom.Cube.Define(stage, path)
     cube.GetSizeAttr().Set(1.0)
     xf = UsdGeom.Xformable(cube.GetPrim())
     xf.AddTranslateOp().Set(Gf.Vec3d(x + w / 2, y + h / 2, (z0 + z1) / 2))
     xf.AddScaleOp().Set(Gf.Vec3f(w, h, z1 - z0))
-    UsdPhysics.CollisionAPI.Apply(cube.GetPrim())
+    if collide:
+        UsdPhysics.CollisionAPI.Apply(cube.GetPrim())
+    return cube
+
+
+def add_quad(stage, path, x0, y0, x1, y1, z, uv_scale, flip=False):
+    """수평 사각 메시 + 타일링 UV (uv_scale m당 텍스처 1회) — 바닥·천장 시각용."""
+    mesh = UsdGeom.Mesh.Define(stage, path)
+    pts = [(x0, y0, z), (x1, y0, z), (x1, y1, z), (x0, y1, z)]
+    mesh.CreatePointsAttr(pts)
+    mesh.CreateFaceVertexCountsAttr([4])
+    mesh.CreateFaceVertexIndicesAttr([0, 3, 2, 1] if flip else [0, 1, 2, 3])
+    mesh.CreateExtentAttr([(x0, y0, z - 0.01), (x1, y1, z + 0.01)])
+    mesh.CreateDoubleSidedAttr(True)
+    u, v = (x1 - x0) / uv_scale, (y1 - y0) / uv_scale
+    st = UsdGeom.PrimvarsAPI(mesh).CreatePrimvar(
+        "st", Sdf.ValueTypeNames.TexCoord2fArray, UsdGeom.Tokens.vertex)
+    st.Set([(0, 0), (u, 0), (u, v), (0, v)])
+    return mesh
+
+
+def bind_mdl(stage, prim, name, mdl_file):
+    """Simple_Warehouse MDL을 머티리얼로 정의해 prim(하위 상속)에 바인딩."""
+    path = f"/World/Looks/{name}"
+    mtl = UsdShade.Material.Define(stage, path)
+    sh = UsdShade.Shader.Define(stage, path + "/Shader")
+    sh.CreateImplementationSourceAttr(UsdShade.Tokens.sourceAsset)
+    sh.SetSourceAsset(Sdf.AssetPath(mdl_file), "mdl")
+    sh.SetSourceAssetSubIdentifier(name, "mdl")
+    out = sh.CreateOutput("out", Sdf.ValueTypeNames.Token)
+    mtl.CreateSurfaceOutput("mdl").ConnectToSource(out)
+    UsdShade.MaterialBindingAPI.Apply(prim.GetPrim() if hasattr(prim, "GetPrim") else prim).Bind(mtl)
 
 
 t0 = time.time()
@@ -105,19 +139,41 @@ UsdPhysics.Scene.Define(stage, Sdf.Path("/physicsScene"))
 UsdGeom.Xform.Define(stage, "/World")
 stage.SetDefaultPrim(stage.GetPrimAtPath("/World"))
 
-# 바닥 + 조명
-add_box(stage, "/World/ground", -5, -5, COLS * CELL + 10, ROWS * CELL + 10, -0.1, 0.0)
-light = UsdLux.DistantLight.Define(stage, "/World/sun")
-light.CreateIntensityAttr(2500)
-UsdGeom.Xformable(light.GetPrim()).AddRotateXYZOp().Set(Gf.Vec3f(0, -35, 25))
+# 바닥(충돌 박스는 표면 아래로 내려 시각 메시와 z-파이팅 방지) + 천장 + 재질 + 조명
+W, H = COLS * CELL, ROWS * CELL
+add_box(stage, "/World/ground", -5, -5, W + 10, H + 10, -0.11, -0.01)
+floor = add_quad(stage, "/World/floor", -5, -5, W + 5, H + 5, 0.0, uv_scale=4.0)
+bind_mdl(stage, floor, "MI_Floor_01", MAT_DIR + "/MI_Floor_01.mdl")
+ceil = add_quad(stage, "/World/ceiling", 0, 0, W, H, CEIL_Z, uv_scale=6.0, flip=True)
+bind_mdl(stage, ceil, "MI_CeilingA_06b", MAT_DIR + "/MI_CeilingA_06b.mdl")
+
+# 실내 조명 그리드 — 천장 직하 RectLight + 발광 등기구 (전부 z 7.8~7.95, 라이다 밴드 밖)
+UsdGeom.Xform.Define(stage, "/World/lights")
+n_light = 0
+for gx in range(18, 111, 12):
+    for gy in range(28, 89, 12):
+        L = UsdLux.RectLight.Define(stage, f"/World/lights/L_{gx}_{gy}")
+        L.CreateIntensityAttr(30000)
+        L.CreateExposureAttr(5.0)                         # x32 — 30000 단독으론 실내가 암흑 (실측)
+        L.CreateWidthAttr(1.2)
+        L.CreateHeightAttr(0.6)
+        xfl = UsdGeom.Xformable(L.GetPrim())
+        xfl.AddTranslateOp().Set(Gf.Vec3d(gx, gy, 7.8))   # RectLight는 기본 -Z(하향) 방사 — 회전 금지
+        add_box(stage, f"/World/lights/fix_{gx}_{gy}", gx - 0.7, gy - 0.35, 1.4, 0.7,
+                7.85, 7.95, collide=False)
+        n_light += 1
+fixtures = stage.GetPrimAtPath("/World/lights")
+bind_mdl(stage, fixtures, "M_Glow", MAT_DIR + "/M_Glow.mdl")
 dome = UsdLux.DomeLight.Define(stage, "/World/dome")
-dome.CreateIntensityAttr(400)
+dome.CreateIntensityAttr(250)                             # 외부·틈새 보조광
+print(f"[0] 드레싱: 바닥·천장 재질 + 조명 {n_light}기")
 
 # 1) 벽·기둥 (셀값 1)
 walls = greedy_rects(grid == 1)
-UsdGeom.Xform.Define(stage, "/World/walls")
+walls_xf = UsdGeom.Xform.Define(stage, "/World/walls")
 for i, (r0, c0, h, w) in enumerate(walls):
     add_box(stage, f"/World/walls/w_{i}", c0 * CELL, r0 * CELL, w * CELL, h * CELL, 0.0, WALL_H)
+bind_mdl(stage, walls_xf, "MI_WallA_01", MAT_DIR + "/MI_WallA_01.mdl")
 print(f"[1] 벽·기둥 박스 {len(walls)}개")
 
 # 2) 컨베이어 (셀값 5)
@@ -250,8 +306,12 @@ def shoot(pos, rot, fname, focal=18.0):
     print(f"[6] {fname} {'OK' if os.path.exists(path) else '캡처 실패'}")
 
 
+# 탑뷰는 천장을 잠시 숨기고 촬영
+ceil_img = UsdGeom.Imageable(stage.GetPrimAtPath("/World/ceiling"))
+ceil_img.MakeInvisible()
 shoot((COLS * CELL / 2, ROWS * CELL / 2, 120), (0, 0, 0), "scene_top.png", focal=24.0)
-shoot((20, 20, 22), (62, 0, -38), "scene_persp.png")
+ceil_img.MakeVisible()
+shoot((18, 42, 4.5), (75, 0, -55), "scene_persp.png")    # 실내 조감 (천장 8m 아래)
 shoot((60, 47, 1.2), (87, 0, -90 + 12), "scene_aisle.png", focal=14.0)
 
 app.close()
