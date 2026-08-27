@@ -39,7 +39,7 @@ FRAME_USD = ASSETS + "/Isaac/Environments/Simple_Warehouse/Props/SM_RackFrame_03
 MAT_DIR = ASSETS + "/Isaac/Environments/Simple_Warehouse/Materials"
 
 CELL = 0.1                      # m/셀 (map_gen과 동일)
-WALL_H = 12.0                   # 산업 고층고 가정 (도면에 층고 정보 없음 — 시각용, 라이다 무관)
+WALL_H = 8.0                    # 산업 표준고 가정 (도면에 층고 정보 없음 — 시각용, 라이다 무관)
 CONV_H = 0.9                    # 라이다 평면(0.7m) 위 — 가시(콜라이더)
 
 # 컨베이어 비주얼 — ConveyorBelt_A08 직선 섹션 (컴포즈 실측 2.719x1.15x1.17, 피벗 동측 끝)
@@ -143,6 +143,23 @@ def add_quad(stage, path, x0, y0, x1, y1, z, uv_scale, flip=False):
     return mesh
 
 
+def bind_omnipbr(stage, prim, name, diffuse_tex, normal_tex, tint):
+    """OmniPBR + 원본 텍스처 + 틴트 — 순정 MDL은 톤 조절 입력을 못 믿어 직접 조립."""
+    path = f"/World/Looks/{name}"
+    mtl = UsdShade.Material.Define(stage, path)
+    sh = UsdShade.Shader.Define(stage, path + "/Shader")
+    sh.CreateImplementationSourceAttr(UsdShade.Tokens.sourceAsset)
+    sh.SetSourceAsset(Sdf.AssetPath("OmniPBR.mdl"), "mdl")
+    sh.SetSourceAssetSubIdentifier("OmniPBR", "mdl")
+    sh.CreateInput("diffuse_texture", Sdf.ValueTypeNames.Asset).Set(Sdf.AssetPath(diffuse_tex))
+    sh.CreateInput("normalmap_texture", Sdf.ValueTypeNames.Asset).Set(Sdf.AssetPath(normal_tex))
+    sh.CreateInput("diffuse_tint", Sdf.ValueTypeNames.Color3f).Set(Gf.Vec3f(*tint))
+    sh.CreateInput("reflection_roughness_constant", Sdf.ValueTypeNames.Float).Set(0.75)
+    out = sh.CreateOutput("out", Sdf.ValueTypeNames.Token)
+    mtl.CreateSurfaceOutput("mdl").ConnectToSource(out)
+    UsdShade.MaterialBindingAPI.Apply(prim.GetPrim()).Bind(mtl)
+
+
 def bind_mdl(stage, prim, name, mdl_file):
     """Simple_Warehouse MDL을 머티리얼로 정의해 prim(하위 상속)에 바인딩."""
     path = f"/World/Looks/{name}"
@@ -178,6 +195,8 @@ bind_mdl(stage, floor, "MI_Floor_01", MAT_DIR + "/MI_Floor_01.mdl")
 # 개방 지붕 — 태양광(그림자·전역 밝기) + 조명 그리드(현수등, z 7.8~7.95 라이다 밴드 밖)
 sun = UsdLux.DistantLight.Define(stage, "/World/sun")
 sun.CreateIntensityAttr(1200)
+sun.CreateEnableColorTemperatureAttr(True)
+sun.CreateColorTemperatureAttr(5000.0)                    # 약간 따뜻한 주광
 UsdGeom.Xformable(sun.GetPrim()).AddRotateXYZOp().Set(Gf.Vec3f(0, -35, 25))
 UsdGeom.Xform.Define(stage, "/World/lights")
 n_light = 0
@@ -186,6 +205,8 @@ for gx in range(18, 111, 12):
         L = UsdLux.RectLight.Define(stage, f"/World/lights/L_{gx}_{gy}")
         L.CreateIntensityAttr(30000)
         L.CreateExposureAttr(5.0)                         # x32 — 30000 단독으론 실내가 암흑 (실측)
+        L.CreateEnableColorTemperatureAttr(True)
+        L.CreateColorTemperatureAttr(3800.0)              # 온백색(약간 황색) 산업등
         L.CreateWidthAttr(1.2)
         L.CreateHeightAttr(0.6)
         xfl = UsdGeom.Xformable(L.GetPrim())
@@ -209,9 +230,13 @@ for i, (r0, c0, h, w) in enumerate(walls):
     parent = "columns" if small else "walls"
     add_box_mesh(stage, f"/World/{parent}/w_{i}", c0 * CELL, r0 * CELL, w * CELL, h * CELL, 0.0, WALL_H)
     n_colbox += small
-bind_mdl(stage, walls_xf, "MI_WallA_01", MAT_DIR + "/MI_WallA_01.mdl")
-bind_mdl(stage, cols_xf, "MI_WallB_01", MAT_DIR + "/MI_WallB_01.mdl")
-print(f"[1] 벽 {len(walls) - n_colbox} + 기둥 {n_colbox} (타일링 UV 메시)")
+# 밝은 순백 벽이 눈부심 → 베이지 톤 (텍스처 디테일 유지, 기둥은 한 단계 짙게 구분)
+TEX = MAT_DIR + "/Textures"
+bind_omnipbr(stage, walls_xf, "WallBeige",
+             TEX + "/T_WallA_01_D.png", TEX + "/T_WallA_01_N.png", (0.85, 0.78, 0.64))
+bind_omnipbr(stage, cols_xf, "ColumnBeige",
+             TEX + "/T_WallBoard_01_D.png", TEX + "/T_WallBoard_01_N.png", (0.78, 0.71, 0.59))
+print(f"[1] 벽 {len(walls) - n_colbox} + 기둥 {n_colbox} (타일링 UV 메시, 베이지 톤)")
 
 # 2) 컨베이어 (셀값 5)
 convs = greedy_rects(grid == 5)
