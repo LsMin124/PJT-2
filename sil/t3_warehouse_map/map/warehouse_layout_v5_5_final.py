@@ -1,6 +1,13 @@
 # ============================================================
 # DXF 도면 → Occupancy Grid → 3PL 풀필먼트 배치 (v5.6)
 #
+# v5.6 → v5.7 (2026-08-28, 시뮬 파트 결정 — "벽 없음" 시나리오 확정):
+#   - 기둥 최소화: 랙에 흡수되는 열(y=57.3, 랙 x범위)만 유지하고 나머지
+#     기둥 심볼(자유 바닥·외벽 파일라스터) 제거 — 물류창고 룩
+#   - y≈76.5 장선(예비존 경계)도 상부 구조선으로 제거 → 예비 보관존 개방
+#   - 사무실 2개소(남서·북서): DXF 잔재(내부 벽·기둥 파편) 클리어 후
+#     재구축 — 외곽벽 0.2m+출입구 1.4m, 회의실 1실. 인력 전용(스테이션 없음)
+#
 # v5.5 → v5.6 검수 반영:
 #   - 축선 레이어(DWGshare.com_4) 장애물 제외 — 6m 격자 축선이 팽창 후
 #     1.6m 벽이 되어 통로를 고립시키던 문제 (기둥 검출에는 계속 사용)
@@ -45,7 +52,8 @@ CELL = 100                                   # mm/cell (0.1 m)
 X0, X1, Y0, Y1 = 660_000, 775_000, 782_000, 888_000   # 크롭 (mm)
 SKIP_TYPES = {"TEXT", "MTEXT", "DIMENSION", "LEADER", "HATCH", "INSERT"}
 SKIP_LAYERS = {"DWGshare.com_4"}             # 6m 격자 축선(장축선·버블) — 실물 아님
-OVERHEAD_Y, OVERHEAD_TOL = 820_100, 400      # y≈38.1m 전폭 단선의 월드 y (mm)
+OVERHEAD_YS = (820_100, 858_470)             # y≈38.1(전폭 이중선)·y≈76.5(예비존 경계) 월드 y (mm)
+OVERHEAD_TOL = 400
 
 
 def is_overhead_line(e):
@@ -68,8 +76,8 @@ def is_overhead_line(e):
             return False
     except Exception:
         return False
-    return (max(ys) - min(ys) < 300 and abs(min(ys) - OVERHEAD_Y) < OVERHEAD_TOL
-            and max(xs) - min(xs) > 3_000)
+    return (max(ys) - min(ys) < 300 and max(xs) - min(xs) > 3_000
+            and any(abs(min(ys) - oy) < OVERHEAD_TOL for oy in OVERHEAD_YS))
 
 # 렉 (Isaac Sim 에셋 실측값으로 교체 가능 — 유닛 정수배 스냅)
 RACK_UNIT_L, RACK_UNIT_D = 4.0, 1.2
@@ -180,6 +188,80 @@ for x in col_x + [col_x[-1] + 6]:            # 마지막 축 포함
             columns.append((round(x, 1), round(y, 1)))
 columns = np.array(sorted(set(map(tuple, columns))))
 print(f"[2] 기둥 라인 {len(col_x)}개 / 기둥 {len(columns)}개 확정")
+
+# ------------------------------------------------------------
+# 2.5) 기둥 최소화 (v5.7) — 랙에 흡수되는 열(y=57.3, 랙 x범위)만 유지.
+#      나머지 기둥 심볼은 그리드에서 제거하되, 외벽 파일라스터는 외벽
+#      라인 밴드만 보존하고 돌출부를 깎는다 (문 개구부 보존을 위해
+#      외벽을 다시 그리지 않고 밴드 마스크로 지운다).
+# ------------------------------------------------------------
+wall_band = np.zeros_like(grid, dtype=bool)
+wall_band[int(25.3 * M):int(25.8 * M), :] = True          # 남측 외벽 25.4/25.6
+wall_band[int(89.1 * M):int(89.7 * M), :] = True          # 북측 외벽
+wall_band[:, int(14.0 * M):int(14.6 * M)] = True          # 서측 외벽 14.2/14.4
+wall_band[:, int(109.8 * M):int(110.4 * M)] = True        # 동측 외벽
+
+keep_cols, drop_cols = [], []
+for x, y in columns:
+    if abs(y - 57.3) < 1.0 and STAGE_L <= x <= STAGE_R:
+        keep_cols.append((x, y))
+    else:
+        drop_cols.append((x, y))
+for x, y in drop_cols:
+    # 심볼이 십자형(팔 y±2m대)이라 4.4m 박스로 지운다 (2.2로는 팔 조각 22개 잔존 실측)
+    r, c = rect_slice(x - 2.2, y - 2.2, 4.4, 4.4)
+    sub = grid[r, c]
+    sub[(sub == 1) & ~wall_band[r, c]] = 0
+# 외벽 인접 파일라스터 스윕 — 미검출 심볼·큰 심볼 잔재까지 제거 (벽 라인 밴드는 보존)
+for r0, r1 in ((23.6, 25.3), (25.8, 27.4), (87.5, 89.1), (89.7, 91.3)):
+    band = grid[int(r0 * M):int(r1 * M), :]
+    band[band == 1] = 0
+for c0, c1 in ((12.4, 14.0), (14.6, 16.2), (108.2, 109.8), (110.4, 112.0)):
+    band = grid[:, int(c0 * M):int(c1 * M)]
+    band[band == 1] = 0
+columns = np.array(keep_cols)
+print(f"[2.5] 기둥 최소화: {len(drop_cols)}개 제거 → 유지 {len(columns)}개 (랙 흡수 열)")
+
+# ------------------------------------------------------------
+# 2.7) 사무실 재구축 (v5.7) — DXF 잔재 클리어 후 실제 사무실 배치.
+#      외곽벽 0.2m(출입구 1.4m x 2면) + 회의실 1실. 서·남(북)면은 건물
+#      외벽이 그대로 벽 역할. 인력 전용 — AMR 스테이션 없음.
+#      가구는 씬 빌더가 시각 전용으로 배치(그리드·플래너 무관).
+# ------------------------------------------------------------
+OFFICES = [(14.6, 25.7, 29.5, 37.5), (14.6, 77.0, 29.5, 89.1)]   # (x0,y0,x1,y1)
+
+
+def hwall(x0, x1, y):
+    r, c = rect_slice(x0, y, x1 - x0, 0.2)
+    grid[r, c] = 1
+
+
+def vwall(x, y0, y1):
+    r, c = rect_slice(x, y0, 0.2, y1 - y0)
+    grid[r, c] = 1
+
+
+for x0, y0, x1, y1 in OFFICES:
+    r, c = rect_slice(x0, y0, x1 - x0, y1 - y0)
+    sub = grid[r, c]
+    sub[(sub == 1) & ~wall_band[r, c]] = 0
+# 남서 사무실 (25.7~37.5): 북벽 y37.3(문 x25.9~27.3) + 동벽 x29.3(문 y31.2~32.6)
+hwall(14.6, 25.9, 37.3)
+hwall(27.3, 29.5, 37.3)
+vwall(29.3, 25.7, 31.2)
+vwall(29.3, 32.6, 37.5)
+vwall(20.7, 25.7, 31.3)                       # 회의실 (남서 코너, 문 x17.2~18.4)
+hwall(14.6, 17.2, 31.1)
+hwall(18.4, 20.9, 31.1)
+# 북서 사무실 (77.0~89.1): 남벽 y77.0(문 x25.9~27.3) + 동벽 x29.3(문 y82.4~83.8)
+hwall(14.6, 25.9, 77.0)
+hwall(27.3, 29.5, 77.0)
+vwall(29.3, 77.0, 82.4)
+vwall(29.3, 83.8, 89.1)
+vwall(20.7, 84.6, 89.1)                       # 회의실 (북서 코너, 문 x17.2~18.4)
+hwall(14.6, 17.2, 84.6)
+hwall(18.4, 20.9, 84.6)
+print(f"[2.7] 사무실 재구축 2개소 (외곽벽+출입구, 회의실 1실씩)")
 
 # ------------------------------------------------------------
 # 3) 렉 배치 (세로, 유닛 스냅, 기둥 기초 회피)
@@ -334,8 +416,8 @@ ZONES = [
     (103.5, 49, 6.5, 16, "충전존", "#27ae60"),
     (33, 77.8, 14, 5.2, "반품 처리존", "#d35400"),
     (50, 77.8, 42, 5.2, "예비 보관/시즌", "#7f8c8d"),
-    (14.5, 77, 15, 12, "사무실/중이층", "#34495e"),
-    (14.5, 26.5, 15, 11, "사무실/중이층", "#34495e"),
+    (14.6, 77, 14.9, 12.1, "사무실 (재구축)", "#34495e"),
+    (14.6, 25.7, 14.9, 11.8, "사무실 (재구축)", "#34495e"),
 ]
 cmap = ListedColormap(["white", "#888888", "#e67e22", "#2e86de", "#27ae60", "#8e44ad"])
 fig, ax = plt.subplots(figsize=(12.5, 11.5))
@@ -350,13 +432,13 @@ for k in range(11):                          # 분산 피킹 위치 표시
     ax.text(35.1 + 6 * k, 57.3, "P", ha="center", va="center", fontsize=8,
             color="#c0392b", fontweight="bold",
             bbox=dict(boxstyle="circle,pad=0.15", fc="white", ec="#c0392b", lw=1.1))
-ax.set_title(f"3PL Fulfillment Layout v5.6 — {assets} rack assets, "
+ax.set_title(f"3PL Fulfillment Layout v5.7 — {assets} rack assets, "
              f"~{pallets:,} pallets, stations {station_ok}/{n_st} "
-             f"{'OK' if verify_ok else 'FAIL'}", fontsize=13)
+             f"{'OK' if verify_ok else 'FAIL'}, columns {len(columns)}", fontsize=13)
 ax.set_xlabel("m")
 ax.set_ylabel("m")
 plt.tight_layout()
-plt.savefig("grid_v56_full.png", dpi=115)
+plt.savefig("grid_v57_full.png", dpi=115)
 plt.show()
 
 import sys

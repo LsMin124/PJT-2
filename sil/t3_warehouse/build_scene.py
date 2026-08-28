@@ -57,6 +57,18 @@ RACK_D = 1.08                   # 데크 실측 깊이 (그리드 선언 1.2 —
 RACK_W = 2.4                    # 더블로우 그리드 폭 (맵 RACK_UNIT_D 1.2 x 2)
 DECK_Z = (1.0, 1.75, 2.5)       # 데크 높이 3 + 바닥 = 4단 (RACK_LEVELS)
 
+# 사무실 (맵 v5.7 재구축 구역과 동일 좌표) — 벽 3.0m + 가구(시각 전용)
+OFFICES = [(14.6, 25.7, 29.5, 37.5), (14.6, 77.0, 29.5, 89.1)]
+OFFICE_H = 3.0
+OPROPS = ASSETS + "/Isaac/Environments/Office/Props/"
+# (에셋, x, y, z, rot_z) — 컴포즈 bbox 실측: TableWorkingDouble 1.7x1.7 h0.75(바닥 피벗),
+# ChairOffice_A 시트가 +x향, TableB 0.8x2.8(장축 y), Sofa 0.82x2.04(장축 y)
+DESKS = [(23.0, 28.0), (26.4, 28.0), (23.0, 31.6), (26.4, 31.6), (16.9, 34.5), (20.3, 34.5),
+         (23.0, 80.0), (26.4, 80.0), (23.0, 83.4), (26.4, 83.4), (16.9, 79.5), (20.3, 79.5)]
+MEETINGS = [(17.6, 28.4), (17.6, 86.9)]       # 회의실 테이블(의자 4는 코드로)
+SOFAS = [(28.6, 35.8), (28.6, 78.3)]
+PLANTS = [(15.4, 36.6), (28.6, 26.4), (15.4, 77.9), (28.6, 88.3)]
+
 grid = np.load(os.path.join(MAP_DIR, "occupancy_grid.npy"))
 rack_units = np.load(os.path.join(MAP_DIR, "rack_units.npy"))
 ROWS, COLS = grid.shape
@@ -234,13 +246,27 @@ dome = UsdLux.DomeLight.Define(stage, "/World/dome")
 dome.CreateIntensityAttr(250)                             # 하늘 보조광
 print(f"[0] 드레싱: 바닥 재질 + 태양 + 현수등 {n_light}기")
 
-# 1) 벽·기둥 (셀값 1 — v5.6은 기둥도 구조체에 포함, 크기로 구분)
+# 1) 벽·기둥 (셀값 1) — 사무실 구역 벽은 3.0m 별도 재질, 그 외 8.0m.
+#    v5.7에서 기둥은 랙 흡수 12개만 남음(크기로 구분해 재질만 달리).
+
+
+def in_office(cx, cy):
+    return any(x0 <= cx <= x1 and y0 <= cy <= y1 for x0, y0, x1, y1 in OFFICES)
+
+
 walls = greedy_rects(grid == 1)
 walls_xf = UsdGeom.Xform.Define(stage, "/World/walls")
 cols_xf = UsdGeom.Xform.Define(stage, "/World/columns")
-n_colbox = 0
+office_xf = UsdGeom.Xform.Define(stage, "/World/office_walls")
+n_colbox = n_office = 0
 for i, (r0, c0, h, w) in enumerate(walls):
-    small = w * CELL < 2.2 and h * CELL < 2.2             # 기둥(심볼 파편) — 별도 재질로 구분
+    cx, cy = (c0 + w / 2) * CELL, (r0 + h / 2) * CELL
+    if in_office(cx, cy):
+        add_box_mesh(stage, f"/World/office_walls/w_{i}", c0 * CELL, r0 * CELL,
+                     w * CELL, h * CELL, 0.0, OFFICE_H)
+        n_office += 1
+        continue
+    small = w * CELL < 2.2 and h * CELL < 2.2             # 기둥 — 별도 재질로 구분
     parent = "columns" if small else "walls"
     add_box_mesh(stage, f"/World/{parent}/w_{i}", c0 * CELL, r0 * CELL, w * CELL, h * CELL, 0.0, WALL_H)
     n_colbox += small
@@ -250,7 +276,42 @@ bind_omnipbr(stage, walls_xf, "WallBeige",
              TEX + "/T_WallA_01_D.png", TEX + "/T_WallA_01_N.png", (0.85, 0.78, 0.64))
 bind_omnipbr(stage, cols_xf, "ColumnBeige",
              TEX + "/T_WallBoard_01_D.png", TEX + "/T_WallBoard_01_N.png", (0.78, 0.71, 0.59))
-print(f"[1] 벽 {len(walls) - n_colbox} + 기둥 {n_colbox} (타일링 UV 메시, 베이지 톤)")
+# WallBoard 텍스처는 원본이 어두운 금속판이라 흰 틴트로도 못 밝힘(실측) — WallA(밝은 벽돌) 사용
+bind_omnipbr(stage, office_xf, "OfficeWhite",
+             TEX + "/T_WallA_01_D.png", TEX + "/T_WallA_01_N.png", (0.95, 0.94, 0.91))
+print(f"[1] 벽 {len(walls) - n_colbox - n_office} + 기둥 {n_colbox} + 사무실 벽 {n_office}(3m)")
+
+# 1b) 사무실 인테리어 — 카펫 바닥 + 가구(시각 전용, 그리드·플래너 무관)
+UsdGeom.Xform.Define(stage, "/World/office_furniture")
+for oi, (x0, y0, x1, y1) in enumerate(OFFICES):
+    q = add_quad(stage, f"/World/office_furniture/floor_{oi}", x0, y0, x1, y1, 0.006, 4.0)
+    UsdGeom.Gprim(q.GetPrim()).CreateDisplayColorAttr([(0.55, 0.56, 0.60)])
+n_furn = 0
+for i, (dx, dy) in enumerate(DESKS):
+    add_asset(stage, f"/World/office_furniture/desk_{i}", OPROPS + "SM_TableWorkingDouble.usd", dx, dy)
+    add_asset(stage, f"/World/office_furniture/chair_{i}a", OPROPS + "SM_ChairOffice_A.usd",
+              dx, dy - 1.05, rot_z=90.0)
+    add_asset(stage, f"/World/office_furniture/chair_{i}b", OPROPS + "SM_ChairOffice_A.usd",
+              dx, dy + 1.05, rot_z=-90.0)
+    add_asset(stage, f"/World/office_furniture/mon_{i}a", OPROPS + "SM_MonitorPC_ON_1.usd",
+              dx, dy - 0.3, z=0.75, rot_z=90.0)
+    add_asset(stage, f"/World/office_furniture/mon_{i}b", OPROPS + "SM_MonitorPC_ON_2.usd",
+              dx, dy + 0.3, z=0.75, rot_z=-90.0)
+    n_furn += 5
+for i, (mx, my) in enumerate(MEETINGS):
+    add_asset(stage, f"/World/office_furniture/meet_{i}", OPROPS + "SM_TableB.usd", mx, my)
+    for j, (cx, cy, rz) in enumerate([(mx - 1.0, my - 0.7, 0), (mx - 1.0, my + 0.7, 0),
+                                      (mx + 1.0, my - 0.7, 180), (mx + 1.0, my + 0.7, 180)]):
+        add_asset(stage, f"/World/office_furniture/meet_{i}c{j}", OPROPS + "SM_ChairOffice_A.usd",
+                  cx, cy, rot_z=rz)
+    n_furn += 5
+for i, (sx, sy) in enumerate(SOFAS):
+    add_asset(stage, f"/World/office_furniture/sofa_{i}", OPROPS + "SM_Sofa.usd", sx, sy, rot_z=180.0)
+    n_furn += 1
+for i, (px, py) in enumerate(PLANTS):
+    add_asset(stage, f"/World/office_furniture/plant_{i}", OPROPS + "SM_Plant01.usd", px, py)
+    n_furn += 1
+print(f"[1b] 사무실 인테리어: 바닥 2 + 가구 {n_furn}점")
 
 # 2) 컨베이어·작업대 (셀값 5) — rect 중심이 컨베이어 라인 밴드 위인지로 구분.
 #    (폭 기준은 함정: qc 작업대가 컨베이어와 셀이 붙어 그리디 분할되면 0.6m 조각이
@@ -404,9 +465,12 @@ else:
         c0, c1 = int((xc - RACK_D) / CELL), int((xc + RACK_D) / CELL)
         rackmask[r0:r1, c0:c1] = True
     rack_hit = occ[rackmask].mean() * 100
-    fp = occ & ~binary_dilation(st | rackmask, iterations=3)
+    office_mask = np.zeros_like(st)
+    for x0, y0, x1, y1 in OFFICES:            # 가구 에셋 내장 콜라이더 — 그리드 밖 시각물
+        office_mask[int(y0 / CELL):int(y1 / CELL), int(x0 / CELL):int(x1 / CELL)] = True
+    fp = occ & ~binary_dilation(st | rackmask, iterations=3) & ~office_mask
     print(f"[5] V&V — 벽·컨베이어·작업대 재현율 {cover:.1f}% · 렉 풋프린트 내 점유(다리·데크 두께) {rack_hit:.1f}%"
-          f" · 풋프린트 밖 오검출 {fp.sum()}셀")
+          f" · 풋프린트 밖 오검출(사무실 가구 제외) {fp.sum()}셀")
     np.save(os.path.join(OUT_DIR, "omap_occ.npy"), occ)
 
 # 6) 스크린샷 — 탑뷰 + 퍼스펙티브 + 통로 뷰(세로형 → 북향)
@@ -436,8 +500,9 @@ def shoot(pos, rot, fname, focal=18.0):
 
 
 shoot((COLS * CELL / 2, ROWS * CELL / 2, 120), (0, 0, 0), "scene_top.png", focal=24.0)
-shoot((22, 38, 4.5), (75, 0, -35), "scene_persp.png")     # 남서측 실내 조감 (작업 라인+렉)
+shoot((34, 40, 4.5), (75, 0, -35), "scene_persp.png")     # 남서측 실내 조감 (작업 라인+렉)
 shoot((59.1, 45.5, 1.2), (87, 0, 0), "scene_aisle.png", focal=14.0)   # 통로5 북향
+shoot((28.3, 30.2, 1.7), (75, 0, 100), "scene_office.png", focal=16.0)  # 남서 사무실 내부
 
 app.close()
 print(f"[done] 총 {time.time()-t0:.0f}s")
