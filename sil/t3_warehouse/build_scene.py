@@ -80,7 +80,6 @@ OPROPS = ASSETS + "/Isaac/Environments/Office/Props/"
 DESKS = [(23.0, 28.0), (26.4, 28.0), (23.0, 31.6), (26.4, 31.6), (16.9, 34.5), (20.3, 34.5),
          (23.0, 80.0), (26.4, 80.0), (23.0, 83.4), (26.4, 83.4), (16.9, 79.5), (20.3, 79.5)]
 MEETINGS = [(17.6, 28.4), (17.6, 86.9)]       # 회의실 테이블(의자 4는 코드로)
-SOFAS = [(28.6, 35.8), (28.6, 78.3)]
 PLANTS = [(15.4, 36.6), (28.6, 26.4), (15.4, 77.9), (28.6, 88.3)]
 
 grid = np.load(os.path.join(MAP_DIR, "occupancy_grid.npy"))
@@ -388,7 +387,30 @@ for i, (dx, dy) in enumerate(DESKS):
               dx, dy - 0.3, z=0.75, rot_z=90.0)
     add_asset(stage, f"/World/office_furniture/mon_{i}b", OPROPS + "SM_MonitorPC_ON_2.usd",
               dx, dy + 0.3, z=0.75, rot_z=-90.0)
-    n_furn += 5
+    # 사무 소품 — 파티션(0.64 x2, 책상 중앙 가로지름)·키보드·마우스·PC·서류(결정적)
+    add_asset(stage, f"/World/office_furniture/prt_{i}a", OPROPS + "SM_Partition.usd",
+              dx - 0.64, dy, z=0.75)
+    add_asset(stage, f"/World/office_furniture/prt_{i}b", OPROPS + "SM_Partition.usd",
+              dx, dy, z=0.75)
+    add_asset(stage, f"/World/office_furniture/kb_{i}a", OPROPS + "SM_KeyboardPC.usd",
+              dx, dy - 0.58, z=0.76, rot_z=90.0)
+    add_asset(stage, f"/World/office_furniture/kb_{i}b", OPROPS + "SM_KeyboardPC.usd",
+              dx, dy + 0.58, z=0.76, rot_z=-90.0)
+    add_asset(stage, f"/World/office_furniture/ms_{i}a", OPROPS + "SM_MousePC.usd",
+              dx + 0.35, dy - 0.55, z=0.76)
+    add_asset(stage, f"/World/office_furniture/ms_{i}b", OPROPS + "SM_MousePC.usd",
+              dx - 0.35, dy + 0.55, z=0.76)
+    add_asset(stage, f"/World/office_furniture/pc_{i}", OPROPS + "SM_PC.usd",
+              dx + 0.62, dy - 0.38, rot_z=90.0)
+    n_furn += 12
+    if rnd("opaper", i) < 0.6:
+        add_asset(stage, f"/World/office_furniture/pap_{i}", OPROPS + "SM_PaperStack_A.usd",
+                  dx - 0.58, dy - 0.5, z=0.76, rot_z=rnd("opr", i) * 40 - 20)
+        n_furn += 1
+    if rnd("ophone", i) < 0.4:
+        add_asset(stage, f"/World/office_furniture/ph_{i}", OPROPS + "SM_Phone.usd",
+                  dx - 0.58, dy + 0.5, z=0.76, rot_z=180.0)
+        n_furn += 1
 for i, (mx, my) in enumerate(MEETINGS):
     add_asset(stage, f"/World/office_furniture/meet_{i}", OPROPS + "SM_TableB.usd", mx, my)
     for j, (cx, cy, rz) in enumerate([(mx - 1.0, my - 0.7, 0), (mx - 1.0, my + 0.7, 0),
@@ -396,8 +418,30 @@ for i, (mx, my) in enumerate(MEETINGS):
         add_asset(stage, f"/World/office_furniture/meet_{i}c{j}", OPROPS + "SM_ChairOffice_A.usd",
                   cx, cy, rot_z=rz)
     n_furn += 5
-for i, (sx, sy) in enumerate(SOFAS):
-    add_asset(stage, f"/World/office_furniture/sofa_{i}", OPROPS + "SM_Sofa.usd", sx, sy, rot_z=180.0)
+# 벽 집기 — 현장 사무실 드레싱 (문 개구부 회피: 동벽 문 y31.2~32.6 / 82.4~83.8,
+# 북·남벽 문 x25.9~27.3). 마커보드·파일캐비닛+프린터·책장·소화전함·바인더
+OFFICE_WALL = [
+    ("SM_MarkerBoard.usd", 14.85, 28.4, 0.95, 0.0),      # 남 회의실 서벽
+    ("SM_MarkerBoard.usd", 14.85, 34.6, 0.95, 0.0),      # 남 사무 구역 서벽
+    ("SM_FileCabinet_01.usd", 26.9, 26.2, 0.0, 90.0),    # 남벽 캐비닛 뱅크 — 서랍면이
+    ("SM_FileCabinet_02.usd", 27.4, 26.2, 0.0, 90.0),    # 좁은 면(+x)이라 90°가 실내향(실측)
+    ("SM_FileCabinet_01.usd", 27.9, 26.2, 0.0, 90.0),
+    ("SM_Printer.usd", 27.4, 26.2, 1.34, 0.0),
+    ("SM_RingBinderStackA.usd", 26.85, 26.15, 1.34, 10.0),
+    ("SM_BookcaseA.usd", 29.15, 34.5, 0.0, 180.0),       # 동벽 (문 31.2~32.6 회피)
+    ("SM_FireCabinetA.usd", 29.4, 30.2, 0.55, 180.0),
+    ("SM_MarkerBoard.usd", 14.85, 86.9, 0.95, 0.0),      # 북 회의실 서벽
+    ("SM_MarkerBoard.usd", 14.85, 79.5, 0.95, 0.0),      # 북 사무 구역 서벽
+    ("SM_FileCabinet_01.usd", 26.9, 88.75, 0.0, -90.0),  # 북벽 캐비닛 뱅크 (서랍면 남향)
+    ("SM_FileCabinet_02.usd", 27.4, 88.75, 0.0, -90.0),
+    ("SM_FileCabinet_01.usd", 27.9, 88.75, 0.0, -90.0),
+    ("SM_Printer.usd", 27.4, 88.75, 1.34, 180.0),
+    ("SM_RingBinderStackA.usd", 27.85, 88.8, 1.34, 170.0),
+    ("SM_BookcaseA.usd", 29.15, 80.5, 0.0, 180.0),       # 동벽 (문 82.4~83.8 회피)
+    ("SM_FireCabinetA.usd", 29.4, 85.0, 0.55, 180.0),
+]
+for i, (usd, wx, wy, wz, wr) in enumerate(OFFICE_WALL):
+    add_asset(stage, f"/World/office_furniture/wall_{i}", OPROPS + usd, wx, wy, z=wz, rot_z=wr)
     n_furn += 1
 for i, (px, py) in enumerate(PLANTS):
     add_asset(stage, f"/World/office_furniture/plant_{i}", OPROPS + "SM_Plant01.usd", px, py)
@@ -422,16 +466,18 @@ convs = greedy_rects(grid == 5)
 UsdGeom.Xform.Define(stage, "/World/conveyors")
 UsdGeom.Xform.Define(stage, "/World/worktables")
 n_conv = n_tab = 0
+bench_mask = np.zeros_like(grid, dtype=bool)
 for i, (r0, c0, h, w) in enumerate(convs):
     if on_conveyor((c0 + w / 2) * CELL, (r0 + h / 2) * CELL):   # 컨베이어 — 콜라이더 전용(비주얼은 A08)
         b = add_box(stage, f"/World/conveyors/c_{i}", c0 * CELL, r0 * CELL,
                     w * CELL, h * CELL, 0.0, CONV_H)
         UsdGeom.Imageable(b.GetPrim()).MakeInvisible()
         n_conv += 1
-    else:                                                 # 작업대 — 가시 박스 (V&V·플래너 동일 소스)
+    else:                                                 # 작업대 — 콜라이더는 그리드 rect 그대로
         b = add_box(stage, f"/World/worktables/t_{i}", c0 * CELL, r0 * CELL,
-                    w * CELL, h * CELL, 0.0, TABLE_H)
-        UsdGeom.Gprim(b.GetPrim()).CreateDisplayColorAttr([(0.35, 0.38, 0.42)])
+                    w * CELL, h * CELL, 0.0, TABLE_H)     # (투명), 비주얼은 packing_table
+        UsdGeom.Imageable(b.GetPrim()).MakeInvisible()
+        bench_mask[r0:r0 + h, c0:c0 + w] = True
         n_tab += 1
 # 정적 비주얼 — 기능 없는 모양용 (V&V·플래너는 위 콜라이더 박스 기준 그대로)
 n_sec = 0
@@ -447,7 +493,21 @@ for ci, (cx0, cy0, clen, vert) in enumerate(CONVEYORS_VIS):
             add_asset(stage, f"/World/conveyors/vis{ci}_{k}", CONV_USD,
                       cx0 + off, cy0 + 0.45)
         n_sec += 1
-print(f"[2] 컨베이어 콜라이더 {n_conv}(투명) + 비주얼 섹션 {n_sec} · 작업대 {n_tab}")
+# 작업대 비주얼 — packing_table (컴포즈 실측 2.47x0.78 h1.08, 벤치 rect 2.3~3.2x1.3).
+# 그리디 분할로 벤치 하나가 2rect가 될 수 있어 연결 성분 중심으로 배치(성분 14 실측)
+from scipy import ndimage
+
+PACK_USD = ASSETS + "/Isaac/Props/PackingTable/packing_table.usd"
+blab, n_bench = ndimage.label(bench_mask)
+for k in range(1, n_bench + 1):
+    ys, xs = np.where(blab == k)
+    bx, by = (xs.mean() + 0.5) * CELL, (ys.mean() + 0.5) * CELL
+    add_asset(stage, f"/World/worktables/pt_{k}", PACK_USD, bx, by,
+              rot_z=180.0 if by < 30 else 0.0)            # VAS 열(y≈28.2)은 도킹이 북측
+    rb = stage.GetPrimAtPath(f"/World/worktables/pt_{k}/asset/container_h20")
+    if rb.IsValid():                                      # 동봉 컨테이너가 리지드바디 — play 중 낙하 방지
+        UsdPhysics.RigidBodyAPI(rb).CreateRigidBodyEnabledAttr(False)
+print(f"[2] 컨베이어 콜라이더 {n_conv}(투명) + 비주얼 섹션 {n_sec} · 패킹 테이블 {n_bench}(rect {n_tab})")
 
 # 2b) 바닥 파렛트 블록 (셀값 6) — 구형 창고 블록 스태킹. 콜라이더는 그리드 rect
 #     그대로(투명, 라이다·플래너 단일 소스), 비주얼은 rect 안에 래핑 파렛트
@@ -509,6 +569,11 @@ def add_pallet_stack(stage, path, x, y, rz, layers):
 
 UsdGeom.Xform.Define(stage, "/World/pallets")
 n_stack = 0
+# 지게차 — 인바운드 파렛트 밴드(셀값 6, 15.6~17.6 x 47~66) 안 주차. 정적 콜라이더
+# 3개(리지드 없음, 컴포즈 실측 1.21x3.49 h2.15)라 st 마스크 안 → V&V 오검출 없음
+FORK_POS = (16.6, 63.8)
+add_asset(stage, "/World/pallets/forklift", ASSETS + "/Isaac/Props/Forklift/forklift.usd",
+          FORK_POS[0], FORK_POS[1], rot_z=8.0)
 prects = greedy_rects(grid == 6)
 for i, (r0, c0, hh, ww) in enumerate(prects):
     b = add_box(stage, f"/World/pallets/col_{i}", c0 * CELL, r0 * CELL,
@@ -527,6 +592,8 @@ for i, (r0, c0, hh, ww) in enumerate(prects):
             a = oa + PALLET_L * (j + 0.5) + (rnd(i, j, k, "a") - 0.5) * 0.06
             d = od + PALLET_D * (k + 0.5) + (rnd(i, j, k, "d") - 0.5) * 0.06
             px, py = (x0 + a, y0 + d) if horiz else (x0 + d, y0 + a)
+            if abs(px - FORK_POS[0]) < 2.0 and abs(py - FORK_POS[1]) < 2.7:
+                continue                       # 지게차 주차 포켓
             rz = (0.0 if horiz else 90.0) + (rnd(i, j, k, "r") - 0.5) * 7
             r = rnd(i, j, k, "t")
             add_pallet_stack(stage, f"/World/pallets/s{i}_{j}_{k}", px, py, rz,
@@ -724,6 +791,8 @@ shoot((28.3, 30.2, 1.7), (75, 0, 100), "scene_office.png", focal=16.0)  # 남서
 shoot((58, 34.6, 2.4), (76, 0, 180), "scene_pallets.png", focal=17.0)   # 남측 파렛트 블록
 shoot((-8, 2, 17), (75, 0, -52), "scene_exterior.png", focal=16.0)      # 남서측 외부 조감
 shoot((-26, 57.5, 8), (85, 0, -90), "scene_gable.png", focal=16.0)      # 서측 박공 정면
+shoot((84, 39.8, 2.0), (78, 0, 180), "scene_station.png", focal=15.0)   # 패킹 스테이션 열 남향
+shoot((17.5, 60.5, 1.6), (80, 0, 170), "scene_forklift.png", focal=16.0)  # 인바운드 밴드·지게차
 shoot((59.1, 42, 1.5), (125, 0, 0), "scene_truss.png", focal=14.0)      # 실내 트러스 앙시(상향각)
 
 app.close()
