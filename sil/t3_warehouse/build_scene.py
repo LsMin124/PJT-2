@@ -479,6 +479,10 @@ def add_pallet_stack(stage, path, x, y, rz, layers):
         sub("l3a", BOX_B, 0, -0.25, z)
         sub("l3b", BOX_B, 0, 0.25, z)
         z += 0.50
+    if layers >= 4:                            # 최상단 테이퍼 층 — 재고 만재
+        sub("l4a", BOX_C, 0, -0.25, z)
+        sub("l4b", BOX_C, 0, 0.25, z)
+        z += 0.25
     wrap = add_box(stage, f"{path}/wrap", -0.56, -0.47, 1.12, 0.94, 0.16, z + 0.03,
                    collide=False)
     UsdShade.MaterialBindingAPI.Apply(wrap.GetPrim()).Bind(wrap_mtl)
@@ -489,7 +493,7 @@ n_stack = 0
 prects = greedy_rects(grid == 6)
 for i, (r0, c0, hh, ww) in enumerate(prects):
     b = add_box(stage, f"/World/pallets/col_{i}", c0 * CELL, r0 * CELL,
-                ww * CELL, hh * CELL, 0.0, 1.85)
+                ww * CELL, hh * CELL, 0.0, 2.05)
     UsdGeom.Imageable(b.GetPrim()).MakeInvisible()
     x0, y0, w_m, h_m = c0 * CELL, r0 * CELL, ww * CELL, hh * CELL
     horiz = w_m >= h_m                        # 장변 방향으로 파렛트 장축 정렬
@@ -505,8 +509,9 @@ for i, (r0, c0, hh, ww) in enumerate(prects):
             d = od + PALLET_D * (k + 0.5) + (rnd(i, j, k, "d") - 0.5) * 0.06
             px, py = (x0 + a, y0 + d) if horiz else (x0 + d, y0 + a)
             rz = (0.0 if horiz else 90.0) + (rnd(i, j, k, "r") - 0.5) * 7
+            r = rnd(i, j, k, "t")
             add_pallet_stack(stage, f"/World/pallets/s{i}_{j}_{k}", px, py, rz,
-                             layers=3 if rnd(i, j, k, "t") > 0.15 else 2)
+                             layers=4 if r > 0.45 else (3 if r > 0.1 else 2))
             n_stack += 1
 print(f"[2b] 바닥 파렛트 블록 {len(prects)}rect → 래핑 더미 {n_stack}개", flush=True)
 
@@ -535,9 +540,11 @@ for bi, (xc, ys, n_units) in enumerate(rack_units):
 print(f"[3] 렉 조립: 프레임 {n_frame} + 데크 {n_shelf}", flush=True)
 
 # 3b) 렉 화물 (시각 전용, 랙 풋프린트 안 — 그리드 값2 그대로):
-#     파렛트 랙 방식 — 전 층(바닥+빔 2단)에 파렛트 유닛로드
-#     (파렛트 + 2x2 박스 + 토퍼) 만재. 낱박스 진열은 층간 관통 실측으로 폐기.
+#     피킹 스테이지 — 파렛트 재고에서 옮겨온 낱박스가 선반에 "어느 정도"
+#     차 있는 모습(슬롯별 채움 편차, 간격·지터·소적재). 단높이 1.35/2.7이라
+#     낱박스+소적재(≤0.75m)도 층간 여유 0.97m로 관통 없음.
 #     데크 상판은 배치 z +0.03 (컴포즈 bbox 실측: 데크 z -0.345~+0.025).
+BOX_KIND = ((BOX_A, 0.70, 0.50), (BOX_B, 0.50, 0.50), (BOX_C, 0.50, 0.25))
 LOAD_Z = (0.0,) + tuple(dz + 0.03 for dz in DECK_Z)
 n_cargo = 0
 for bi, (xc, ys, n_units) in enumerate(rack_units):
@@ -549,24 +556,30 @@ for bi, (xc, ys, n_units) in enumerate(rack_units):
             root = f"/World/racks/cargo_b{bi}_l{line}_u{u}"
             UsdGeom.Xform.Define(stage, root)
             for li, lz in enumerate(LOAD_Z):
-                for pi, py in enumerate((yc - 1.0, yc + 1.0)):  # 층당 유닛로드 2
-                    if rnd(bi, line, u, li, pi) < 0.04:         # 빈 자리 4%
-                        continue
-                    jy = py + (rnd(bi, line, u, li, pi, "j") - 0.5) * 0.06
-                    add_asset(stage, f"{root}/p{li}_{pi}", PALLET_USD, lx, jy,
-                              z=lz, rot_z=90.0, instance=True)
+                dens = 0.45 + rnd(bi, line, u, li, "d") * 0.45  # 슬롯별 채움 편차
+                yy = yc - 1.85
+                while True:
+                    r = rnd(bi, line, u, li, round(yy, 2))
+                    usd, wid, hgt = BOX_KIND[int(r * 3) % 3]
+                    yy += wid / 2
+                    if yy + wid / 2 > yc + 1.95:
+                        break
+                    key = f"{li}_{int((yy + 2) * 100)}"
+                    bx = lx + (rnd(bi, li, round(yy, 2), "x") - 0.5) * 0.3
+                    add_asset(stage, f"{root}/d{key}", usd, bx, yy, z=lz,
+                              rot_z=90.0 + (rnd(bi, li, round(yy, 2), "r") - 0.5) * 14,
+                              instance=True)
                     n_cargo += 1
-                    for qi, (qx, qy) in enumerate(((-0.25, -0.25), (-0.25, 0.25),
-                                                   (0.25, -0.25), (0.25, 0.25))):
-                        add_asset(stage, f"{root}/b{li}_{pi}_{qi}", BOX_B,
-                                  lx + qx, jy + qy, z=lz + 0.21, instance=True)
+                    if rnd(bi, li, round(yy, 2), "s") > 0.78:   # 가끔 2단 소적재
+                        add_asset(stage, f"{root}/s{key}", BOX_C, bx, yy,
+                                  z=lz + hgt, rot_z=90.0, instance=True)
                         n_cargo += 1
-                    if rnd(bi, line, u, li, pi, "t") > 0.15:    # 토퍼 85%
-                        for ti, ty in enumerate((-0.25, 0.25)):
-                            add_asset(stage, f"{root}/t{li}_{pi}_{ti}", BOX_C,
-                                      lx, jy + ty, z=lz + 0.71, instance=True)
-                            n_cargo += 1
-print(f"[3b] 렉 화물: 파렛트 유닛로드 (파렛트·박스 {n_cargo}점)", flush=True)
+                    if rnd(bi, li, round(yy, 2), "b") > 0.7:    # 가끔 뒷줄 박스
+                        add_asset(stage, f"{root}/r{key}", BOX_B, lx + 0.27, yy,
+                                  z=lz, rot_z=90.0, instance=True)
+                        n_cargo += 1
+                    yy += wid / 2 + 0.12 + (1 - dens) * 0.9 * rnd(bi, li, round(yy, 2), "g")
+print(f"[3b] 렉 화물: 피킹 낱박스 {n_cargo}점", flush=True)
 
 # 바닥 마킹 — 렉 세그먼트 안전선(황) + 스테이션 마킹(청): 시인성 + 레이아웃 데이터의 시각화
 UsdGeom.Xform.Define(stage, "/World/markings")
