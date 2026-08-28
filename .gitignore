@@ -3,3 +3,4 @@
 *.npy
 *.usd
 __pycache__/
+*.etli

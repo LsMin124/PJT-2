@@ -219,14 +219,43 @@ for x, y in drop_cols:
     sub = grid[r, c]
     sub[(sub == 1) & ~wall_band[r, c]] = 0
 # 외벽 인접 파일라스터 스윕 — 미검출 심볼·큰 심볼 잔재까지 제거 (벽 라인 밴드는 보존)
+# ※ ~wall_band 가드 필수: 밴드 전폭을 지우면 직교 외벽이 코너에서 1.6m씩
+#   뚫림 (v5.8까지 코너 8곳 개구 실측 — 씬 외벽 구멍의 원인)
 for r0, r1 in ((23.6, 25.3), (25.8, 27.4), (87.5, 89.1), (89.7, 91.3)):
-    band = grid[int(r0 * M):int(r1 * M), :]
-    band[band == 1] = 0
+    rs = slice(int(r0 * M), int(r1 * M))
+    band = grid[rs, :]
+    band[(band == 1) & ~wall_band[rs, :]] = 0
 for c0, c1 in ((12.4, 14.0), (14.6, 16.2), (108.2, 109.8), (110.4, 112.0)):
-    band = grid[:, int(c0 * M):int(c1 * M)]
-    band[band == 1] = 0
+    cs = slice(int(c0 * M), int(c1 * M))
+    band = grid[:, cs]
+    band[(band == 1) & ~wall_band[:, cs]] = 0
 columns = np.array(keep_cols)
 print(f"[2.5] 기둥 최소화: {len(drop_cols)}개 제거 → 유지 {len(columns)}개 (랙 흡수 열)")
+
+# ------------------------------------------------------------
+# 2.6) 외벽 봉합 (v5.9) — DXF 도법상 파일라스터 심볼이 벽 라인을 대체한 자리
+#      (남벽 프레임 축 0.3m 단절 6곳 실측)를 메운다. 단면에 벽(1)도 문(4)도
+#      전혀 없는 스캔라인만 채움 — 문 개구부는 그대로 보존.
+# ------------------------------------------------------------
+
+
+def seal_wall(axis, lo, hi, s0, s1):
+    """axis 'x'=동서벽(x 밴드 고정, y 스캔) / 'y'=남북벽(y 밴드 고정, x 스캔)."""
+    n = 0
+    for k in range(int(s0 * M), int(s1 * M)):
+        if axis == "x":
+            cross = grid[k, int(lo * M):int(hi * M)]
+        else:
+            cross = grid[int(lo * M):int(hi * M), k]
+        if not np.any((cross == 1) | (cross == 4)):
+            cross[1:-1] = 1                    # 밴드 안쪽 0.4m만 채움 (라인 두께 유지)
+            n += 1
+    return n
+
+
+sealed = (seal_wall("x", 14.0, 14.6, 25.3, 89.7) + seal_wall("x", 109.8, 110.4, 25.3, 89.7)
+          + seal_wall("y", 25.3, 25.8, 14.0, 110.4) + seal_wall("y", 89.1, 89.7, 14.0, 110.4))
+print(f"[2.6] 외벽 봉합: 빈 스캔라인 {sealed}줄 채움 (문 개구부 보존)")
 
 # ------------------------------------------------------------
 # 2.7) 사무실 재구축 (v5.7) — DXF 잔재 클리어 후 실제 사무실 배치.

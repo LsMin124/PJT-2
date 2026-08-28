@@ -330,9 +330,9 @@ TEX = MAT_DIR + "/Textures"
 bind_pbr(stage, walls_xf, "SteelPanel", (0.74, 0.77, 0.80),
          normal_tex=TEX + "/T_WallBoard_01_N.png", rough=0.42, metal=0.25)
 bind_mdl(stage, cols_xf, "MI_FrameA_01", MAT_DIR + "/MI_FrameA_01.mdl")
-# WallBoard 텍스처는 원본이 어두운 금속판이라 흰 틴트로도 못 밝힘(실측) — WallA(밝은 벽돌) 사용
-bind_omnipbr(stage, office_xf, "OfficeWhite",
-             TEX + "/T_WallA_01_D.png", TEX + "/T_WallA_01_N.png", (0.95, 0.94, 0.91))
+# 벽돌(T_WallA)은 철제 창고 안 가설 사무실과 이질적(사용자 피드백 — "붕 뜬다")
+# → 매끈한 샌드위치 패널 단색. WallBoard 노멀은 어두운 원판이라 미사용(기존 실측)
+bind_pbr(stage, office_xf, "OfficePanel", (0.90, 0.91, 0.93), rough=0.55)
 print(f"[1] 벽 {len(walls) - n_colbox - n_office} + 기둥 {n_colbox} + 사무실 벽 {n_office}(3m)")
 
 # 1c) 철골 외피 — 설계도(포털 프레임 6m 모듈)의 윈드 컬럼 + 월 거트.
@@ -378,10 +378,16 @@ for oi, (x0, y0, x1, y1) in enumerate(OFFICES):
     UsdGeom.Gprim(q.GetPrim()).CreateDisplayColorAttr([(0.55, 0.56, 0.60)])
 n_furn = 0
 for i, (dx, dy) in enumerate(DESKS):
-    add_asset(stage, f"/World/office_furniture/desk_{i}", OPROPS + "SM_TableWorkingDouble.usd", dx, dy)
-    add_asset(stage, f"/World/office_furniture/chair_{i}a", OPROPS + "SM_ChairOffice_A.usd",
+    # 데스크: 철제 작업 테이블(0.8x1.7 실측, 장축 y → 90° 회전) 등맞댄 2대 —
+    # 유리·블랙 톤 TableWorkingDouble이 식당처럼 보인다는 피드백으로 교체
+    add_asset(stage, f"/World/office_furniture/desk_{i}a", OPROPS + "SM_TableWorkSecurity.usd",
+              dx, dy - 0.42, rot_z=90.0)
+    add_asset(stage, f"/World/office_furniture/desk_{i}b", OPROPS + "SM_TableWorkSecurity.usd",
+              dx, dy + 0.42, rot_z=90.0)
+    # 의자: 강관 캔틸레버(SM_Chair, 시트 +x향) — 레드 디자이너 체어 대체
+    add_asset(stage, f"/World/office_furniture/chair_{i}a", OPROPS + "SM_Chair.usd",
               dx, dy - 1.05, rot_z=90.0)
-    add_asset(stage, f"/World/office_furniture/chair_{i}b", OPROPS + "SM_ChairOffice_A.usd",
+    add_asset(stage, f"/World/office_furniture/chair_{i}b", OPROPS + "SM_Chair.usd",
               dx, dy + 1.05, rot_z=-90.0)
     add_asset(stage, f"/World/office_furniture/mon_{i}a", OPROPS + "SM_MonitorPC_ON_1.usd",
               dx, dy - 0.3, z=0.75, rot_z=90.0)
@@ -415,7 +421,7 @@ for i, (mx, my) in enumerate(MEETINGS):
     add_asset(stage, f"/World/office_furniture/meet_{i}", OPROPS + "SM_TableB.usd", mx, my)
     for j, (cx, cy, rz) in enumerate([(mx - 1.0, my - 0.7, 0), (mx - 1.0, my + 0.7, 0),
                                       (mx + 1.0, my - 0.7, 180), (mx + 1.0, my + 0.7, 180)]):
-        add_asset(stage, f"/World/office_furniture/meet_{i}c{j}", OPROPS + "SM_ChairOffice_A.usd",
+        add_asset(stage, f"/World/office_furniture/meet_{i}c{j}", OPROPS + "SM_Chair.usd",
                   cx, cy, rot_z=rz)
     n_furn += 5
 # 벽 집기 — 현장 사무실 드레싱 (문 개구부 회피: 동벽 문 y31.2~32.6 / 82.4~83.8,
@@ -502,11 +508,22 @@ blab, n_bench = ndimage.label(bench_mask)
 for k in range(1, n_bench + 1):
     ys, xs = np.where(blab == k)
     bx, by = (xs.mean() + 0.5) * CELL, (ys.mean() + 0.5) * CELL
-    add_asset(stage, f"/World/worktables/pt_{k}", PACK_USD, bx, by,
-              rot_z=180.0 if by < 30 else 0.0)            # VAS 열(y≈28.2)은 도킹이 북측
+    for cx0, cy0, cL, cv in CONVEYORS_VIS:                # qc 검수대 — 벨트 비주얼과 겹침
+        if not cv and cx0 - 0.5 <= bx <= cx0 + cL + 0.5:  #  방지: 북측으로 0.5m 이격
+            top = cy0 + 1.05
+            if cy0 - 0.5 < by < top + 0.5:
+                by = top + 0.5
+    wtab = add_asset(stage, f"/World/worktables/pt_{k}", PACK_USD, bx, by,
+                     rot_z=180.0 if by < 30 else 0.0)     # VAS 열(y≈28.2)은 도킹이 북측
     rb = stage.GetPrimAtPath(f"/World/worktables/pt_{k}/asset/container_h20")
     if rb.IsValid():                                      # 동봉 컨테이너가 리지드바디 — play 중 낙하 방지
         UsdPhysics.RigidBodyAPI(rb).CreateRigidBodyEnabledAttr(False)
+    # 에셋 내장 정적 콜라이더 전체 비활성 — 콜라이더 단일 소스는 그리드 투명 박스.
+    # (qc 벤치를 벨트에서 이격하자 내장 콜라이더가 팽창 마스크 밖 0.1m 줄로 새어
+    #  V&V 오검출 56셀 — 실측 후 원칙대로 차단)
+    for p in Usd.PrimRange(wtab.GetPrim()):
+        if p.HasAPI(UsdPhysics.CollisionAPI):
+            UsdPhysics.CollisionAPI(p).CreateCollisionEnabledAttr(False)
 print(f"[2] 컨베이어 콜라이더 {n_conv}(투명) + 비주얼 섹션 {n_sec} · 패킹 테이블 {n_bench}(rect {n_tab})")
 
 # 2b) 바닥 파렛트 블록 (셀값 6) — 구형 창고 블록 스태킹. 콜라이더는 그리드 rect
