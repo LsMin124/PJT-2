@@ -28,6 +28,8 @@ import omni.timeline
 import omni.usd
 from pxr import Gf, Sdf, Usd, UsdGeom, UsdLux, UsdPhysics, UsdShade
 
+from roof_structure import add_h_col, build_roof   # 박공지붕·H형강 (pxr 이후 import)
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 MAP_DIR = os.path.join(HERE, "..", "t3_warehouse_map", "map")
 OUT_DIR = os.path.join(HERE, "out")
@@ -40,7 +42,8 @@ FRAME_USD = ASSETS + "/Isaac/Environments/Simple_Warehouse/Props/SM_RackFrame_03
 MAT_DIR = ASSETS + "/Isaac/Environments/Simple_Warehouse/Materials"
 
 CELL = 0.1                      # m/셀 (맵 스크립트와 동일)
-WALL_H = 8.0                    # 산업 표준고 가정 (도면에 층고 정보 없음 — 시각용, 라이다 무관)
+WALL_H = 9.0                    # 처마 기둥 상단 +9.000 (DXF 치수선 실측 — 시각용, 라이다 무관)
+CENTER_COL_Z = 11.0             # 중앙(릿지 지지) 기둥 상단 +11.000 (실측)
 CONV_H = 0.9                    # 라이다 평면(0.7m) 위 — 가시(콜라이더)
 TABLE_H = 0.9                   # 작업대 높이 — 라이다 평면 위 (0.6m 큐브 관통 사고 교훈)
 
@@ -263,7 +266,7 @@ add_box(stage, "/World/ground", -5, -5, W + 10, H + 10, -0.11, -0.01)
 floor = add_quad(stage, "/World/floor", -5, -5, W + 5, H + 5, 0.0, uv_scale=4.0)
 bind_mdl(stage, floor, "MI_Floor_02b", MAT_DIR + "/MI_Floor_02b.mdl")   # 콘크리트 창고 바닥
 
-# 개방 지붕 — 태양광(그림자·전역 밝기) + 조명 그리드(현수등, z 7.8~7.95 라이다 밴드 밖)
+# 태양광은 외부 샷·모니터 개구 채광용 — 지붕이 덮여 실내는 현수등이 주광원
 sun = UsdLux.DistantLight.Define(stage, "/World/sun")
 sun.CreateIntensityAttr(1200)
 UsdGeom.Xformable(sun.GetPrim()).AddRotateXYZOp().Set(Gf.Vec3f(0, -35, 25))
@@ -273,7 +276,7 @@ for gx in range(18, 111, 12):
     for gy in range(28, 89, 12):
         L = UsdLux.RectLight.Define(stage, f"/World/lights/L_{gx}_{gy}")
         L.CreateIntensityAttr(30000)
-        L.CreateExposureAttr(5.0)                         # x32 — 30000 단독으론 실내가 암흑 (실측)
+        L.CreateExposureAttr(5.5)                         # 지붕으로 태양 차단 — x32에서 x45로 보충
         L.CreateWidthAttr(1.2)
         L.CreateHeightAttr(0.6)
         xfl = UsdGeom.Xformable(L.GetPrim())
@@ -307,10 +310,21 @@ for i, (r0, c0, h, w) in enumerate(walls):
                      w * CELL, h * CELL, 0.0, OFFICE_H)
         n_office += 1
         continue
-    small = w * CELL < 2.2 and h * CELL < 2.2             # 기둥 — 별도 재질로 구분
-    parent = "columns" if small else "walls"
-    add_box_mesh(stage, f"/World/{parent}/w_{i}", c0 * CELL, r0 * CELL, w * CELL, h * CELL, 0.0, WALL_H)
-    n_colbox += small
+    small = w * CELL < 2.2 and h * CELL < 2.2
+    if small and abs(cy - 57.3) < 1.5:                    # 릿지 지지 기둥열 — 십자 심볼 파편
+        # 콜라이더는 그리드 rect 그대로(단일 소스, 투명). 비주얼 H형강은 루프 뒤
+        # columns.npy 실기둥 중심 12곳에 1개씩만 — 파편마다 세우면 십자당 ~37개
+        # 군집(2차 빌드 실측 442개), small 전체 변환은 벽 구멍+지붕 관통(1차 실측).
+        b = add_box(stage, f"/World/columns/col_{i}", c0 * CELL, r0 * CELL,
+                    w * CELL, h * CELL, 0.0, CENTER_COL_Z)
+        UsdGeom.Imageable(b.GetPrim()).MakeInvisible()
+        continue
+    add_box_mesh(stage, f"/World/walls/w_{i}", c0 * CELL, r0 * CELL, w * CELL, h * CELL, 0.0, WALL_H)
+# 릿지 지지 H형강 기둥 — 실기둥 중심(columns.npy) 12곳, 상단 +11.0 (실측)
+for k, (colx, coly) in enumerate(np.load(os.path.join(MAP_DIR, "columns.npy"))):
+    add_h_col(stage, add_box, f"/World/columns/h_{k}", float(colx), float(coly),
+              CENTER_COL_Z, depth_axis="y", D=0.45, B=0.40, tf=0.06, tw=0.06)
+    n_colbox += 1
 # 철제 창고 룩 (설계도: 철골 포털프레임 + 패널 외벽) — 외벽은 밝은 회백
 # 샌드위치 패널(패널 노멀만 사용), 기둥은 랙 프레임과 동일한 아연도금 스틸
 TEX = MAT_DIR + "/Textures"
@@ -329,16 +343,16 @@ n_steel = 0
 FRAME_XS = [20.1 + 6 * k for k in range(15)]              # 장변(남·북벽) 프레임 축
 END_YS = [31.8, 38.0, 51.0, 57.3, 63.6, 83.0]             # 단변(서·동벽), 문 구간 회피
 for x in FRAME_XS:
-    for y0 in (25.65, 88.8):
-        add_box(stage, f"/World/steel/c{n_steel}", x - 0.175, y0, 0.35, 0.3,
-                0.0, 7.6, collide=False)
+    for y0 in (25.65, 88.8):                              # 윈드 컬럼 — H형강 (웨브 벽 직교)
+        add_h_col(stage, add_box, f"/World/steel/c{n_steel}", x, y0 + 0.15, 8.8,
+                  depth_axis="y", D=0.30, B=0.35)
         n_steel += 1
 for y in END_YS:
     for x0 in (14.45, 109.5):
-        add_box(stage, f"/World/steel/c{n_steel}", x0, y - 0.175, 0.3, 0.35,
-                0.0, 7.6, collide=False)
+        add_h_col(stage, add_box, f"/World/steel/c{n_steel}", x0 + 0.15, y, 8.8,
+                  depth_axis="x", D=0.30, B=0.35)
         n_steel += 1
-GIRT_Z = (2.7, 5.0, 7.2)
+GIRT_Z = (2.7, 5.0, 7.2, 8.6)                             # 8.6 — 처마 9.0 하부 최상단 거트
 DOOR_FREE_Y = ((26.0, 38.2), (44.8, 70.2), (76.8, 89.0))  # 서·동벽 문 구간 제외 스팬
 for z in GIRT_Z:
     for y0 in (25.65, 88.95):                             # 남·북벽 전장 거트
@@ -351,7 +365,12 @@ for z in GIRT_Z:
                     z, z + 0.12, collide=False)
             n_steel += 1
 bind_mdl(stage, steel_xf, "MI_FrameA_01", MAT_DIR + "/MI_FrameA_01.mdl")
-print(f"[1c] 철골 외피: 윈드 컬럼·거트 {n_steel}개")
+print(f"[1c] 철골 외피: 윈드 컬럼(H형강)·거트 {n_steel}개")
+
+# 1d) 박공지붕 + 상부 철골 (설계 실측: 처마 +9.0 · i=15% · 릿지면 ~+14.5 · 모니터 4.5m)
+n_roof, n_pur = build_roof(stage, add_box=add_box, bind_pbr=bind_pbr, bind_mdl=bind_mdl,
+                           mat_dir=MAT_DIR, frame_xs=FRAME_XS)
+print(f"[1d] 박공지붕: 트러스·모니터·브레이싱 부재 {n_roof} + 퍼린 {n_pur}")
 
 # 1b) 사무실 인테리어 — 카펫 바닥 + 가구(시각 전용, 그리드·플래너 무관)
 UsdGeom.Xform.Define(stage, "/World/office_furniture")
@@ -703,6 +722,9 @@ shoot((34, 40, 4.5), (75, 0, -35), "scene_persp.png")     # 남서측 실내 조
 shoot((59.1, 45.5, 1.2), (87, 0, 0), "scene_aisle.png", focal=14.0)   # 통로5 북향
 shoot((28.3, 30.2, 1.7), (75, 0, 100), "scene_office.png", focal=16.0)  # 남서 사무실 내부
 shoot((58, 34.6, 2.4), (76, 0, 180), "scene_pallets.png", focal=17.0)   # 남측 파렛트 블록
+shoot((-8, 2, 17), (75, 0, -52), "scene_exterior.png", focal=16.0)      # 남서측 외부 조감
+shoot((-26, 57.5, 8), (85, 0, -90), "scene_gable.png", focal=16.0)      # 서측 박공 정면
+shoot((59.1, 42, 1.5), (125, 0, 0), "scene_truss.png", focal=14.0)      # 실내 트러스 앙시(상향각)
 
 app.close()
 print(f"[done] 총 {time.time()-t0:.0f}s")
