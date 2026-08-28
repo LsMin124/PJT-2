@@ -1,33 +1,40 @@
 # T3 — DXF 공장 씬 (씬 빌더)
 
-"그리드가 곧 씬"이 원칙: map_gen(v6.3)의 occupancy grid와 랙 배치 좌표를 그대로
-Isaac USD 씬으로 세운다. DES와 SIL이 단일 소스를 공유하는 구조의 물리 실체.
+"그리드가 곧 씬"이 원칙: 팀원 개편 맵 v5.6(`t3_warehouse_map/map/`)의 occupancy grid와
+랙 배치 좌표를 그대로 Isaac USD 씬으로 세운다. DES와 SIL이 단일 소스를 공유하는
+구조의 물리 실체.
 
 ## 파일
 
 | 파일 | 역할 |
 |---|---|
-| `build_scene.py` | 씬 빌더 — 그리드→벽·컨베이어 박스, rack_rows→NVIDIA 랙 부품 조립, omap V&V, 스크린샷 |
+| `build_scene.py` | 씬 빌더 — 그리드→벽·작업대 박스, rack_units→NVIDIA 랙 부품 조립(세로형), omap V&V, 스크린샷 |
 | `warehouse_scene.usd` | 산출 씬 (재생성물 — untracked) |
+| `view_scene.py` | WebRTC 관전 뷰어 (완성 씬 열람용) |
 | `out/scene_*.png` | 검수 스크린샷 (탑뷰·조감·통로 시점) |
 | `out/omap_occ.npy` | 씬→점유맵 역생성 결과 (V&V) |
 
 ## 실행
 
 ```bash
-# 선행: sil/t3_warehouse_map/ 에서 map_gen.py 실행 (npy 생성)
+# 선행: sil/t3_warehouse_map/map/ 에서 warehouse_layout_v5_5_final.py 실행 (npy 생성)
 cd ~/isaacsim && ./python.sh <repo>/sil/t3_warehouse/build_scene.py
 ```
 
 ## 구성 요소
 
-- **벽·기둥** (그리드 셀값 1): 그리디 메싱으로 병합한 박스, 높이 3.0m
-- **컨베이어** (셀값 5): 병합 박스 높이 0.9m — 라이다 평면(0.7m) 위라 가시 (T2 교훈)
-- **랙**: full_warehouse와 동일한 NVIDIA 부품 실측 조립 —
-  `SM_RackFrame_03`(0.127×1.0×3.0m) 5개/유닛 + `SM_RackShelf_01`(4.0×1.08m 데크) 4베이×3데크.
-  유닛 16.13m = 4베이×4.0m + 프레임 마진 0.13 (팀 실측값과 일치 확인)
+- **벽·기둥** (그리드 셀값 1): 그리디 메싱으로 병합한 UV 타일링 박스 메시, 높이 8.0m,
+  베이지 톤. v5.6은 기둥도 셀값 1에 포함 — 풋프린트 크기(≤2.2m)로 구분해 재질만 달리함
+- **컨베이어·작업대** (셀값 5): rect 중심이 컨베이어 라인 밴드 위인지로 구분 —
+  컨베이어는 투명 콜라이더 + ConveyorBelt_A08 비주얼(L자 연결 포함 6기),
+  작업대는 가시 박스 0.9m 높이(라이다 평면 0.7m 위, T2 교훈)
+- **랙** (rack_units — 세로형 더블로우): `SM_RackFrame_03`(0.127×1.0×3.0m) 유닛 경계
+  공유 n+1개 + `SM_RackShelf_01`(4.0×1.08m 데크) 유닛당 3데크(+바닥 = 4단).
+  유닛 4.0m = 데크 베이 1개와 정확 일치. 컴포즈된 부품은 가로 정렬이므로 **z축 90°
+  회전 조립**(가로형 v6.3에서 회전 금지였던 것과 반대 — 참조 컴포즈 bbox 실측 기준)
 - **V&V**: `isaacsim.asset.gen.omap`으로 씬→점유맵을 역생성해 원 그리드와 diff —
-  "씬이 그리드와 일치한다"를 자동 검증 (벽·컨베이어 재현율, 랙 풋프린트 점유율, 오검출 수)
+  "씬이 그리드와 일치한다"를 자동 검증. v5.6 결과: 벽·컨베이어·작업대 재현율 100.0%,
+  랙 풋프린트 점유 100.0%, 풋프린트 밖 오검출 0셀
 
 ## 남은 것 (T3 본편)
 

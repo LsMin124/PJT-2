@@ -1,15 +1,16 @@
-"""T3 씬 빌더 — occupancy grid + rack_rows를 Isaac USD 씬으로 세운다.
+"""T3 씬 빌더 — occupancy grid + rack_units를 Isaac USD 씬으로 세운다 (v5.6 맵).
 
 원칙: 그리드가 곧 씬이다 (DES와 SIL의 단일 소스).
-  - 벽·기둥(셀값 1): 그리디 메싱으로 병합한 박스 (높이 3.0m)
-  - 컨베이어(셀값 5): 병합 박스 (높이 0.9m — 라이다 평면 위)
-  - 렉(rack_rows.npy): NVIDIA 부품 조립 — SM_RackFrame_03(0.127x1.0x3.0) 5개
-    + SM_RackShelf_01(4.0x1.08 데크) 4베이 x 3데크, 유닛 16.13m, 더블(등맞대기 2줄)
+  - 벽·기둥(셀값 1): 그리디 메싱으로 병합한 박스 (높이 8.0m)
+  - 컨베이어·작업대(셀값 5): 폭으로 구분 — 폭 0.9m 컨베이어는 투명 콜라이더
+    + ConveyorBelt_A08 비주얼, 폭 1.2m+ 작업대는 가시 박스 (높이 0.9m — 라이다 평면 위)
+  - 렉(rack_units.npy): 세로형 더블로우 — [x중심, y시작, 유닛수], 유닛 4.0m =
+    SM_RackShelf_01 베이 1개와 정확 일치. 부품을 z축 90° 회전해 y축 정렬 조립
   - V&V: isaacsim.asset.gen.omap으로 씬→점유맵 재생성 후 원 그리드와 diff
 
 실행:
   cd ~/isaacsim && ./python.sh <repo>/sil/t3_warehouse/build_scene.py
-전제: sil/t3_warehouse_map/에서 map_gen.py 실행 완료(npy 존재).
+전제: sil/t3_warehouse_map/map/에서 warehouse_layout_v5_5_final.py 실행 완료(npy 존재).
 """
 
 from isaacsim import SimulationApp
@@ -28,7 +29,7 @@ import omni.usd
 from pxr import Gf, Sdf, Usd, UsdGeom, UsdLux, UsdPhysics, UsdShade
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-MAP_DIR = os.path.join(HERE, "..", "t3_warehouse_map")
+MAP_DIR = os.path.join(HERE, "..", "t3_warehouse_map", "map")
 OUT_DIR = os.path.join(HERE, "out")
 os.makedirs(OUT_DIR, exist_ok=True)
 
@@ -38,24 +39,28 @@ FRAME_USD = ASSETS + "/Isaac/Environments/Simple_Warehouse/Props/SM_RackFrame_03
 
 MAT_DIR = ASSETS + "/Isaac/Environments/Simple_Warehouse/Materials"
 
-CELL = 0.1                      # m/셀 (map_gen과 동일)
+CELL = 0.1                      # m/셀 (맵 스크립트와 동일)
 WALL_H = 8.0                    # 산업 표준고 가정 (도면에 층고 정보 없음 — 시각용, 라이다 무관)
 CONV_H = 0.9                    # 라이다 평면(0.7m) 위 — 가시(콜라이더)
+TABLE_H = 0.9                   # 작업대 높이 — 라이다 평면 위 (0.6m 큐브 관통 사고 교훈)
 
 # 컨베이어 비주얼 — ConveyorBelt_A08 직선 섹션 (컴포즈 실측 2.719x1.15x1.17, 피벗 동측 끝)
 CONV_USD = ASSETS + "/Isaac/Props/Conveyors/ConveyorBelt_A08.usd"
 CONV_SEC_L = 2.719
-CONVEYORS_VIS = [(14.6, 38.9, 16.0), (14.6, 70.9, 16.0),
-                 (94.6, 43.1, 15.0), (94.6, 75.1, 15.0)]   # (x시작, y하단, 길이) — map_gen v6.3 동일
-RACK_UNIT_L = 16.13
-RACK_D = 1.08
-BAY = 4.0                       # 베이 피치 (16.13 = 4x4.0 + 0.13 프레임 마진)
+# (x0, y0, 길이, 세로 여부) — 맵 v5.6 CONVEYORS/CONVEYORS_V와 동일 좌표
+CONVEYORS_VIS = [(14.6, 38.9, 16.0, False), (14.6, 70.9, 16.0, False),
+                 (94.6, 43.1, 15.0, False), (94.6, 75.1, 15.0, False),
+                 (101.0, 34.4, 7.4, False),                 # 패킹→출고 연결 (동진)
+                 (107.5, 35.3, 7.8, True)]                  # 패킹→출고 연결 (북상)
+UNIT_L = 4.0                    # 렉 유닛 길이 (y) = SM_RackShelf 베이 1개
+RACK_D = 1.08                   # 데크 실측 깊이 (그리드 선언 1.2 — 풋프린트 내 배치)
+RACK_W = 2.4                    # 더블로우 그리드 폭 (맵 RACK_UNIT_D 1.2 x 2)
 DECK_Z = (1.0, 1.75, 2.5)       # 데크 높이 3 + 바닥 = 4단 (RACK_LEVELS)
 
 grid = np.load(os.path.join(MAP_DIR, "occupancy_grid.npy"))
-rack_rows = np.load(os.path.join(MAP_DIR, "rack_rows.npy"))
+rack_units = np.load(os.path.join(MAP_DIR, "rack_units.npy"))
 ROWS, COLS = grid.shape
-print(f"[in] grid {ROWS}x{COLS}, rack_rows {len(rack_rows)}행(블록)")
+print(f"[in] grid {ROWS}x{COLS}, rack_units {len(rack_units)}세그(세로형)")
 
 
 def greedy_rects(mask):
@@ -173,6 +178,19 @@ def bind_mdl(stage, prim, name, mdl_file):
     UsdShade.MaterialBindingAPI.Apply(prim.GetPrim() if hasattr(prim, "GetPrim") else prim).Bind(mtl)
 
 
+def add_asset(stage, path, usd, x, y, z=0.0, rot_z=None):
+    """참조 에셋 배치 — 에셋 루트에 자체 xformOpOrder가 있어도 안전하도록
+    래퍼 Xform이 이동·회전을 담당한다 (A08에서 실측한 예외의 일반화)."""
+    w = UsdGeom.Xform.Define(stage, path)
+    xf = UsdGeom.Xformable(w.GetPrim())
+    xf.AddTranslateOp().Set(Gf.Vec3d(x, y, z))
+    if rot_z is not None:
+        xf.AddRotateZOp().Set(rot_z)
+    a = UsdGeom.Xform.Define(stage, path + "/asset")
+    a.GetPrim().GetReferences().AddReference(usd)
+    return w
+
+
 t0 = time.time()
 # 저작은 렌더러와 분리된 순수 USD 스테이지에서 — 참조를 하나씩 붙이며 app.update()를
 # 돌리면 로딩 중 hydra 경로에서 간헐 세그폴트(3회 재현). 완성 파일을 한 번에 열면 안정.
@@ -186,7 +204,7 @@ UsdPhysics.Scene.Define(stage, Sdf.Path("/physicsScene"))
 UsdGeom.Xform.Define(stage, "/World")
 stage.SetDefaultPrim(stage.GetPrimAtPath("/World"))
 
-# 바닥(충돌 박스는 표면 아래로 내려 시각 메시와 z-파이팅 방지) + 천장 + 재질 + 조명
+# 바닥(충돌 박스는 표면 아래로 내려 시각 메시와 z-파이팅 방지) + 재질 + 조명
 W, H = COLS * CELL, ROWS * CELL
 add_box(stage, "/World/ground", -5, -5, W + 10, H + 10, -0.11, -0.01)
 floor = add_quad(stage, "/World/floor", -5, -5, W + 5, H + 5, 0.0, uv_scale=4.0)
@@ -216,7 +234,7 @@ dome = UsdLux.DomeLight.Define(stage, "/World/dome")
 dome.CreateIntensityAttr(250)                             # 하늘 보조광
 print(f"[0] 드레싱: 바닥 재질 + 태양 + 현수등 {n_light}기")
 
-# 1) 벽·기둥 (셀값 1)
+# 1) 벽·기둥 (셀값 1 — v5.6은 기둥도 구조체에 포함, 크기로 구분)
 walls = greedy_rects(grid == 1)
 walls_xf = UsdGeom.Xform.Define(stage, "/World/walls")
 cols_xf = UsdGeom.Xform.Define(stage, "/World/columns")
@@ -234,64 +252,82 @@ bind_omnipbr(stage, cols_xf, "ColumnBeige",
              TEX + "/T_WallBoard_01_D.png", TEX + "/T_WallBoard_01_N.png", (0.78, 0.71, 0.59))
 print(f"[1] 벽 {len(walls) - n_colbox} + 기둥 {n_colbox} (타일링 UV 메시, 베이지 톤)")
 
-# 2) 컨베이어 (셀값 5)
+# 2) 컨베이어·작업대 (셀값 5) — rect 중심이 컨베이어 라인 밴드 위인지로 구분.
+#    (폭 기준은 함정: qc 작업대가 컨베이어와 셀이 붙어 그리디 분할되면 0.6m 조각이
+#    되어 컨베이어로 오분류 — 14/16개 실측 후 좌표 기준으로 교체)
+
+
+def on_conveyor(cx, cy):
+    for x0, y0, L, vert in CONVEYORS_VIS:
+        if vert and x0 - 0.3 <= cx <= x0 + 1.2 and y0 - 0.3 <= cy <= y0 + L + 0.3:
+            return True
+        if not vert and x0 - 0.3 <= cx <= x0 + L + 0.3 and y0 - 0.3 <= cy <= y0 + 1.2:
+            return True
+    return False
+
+
 convs = greedy_rects(grid == 5)
 UsdGeom.Xform.Define(stage, "/World/conveyors")
+UsdGeom.Xform.Define(stage, "/World/worktables")
+n_conv = n_tab = 0
 for i, (r0, c0, h, w) in enumerate(convs):
-    b = add_box(stage, f"/World/conveyors/c_{i}", c0 * CELL, r0 * CELL, w * CELL, h * CELL, 0.0, CONV_H)
-    UsdGeom.Imageable(b.GetPrim()).MakeInvisible()        # 콜라이더 전용 — 비주얼은 실물 에셋
+    if on_conveyor((c0 + w / 2) * CELL, (r0 + h / 2) * CELL):   # 컨베이어 — 콜라이더 전용(비주얼은 A08)
+        b = add_box(stage, f"/World/conveyors/c_{i}", c0 * CELL, r0 * CELL,
+                    w * CELL, h * CELL, 0.0, CONV_H)
+        UsdGeom.Imageable(b.GetPrim()).MakeInvisible()
+        n_conv += 1
+    else:                                                 # 작업대 — 가시 박스 (V&V·플래너 동일 소스)
+        b = add_box(stage, f"/World/worktables/t_{i}", c0 * CELL, r0 * CELL,
+                    w * CELL, h * CELL, 0.0, TABLE_H)
+        UsdGeom.Gprim(b.GetPrim()).CreateDisplayColorAttr([(0.35, 0.38, 0.42)])
+        n_tab += 1
 # 정적 비주얼 — 기능 없는 모양용 (V&V·플래너는 위 콜라이더 박스 기준 그대로)
 n_sec = 0
-for ci, (cx0, cy0, clen) in enumerate(CONVEYORS_VIS):
-    yc = cy0 + 0.45
+for ci, (cx0, cy0, clen, vert) in enumerate(CONVEYORS_VIS):
     n = int(clen // CONV_SEC_L)
-    sx = cx0 + (clen - n * CONV_SEC_L) / 2
+    s0 = (clen - n * CONV_SEC_L) / 2
     for k in range(n):
-        # A08 루트에 자체 xformOpOrder가 있어 같은 op 추가가 예외 — 래퍼 Xform이 이동 담당
-        w_xf = UsdGeom.Xform.Define(stage, f"/World/conveyors/vis{ci}_{k}")
-        UsdGeom.Xformable(w_xf.GetPrim()).AddTranslateOp().Set(
-            Gf.Vec3d(sx + k * CONV_SEC_L + 2.719, yc, 0.0))   # 에셋 피벗 = 동측 끝(x -2.719~0)
-        c = UsdGeom.Xform.Define(stage, f"/World/conveyors/vis{ci}_{k}/asset")
-        c.GetPrim().GetReferences().AddReference(CONV_USD)
+        off = s0 + k * CONV_SEC_L + CONV_SEC_L            # 에셋 피벗 = 진행측 끝 (x -2.719~0)
+        if vert:                                          # z 90° 회전 → 스팬이 -y 방향
+            add_asset(stage, f"/World/conveyors/vis{ci}_{k}", CONV_USD,
+                      cx0 + 0.45, cy0 + off, rot_z=90.0)
+        else:
+            add_asset(stage, f"/World/conveyors/vis{ci}_{k}", CONV_USD,
+                      cx0 + off, cy0 + 0.45)
         n_sec += 1
-print(f"[2] 컨베이어: 콜라이더 박스 {len(convs)}(투명) + 비주얼 섹션 {n_sec}")
+print(f"[2] 컨베이어 콜라이더 {n_conv}(투명) + 비주얼 섹션 {n_sec} · 작업대 {n_tab}")
 
-# 3) 렉 — 부품 조립 (rack_rows: [x시작, y하단, 유닛수] / 행폭 2xRACK_D 더블)
+# 3) 렉 — 부품 조립 (rack_units: [x중심, y시작, 유닛수] — 세로형 더블로우)
+#    유닛 4.0m = 데크(베이) 1개와 정확 일치. 컴포즈된 데크는 4.0(x)x1.08(y)로
+#    가로 정렬이므로 세로형에선 z축 90° 회전이 "필요"하다 (v6.3 가로형은 회전 금지
+#    였던 것과 반대 — 근거는 동일하게 참조 컴포즈 bbox 실측).
 UsdGeom.Xform.Define(stage, "/World/racks")
 n_frame = n_shelf = 0
-for bi, (xs, yb, n_units) in enumerate(rack_rows):
+for bi, (xc, ys, n_units) in enumerate(rack_units):
     n_units = int(n_units)
-    for line in range(2):                              # 등맞대기 2줄
-        yc = yb + RACK_D * (line + 0.5)                # 줄 중심 y
-        for u in range(n_units):
-            x0 = xs + u * RACK_UNIT_L
-            root = f"/World/racks/b{bi}_l{line}_u{u}"
-            UsdGeom.Xform.Define(stage, root)
-            for k in range(5):                         # 프레임 5 (베이 경계)
-                p = UsdGeom.Xform.Define(stage, f"{root}/frame_{k}")
-                p.GetPrim().GetReferences().AddReference(FRAME_USD)
-                UsdGeom.Xformable(p.GetPrim()).AddTranslateOp().Set(
-                    Gf.Vec3d(x0 + 0.065 + BAY * k, yc, 0.0))
-                n_frame += 1
-            for k in range(4):                         # 베이 4 x 데크 3
-                cx = x0 + 0.065 + BAY * k + BAY / 2
-                for dz in DECK_Z:
-                    p = UsdGeom.Xform.Define(stage, f"{root}/shelf_{k}_{int(dz*100)}")
-                    p.GetPrim().GetReferences().AddReference(SHELF_USD)
-                    # 회전 불필요 — 참조 컴포즈된 데크는 이미 4.0(x)x1.08(y) 행 정렬.
-                    # (에셋 파일을 직접 열어 잰 bbox는 축이 뒤바뀐 값을 줌 — 반드시
-                    # 참조로 컴포즈한 상태에서 잴 것. omap V&V가 이 오배치를 잡아냈다)
-                    UsdGeom.Xformable(p.GetPrim()).AddTranslateOp().Set(Gf.Vec3d(cx, yc, dz))
-                    n_shelf += 1
+    for line in range(2):                              # 등맞대기 2줄 (x = xc ± 0.54, 등이 맞닿음)
+        lx = xc + RACK_D * (line - 0.5)
+        root = f"/World/racks/b{bi}_l{line}"
+        UsdGeom.Xform.Define(stage, root)
+        for k in range(n_units + 1):                   # 프레임 — 유닛 경계 공유 (n+1개)
+            add_asset(stage, f"{root}/frame_{k}", FRAME_USD,
+                      lx, ys + UNIT_L * k, rot_z=90.0)
+            n_frame += 1
+        for u in range(n_units):                       # 유닛당 데크 3 (+바닥 = 4단)
+            yc = ys + UNIT_L * u + UNIT_L / 2
+            for dz in DECK_Z:
+                add_asset(stage, f"{root}/shelf_{u}_{int(dz*100)}", SHELF_USD,
+                          lx, yc, z=dz, rot_z=90.0)
+                n_shelf += 1
 print(f"[3] 렉 조립: 프레임 {n_frame} + 데크 {n_shelf}", flush=True)
 
-# 바닥 마킹 — 렉 블록 안전선(황) + 스테이션 마킹(청): 시인성 + 레이아웃 데이터의 시각화
+# 바닥 마킹 — 렉 세그먼트 안전선(황) + 스테이션 마킹(청): 시인성 + 레이아웃 데이터의 시각화
 UsdGeom.Xform.Define(stage, "/World/markings")
 n_mark = 0
 LW = 0.12
-for bi, (xs, yb, nu) in enumerate(rack_rows):
-    bx0, by0 = xs - 0.27, yb - 0.27
-    bx1, by1 = xs + int(nu) * RACK_UNIT_L + 0.27, yb + 2 * RACK_D + 0.27
+for bi, (xc, ys, nu) in enumerate(rack_units):
+    bx0, by0 = xc - RACK_W / 2 - 0.27, ys - 0.27
+    bx1, by1 = xc + RACK_W / 2 + 0.27, ys + int(nu) * UNIT_L + 0.27
     for j, (qx0, qy0, qx1, qy1) in enumerate([
             (bx0, by0, bx1, by0 + LW), (bx0, by1 - LW, bx1, by1),
             (bx0, by0, bx0 + LW, by1), (bx1 - LW, by0, bx1, by1)]):
@@ -359,21 +395,21 @@ if occ is None:
     print(f"[5] omap 버퍼 크기 불일치({buf.size}) — diff 생략")
 else:
     from scipy.ndimage import binary_dilation
-    st = (grid == 1) | (grid == 5)                     # 벽·컨베이어: 셀 단위 일치 기대
+    st = (grid == 1) | (grid == 5)                     # 벽·컨베이어·작업대: 셀 단위 일치 기대
     tol = binary_dilation(occ, iterations=2)
     cover = tol[st].mean() * 100
     rackmask = np.zeros_like(st)
-    for xs, yb, n_units in rack_rows:
-        r0, r1 = int(yb / CELL), int((yb + 2 * RACK_D) / CELL)
-        c0, c1 = int(xs / CELL), int((xs + int(n_units) * RACK_UNIT_L) / CELL)
+    for xc, ys, n_units in rack_units:
+        r0, r1 = int(ys / CELL), int((ys + int(n_units) * UNIT_L) / CELL)
+        c0, c1 = int((xc - RACK_D) / CELL), int((xc + RACK_D) / CELL)
         rackmask[r0:r1, c0:c1] = True
     rack_hit = occ[rackmask].mean() * 100
     fp = occ & ~binary_dilation(st | rackmask, iterations=3)
-    print(f"[5] V&V — 벽·컨베이어 재현율 {cover:.1f}% · 렉 풋프린트 내 점유(다리·데크 두께) {rack_hit:.1f}%"
+    print(f"[5] V&V — 벽·컨베이어·작업대 재현율 {cover:.1f}% · 렉 풋프린트 내 점유(다리·데크 두께) {rack_hit:.1f}%"
           f" · 풋프린트 밖 오검출 {fp.sum()}셀")
     np.save(os.path.join(OUT_DIR, "omap_occ.npy"), occ)
 
-# 6) 스크린샷 — 탑뷰 + 퍼스펙티브
+# 6) 스크린샷 — 탑뷰 + 퍼스펙티브 + 통로 뷰(세로형 → 북향)
 from omni.kit.viewport.utility import capture_viewport_to_file, get_active_viewport
 
 cam = UsdGeom.Camera.Define(stage, "/World/cam")
@@ -400,8 +436,8 @@ def shoot(pos, rot, fname, focal=18.0):
 
 
 shoot((COLS * CELL / 2, ROWS * CELL / 2, 120), (0, 0, 0), "scene_top.png", focal=24.0)
-shoot((18, 42, 4.5), (75, 0, -55), "scene_persp.png")    # 실내 조감
-shoot((60, 47, 1.2), (87, 0, -90 + 12), "scene_aisle.png", focal=14.0)
+shoot((22, 38, 4.5), (75, 0, -35), "scene_persp.png")     # 남서측 실내 조감 (작업 라인+렉)
+shoot((59.1, 45.5, 1.2), (87, 0, 0), "scene_aisle.png", focal=14.0)   # 통로5 북향
 
 app.close()
 print(f"[done] 총 {time.time()-t0:.0f}s")
