@@ -185,6 +185,25 @@ def bind_omnipbr(stage, prim, name, diffuse_tex, normal_tex, tint):
     UsdShade.MaterialBindingAPI.Apply(prim.GetPrim()).Bind(mtl)
 
 
+def bind_pbr(stage, prim, name, color, normal_tex=None, rough=0.5, metal=0.0):
+    """단색(+노멀맵) OmniPBR — 철골·샌드위치 패널 등 (텍스처 원색이 어두워
+    틴트로 못 살리는 경우의 대안, OfficeWhite 실측 교훈의 일반화)."""
+    path = f"/World/Looks/{name}"
+    mtl = UsdShade.Material.Define(stage, path)
+    sh = UsdShade.Shader.Define(stage, path + "/Shader")
+    sh.CreateImplementationSourceAttr(UsdShade.Tokens.sourceAsset)
+    sh.SetSourceAsset(Sdf.AssetPath("OmniPBR.mdl"), "mdl")
+    sh.SetSourceAssetSubIdentifier("OmniPBR", "mdl")
+    sh.CreateInput("diffuse_color_constant", Sdf.ValueTypeNames.Color3f).Set(Gf.Vec3f(*color))
+    if normal_tex:
+        sh.CreateInput("normalmap_texture", Sdf.ValueTypeNames.Asset).Set(Sdf.AssetPath(normal_tex))
+    sh.CreateInput("reflection_roughness_constant", Sdf.ValueTypeNames.Float).Set(rough)
+    sh.CreateInput("metallic_constant", Sdf.ValueTypeNames.Float).Set(metal)
+    out = sh.CreateOutput("out", Sdf.ValueTypeNames.Token)
+    mtl.CreateSurfaceOutput("mdl").ConnectToSource(out)
+    UsdShade.MaterialBindingAPI.Apply(prim.GetPrim() if hasattr(prim, "GetPrim") else prim).Bind(mtl)
+
+
 def bind_mdl(stage, prim, name, mdl_file):
     """Simple_Warehouse MDL을 머티리얼로 정의해 prim(하위 상속)에 바인딩."""
     path = f"/World/Looks/{name}"
@@ -239,7 +258,7 @@ stage.SetDefaultPrim(stage.GetPrimAtPath("/World"))
 W, H = COLS * CELL, ROWS * CELL
 add_box(stage, "/World/ground", -5, -5, W + 10, H + 10, -0.11, -0.01)
 floor = add_quad(stage, "/World/floor", -5, -5, W + 5, H + 5, 0.0, uv_scale=4.0)
-bind_mdl(stage, floor, "MI_Floor_01", MAT_DIR + "/MI_Floor_01.mdl")
+bind_mdl(stage, floor, "MI_Floor_02b", MAT_DIR + "/MI_Floor_02b.mdl")   # 콘크리트 창고 바닥
 
 # 개방 지붕 — 태양광(그림자·전역 밝기) + 조명 그리드(현수등, z 7.8~7.95 라이다 밴드 밖)
 sun = UsdLux.DistantLight.Define(stage, "/World/sun")
@@ -289,16 +308,47 @@ for i, (r0, c0, h, w) in enumerate(walls):
     parent = "columns" if small else "walls"
     add_box_mesh(stage, f"/World/{parent}/w_{i}", c0 * CELL, r0 * CELL, w * CELL, h * CELL, 0.0, WALL_H)
     n_colbox += small
-# 밝은 순백 벽이 눈부심 → 베이지 톤 (텍스처 디테일 유지, 기둥은 한 단계 짙게 구분)
+# 철제 창고 룩 (설계도: 철골 포털프레임 + 패널 외벽) — 외벽은 밝은 회백
+# 샌드위치 패널(패널 노멀만 사용), 기둥은 랙 프레임과 동일한 아연도금 스틸
 TEX = MAT_DIR + "/Textures"
-bind_omnipbr(stage, walls_xf, "WallBeige",
-             TEX + "/T_WallA_01_D.png", TEX + "/T_WallA_01_N.png", (0.85, 0.78, 0.64))
-bind_omnipbr(stage, cols_xf, "ColumnBeige",
-             TEX + "/T_WallBoard_01_D.png", TEX + "/T_WallBoard_01_N.png", (0.78, 0.71, 0.59))
+bind_pbr(stage, walls_xf, "SteelPanel", (0.74, 0.77, 0.80),
+         normal_tex=TEX + "/T_WallBoard_01_N.png", rough=0.42, metal=0.25)
+bind_mdl(stage, cols_xf, "MI_FrameA_01", MAT_DIR + "/MI_FrameA_01.mdl")
 # WallBoard 텍스처는 원본이 어두운 금속판이라 흰 틴트로도 못 밝힘(실측) — WallA(밝은 벽돌) 사용
 bind_omnipbr(stage, office_xf, "OfficeWhite",
              TEX + "/T_WallA_01_D.png", TEX + "/T_WallA_01_N.png", (0.95, 0.94, 0.91))
 print(f"[1] 벽 {len(walls) - n_colbox - n_office} + 기둥 {n_colbox} + 사무실 벽 {n_office}(3m)")
+
+# 1c) 철골 외피 — 설계도(포털 프레임 6m 모듈)의 윈드 컬럼 + 월 거트.
+#     벽면에 밀착한 시각 전용 부재(collide=False — 벽 팽창역 안이라 플래너 무관).
+steel_xf = UsdGeom.Xform.Define(stage, "/World/steel")
+n_steel = 0
+FRAME_XS = [20.1 + 6 * k for k in range(15)]              # 장변(남·북벽) 프레임 축
+END_YS = [31.8, 38.0, 51.0, 57.3, 63.6, 83.0]             # 단변(서·동벽), 문 구간 회피
+for x in FRAME_XS:
+    for y0 in (25.65, 88.8):
+        add_box(stage, f"/World/steel/c{n_steel}", x - 0.175, y0, 0.35, 0.3,
+                0.0, 7.6, collide=False)
+        n_steel += 1
+for y in END_YS:
+    for x0 in (14.45, 109.5):
+        add_box(stage, f"/World/steel/c{n_steel}", x0, y - 0.175, 0.3, 0.35,
+                0.0, 7.6, collide=False)
+        n_steel += 1
+GIRT_Z = (2.7, 5.0, 7.2)
+DOOR_FREE_Y = ((26.0, 38.2), (44.8, 70.2), (76.8, 89.0))  # 서·동벽 문 구간 제외 스팬
+for z in GIRT_Z:
+    for y0 in (25.65, 88.95):                             # 남·북벽 전장 거트
+        add_box(stage, f"/World/steel/g{n_steel}", 15.0, y0, 95.0, 0.15,
+                z, z + 0.12, collide=False)
+        n_steel += 1
+    for ya, yb in (DOOR_FREE_Y if z < 6.5 else ((26.0, 89.0),)):
+        for x0 in (14.45, 109.55):
+            add_box(stage, f"/World/steel/g{n_steel}", x0, ya, 0.15, yb - ya,
+                    z, z + 0.12, collide=False)
+            n_steel += 1
+bind_mdl(stage, steel_xf, "MI_FrameA_01", MAT_DIR + "/MI_FrameA_01.mdl")
+print(f"[1c] 철골 외피: 윈드 컬럼·거트 {n_steel}개")
 
 # 1b) 사무실 인테리어 — 카펫 바닥 + 가구(시각 전용, 그리드·플래너 무관)
 UsdGeom.Xform.Define(stage, "/World/office_furniture")
@@ -395,28 +445,38 @@ wout = wsh.CreateOutput("out", Sdf.ValueTypeNames.Token)
 wrap_mtl.CreateSurfaceOutput("mdl").ConnectToSource(wout)
 
 
-def add_pallet_stack(stage, path, x, y, rz, tall):
-    """래핑 파렛트 더미(시각 전용): 파렛트 + 박스 1~2층 + 반투명 랩."""
+def add_pallet_stack(stage, path, x, y, rz, layers):
+    """래핑 파렛트 더미(시각 전용): 파렛트 + 교차 적재 박스 layers층 + 반투명 랩.
+    실제 파렛타이징처럼 층마다 90° 교차 — 2층 1.2m / 3층 1.7m."""
     w = UsdGeom.Xform.Define(stage, path)
     xf = UsdGeom.Xformable(w.GetPrim())
     xf.AddTranslateOp().Set(Gf.Vec3d(x, y, 0.0))
     xf.AddRotateZOp().Set(rz)
 
-    def sub(name, usd, lx, ly, lz):
+    def sub(name, usd, lx, ly, lz, lrz=None):
         s = UsdGeom.Xform.Define(stage, f"{path}/{name}")
-        UsdGeom.Xformable(s.GetPrim()).AddTranslateOp().Set(Gf.Vec3d(lx, ly, lz))
+        sx = UsdGeom.Xformable(s.GetPrim())
+        sx.AddTranslateOp().Set(Gf.Vec3d(lx, ly, lz))
+        if lrz is not None:
+            sx.AddRotateZOp().Set(lrz)
         a = UsdGeom.Xform.Define(stage, f"{path}/{name}/a")
         a.GetPrim().GetReferences().AddReference(usd)
         a.GetPrim().SetInstanceable(True)
 
     sub("pal", PALLET_USD, 0, 0, 0)
-    sub("b1", BOX_A, 0, -0.25, 0.21)
-    sub("b2", BOX_A, 0, 0.25, 0.21)
-    top = 0.71
-    if tall:
-        sub("b3", BOX_B, 0.05, 0, 0.71)
-        top = 1.21
-    wrap = add_box(stage, f"{path}/wrap", -0.56, -0.47, 1.12, 0.94, 0.16, top + 0.03,
+    z = 0.21
+    sub("l1a", BOX_A, 0, -0.25, z)
+    sub("l1b", BOX_A, 0, 0.25, z)
+    z += 0.50
+    if layers >= 2:
+        sub("l2a", BOX_A, -0.25, 0, z, lrz=90)
+        sub("l2b", BOX_A, 0.25, 0, z, lrz=90)
+        z += 0.50
+    if layers >= 3:
+        sub("l3a", BOX_B, 0, -0.25, z)
+        sub("l3b", BOX_B, 0, 0.25, z)
+        z += 0.50
+    wrap = add_box(stage, f"{path}/wrap", -0.56, -0.47, 1.12, 0.94, 0.16, z + 0.03,
                    collide=False)
     UsdShade.MaterialBindingAPI.Apply(wrap.GetPrim()).Bind(wrap_mtl)
 
@@ -426,7 +486,7 @@ n_stack = 0
 prects = greedy_rects(grid == 6)
 for i, (r0, c0, hh, ww) in enumerate(prects):
     b = add_box(stage, f"/World/pallets/col_{i}", c0 * CELL, r0 * CELL,
-                ww * CELL, hh * CELL, 0.0, 1.35)
+                ww * CELL, hh * CELL, 0.0, 1.85)
     UsdGeom.Imageable(b.GetPrim()).MakeInvisible()
     x0, y0, w_m, h_m = c0 * CELL, r0 * CELL, ww * CELL, hh * CELL
     horiz = w_m >= h_m                        # 장변 방향으로 파렛트 장축 정렬
@@ -436,14 +496,14 @@ for i, (r0, c0, hh, ww) in enumerate(prects):
     od = (deep - nd * PALLET_D) / 2
     for j in range(nl):
         for k in range(nd):
-            if rnd(i, j, k) < 0.08:           # 빈 자리 — 사용 중인 창고 느낌
+            if rnd(i, j, k) < 0.03:           # 빈 자리 최소 — 꽉 찬 창고
                 continue
             a = oa + PALLET_L * (j + 0.5) + (rnd(i, j, k, "a") - 0.5) * 0.06
             d = od + PALLET_D * (k + 0.5) + (rnd(i, j, k, "d") - 0.5) * 0.06
             px, py = (x0 + a, y0 + d) if horiz else (x0 + d, y0 + a)
             rz = (0.0 if horiz else 90.0) + (rnd(i, j, k, "r") - 0.5) * 7
             add_pallet_stack(stage, f"/World/pallets/s{i}_{j}_{k}", px, py, rz,
-                             tall=rnd(i, j, k, "t") > 0.25)
+                             layers=3 if rnd(i, j, k, "t") > 0.3 else 2)
             n_stack += 1
 print(f"[2b] 바닥 파렛트 블록 {len(prects)}rect → 래핑 더미 {n_stack}개", flush=True)
 
@@ -472,9 +532,9 @@ for bi, (xc, ys, n_units) in enumerate(rack_units):
 print(f"[3] 렉 조립: 프레임 {n_frame} + 데크 {n_shelf}", flush=True)
 
 # 3b) 렉 화물 (시각 전용, 랙 풋프린트 안 — 그리드 값2 그대로):
-#     바닥층 파렛트+박스, 데크층 개별 박스 줄지어 채움. 데크 상판은
-#     배치 z +0.03 (컴포즈 bbox 실측: 데크 z -0.345~+0.025).
-BOX_CYCLE = (BOX_A, BOX_B, BOX_C, BOX_B, BOX_A, BOX_C)
+#     바닥층 파렛트 만재(2x2+토퍼), 데크층 2열 연속 적재 + 토퍼 — 꽉 찬 창고.
+#     데크 상판은 배치 z +0.03 (컴포즈 bbox 실측: 데크 z -0.345~+0.025).
+BOX_KIND = ((BOX_A, 0.70, 0.50), (BOX_B, 0.50, 0.50), (BOX_C, 0.50, 0.25))
 n_cargo = 0
 for bi, (xc, ys, n_units) in enumerate(rack_units):
     n_units = int(n_units)
@@ -484,29 +544,45 @@ for bi, (xc, ys, n_units) in enumerate(rack_units):
             yc = ys + UNIT_L * u + UNIT_L / 2
             root = f"/World/racks/cargo_b{bi}_l{line}_u{u}"
             UsdGeom.Xform.Define(stage, root)
-            for pi, py in enumerate((yc - 1.0, yc + 1.0)):     # 바닥층 파렛트 2
-                if rnd(bi, line, u, pi) < 0.15:
+            for pi, py in enumerate((yc - 1.0, yc + 1.0)):     # 바닥층 파렛트 만재
+                if rnd(bi, line, u, pi) < 0.06:
                     continue
                 add_asset(stage, f"{root}/fp{pi}", PALLET_USD, lx, py,
                           rot_z=90.0, instance=True)
-                add_asset(stage, f"{root}/fb{pi}a", BOX_A, lx - 0.25, py, z=0.21,
-                          rot_z=90.0, instance=True)
-                if rnd(bi, line, u, pi, "2") > 0.3:
-                    add_asset(stage, f"{root}/fb{pi}b", BOX_A, lx + 0.25, py, z=0.21,
-                              rot_z=90.0, instance=True)
-                n_cargo += 3
-            for li, dz in enumerate(DECK_Z):                    # 데크층 박스 3열
-                for ki, ky in enumerate((yc - 1.3, yc, yc + 1.3)):
-                    if rnd(bi, line, u, li, ki) < 0.12:
-                        continue
-                    box = BOX_CYCLE[int(rnd(bi, line, u, li, ki, "b") * len(BOX_CYCLE))]
-                    add_asset(stage, f"{root}/d{li}_{ki}", box,
-                              lx + (rnd(bi, line, u, li, ki, "x") - 0.5) * 0.2,
-                              ky + (rnd(bi, line, u, li, ki, "y") - 0.5) * 0.25,
-                              z=dz + 0.03,
-                              rot_z=90.0 + (rnd(bi, line, u, li, ki, "r") - 0.5) * 10,
-                              instance=True)
+                n_cargo += 1
+                for qi, (qx, qy) in enumerate(((-0.25, -0.25), (-0.25, 0.25),
+                                               (0.25, -0.25), (0.25, 0.25))):
+                    add_asset(stage, f"{root}/fb{pi}_{qi}", BOX_B, lx + qx, py + qy,
+                              z=0.21, instance=True)
                     n_cargo += 1
+                if rnd(bi, line, u, pi, "2") > 0.4:
+                    add_asset(stage, f"{root}/ft{pi}", BOX_A, lx, py, z=0.71,
+                              rot_z=90.0, instance=True)
+                    n_cargo += 1
+            for li, dz in enumerate(DECK_Z):                    # 데크층 2열 연속 적재
+                for row, rx in ((0, lx - 0.27), (1, lx + 0.27)):
+                    yy = yc - 1.92
+                    while yy < yc + 1.85:
+                        r = rnd(bi, line, u, li, row, round(yy, 2))
+                        usd, wid, hgt = BOX_KIND[int(r * 3) % 3]
+                        yy += wid / 2
+                        if yy + wid / 2 > yc + 1.98:            # 엣지 기준 — 유닛 밖 돌출 방지
+                            break
+                        if r > 0.07:                            # 7% 빈틈
+                            key = f"{li}_{row}_{int((yy + 2) * 100)}"
+                            add_asset(stage, f"{root}/d{key}", usd,
+                                      rx + (rnd(bi, li, row, round(yy, 2), "x") - 0.5) * 0.05,
+                                      yy, z=dz + 0.03,
+                                      rot_z=90.0 + (rnd(bi, li, row, round(yy, 2), "r") - 0.5) * 8,
+                                      instance=True)
+                            n_cargo += 1
+                            if hgt <= 0.26 or (hgt <= 0.51
+                                               and rnd(bi, li, row, round(yy, 2), "s") > 0.6):
+                                add_asset(stage, f"{root}/t{key}", BOX_C,
+                                          rx, yy, z=dz + 0.03 + hgt, rot_z=90.0,
+                                          instance=True)
+                                n_cargo += 1
+                        yy += wid / 2 + 0.04
 print(f"[3b] 렉 화물: 파렛트·박스 {n_cargo}점", flush=True)
 
 # 바닥 마킹 — 렉 세그먼트 안전선(황) + 스테이션 마킹(청): 시인성 + 레이아웃 데이터의 시각화
