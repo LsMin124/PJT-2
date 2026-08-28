@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<title>자율주행 연구실 면담 질문지</title>
+<style>
+  :root{
+    --bg:#14181D;
+    --panel:#1C2229;
+    --panel-edge:#2C343D;
+    --ink:#E8ECF1;
+    --ink-soft:#9AA7B4;
+    --amber:#F08A32;
+    --machine:#3BAF77;
+    --steel:#8FB4D9;
+    --grid:#2A323B;
+    --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  body{
+    background:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:32px 32px;
+    color:var(--ink);font-family:var(--sans);line-height:1.6;font-size:14.5px;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px 60px}
+
+  /* ── 표제란 ── */
+  header{border-bottom:3px solid var(--ink);background:var(--panel)}
+  header .wrap{padding-bottom:0}
+  .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:30px 0 22px;align-items:end}
+  .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
+  .doc-eyebrow b{color:var(--amber);font-weight:600}
+  h1{font-size:clamp(21px,3vw,30px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
+  h1 .sub{display:block;font-size:.55em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
+  .meta b{color:var(--ink);font-weight:600}
+
+  /* ── 요약 3줄 ── */
+  .register-label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:30px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--panel-edge)}
+  .summary{display:flex;flex-direction:column;gap:8px}
+  .summary .row{display:grid;grid-template-columns:74px 1fr;gap:14px;background:var(--panel);border:1px solid var(--panel-edge);padding:11px 14px;align-items:baseline}
+  .summary .key{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--amber);letter-spacing:.08em}
+  .summary p{font-size:13.5px}
+  .summary b{color:var(--steel);font-weight:600}
+
+  /* ── 질문 그룹 ── */
+  .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media (max-width:760px){.qgrid{grid-template-columns:1fr}.titleblock{grid-template-columns:1fr}.meta{border-left:none;padding-left:0;text-align:left}}
+  .qcard{background:var(--panel);border:1px solid var(--panel-edge);border-top:2px solid var(--amber);padding:14px 16px}
+  .qcard.full{grid-column:1/-1;border-top-color:var(--machine)}
+  .qno{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--amber);letter-spacing:.08em}
+  .qcard.full .qno{color:var(--machine)}
+  .qcard h2{font-size:15px;font-weight:700;margin:2px 0 4px}
+  .qcard .aim{font-size:12px;color:var(--ink-soft);margin-bottom:9px}
+  .status{font-size:12.5px;background:rgba(143,180,217,.08);border-left:3px solid var(--steel);padding:7px 10px;margin-bottom:10px;color:var(--ink)}
+  .status b{color:var(--steel);font-family:var(--mono);font-size:11px;letter-spacing:.06em;margin-right:6px}
+  .qcard ol{list-style:none;display:flex;flex-direction:column;gap:8px}
+  .qcard ol li{display:grid;grid-template-columns:20px 1fr;gap:8px;font-size:13px}
+  .qcard ol .n{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--ink-soft);padding-top:2px}
+
+  /* ── 사용법 ── */
+  .howto{margin-top:14px;border:1px dashed var(--panel-edge);padding:11px 14px;font-size:12.5px;color:var(--ink-soft)}
+  .howto b{color:var(--ink);font-family:var(--mono);font-size:11px;letter-spacing:.08em;margin-right:8px}
+
+  /* ── 인쇄: A4 한 장 라이트 ── */
+  @media print{
+    :root{
+      --bg:#FFFFFF;--panel:#FFFFFF;--panel-edge:#C9CFD6;--ink:#111417;--ink-soft:#565E66;
+      --amber:#B4560E;--machine:#1E7A50;--steel:#2F5F8A;
+    }
+    body{background:#FFFFFF;background-image:none;font-size:10.5px;line-height:1.45}
+    @page{size:A4;margin:11mm}
+    .wrap{max-width:none;padding:0}
+    header{border-bottom-width:2px}
+    .titleblock{padding:0 0 8px}
+    h1{font-size:17px}
+    .register-label{margin:10px 0 6px}
+    .summary{gap:4px}
+    .summary .row,.qcard{padding:6px 9px;break-inside:avoid}
+    .summary p{font-size:10.5px}
+    .qgrid{gap:6px}
+    .qcard h2{font-size:11.5px}
+    .qcard .aim,.status,.howto{font-size:9.5px}
+    .status{padding:4px 7px;margin-bottom:6px;background:#EFF4F9}
+    .qcard ol{gap:4px}
+    .qcard ol li{font-size:10px}
+    .howto{margin-top:8px;padding:6px 9px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="titleblock">
+      <div>
+        <div class="doc-eyebrow"><b>PJT-2</b> · WORKING · INTERVIEW SHEET</div>
+        <h1>자율주행 연구실 면담 질문지
+          <span class="sub">AMR 도입 견적 시뮬레이션 — 기계공학과 자율주행 전공 교수 면담용 한 페이지</span>
+        </h1>
+      </div>
+      <div class="meta">
+        DATE <b>2026-08-28</b><br>
+        면담자 <b>이승민</b><br>
+        소속 <b>SSAFY 팀 루돌프 · 시뮬레이션 파트</b>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="register-label">프로젝트 요약 — 세 줄</div>
+  <div class="summary">
+    <div class="row"><span class="key">무엇</span>
+      <p>물류센터의 시설·물류 데이터를 받아, 시뮬레이션으로 <b>AMR 대수별 처리량–비용–ROI 곡선</b>을 산출하는 중립 견적 서비스. 선택은 고객이, 근거는 시스템이.</p></div>
+    <div class="row"><span class="key">구조</span>
+      <p>2계층 시뮬레이션. <b>SimPy DES</b>(수백 배속, 기종×대수 스윕)가 "몇 대가 최적인가"를 계산하고, <b>ROS2 + Isaac Sim SIL</b>(RTF≈1, VDA 5050 인터페이스)이 최적 구성 1~2개를 가상 시운전해 "그 답이 실제 스택에서 성립하는가"를 검증.</p></div>
+    <div class="row"><span class="key">연결</span>
+      <p><b>보정 루프</b>. SIL에서 실측한 엣지 주행시간·도킹 시간 분포로 DES의 유효속도 계수를 캘리브레이션하고 재스윕.</p></div>
+  </div>
+
+  <div class="register-label">질문지 — 권장 순서 Q1 → Q5</div>
+  <div class="qgrid">
+
+    <div class="qcard">
+      <span class="qno">Q1</span>
+      <h2>주행 모델 충실도 — 차량 동역학</h2>
+      <div class="aim">교수님 전공 정중앙. 대화를 여는 질문.</div>
+      <div class="status"><b>현황</b>DES는 주행을 유효속도 계수 하나로 근사. 가감속·코너·하중은 미모델, SIL 실측으로 계수만 보정.</div>
+      <ol>
+        <li><span class="n">①</span><span>견적 목적(사이클 타임 오차 ±10% 수준)이면 가감속 프로파일·코너 감속·적재 하중을 어디까지 모델에 넣어야 하고, 어디부터는 계수 보정으로 충분한가요?</span></li>
+        <li><span class="n">②</span><span>저속 AMR의 주행 시간 오차를 지배하는 건 동역학(가감속)인가요, 정지·재출발 같은 이산 이벤트인가요? 어느 쪽부터 정밀화해야 하나요?</span></li>
+      </ol>
+    </div>
+
+    <div class="qcard">
+      <span class="qno">Q2</span>
+      <h2>시뮬레이션 검증(V&amp;V)</h2>
+      <div class="aim">자율주행이 가장 앞서 있는 분야에서 방법론 빌리기.</div>
+      <div class="status"><b>현황</b>실차 없음. DES↔물리 시뮬 교차 검증 구조. 준거는 VDI 3693(가상 시운전)·VDI 3633.</div>
+      <ol>
+        <li><span class="n">①</span><span>자율주행의 시나리오 커버리지·sim-to-real gap 정량화 기법 중, 실차 없이 시뮬레이션끼리 교차 검증하는 우리 구조에 이식할 만한 지표는 무엇일까요?</span></li>
+        <li><span class="n">②</span><span>엣지 주행시간·도킹 시간의 "분포" 일치를 검증할 때, 평균 외에 어떤 통계량까지 봐야 하나요?</span></li>
+      </ol>
+    </div>
+
+    <div class="qcard">
+      <span class="qno">Q3</span>
+      <h2>추종 제어 · 정밀 도킹</h2>
+      <div class="aim">구체적 설계 결정을 검증받는 질문.</div>
+      <div class="status"><b>현황</b>경로는 중앙 하달(VDA 5050 노드/엣지), 로봇은 Pure Pursuit로 구간 추종만. 리프트 도킹 1장면 구현 예정.</div>
+      <ol>
+        <li><span class="n">①</span><span>협로 코너·도킹 접근 같은 저속 정밀 구간에서 Pure Pursuit가 깨지는 조건과, MPC급으로 올려야 하는 경계를 어떻게 판단하시나요?</span></li>
+        <li><span class="n">②</span><span>±cm급 정밀 도킹 소요 시간의 분산을 지배하는 요인은 무엇인가요 — 인지 오차, 제어기 수렴, 접근 기동? (자동주차 연구와의 접점)</span></li>
+      </ol>
+    </div>
+
+    <div class="qcard">
+      <span class="qno">Q4</span>
+      <h2>다중 로봇 교통</h2>
+      <div class="aim">MAPF를 자율주행 언어(교통류·교차로)로 번역.</div>
+      <div class="status"><b>현황</b>Prioritized Planning + 시공간 예약, 존 예약으로 데드락 처리. 대수 증가 시 처리량 포화를 교통류 fundamental diagram으로 설명.</div>
+      <ol>
+        <li><span class="n">①</span><span>도로 교통류 이론을 창고 통로(폭 2~3m, 단방향 제어)에 이식할 때 주의할 점이 있을까요?</span></li>
+        <li><span class="n">②</span><span>자율주행의 intersection management 연구에서 창고 교차로 제어로 가져올 만한 아이디어가 있을까요?</span></li>
+      </ol>
+    </div>
+
+    <div class="qcard full">
+      <span class="qno">Q5</span>
+      <h2>방향 확인 — 마지막 하나</h2>
+      <ol>
+        <li><span class="n">①</span><span>이 주제에서 학술적으로 파고들 가치가 있는 지점을 하나만 꼽는다면 어디라고 보시나요? <span style="color:var(--ink-soft)">(저희 가설: DES↔물리 시뮬 보정 루프의 체계화)</span></span></li>
+      </ol>
+    </div>
+
+  </div>
+
+  <div class="howto"><b>사용법</b>Q1부터 순서대로. 각 질문 전에 파란 "현황" 반 문장을 먼저 말하면, 일반론이 아니라 설계 리뷰형 답을 받기 쉽습니다.</div>
+
+</div>
+
+</body>
+</html>
