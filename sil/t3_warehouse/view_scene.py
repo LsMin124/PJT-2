@@ -10,7 +10,10 @@ import os
 
 from isaacsim import SimulationApp
 
-app = SimulationApp({"headless": True, "hide_ui": False})
+# 720p — tailscale DERP 릴레이 경유 접속(직결 불가 환경, RTT 170~500ms 실측)에서
+# 1080p는 대역폭 부족으로 화면 멈춤. LAN 직결로 볼 땐 1920x1080으로 올려도 됨.
+app = SimulationApp({"headless": True, "hide_ui": False,
+                     "window_width": 1280, "window_height": 720})
 app.set_setting("/app/window/drawMouse", True)
 
 from isaacsim.core.experimental.utils.app import enable_extension
