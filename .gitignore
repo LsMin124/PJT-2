@@ -2,3 +2,4 @@
 *.pdf
 *.npy
 *.usd
+__pycache__/
