@@ -57,6 +57,14 @@ RACK_D = 1.08                   # 데크 실측 깊이 (그리드 선언 1.2 —
 RACK_W = 2.4                    # 더블로우 그리드 폭 (맵 RACK_UNIT_D 1.2 x 2)
 DECK_Z = (1.0, 1.75, 2.5)       # 데크 높이 3 + 바닥 = 4단 (RACK_LEVELS)
 
+# 화물 드레싱 (v5.8) — 구형 창고 캐릭터: 바닥 파렛트 블록(셀값 6) + 랙 박스
+PROPS = ASSETS + "/Isaac/Environments/Simple_Warehouse/Props/"
+PALLET_USD = PROPS + "SM_PaletteA_01.usd"     # 컴포즈 실측 1.21x1.00, h0.21
+BOX_A = PROPS + "SM_CardBoxA_01.usd"          # 0.70x0.50x0.50
+BOX_B = PROPS + "SM_CardBoxB_01.usd"          # 0.50x0.50x0.50
+BOX_C = PROPS + "SM_CardBoxC_01.usd"          # 0.50x0.50x0.25
+PALLET_L, PALLET_D = 1.27, 1.06               # 배치 피치 (장변 1.21, 단변 1.00)
+
 # 사무실 (맵 v5.7 재구축 구역과 동일 좌표) — 벽 3.0m + 가구(시각 전용)
 OFFICES = [(14.6, 25.7, 29.5, 37.5), (14.6, 77.0, 29.5, 89.1)]
 OFFICE_H = 3.0
@@ -190,9 +198,10 @@ def bind_mdl(stage, prim, name, mdl_file):
     UsdShade.MaterialBindingAPI.Apply(prim.GetPrim() if hasattr(prim, "GetPrim") else prim).Bind(mtl)
 
 
-def add_asset(stage, path, usd, x, y, z=0.0, rot_z=None):
+def add_asset(stage, path, usd, x, y, z=0.0, rot_z=None, instance=False):
     """참조 에셋 배치 — 에셋 루트에 자체 xformOpOrder가 있어도 안전하도록
-    래퍼 Xform이 이동·회전을 담당한다 (A08에서 실측한 예외의 일반화)."""
+    래퍼 Xform이 이동·회전을 담당한다 (A08에서 실측한 예외의 일반화).
+    instance=True면 USD 인스턴싱(대량 화물용 — 프로토타입 공유)."""
     w = UsdGeom.Xform.Define(stage, path)
     xf = UsdGeom.Xformable(w.GetPrim())
     xf.AddTranslateOp().Set(Gf.Vec3d(x, y, z))
@@ -200,7 +209,17 @@ def add_asset(stage, path, usd, x, y, z=0.0, rot_z=None):
         xf.AddRotateZOp().Set(rot_z)
     a = UsdGeom.Xform.Define(stage, path + "/asset")
     a.GetPrim().GetReferences().AddReference(usd)
+    if instance:
+        a.GetPrim().SetInstanceable(True)
     return w
+
+
+import zlib
+
+
+def rnd(*key):
+    """결정적 의사난수 [0,1) — 재실행해도 같은 배치 (성공 판정·diff 재현성)."""
+    return (zlib.crc32(repr(key).encode()) % 10000) / 10000.0
 
 
 t0 = time.time()
@@ -358,6 +377,76 @@ for ci, (cx0, cy0, clen, vert) in enumerate(CONVEYORS_VIS):
         n_sec += 1
 print(f"[2] 컨베이어 콜라이더 {n_conv}(투명) + 비주얼 섹션 {n_sec} · 작업대 {n_tab}")
 
+# 2b) 바닥 파렛트 블록 (셀값 6) — 구형 창고 블록 스태킹. 콜라이더는 그리드 rect
+#     그대로(투명, 라이다·플래너 단일 소스), 비주얼은 rect 안에 래핑 파렛트
+#     더미를 자동 채움. 랩은 반투명 OmniPBR(기성 래핑 에셋 없음 — 합성).
+wrap_path = "/World/Looks/StretchWrap"
+wrap_mtl = UsdShade.Material.Define(stage, wrap_path)
+wsh = UsdShade.Shader.Define(stage, wrap_path + "/Shader")
+wsh.CreateImplementationSourceAttr(UsdShade.Tokens.sourceAsset)
+wsh.SetSourceAsset(Sdf.AssetPath("OmniPBR.mdl"), "mdl")
+wsh.SetSourceAssetSubIdentifier("OmniPBR", "mdl")
+# opacity 0.45는 밀키 불투명으로 렌더돼 속 박스가 안 비침(실측) — 0.22로
+wsh.CreateInput("diffuse_color_constant", Sdf.ValueTypeNames.Color3f).Set(Gf.Vec3f(0.75, 0.78, 0.83))
+wsh.CreateInput("enable_opacity", Sdf.ValueTypeNames.Bool).Set(True)
+wsh.CreateInput("opacity_constant", Sdf.ValueTypeNames.Float).Set(0.22)
+wsh.CreateInput("reflection_roughness_constant", Sdf.ValueTypeNames.Float).Set(0.1)
+wout = wsh.CreateOutput("out", Sdf.ValueTypeNames.Token)
+wrap_mtl.CreateSurfaceOutput("mdl").ConnectToSource(wout)
+
+
+def add_pallet_stack(stage, path, x, y, rz, tall):
+    """래핑 파렛트 더미(시각 전용): 파렛트 + 박스 1~2층 + 반투명 랩."""
+    w = UsdGeom.Xform.Define(stage, path)
+    xf = UsdGeom.Xformable(w.GetPrim())
+    xf.AddTranslateOp().Set(Gf.Vec3d(x, y, 0.0))
+    xf.AddRotateZOp().Set(rz)
+
+    def sub(name, usd, lx, ly, lz):
+        s = UsdGeom.Xform.Define(stage, f"{path}/{name}")
+        UsdGeom.Xformable(s.GetPrim()).AddTranslateOp().Set(Gf.Vec3d(lx, ly, lz))
+        a = UsdGeom.Xform.Define(stage, f"{path}/{name}/a")
+        a.GetPrim().GetReferences().AddReference(usd)
+        a.GetPrim().SetInstanceable(True)
+
+    sub("pal", PALLET_USD, 0, 0, 0)
+    sub("b1", BOX_A, 0, -0.25, 0.21)
+    sub("b2", BOX_A, 0, 0.25, 0.21)
+    top = 0.71
+    if tall:
+        sub("b3", BOX_B, 0.05, 0, 0.71)
+        top = 1.21
+    wrap = add_box(stage, f"{path}/wrap", -0.56, -0.47, 1.12, 0.94, 0.16, top + 0.03,
+                   collide=False)
+    UsdShade.MaterialBindingAPI.Apply(wrap.GetPrim()).Bind(wrap_mtl)
+
+
+UsdGeom.Xform.Define(stage, "/World/pallets")
+n_stack = 0
+prects = greedy_rects(grid == 6)
+for i, (r0, c0, hh, ww) in enumerate(prects):
+    b = add_box(stage, f"/World/pallets/col_{i}", c0 * CELL, r0 * CELL,
+                ww * CELL, hh * CELL, 0.0, 1.35)
+    UsdGeom.Imageable(b.GetPrim()).MakeInvisible()
+    x0, y0, w_m, h_m = c0 * CELL, r0 * CELL, ww * CELL, hh * CELL
+    horiz = w_m >= h_m                        # 장변 방향으로 파렛트 장축 정렬
+    along, deep = (w_m, h_m) if horiz else (h_m, w_m)
+    nl, nd = int(along // PALLET_L), max(int(deep // PALLET_D), 1)
+    oa = (along - nl * PALLET_L) / 2
+    od = (deep - nd * PALLET_D) / 2
+    for j in range(nl):
+        for k in range(nd):
+            if rnd(i, j, k) < 0.08:           # 빈 자리 — 사용 중인 창고 느낌
+                continue
+            a = oa + PALLET_L * (j + 0.5) + (rnd(i, j, k, "a") - 0.5) * 0.06
+            d = od + PALLET_D * (k + 0.5) + (rnd(i, j, k, "d") - 0.5) * 0.06
+            px, py = (x0 + a, y0 + d) if horiz else (x0 + d, y0 + a)
+            rz = (0.0 if horiz else 90.0) + (rnd(i, j, k, "r") - 0.5) * 7
+            add_pallet_stack(stage, f"/World/pallets/s{i}_{j}_{k}", px, py, rz,
+                             tall=rnd(i, j, k, "t") > 0.25)
+            n_stack += 1
+print(f"[2b] 바닥 파렛트 블록 {len(prects)}rect → 래핑 더미 {n_stack}개", flush=True)
+
 # 3) 렉 — 부품 조립 (rack_units: [x중심, y시작, 유닛수] — 세로형 더블로우)
 #    유닛 4.0m = 데크(베이) 1개와 정확 일치. 컴포즈된 데크는 4.0(x)x1.08(y)로
 #    가로 정렬이므로 세로형에선 z축 90° 회전이 "필요"하다 (v6.3 가로형은 회전 금지
@@ -381,6 +470,44 @@ for bi, (xc, ys, n_units) in enumerate(rack_units):
                           lx, yc, z=dz, rot_z=90.0)
                 n_shelf += 1
 print(f"[3] 렉 조립: 프레임 {n_frame} + 데크 {n_shelf}", flush=True)
+
+# 3b) 렉 화물 (시각 전용, 랙 풋프린트 안 — 그리드 값2 그대로):
+#     바닥층 파렛트+박스, 데크층 개별 박스 줄지어 채움. 데크 상판은
+#     배치 z +0.03 (컴포즈 bbox 실측: 데크 z -0.345~+0.025).
+BOX_CYCLE = (BOX_A, BOX_B, BOX_C, BOX_B, BOX_A, BOX_C)
+n_cargo = 0
+for bi, (xc, ys, n_units) in enumerate(rack_units):
+    n_units = int(n_units)
+    for line in range(2):
+        lx = xc + RACK_D * (line - 0.5)
+        for u in range(n_units):
+            yc = ys + UNIT_L * u + UNIT_L / 2
+            root = f"/World/racks/cargo_b{bi}_l{line}_u{u}"
+            UsdGeom.Xform.Define(stage, root)
+            for pi, py in enumerate((yc - 1.0, yc + 1.0)):     # 바닥층 파렛트 2
+                if rnd(bi, line, u, pi) < 0.15:
+                    continue
+                add_asset(stage, f"{root}/fp{pi}", PALLET_USD, lx, py,
+                          rot_z=90.0, instance=True)
+                add_asset(stage, f"{root}/fb{pi}a", BOX_A, lx - 0.25, py, z=0.21,
+                          rot_z=90.0, instance=True)
+                if rnd(bi, line, u, pi, "2") > 0.3:
+                    add_asset(stage, f"{root}/fb{pi}b", BOX_A, lx + 0.25, py, z=0.21,
+                              rot_z=90.0, instance=True)
+                n_cargo += 3
+            for li, dz in enumerate(DECK_Z):                    # 데크층 박스 3열
+                for ki, ky in enumerate((yc - 1.3, yc, yc + 1.3)):
+                    if rnd(bi, line, u, li, ki) < 0.12:
+                        continue
+                    box = BOX_CYCLE[int(rnd(bi, line, u, li, ki, "b") * len(BOX_CYCLE))]
+                    add_asset(stage, f"{root}/d{li}_{ki}", box,
+                              lx + (rnd(bi, line, u, li, ki, "x") - 0.5) * 0.2,
+                              ky + (rnd(bi, line, u, li, ki, "y") - 0.5) * 0.25,
+                              z=dz + 0.03,
+                              rot_z=90.0 + (rnd(bi, line, u, li, ki, "r") - 0.5) * 10,
+                              instance=True)
+                    n_cargo += 1
+print(f"[3b] 렉 화물: 파렛트·박스 {n_cargo}점", flush=True)
 
 # 바닥 마킹 — 렉 세그먼트 안전선(황) + 스테이션 마킹(청): 시인성 + 레이아웃 데이터의 시각화
 UsdGeom.Xform.Define(stage, "/World/markings")
@@ -456,7 +583,7 @@ if occ is None:
     print(f"[5] omap 버퍼 크기 불일치({buf.size}) — diff 생략")
 else:
     from scipy.ndimage import binary_dilation
-    st = (grid == 1) | (grid == 5)                     # 벽·컨베이어·작업대: 셀 단위 일치 기대
+    st = np.isin(grid, (1, 5, 6))                      # 벽·컨베이어·작업대·파렛트: 셀 단위 일치 기대
     tol = binary_dilation(occ, iterations=2)
     cover = tol[st].mean() * 100
     rackmask = np.zeros_like(st)
@@ -503,6 +630,7 @@ shoot((COLS * CELL / 2, ROWS * CELL / 2, 120), (0, 0, 0), "scene_top.png", focal
 shoot((34, 40, 4.5), (75, 0, -35), "scene_persp.png")     # 남서측 실내 조감 (작업 라인+렉)
 shoot((59.1, 45.5, 1.2), (87, 0, 0), "scene_aisle.png", focal=14.0)   # 통로5 북향
 shoot((28.3, 30.2, 1.7), (75, 0, 100), "scene_office.png", focal=16.0)  # 남서 사무실 내부
+shoot((58, 34.6, 2.4), (76, 0, 180), "scene_pallets.png", focal=17.0)   # 남측 파렛트 블록
 
 app.close()
 print(f"[done] 총 {time.time()-t0:.0f}s")

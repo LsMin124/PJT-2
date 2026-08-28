@@ -1,6 +1,12 @@
 # ============================================================
 # DXF 도면 → Occupancy Grid → 3PL 풀필먼트 배치 (v5.6)
 #
+# v5.7 → v5.8 (2026-08-28, 설계도 전체 확인 — 철골 포털프레임 구형 창고):
+#   - 바닥 파렛트 보관 밴드(셀값 6) 추가 — 구형 창고의 블록 스태킹 캐릭터.
+#     포장재존 2·예비존 2·출고 스테이징 블록 1·입고 서편 1 (총 6밴드,
+#     전부 스테이션 팽창역과 간섭 없음 — 자가검증 46/46 유지 확인)
+#   - 씬은 밴드 rect에서 래핑 파렛트 더미를 자동 생성, 랙은 박스로 채움
+#
 # v5.6 → v5.7 (2026-08-28, 시뮬 파트 결정 — "벽 없음" 시나리오 확정):
 #   - 기둥 최소화: 랙에 흡수되는 열(y=57.3, 랙 x범위)만 유지하고 나머지
 #     기둥 심볼(자유 바닥·외벽 파일라스터) 제거 — 물류창고 룩
@@ -28,8 +34,8 @@
 #   6) 저장: occupancy_grid / obstacle_mask / rack_units / columns / map.pgm+yaml
 #   7) 시각화: 구역 오버레이(한글 라벨) 포함
 #
-# 셀 값: 0=빈공간, 1=구조체(기둥 포함), 2=렉, 3=스테이션, 4=문, 5=컨베이어·작업대
-#        (기둥 좌표는 columns.npy로 별도 제공)
+# 셀 값: 0=빈공간, 1=구조체(기둥 포함), 2=렉, 3=스테이션, 4=문, 5=컨베이어·작업대,
+#        6=바닥 파렛트 보관 (기둥 좌표는 columns.npy로 별도 제공)
 # 좌표계: 그리드[m]. 건물 좌하단 = (14.1, 25.5), 건물 96 x 64 m
 # 운영 모델: P2G 하이브리드 (피커가 렉 통로에서 피킹, AMR은 운반 전용)
 # ============================================================
@@ -353,9 +359,23 @@ n_st = sum(len(v) for v in STATIONS.values())
 print(f"[4] 스테이션 {n_st}개소 배치")
 
 # ------------------------------------------------------------
+# 5.5) 바닥 파렛트 보관 밴드 (셀값 6, v5.8) — 구형 창고 블록 스태킹.
+#      씬 빌더가 이 rect들에서 래핑 파렛트 더미를 자동 배치한다.
+# ------------------------------------------------------------
+PALLET_BANDS = [
+    (33.0, 27.0, 84.0, 29.0), (33.0, 30.4, 84.0, 31.4),   # 포장재·빈파렛트존
+    (50.0, 78.4, 92.0, 80.4), (50.0, 81.4, 92.0, 82.4),   # 예비 보관/시즌존
+    (103.0, 67.0, 108.6, 74.0),                            # 파렛트 출고 스테이징 블록
+    (15.6, 47.0, 17.6, 66.0),                              # 입고 서편 벽면
+]
+for x0, y0, x1, y1 in PALLET_BANDS:
+    add_rect(grid, x0, y0, x1 - x0, y1 - y0, 6)
+print(f"[4.5] 바닥 파렛트 밴드 {len(PALLET_BANDS)}개 (셀값 6)")
+
+# ------------------------------------------------------------
 # 6) 저장 (그리드 / 마스크 / 좌표 / ROS 맵)
 # ------------------------------------------------------------
-obstacle = binary_dilation(np.isin(grid, (1, 2, 5)), iterations=int(INFLATE * M))
+obstacle = binary_dilation(np.isin(grid, (1, 2, 5, 6)), iterations=int(INFLATE * M))
 np.save("occupancy_grid.npy", grid)
 np.save("obstacle_mask.npy", obstacle)
 np.save("rack_units.npy", np.array(rack_units))
@@ -366,7 +386,7 @@ json.dump({k: v for k, v in STATIONS.items()}, open("stations.json", "w"), inden
 # ROS map (건물 범위 크롭, 원점 = 건물 좌하단)
 bx0, bx1, by0, by1 = 14.1, 110.1, 25.5, 89.5
 sub = grid[int(by0 * M):int(by1 * M), int(bx0 * M):int(bx1 * M)]
-img = np.where(np.isin(sub, (1, 2, 5)), 0, 254).astype(np.uint8)[::-1, :]
+img = np.where(np.isin(sub, (1, 2, 5, 6)), 0, 254).astype(np.uint8)[::-1, :]
 h, w = img.shape
 with open("map.pgm", "wb") as f:
     f.write(f"P5\n{w} {h}\n255\n".encode())
@@ -419,9 +439,9 @@ ZONES = [
     (14.6, 77, 14.9, 12.1, "사무실 (재구축)", "#34495e"),
     (14.6, 25.7, 14.9, 11.8, "사무실 (재구축)", "#34495e"),
 ]
-cmap = ListedColormap(["white", "#888888", "#e67e22", "#2e86de", "#27ae60", "#8e44ad"])
+cmap = ListedColormap(["white", "#888888", "#e67e22", "#2e86de", "#27ae60", "#8e44ad", "#a97142"])
 fig, ax = plt.subplots(figsize=(12.5, 11.5))
-ax.imshow(grid, cmap=cmap, vmin=0, vmax=5, origin="lower",
+ax.imshow(grid, cmap=cmap, vmin=0, vmax=6, origin="lower",
           extent=[0, (X1 - X0) / 1000, 0, (Y1 - Y0) / 1000])
 for x, y, w_, h_, label, color in ZONES:
     ax.add_patch(Rectangle((x, y), w_, h_, facecolor=color, alpha=0.16,
@@ -432,13 +452,13 @@ for k in range(11):                          # 분산 피킹 위치 표시
     ax.text(35.1 + 6 * k, 57.3, "P", ha="center", va="center", fontsize=8,
             color="#c0392b", fontweight="bold",
             bbox=dict(boxstyle="circle,pad=0.15", fc="white", ec="#c0392b", lw=1.1))
-ax.set_title(f"3PL Fulfillment Layout v5.7 — {assets} rack assets, "
+ax.set_title(f"3PL Fulfillment Layout v5.8 — {assets} rack assets, "
              f"~{pallets:,} pallets, stations {station_ok}/{n_st} "
              f"{'OK' if verify_ok else 'FAIL'}, columns {len(columns)}", fontsize=13)
 ax.set_xlabel("m")
 ax.set_ylabel("m")
 plt.tight_layout()
-plt.savefig("grid_v57_full.png", dpi=115)
+plt.savefig("grid_full.png", dpi=115)                      # 버전 무관 고정 파일명
 plt.show()
 
 import sys
