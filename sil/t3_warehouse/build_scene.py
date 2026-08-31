@@ -631,10 +631,11 @@ print(f"[2b] 바닥 파렛트 블록 {len(prects)}rect → 래핑 더미 {n_stac
 #    z축 90° 회전이 "필요"하다 (근거는 참조 컴포즈 bbox 실측).
 UsdGeom.Xform.Define(stage, "/World/racks")
 n_frame = n_shelf = 0
-for bi, (xc, ys, n_units) in enumerate(rack_units):
-    n_units = int(n_units)
-    for line in range(2):                              # 등맞대기 2줄 (x = xc ± 0.54, 등이 맞닿음)
-        lx = xc + RACK_D * (line - 0.5)
+for bi, ru in enumerate(rack_units):
+    xc, ys, n_units = ru[0], ru[1], int(ru[2])
+    n_rows = int(ru[3]) if len(ru) > 3 else 2          # v6.0.1: 양끝 열은 1열
+    for line in range(n_rows):                         # 등맞대기 2줄 (x = xc ± 0.54) 또는 단열
+        lx = xc if n_rows == 1 else xc + RACK_D * (line - 0.5)
         root = f"/World/racks/b{bi}_l{line}"
         UsdGeom.Xform.Define(stage, root)
         for k in range(n_units + 1):                   # 프레임 — 유닛 경계 공유 (n+1개)
@@ -657,10 +658,11 @@ print(f"[3] 렉 조립: 프레임 {n_frame} + 데크 {n_shelf}", flush=True)
 BOX_KIND = ((BOX_A, 0.70, 0.50), (BOX_B, 0.50, 0.50), (BOX_C, 0.50, 0.25))
 LOAD_Z = (0.0,) + tuple(dz + 0.03 for dz in DECK_Z)
 n_cargo = 0
-for bi, (xc, ys, n_units) in enumerate(rack_units):
-    n_units = int(n_units)
-    for line in range(2):
-        lx = xc + RACK_D * (line - 0.5)
+for bi, ru in enumerate(rack_units):
+    xc, ys, n_units = ru[0], ru[1], int(ru[2])
+    n_rows = int(ru[3]) if len(ru) > 3 else 2
+    for line in range(n_rows):
+        lx = xc if n_rows == 1 else xc + RACK_D * (line - 0.5)
         for u in range(n_units):
             yc = ys + UNIT_L * u + UNIT_L / 2
             root = f"/World/racks/cargo_b{bi}_l{line}_u{u}"
@@ -695,9 +697,11 @@ print(f"[3b] 렉 화물: 피킹 낱박스 {n_cargo}점", flush=True)
 UsdGeom.Xform.Define(stage, "/World/markings")
 n_mark = 0
 LW = 0.12
-for bi, (xc, ys, nu) in enumerate(rack_units):
-    bx0, by0 = xc - RACK_W / 2 - 0.27, ys - 0.27
-    bx1, by1 = xc + RACK_W / 2 + 0.27, ys + int(nu) * UNIT_L + 0.27
+for bi, ru in enumerate(rack_units):
+    xc, ys, nu = ru[0], ru[1], ru[2]
+    half_w = RACK_W / 2 if (len(ru) <= 3 or int(ru[3]) == 2) else RACK_W / 4
+    bx0, by0 = xc - half_w - 0.27, ys - 0.27
+    bx1, by1 = xc + half_w + 0.27, ys + int(nu) * UNIT_L + 0.27
     for j, (qx0, qy0, qx1, qy1) in enumerate([
             (bx0, by0, bx1, by0 + LW), (bx0, by1 - LW, bx1, by1),
             (bx0, by0, bx0 + LW, by1), (bx1 - LW, by0, bx1, by1)]):
@@ -866,9 +870,11 @@ else:
     tol = binary_dilation(occ, iterations=2)
     cover = tol[st].mean() * 100
     rackmask = np.zeros_like(st)
-    for xc, ys, n_units in rack_units:
-        r0, r1 = int(ys / CELL), int((ys + int(n_units) * UNIT_L) / CELL)
-        c0, c1 = int((xc - RACK_D) / CELL), int((xc + RACK_D) / CELL)
+    for ru in rack_units:
+        xc, ys, n_units = ru[0], ru[1], int(ru[2])
+        half = RACK_D if (len(ru) <= 3 or int(ru[3]) == 2) else RACK_D / 2
+        r0, r1 = int(ys / CELL), int((ys + n_units * UNIT_L) / CELL)
+        c0, c1 = int((xc - half) / CELL), int((xc + half) / CELL)
         rackmask[r0:r1, c0:c1] = True
     rack_hit = occ[rackmask].mean() * 100
     office_mask = np.zeros_like(st)

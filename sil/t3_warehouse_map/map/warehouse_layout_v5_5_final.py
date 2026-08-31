@@ -304,12 +304,19 @@ print(f"[2.7] 사무실 재구축 2개소 (외곽벽+출입구, 회의실 1실�
 # 3) 렉 배치 (세로, 유닛 스냅, 기둥 기초 회피)
 # ------------------------------------------------------------
 clear_cells = int(CLEAR * M)
-rack_units = []                               # (x중심, y시작, 유닛수)
-for x in col_x:
-    if x < STAGE_L or x > STAGE_R:
-        continue
+# v6.0.1: 양끝 열은 1열(통로 쪽 행만) — 끝열 바깥 행이 구역에 안 속하는 고아를
+# 제거해 행 22개 = 22구역×통로쪽 행이 정확히 떨어진다 (전체 132랙 = 22구역×6랙)
+rack_units = []                               # (x중심, y시작, 유닛수, 행수 1|2)
+elig_x = [x for x in col_x if STAGE_L <= x <= STAGE_R]
+for x in elig_x:
+    if x == elig_x[0]:                        # 서쪽 끝 — 동측(통로) 행만
+        n_rows, cx_fp, w_fp = 1, x + RACK_UNIT_D / 2, RACK_UNIT_D
+    elif x == elig_x[-1]:                     # 동쪽 끝 — 서측(통로) 행만
+        n_rows, cx_fp, w_fp = 1, x - RACK_UNIT_D / 2, RACK_UNIT_D
+    else:
+        n_rows, cx_fp, w_fp = 2, x, RACK_W
     for y0, y1 in RACK_BANKS:
-        r, c = rect_slice(x - RACK_W / 2, y0, RACK_W, y1 - y0)
+        r, c = rect_slice(cx_fp - w_fp / 2, y0, w_fp, y1 - y0)
         blocked = (grid[r, c] == 1).sum(axis=1) > THICK_THRESH
         b2 = blocked.copy()
         for i in np.where(blocked)[0]:
@@ -327,19 +334,19 @@ for x in col_x:
                 if n_units >= 1:
                     used = n_units * RACK_UNIT_L
                     ys = y0 + i * CELL / 1000 + (seg_len - used) / 2
-                    rr, cc = rect_slice(x - RACK_W / 2, ys, RACK_W, used)
+                    rr, cc = rect_slice(cx_fp - w_fp / 2, ys, w_fp, used)
                     sub = grid[rr, cc]
                     sub[sub == 0] = 2
-                    rack_units.append((round(x, 2), round(ys, 2), n_units))
+                    rack_units.append((round(cx_fp, 2), round(ys, 2), n_units, n_rows))
                 i = j
             else:
                 i += 1
 
-total_units = sum(n for _, _, n in rack_units)
-assets = total_units * (2 if DOUBLE_ROW else 1)
-pallets = int(total_units * RACK_UNIT_L / PALLET_PITCH) * 2 * RACK_LEVELS
-print(f"[3] 렉 세그먼트 {len(rack_units)}개, 유닛 {total_units} → 에셋 {assets}개, "
-      f"파렛트 약 {pallets:,}개 (통로 {6 - RACK_W:.1f}m)")
+total_units = sum(n for _, _, n, _ in rack_units)
+row_units = sum(n * rw for _, _, n, rw in rack_units)     # 행 단위 랙 칸 수
+pallets = int(row_units * RACK_UNIT_L / PALLET_PITCH) * RACK_LEVELS
+print(f"[3] 렉 세그먼트 {len(rack_units)}개, 유닛 {total_units} → 랙 칸 {row_units}"
+      f"(=22구역x6 검산 {row_units == 132}), 파렛트 약 {pallets:,}개 (통로 {6 - RACK_W:.1f}m)")
 
 # ------------------------------------------------------------
 # 4) 문 / 컨베이어
@@ -506,7 +513,7 @@ for k in range(11):                          # 분산 피킹 위치 표시
     ax.text(35.1 + 6 * k, 57.3, "P", ha="center", va="center", fontsize=8,
             color="#c0392b", fontweight="bold",
             bbox=dict(boxstyle="circle,pad=0.15", fc="white", ec="#c0392b", lw=1.1))
-ax.set_title(f"3PL Fulfillment Layout v5.8 — {assets} rack assets, "
+ax.set_title(f"3PL Fulfillment Layout v6.0.1 — {row_units} rack slots (22 zones x 6), "
              f"~{pallets:,} pallets, stations {station_ok}/{n_st} "
              f"{'OK' if verify_ok else 'FAIL'}, columns {len(columns)}", fontsize=13)
 ax.set_xlabel("m")
