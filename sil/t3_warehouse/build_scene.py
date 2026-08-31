@@ -17,6 +17,7 @@ from isaacsim import SimulationApp
 
 app = SimulationApp({"headless": True})
 
+import json
 import os
 import time
 
@@ -310,7 +311,9 @@ for i, (r0, c0, h, w) in enumerate(walls):
         n_office += 1
         continue
     small = w * CELL < 2.2 and h * CELL < 2.2
-    if small and abs(cy - 57.3) < 1.5:                    # 릿지 지지 기둥열 — 십자 심볼 파편
+    # x 한정 필수: 릿지 라인(y57.3)이 서·동 외벽과 만나는 지점의 벽 파편까지 투명화되면
+    # 벽에 시각 구멍(콜라이더는 남아 V&V가 못 잡음 — scene_charger 샷 실측)
+    if small and abs(cy - 57.3) < 1.5 and 15.0 < cx < 109.5:   # 릿지 기둥열 십자 파편
         # 콜라이더는 그리드 rect 그대로(단일 소스, 투명). 비주얼 H형강은 루프 뒤
         # columns.npy 실기둥 중심 12곳에 1개씩만 — 파편마다 세우면 십자당 ~37개
         # 군집(2차 빌드 실측 442개), small 전체 변환은 벽 구멍+지붕 관통(1차 실측).
@@ -704,6 +707,103 @@ for i, (r0, c0, hh, ww) in enumerate(greedy_rects(grid == 3)):
     n_mark += 1
 print(f"[3c] 바닥 마킹 {n_mark}개 (안전선·스테이션)")
 
+# 3d) 충전 스테이션 — stations.json charger 6기. 도킹 셀(x 107.8)은 자유 공간(값 3)
+#     이므로 실물 캐비닛은 동벽 실내면 x=109.90(그리드 실측: 동벽 109.90~110.20)에
+#     벽걸이. 전부 collide=False — 스캔 밴드(z 0.2~1.2)와 겹치는 높이라 콜라이더를
+#     켜면 V&V 오검출. 벽 팽창역 0.8m(→x 109.10) 안이라 플래너·그리드 무관.
+with open(os.path.join(MAP_DIR, "stations.json")) as f:
+    stations = json.load(f)
+chg_xf = UsdGeom.Xform.Define(stage, "/World/chargers")
+UsdGeom.Xform.Define(stage, "/World/chargers_trim")
+led_xf = UsdGeom.Xform.Define(stage, "/World/chargers_led")
+E_WALL = 109.90
+chg_ys = [cy for _, cy in stations["charger"]]
+for ci, (cx, cy) in enumerate(stations["charger"]):
+    add_box(stage, f"/World/chargers/body_{ci}", E_WALL - 0.35, cy - 0.40, 0.35, 0.80,
+            0.40, 1.70, collide=False)
+    b = add_box(stage, f"/World/chargers_trim/cap_{ci}", E_WALL - 0.40, cy - 0.44, 0.40,
+                0.88, 1.70, 1.78, collide=False)
+    UsdGeom.Gprim(b.GetPrim()).CreateDisplayColorAttr([(0.95, 0.75, 0.08)])
+    p = add_box(stage, f"/World/chargers_trim/panel_{ci}", E_WALL - 0.37, cy - 0.30, 0.02,
+                0.60, 0.55, 1.50, collide=False)
+    UsdGeom.Gprim(p.GetPrim()).CreateDisplayColorAttr([(0.10, 0.11, 0.12)])
+    add_box(stage, f"/World/chargers_led/led_{ci}", E_WALL - 0.38, cy - 0.05, 0.02, 0.10,
+            1.55, 1.60, collide=False)
+    q = add_quad(stage, f"/World/markings/chgpad_{ci}", cx - 0.48, cy - 0.48,
+                 cx + 0.48, cy + 0.48, 0.014, 2.0)         # 도킹 셀 고무 매트 도장
+    UsdGeom.Gprim(q.GetPrim()).CreateDisplayColorAttr([(0.13, 0.13, 0.15)])
+add_box(stage, "/World/chargers/tray", E_WALL - 0.16, min(chg_ys) - 0.5, 0.14,
+        max(chg_ys) - min(chg_ys) + 1.0, 1.82, 1.92, collide=False)   # 케이블 트레이
+for k in range(7):                                         # 베이 구획선 (3m 피치 ±1.5)
+    by = 48.5 + 3.0 * k
+    q = add_quad(stage, f"/World/markings/chgline_{k}", 106.9, by - 0.06, 109.3,
+                 by + 0.06, 0.011, 2.0)
+    UsdGeom.Gprim(q.GetPrim()).CreateDisplayColorAttr([(1.0, 0.78, 0.05)])
+bind_pbr(stage, chg_xf, "ChargerSteel", (0.24, 0.25, 0.28), rough=0.45, metal=0.35)
+bind_mdl(stage, led_xf, "M_Glow", MAT_DIR + "/M_Glow.mdl")
+print(f"[3d] 충전 스테이션 {len(stations['charger'])}기 (동벽 벽걸이·베이 도장)")
+
+# 3e) 도어 드레싱 — 서·동 박공벽 문 4곳(그리드 실측 y 38.3~44.6 / 70.3~76.7).
+#     그리드의 문 구간은 값4 스트립 양옆에 전고 벽 라미나 2겹(예: x 14.1~14.2,
+#     14.3~14.4)이 남아 물리적으로 봉인돼 있다(USD bbox 스캔 실측) — 그리드가 단일
+#     소스이므로 씬도 "셔터 내려진 상태"로 표현한다: 라미나 위에 안팎 셔터 패널+
+#     리브를 씌우고 하우징·잼 포스트·상부 메꿈을 붙인다. 시각물은 전부 collide=False
+#     (스캔 밴드 z 0.2~1.2와 겹치는 높이 — 콜라이더는 라미나 벽이 담당).
+door_xf = UsdGeom.Xform.Define(stage, "/World/doors")
+shut_xf = UsdGeom.Xform.Define(stage, "/World/shutters")
+UsdGeom.Xform.Define(stage, "/World/shutters_rib")
+DOOR_SPANS = ((38.3, 44.6), (70.3, 76.7))
+
+
+def door_x0(face, dsign, depth):
+    """실내면 face에서 실내 쪽으로 depth 돌출한 박스의 x0 (dsign: 실내 방향 부호)."""
+    return face if dsign > 0 else face - depth
+
+
+n_door = 0
+for face, dsign, wx0 in ((14.40, 1.0, 14.10), (109.90, -1.0, 109.90)):
+    for ya, yb in DOOR_SPANS:
+        add_box_mesh(stage, f"/World/walls/door_top_{n_door}", wx0 + 0.005, ya, 0.29,
+                     yb - ya, 6.2, WALL_H)                 # 개구 상부 메꿈 (5mm 인셋 — 라미나 면과 z-파이팅 방지)
+        add_box(stage, f"/World/doors/box_{n_door}", door_x0(face, dsign, 0.45),
+                ya - 0.25, 0.45, yb - ya + 0.50, 5.55, 6.20, collide=False)  # 셔터 롤 하우징
+        # 셔터 커튼(폐쇄 상태) — 벽 라미나 안팎 면을 덮는 패널 + 가로 리브
+        in_x0 = face if dsign > 0 else face - 0.06              # 실내면 패널
+        out_x0 = wx0 - 0.06 if dsign > 0 else wx0 + 0.30       # 실외면 패널
+        for side, px0, z1 in (("in", in_x0, 5.55), ("out", out_x0, 6.20)):
+            # 실외면은 헤더(6.2)까지 — 라미나가 안 덮는 문 가장자리 z5.55~6.2 슬롯 차단
+            add_box(stage, f"/World/shutters/{side}_{n_door}", px0, ya + 0.05,
+                    0.06, yb - ya - 0.10, 0.05, z1, collide=False)
+            for rk in range(11):
+                r = add_box(stage, f"/World/shutters_rib/{side}_{n_door}_{rk}",
+                            px0 - 0.01, ya + 0.05, 0.08, yb - ya - 0.10,
+                            0.55 + 0.5 * rk, 0.59 + 0.5 * rk, collide=False)
+                UsdGeom.Gprim(r.GetPrim()).CreateDisplayColorAttr([(0.42, 0.44, 0.47)])
+        for pj, yp in enumerate((ya - 0.27, yb + 0.02)):
+            add_box(stage, f"/World/doors/post_{n_door}_{pj}", door_x0(face, dsign, 0.30),
+                    yp, 0.30, 0.25, 0.0, 6.20, collide=False)   # 잼 포스트
+        sx = face + (0.20 if dsign > 0 else -0.35)
+        q = add_quad(stage, f"/World/markings/door_{n_door}", sx, ya, sx + 0.15, yb,
+                     0.012, 2.0)                                # 실내 경계 황색 스트립
+        UsdGeom.Gprim(q.GetPrim()).CreateDisplayColorAttr([(1.0, 0.78, 0.05)])
+        n_door += 1
+bind_mdl(stage, door_xf, "MI_FrameA_01", MAT_DIR + "/MI_FrameA_01.mdl")
+bind_pbr(stage, shut_xf, "ShutterSteel", (0.58, 0.60, 0.63), rough=0.45, metal=0.5)
+print(f"[3e] 도어 드레싱 {n_door}곳 (폐쇄 셔터·하우징·잼 포스트·상부 메꿈)")
+
+# 3f) 스테이션 앵커 — stations.json 전 지점을 /World/anchors/<type>_<i> Xform으로.
+#     기하 없음(시각·물리 무관). 이후 프로젝트(재생기·warehouse_sim·FMS)가 좌표를
+#     씬에서 직접 질의하는 표준 통로 — 그리드·씬 이중 관리 방지.
+UsdGeom.Xform.Define(stage, "/World/anchors")
+n_anch = 0
+for typ, pts in stations.items():
+    for ai, (ax, ay) in enumerate(pts):
+        a = UsdGeom.Xform.Define(stage, f"/World/anchors/{typ}_{ai}")
+        UsdGeom.Xformable(a.GetPrim()).AddTranslateOp().Set(
+            Gf.Vec3d(float(ax), float(ay), 0.0))
+        n_anch += 1
+print(f"[3f] 스테이션 앵커 {n_anch}개 (/World/anchors)")
+
 # 4) 저작 저장 → 완성 파일을 컨텍스트로 오픈 (참조 일괄 로딩)
 stage.GetRootLayer().Save()
 del stage
@@ -811,6 +911,10 @@ shoot((-26, 57.5, 8), (85, 0, -90), "scene_gable.png", focal=16.0)      # 서측
 shoot((84, 39.8, 2.0), (78, 0, 180), "scene_station.png", focal=15.0)   # 패킹 스테이션 열 남향
 shoot((17.5, 60.5, 1.6), (80, 0, 170), "scene_forklift.png", focal=16.0)  # 인바운드 밴드·지게차
 shoot((59.1, 42, 1.5), (125, 0, 0), "scene_truss.png", focal=14.0)      # 실내 트러스 앙시(상향각)
+shoot((104.6, 57.5, 1.6), (78, 0, -90), "scene_charger.png", focal=16.0)  # 충전 스테이션 열(동향)
+shoot((22.0, 48.0, 2.6), (82, 0, 131), "scene_door.png", focal=15.0)      # 서벽 남측 도어(북동→사선)
+# ※ (21.5,35)는 남서 사무실 "내부" — 도어 앞은 사무실(y<37.5)·컨베이어(y38.9) 사이가 좁아
+#   북동쪽 개활지에서 잡아야 한다 (2차 빌드 실측)
 
 app.close()
 print(f"[done] 총 {time.time()-t0:.0f}s")

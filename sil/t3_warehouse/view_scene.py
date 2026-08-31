@@ -3,6 +3,8 @@
 실행:
   cd ~/isaacsim && ./python.sh <repo>/sil/t3_warehouse/view_scene.py
 접속: Isaac Sim WebRTC Streaming Client → 서버 IP (LAN 192.168.0.6 / tailscale 100.89.12.112)
+UDP 차단망(캠퍼스 내부망 — tailscale DERP 릴레이 실측): WebRTC 대신 브라우저로
+  http://100.89.12.112:8211/  (TCP 전용 MJPEG, http_stream.py — 조작 불가·관전만)
 전제: build_scene.py 실행 완료(warehouse_scene.usd 존재), Isaac 동시 1인스턴스.
 """
 
@@ -42,7 +44,12 @@ xf.AddTranslateOp().Set(Gf.Vec3d(20, 20, 22))
 xf.AddRotateXYZOp().Set(Gf.Vec3f(62, 0, -38))
 get_active_viewport().camera_path = "/World/view_cam"
 
+from http_stream import HttpViewer
+
+viewer = HttpViewer(port=8211)
+
 print("[view_scene] ready — WebRTC 접속 대기 (종료: 프로세스 킬)", flush=True)
 while app.is_running():
     app.update()
+    viewer.tick()
 app.close()
