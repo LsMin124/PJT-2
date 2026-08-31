@@ -138,6 +138,22 @@ for _gi, (_gx, _gy) in enumerate(((-0.677, 0.093), (-0.677, -0.093))):
     _UsdShade.MaterialBindingAPI.Apply(_sp.GetPrim()).Bind(
         _gmat, materialPurpose="physics")
     UsdGeom.Imageable(_sp.GetPrim()).MakeInvisible()
+# 바퀴 실린더 → 해석적 구체 접촉 (r 0.08, 바퀴 바디 원점=축심). PhysX가 실린더를
+# 컨벡스 헐(다면체)로 근사하면 다각형 바퀴가 되어 비포장도로처럼 덜컹거림(사용자
+# 관전 실측) — 구체는 해석적이라 완전 매끄러운 굴림. 마찰은 에셋 wheel_material 상속.
+_wmat = _UsdShade.Material.Get(_stage_now, "/World/iw_hub/wheel_material")
+for _side in ("left_wheel", "right_wheel"):
+    _cyl = _stage_now.GetPrimAtPath(f"/World/iw_hub/{_side}/Cylinder")
+    if _cyl.IsValid():
+        _UsdPhysics.CollisionAPI.Apply(_cyl).CreateCollisionEnabledAttr(False)
+    _ws = UsdGeom.Sphere.Define(_stage_now, f"/World/iw_hub/{_side}/contact_sphere")
+    _ws.CreateRadiusAttr(0.08)
+    _UsdPhysics.CollisionAPI.Apply(_ws.GetPrim())
+    if _wmat:
+        _UsdShade.MaterialBindingAPI.Apply(_ws.GetPrim()).Bind(
+            _wmat, materialPurpose="physics")
+    UsdGeom.Imageable(_ws.GetPrim()).MakeInvisible()
+
 # 섀시 외곽 박스(벽·장애물 접촉용, 바닥과 여유 0.03) — 시각 메시 bbox 실측 근사
 _cb = UsdGeom.Cube.Define(_stage_now, "/World/iw_hub/chassis/hull")
 _cb.GetSizeAttr().Set(1.0)
