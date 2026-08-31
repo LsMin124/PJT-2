@@ -420,8 +420,10 @@ h, w = img.shape
 with open("map.pgm", "wb") as f:
     f.write(f"P5\n{w} {h}\n255\n".encode())
     f.write(img.tobytes())
+# origin = 크롭 좌하단(월드 좌표) — [0,0,0]이면 map 프레임이 월드에서 (bx0,by0)만큼
+# 어긋나 AMCL 초기포즈·odom과 불일치 (T3 localization 개통 때 실측)
 open("map.yaml", "w").write(
-    "image: map.pgm\nmode: trinary\nresolution: 0.1\norigin: [0.0, 0.0, 0.0]\n"
+    f"image: map.pgm\nmode: trinary\nresolution: 0.1\norigin: [{bx0}, {by0}, 0.0]\n"
     "negate: 0\noccupied_thresh: 0.65\nfree_thresh: 0.196\n")
 print(f"[5] 저장 완료 (ROS map {w}x{h}px 포함)")
 

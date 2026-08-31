@@ -13,6 +13,8 @@
 | `warehouse_scene.usd` | 산출 씬 (재생성물 — untracked) |
 | `view_scene.py` | WebRTC 관전 뷰어 (완성 씬 열람용) |
 | `http_stream.py` | TCP 전용 HTTP MJPEG 관전 경로 (8211) — 캠퍼스 UDP 차단망 대응 |
+| `warehouse_sim.py` | T3 본편 — 씬+iw.hub+물리 라이다, ROS2 개통(/scan /odom /tf /clock, /cmd_vel). iw_hub 콜리전 수술 포함 |
+| `ros2/` | localization — AMCL+map_server+foxglove(8765) 런치·파라미터. 오차 0.1~0.4m 개통 검증 |
 | `out/scene_*.png` | 검수 스크린샷 (탑뷰·조감·통로 시점) |
 | `out/omap_occ.npy` | 씬→점유맵 역생성 결과 (V&V) |
 
