@@ -1,11 +1,12 @@
-"""T3 씬 빌더 — occupancy grid + rack_units를 Isaac USD 씬으로 세운다 (v5.6 맵).
+"""T3 씬 빌더 — occupancy grid + rack_units를 Isaac USD 씬으로 세운다 (v6.0 맵).
 
 원칙: 그리드가 곧 씬이다 (DES와 SIL의 단일 소스).
   - 벽·기둥(셀값 1): 그리디 메싱으로 병합한 박스 (높이 8.0m)
   - 컨베이어·작업대(셀값 5): 폭으로 구분 — 폭 0.9m 컨베이어는 투명 콜라이더
     + ConveyorBelt_A08 비주얼, 폭 1.2m+ 작업대는 가시 박스 (높이 0.9m — 라이다 평면 위)
-  - 렉(rack_units.npy): 세로형 더블로우 — [x중심, y시작, 유닛수], 유닛 4.0m =
-    SM_RackShelf_01 베이 1개와 정확 일치. 부품을 z축 90° 회전해 y축 정렬 조립
+  - 렉(rack_units.npy): 세로형 더블로우 — [x중심, y시작, 유닛수], v6.0 유닛 3.0m
+    (구역제: 통로 반쪽 3랙×2열 = 구역 6랙, A~V 22구역). SM_RackShelf_01 베이는
+    4.0m라 장축 0.75 스케일 정합, 부품을 z축 90° 회전해 y축 정렬 조립
   - V&V: isaacsim.asset.gen.omap으로 씬→점유맵 재생성 후 원 그리드와 diff
 
 실행:
@@ -56,7 +57,8 @@ CONVEYORS_VIS = [(14.6, 38.9, 16.0, False), (14.6, 70.9, 16.0, False),
                  (94.6, 43.1, 15.0, False), (94.6, 75.1, 15.0, False),
                  (101.0, 34.4, 7.4, False),                 # 패킹→출고 연결 (동진)
                  (107.5, 35.3, 7.8, True)]                  # 패킹→출고 연결 (북상)
-UNIT_L = 4.0                    # 렉 유닛 길이 (y) = SM_RackShelf 베이 1개
+UNIT_L = 3.0                    # 렉 유닛 길이 (y) — v6.0 구역제(반쪽 3랙×3m).
+DECK_SCALE = UNIT_L / 4.0       # SM_RackShelf 베이는 4.0m — 장축 0.75 스케일로 정합
 RACK_D = 1.08                   # 데크 실측 깊이 (그리드 선언 1.2 — 풋프린트 내 배치)
 RACK_W = 2.4                    # 더블로우 그리드 폭 (맵 RACK_UNIT_D 1.2 x 2)
 DECK_Z = (1.35, 2.7)            # 빔 2단 + 바닥 = 3단 파렛트 랙 — 파렛트 유닛로드
@@ -223,7 +225,7 @@ def bind_mdl(stage, prim, name, mdl_file):
     UsdShade.MaterialBindingAPI.Apply(prim.GetPrim() if hasattr(prim, "GetPrim") else prim).Bind(mtl)
 
 
-def add_asset(stage, path, usd, x, y, z=0.0, rot_z=None, instance=False):
+def add_asset(stage, path, usd, x, y, z=0.0, rot_z=None, instance=False, scale=None):
     """참조 에셋 배치 — 에셋 루트에 자체 xformOpOrder가 있어도 안전하도록
     래퍼 Xform이 이동·회전을 담당한다 (A08에서 실측한 예외의 일반화).
     instance=True면 USD 인스턴싱(대량 화물용 — 프로토타입 공유)."""
@@ -232,6 +234,8 @@ def add_asset(stage, path, usd, x, y, z=0.0, rot_z=None, instance=False):
     xf.AddTranslateOp().Set(Gf.Vec3d(x, y, z))
     if rot_z is not None:
         xf.AddRotateZOp().Set(rot_z)
+    if scale is not None:
+        xf.AddScaleOp().Set(Gf.Vec3f(*scale))
     a = UsdGeom.Xform.Define(stage, path + "/asset")
     a.GetPrim().GetReferences().AddReference(usd)
     if instance:
@@ -622,9 +626,9 @@ for i, (r0, c0, hh, ww) in enumerate(prects):
 print(f"[2b] 바닥 파렛트 블록 {len(prects)}rect → 래핑 더미 {n_stack}개", flush=True)
 
 # 3) 렉 — 부품 조립 (rack_units: [x중심, y시작, 유닛수] — 세로형 더블로우)
-#    유닛 4.0m = 데크(베이) 1개와 정확 일치. 컴포즈된 데크는 4.0(x)x1.08(y)로
-#    가로 정렬이므로 세로형에선 z축 90° 회전이 "필요"하다 (v6.3 가로형은 회전 금지
-#    였던 것과 반대 — 근거는 동일하게 참조 컴포즈 bbox 실측).
+#    v6.0 구역제: 유닛 3.0m(반쪽당 3랙×2열=구역 6랙). SM_RackShelf 베이는 4.0m라
+#    장축 DECK_SCALE(0.75) 스케일로 정합. 컴포즈된 데크는 가로 정렬이므로 세로형에선
+#    z축 90° 회전이 "필요"하다 (근거는 참조 컴포즈 bbox 실측).
 UsdGeom.Xform.Define(stage, "/World/racks")
 n_frame = n_shelf = 0
 for bi, (xc, ys, n_units) in enumerate(rack_units):
@@ -637,11 +641,11 @@ for bi, (xc, ys, n_units) in enumerate(rack_units):
             add_asset(stage, f"{root}/frame_{k}", FRAME_USD,
                       lx, ys + UNIT_L * k, rot_z=90.0)
             n_frame += 1
-        for u in range(n_units):                       # 유닛당 데크 3 (+바닥 = 4단)
+        for u in range(n_units):                       # 유닛당 데크 2단 (+바닥 = 3단)
             yc = ys + UNIT_L * u + UNIT_L / 2
             for dz in DECK_Z:
                 add_asset(stage, f"{root}/shelf_{u}_{int(dz*100)}", SHELF_USD,
-                          lx, yc, z=dz, rot_z=90.0)
+                          lx, yc, z=dz, rot_z=90.0, scale=(DECK_SCALE, 1.0, 1.0))
                 n_shelf += 1
 print(f"[3] 렉 조립: 프레임 {n_frame} + 데크 {n_shelf}", flush=True)
 
@@ -663,12 +667,12 @@ for bi, (xc, ys, n_units) in enumerate(rack_units):
             UsdGeom.Xform.Define(stage, root)
             for li, lz in enumerate(LOAD_Z):
                 dens = 0.45 + rnd(bi, line, u, li, "d") * 0.45  # 슬롯별 채움 편차
-                yy = yc - 1.85
+                yy = yc - (UNIT_L / 2 - 0.15)                   # 베이 길이 파생 (v6.0 3m)
                 while True:
                     r = rnd(bi, line, u, li, round(yy, 2))
                     usd, wid, hgt = BOX_KIND[int(r * 3) % 3]
                     yy += wid / 2
-                    if yy + wid / 2 > yc + 1.95:
+                    if yy + wid / 2 > yc + (UNIT_L / 2 - 0.05):
                         break
                     key = f"{li}_{int((yy + 2) * 100)}"
                     bx = lx + (rnd(bi, li, round(yy, 2), "x") - 0.5) * 0.3
