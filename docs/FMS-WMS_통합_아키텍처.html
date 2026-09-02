@@ -53,11 +53,11 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>AMR 도입 견적 SaaS — FMS-WMS 통합 시스템 아키텍처</h1>
-  <p class="sub">창고·물류 정보 입력 → 고정 MAPF 탑재 FMS로 대수·기종 스윕(SimPy DES + Optuna) + Isaac 5분 숏런 검증 → 견적 리포트 · 파이프라인 ①–⑧ · EC2(k3s) / GPU 2-인스턴스 · v2.0 · 2026-09-02</p>
+  <h1>AMR 도입 견적 서비스 — FMS-WMS 통합 시스템 아키텍처</h1>
+  <p class="sub">요청 접수형(비동기): 고객 요청 → 운영 검토·시나리오 컴파일 → 고정 MAPF 탑재 FMS로 대수·기종 스윕(SimPy DES + Optuna) + Isaac 물리 검증 런 → 견적서 발송 · ①–⑧ · EC2(k3s) / GPU 2-인스턴스 · v2.1 · 2026-09-02</p>
 
   <figure>
-  <svg viewBox="-40 0 1800 1000" role="img" aria-label="AMR 도입 견적 SaaS 아키텍처. EC2(k3s)와 GPU 서버 두 인스턴스 위에서 고객 시나리오 입력이 WMS, 고정 MAPF 탑재 FMS, 구성 스윕 엔진(SimPy DES·Optuna), Isaac 5분 숏런 검증을 거쳐 견적 리포트로 이어진다. 파이프라인 번호 1~8.">
+  <svg viewBox="-40 0 1800 1000" role="img" aria-label="AMR 도입 견적 서비스(요청 접수형) 아키텍처. EC2(k3s)와 GPU 서버 두 인스턴스 위에서 고객 요청이 운영 검토, WMS 시나리오 컴파일, 고정 MAPF 탑재 FMS, 구성 스윕 엔진(SimPy DES·Optuna), Isaac 물리 검증 런을 거쳐 견적서 발송으로 이어진다. 파이프라인 번호 1~8.">
     <defs>
       <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
         <path d="M2 1L8 5L2 9" fill="none" stroke="#45443e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -102,7 +102,7 @@
     <use href="#si-nvidia" x="1336" y="516" width="16" height="16" style="color:#ffffff"/>
 
     <!-- ============ 계층 눈썹 라벨 ============ -->
-    <text class="eyebrow" x="40" y="28">01 · 고객 입력 · 관제</text>
+    <text class="eyebrow" x="40" y="28">01 · 접수 · 운영 콘솔</text>
     <text class="eyebrow" x="40" y="170">02 · WMS 계층</text>
     <text class="eyebrow" x="580" y="170">03 · 메시지 백본</text>
     <text class="eyebrow" x="780" y="28">04 · FMS — 배차·경로·교통</text>
@@ -116,9 +116,9 @@
       <rect class="cbox" x="40" y="40" width="310" height="96"/>
       <rect x="40" y="40" width="26" height="26" fill="#20232A"/>
       <use href="#si-react" x="44.5" y="44.5" width="17" height="17" style="color:#61DAFB"/>
-      <text class="chead" x="76" y="58">React 시나리오 스튜디오</text>
+      <text class="chead" x="76" y="58">React 웹 콘솔</text>
       <use href="#si-docker" x="326" y="46" width="16" height="16" style="color:#2496ED"/>
-      <text class="bl" x="56" y="88">창고·물류 입력 · 관제 맵 · 리포트</text>
+      <text class="bl" x="56" y="88">고객 요청 폼 · 운영 검토 콘솔 · 관제 · 리포트</text>
 
       <rect class="cbox" x="370" y="40" width="150" height="96"/>
       <use href="#si-docker" x="496" y="46" width="16" height="16" style="color:#2496ED"/>
@@ -177,7 +177,7 @@
 
       <rect class="sbox" x="60" y="778" width="440" height="80"/>
       <text class="bt" x="280" y="812" text-anchor="middle">견적 리포트 생성기</text>
-      <text class="bl" x="280" y="834" text-anchor="middle">권장 대수 · 보장 처리량(P10) → 견적서(웹·PDF)</text>
+      <text class="bl" x="280" y="834" text-anchor="middle">LLM 초안 + 운영자 검수 → 견적서 발송(웹·PDF)</text>
 
       <path class="edge-in" d="M165 758 L165 778" marker-end="url(#ahi)"/>
       <path class="edge-in" d="M395 758 L395 778" marker-end="url(#ahi)"/>
@@ -277,8 +277,8 @@
       <text class="bl" x="1540" y="416" text-anchor="middle">처리량 P50·P10 · 사이클타임</text>
 
       <rect class="sbox" x="1420" y="468" width="240" height="110"/>
-      <text class="bt" x="1540" y="514" text-anchor="middle">물리 보정 — Isaac 숏런</text>
-      <text class="bl" x="1540" y="538" text-anchor="middle">상위 구성 5분 런 갭 → 캘리브레이션</text>
+      <text class="bt" x="1540" y="514" text-anchor="middle">물리 검증 — Isaac 런</text>
+      <text class="bl" x="1540" y="538" text-anchor="middle">상위 구성 검증 런 → 갭 캘리브레이션</text>
 
       <rect class="sbox" x="1420" y="602" width="240" height="70"/>
       <text class="bt" x="1540" y="628" text-anchor="middle">산출물</text>
@@ -296,7 +296,7 @@
 
     <!-- ============ 워크플로우 화살표 ============ -->
     <path class="edge" d="M195 136 L195 180" marker-end="url(#ah)"/>
-    <text class="el mono" x="208" y="162">REST POST /api/scenarios</text>
+    <text class="el mono" x="208" y="162">REST POST /api/requests</text>
     <rect class="badge" x="169" y="147" width="22" height="22"/><text class="badge-t" x="180" y="163" text-anchor="middle">1</text>
     <path class="edge" d="M445 136 L445 180" marker-end="url(#ah)"/>
     <text class="el" x="458" y="162">부하 주문 스트림</text>
@@ -331,7 +331,7 @@
     <path class="edge-r" d="M1340 285 L1398 285" marker-end="url(#ah)"/>
     <text class="el" x="1369" y="272" text-anchor="middle">코어 임베드</text>
     <path class="edge-r" d="M1340 790 L1384 790 L1384 560 L1398 560" marker-start="url(#ah)" marker-end="url(#ah)"/>
-    <text class="el" x="1378" y="778" text-anchor="end">숏런 지시 · 로그</text>
+    <text class="el" x="1378" y="778" text-anchor="end">검증 런 지시 · 로그</text>
 
     <!-- ============ 견적 플로우 (⑩) ============ -->
     <path class="edge" d="M280 580 L280 620" marker-end="url(#ah)"/>
@@ -349,7 +349,7 @@
   <figcaption>
     <span class="lg"><span class="sw"></span> 실시간 데이터 흐름 (REST · MQTT · DDS)</span>
     <span class="lg"><span class="sw swd"></span> 배치 흐름 (SQL · parquet)</span>
-    <span class="lg"><b>①–⑧</b> 견적 파이프라인 · 번호 없는 실선 = 시뮬 내부 주문 체인(⑤ 숏런·라이브 데모에서 실행)</span>
+    <span class="lg"><b>①–⑧</b> 견적 파이프라인 (비동기 접수형) · 번호 없는 실선 = 시뮬 내부 주문 체인(⑤ 검증 런·라이브 데모에서 실행)</span>
     <span class="lg"><b>굵은 테두리</b> = 고정 MAPF 코어</span>
     <span class="lg"><b>외곽 프레임</b> = 배포 인스턴스 (EC2 · GPU 서버) · <b>Docker 로고</b> = k3s 파드 (시뮬 섬은 네이티브)</span>
   </figcaption>
@@ -358,17 +358,17 @@
   <h2>견적 파이프라인 ①–⑧ — 구간별 인터페이스</h2>
   <table>
     <tr><th style="width:44px">단계</th><th style="width:150px">이름</th><th style="width:210px">구간</th><th style="width:280px">인터페이스</th><th>내용</th></tr>
-    <tr><td>①</td><td>창고·물류 입력</td><td>FE 스튜디오 → WMS</td><td><code>REST POST /api/scenarios</code></td><td>레이아웃 · 물동량 · 주문 프로파일 · 기종 후보 — 견적의 입력 전부</td></tr>
-    <tr><td>②</td><td>시나리오 컴파일</td><td>WMS 내부</td><td>in-process → PG 저장</td><td>맵·존·스테이션·수요 프로파일을 WMS 도메인 데이터로 생성</td></tr>
+    <tr><td>①</td><td>견적 요청 접수</td><td>고객 폼 → WMS</td><td><code>REST POST /api/requests</code></td><td>레이아웃 · 물동량 · 주문 프로파일 · 기종 후보 제출 — 비동기 접수, 즉시 응답 없음</td></tr>
+    <tr><td>②</td><td>운영 검토·컴파일</td><td>운영자 콘솔 + WMS</td><td>검토 승인 → in-process → PG</td><td><b>운영자가 요청을 검토·정제</b>한 뒤 맵·존·스테이션·수요 프로파일을 도메인 데이터로 컴파일</td></tr>
     <tr><td>③</td><td>스윕 잡 클레임</td><td>PG → 스윕 엔진</td><td><code>SQL FOR UPDATE SKIP LOCKED</code></td><td>워커가 시나리오·스윕 잡을 폴링 — 웹 응답과 무거운 계산의 분리</td></tr>
     <tr><td>④</td><td>구성 탐색·DES</td><td>스윕 엔진 내부</td><td>in-process (SimPy)</td><td>Optuna가 대수×기종 제안 → FMS 코어+고정 MAPF로 가상 시간 실행 × 시드 반복</td></tr>
-    <tr><td>⑤</td><td>Isaac 숏런 검증</td><td>엔진 → GPU 섬</td><td>전 체인 (MQTT · DDS)</td><td>상위 구성만 5분 물리 런 — 아래 "시뮬 내부 주문 체인"이 실제로 흐름. 갭을 DES에 캘리브레이션</td></tr>
+    <tr><td>⑤</td><td>Isaac 물리 검증 런</td><td>엔진 → GPU 섬</td><td>전 체인 (MQTT · DDS)</td><td>상위 구성만 물리 검증 런(배치, 시간 제약 없음) — 아래 "시뮬 내부 주문 체인"이 실제로 흐름. 갭을 DES에 캘리브레이션</td></tr>
     <tr><td>⑥</td><td>KPI 집계·보정</td><td>엔진 내부</td><td>parquet · SQL</td><td>구성별 처리량 P50·P10 분포 + 물리 보정 — "최악의 달에도 보장되는 숫자"</td></tr>
-    <tr><td>⑦</td><td>견적 리포트 생성</td><td>KPI → 견적 엔진</td><td>SQL · LLM 서술</td><td>권장 대수·기종, 보장 처리량(P10), TCO/ROI, 증설 로드맵</td></tr>
-    <tr><td>⑧</td><td>리포트 열람</td><td>견적 엔진 → FE</td><td><code>REST GET /api/reports</code></td><td>견적서(웹·PDF) + 대수–성능 곡선 — 고객이 받는 최종 산출물</td></tr>
+    <tr><td>⑦</td><td>견적 리포트 작성</td><td>KPI → 견적 엔진</td><td>SQL · LLM 서술 → <b>운영자 검수</b></td><td>권장 대수·기종, 보장 처리량(P10), TCO/ROI, 증설 로드맵 — LLM 초안을 사람이 최종 검수</td></tr>
+    <tr><td>⑧</td><td>견적서 발송</td><td>견적 엔진 → 고객</td><td>이메일 알림 · <code>REST GET /api/reports</code></td><td>완결 후 발송 — 견적서(웹·PDF) + 대수–성능 곡선. 고객은 링크로 열람</td></tr>
   </table>
 
-  <h2>시뮬 내부 주문 체인 — ⑤ 숏런·라이브 데모 공통</h2>
+  <h2>시뮬 내부 주문 체인 — ⑤ 검증 런·라이브 데모 공통</h2>
   <table>
     <tr><th style="width:280px">인터페이스</th><th style="width:230px">구간</th><th>역할</th></tr>
     <tr><td><code>MQTT biz/order</code></td><td>WMS → FMS</td><td>수요 생성기의 주문 → 운송오더(TO) 발행. 느슨한 결합</td></tr>
@@ -379,7 +379,7 @@
     <tr><td><code>MQTT fms/event</code></td><td>FMS → WMS</td><td>피킹 완료 → 재고 원자적 차감 → 주문 SHIPPED</td></tr>
   </table>
 
-  <p class="note"><b>설계 원칙</b> — MAPF는 연구 대상이 아니라 <b>고정 솔버</b>다: v1은 PP+시공간 예약으로 픽스하고, 슬롯 구조만 유지해 추후 교체 여지를 남긴다. 스윕이 탐색하는 것은 알고리즘이 아니라 <b>구성(AMR 대수 × 기종)</b>이다. SimPy DES가 구성별 분포를 만들고, Isaac 5분 숏런이 물리 갭을 보정하며, 그 숫자가 그대로 견적서가 된다 — 같은 FMS 코어가 DES·숏런·라이브 데모 세 곳에서 돌기 때문에 견적과 시연이 한 몸이다.</p>
+  <p class="note"><b>설계 원칙</b> — 셀프서브 SaaS가 아니라 <b>요청 접수형 비동기 서비스</b>다: 접수(①)와 발송(⑧) 사이는 전부 내부 배치이며, 검토(②)와 검수(⑦) 두 곳에 운영자가 개입한다. MAPF는 연구 대상이 아니라 <b>고정 솔버</b>(v1 = PP+시공간 예약, 슬롯 구조만 유지)이고, 스윕이 탐색하는 것은 알고리즘이 아니라 <b>구성(AMR 대수 × 기종)</b>이다. SimPy DES가 구성별 분포를 만들고, Isaac 물리 검증 런이 갭을 보정하며(비동기라 런 길이 제약 없음), 그 숫자가 그대로 견적서가 된다 — 같은 FMS 코어가 DES·검증 런·라이브 데모 세 곳에서 돌기 때문에 견적과 시연이 한 몸이다.</p>
 </div>
 </body>
 </html>
