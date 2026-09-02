@@ -54,7 +54,7 @@
 <body>
 <div class="wrap">
   <h1>AMR 도입 견적 서비스 — FMS-WMS 통합 시스템 아키텍처</h1>
-  <p class="sub">요청 접수형(비동기) · 웹 인프라 2층 분리 — 상시 견적 서비스 / 런 단위 시뮬 스택 · 고정 MAPF · SimPy DES + Optuna 스윕 + Isaac 물리 검증 런 · EC2(k3s) / GPU 2-인스턴스 · v2.6 · 2026-09-02</p>
+  <p class="sub">요청 접수형(비동기) · 웹 인프라 2층 분리 — 상시 견적 서비스 / 런 단위 시뮬 스택 · 고정 MAPF · SimPy DES + Optuna 스윕 + Isaac 물리 검증 런 · EC2(k3s) / GPU 2-인스턴스 · v2.7 · 2026-09-02</p>
 
   <figure>
   <svg viewBox="-40 0 1800 1040" role="img" aria-label="AMR 도입 견적 서비스(요청 접수형) 아키텍처. 상시 가동 견적 서비스(FE·견적 BE·PostgreSQL·견적 산출)와 런 단위로 기동되는 시뮬 스택(시뮬 WMS·EMQX·FMS 코어), GPU 서버의 ROS2·Isaac 실행 계층, k3s 배치 견적 계산 엔진이 파이프라인 번호 1~8로 연결된다.">
@@ -110,7 +110,7 @@
 
     <!-- ============ 계층 눈썹 라벨 ============ -->
     <text class="eyebrow" x="40" y="668">02 · 시뮬 스택 — 런 단위 기동</text>
-    <text class="eyebrow" x="580" y="170">03 · 메시지 백본 — 상시</text>
+    <text class="eyebrow" x="580" y="88">03 · 메시지 백본 — 상시</text>
     <text class="eyebrow" x="780" y="28">04 · FMS 코어 — 런 단위</text>
     <rect x="776" y="519" width="176" height="15" fill="#ffffff"/>
     <text class="eyebrow" x="780" y="530">05 · 실행 계층 (SIL)</text>
@@ -198,16 +198,21 @@
 
     <!-- ============ EMQX 백본 (런 단위) ============ -->
     <g>
-      <rect x="580" y="180" width="140" height="790" fill="#F7F6F1" stroke="#6f6e64" stroke-width="1.2"/>
-      <rect x="580" y="180" width="26" height="26" fill="#660066"/>
-      <use href="#si-mqtt" x="584.5" y="184.5" width="17" height="17" style="color:#ffffff"/>
-      <text class="chead" x="612" y="198">EMQX</text>
-      <use href="#si-docker" x="698" y="186" width="16" height="16" style="color:#2496ED"/>
-      <text class="ctag" x="650" y="236" text-anchor="middle">MQTT 브로커</text>
-      <text class="bl mono" x="650" y="470" text-anchor="middle" font-size="11">biz/*  fms/*</text>
-      <text class="bl mono" x="650" y="488" text-anchor="middle" font-size="11">uagv/v2/*</text>
-      <text class="bl mono" x="650" y="506" text-anchor="middle" font-size="11">sim/control</text>
-      <text class="ctag" x="650" y="948" text-anchor="middle">QoS1 · retained state</text>
+      <rect x="580" y="100" width="120" height="750" fill="#F7F6F1" stroke="#6f6e64" stroke-width="1.2"/>
+      <rect x="580" y="100" width="26" height="26" fill="#660066"/>
+      <use href="#si-mqtt" x="584.5" y="104.5" width="17" height="17" style="color:#ffffff"/>
+      <text class="chead" x="612" y="118">EMQX</text>
+      <use href="#si-docker" x="678" y="106" width="16" height="16" style="color:#2496ED"/>
+      <text class="bl mono" x="640" y="144" text-anchor="middle" font-size="10.5">biz/order</text>
+      <text class="bl mono" x="640" y="364" text-anchor="middle" font-size="10.5">uagv/…/order</text>
+      <text class="bl mono" x="640" y="412" text-anchor="middle" font-size="10.5">uagv/…/state</text>
+      <text class="bl mono" x="640" y="484" text-anchor="middle" font-size="10.5">fms/event</text>
+      <text class="bl mono" x="640" y="584" text-anchor="middle" font-size="10.5">uagv/…/order</text>
+      <text class="bl mono" x="640" y="626" text-anchor="middle" font-size="10.5">uagv/…/state</text>
+      <text class="bl mono" x="640" y="679" text-anchor="middle" font-size="10.5">sim/control</text>
+      <text class="bl mono" x="640" y="764" text-anchor="middle" font-size="10.5">biz/order</text>
+      <text class="bl mono" x="640" y="816" text-anchor="middle" font-size="10.5">fms/event</text>
+      <text class="ctag" x="640" y="836" text-anchor="middle">MQTT · QoS1 · retained</text>
     </g>
 
     <!-- ============ FMS 코어 (런 단위) ============ -->
@@ -333,25 +338,16 @@
 
     <!-- ============ 시뮬 내부 주문 체인 ============ -->
     <path class="edge" d="M520 760 L580 760" marker-end="url(#ah)"/>
-    <text class="el mono" x="550" y="746" text-anchor="middle">pub biz/order</text>
     <path class="edge" d="M580 812 L520 812" marker-end="url(#ah)"/>
-    <text class="el mono" x="550" y="834" text-anchor="middle">sub fms/event</text>
-    <path class="edge" d="M720 140 L780 140" marker-end="url(#ah)"/>
-    <text class="el mono" x="750" y="126" text-anchor="middle">sub biz/order</text>
-    <path class="edge" d="M780 360 L720 360" marker-end="url(#ah)"/>
-    <text class="el mono" x="750" y="346" text-anchor="middle">pub uagv/…/order</text>
-    <path class="edge" d="M720 408 L780 408" marker-end="url(#ah)"/>
-    <text class="el mono" x="750" y="430" text-anchor="middle">sub uagv/…/state</text>
-    <path class="edge" d="M780 480 L720 480" marker-end="url(#ah)"/>
-    <text class="el mono" x="750" y="466" text-anchor="middle">pub fms/event</text>
-    <path class="edge" d="M720 580 L780 580" marker-end="url(#ah)"/>
-    <text class="el mono" x="775" y="566" text-anchor="end">sub uagv/…/order</text>
-    <path class="edge" d="M780 622 L720 622" marker-end="url(#ah)"/>
-    <text class="el mono" x="775" y="644" text-anchor="end">pub state 2Hz</text>
+    <path class="edge" d="M700 140 L780 140" marker-end="url(#ah)"/>
+    <path class="edge" d="M780 360 L700 360" marker-end="url(#ah)"/>
+    <path class="edge" d="M700 408 L780 408" marker-end="url(#ah)"/>
+    <path class="edge" d="M780 480 L700 480" marker-end="url(#ah)"/>
+    <path class="edge" d="M700 580 L780 580" marker-end="url(#ah)"/>
+    <path class="edge" d="M780 622 L700 622" marker-end="url(#ah)"/>
     <rect class="chip" x="784" y="656" width="130" height="38"/>
     <text class="chipt" x="849" y="680" text-anchor="middle" font-weight="700">sim-runner 데몬</text>
-    <path class="edge-r" d="M720 675 L784 675" marker-start="url(#ah)" marker-end="url(#ah)"/>
-    <text class="el mono" x="752" y="662" text-anchor="middle">sim/control</text>
+    <path class="edge-r" d="M700 675 L784 675" marker-start="url(#ah)" marker-end="url(#ah)"/>
     <path class="edge" d="M950 650 L950 700" marker-end="url(#ah)"/>
     <text class="el mono" x="963" y="672">DDS /cmd_vel 20Hz</text>
     <rect class="badge" x="924" y="661" width="22" height="22"/><text class="badge-t" x="935" y="677" text-anchor="middle">5</text>
@@ -359,11 +355,9 @@
     <text class="el mono" x="1188" y="694" text-anchor="end">DDS /odom · /scan · /tf</text>
 
     <!-- ============ 배치 흐름 (점선) ============ -->
-    <path class="edge-r" d="M520 330 L540 330 L540 964 L1600 964 L1600 884" marker-end="url(#ah)"/>
-    <text class="el" x="1060" y="956" text-anchor="middle">시나리오 로드 · 스윕 잡 클레임 (SQL, 워커 폴링)</text>
-    <rect class="badge" x="529" y="700" width="22" height="22"/><text class="badge-t" x="540" y="716" text-anchor="middle">3</text>
-    <path class="edge-r" d="M1540 880 L1540 934 L556 934 L556 520 L520 520" marker-end="url(#ah)"/>
-    <text class="el" x="1050" y="926" text-anchor="middle">대수별 KPI · 권장 구성 (적재)</text>
+    <path class="edge-r" d="M520 334 L548 334 L548 952 L1600 952 L1600 884" marker-start="url(#ah)" marker-end="url(#ah)"/>
+    <text class="el" x="1074" y="944" text-anchor="middle">잡 클레임 (SQL, 워커 폴링) ↔ KPI · 아티팩트 적재 (PG · S3)</text>
+    <rect class="badge" x="537" y="700" width="22" height="22"/><text class="badge-t" x="548" y="716" text-anchor="middle">3</text>
     <path class="edge-r" d="M1340 285 L1398 285" marker-end="url(#ah)"/>
     <text class="el" x="1369" y="272" text-anchor="middle">코어 임베드</text>
     <path class="edge-r" d="M1340 790 L1384 790 L1384 735 L1418 735" marker-start="url(#ah)" marker-end="url(#ah)"/>
@@ -372,6 +366,7 @@
   <figcaption>
     <span class="lg"><span class="sw"></span> 실시간 데이터 흐름 (REST · MQTT · DDS)</span>
     <span class="lg"><span class="sw swd"></span> 배치 흐름 (SQL · parquet)</span>
+    <span class="lg"><b>백본 화살표</b> = 들어감 pub · 나옴 sub (토픽은 레인에 표기)</span>
     <span class="lg"><b>①–⑧</b> 견적 파이프라인 (비동기 접수형)</span>
     <span class="lg"><b>상시 / 런 단위</b> = 견적 서비스는 상시 가동, 시뮬 스택은 시나리오별 기동·리셋</span>
     <span class="lg"><b>굵은 테두리</b> = 고정 MAPF 코어</span>
