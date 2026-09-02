@@ -6,13 +6,8 @@
 <title>FMS-WMS 통합 아키텍처</title>
 <style>
   :root{
-    --bg:#faf9f5; --card:#ffffff; --border:#e8e6dc; --text:#1a1a17; --text2:#5f5e5a; --muted:#888780;
-    --purple-50:#EEEDFE; --purple-600:#534AB7; --purple-800:#3C3489;
-    --blue-50:#E6F1FB;  --blue-600:#185FA5;  --blue-800:#0C447C;
-    --teal-50:#E1F5EE;  --teal-600:#0F6E56;  --teal-800:#085041;
-    --gray-50:#F1EFE8;  --gray-600:#5F5E5A;  --gray-800:#444441;
-    --steel-50:#EBEFF4; --steel-600:#3E5C76; --steel-800:#2C4257;
-    --coral-50:#FAECE7; --coral-600:#993C1D; --coral-800:#712B13;
+    --bg:#ffffff; --card:#ffffff; --border:#e3e1d8; --text:#1a1a17; --text2:#5f5e5a; --muted:#888780;
+    --line:#6f6e64; --sub:#bfbdb0; --gray-50:#F4F3EE; --gray-800:#444441;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;justify-content:center;padding:36px 20px 60px;}
@@ -21,11 +16,12 @@
   .sub{font-size:13.5px;color:var(--muted);margin:6px 0 22px;}
   figure{margin:0;}
   svg{width:100%;height:auto;display:block;}
+  svg text{fill:#1a1a17;}
   figcaption{font-size:12.5px;color:var(--muted);margin-top:10px;display:flex;gap:18px;flex-wrap:wrap;}
   figcaption b{color:var(--text2);font-weight:600;}
   .lg{display:inline-flex;align-items:center;gap:6px;}
-  .lg .sw{display:inline-block;width:22px;height:0;border-top:2px solid #8a8878;}
-  .lg .swd{border-top:2px dashed var(--coral-600);}
+  .lg .sw{display:inline-block;width:22px;height:0;border-top:2px solid #45443e;}
+  .lg .swd{border-top:2px dashed #45443e;}
   h2{font-size:16px;font-weight:700;margin:34px 0 10px;}
   table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border);font-size:13px;}
   th{background:var(--gray-50);color:var(--text2);font-weight:600;text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);}
@@ -33,176 +29,55 @@
   tr:last-child td{border-bottom:none;}
   td:first-child{font-weight:700;color:var(--text);white-space:nowrap;}
   code{font-family:"SF Mono",Consolas,monospace;font-size:12px;background:var(--gray-50);border:1px solid var(--border);padding:1px 6px;color:var(--gray-800);}
-  .note{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--coral-600);padding:12px 16px;font-size:13.5px;color:var(--text2);line-height:1.6;margin-top:14px;}
+  .note{background:var(--card);border:1px solid var(--border);border-left:3px solid #1a1a17;padding:12px 16px;font-size:13.5px;color:var(--text2);line-height:1.6;margin-top:14px;}
   .note b{color:var(--text);}
   /* SVG 공통 */
   .eyebrow{font-size:11.5px;letter-spacing:.14em;font-weight:700;fill:#9a978a;}
-  .chead{font-size:16px;font-weight:700;}
+  .chead{font-size:15.5px;font-weight:700;}
   .ctag{font-size:11.5px;fill:#9a978a;}
   .bt{font-size:13px;font-weight:700;}
-  .bl{font-size:11.5px;fill:#5f5e5a;}
+  .bl{font-size:11.5px;fill:#66655c;}
   .mono{font-family:"SF Mono",Consolas,monospace;}
-  .el{font-size:12px;fill:#55544e;paint-order:stroke;stroke:#faf9f5;stroke-width:5px;stroke-linejoin:round;}
-  .elc{fill:#993C1D;}
-  .edge{stroke:#8a8878;stroke-width:1.8;fill:none;}
-  .edge-in{stroke:#b5b3a4;stroke-width:1.6;fill:none;}
-  .edge-r{stroke:#993C1D;stroke-width:1.8;stroke-dasharray:6 5;fill:none;}
+  .el{font-size:12px;fill:#55544e;paint-order:stroke;stroke:#ffffff;stroke-width:5px;stroke-linejoin:round;}
+  .edge{stroke:#45443e;stroke-width:1.5;fill:none;}
+  .edge-in{stroke:#b3b1a4;stroke-width:1.4;fill:none;}
+  .edge-r{stroke:#45443e;stroke-width:1.5;stroke-dasharray:6 5;fill:none;}
   .badge{fill:#1a1a17;}
   .badge-t{font-size:13px;font-weight:700;fill:#ffffff;}
-  .chip{fill:#ffffff;stroke:#d8d5c8;}
-  .chipt{font-size:11.5px;fill:#5f5e5a;}
-  .ic{stroke:currentColor;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round;}
-  .icf{fill:currentColor;stroke:none;}
+  .chip{fill:#ffffff;stroke:#bfbdb0;}
+  .chipt{font-size:11.5px;fill:#55544e;}
+  .cbox{fill:#ffffff;stroke:#6f6e64;stroke-width:1.2;}
+  .sbox{fill:#ffffff;stroke:#bfbdb0;stroke-width:1;}
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>주문 기반 FMS-WMS 통합 시스템 아키텍처</h1>
-  <p class="sub">주문 워크플로우 ①–⑨ + 견적 산출 ⑩ · MAPF 최적화 연구 트랙(그리드×물리 2계층 검증) · 3PL AMR 도입 의사결정 지원 · v1.2 · 2026-09-02</p>
+  <p class="sub">주문 워크플로우 ①–⑨ + 견적 산출 ⑩ · MAPF 최적화 연구 트랙(그리드×물리 2계층 검증) · 3PL AMR 도입 의사결정 지원 · v1.3 · 2026-09-02</p>
 
   <figure>
   <svg viewBox="0 0 1720 1000" role="img" aria-label="주문에서 출고까지의 FMS-WMS 통합 아키텍처. 주문 계층, WMS, EMQX 메시지 백본, FMS 코어, ROS2·Isaac 실행 계층, MAPF 연구 트랙, 3PL 견적 산출 계층이 워크플로우 번호 1~10으로 연결된다.">
     <defs>
       <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
-        <path d="M2 1L8 5L2 9" fill="none" stroke="#8a8878" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M2 1L8 5L2 9" fill="none" stroke="#45443e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
       </marker>
       <marker id="ahi" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-        <path d="M2 1L8 5L2 9" fill="none" stroke="#b5b3a4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M2 1L8 5L2 9" fill="none" stroke="#b3b1a4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
       </marker>
-      <marker id="ahc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
-        <path d="M2 1L8 5L2 9" fill="none" stroke="#993C1D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-      </marker>
-
-      <!-- ==== 아이콘 라이브러리 (20×20) ==== -->
-      <symbol id="i-react" viewBox="0 0 20 20">
-        <circle class="icf" cx="10" cy="10" r="1.9"/>
-        <ellipse class="ic" cx="10" cy="10" rx="8.2" ry="3.3"/>
-        <ellipse class="ic" cx="10" cy="10" rx="8.2" ry="3.3" transform="rotate(60 10 10)"/>
-        <ellipse class="ic" cx="10" cy="10" rx="8.2" ry="3.3" transform="rotate(120 10 10)"/>
-      </symbol>
-      <symbol id="i-bolt" viewBox="0 0 20 20">
-        <path class="icf" d="M11.2 1.8 L4.6 11 H9.2 L7.8 18.2 L15.4 8.4 H10.4 Z"/>
-      </symbol>
-      <symbol id="i-spring" viewBox="0 0 20 20">
-        <path class="ic" d="M4 16.5 C4 8 10 3 17 3.5 C16.5 11.5 11 16.5 4 16.5 Z"/>
-        <path class="ic" d="M4 16.5 C8 12.5 11.5 9 15 5.5"/>
-      </symbol>
-      <symbol id="i-state" viewBox="0 0 20 20">
-        <circle class="ic" cx="5" cy="10" r="3.1"/>
-        <circle class="ic" cx="15" cy="10" r="3.1"/>
-        <path class="ic" d="M8.3 10 H11.6 M10.2 8.4 L11.8 10 L10.2 11.6"/>
-      </symbol>
-      <symbol id="i-shelf" viewBox="0 0 20 20">
-        <rect class="ic" x="3" y="3" width="14" height="14"/>
-        <path class="ic" d="M3 8.4 H17 M3 12.8 H17 M7.5 3 V17 M12.5 3 V17"/>
-      </symbol>
-      <symbol id="i-split" viewBox="0 0 20 20">
-        <rect class="ic" x="7" y="2.5" width="6" height="5"/>
-        <path class="ic" d="M10 7.5 V10.5 M10 10.5 L5 13.5 M10 10.5 L15 13.5"/>
-        <rect class="ic" x="3" y="14" width="4" height="4"/>
-        <rect class="ic" x="13" y="14" width="4" height="4"/>
-      </symbol>
-      <symbol id="i-transfer" viewBox="0 0 20 20">
-        <rect class="ic" x="4" y="3" width="12" height="7"/>
-        <path class="ic" d="M10 12 V17.2 M7.6 14.8 L10 17.2 L12.4 14.8"/>
-      </symbol>
-      <symbol id="i-db" viewBox="0 0 20 20">
-        <ellipse class="ic" cx="10" cy="4.6" rx="7" ry="2.5"/>
-        <path class="ic" d="M3 4.6 V15.4 C3 16.8 6.1 17.9 10 17.9 S17 16.8 17 15.4 V4.6"/>
-        <path class="ic" d="M3 10 C3 11.4 6.1 12.5 10 12.5 S17 11.4 17 10"/>
-      </symbol>
-      <symbol id="i-hub" viewBox="0 0 20 20">
-        <rect class="ic" x="7.4" y="7.4" width="5.2" height="5.2"/>
-        <path class="ic" d="M7.4 7.4 L4.6 4.6 M12.6 7.4 L15.4 4.6 M7.4 12.6 L4.6 15.4 M12.6 12.6 L15.4 15.4"/>
-        <rect class="icf" x="2.2" y="2.2" width="3" height="3"/>
-        <rect class="icf" x="14.8" y="2.2" width="3" height="3"/>
-        <rect class="icf" x="2.2" y="14.8" width="3" height="3"/>
-        <rect class="icf" x="14.8" y="14.8" width="3" height="3"/>
-      </symbol>
-      <symbol id="i-gear" viewBox="0 0 20 20">
-        <circle class="ic" cx="10" cy="10" r="4"/>
-        <path class="ic" d="M10 2.6 V5.1 M10 14.9 V17.4 M2.6 10 H5.1 M14.9 10 H17.4 M4.8 4.8 L6.6 6.6 M13.4 13.4 L15.2 15.2 M15.2 4.8 L13.4 6.6 M6.6 13.4 L4.8 15.2"/>
-      </symbol>
-      <symbol id="i-map" viewBox="0 0 20 20">
-        <rect class="ic" x="3" y="4" width="14" height="12"/>
-        <path class="ic" d="M7.7 4 V16 M12.3 4 V16"/>
-        <circle class="icf" cx="10" cy="10" r="1.5"/>
-      </symbol>
-      <symbol id="i-dispatch" viewBox="0 0 20 20">
-        <path class="ic" d="M10 17 V10 M10 10 L4.5 4.5 M10 10 V3 M10 10 L15.5 4.5"/>
-        <path class="icf" d="M4 7 V4 H7 Z M8.5 5.5 H11.5 L10 2.7 Z M13 4 H16 V7 Z"/>
-      </symbol>
-      <symbol id="i-route" viewBox="0 0 20 20">
-        <rect class="ic" x="2.5" y="13.5" width="4" height="4"/>
-        <rect class="ic" x="13.5" y="2.5" width="4" height="4"/>
-        <path class="ic" d="M4.5 13.5 V8.8 H10.3 V4.5 H13.5"/>
-      </symbol>
-      <symbol id="i-grid" viewBox="0 0 20 20">
-        <rect class="ic" x="3" y="3" width="14" height="14"/>
-        <path class="ic" d="M3 7.7 H17 M3 12.3 H17 M7.7 3 V17 M12.3 3 V17"/>
-        <rect class="icf" x="12.3" y="7.7" width="4.7" height="4.6"/>
-      </symbol>
-      <symbol id="i-plug" viewBox="0 0 20 20">
-        <path class="ic" d="M7 2.5 V6.5 M13 2.5 V6.5"/>
-        <path class="ic" d="M5.5 6.5 H14.5 V10 A4.5 4.5 0 0 1 5.5 10 Z"/>
-        <path class="ic" d="M10 14.5 V17.5"/>
-      </symbol>
-      <symbol id="i-signal" viewBox="0 0 20 20">
-        <rect class="ic" x="6.5" y="2.5" width="7" height="15"/>
-        <circle class="icf" cx="10" cy="6" r="1.7"/>
-        <circle class="ic" cx="10" cy="10" r="1.7"/>
-        <circle class="ic" cx="10" cy="14" r="1.7"/>
-      </symbol>
-      <symbol id="i-ros" viewBox="0 0 20 20">
-        <circle class="icf" cx="4" cy="4" r="1.9"/><circle class="icf" cx="10" cy="4" r="1.9"/><circle class="icf" cx="16" cy="4" r="1.9"/>
-        <circle class="icf" cx="4" cy="10" r="1.9"/><circle class="icf" cx="10" cy="10" r="1.9"/><circle class="icf" cx="16" cy="10" r="1.9"/>
-        <circle class="icf" cx="4" cy="16" r="1.9"/><circle class="icf" cx="10" cy="16" r="1.9"/><circle class="icf" cx="16" cy="16" r="1.9"/>
-      </symbol>
-      <symbol id="i-steer" viewBox="0 0 20 20">
-        <path class="ic" d="M3 17 H9.5 V9.5 H16"/>
-        <path class="icf" d="M14.5 7 L18 9.5 L14.5 12 Z"/>
-        <circle class="icf" cx="3" cy="17" r="1.8"/>
-      </symbol>
-      <symbol id="i-target" viewBox="0 0 20 20">
-        <circle class="ic" cx="10" cy="10" r="5.5"/>
-        <path class="ic" d="M10 1.8 V5 M10 15 V18.2 M1.8 10 H5 M15 10 H18.2"/>
-        <circle class="icf" cx="10" cy="10" r="1.6"/>
-      </symbol>
-      <symbol id="i-cube" viewBox="0 0 20 20">
-        <path class="ic" d="M4 7 L8.5 3 H17 V11.5 L12.5 16 H4 Z"/>
-        <path class="ic" d="M4 7 H12.5 V16 M12.5 7 L17 3"/>
-      </symbol>
-      <symbol id="i-flask" viewBox="0 0 20 20">
-        <path class="ic" d="M7.8 2.8 H12.2 M9 2.8 V8 L4.4 15.8 A1.4 1.4 0 0 0 5.6 18 H14.4 A1.4 1.4 0 0 0 15.6 15.8 L11 8 V2.8"/>
-        <path class="ic" d="M6.3 13 H13.7"/>
-      </symbol>
-      <symbol id="i-chart" viewBox="0 0 20 20">
-        <path class="ic" d="M3.5 2.5 V16.5 H17.5"/>
-        <rect class="icf" x="6" y="10" width="2.6" height="6.5"/>
-        <rect class="icf" x="10" y="6.5" width="2.6" height="10"/>
-        <rect class="icf" x="14" y="11.5" width="2.6" height="5"/>
-      </symbol>
-      <symbol id="i-compare" viewBox="0 0 20 20">
-        <rect class="ic" x="3" y="6.5" width="9.5" height="9.5"/>
-        <rect class="ic" x="7.5" y="3" width="9.5" height="9.5" stroke-dasharray="2.6 2.2"/>
-      </symbol>
-      <symbol id="i-doc" viewBox="0 0 20 20">
-        <path class="ic" d="M5 2.5 H12 L15.5 6 V17.5 H5 Z"/>
-        <path class="ic" d="M12 2.5 V6 H15.5 M7.5 10 H13 M7.5 13 H13"/>
-      </symbol>
-      <symbol id="i-curve" viewBox="0 0 20 20">
-        <path class="ic" d="M3.5 2.5 V16.5 H17.5"/>
-        <path class="ic" d="M5 14 L8.5 10.5 L11.5 12 L16.5 5.5"/>
-        <circle class="icf" cx="16.5" cy="5.5" r="1.6"/>
-      </symbol>
-      <symbol id="i-won" viewBox="0 0 20 20">
-        <circle class="ic" cx="10" cy="10" r="7.5"/>
-        <text x="10" y="13.4" text-anchor="middle" font-size="9.5" font-weight="700" fill="currentColor" stroke="none" font-family="sans-serif">₩</text>
-      </symbol>
-      <symbol id="i-house" viewBox="0 0 20 20">
-        <path class="ic" d="M3 17 V8 L10 3 L17 8 V17"/>
-        <rect class="ic" x="7.3" y="11.5" width="5.4" height="5.5"/>
-      </symbol>
+<symbol id="si-react" viewBox="0 0 24 24"><path fill="currentColor" d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z"/>
+</symbol>
+<symbol id="si-springboot" viewBox="0 0 24 24"><path fill="currentColor" d="m23.693 10.7058-4.73-8.1844c-.4094-.7106-1.4166-1.2942-2.2402-1.2942H7.2725c-.819 0-1.8308.5836-2.2402 1.2942L.307 10.7058c-.4095.7106-.4095 1.873 0 2.5837l4.7252 8.189c.4094.7107 1.4166 1.2943 2.2402 1.2943h9.455c.819 0 1.826-.5836 2.2402-1.2942l4.7252-8.189c.4095-.7107.4095-1.8732 0-2.5838zM10.9763 5.7547c0-.5365.4377-.9742.9742-.9742s.9742.4377.9742.9742v5.8217c0 .5366-.4377.9742-.9742.9742s-.9742-.4376-.9742-.9742zm.9742 12.4294c-3.6427 0-6.6077-2.965-6.6077-6.6077.0047-2.0896.993-4.0521 2.6685-5.304a.8657.8657 0 0 1 1.2142.1788.8657.8657 0 0 1-.1788 1.2143c-2.1602 1.6048-2.612 4.6592-1.0072 6.8194 1.6049 2.1603 4.6593 2.612 6.8195 1.0072 1.2378-.9177 1.9673-2.372 1.9673-3.9157a4.8972 4.8972 0 0 0-1.9861-3.925c-.386-.2824-.466-.8284-.1836-1.2143.2824-.386.8283-.466 1.2143-.1835 1.6895 1.2471 2.6826 3.2238 2.6873 5.3228 0 3.6474-2.965 6.6077-6.6077 6.6077z"/>
+</symbol>
+<symbol id="si-postgresql" viewBox="0 0 24 24"><path fill="currentColor" d="M23.5594 14.7228a.5269.5269 0 0 0-.0563-.1191c-.139-.2632-.4768-.3418-1.0074-.2321-1.6533.3411-2.2935.1312-2.5256-.0191 1.342-2.0482 2.445-4.522 3.0411-6.8297.2714-1.0507.7982-3.5237.1222-4.7316a1.5641 1.5641 0 0 0-.1509-.235C21.6931.9086 19.8007.0248 17.5099.0005c-1.4947-.0158-2.7705.3461-3.1161.4794a9.449 9.449 0 0 0-.5159-.0816 8.044 8.044 0 0 0-1.3114-.1278c-1.1822-.0184-2.2038.2642-3.0498.8406-.8573-.3211-4.7888-1.645-7.2219.0788C.9359 2.1526.3086 3.8733.4302 6.3043c.0409.818.5069 3.334 1.2423 5.7436.4598 1.5065.9387 2.7019 1.4334 3.582.553.9942 1.1259 1.5933 1.7143 1.7895.4474.1491 1.1327.1441 1.8581-.7279.8012-.9635 1.5903-1.8258 1.9446-2.2069.4351.2355.9064.3625 1.39.3772a.0569.0569 0 0 0 .0004.0041 11.0312 11.0312 0 0 0-.2472.3054c-.3389.4302-.4094.5197-1.5002.7443-.3102.064-1.1344.2339-1.1464.8115-.0025.1224.0329.2309.0919.3268.2269.4231.9216.6097 1.015.6331 1.3345.3335 2.5044.092 3.3714-.6787-.017 2.231.0775 4.4174.3454 5.0874.2212.5529.7618 1.9045 2.4692 1.9043.2505 0 .5263-.0291.8296-.0941 1.7819-.3821 2.5557-1.1696 2.855-2.9059.1503-.8707.4016-2.8753.5388-4.1012.0169-.0703.0357-.1207.057-.1362.0007-.0005.0697-.0471.4272.0307a.3673.3673 0 0 0 .0443.0068l.2539.0223.0149.001c.8468.0384 1.9114-.1426 2.5312-.4308.6438-.2988 1.8057-1.0323 1.5951-1.6698zM2.371 11.8765c-.7435-2.4358-1.1779-4.8851-1.2123-5.5719-.1086-2.1714.4171-3.6829 1.5623-4.4927 1.8367-1.2986 4.8398-.5408 6.108-.13-.0032.0032-.0066.0061-.0098.0094-2.0238 2.044-1.9758 5.536-1.9708 5.7495-.0002.0823.0066.1989.0162.3593.0348.5873.0996 1.6804-.0735 2.9184-.1609 1.1504.1937 2.2764.9728 3.0892.0806.0841.1648.1631.2518.2374-.3468.3714-1.1004 1.1926-1.9025 2.1576-.5677.6825-.9597.5517-1.0886.5087-.3919-.1307-.813-.5871-1.2381-1.3223-.4796-.839-.9635-2.0317-1.4155-3.5126zm6.0072 5.0871c-.1711-.0428-.3271-.1132-.4322-.1772.0889-.0394.2374-.0902.4833-.1409 1.2833-.2641 1.4815-.4506 1.9143-1.0002.0992-.126.2116-.2687.3673-.4426a.3549.3549 0 0 0 .0737-.1298c.1708-.1513.2724-.1099.4369-.0417.156.0646.3078.26.3695.4752.0291.1016.0619.2945-.0452.4444-.9043 1.2658-2.2216 1.2494-3.1676 1.0128zm2.094-3.988-.0525.141c-.133.3566-.2567.6881-.3334 1.003-.6674-.0021-1.3168-.2872-1.8105-.8024-.6279-.6551-.9131-1.5664-.7825-2.5004.1828-1.3079.1153-2.4468.079-3.0586-.005-.0857-.0095-.1607-.0122-.2199.2957-.2621 1.6659-.9962 2.6429-.7724.4459.1022.7176.4057.8305.928.5846 2.7038.0774 3.8307-.3302 4.7363-.084.1866-.1633.3629-.2311.5454zm7.3637 4.5725c-.0169.1768-.0358.376-.0618.5959l-.146.4383a.3547.3547 0 0 0-.0182.1077c-.0059.4747-.054.6489-.115.8693-.0634.2292-.1353.4891-.1794 1.0575-.11 1.4143-.8782 2.2267-2.4172 2.5565-1.5155.3251-1.7843-.4968-2.0212-1.2217a6.5824 6.5824 0 0 0-.0769-.2266c-.2154-.5858-.1911-1.4119-.1574-2.5551.0165-.5612-.0249-1.9013-.3302-2.6462.0044-.2932.0106-.5909.019-.8918a.3529.3529 0 0 0-.0153-.1126 1.4927 1.4927 0 0 0-.0439-.208c-.1226-.4283-.4213-.7866-.7797-.9351-.1424-.059-.4038-.1672-.7178-.0869.067-.276.1831-.5875.309-.9249l.0529-.142c.0595-.16.134-.3257.213-.5012.4265-.9476 1.0106-2.2453.3766-5.1772-.2374-1.0981-1.0304-1.6343-2.2324-1.5098-.7207.0746-1.3799.3654-1.7088.5321a5.6716 5.6716 0 0 0-.1958.1041c.0918-1.1064.4386-3.1741 1.7357-4.4823a4.0306 4.0306 0 0 1 .3033-.276.3532.3532 0 0 0 .1447-.0644c.7524-.5706 1.6945-.8506 2.802-.8325.4091.0067.8017.0339 1.1742.081 1.939.3544 3.2439 1.4468 4.0359 2.3827.8143.9623 1.2552 1.9315 1.4312 2.4543-1.3232-.1346-2.2234.1268-2.6797.779-.9926 1.4189.543 4.1729 1.2811 5.4964.1353.2426.2522.4522.2889.5413.2403.5825.5515.9713.7787 1.2552.0696.087.1372.1714.1885.245-.4008.1155-1.1208.3825-1.0552 1.717-.0123.1563-.0423.4469-.0834.8148-.0461.2077-.0702.4603-.0994.7662zm.8905-1.6211c-.0405-.8316.2691-.9185.5967-1.0105a2.8566 2.8566 0 0 0 .135-.0406 1.202 1.202 0 0 0 .1342.103c.5703.3765 1.5823.4213 3.0068.1344-.2016.1769-.5189.3994-.9533.6011-.4098.1903-1.0957.333-1.7473.3636-.7197.0336-1.0859-.0807-1.1721-.151zm.5695-9.2712c-.0059.3508-.0542.6692-.1054 1.0017-.055.3576-.112.7274-.1264 1.1762-.0142.4368.0404.8909.0932 1.3301.1066.887.216 1.8003-.2075 2.7014a3.5272 3.5272 0 0 1-.1876-.3856c-.0527-.1276-.1669-.3326-.3251-.6162-.6156-1.1041-2.0574-3.6896-1.3193-4.7446.3795-.5427 1.3408-.5661 2.1781-.463zm.2284 7.0137a12.3762 12.3762 0 0 0-.0853-.1074l-.0355-.0444c.7262-1.1995.5842-2.3862.4578-3.4385-.0519-.4318-.1009-.8396-.0885-1.2226.0129-.4061.0666-.7543.1185-1.0911.0639-.415.1288-.8443.1109-1.3505.0134-.0531.0188-.1158.0118-.1902-.0457-.4855-.5999-1.938-1.7294-3.253-.6076-.7073-1.4896-1.4972-2.6889-2.0395.5251-.1066 1.2328-.2035 2.0244-.1859 2.0515.0456 3.6746.8135 4.8242 2.2824a.908.908 0 0 1 .0667.1002c.7231 1.3556-.2762 6.2751-2.9867 10.5405zm-8.8166-6.1162c-.025.1794-.3089.4225-.6211.4225a.5821.5821 0 0 1-.0809-.0056c-.1873-.026-.3765-.144-.5059-.3156-.0458-.0605-.1203-.178-.1055-.2844.0055-.0401.0261-.0985.0925-.1488.1182-.0894.3518-.1226.6096-.0867.3163.0441.6426.1938.6113.4186zm7.9305-.4114c.0111.0792-.049.201-.1531.3102-.0683.0717-.212.1961-.4079.2232a.5456.5456 0 0 1-.075.0052c-.2935 0-.5414-.2344-.5607-.3717-.024-.1765.2641-.3106.5611-.352.297-.0414.6111.0088.6356.1851z"/>
+</symbol>
+<symbol id="si-python" viewBox="0 0 24 24"><path fill="currentColor" d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z"/>
+</symbol>
+<symbol id="si-ros" viewBox="0 0 24 24"><path fill="currentColor" d="M2.807 0C1.353 0 .173 1.22.173 2.722c0 1.504 1.18 2.723 2.634 2.723 1.455 0 2.635-1.22 2.635-2.723S4.262 0 2.807 0zM12 0c-1.455 0-2.634 1.22-2.634 2.722 0 1.504 1.18 2.723 2.634 2.723 1.455 0 2.634-1.22 2.634-2.723S13.454 0 12 0zm9.193 0c-1.455 0-2.635 1.22-2.635 2.722 0 1.504 1.18 2.723 2.635 2.723 1.455 0 2.634-1.22 2.634-2.723S22.647 0 21.193 0zM2.807 9.277C1.353 9.277.173 10.497.173 12s1.18 2.722 2.634 2.722c1.455 0 2.635-1.219 2.635-2.722 0-1.504-1.18-2.723-2.635-2.723zm9.193 0c-1.455 0-2.634 1.22-2.634 2.723s1.18 2.722 2.634 2.722c1.455 0 2.634-1.219 2.634-2.722 0-1.504-1.18-2.723-2.634-2.723zm9.193 0c-1.455 0-2.635 1.22-2.635 2.723s1.18 2.722 2.635 2.722c1.455 0 2.634-1.219 2.634-2.722 0-1.504-1.18-2.723-2.634-2.723zM2.807 18.555c-1.454 0-2.634 1.22-2.634 2.722C.173 22.781 1.353 24 2.807 24c1.455 0 2.635-1.22 2.635-2.723s-1.18-2.722-2.635-2.722zm9.193 0c-1.455 0-2.634 1.22-2.634 2.722C9.366 22.781 10.546 24 12 24c1.455 0 2.634-1.22 2.634-2.723s-1.18-2.722-2.634-2.722zm9.193 0c-1.455 0-2.635 1.22-2.635 2.722 0 1.504 1.18 2.723 2.635 2.723 1.455 0 2.634-1.22 2.634-2.723s-1.18-2.722-2.634-2.722z"/>
+</symbol>
+<symbol id="si-nvidia" viewBox="0 0 24 24"><path fill="currentColor" d="M8.948 8.798v-1.43a6.7 6.7 0 0 1 .424-.018c3.922-.124 6.493 3.374 6.493 3.374s-2.774 3.851-5.75 3.851c-.398 0-.787-.062-1.158-.185v-4.346c1.528.185 1.837.857 2.747 2.385l2.04-1.714s-1.492-1.952-4-1.952a6.016 6.016 0 0 0-.796.035m0-4.735v2.138l.424-.027c5.45-.185 9.01 4.47 9.01 4.47s-4.08 4.964-8.33 4.964c-.37 0-.733-.035-1.095-.097v1.325c.3.035.61.062.91.062 3.957 0 6.82-2.023 9.593-4.408.459.371 2.34 1.263 2.73 1.652-2.633 2.208-8.772 3.984-12.253 3.984-.335 0-.653-.018-.971-.053v1.864H24V4.063zm0 10.326v1.131c-3.657-.654-4.673-4.46-4.673-4.46s1.758-1.944 4.673-2.262v1.237H8.94c-1.528-.186-2.73 1.245-2.73 1.245s.68 2.412 2.739 3.11M2.456 10.9s2.164-3.197 6.5-3.533V6.201C4.153 6.59 0 10.653 0 10.653s2.35 6.802 8.948 7.42v-1.237c-4.84-.6-6.492-5.936-6.492-5.936z"/>
+</symbol>
+<symbol id="si-mqtt" viewBox="0 0 24 24"><path fill="currentColor" d="M10.657 23.994h-9.45A1.212 1.212 0 0 1 0 22.788v-9.18h.071c5.784 0 10.504 4.65 10.586 10.386Zm7.606 0h-4.045C14.135 16.246 7.795 9.977 0 9.942V6.038h.071c9.983 0 18.121 8.044 18.192 17.956Zm4.53 0h-.97C21.754 12.071 11.995 2.407 0 2.372v-1.16C0 .55.544.006 1.207.006h7.64C15.733 2.49 21.257 7.789 24 14.508v8.291c0 .663-.544 1.195-1.207 1.195ZM16.713.006h6.092A1.19 1.19 0 0 1 24 1.2v5.914c-.91-1.242-2.046-2.65-3.158-3.762C19.588 2.11 18.122.987 16.714.005Z"/>
+</symbol>
     </defs>
 
     <!-- ============ 계층 눈썹 라벨 ============ -->
@@ -211,76 +86,71 @@
     <text class="eyebrow" x="580" y="170">03 · 메시지 백본</text>
     <text class="eyebrow" x="780" y="28">04 · FMS — 배차·경로·교통</text>
     <text class="eyebrow" x="780" y="530">05 · 실행 계층 (SIL)</text>
-    <text class="eyebrow" x="1400" y="28" fill="#993C1D">R · MAPF 연구 트랙</text>
+    <text class="eyebrow" x="1400" y="28">R · MAPF 연구 트랙</text>
     <text class="eyebrow" x="40" y="610">06 · 의사결정 지원 — 3PL 견적</text>
 
     <!-- ============ 01 주문 계층 ============ -->
     <g>
-      <rect x="40" y="40" width="310" height="96" fill="var(--purple-50)" stroke="var(--purple-600)"/>
-      <use href="#i-react" x="58" y="54" width="22" height="22" style="color:var(--purple-800)"/>
-      <text class="chead" x="92" y="71" fill="var(--purple-800)">React 관제 콘솔</text>
-      <text class="bl" x="92" y="94">주문 · 관제 맵 · 견적 리포트</text>
-      <rect x="370" y="40" width="150" height="96" fill="var(--purple-50)" stroke="var(--purple-600)"/>
-      <use href="#i-bolt" x="386" y="56" width="18" height="18" style="color:var(--purple-800)"/>
-      <text class="bt" x="412" y="70" fill="var(--purple-800)">주문 생성기</text>
-      <text class="bl" x="412" y="92">부하 프로파일 λ</text>
+      <rect class="cbox" x="40" y="40" width="310" height="96"/>
+      <rect x="40" y="40" width="26" height="26" fill="#20232A"/>
+      <use href="#si-react" x="44.5" y="44.5" width="17" height="17" style="color:#61DAFB"/>
+      <text class="chead" x="76" y="58">React 관제 콘솔</text>
+      <text class="bl" x="56" y="88">주문 · 관제 맵 · 견적 리포트</text>
+
+      <rect class="cbox" x="370" y="40" width="150" height="96"/>
+      <text class="bt" x="445" y="82" text-anchor="middle">주문 생성기</text>
+      <text class="bl" x="445" y="104" text-anchor="middle">부하 프로파일 λ</text>
     </g>
 
     <!-- ============ 02 WMS ============ -->
     <g>
-      <rect x="40" y="180" width="480" height="280" fill="var(--blue-50)" stroke="var(--blue-600)"/>
-      <use href="#i-spring" x="58" y="192" width="22" height="22" style="color:var(--blue-800)"/>
-      <text class="chead" x="92" y="210" fill="var(--blue-800)">WMS — Spring BE</text>
+      <rect class="cbox" x="40" y="180" width="480" height="280"/>
+      <rect x="40" y="180" width="26" height="26" fill="#6DB33F"/>
+      <use href="#si-springboot" x="44.5" y="184.5" width="17" height="17" style="color:#ffffff"/>
+      <text class="chead" x="76" y="198">WMS — Spring BE</text>
 
-      <rect x="60" y="226" width="210" height="92" fill="#fff" stroke="var(--blue-600)" stroke-opacity=".45"/>
-      <use href="#i-state" x="74" y="240" width="18" height="18" style="color:var(--blue-600)"/>
-      <text class="bt" x="100" y="254" fill="var(--blue-800)">주문 상태기계</text>
-      <text class="bl mono" x="74" y="290" font-size="11">RECEIVED → SHIPPED</text>
+      <rect class="sbox" x="60" y="226" width="210" height="92"/>
+      <text class="bt" x="165" y="268" text-anchor="middle">주문 상태기계</text>
+      <text class="bl mono" x="165" y="290" text-anchor="middle" font-size="11">RECEIVED → SHIPPED</text>
 
-      <rect x="290" y="226" width="210" height="92" fill="#fff" stroke="var(--blue-600)" stroke-opacity=".45"/>
-      <use href="#i-shelf" x="304" y="240" width="18" height="18" style="color:var(--blue-600)"/>
-      <text class="bt" x="330" y="254" fill="var(--blue-800)">재고·로케이션</text>
-      <text class="bl" x="304" y="290">zones A–V · 132랙 · 57 ST</text>
+      <rect class="sbox" x="290" y="226" width="210" height="92"/>
+      <text class="bt" x="395" y="268" text-anchor="middle">재고·로케이션</text>
+      <text class="bl" x="395" y="290" text-anchor="middle">zones A–V · 132랙 · 57 ST</text>
 
-      <rect x="60" y="346" width="210" height="92" fill="#fff" stroke="var(--blue-600)" stroke-opacity=".45"/>
-      <use href="#i-split" x="74" y="360" width="18" height="18" style="color:var(--blue-600)"/>
-      <text class="bt" x="100" y="374" fill="var(--blue-800)">태스크 분해</text>
-      <text class="bl" x="74" y="410">주문 → 운송오더(TO)</text>
+      <rect class="sbox" x="60" y="346" width="210" height="92"/>
+      <text class="bt" x="165" y="388" text-anchor="middle">태스크 분해</text>
+      <text class="bl" x="165" y="410" text-anchor="middle">주문 → 운송오더(TO)</text>
 
-      <rect x="290" y="346" width="210" height="92" fill="#fff" stroke="var(--blue-600)" stroke-opacity=".45"/>
-      <use href="#i-transfer" x="304" y="360" width="18" height="18" style="color:var(--blue-600)"/>
-      <text class="bt" x="330" y="374" fill="var(--blue-800)">피킹·재고 전이</text>
-      <text class="bl" x="304" y="410">이벤트 → 재고 차감</text>
+      <rect class="sbox" x="290" y="346" width="210" height="92"/>
+      <text class="bt" x="395" y="388" text-anchor="middle">피킹·재고 전이</text>
+      <text class="bl" x="395" y="410" text-anchor="middle">이벤트 → 재고 차감</text>
     </g>
 
     <!-- PostgreSQL -->
     <g>
-      <rect x="40" y="500" width="480" height="80" fill="var(--gray-50)" stroke="var(--gray-600)"/>
-      <use href="#i-db" x="58" y="522" width="20" height="20" style="color:var(--gray-800)"/>
-      <text class="bt" x="88" y="532" fill="var(--gray-800)">PostgreSQL</text>
-      <text class="bl" x="88" y="554">주문 · 재고 · Task · run_kpi</text>
+      <rect class="cbox" x="40" y="500" width="480" height="80"/>
+      <rect x="40" y="500" width="26" height="26" fill="#336791"/>
+      <use href="#si-postgresql" x="44.5" y="504.5" width="17" height="17" style="color:#ffffff"/>
+      <text class="chead" x="76" y="518">PostgreSQL</text>
+      <text class="bl" x="56" y="556">주문 · 재고 · Task · run_kpi</text>
     </g>
 
     <!-- ============ 06 의사결정 지원 (견적) ============ -->
     <g>
-      <rect x="40" y="620" width="480" height="260" fill="var(--purple-50)" stroke="var(--purple-600)"/>
-      <use href="#i-doc" x="58" y="632" width="22" height="22" style="color:var(--purple-800)"/>
-      <text class="chead" x="92" y="650" fill="var(--purple-800)">견적 산출 — 도입 의사결정 지원</text>
+      <rect class="cbox" x="40" y="620" width="480" height="260"/>
+      <text class="chead" x="58" y="648">견적 산출 — 도입 의사결정 지원</text>
 
-      <rect x="60" y="666" width="210" height="92" fill="#fff" stroke="var(--purple-600)" stroke-opacity=".45"/>
-      <use href="#i-curve" x="74" y="680" width="18" height="18" style="color:var(--purple-600)"/>
-      <text class="bt" x="100" y="694" fill="var(--purple-800)">대수–성능 곡선</text>
-      <text class="bl" x="74" y="730">대수별 처리량 P50 · P10</text>
+      <rect class="sbox" x="60" y="666" width="210" height="92"/>
+      <text class="bt" x="165" y="708" text-anchor="middle">대수–성능 곡선</text>
+      <text class="bl" x="165" y="730" text-anchor="middle">대수별 처리량 P50 · P10</text>
 
-      <rect x="290" y="666" width="210" height="92" fill="#fff" stroke="var(--purple-600)" stroke-opacity=".45"/>
-      <use href="#i-won" x="304" y="680" width="18" height="18" style="color:var(--purple-600)"/>
-      <text class="bt" x="330" y="694" fill="var(--purple-800)">비용·ROI 모델</text>
-      <text class="bl" x="304" y="730">TCO · 건당 처리 원가</text>
+      <rect class="sbox" x="290" y="666" width="210" height="92"/>
+      <text class="bt" x="395" y="708" text-anchor="middle">비용·ROI 모델</text>
+      <text class="bl" x="395" y="730" text-anchor="middle">TCO · 건당 처리 원가</text>
 
-      <rect x="60" y="778" width="440" height="80" fill="#fff" stroke="var(--purple-600)" stroke-opacity=".45"/>
-      <use href="#i-doc" x="74" y="794" width="18" height="18" style="color:var(--purple-600)"/>
-      <text class="bt" x="100" y="808" fill="var(--purple-800)">견적 리포트 생성기</text>
-      <text class="bl" x="100" y="830">권장 대수 · 보장 처리량(P10) → 견적서(웹·PDF)</text>
+      <rect class="sbox" x="60" y="778" width="440" height="80"/>
+      <text class="bt" x="280" y="812" text-anchor="middle">견적 리포트 생성기</text>
+      <text class="bl" x="280" y="834" text-anchor="middle">권장 대수 · 보장 처리량(P10) → 견적서(웹·PDF)</text>
 
       <path class="edge-in" d="M165 758 L165 778" marker-end="url(#ahi)"/>
       <path class="edge-in" d="M395 758 L395 778" marker-end="url(#ahi)"/>
@@ -288,10 +158,11 @@
 
     <!-- ============ 03 EMQX 백본 ============ -->
     <g>
-      <rect x="580" y="180" width="140" height="680" fill="var(--gray-50)" stroke="var(--gray-600)"/>
-      <use href="#i-hub" x="639" y="200" width="22" height="22" style="color:var(--gray-800)"/>
-      <text class="chead" x="650" y="248" text-anchor="middle" fill="var(--gray-800)">EMQX</text>
-      <text class="ctag" x="650" y="268" text-anchor="middle">MQTT 브로커</text>
+      <rect x="580" y="180" width="140" height="680" fill="#F7F6F1" stroke="#6f6e64" stroke-width="1.2"/>
+      <rect x="580" y="180" width="26" height="26" fill="#660066"/>
+      <use href="#si-mqtt" x="584.5" y="184.5" width="17" height="17" style="color:#ffffff"/>
+      <text class="chead" x="612" y="198">EMQX</text>
+      <text class="ctag" x="650" y="236" text-anchor="middle">MQTT 브로커</text>
       <text class="bl mono" x="650" y="500" text-anchor="middle" font-size="11">biz/*  fms/*</text>
       <text class="bl mono" x="650" y="518" text-anchor="middle" font-size="11">uagv/v2/*</text>
       <text class="ctag" x="650" y="836" text-anchor="middle">QoS1 · retained state</text>
@@ -299,25 +170,23 @@
 
     <!-- ============ 04 FMS 코어 ============ -->
     <g>
-      <rect x="780" y="40" width="560" height="460" fill="var(--teal-50)" stroke="var(--teal-600)"/>
-      <use href="#i-gear" x="798" y="52" width="22" height="22" style="color:var(--teal-800)"/>
-      <text class="chead" x="832" y="70" fill="var(--teal-800)">FMS 코어 — Python</text>
-      <text class="ctag" x="1322" y="70" text-anchor="end">500ms 제어 사이클</text>
+      <rect class="cbox" x="780" y="40" width="560" height="460"/>
+      <rect x="780" y="40" width="26" height="26" fill="#3776AB"/>
+      <use href="#si-python" x="784.5" y="44.5" width="17" height="17" style="color:#ffffff"/>
+      <text class="chead" x="816" y="58">FMS 코어 — Python</text>
+      <text class="ctag" x="1322" y="58" text-anchor="end">500ms 제어 사이클</text>
 
-      <rect x="800" y="96" width="250" height="88" fill="#fff" stroke="var(--teal-600)" stroke-opacity=".45"/>
-      <use href="#i-map" x="814" y="110" width="18" height="18" style="color:var(--teal-600)"/>
-      <text class="bt" x="840" y="124" fill="var(--teal-800)">월드모델</text>
-      <text class="bl" x="814" y="160">그래프 · 로봇 상태 · 예약 뷰</text>
+      <rect class="sbox" x="800" y="96" width="250" height="88"/>
+      <text class="bt" x="925" y="136" text-anchor="middle">월드모델</text>
+      <text class="bl" x="925" y="158" text-anchor="middle">그래프 · 로봇 상태 · 예약 뷰</text>
 
-      <rect x="1070" y="96" width="250" height="88" fill="#fff" stroke="var(--teal-600)" stroke-opacity=".45"/>
-      <use href="#i-dispatch" x="1084" y="110" width="18" height="18" style="color:var(--teal-600)"/>
-      <text class="bt" x="1110" y="124" fill="var(--teal-800)">배차 Dispatcher</text>
-      <text class="bl" x="1084" y="160">태스크 ↔ 로봇 할당</text>
+      <rect class="sbox" x="1070" y="96" width="250" height="88"/>
+      <text class="bt" x="1195" y="136" text-anchor="middle">배차 Dispatcher</text>
+      <text class="bl" x="1195" y="158" text-anchor="middle">태스크 ↔ 로봇 할당</text>
 
-      <rect x="800" y="204" width="360" height="110" fill="#fff" stroke="var(--coral-600)" stroke-width="2"/>
-      <use href="#i-route" x="814" y="216" width="19" height="19" style="color:var(--coral-800)"/>
-      <text class="bt" x="842" y="230" fill="var(--coral-800)">MAPF 플래너 — 교체형 솔버 슬롯</text>
-      <text class="bl" x="814" y="252">다중 로봇 무충돌 경로 (연구 코어)</text>
+      <rect x="800" y="204" width="360" height="110" fill="#ffffff" stroke="#1a1a17" stroke-width="2"/>
+      <text class="bt" x="980" y="232" text-anchor="middle">MAPF 플래너 — 교체형 솔버 슬롯</text>
+      <text class="bl" x="980" y="252" text-anchor="middle">다중 로봇 무충돌 경로 계산 · 연구 코어</text>
       <rect class="chip" x="814" y="264" width="86" height="26"/>
       <text class="chipt" x="857" y="281" text-anchor="middle">PP+예약</text>
       <rect class="chip" x="908" y="264" width="70" height="26"/>
@@ -327,78 +196,67 @@
       <rect class="chip" x="1058" y="264" width="76" height="26"/>
       <text class="chipt" x="1096" y="281" text-anchor="middle">LaCAM</text>
 
-      <rect x="1180" y="204" width="140" height="110" fill="#fff" stroke="var(--teal-600)" stroke-opacity=".45"/>
-      <use href="#i-grid" x="1194" y="216" width="18" height="18" style="color:var(--teal-600)"/>
-      <text class="bt" x="1194" y="256" fill="var(--teal-800)">시공간 예약</text>
-      <text class="bl" x="1194" y="278">노드·엣지 × 시간창</text>
+      <rect class="sbox" x="1180" y="204" width="140" height="110"/>
+      <text class="bt" x="1250" y="250" text-anchor="middle">시공간 예약</text>
+      <text class="bl" x="1250" y="272" text-anchor="middle">노드·엣지 × 시간창</text>
 
-      <rect x="800" y="334" width="250" height="84" fill="#fff" stroke="var(--teal-600)" stroke-opacity=".45"/>
-      <use href="#i-plug" x="814" y="348" width="18" height="18" style="color:var(--teal-600)"/>
-      <text class="bt" x="840" y="362" fill="var(--teal-800)">VDA 5050 어댑터</text>
-      <text class="bl" x="814" y="398">Order / State 변환</text>
+      <rect class="sbox" x="800" y="334" width="250" height="84"/>
+      <text class="bt" x="925" y="370" text-anchor="middle">VDA 5050 어댑터</text>
+      <text class="bl" x="925" y="392" text-anchor="middle">Order / State 변환</text>
 
-      <rect x="1070" y="334" width="250" height="84" fill="#fff" stroke="var(--teal-600)" stroke-opacity=".45"/>
-      <use href="#i-signal" x="1084" y="348" width="18" height="18" style="color:var(--teal-600)"/>
-      <text class="bt" x="1110" y="362" fill="var(--teal-800)">교통 관제</text>
-      <text class="bl" x="1084" y="398">예약 해제 · base 연장</text>
+      <rect class="sbox" x="1070" y="334" width="250" height="84"/>
+      <text class="bt" x="1195" y="370" text-anchor="middle">교통 관제</text>
+      <text class="bl" x="1195" y="392" text-anchor="middle">예약 해제 · base 연장</text>
 
-      <!-- FMS 내부 흐름 -->
       <path class="edge-in" d="M1050 140 L1070 140" marker-end="url(#ahi)"/>
       <path class="edge-in" d="M1150 184 L1150 204" marker-end="url(#ahi)"/>
       <path class="edge-in" d="M1160 259 L1180 259" marker-end="url(#ahi)"/>
       <path class="edge-in" d="M1115 314 L1115 334" marker-end="url(#ahi)"/>
       <path class="edge-in" d="M1070 376 L1050 376" marker-end="url(#ahi)"/>
-      <text class="el" x="1042" y="368" text-anchor="end" font-size="11">released base</text>
     </g>
 
     <!-- ============ 05 실행 계층 ============ -->
     <g>
-      <rect x="780" y="540" width="560" height="110" fill="var(--steel-50)" stroke="var(--steel-600)"/>
-      <use href="#i-ros" x="798" y="552" width="22" height="22" style="color:var(--steel-800)"/>
-      <text class="chead" x="832" y="570" fill="var(--steel-800)">amr-agent × N — ROS 2</text>
+      <rect class="cbox" x="780" y="540" width="560" height="110"/>
+      <rect x="780" y="540" width="26" height="26" fill="#22314E"/>
+      <use href="#si-ros" x="784.5" y="544.5" width="17" height="17" style="color:#ffffff"/>
+      <text class="chead" x="816" y="558">amr-agent × N — ROS 2</text>
       <rect class="chip" x="798" y="588" width="196" height="34"/>
-      <use href="#i-plug" x="808" y="596" width="16" height="16" style="color:var(--steel-600)"/>
-      <text class="chipt" x="832" y="609">MQTT–ROS 브리지 (VDA5050)</text>
+      <text class="chipt" x="896" y="609" text-anchor="middle">MQTT–ROS 브리지 (VDA5050)</text>
       <rect class="chip" x="1006" y="588" width="164" height="34"/>
-      <use href="#i-steer" x="1016" y="596" width="16" height="16" style="color:var(--steel-600)"/>
-      <text class="chipt" x="1040" y="609">Pure Pursuit 추종</text>
+      <text class="chipt" x="1088" y="609" text-anchor="middle">Pure Pursuit 추종</text>
       <rect class="chip" x="1182" y="588" width="140" height="34"/>
-      <use href="#i-target" x="1192" y="596" width="16" height="16" style="color:var(--steel-600)"/>
-      <text class="chipt" x="1216" y="609">AMCL 자기위치</text>
+      <text class="chipt" x="1252" y="609" text-anchor="middle">AMCL 자기위치</text>
 
-      <rect x="780" y="700" width="560" height="180" fill="var(--steel-50)" stroke="var(--steel-600)"/>
-      <use href="#i-cube" x="798" y="712" width="22" height="22" style="color:var(--steel-800)"/>
-      <text class="chead" x="832" y="730" fill="var(--steel-800)">Isaac Sim — 물리 창고 (SIL)</text>
-      <text class="bl" x="798" y="762">iw.hub × N · 창고 씬 v6.0.1 · 물리 라이다 720빔 · /clock</text>
+      <rect class="cbox" x="780" y="700" width="560" height="180"/>
+      <rect x="780" y="700" width="26" height="26" fill="#76B900"/>
+      <use href="#si-nvidia" x="784.5" y="704.5" width="17" height="17" style="color:#ffffff"/>
+      <text class="chead" x="816" y="718">Isaac Sim — 물리 창고 (SIL)</text>
+      <text class="bl" x="798" y="752">iw.hub × N · 창고 씬 v6.0.1 · 물리 라이다 720빔 · /clock</text>
       <text class="ctag" x="798" y="850">슬립 · 지연 · 혼잡 = 실제 물리</text>
     </g>
 
     <!-- ============ R 연구 트랙 ============ -->
     <g>
-      <rect x="1400" y="40" width="280" height="840" fill="var(--coral-50)" stroke="var(--coral-600)"/>
-      <use href="#i-flask" x="1418" y="52" width="22" height="22" style="color:var(--coral-800)"/>
-      <text class="chead" x="1450" y="70" fill="var(--coral-800)">MAPF 연구 트랙</text>
+      <rect x="1400" y="40" width="280" height="840" fill="#ffffff" stroke="#6f6e64" stroke-width="1.2" stroke-dasharray="7 5"/>
+      <text class="chead" x="1418" y="68">MAPF 연구 트랙</text>
 
-      <rect x="1420" y="96" width="240" height="150" fill="#fff" stroke="var(--coral-600)" stroke-opacity=".5"/>
-      <use href="#i-grid" x="1434" y="110" width="18" height="18" style="color:var(--coral-600)"/>
-      <text class="bt" x="1460" y="124" fill="var(--coral-800)">그리드 벤치 하네스</text>
-      <text class="bl" x="1434" y="156">1m 셀 · FMS 코어 동일 솔버</text>
-      <text class="bl" x="1434" y="176">솔버 4+종 × 로봇 5–50 × 부하</text>
+      <rect class="sbox" x="1420" y="96" width="240" height="150"/>
+      <text class="bt" x="1540" y="150" text-anchor="middle">그리드 벤치 하네스</text>
+      <text class="bl" x="1540" y="176" text-anchor="middle">1m 셀 · FMS 코어 동일 솔버</text>
+      <text class="bl" x="1540" y="196" text-anchor="middle">솔버 4+종 × 로봇 5–50 × 부하</text>
 
-      <rect x="1420" y="286" width="240" height="130" fill="#fff" stroke="var(--coral-600)" stroke-opacity=".5"/>
-      <use href="#i-chart" x="1434" y="300" width="18" height="18" style="color:var(--coral-600)"/>
-      <text class="bt" x="1460" y="314" fill="var(--coral-800)">KPI 집계</text>
-      <text class="bl" x="1434" y="346">처리량 · 사이클타임 · 데드락</text>
+      <rect class="sbox" x="1420" y="286" width="240" height="130"/>
+      <text class="bt" x="1540" y="336" text-anchor="middle">KPI 집계</text>
+      <text class="bl" x="1540" y="360" text-anchor="middle">처리량 · 사이클타임 · 데드락</text>
 
-      <rect x="1420" y="456" width="240" height="150" fill="#fff" stroke="var(--coral-600)" stroke-opacity=".5"/>
-      <use href="#i-compare" x="1434" y="470" width="18" height="18" style="color:var(--coral-600)"/>
-      <text class="bt" x="1460" y="484" fill="var(--coral-800)">그리드–물리 갭 분석</text>
-      <text class="bl" x="1434" y="516">그리드 예측 vs SIL 실측</text>
+      <rect class="sbox" x="1420" y="456" width="240" height="150"/>
+      <text class="bt" x="1540" y="510" text-anchor="middle">그리드–물리 갭 분석</text>
+      <text class="bl" x="1540" y="534" text-anchor="middle">그리드 예측 vs SIL 실측</text>
 
-      <rect x="1420" y="646" width="240" height="70" fill="#fff" stroke="var(--coral-600)" stroke-opacity=".5"/>
-      <use href="#i-doc" x="1434" y="660" width="18" height="18" style="color:var(--coral-600)"/>
-      <text class="bt" x="1460" y="674" fill="var(--coral-800)">산출물</text>
-      <text class="bl" x="1434" y="700">솔버 권고 · 대수별 KPI</text>
+      <rect class="sbox" x="1420" y="646" width="240" height="70"/>
+      <text class="bt" x="1540" y="672" text-anchor="middle">산출물</text>
+      <text class="bl" x="1540" y="696" text-anchor="middle">솔버 권고 · 대수별 KPI</text>
 
       <path class="edge-in" d="M1540 246 L1540 286" marker-end="url(#ahi)"/>
       <path class="edge-in" d="M1540 416 L1540 456" marker-end="url(#ahi)"/>
@@ -444,19 +302,19 @@
     <text class="el mono" x="1188" y="694" text-anchor="end">DDS /odom · /scan · /tf</text>
 
     <!-- ============ 연구 트랙 연결 (점선) ============ -->
-    <path class="edge-r" d="M1340 250 L1372 250 L1372 170 L1398 170" marker-end="url(#ahc)"/>
-    <text class="el elc" x="1368" y="216" text-anchor="end">동일 솔버 코드</text>
-    <path class="edge-r" d="M1340 790 L1384 790 L1384 560 L1398 560" marker-end="url(#ahc)"/>
-    <text class="el elc" x="1378" y="778" text-anchor="end">SIL 실행 로그</text>
-    <path class="edge-r" d="M1420 680 L1358 680 L1358 300 L1342 300" marker-end="url(#ahc)"/>
-    <text class="el elc" x="1354" y="490" text-anchor="end">솔버·파라미터 환류</text>
+    <path class="edge-r" d="M1340 250 L1372 250 L1372 170 L1398 170" marker-end="url(#ah)"/>
+    <text class="el" x="1368" y="216" text-anchor="end">동일 솔버 코드</text>
+    <path class="edge-r" d="M1340 790 L1384 790 L1384 560 L1398 560" marker-end="url(#ah)"/>
+    <text class="el" x="1378" y="778" text-anchor="end">SIL 실행 로그</text>
+    <path class="edge-r" d="M1420 680 L1358 680 L1358 300 L1342 300" marker-end="url(#ah)"/>
+    <text class="el" x="1354" y="490" text-anchor="end">솔버·파라미터 환류</text>
     <rect class="badge" x="1347" y="609" width="22" height="22"/><text class="badge-t" x="1358" y="625" text-anchor="middle">9</text>
 
     <!-- ============ 견적 플로우 (⑩) ============ -->
     <path class="edge" d="M280 580 L280 620" marker-end="url(#ah)"/>
     <text class="el mono" x="293" y="604">run_kpi · 실측 근거</text>
-    <path class="edge-r" d="M1540 880 L1540 936 L280 936 L280 884" marker-end="url(#ahc)"/>
-    <text class="el elc" x="910" y="928" text-anchor="middle">스윕 KPI · 솔버 권고 (오프라인 적재)</text>
+    <path class="edge-r" d="M1540 880 L1540 936 L280 936 L280 884" marker-end="url(#ah)"/>
+    <text class="el" x="910" y="928" text-anchor="middle">스윕 KPI · 솔버 권고 (오프라인 적재)</text>
     <path class="edge" d="M40 700 L20 700 L20 88 L40 88" marker-end="url(#ah)"/>
     <text class="el" transform="rotate(-90 14 400)" x="14" y="400" text-anchor="middle">견적서 · 대수–성능 곡선</text>
     <rect class="badge" x="8" y="549" width="24" height="22"/><text class="badge-t" x="20" y="565" text-anchor="middle" font-size="12">10</text>
@@ -465,7 +323,7 @@
     <span class="lg"><span class="sw"></span> 운영 데이터 흐름 (REST · MQTT · DDS)</span>
     <span class="lg"><span class="sw swd"></span> 연구 트랙 (오프라인)</span>
     <span class="lg"><b>①–⑨</b> 주문 1건의 워크플로우 · <b>⑩</b> 견적 산출</span>
-    <span class="lg"><b>주황 테두리</b> = 연구 코어 (교체형 MAPF 솔버 슬롯)</span>
+    <span class="lg"><b>굵은 테두리</b> = 연구 코어 (교체형 MAPF 솔버 슬롯)</span>
   </figcaption>
   </figure>
 
