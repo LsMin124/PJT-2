@@ -164,6 +164,7 @@
       <use href="#si-springboot" x="44.5" y="684.5" width="17" height="17" style="color:#ffffff"/>
       <text class="chead" x="76" y="698">시뮬 WMS — Spring</text>
       <use href="#si-docker" x="492" y="686" width="16" height="16" style="color:#2496ED"/>
+      <text class="ctag" x="500" y="718" text-anchor="end">상태: H2 인메모리 — 런 스코프</text>
 
       <rect class="sbox" x="60" y="726" width="210" height="74"/>
       <text class="bt" x="165" y="756" text-anchor="middle">주문 상태기계</text>
@@ -386,7 +387,7 @@
     <tr><td><code>MQTT fms/event</code></td><td>FMS → 시뮬 WMS</td><td>피킹 완료 → 재고 원자적 차감 → 주문 SHIPPED</td></tr>
   </table>
 
-  <p class="note"><b>설계 원칙</b> — 웹 인프라는 두 층으로 분리한다: <b>견적 서비스(FE·견적 BE·PG)는 상시 가동</b>이고 고객·운영자 대면이며, <b>시뮬 스택(시뮬 WMS·EMQX·FMS)은 런 단위로 기동·리셋</b>되는 내부 엔진이라 런 스코프 상태가 영속 DB와 섞이지 않는다. 접수(①)와 발송(⑧) 사이는 전부 내부 배치이고, 검토(②)·검수(⑦) 두 곳에 운영자가 개입한다. MAPF는 <b>고정 솔버</b>(v1 = PP+시공간 예약, 슬롯만 유지)이며 스윕이 탐색하는 것은 <b>구성(AMR 대수 × 기종)</b>이다. SimPy DES가 구성별 분포를 만들고 Isaac 물리 검증 런이 갭을 보정하며, 같은 FMS 코어가 DES·검증 런·라이브 데모 세 곳에서 돌기 때문에 견적과 시연이 한 몸이다. <b>런 오케스트레이션</b>은 계산 엔진 워커가 전담한다: EC2 측 시뮬 파드는 k8s API로 생성·삭제하고, GPU 측은 상주 sim-runner 데몬에 <code>MQTT sim/control</code>로 start/stop을 지시한다(헬스비트 감시·타임아웃 강제 정리, GPU 1대라 Isaac 런은 직렬 큐). 이 제어 채널이 런보다 먼저 있어야 하므로 EMQX는 상시 가동이다. <b>런 아티팩트</b>는 견적의 증거물이다: 검증 런마다 배속 영상(MP4, MJPEG 프레임 허브→ffmpeg NVENC) · 인터랙티브 리플레이(odom 로그→JSON) · 궤적 히트맵을 수집해 S3에 적재하고, 웹 견적서에 임베드·PDF에 QR로 연결한다 — "물리 검증"이라는 주장에 고객이 눈으로 확인하는 실체를 붙인다.</p>
+  <p class="note"><b>설계 원칙</b> — 웹 인프라는 두 층으로 분리한다: <b>견적 서비스(FE·견적 BE·PG)는 상시 가동</b>이고 고객·운영자 대면이며, <b>시뮬 스택(시뮬 WMS·EMQX·FMS)은 런 단위로 기동·리셋</b>되는 내부 엔진이라 런 스코프 상태가 영속 DB와 섞이지 않는다 — 시뮬 WMS의 주문·재고 상태는 H2 인메모리(런과 함께 소멸, Spring 프로파일 전환으로 실물 PG 승격 가능)이고, 영속이 필요한 결과물만 parquet·S3와 견적 PG로 빠진다. 접수(①)와 발송(⑧) 사이는 전부 내부 배치이고, 검토(②)·검수(⑦) 두 곳에 운영자가 개입한다. MAPF는 <b>고정 솔버</b>(v1 = PP+시공간 예약, 슬롯만 유지)이며 스윕이 탐색하는 것은 <b>구성(AMR 대수 × 기종)</b>이다. SimPy DES가 구성별 분포를 만들고 Isaac 물리 검증 런이 갭을 보정하며, 같은 FMS 코어가 DES·검증 런·라이브 데모 세 곳에서 돌기 때문에 견적과 시연이 한 몸이다. <b>런 오케스트레이션</b>은 계산 엔진 워커가 전담한다: EC2 측 시뮬 파드는 k8s API로 생성·삭제하고, GPU 측은 상주 sim-runner 데몬에 <code>MQTT sim/control</code>로 start/stop을 지시한다(헬스비트 감시·타임아웃 강제 정리, GPU 1대라 Isaac 런은 직렬 큐). 이 제어 채널이 런보다 먼저 있어야 하므로 EMQX는 상시 가동이다. <b>런 아티팩트</b>는 견적의 증거물이다: 검증 런마다 배속 영상(MP4, MJPEG 프레임 허브→ffmpeg NVENC) · 인터랙티브 리플레이(odom 로그→JSON) · 궤적 히트맵을 수집해 S3에 적재하고, 웹 견적서에 임베드·PDF에 QR로 연결한다 — "물리 검증"이라는 주장에 고객이 눈으로 확인하는 실체를 붙인다.</p>
 </div>
 </body>
 </html>
