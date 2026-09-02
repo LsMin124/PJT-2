@@ -27,13 +27,13 @@
   .lg .sw{display:inline-block;width:22px;height:0;border-top:2px solid #8a8878;}
   .lg .swd{border-top:2px dashed var(--coral-600);}
   h2{font-size:16px;font-weight:700;margin:34px 0 10px;}
-  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;font-size:13px;}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border);font-size:13px;}
   th{background:var(--gray-50);color:var(--text2);font-weight:600;text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);}
   td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text2);line-height:1.55;}
   tr:last-child td{border-bottom:none;}
   td:first-child{font-weight:700;color:var(--text);white-space:nowrap;}
-  code{font-family:"SF Mono",Consolas,monospace;font-size:12px;background:var(--gray-50);border:1px solid var(--border);border-radius:5px;padding:1px 6px;color:var(--gray-800);}
-  .note{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--coral-600);border-radius:8px;padding:12px 16px;font-size:13.5px;color:var(--text2);line-height:1.6;margin-top:14px;}
+  code{font-family:"SF Mono",Consolas,monospace;font-size:12px;background:var(--gray-50);border:1px solid var(--border);padding:1px 6px;color:var(--gray-800);}
+  .note{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--coral-600);padding:12px 16px;font-size:13.5px;color:var(--text2);line-height:1.6;margin-top:14px;}
   .note b{color:var(--text);}
   /* SVG 공통 */
   .eyebrow{font-size:11.5px;letter-spacing:.14em;font-weight:700;fill:#9a978a;}
@@ -51,12 +51,14 @@
   .badge-t{font-size:13px;font-weight:700;fill:#ffffff;}
   .chip{fill:#ffffff;stroke:#d8d5c8;}
   .chipt{font-size:11.5px;fill:#5f5e5a;}
+  .ic{stroke:currentColor;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .icf{fill:currentColor;stroke:none;}
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>주문 기반 FMS-WMS 통합 시스템 아키텍처</h1>
-  <p class="sub">주문 워크플로우 ①–⑨ + 견적 산출 ⑩ · MAPF 최적화 연구 트랙(그리드×물리 2계층 검증) · 3PL AMR 도입 의사결정 지원 · v1.1 · 2026-09-02</p>
+  <p class="sub">주문 워크플로우 ①–⑨ + 견적 산출 ⑩ · MAPF 최적화 연구 트랙(그리드×물리 2계층 검증) · 3PL AMR 도입 의사결정 지원 · v1.2 · 2026-09-02</p>
 
   <figure>
   <svg viewBox="0 0 1720 1000" role="img" aria-label="주문에서 출고까지의 FMS-WMS 통합 아키텍처. 주문 계층, WMS, EMQX 메시지 백본, FMS 코어, ROS2·Isaac 실행 계층, MAPF 연구 트랙, 3PL 견적 산출 계층이 워크플로우 번호 1~10으로 연결된다.">
@@ -70,6 +72,137 @@
       <marker id="ahc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
         <path d="M2 1L8 5L2 9" fill="none" stroke="#993C1D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
       </marker>
+
+      <!-- ==== 아이콘 라이브러리 (20×20) ==== -->
+      <symbol id="i-react" viewBox="0 0 20 20">
+        <circle class="icf" cx="10" cy="10" r="1.9"/>
+        <ellipse class="ic" cx="10" cy="10" rx="8.2" ry="3.3"/>
+        <ellipse class="ic" cx="10" cy="10" rx="8.2" ry="3.3" transform="rotate(60 10 10)"/>
+        <ellipse class="ic" cx="10" cy="10" rx="8.2" ry="3.3" transform="rotate(120 10 10)"/>
+      </symbol>
+      <symbol id="i-bolt" viewBox="0 0 20 20">
+        <path class="icf" d="M11.2 1.8 L4.6 11 H9.2 L7.8 18.2 L15.4 8.4 H10.4 Z"/>
+      </symbol>
+      <symbol id="i-spring" viewBox="0 0 20 20">
+        <path class="ic" d="M4 16.5 C4 8 10 3 17 3.5 C16.5 11.5 11 16.5 4 16.5 Z"/>
+        <path class="ic" d="M4 16.5 C8 12.5 11.5 9 15 5.5"/>
+      </symbol>
+      <symbol id="i-state" viewBox="0 0 20 20">
+        <circle class="ic" cx="5" cy="10" r="3.1"/>
+        <circle class="ic" cx="15" cy="10" r="3.1"/>
+        <path class="ic" d="M8.3 10 H11.6 M10.2 8.4 L11.8 10 L10.2 11.6"/>
+      </symbol>
+      <symbol id="i-shelf" viewBox="0 0 20 20">
+        <rect class="ic" x="3" y="3" width="14" height="14"/>
+        <path class="ic" d="M3 8.4 H17 M3 12.8 H17 M7.5 3 V17 M12.5 3 V17"/>
+      </symbol>
+      <symbol id="i-split" viewBox="0 0 20 20">
+        <rect class="ic" x="7" y="2.5" width="6" height="5"/>
+        <path class="ic" d="M10 7.5 V10.5 M10 10.5 L5 13.5 M10 10.5 L15 13.5"/>
+        <rect class="ic" x="3" y="14" width="4" height="4"/>
+        <rect class="ic" x="13" y="14" width="4" height="4"/>
+      </symbol>
+      <symbol id="i-transfer" viewBox="0 0 20 20">
+        <rect class="ic" x="4" y="3" width="12" height="7"/>
+        <path class="ic" d="M10 12 V17.2 M7.6 14.8 L10 17.2 L12.4 14.8"/>
+      </symbol>
+      <symbol id="i-db" viewBox="0 0 20 20">
+        <ellipse class="ic" cx="10" cy="4.6" rx="7" ry="2.5"/>
+        <path class="ic" d="M3 4.6 V15.4 C3 16.8 6.1 17.9 10 17.9 S17 16.8 17 15.4 V4.6"/>
+        <path class="ic" d="M3 10 C3 11.4 6.1 12.5 10 12.5 S17 11.4 17 10"/>
+      </symbol>
+      <symbol id="i-hub" viewBox="0 0 20 20">
+        <rect class="ic" x="7.4" y="7.4" width="5.2" height="5.2"/>
+        <path class="ic" d="M7.4 7.4 L4.6 4.6 M12.6 7.4 L15.4 4.6 M7.4 12.6 L4.6 15.4 M12.6 12.6 L15.4 15.4"/>
+        <rect class="icf" x="2.2" y="2.2" width="3" height="3"/>
+        <rect class="icf" x="14.8" y="2.2" width="3" height="3"/>
+        <rect class="icf" x="2.2" y="14.8" width="3" height="3"/>
+        <rect class="icf" x="14.8" y="14.8" width="3" height="3"/>
+      </symbol>
+      <symbol id="i-gear" viewBox="0 0 20 20">
+        <circle class="ic" cx="10" cy="10" r="4"/>
+        <path class="ic" d="M10 2.6 V5.1 M10 14.9 V17.4 M2.6 10 H5.1 M14.9 10 H17.4 M4.8 4.8 L6.6 6.6 M13.4 13.4 L15.2 15.2 M15.2 4.8 L13.4 6.6 M6.6 13.4 L4.8 15.2"/>
+      </symbol>
+      <symbol id="i-map" viewBox="0 0 20 20">
+        <rect class="ic" x="3" y="4" width="14" height="12"/>
+        <path class="ic" d="M7.7 4 V16 M12.3 4 V16"/>
+        <circle class="icf" cx="10" cy="10" r="1.5"/>
+      </symbol>
+      <symbol id="i-dispatch" viewBox="0 0 20 20">
+        <path class="ic" d="M10 17 V10 M10 10 L4.5 4.5 M10 10 V3 M10 10 L15.5 4.5"/>
+        <path class="icf" d="M4 7 V4 H7 Z M8.5 5.5 H11.5 L10 2.7 Z M13 4 H16 V7 Z"/>
+      </symbol>
+      <symbol id="i-route" viewBox="0 0 20 20">
+        <rect class="ic" x="2.5" y="13.5" width="4" height="4"/>
+        <rect class="ic" x="13.5" y="2.5" width="4" height="4"/>
+        <path class="ic" d="M4.5 13.5 V8.8 H10.3 V4.5 H13.5"/>
+      </symbol>
+      <symbol id="i-grid" viewBox="0 0 20 20">
+        <rect class="ic" x="3" y="3" width="14" height="14"/>
+        <path class="ic" d="M3 7.7 H17 M3 12.3 H17 M7.7 3 V17 M12.3 3 V17"/>
+        <rect class="icf" x="12.3" y="7.7" width="4.7" height="4.6"/>
+      </symbol>
+      <symbol id="i-plug" viewBox="0 0 20 20">
+        <path class="ic" d="M7 2.5 V6.5 M13 2.5 V6.5"/>
+        <path class="ic" d="M5.5 6.5 H14.5 V10 A4.5 4.5 0 0 1 5.5 10 Z"/>
+        <path class="ic" d="M10 14.5 V17.5"/>
+      </symbol>
+      <symbol id="i-signal" viewBox="0 0 20 20">
+        <rect class="ic" x="6.5" y="2.5" width="7" height="15"/>
+        <circle class="icf" cx="10" cy="6" r="1.7"/>
+        <circle class="ic" cx="10" cy="10" r="1.7"/>
+        <circle class="ic" cx="10" cy="14" r="1.7"/>
+      </symbol>
+      <symbol id="i-ros" viewBox="0 0 20 20">
+        <circle class="icf" cx="4" cy="4" r="1.9"/><circle class="icf" cx="10" cy="4" r="1.9"/><circle class="icf" cx="16" cy="4" r="1.9"/>
+        <circle class="icf" cx="4" cy="10" r="1.9"/><circle class="icf" cx="10" cy="10" r="1.9"/><circle class="icf" cx="16" cy="10" r="1.9"/>
+        <circle class="icf" cx="4" cy="16" r="1.9"/><circle class="icf" cx="10" cy="16" r="1.9"/><circle class="icf" cx="16" cy="16" r="1.9"/>
+      </symbol>
+      <symbol id="i-steer" viewBox="0 0 20 20">
+        <path class="ic" d="M3 17 H9.5 V9.5 H16"/>
+        <path class="icf" d="M14.5 7 L18 9.5 L14.5 12 Z"/>
+        <circle class="icf" cx="3" cy="17" r="1.8"/>
+      </symbol>
+      <symbol id="i-target" viewBox="0 0 20 20">
+        <circle class="ic" cx="10" cy="10" r="5.5"/>
+        <path class="ic" d="M10 1.8 V5 M10 15 V18.2 M1.8 10 H5 M15 10 H18.2"/>
+        <circle class="icf" cx="10" cy="10" r="1.6"/>
+      </symbol>
+      <symbol id="i-cube" viewBox="0 0 20 20">
+        <path class="ic" d="M4 7 L8.5 3 H17 V11.5 L12.5 16 H4 Z"/>
+        <path class="ic" d="M4 7 H12.5 V16 M12.5 7 L17 3"/>
+      </symbol>
+      <symbol id="i-flask" viewBox="0 0 20 20">
+        <path class="ic" d="M7.8 2.8 H12.2 M9 2.8 V8 L4.4 15.8 A1.4 1.4 0 0 0 5.6 18 H14.4 A1.4 1.4 0 0 0 15.6 15.8 L11 8 V2.8"/>
+        <path class="ic" d="M6.3 13 H13.7"/>
+      </symbol>
+      <symbol id="i-chart" viewBox="0 0 20 20">
+        <path class="ic" d="M3.5 2.5 V16.5 H17.5"/>
+        <rect class="icf" x="6" y="10" width="2.6" height="6.5"/>
+        <rect class="icf" x="10" y="6.5" width="2.6" height="10"/>
+        <rect class="icf" x="14" y="11.5" width="2.6" height="5"/>
+      </symbol>
+      <symbol id="i-compare" viewBox="0 0 20 20">
+        <rect class="ic" x="3" y="6.5" width="9.5" height="9.5"/>
+        <rect class="ic" x="7.5" y="3" width="9.5" height="9.5" stroke-dasharray="2.6 2.2"/>
+      </symbol>
+      <symbol id="i-doc" viewBox="0 0 20 20">
+        <path class="ic" d="M5 2.5 H12 L15.5 6 V17.5 H5 Z"/>
+        <path class="ic" d="M12 2.5 V6 H15.5 M7.5 10 H13 M7.5 13 H13"/>
+      </symbol>
+      <symbol id="i-curve" viewBox="0 0 20 20">
+        <path class="ic" d="M3.5 2.5 V16.5 H17.5"/>
+        <path class="ic" d="M5 14 L8.5 10.5 L11.5 12 L16.5 5.5"/>
+        <circle class="icf" cx="16.5" cy="5.5" r="1.6"/>
+      </symbol>
+      <symbol id="i-won" viewBox="0 0 20 20">
+        <circle class="ic" cx="10" cy="10" r="7.5"/>
+        <text x="10" y="13.4" text-anchor="middle" font-size="9.5" font-weight="700" fill="currentColor" stroke="none" font-family="sans-serif">₩</text>
+      </symbol>
+      <symbol id="i-house" viewBox="0 0 20 20">
+        <path class="ic" d="M3 17 V8 L10 3 L17 8 V17"/>
+        <rect class="ic" x="7.3" y="11.5" width="5.4" height="5.5"/>
+      </symbol>
     </defs>
 
     <!-- ============ 계층 눈썹 라벨 ============ -->
@@ -83,75 +216,71 @@
 
     <!-- ============ 01 주문 계층 ============ -->
     <g>
-      <rect x="40" y="40" width="310" height="96" rx="10" fill="var(--purple-50)" stroke="var(--purple-600)"/>
-      <text class="chead" x="58" y="70" fill="var(--purple-800)">React 관제 콘솔</text>
-      <text class="bl" x="58" y="94">주문 입력 · 라이브 관제 맵</text>
-      <text class="bl" x="58" y="112">KPI 뷰 · 견적 리포트 뷰</text>
-      <rect x="370" y="40" width="150" height="96" rx="10" fill="var(--purple-50)" stroke="var(--purple-600)"/>
-      <text class="bt" x="388" y="70" fill="var(--purple-800)">주문 생성기</text>
-      <text class="bl" x="388" y="94">부하 프로파일 λ</text>
-      <text class="bl" x="388" y="112">데모·벤치 공용</text>
+      <rect x="40" y="40" width="310" height="96" fill="var(--purple-50)" stroke="var(--purple-600)"/>
+      <use href="#i-react" x="58" y="54" width="22" height="22" style="color:var(--purple-800)"/>
+      <text class="chead" x="92" y="71" fill="var(--purple-800)">React 관제 콘솔</text>
+      <text class="bl" x="92" y="94">주문 · 관제 맵 · 견적 리포트</text>
+      <rect x="370" y="40" width="150" height="96" fill="var(--purple-50)" stroke="var(--purple-600)"/>
+      <use href="#i-bolt" x="386" y="56" width="18" height="18" style="color:var(--purple-800)"/>
+      <text class="bt" x="412" y="70" fill="var(--purple-800)">주문 생성기</text>
+      <text class="bl" x="412" y="92">부하 프로파일 λ</text>
     </g>
 
     <!-- ============ 02 WMS ============ -->
     <g>
-      <rect x="40" y="180" width="480" height="280" rx="10" fill="var(--blue-50)" stroke="var(--blue-600)"/>
-      <text class="chead" x="58" y="210" fill="var(--blue-800)">WMS — Spring BE</text>
-      <text class="ctag" x="502" y="210" text-anchor="end">주문 상태기계 · 재고</text>
+      <rect x="40" y="180" width="480" height="280" fill="var(--blue-50)" stroke="var(--blue-600)"/>
+      <use href="#i-spring" x="58" y="192" width="22" height="22" style="color:var(--blue-800)"/>
+      <text class="chead" x="92" y="210" fill="var(--blue-800)">WMS — Spring BE</text>
 
-      <rect x="60" y="226" width="210" height="92" rx="6" fill="#fff" stroke="var(--blue-600)" stroke-opacity=".45"/>
-      <text class="bt" x="74" y="250" fill="var(--blue-800)">주문 상태기계</text>
-      <text class="bl mono" x="74" y="272" font-size="11">RECEIVED → ALLOCATED</text>
-      <text class="bl mono" x="74" y="288" font-size="11">→ PICKING → STAGED</text>
-      <text class="bl mono" x="74" y="304" font-size="11">→ SHIPPED</text>
+      <rect x="60" y="226" width="210" height="92" fill="#fff" stroke="var(--blue-600)" stroke-opacity=".45"/>
+      <use href="#i-state" x="74" y="240" width="18" height="18" style="color:var(--blue-600)"/>
+      <text class="bt" x="100" y="254" fill="var(--blue-800)">주문 상태기계</text>
+      <text class="bl mono" x="74" y="290" font-size="11">RECEIVED → SHIPPED</text>
 
-      <rect x="290" y="226" width="210" height="92" rx="6" fill="#fff" stroke="var(--blue-600)" stroke-opacity=".45"/>
-      <text class="bt" x="304" y="250" fill="var(--blue-800)">재고·로케이션 마스터</text>
-      <text class="bl" x="304" y="272">zones.json — A–V 22구역</text>
-      <text class="bl" x="304" y="288">132랙 · 57 스테이션</text>
-      <text class="bl" x="304" y="304">랙 슬롯 단위 재고</text>
+      <rect x="290" y="226" width="210" height="92" fill="#fff" stroke="var(--blue-600)" stroke-opacity=".45"/>
+      <use href="#i-shelf" x="304" y="240" width="18" height="18" style="color:var(--blue-600)"/>
+      <text class="bt" x="330" y="254" fill="var(--blue-800)">재고·로케이션</text>
+      <text class="bl" x="304" y="290">zones A–V · 132랙 · 57 ST</text>
 
-      <rect x="60" y="346" width="210" height="92" rx="6" fill="#fff" stroke="var(--blue-600)" stroke-opacity=".45"/>
-      <text class="bt" x="74" y="370" fill="var(--blue-800)">태스크 분해</text>
-      <text class="bl" x="74" y="392">주문 → 운송오더(TO)</text>
-      <text class="bl" x="74" y="408">픽업·하역 스테이션 지정</text>
-      <text class="bl" x="74" y="424">우선순위 부여</text>
+      <rect x="60" y="346" width="210" height="92" fill="#fff" stroke="var(--blue-600)" stroke-opacity=".45"/>
+      <use href="#i-split" x="74" y="360" width="18" height="18" style="color:var(--blue-600)"/>
+      <text class="bt" x="100" y="374" fill="var(--blue-800)">태스크 분해</text>
+      <text class="bl" x="74" y="410">주문 → 운송오더(TO)</text>
 
-      <rect x="290" y="346" width="210" height="92" rx="6" fill="#fff" stroke="var(--blue-600)" stroke-opacity=".45"/>
-      <text class="bt" x="304" y="370" fill="var(--blue-800)">피킹·재고 전이</text>
-      <text class="bl" x="304" y="392">도킹 완료 이벤트 수신</text>
-      <text class="bl" x="304" y="408">피킹 시간 분포 처리</text>
-      <text class="bl" x="304" y="424">재고 원자적 차감</text>
+      <rect x="290" y="346" width="210" height="92" fill="#fff" stroke="var(--blue-600)" stroke-opacity=".45"/>
+      <use href="#i-transfer" x="304" y="360" width="18" height="18" style="color:var(--blue-600)"/>
+      <text class="bt" x="330" y="374" fill="var(--blue-800)">피킹·재고 전이</text>
+      <text class="bl" x="304" y="410">이벤트 → 재고 차감</text>
     </g>
 
     <!-- PostgreSQL -->
     <g>
-      <rect x="40" y="500" width="480" height="80" rx="10" fill="var(--gray-50)" stroke="var(--gray-600)"/>
-      <text class="bt" x="58" y="532" fill="var(--gray-800)">PostgreSQL</text>
-      <text class="bl" x="58" y="554">주문 · 재고 · Task · 결정 로그 · run_kpi</text>
+      <rect x="40" y="500" width="480" height="80" fill="var(--gray-50)" stroke="var(--gray-600)"/>
+      <use href="#i-db" x="58" y="522" width="20" height="20" style="color:var(--gray-800)"/>
+      <text class="bt" x="88" y="532" fill="var(--gray-800)">PostgreSQL</text>
+      <text class="bl" x="88" y="554">주문 · 재고 · Task · run_kpi</text>
     </g>
 
     <!-- ============ 06 의사결정 지원 (견적) ============ -->
     <g>
-      <rect x="40" y="620" width="480" height="260" rx="10" fill="var(--purple-50)" stroke="var(--purple-600)"/>
-      <text class="chead" x="58" y="650" fill="var(--purple-800)">견적 산출 — 도입 의사결정 지원</text>
-      <text class="ctag" x="502" y="650" text-anchor="end">서비스 산출물</text>
+      <rect x="40" y="620" width="480" height="260" fill="var(--purple-50)" stroke="var(--purple-600)"/>
+      <use href="#i-doc" x="58" y="632" width="22" height="22" style="color:var(--purple-800)"/>
+      <text class="chead" x="92" y="650" fill="var(--purple-800)">견적 산출 — 도입 의사결정 지원</text>
 
-      <rect x="60" y="666" width="210" height="92" rx="6" fill="#fff" stroke="var(--purple-600)" stroke-opacity=".45"/>
-      <text class="bt" x="74" y="690" fill="var(--purple-800)">대수–성능 곡선</text>
-      <text class="bl" x="74" y="712">구성별 처리량 P50 · P10</text>
-      <text class="bl" x="74" y="728">사이클타임 · 혼잡 민감도</text>
-      <text class="bl" x="74" y="744">솔버×대수 스윕 집계</text>
+      <rect x="60" y="666" width="210" height="92" fill="#fff" stroke="var(--purple-600)" stroke-opacity=".45"/>
+      <use href="#i-curve" x="74" y="680" width="18" height="18" style="color:var(--purple-600)"/>
+      <text class="bt" x="100" y="694" fill="var(--purple-800)">대수–성능 곡선</text>
+      <text class="bl" x="74" y="730">대수별 처리량 P50 · P10</text>
 
-      <rect x="290" y="666" width="210" height="92" rx="6" fill="#fff" stroke="var(--purple-600)" stroke-opacity=".45"/>
-      <text class="bt" x="304" y="690" fill="var(--purple-800)">비용·ROI 모델</text>
-      <text class="bl" x="304" y="712">CAPEX · RaaS 요율</text>
-      <text class="bl" x="304" y="728">건당 처리 원가 곡선</text>
-      <text class="bl" x="304" y="744">증설 로드맵</text>
+      <rect x="290" y="666" width="210" height="92" fill="#fff" stroke="var(--purple-600)" stroke-opacity=".45"/>
+      <use href="#i-won" x="304" y="680" width="18" height="18" style="color:var(--purple-600)"/>
+      <text class="bt" x="330" y="694" fill="var(--purple-800)">비용·ROI 모델</text>
+      <text class="bl" x="304" y="730">TCO · 건당 처리 원가</text>
 
-      <rect x="60" y="778" width="440" height="80" rx="6" fill="#fff" stroke="var(--purple-600)" stroke-opacity=".45"/>
-      <text class="bt" x="74" y="802" fill="var(--purple-800)">견적 리포트 생성기</text>
-      <text class="bl" x="74" y="824">권장 대수 · 보장 처리량(P10) · TCO/ROI — LLM 서술 → 견적서(웹·PDF)</text>
+      <rect x="60" y="778" width="440" height="80" fill="#fff" stroke="var(--purple-600)" stroke-opacity=".45"/>
+      <use href="#i-doc" x="74" y="794" width="18" height="18" style="color:var(--purple-600)"/>
+      <text class="bt" x="100" y="808" fill="var(--purple-800)">견적 리포트 생성기</text>
+      <text class="bl" x="100" y="830">권장 대수 · 보장 처리량(P10) → 견적서(웹·PDF)</text>
 
       <path class="edge-in" d="M165 758 L165 778" marker-end="url(#ahi)"/>
       <path class="edge-in" d="M395 758 L395 778" marker-end="url(#ahi)"/>
@@ -159,9 +288,10 @@
 
     <!-- ============ 03 EMQX 백본 ============ -->
     <g>
-      <rect x="580" y="180" width="140" height="680" rx="10" fill="var(--gray-50)" stroke="var(--gray-600)"/>
-      <text class="chead" x="650" y="216" text-anchor="middle" fill="var(--gray-800)">EMQX</text>
-      <text class="ctag" x="650" y="236" text-anchor="middle">MQTT 브로커</text>
+      <rect x="580" y="180" width="140" height="680" fill="var(--gray-50)" stroke="var(--gray-600)"/>
+      <use href="#i-hub" x="639" y="200" width="22" height="22" style="color:var(--gray-800)"/>
+      <text class="chead" x="650" y="248" text-anchor="middle" fill="var(--gray-800)">EMQX</text>
+      <text class="ctag" x="650" y="268" text-anchor="middle">MQTT 브로커</text>
       <text class="bl mono" x="650" y="500" text-anchor="middle" font-size="11">biz/*  fms/*</text>
       <text class="bl mono" x="650" y="518" text-anchor="middle" font-size="11">uagv/v2/*</text>
       <text class="ctag" x="650" y="836" text-anchor="middle">QoS1 · retained state</text>
@@ -169,49 +299,48 @@
 
     <!-- ============ 04 FMS 코어 ============ -->
     <g>
-      <rect x="780" y="40" width="560" height="460" rx="10" fill="var(--teal-50)" stroke="var(--teal-600)"/>
-      <text class="chead" x="798" y="70" fill="var(--teal-800)">FMS 코어 — Python</text>
+      <rect x="780" y="40" width="560" height="460" fill="var(--teal-50)" stroke="var(--teal-600)"/>
+      <use href="#i-gear" x="798" y="52" width="22" height="22" style="color:var(--teal-800)"/>
+      <text class="chead" x="832" y="70" fill="var(--teal-800)">FMS 코어 — Python</text>
       <text class="ctag" x="1322" y="70" text-anchor="end">500ms 제어 사이클</text>
 
-      <rect x="800" y="96" width="250" height="88" rx="6" fill="#fff" stroke="var(--teal-600)" stroke-opacity=".45"/>
-      <text class="bt" x="814" y="120" fill="var(--teal-800)">월드모델</text>
-      <text class="bl" x="814" y="142">경로망 그래프 · 로봇 포즈</text>
-      <text class="bl" x="814" y="158">태스크·예약 현황</text>
+      <rect x="800" y="96" width="250" height="88" fill="#fff" stroke="var(--teal-600)" stroke-opacity=".45"/>
+      <use href="#i-map" x="814" y="110" width="18" height="18" style="color:var(--teal-600)"/>
+      <text class="bt" x="840" y="124" fill="var(--teal-800)">월드모델</text>
+      <text class="bl" x="814" y="160">그래프 · 로봇 상태 · 예약 뷰</text>
 
-      <rect x="1070" y="96" width="250" height="88" rx="6" fill="#fff" stroke="var(--teal-600)" stroke-opacity=".45"/>
-      <text class="bt" x="1084" y="120" fill="var(--teal-800)">배차 Dispatcher</text>
-      <text class="bl" x="1084" y="142">태스크 ↔ 로봇 할당</text>
-      <text class="bl" x="1084" y="158">유휴·근접·배터리 규칙</text>
+      <rect x="1070" y="96" width="250" height="88" fill="#fff" stroke="var(--teal-600)" stroke-opacity=".45"/>
+      <use href="#i-dispatch" x="1084" y="110" width="18" height="18" style="color:var(--teal-600)"/>
+      <text class="bt" x="1110" y="124" fill="var(--teal-800)">배차 Dispatcher</text>
+      <text class="bl" x="1084" y="160">태스크 ↔ 로봇 할당</text>
 
-      <rect x="800" y="204" width="360" height="110" rx="6" fill="#fff" stroke="var(--coral-600)" stroke-width="2"/>
-      <text class="bt" x="814" y="228" fill="var(--coral-800)">MAPF 플래너 — 교체형 솔버 슬롯</text>
-      <text class="bl" x="814" y="250">다중 로봇 무충돌 경로 계산 (연구 코어)</text>
-      <rect class="chip" x="814" y="264" width="86" height="26" rx="5"/>
+      <rect x="800" y="204" width="360" height="110" fill="#fff" stroke="var(--coral-600)" stroke-width="2"/>
+      <use href="#i-route" x="814" y="216" width="19" height="19" style="color:var(--coral-800)"/>
+      <text class="bt" x="842" y="230" fill="var(--coral-800)">MAPF 플래너 — 교체형 솔버 슬롯</text>
+      <text class="bl" x="814" y="252">다중 로봇 무충돌 경로 (연구 코어)</text>
+      <rect class="chip" x="814" y="264" width="86" height="26"/>
       <text class="chipt" x="857" y="281" text-anchor="middle">PP+예약</text>
-      <rect class="chip" x="908" y="264" width="70" height="26" rx="5"/>
+      <rect class="chip" x="908" y="264" width="70" height="26"/>
       <text class="chipt" x="943" y="281" text-anchor="middle">RHCR</text>
-      <rect class="chip" x="986" y="264" width="64" height="26" rx="5"/>
+      <rect class="chip" x="986" y="264" width="64" height="26"/>
       <text class="chipt" x="1018" y="281" text-anchor="middle">PIBT</text>
-      <rect class="chip" x="1058" y="264" width="76" height="26" rx="5"/>
+      <rect class="chip" x="1058" y="264" width="76" height="26"/>
       <text class="chipt" x="1096" y="281" text-anchor="middle">LaCAM</text>
 
-      <rect x="1180" y="204" width="140" height="110" rx="6" fill="#fff" stroke="var(--teal-600)" stroke-opacity=".45"/>
-      <text class="bt" x="1194" y="228" fill="var(--teal-800)">시공간 예약</text>
-      <text class="bl" x="1194" y="250">노드·엣지 ×</text>
-      <text class="bl" x="1194" y="266">시간창 테이블</text>
-      <text class="bl" x="1194" y="290">충돌 사전 차단</text>
+      <rect x="1180" y="204" width="140" height="110" fill="#fff" stroke="var(--teal-600)" stroke-opacity=".45"/>
+      <use href="#i-grid" x="1194" y="216" width="18" height="18" style="color:var(--teal-600)"/>
+      <text class="bt" x="1194" y="256" fill="var(--teal-800)">시공간 예약</text>
+      <text class="bl" x="1194" y="278">노드·엣지 × 시간창</text>
 
-      <rect x="800" y="334" width="250" height="84" rx="6" fill="#fff" stroke="var(--teal-600)" stroke-opacity=".45"/>
-      <text class="bt" x="814" y="358" fill="var(--teal-800)">VDA 5050 어댑터</text>
-      <text class="bl" x="814" y="380">Order / State 변환</text>
-      <text class="bl" x="814" y="396">표준 경계 · factsheet</text>
+      <rect x="800" y="334" width="250" height="84" fill="#fff" stroke="var(--teal-600)" stroke-opacity=".45"/>
+      <use href="#i-plug" x="814" y="348" width="18" height="18" style="color:var(--teal-600)"/>
+      <text class="bt" x="840" y="362" fill="var(--teal-800)">VDA 5050 어댑터</text>
+      <text class="bl" x="814" y="398">Order / State 변환</text>
 
-      <rect x="1070" y="334" width="250" height="84" rx="6" fill="#fff" stroke="var(--teal-600)" stroke-opacity=".45"/>
-      <text class="bt" x="1084" y="358" fill="var(--teal-800)">교통 관제</text>
-      <text class="bl" x="1084" y="380">state 반영 · 지난 예약 해제</text>
-      <text class="bl" x="1084" y="396">base 연장 stitching</text>
-
-      <text class="ctag" x="1060" y="466" text-anchor="middle">사이클: state 반영 → 배차 → MAPF → 예약 → 오더 발행</text>
+      <rect x="1070" y="334" width="250" height="84" fill="#fff" stroke="var(--teal-600)" stroke-opacity=".45"/>
+      <use href="#i-signal" x="1084" y="348" width="18" height="18" style="color:var(--teal-600)"/>
+      <text class="bt" x="1110" y="362" fill="var(--teal-800)">교통 관제</text>
+      <text class="bl" x="1084" y="398">예약 해제 · base 연장</text>
 
       <!-- FMS 내부 흐름 -->
       <path class="edge-in" d="M1050 140 L1070 140" marker-end="url(#ahi)"/>
@@ -224,55 +353,52 @@
 
     <!-- ============ 05 실행 계층 ============ -->
     <g>
-      <rect x="780" y="540" width="560" height="110" rx="10" fill="var(--steel-50)" stroke="var(--steel-600)"/>
-      <text class="chead" x="798" y="570" fill="var(--steel-800)">amr-agent × N — ROS 2</text>
-      <rect class="chip" x="798" y="588" width="182" height="34" rx="6"/>
-      <text class="chipt" x="889" y="609" text-anchor="middle">MQTT–ROS 브리지 (VDA5050)</text>
-      <rect class="chip" x="992" y="588" width="160" height="34" rx="6"/>
-      <text class="chipt" x="1072" y="609" text-anchor="middle">Pure Pursuit 추종기</text>
-      <rect class="chip" x="1164" y="588" width="150" height="34" rx="6"/>
-      <text class="chipt" x="1239" y="609" text-anchor="middle">AMCL 자기위치</text>
+      <rect x="780" y="540" width="560" height="110" fill="var(--steel-50)" stroke="var(--steel-600)"/>
+      <use href="#i-ros" x="798" y="552" width="22" height="22" style="color:var(--steel-800)"/>
+      <text class="chead" x="832" y="570" fill="var(--steel-800)">amr-agent × N — ROS 2</text>
+      <rect class="chip" x="798" y="588" width="196" height="34"/>
+      <use href="#i-plug" x="808" y="596" width="16" height="16" style="color:var(--steel-600)"/>
+      <text class="chipt" x="832" y="609">MQTT–ROS 브리지 (VDA5050)</text>
+      <rect class="chip" x="1006" y="588" width="164" height="34"/>
+      <use href="#i-steer" x="1016" y="596" width="16" height="16" style="color:var(--steel-600)"/>
+      <text class="chipt" x="1040" y="609">Pure Pursuit 추종</text>
+      <rect class="chip" x="1182" y="588" width="140" height="34"/>
+      <use href="#i-target" x="1192" y="596" width="16" height="16" style="color:var(--steel-600)"/>
+      <text class="chipt" x="1216" y="609">AMCL 자기위치</text>
 
-      <rect x="780" y="700" width="560" height="180" rx="10" fill="var(--steel-50)" stroke="var(--steel-600)"/>
-      <text class="chead" x="798" y="730" fill="var(--steel-800)">Isaac Sim — 물리 창고 (SIL)</text>
-      <text class="bl" x="798" y="758">iw.hub × N — 차동구동 물리 · 리프트</text>
-      <text class="bl" x="798" y="778">창고 씬 v6.0.1 — 22구역 · 132랙 · 57 스테이션</text>
-      <text class="bl" x="798" y="798">물리 라이다 720빔 · /clock 심시간</text>
-      <text class="ctag" x="798" y="850">현실 대역 — 슬립·지연·혼잡이 실제 물리로 발생</text>
+      <rect x="780" y="700" width="560" height="180" fill="var(--steel-50)" stroke="var(--steel-600)"/>
+      <use href="#i-cube" x="798" y="712" width="22" height="22" style="color:var(--steel-800)"/>
+      <text class="chead" x="832" y="730" fill="var(--steel-800)">Isaac Sim — 물리 창고 (SIL)</text>
+      <text class="bl" x="798" y="762">iw.hub × N · 창고 씬 v6.0.1 · 물리 라이다 720빔 · /clock</text>
+      <text class="ctag" x="798" y="850">슬립 · 지연 · 혼잡 = 실제 물리</text>
     </g>
 
     <!-- ============ R 연구 트랙 ============ -->
     <g>
-      <rect x="1400" y="40" width="280" height="840" rx="10" fill="var(--coral-50)" stroke="var(--coral-600)"/>
-      <text class="chead" x="1418" y="70" fill="var(--coral-800)">MAPF 연구 트랙</text>
-      <text class="ctag" x="1662" y="70" text-anchor="end">그리드 × 물리</text>
+      <rect x="1400" y="40" width="280" height="840" fill="var(--coral-50)" stroke="var(--coral-600)"/>
+      <use href="#i-flask" x="1418" y="52" width="22" height="22" style="color:var(--coral-800)"/>
+      <text class="chead" x="1450" y="70" fill="var(--coral-800)">MAPF 연구 트랙</text>
 
-      <rect x="1420" y="96" width="240" height="150" rx="6" fill="#fff" stroke="var(--coral-600)" stroke-opacity=".5"/>
-      <text class="bt" x="1434" y="120" fill="var(--coral-800)">그리드 벤치 하네스</text>
-      <text class="bl" x="1434" y="142">1m 셀 고속 스텝 시뮬</text>
-      <text class="bl" x="1434" y="158">FMS 코어 동일 솔버 import</text>
-      <text class="bl" x="1434" y="174">스윕: 솔버 4+종</text>
-      <text class="bl" x="1434" y="190">× 로봇 5–50대 × 주문 부하</text>
-      <text class="bl" x="1434" y="206">lifelong MAPD 스트림</text>
+      <rect x="1420" y="96" width="240" height="150" fill="#fff" stroke="var(--coral-600)" stroke-opacity=".5"/>
+      <use href="#i-grid" x="1434" y="110" width="18" height="18" style="color:var(--coral-600)"/>
+      <text class="bt" x="1460" y="124" fill="var(--coral-800)">그리드 벤치 하네스</text>
+      <text class="bl" x="1434" y="156">1m 셀 · FMS 코어 동일 솔버</text>
+      <text class="bl" x="1434" y="176">솔버 4+종 × 로봇 5–50 × 부하</text>
 
-      <rect x="1420" y="286" width="240" height="130" rx="6" fill="#fff" stroke="var(--coral-600)" stroke-opacity=".5"/>
-      <text class="bt" x="1434" y="310" fill="var(--coral-800)">KPI 집계</text>
-      <text class="bl" x="1434" y="332">처리량 orders/hr</text>
-      <text class="bl" x="1434" y="348">사이클타임 P50 · P95</text>
-      <text class="bl" x="1434" y="364">데드락 · 재계획 횟수</text>
-      <text class="bl" x="1434" y="380">솔버 계산 시간</text>
+      <rect x="1420" y="286" width="240" height="130" fill="#fff" stroke="var(--coral-600)" stroke-opacity=".5"/>
+      <use href="#i-chart" x="1434" y="300" width="18" height="18" style="color:var(--coral-600)"/>
+      <text class="bt" x="1460" y="314" fill="var(--coral-800)">KPI 집계</text>
+      <text class="bl" x="1434" y="346">처리량 · 사이클타임 · 데드락</text>
 
-      <rect x="1420" y="456" width="240" height="150" rx="6" fill="#fff" stroke="var(--coral-600)" stroke-opacity=".5"/>
-      <text class="bt" x="1434" y="480" fill="var(--coral-800)">그리드–물리 갭 분석</text>
-      <text class="bl" x="1434" y="502">그리드 예측 vs SIL 실측</text>
-      <text class="bl" x="1434" y="518">실행 지연·슬립 강건성</text>
-      <text class="bl" x="1434" y="534">승자 솔버 물리 재검증</text>
-      <text class="bl" x="1434" y="558">"그리드의 승자가</text>
-      <text class="bl" x="1434" y="574">물리에서도 이기는가"</text>
+      <rect x="1420" y="456" width="240" height="150" fill="#fff" stroke="var(--coral-600)" stroke-opacity=".5"/>
+      <use href="#i-compare" x="1434" y="470" width="18" height="18" style="color:var(--coral-600)"/>
+      <text class="bt" x="1460" y="484" fill="var(--coral-800)">그리드–물리 갭 분석</text>
+      <text class="bl" x="1434" y="516">그리드 예측 vs SIL 실측</text>
 
-      <rect x="1420" y="646" width="240" height="70" rx="6" fill="#fff" stroke="var(--coral-600)" stroke-opacity=".5"/>
-      <text class="bt" x="1434" y="672" fill="var(--coral-800)">산출물</text>
-      <text class="bl" x="1434" y="694">솔버 권고 · 대수별 KPI · 갭 리포트</text>
+      <rect x="1420" y="646" width="240" height="70" fill="#fff" stroke="var(--coral-600)" stroke-opacity=".5"/>
+      <use href="#i-doc" x="1434" y="660" width="18" height="18" style="color:var(--coral-600)"/>
+      <text class="bt" x="1460" y="674" fill="var(--coral-800)">산출물</text>
+      <text class="bl" x="1434" y="700">솔버 권고 · 대수별 KPI</text>
 
       <path class="edge-in" d="M1540 246 L1540 286" marker-end="url(#ahi)"/>
       <path class="edge-in" d="M1540 416 L1540 456" marker-end="url(#ahi)"/>
@@ -280,53 +406,40 @@
     </g>
 
     <!-- ============ 워크플로우 화살표 ============ -->
-    <!-- 1: FE → WMS -->
     <path class="edge" d="M195 136 L195 180" marker-end="url(#ah)"/>
     <text class="el mono" x="208" y="162">REST POST /api/orders</text>
-    <circle class="badge" cx="180" cy="158" r="12"/><text class="badge-t" x="180" y="163" text-anchor="middle">1</text>
+    <rect class="badge" x="169" y="147" width="22" height="22"/><text class="badge-t" x="180" y="163" text-anchor="middle">1</text>
     <path class="edge" d="M445 136 L445 180" marker-end="url(#ah)"/>
     <text class="el" x="458" y="162">부하 주문 스트림</text>
-    <!-- WMS → FE (WS) -->
     <path class="edge" d="M100 180 L100 136" marker-end="url(#ah)"/>
     <text class="el" x="100" y="152" text-anchor="middle">WS 관제 push</text>
-    <!-- 2: WMS 내부 분해 -->
-    <circle class="badge" cx="270" cy="346" r="12"/><text class="badge-t" x="270" y="351" text-anchor="middle">2</text>
-    <!-- WMS → PG -->
+    <rect class="badge" x="259" y="335" width="22" height="22"/><text class="badge-t" x="270" y="351" text-anchor="middle">2</text>
     <path class="edge" d="M280 460 L280 500" marker-end="url(#ah)"/>
     <text class="el mono" x="293" y="484">JDBC 트랜잭션</text>
-    <!-- 3: WMS → EMQX -->
     <path class="edge" d="M520 270 L580 270" marker-end="url(#ah)"/>
     <text class="el mono" x="550" y="256" text-anchor="middle">pub biz/order</text>
-    <circle class="badge" cx="550" cy="290" r="12"/><text class="badge-t" x="550" y="295" text-anchor="middle">3</text>
-    <!-- 8: EMQX → WMS -->
+    <rect class="badge" x="539" y="279" width="22" height="22"/><text class="badge-t" x="550" y="295" text-anchor="middle">3</text>
     <path class="edge" d="M580 390 L520 390" marker-end="url(#ah)"/>
     <text class="el mono" x="550" y="376" text-anchor="middle">sub fms/event</text>
-    <circle class="badge" cx="550" cy="410" r="12"/><text class="badge-t" x="550" y="415" text-anchor="middle">8</text>
-    <!-- 4: EMQX → FMS -->
+    <rect class="badge" x="539" y="399" width="22" height="22"/><text class="badge-t" x="550" y="415" text-anchor="middle">8</text>
     <path class="edge" d="M720 140 L780 140" marker-end="url(#ah)"/>
     <text class="el mono" x="750" y="126" text-anchor="middle">sub biz/order</text>
-    <circle class="badge" cx="750" cy="160" r="12"/><text class="badge-t" x="750" y="165" text-anchor="middle">4</text>
-    <!-- 5: FMS → EMQX (order 발행) -->
+    <rect class="badge" x="739" y="149" width="22" height="22"/><text class="badge-t" x="750" y="165" text-anchor="middle">4</text>
     <path class="edge" d="M780 360 L720 360" marker-end="url(#ah)"/>
     <text class="el mono" x="750" y="346" text-anchor="middle">pub uagv/…/order</text>
-    <circle class="badge" cx="750" cy="380" r="12"/><text class="badge-t" x="750" y="385" text-anchor="middle">5</text>
-    <!-- EMQX → FMS (state 수신) -->
+    <rect class="badge" x="739" y="369" width="22" height="22"/><text class="badge-t" x="750" y="385" text-anchor="middle">5</text>
     <path class="edge" d="M720 408 L780 408" marker-end="url(#ah)"/>
     <text class="el mono" x="750" y="430" text-anchor="middle">sub uagv/…/state</text>
-    <!-- fms/event 발행 -->
     <path class="edge" d="M780 480 L720 480" marker-end="url(#ah)"/>
     <text class="el mono" x="750" y="466" text-anchor="middle">pub fms/event</text>
-    <!-- EMQX → agent -->
     <path class="edge" d="M720 580 L780 580" marker-end="url(#ah)"/>
     <text class="el mono" x="775" y="566" text-anchor="end">sub uagv/…/order</text>
-    <!-- 7: agent → EMQX -->
     <path class="edge" d="M780 622 L720 622" marker-end="url(#ah)"/>
     <text class="el mono" x="775" y="644" text-anchor="end">pub state 2Hz</text>
-    <circle class="badge" cx="695" cy="622" r="12"/><text class="badge-t" x="695" y="627" text-anchor="middle">7</text>
-    <!-- 6: agent ↔ Isaac -->
+    <rect class="badge" x="684" y="611" width="22" height="22"/><text class="badge-t" x="695" y="627" text-anchor="middle">7</text>
     <path class="edge" d="M950 650 L950 700" marker-end="url(#ah)"/>
     <text class="el mono" x="963" y="672">DDS /cmd_vel 20Hz</text>
-    <circle class="badge" cx="935" cy="672" r="12"/><text class="badge-t" x="935" y="677" text-anchor="middle">6</text>
+    <rect class="badge" x="924" y="661" width="22" height="22"/><text class="badge-t" x="935" y="677" text-anchor="middle">6</text>
     <path class="edge" d="M1200 700 L1200 650" marker-end="url(#ah)"/>
     <text class="el mono" x="1188" y="694" text-anchor="end">DDS /odom · /scan · /tf</text>
 
@@ -337,7 +450,7 @@
     <text class="el elc" x="1378" y="778" text-anchor="end">SIL 실행 로그</text>
     <path class="edge-r" d="M1420 680 L1358 680 L1358 300 L1342 300" marker-end="url(#ahc)"/>
     <text class="el elc" x="1354" y="490" text-anchor="end">솔버·파라미터 환류</text>
-    <circle class="badge" cx="1358" cy="620" r="12"/><text class="badge-t" x="1358" y="625" text-anchor="middle">9</text>
+    <rect class="badge" x="1347" y="609" width="22" height="22"/><text class="badge-t" x="1358" y="625" text-anchor="middle">9</text>
 
     <!-- ============ 견적 플로우 (⑩) ============ -->
     <path class="edge" d="M280 580 L280 620" marker-end="url(#ah)"/>
@@ -346,7 +459,7 @@
     <text class="el elc" x="910" y="928" text-anchor="middle">스윕 KPI · 솔버 권고 (오프라인 적재)</text>
     <path class="edge" d="M40 700 L20 700 L20 88 L40 88" marker-end="url(#ah)"/>
     <text class="el" transform="rotate(-90 14 400)" x="14" y="400" text-anchor="middle">견적서 · 대수–성능 곡선</text>
-    <circle class="badge" cx="20" cy="560" r="13"/><text class="badge-t" x="20" y="565" text-anchor="middle" font-size="12">10</text>
+    <rect class="badge" x="8" y="549" width="24" height="22"/><text class="badge-t" x="20" y="565" text-anchor="middle" font-size="12">10</text>
   </svg>
   <figcaption>
     <span class="lg"><span class="sw"></span> 운영 데이터 흐름 (REST · MQTT · DDS)</span>
