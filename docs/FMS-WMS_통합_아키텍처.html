@@ -55,7 +55,7 @@
 <body>
 <div class="wrap">
   <h1>AMR 도입 견적 서비스 — FMS-WMS 통합 시스템 아키텍처</h1>
-  <p class="sub">요청 접수형(비동기) · 웹 인프라 2층 분리 — 상시 견적 서비스 / 런 단위 시뮬 스택 · 고정 MAPF · SimPy DES + Optuna 스윕 + Isaac 물리 검증 런 · EC2 t3.xlarge(k3s, IAM 없음) / GPU 서버 2-인스턴스 · v3.3 · 2026-09-02</p>
+  <p class="sub">요청 접수형(비동기) · 웹 인프라 2층 분리 — 상시 견적 서비스 / 런 단위 시뮬 스택 · 고정 MAPF · SimPy DES + Optuna 스윕 + Isaac 물리 검증 런 · EC2 t3.xlarge(k3s, IAM 없음) / GPU 서버 2-인스턴스 · v3.4 · 2026-09-02</p>
 
   <figure>
   <svg viewBox="-40 0 1800 1040" role="img" aria-label="AMR 도입 견적 서비스(요청 접수형) 아키텍처. 상시 가동 견적 서비스(FE·견적 BE·PostgreSQL·견적 산출)와 런 단위로 기동되는 시뮬 스택(시뮬 WMS·EMQX·FMS 코어), GPU 서버의 ROS2·Isaac 실행 계층, k3s 배치 견적 계산 엔진이 파이프라인 번호 1~8로 연결된다.">
@@ -191,6 +191,7 @@
       <use href="#si-springboot" x="44.5" y="684.5" width="17" height="17" style="color:#ffffff"/>
       <text class="chead" x="76" y="698">시뮬 WMS — Spring</text>
       <use href="#si-docker" x="492" y="686" width="16" height="16" style="color:#2496ED"/>
+      <text class="ctag" x="500" y="718" text-anchor="end">규칙 · zones.json → DES WMS 라이트와 공유</text>
 
       <rect class="sbox" x="60" y="726" width="210" height="74"/>
       <text class="bt" x="165" y="756" text-anchor="middle">주문 상태기계</text>
@@ -315,8 +316,12 @@
       <text class="bl" x="1540" y="170" text-anchor="middle">AMR 대수 × 기종 · TPE</text>
 
       <rect class="sbox" x="1420" y="240" width="240" height="90"/>
-      <text class="bt" x="1540" y="280" text-anchor="middle">DES 실행 — SimPy</text>
-      <text class="bl" x="1540" y="302" text-anchor="middle">FMS 커널(공유) + WMS 확률 모델</text>
+      <text class="bt" x="1540" y="262" text-anchor="middle">DES 실행 — SimPy</text>
+      <rect class="chip" x="1430" y="272" width="108" height="24"/>
+      <text class="chipt" x="1484" y="288" text-anchor="middle" font-size="10.5">FMS 커널 · 공유</text>
+      <rect class="chip" x="1546" y="272" width="106" height="24"/>
+      <text class="chipt" x="1599" y="288" text-anchor="middle" font-size="10.5">WMS 라이트 모델</text>
+      <text class="bl" x="1540" y="318" text-anchor="middle" font-size="10.5">가상 시계 · 시드 반복 · 규칙 공유</text>
 
       <rect class="sbox" x="1420" y="354" width="240" height="90"/>
       <text class="bt" x="1540" y="394" text-anchor="middle">KPI 집계</text>
