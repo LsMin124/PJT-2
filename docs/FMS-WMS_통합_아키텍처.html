@@ -55,7 +55,7 @@
 <body>
 <div class="wrap">
   <h1>AMR 도입 견적 서비스 — FMS-WMS 통합 시스템 아키텍처</h1>
-  <p class="sub">요청 접수형(비동기) · 웹 인프라 2층 분리 — 상시 견적 서비스 / 런 단위 시뮬 스택 · 고정 MAPF · SimPy DES + Optuna 스윕 + Isaac 물리 검증 런 · EC2 t3.xlarge(k3s, IAM 없음) / GPU 서버 2-인스턴스 · v3.4 · 2026-09-02</p>
+  <p class="sub">요청 접수형(비동기) · 웹 인프라 2층 분리 — 상시 견적 서비스 / 런 단위 시뮬 스택 · 고정 MAPF · SimPy DES + Optuna 스윕 + Isaac 물리 검증 런 · EC2 t3.xlarge(k3s, IAM 없음) / GPU 서버 2-인스턴스 · v3.5 · 2026-09-02</p>
 
   <figure>
   <svg viewBox="-40 0 1800 1040" role="img" aria-label="AMR 도입 견적 서비스(요청 접수형) 아키텍처. 상시 가동 견적 서비스(FE·견적 BE·PostgreSQL·견적 산출)와 런 단위로 기동되는 시뮬 스택(시뮬 WMS·EMQX·FMS 코어), GPU 서버의 ROS2·Isaac 실행 계층, k3s 배치 견적 계산 엔진이 파이프라인 번호 1~8로 연결된다.">
@@ -95,31 +95,31 @@
     </defs>
 
     <!-- ============ 배포 프레임 (EC2 / GPU) ============ -->
-    <path d="M-16 16 H1700 V900 H1372 V516 H748 V990 H-16 Z" fill="#1F5FBF" fill-opacity="0.05" stroke="#45443e" stroke-width="1.5"/>
+    <path d="M-16 16 H1700 V900 H1372 V516 H748 V990 H-16 Z" fill="#1F5FBF" fill-opacity="0.06" stroke="#45443e" stroke-width="1.5"/>
     <rect x="1266" y="10" width="380" height="15" fill="#ffffff"/>
     <text class="fl" x="1640" y="21" text-anchor="end">AWS EC2 t3.xlarge (4 vCPU · 16 GB) — k3s · IAM 없음</text>
     <rect x="1648" y="4" width="24" height="24" fill="#232F3E"/>
     <use href="#si-amazonwebservices" x="1652" y="8" width="16" height="16" style="color:#ffffff"/>
     <rect x="1676" y="4" width="24" height="24" fill="#FFC61C"/>
     <use href="#si-k3s" x="1680" y="8" width="16" height="16" style="color:#1a1a17"/>
-    <rect x="760" y="524" width="596" height="376" fill="#3E9B3E" fill-opacity="0.07" stroke="#45443e" stroke-width="1.5"/>
+    <rect x="760" y="524" width="596" height="376" fill="#3E9B3E" fill-opacity="0.09" stroke="#45443e" stroke-width="1.5"/>
     <rect x="966" y="518" width="364" height="15" fill="#ffffff"/>
     <text class="fl" x="1324" y="529" text-anchor="end">GPU 서버 ×N (RTX 5080) — 시뮬 섬 · 네이티브</text>
     <rect x="1332" y="512" width="24" height="24" fill="#76B900"/>
     <use href="#si-nvidia" x="1336" y="516" width="16" height="16" style="color:#ffffff"/>
 
     <!-- ============ 도메인 틴트: 견적(보라) / 시뮬(앰버) ============ -->
-    <rect x="24" y="28" width="512" height="616" fill="#6B4FBB" fill-opacity="0.08"/>
-    <rect x="1400" y="40" width="280" height="840" fill="#6B4FBB" fill-opacity="0.08"/>
-    <path d="M24 660 H560 V24 H1364 V976 H24 Z" fill="#D98A1E" fill-opacity="0.08"/>
+    <rect x="24" y="28" width="512" height="616" fill="#6B4FBB" fill-opacity="0.10"/>
+    <rect x="1400" y="40" width="280" height="840" fill="#6B4FBB" fill-opacity="0.10"/>
+    <path d="M24 660 H560 V34 H1364 V976 H24 Z" fill="#D98A1E" fill-opacity="0.10" stroke="#D98A1E" stroke-width="1.6" stroke-dasharray="7 5"/>
 
     <!-- ============ 상시/런 구분 프레임 ============ -->
-    <rect x="24" y="28" width="512" height="616" fill="none" stroke="#6f6e64" stroke-width="1.2" stroke-dasharray="7 5"/>
+    <rect x="24" y="28" width="512" height="616" fill="none" stroke="#6B4FBB" stroke-width="1.6" stroke-dasharray="7 5"/>
     <rect x="300" y="25" width="228" height="15" fill="#ffffff"/>
-    <text class="fl" x="524" y="33" text-anchor="end">01 · 견적 서비스 — 상시 가동</text>
+    <text class="fl" x="524" y="33" text-anchor="end" fill="#5A3FA8">01 · 견적 서비스 — 상시 가동</text>
 
     <!-- ============ 계층 눈썹 라벨 ============ -->
-    <text class="eyebrow" x="40" y="668">02 · 시뮬 스택 — 런 단위 기동</text>
+    <text class="eyebrow" x="40" y="668" fill="#B8741A">02 · 시뮬레이션 도메인 — 런 단위 기동</text>
     <text class="eyebrow" x="580" y="88">03 · 메시지 백본 — 상시</text>
     <text class="eyebrow" x="780" y="28">04 · FMS 코어 — 런 단위</text>
     <rect x="776" y="519" width="176" height="15" fill="#ffffff"/>
@@ -234,7 +234,7 @@
       <text class="bl mono" x="640" y="816" text-anchor="middle" font-size="10.5">fms/event</text>
       <text class="ctag" x="640" y="836" text-anchor="middle">MQTT · QoS1 · retained</text>
     </g>
-    <rect x="580" y="100" width="120" height="750" fill="#6B4FBB" fill-opacity="0.08"/>
+    <rect x="580" y="100" width="120" height="750" fill="#6B4FBB" fill-opacity="0.10" stroke="#6B4FBB" stroke-width="1.4" stroke-dasharray="5 4"/>
 
     <!-- ============ FMS 코어 (런 단위) ============ -->
     <g>
@@ -307,7 +307,7 @@
 
     <!-- ============ 견적 계산 엔진 (배치) ============ -->
     <g>
-      <rect x="1400" y="40" width="280" height="840" fill="#ffffff" stroke="#6f6e64" stroke-width="1.2" stroke-dasharray="7 5"/>
+      <rect x="1400" y="40" width="280" height="840" fill="none" stroke="#6B4FBB" stroke-width="1.6" stroke-dasharray="7 5"/>
       <text class="chead" x="1418" y="68">견적 계산 엔진 — 배치 워커</text>
       <text class="ctag" x="1418" y="86">06 · EC2 k3s Job · AMQP 소비 · CPU limit 2 vCPU</text>
 
@@ -349,8 +349,8 @@
       <rect class="badge" x="1409" y="229" width="22" height="22"/><text class="badge-t" x="1420" y="245" text-anchor="middle">4</text>
       <rect class="badge" x="1409" y="343" width="22" height="22"/><text class="badge-t" x="1420" y="359" text-anchor="middle">6</text>
     </g>
-    <rect x="1400" y="456" width="280" height="134" fill="#D98A1E" fill-opacity="0.10"/>
-    <rect x="1400" y="688" width="280" height="94" fill="#D98A1E" fill-opacity="0.10"/>
+    <rect x="1406" y="458" width="268" height="130" fill="#D98A1E" fill-opacity="0.12" stroke="#D98A1E" stroke-width="1.4" stroke-dasharray="5 4"/>
+    <rect x="1406" y="690" width="268" height="90" fill="#D98A1E" fill-opacity="0.12" stroke="#D98A1E" stroke-width="1.4" stroke-dasharray="5 4"/>
 
     <!-- ============ 견적 파이프라인 화살표 ============ -->
     <path class="edge" d="M195 136 L195 176" marker-end="url(#ah)"/>
@@ -409,7 +409,7 @@
     <span class="lg"><b>상시 / 런 단위</b> = 견적 서비스는 상시 가동, 시뮬 스택은 시나리오별 기동·리셋</span>
     <span class="lg"><b>굵은 테두리</b> = 고정 MAPF 코어</span>
     <span class="lg"><b>외곽 프레임</b> = 배포 인스턴스 · <b>Docker 로고</b> = k3s 파드</span>
-    <span class="lg"><span class="swb" style="background:rgba(31,95,191,.14)"></span> EC2 <span class="swb" style="background:rgba(62,155,62,.16)"></span> GPU 서버 · <span class="swb" style="background:rgba(107,79,187,.16)"></span> 견적 서비스 <span class="swb" style="background:rgba(217,138,30,.16)"></span> 시뮬레이션 · 틴트가 겹친 곳 = 공용</span>
+    <span class="lg"><span class="swb" style="background:rgba(31,95,191,.16)"></span> EC2 <span class="swb" style="background:rgba(62,155,62,.18)"></span> GPU 서버 · <span class="swb" style="background:rgba(107,79,187,.18);border:1.5px dashed #6B4FBB"></span> 견적 서비스 도메인 <span class="swb" style="background:rgba(217,138,30,.18);border:1.5px dashed #D98A1E"></span> 시뮬레이션 도메인 · 색 점선 = 도메인 경계, 상대 색 점선 조각 = 공용</span>
   </figcaption>
   </figure>
 
