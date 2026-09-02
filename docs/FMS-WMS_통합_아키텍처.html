@@ -55,7 +55,7 @@
 <body>
 <div class="wrap">
   <h1>AMR 도입 견적 서비스 — FMS-WMS 통합 시스템 아키텍처</h1>
-  <p class="sub">요청 접수형(비동기) · 웹 인프라 2층 분리 — 상시 견적 서비스 / 런 단위 시뮬 스택 · 고정 MAPF · SimPy DES + Optuna 스윕 + Isaac 물리 검증 런 · EC2 t3.xlarge(k3s, IAM 없음) / GPU 서버 2-인스턴스 · v3.5 · 2026-09-02</p>
+  <p class="sub">요청 접수형(비동기) · 웹 인프라 2층 분리 — 상시 견적 서비스 / 런 단위 시뮬 스택 · 고정 MAPF · SimPy DES + Optuna 스윕 + Isaac 물리 검증 런 · EC2 t3.xlarge(k3s, IAM 없음) / GPU 서버 2-인스턴스 · v3.6 · 2026-09-02</p>
 
   <figure>
   <svg viewBox="-40 0 1800 1040" role="img" aria-label="AMR 도입 견적 서비스(요청 접수형) 아키텍처. 상시 가동 견적 서비스(FE·견적 BE·PostgreSQL·견적 산출)와 런 단위로 기동되는 시뮬 스택(시뮬 WMS·EMQX·FMS 코어), GPU 서버의 ROS2·Isaac 실행 계층, k3s 배치 견적 계산 엔진이 파이프라인 번호 1~8로 연결된다.">
@@ -95,16 +95,16 @@
     </defs>
 
     <!-- ============ 배포 프레임 (EC2 / GPU) ============ -->
-    <path d="M-16 16 H1700 V900 H1372 V516 H748 V990 H-16 Z" fill="#1F5FBF" fill-opacity="0.06" stroke="#45443e" stroke-width="1.5"/>
+    <path d="M-16 16 H1700 V900 H1372 V516 H748 V990 H-16 Z" fill="#1F5FBF" fill-opacity="0.06" stroke="#1F5FBF" stroke-width="3"/>
     <rect x="1266" y="10" width="380" height="15" fill="#ffffff"/>
-    <text class="fl" x="1640" y="21" text-anchor="end">AWS EC2 t3.xlarge (4 vCPU · 16 GB) — k3s · IAM 없음</text>
+    <text class="fl" x="1640" y="21" text-anchor="end" fill="#1F5FBF">AWS EC2 t3.xlarge (4 vCPU · 16 GB) — k3s · IAM 없음</text>
     <rect x="1648" y="4" width="24" height="24" fill="#232F3E"/>
     <use href="#si-amazonwebservices" x="1652" y="8" width="16" height="16" style="color:#ffffff"/>
     <rect x="1676" y="4" width="24" height="24" fill="#FFC61C"/>
     <use href="#si-k3s" x="1680" y="8" width="16" height="16" style="color:#1a1a17"/>
-    <rect x="760" y="524" width="596" height="376" fill="#3E9B3E" fill-opacity="0.09" stroke="#45443e" stroke-width="1.5"/>
+    <rect x="760" y="524" width="596" height="376" fill="#3E9B3E" fill-opacity="0.09" stroke="#2E8B3A" stroke-width="3"/>
     <rect x="966" y="518" width="364" height="15" fill="#ffffff"/>
-    <text class="fl" x="1324" y="529" text-anchor="end">GPU 서버 ×N (RTX 5080) — 시뮬 섬 · 네이티브</text>
+    <text class="fl" x="1324" y="529" text-anchor="end" fill="#2E8B3A">GPU 서버 ×N (RTX 5080) — 시뮬 섬 · 네이티브</text>
     <rect x="1332" y="512" width="24" height="24" fill="#76B900"/>
     <use href="#si-nvidia" x="1336" y="516" width="16" height="16" style="color:#ffffff"/>
 
@@ -191,7 +191,7 @@
       <use href="#si-springboot" x="44.5" y="684.5" width="17" height="17" style="color:#ffffff"/>
       <text class="chead" x="76" y="698">시뮬 WMS — Spring</text>
       <use href="#si-docker" x="492" y="686" width="16" height="16" style="color:#2496ED"/>
-      <text class="ctag" x="500" y="718" text-anchor="end">규칙 · zones.json → DES WMS 라이트와 공유</text>
+      <text class="ctag" x="500" y="718" text-anchor="end">≡ 시나리오 패키지 공유 — zones.json · 분해 규칙 · 수요 (런 기동 시 주입 ←)</text>
 
       <rect class="sbox" x="60" y="726" width="210" height="74"/>
       <text class="bt" x="165" y="756" text-anchor="middle">주문 상태기계</text>
@@ -321,7 +321,7 @@
       <text class="chipt" x="1484" y="288" text-anchor="middle" font-size="10.5">FMS 커널 · 공유</text>
       <rect class="chip" x="1546" y="272" width="106" height="24"/>
       <text class="chipt" x="1599" y="288" text-anchor="middle" font-size="10.5">WMS 라이트 모델</text>
-      <text class="bl" x="1540" y="318" text-anchor="middle" font-size="10.5">가상 시계 · 시드 반복 · 규칙 공유</text>
+      <text class="bl" x="1540" y="318" text-anchor="middle" font-size="10.5">가상 시계 · 시드 반복 · ≡ 시나리오 패키지 공유</text>
 
       <rect class="sbox" x="1420" y="354" width="240" height="90"/>
       <text class="bt" x="1540" y="394" text-anchor="middle">KPI 집계</text>
@@ -396,6 +396,7 @@
     <path class="edge-r" d="M520 334 L548 334 L548 952 L1600 952 L1600 884" marker-start="url(#ah)" marker-end="url(#ah)"/>
     <text class="el" x="1074" y="944" text-anchor="middle">AMQP — 잡 소비 → (워커 ×N 수평 확장) · ← 결과 이벤트 (KPI · 아티팩트 키)</text>
     <rect class="badge" x="537" y="700" width="22" height="22"/><text class="badge-t" x="548" y="716" text-anchor="middle">3</text>
+    <path class="edge-r" d="M548 738 L520 738" marker-end="url(#ah)"/>
     <path class="edge-r" d="M1340 285 L1398 285" marker-end="url(#ah)"/>
     <text class="el" x="1369" y="272" text-anchor="middle">코어 임베드</text>
     <path class="edge-r" d="M1340 790 L1384 790 L1384 735 L1418 735" marker-start="url(#ah)" marker-end="url(#ah)"/>
@@ -409,7 +410,7 @@
     <span class="lg"><b>상시 / 런 단위</b> = 견적 서비스는 상시 가동, 시뮬 스택은 시나리오별 기동·리셋</span>
     <span class="lg"><b>굵은 테두리</b> = 고정 MAPF 코어</span>
     <span class="lg"><b>외곽 프레임</b> = 배포 인스턴스 · <b>Docker 로고</b> = k3s 파드</span>
-    <span class="lg"><span class="swb" style="background:rgba(31,95,191,.16)"></span> EC2 <span class="swb" style="background:rgba(62,155,62,.18)"></span> GPU 서버 · <span class="swb" style="background:rgba(107,79,187,.18);border:1.5px dashed #6B4FBB"></span> 견적 서비스 도메인 <span class="swb" style="background:rgba(217,138,30,.18);border:1.5px dashed #D98A1E"></span> 시뮬레이션 도메인 · 색 점선 = 도메인 경계, 상대 색 점선 조각 = 공용</span>
+    <span class="lg"><span class="swb" style="background:rgba(31,95,191,.16);border:2.5px solid #1F5FBF"></span> EC2 <span class="swb" style="background:rgba(62,155,62,.18);border:2.5px solid #2E8B3A"></span> GPU 서버 (굵은 실선 = 기기 경계) · <span class="swb" style="background:rgba(107,79,187,.18);border:1.5px dashed #6B4FBB"></span> 견적 서비스 도메인 <span class="swb" style="background:rgba(217,138,30,.18);border:1.5px dashed #D98A1E"></span> 시뮬레이션 도메인 · 색 점선 = 도메인 경계, 상대 색 점선 조각 = 공용</span>
   </figcaption>
   </figure>
 
@@ -418,9 +419,9 @@
     <tr><th style="width:44px">단계</th><th style="width:150px">이름</th><th style="width:210px">구간</th><th style="width:280px">인터페이스</th><th>내용</th></tr>
     <tr><td>①</td><td>견적 요청 접수</td><td>고객 폼 → 견적 BE</td><td><code>REST POST /api/requests</code></td><td>레이아웃 · 물동량 · 주문 프로파일 · 기종 후보 제출 — 비동기 접수. 큐 깊이로 <b>대기 순번·예상 완료 ETA</b>를 즉시 회신(WS)</td></tr>
     <tr><td>②</td><td>운영 검토·컴파일</td><td>운영 콘솔 + 견적 BE</td><td>검토 승인 → PG 저장</td><td><b>운영자가 요청을 검토·정제</b>한 뒤 맵·존·수요 프로파일을 시나리오로 컴파일</td></tr>
-    <tr><td>③</td><td>스윕 잡 소비</td><td>RabbitMQ → 계산 엔진</td><td><code>AMQP</code> 우선순위 큐 · DLQ</td><td>검토 승인된 잡을 워커가 소비 — CPU 워커는 수평 확장, 실패 잡은 DLQ. 상시 서비스와 무거운 계산의 분리</td></tr>
+    <tr><td>③</td><td>스윕 잡 소비</td><td>RabbitMQ → 계산 엔진</td><td><code>AMQP</code> 우선순위 큐 · DLQ</td><td>검토 승인된 잡(= <b>시나리오 패키지</b> + 스윕 범위)을 워커가 소비 — CPU 워커는 수평 확장, 실패 잡은 DLQ. 상시 서비스와 무거운 계산의 분리</td></tr>
     <tr><td>④</td><td>구성 탐색·DES</td><td>계산 엔진 — EC2 k3s Job</td><td>in-process (SimPy) · CPU limit 2 vCPU</td><td>Optuna가 대수×기종 제안 → FMS 커널(공유)+고정 MAPF로 가상 시간 실행 × 시드 반복. WMS는 DES에서 확률 모델(주문→TO 규칙 + 피킹 시간 분포)로 대체, 검증 런에서만 실제 Spring WMS. t3.xlarge 버스트 크레딧(적립 2,304 ≈ 풀가동 16 h)이 산발적 견적 배치엔 충분 — 상시 서비스용 2 vCPU는 limit로 보존</td></tr>
-    <tr><td>⑤</td><td>Isaac 물리 검증 런</td><td>GPU 런 큐 → 시뮬 스택 기동</td><td><code>k8s API</code> · <code>MQTT sim/control</code></td><td>상위 구성만 <b>GPU 런 큐</b>에 적재 — GPU 수만큼만 소비자(현재 1대 직렬, 확장 시 GPU 서버 추가 = 소비자 추가). 오케스트레이터가 시뮬 WMS·FMS 파드를 k8s API로 기동하고, GPU 측은 sim-runner 데몬이 sim/control로 Isaac·agent를 스폰·정리</td></tr>
+    <tr><td>⑤</td><td>Isaac 물리 검증 런</td><td>GPU 런 큐 → 시뮬 스택 기동</td><td><code>k8s API</code> · <code>MQTT sim/control</code></td><td>상위 구성만 <b>GPU 런 큐</b>에 적재 — GPU 수만큼만 소비자(현재 1대 직렬, 확장 시 GPU 서버 추가 = 소비자 추가). 오케스트레이터가 시뮬 WMS·FMS 파드를 k8s API로 기동하며 <b>DES와 동일한 시나리오 패키지를 주입</b>, GPU 측은 sim-runner 데몬이 sim/control로 Isaac·agent를 스폰·정리</td></tr>
     <tr><td>⑥</td><td>KPI 집계·아티팩트 수집</td><td>runner → MinIO · 엔진 → BE</td><td>S3 API presigned PUT · AMQP 결과 이벤트</td><td>구성별 처리량 P50·P10 분포 + 물리 갭 캘리브레이션. sim-runner가 런 아티팩트 — <b>배속 영상(MP4) · 리플레이(JSON) · 궤적 히트맵(PNG)</b> — 를 MinIO에 presigned PUT, 워커는 결과 이벤트를 AMQP로 회신 → BE가 PG에 KPI·아티팩트 메타 기록</td></tr>
     <tr><td>⑦</td><td>견적 리포트 작성</td><td>KPI·아티팩트 → 견적 산출</td><td>SQL · LLM 서술 → <b>운영자 검수</b></td><td>권장 대수·기종, 보장 처리량(P10), TCO/ROI, 증설 로드맵 + <b>검증 영상·리플레이 임베드</b> — LLM 초안을 사람이 최종 검수</td></tr>
     <tr><td>⑧</td><td>견적서 발송</td><td>견적 BE → 고객</td><td>이메일 알림 · <code>REST GET /api/reports</code></td><td>완결 후 발송 — 웹 견적서(영상 플레이어 + 인터랙티브 2D 리플레이) · PDF(궤적 이미지 + 영상 QR). "당신 창고에서 로봇이 실제로 도는 장면"이 견적의 증거</td></tr>
@@ -437,7 +438,7 @@
     <tr><td><code>MQTT fms/event</code></td><td>FMS → 시뮬 WMS</td><td>피킹 완료 → 재고 원자적 차감 → 주문 SHIPPED</td></tr>
   </table>
 
-  <p class="note"><b>설계 원칙</b> — 웹 인프라는 두 층으로 분리한다: <b>견적 서비스(FE·견적 BE·PG)는 상시 가동</b>이고 고객·운영자 대면이며, <b>시뮬 스택(시뮬 WMS·EMQX·FMS)은 런 단위로 기동·리셋</b>되는 내부 엔진이라 런 스코프 상태가 영속 DB와 섞이지 않는다 — 시뮬 WMS의 주문·재고 상태는 H2 인메모리(런과 함께 소멸, Spring 프로파일 전환으로 실물 PG 승격 가능)이고, 영속이 필요한 결과물만 parquet·S3와 견적 PG로 빠진다. 접수(①)와 발송(⑧) 사이는 전부 내부 배치이고, 검토(②)·검수(⑦) 두 곳에 운영자가 개입한다. MAPF는 <b>고정 솔버</b>(v1 = PP+시공간 예약, 슬롯만 유지)이며 스윕이 탐색하는 것은 <b>구성(AMR 대수 × 기종)</b>이다. <b>FMS 코어는 시계·난수를 주입받고 I/O가 없는 순수 결정 커널</b>(<code>step(world, now, events) → decisions</code>)이고, 동기(DES)·비동기(라이브)의 차이는 실행 셸 2종이 흡수한다 — SimPy 하네스는 가상 시계로 즉시 호출하고, MQTT 데몬은 비동기 state를 인박스에 모아 500ms 틱마다 스냅샷으로 호출한다. 명령 반영 지연·슬립은 결함이 아니라 물리 런에서 재서 DES에 넣는 캘리브레이션 대상이며, 이것이 성립하려면 오히려 코어가 같아야 한다. 공유의 경계는 <b>"측정 대상은 공유, 환경은 모델링"</b>이다: FMS는 견적 숫자를 만드는 측정 대상이라 커널을 공유하고, WMS는 환경이라 DES에서는 확률 모델(주문→TO 분해 규칙 + 피킹 시간 분포)로 대체하며 검증 런에서만 실제 Spring WMS가 실제 인터페이스(biz/order · fms/event)로 붙는다 — 검증 런이 현장 배포 형태(FMS ↔ 고객 WMS)와 동형이 되고, 통합 자산은 Spring WMS에 남는다. 두 구현의 드리프트는 zones.json·분해 규칙 공유와 골든 시나리오 패리티 테스트(같은 주문 스트림 → 동일 TO 목록)로 막는다. SimPy DES가 구성별 분포를 만들고 Isaac 물리 검증 런이 갭을 보정하며, 같은 FMS 코어가 DES·검증 런·라이브 데모 세 곳에서 돌기 때문에 견적과 시연이 한 몸이다. <b>런 오케스트레이션</b>은 계산 엔진 워커가 전담한다: EC2 측 시뮬 파드는 k8s API로 생성·삭제하고, GPU 측은 상주 sim-runner 데몬에 <code>MQTT sim/control</code>로 start/stop을 지시한다(헬스비트 감시·타임아웃 강제 정리, GPU 1대라 Isaac 런은 직렬 큐). 이 제어 채널이 런보다 먼저 있어야 하므로 EMQX는 상시 가동이다. <b>큐잉 정책</b>은 2단이다: 요청 잡 큐(RabbitMQ — 우선순위·DLQ, CPU 워커 수평 확장)와 GPU 런 큐(GPU 수 = 소비자 수, 직렬). GPU가 병목이므로 접수 시 큐 깊이로 대기 순번·ETA를 회신하고, 운영자 콘솔에서 우선순위를 조정한다 — 확장은 GPU 서버를 붙이는 것으로 끝난다. <b>런 아티팩트</b>는 견적의 증거물이다: 검증 런마다 배속 영상(MP4, MJPEG 프레임 허브→ffmpeg NVENC) · 인터랙티브 리플레이(odom 로그→JSON) · 궤적 히트맵을 수집해 MinIO(S3 호환 단일 파드 — EC2 내부, AWS 계정·과금 없음)에 적재하고 presigned URL로 웹 견적서에 임베드·PDF에 QR로 연결한다 — "물리 검증"이라는 주장에 고객이 눈으로 확인하는 실체를 붙인다. <b>인프라 제약</b>: EC2는 t3.xlarge(4 vCPU · 16 GB) 1대이고 IAM 접근이 없다 — 관리형 AWS 서비스는 0, 전부 k3s 자체 호스팅(PG·RabbitMQ·EMQX·MinIO·BE·시뮬 파드 합산 상주 메모리 ≈ 5 GB로 여유), 이미지는 GHCR, 인증서는 certbot, 외부 노출은 nginx :443 하나, 홈서버↔EC2는 tailscale 아웃바운드. DES 워커는 EC2 k3s Job으로 둔다 — 버스트형 CPU지만 적립 크레딧(2,304 ≈ 4 vCPU 풀가동 16 h)이 산발적·비동기 견적 배치에 충분하고, 고갈돼도 40%로 느려질 뿐 멈추지 않으며, 홈서버 가용성에 견적 계산이 묶이지 않는다. 대형 스윕이 필요하면 같은 워커 이미지를 홈서버에서 추가 소비자로 띄우는 탈출구만 열어둔다.</p>
+  <p class="note"><b>설계 원칙</b> — 웹 인프라는 두 층으로 분리한다: <b>견적 서비스(FE·견적 BE·PG)는 상시 가동</b>이고 고객·운영자 대면이며, <b>시뮬 스택(시뮬 WMS·EMQX·FMS)은 런 단위로 기동·리셋</b>되는 내부 엔진이라 런 스코프 상태가 영속 DB와 섞이지 않는다 — 시뮬 WMS의 주문·재고 상태는 H2 인메모리(런과 함께 소멸, Spring 프로파일 전환으로 실물 PG 승격 가능)이고, 영속이 필요한 결과물만 parquet·S3와 견적 PG로 빠진다. 접수(①)와 발송(⑧) 사이는 전부 내부 배치이고, 검토(②)·검수(⑦) 두 곳에 운영자가 개입한다. MAPF는 <b>고정 솔버</b>(v1 = PP+시공간 예약, 슬롯만 유지)이며 스윕이 탐색하는 것은 <b>구성(AMR 대수 × 기종)</b>이다. <b>FMS 코어는 시계·난수를 주입받고 I/O가 없는 순수 결정 커널</b>(<code>step(world, now, events) → decisions</code>)이고, 동기(DES)·비동기(라이브)의 차이는 실행 셸 2종이 흡수한다 — SimPy 하네스는 가상 시계로 즉시 호출하고, MQTT 데몬은 비동기 state를 인박스에 모아 500ms 틱마다 스냅샷으로 호출한다. 명령 반영 지연·슬립은 결함이 아니라 물리 런에서 재서 DES에 넣는 캘리브레이션 대상이며, 이것이 성립하려면 오히려 코어가 같아야 한다. 공유의 경계는 <b>"측정 대상은 공유, 환경은 모델링"</b>이다: FMS는 견적 숫자를 만드는 측정 대상이라 커널을 공유하고, WMS는 환경이라 DES에서는 확률 모델(주문→TO 분해 규칙 + 피킹 시간 분포)로 대체하며 검증 런에서만 실제 Spring WMS가 실제 인터페이스(biz/order · fms/event)로 붙는다 — 검증 런이 현장 배포 형태(FMS ↔ 고객 WMS)와 동형이 되고, 통합 자산은 Spring WMS에 남는다. 두 WMS는 완전 독립이 아니라 <b>같은 환경 정의의 두 소비자</b>다: ②에서 컴파일된 하나의 시나리오 패키지(zones.json · 맵 · 분해 규칙 · 수요 프로파일)를 DES 워커는 잡 페이로드로, 시뮬 WMS는 런 기동 시 주입으로 받는다. 구현 드리프트는 골든 시나리오 패리티 테스트(같은 주문 스트림 → 동일 TO 목록)로 막는다. SimPy DES가 구성별 분포를 만들고 Isaac 물리 검증 런이 갭을 보정하며, 같은 FMS 코어가 DES·검증 런·라이브 데모 세 곳에서 돌기 때문에 견적과 시연이 한 몸이다. <b>런 오케스트레이션</b>은 계산 엔진 워커가 전담한다: EC2 측 시뮬 파드는 k8s API로 생성·삭제하고, GPU 측은 상주 sim-runner 데몬에 <code>MQTT sim/control</code>로 start/stop을 지시한다(헬스비트 감시·타임아웃 강제 정리, GPU 1대라 Isaac 런은 직렬 큐). 이 제어 채널이 런보다 먼저 있어야 하므로 EMQX는 상시 가동이다. <b>큐잉 정책</b>은 2단이다: 요청 잡 큐(RabbitMQ — 우선순위·DLQ, CPU 워커 수평 확장)와 GPU 런 큐(GPU 수 = 소비자 수, 직렬). GPU가 병목이므로 접수 시 큐 깊이로 대기 순번·ETA를 회신하고, 운영자 콘솔에서 우선순위를 조정한다 — 확장은 GPU 서버를 붙이는 것으로 끝난다. <b>런 아티팩트</b>는 견적의 증거물이다: 검증 런마다 배속 영상(MP4, MJPEG 프레임 허브→ffmpeg NVENC) · 인터랙티브 리플레이(odom 로그→JSON) · 궤적 히트맵을 수집해 MinIO(S3 호환 단일 파드 — EC2 내부, AWS 계정·과금 없음)에 적재하고 presigned URL로 웹 견적서에 임베드·PDF에 QR로 연결한다 — "물리 검증"이라는 주장에 고객이 눈으로 확인하는 실체를 붙인다. <b>인프라 제약</b>: EC2는 t3.xlarge(4 vCPU · 16 GB) 1대이고 IAM 접근이 없다 — 관리형 AWS 서비스는 0, 전부 k3s 자체 호스팅(PG·RabbitMQ·EMQX·MinIO·BE·시뮬 파드 합산 상주 메모리 ≈ 5 GB로 여유), 이미지는 GHCR, 인증서는 certbot, 외부 노출은 nginx :443 하나, 홈서버↔EC2는 tailscale 아웃바운드. DES 워커는 EC2 k3s Job으로 둔다 — 버스트형 CPU지만 적립 크레딧(2,304 ≈ 4 vCPU 풀가동 16 h)이 산발적·비동기 견적 배치에 충분하고, 고갈돼도 40%로 느려질 뿐 멈추지 않으며, 홈서버 가용성에 견적 계산이 묶이지 않는다. 대형 스윕이 필요하면 같은 워커 이미지를 홈서버에서 추가 소비자로 띄우는 탈출구만 열어둔다.</p>
 </div>
 </body>
 </html>
