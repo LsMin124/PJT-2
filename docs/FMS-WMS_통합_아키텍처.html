@@ -54,10 +54,10 @@
 <body>
 <div class="wrap">
   <h1>AMR 도입 견적 서비스 — FMS-WMS 통합 시스템 아키텍처</h1>
-  <p class="sub">요청 접수형(비동기): 고객 요청 → 운영 검토·시나리오 컴파일 → 고정 MAPF 탑재 FMS로 대수·기종 스윕(SimPy DES + Optuna) + Isaac 물리 검증 런 → 견적서 발송 · ①–⑧ · EC2(k3s) / GPU 2-인스턴스 · v2.1 · 2026-09-02</p>
+  <p class="sub">요청 접수형(비동기) · 웹 인프라 2층 분리 — 상시 견적 서비스 / 런 단위 시뮬 스택 · 고정 MAPF · SimPy DES + Optuna 스윕 + Isaac 물리 검증 런 · EC2(k3s) / GPU 2-인스턴스 · v2.2 · 2026-09-02</p>
 
   <figure>
-  <svg viewBox="-40 0 1800 1000" role="img" aria-label="AMR 도입 견적 서비스(요청 접수형) 아키텍처. EC2(k3s)와 GPU 서버 두 인스턴스 위에서 고객 요청이 운영 검토, WMS 시나리오 컴파일, 고정 MAPF 탑재 FMS, 구성 스윕 엔진(SimPy DES·Optuna), Isaac 물리 검증 런을 거쳐 견적서 발송으로 이어진다. 파이프라인 번호 1~8.">
+  <svg viewBox="-40 0 1800 1040" role="img" aria-label="AMR 도입 견적 서비스(요청 접수형) 아키텍처. 상시 가동 견적 서비스(FE·견적 BE·PostgreSQL·견적 산출)와 런 단위로 기동되는 시뮬 스택(시뮬 WMS·EMQX·FMS 코어), GPU 서버의 ROS2·Isaac 실행 계층, k3s 배치 견적 계산 엔진이 파이프라인 번호 1~8로 연결된다.">
     <defs>
       <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
         <path d="M2 1L8 5L2 9" fill="none" stroke="#45443e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -88,7 +88,7 @@
     </defs>
 
     <!-- ============ 배포 프레임 (EC2 / GPU) ============ -->
-    <path d="M-16 16 H1356 V516 H748 V900 H-16 Z" fill="none" stroke="#45443e" stroke-width="1.5"/>
+    <path d="M-16 16 H1356 V516 H748 V990 H-16 Z" fill="none" stroke="#45443e" stroke-width="1.5"/>
     <rect x="1014" y="10" width="288" height="15" fill="#ffffff"/>
     <text class="fl" x="1296" y="21" text-anchor="end">AWS EC2 — 서비스 섬 · k3s 클러스터</text>
     <rect x="1304" y="4" width="24" height="24" fill="#232F3E"/>
@@ -101,102 +101,104 @@
     <rect x="1332" y="512" width="24" height="24" fill="#76B900"/>
     <use href="#si-nvidia" x="1336" y="516" width="16" height="16" style="color:#ffffff"/>
 
+    <!-- ============ 상시/런 구분 프레임 ============ -->
+    <rect x="24" y="28" width="512" height="616" fill="none" stroke="#6f6e64" stroke-width="1.2" stroke-dasharray="7 5"/>
+    <rect x="300" y="25" width="228" height="15" fill="#ffffff"/>
+    <text class="fl" x="524" y="33" text-anchor="end">01 · 견적 서비스 — 상시 가동</text>
+
     <!-- ============ 계층 눈썹 라벨 ============ -->
-    <text class="eyebrow" x="40" y="28">01 · 접수 · 운영 콘솔</text>
-    <text class="eyebrow" x="40" y="170">02 · WMS 계층</text>
-    <text class="eyebrow" x="580" y="170">03 · 메시지 백본</text>
-    <text class="eyebrow" x="780" y="28">04 · FMS — 배차·경로·교통</text>
+    <text class="eyebrow" x="40" y="668">02 · 시뮬 스택 — 런 단위 기동</text>
+    <text class="eyebrow" x="580" y="170">03 · 메시지 백본 — 런 단위</text>
+    <text class="eyebrow" x="780" y="28">04 · FMS 코어 — 런 단위</text>
     <rect x="776" y="519" width="176" height="15" fill="#ffffff"/>
     <text class="eyebrow" x="780" y="530">05 · 실행 계층 (SIL)</text>
-    <text class="eyebrow" x="1400" y="28">07 · 구성 스윕 엔진 (배치)</text>
-    <text class="eyebrow" x="40" y="610">06 · 의사결정 지원 — 3PL 견적</text>
+    <text class="eyebrow" x="1400" y="28">06 · 견적 계산 엔진 — k3s 배치 Job</text>
 
-    <!-- ============ 01 주문 계층 ============ -->
+    <!-- ============ 견적 서비스 (상시) ============ -->
     <g>
-      <rect class="cbox" x="40" y="40" width="310" height="96"/>
+      <rect class="cbox" x="40" y="40" width="480" height="96"/>
       <rect x="40" y="40" width="26" height="26" fill="#20232A"/>
       <use href="#si-react" x="44.5" y="44.5" width="17" height="17" style="color:#61DAFB"/>
       <text class="chead" x="76" y="58">React 웹 콘솔</text>
-      <use href="#si-docker" x="326" y="46" width="16" height="16" style="color:#2496ED"/>
+      <use href="#si-docker" x="492" y="46" width="16" height="16" style="color:#2496ED"/>
       <text class="bl" x="56" y="88">고객 요청 폼 · 운영 검토 콘솔 · 관제 · 리포트</text>
 
-      <rect class="cbox" x="370" y="40" width="150" height="96"/>
-      <use href="#si-docker" x="496" y="46" width="16" height="16" style="color:#2496ED"/>
-      <text class="bt" x="445" y="82" text-anchor="middle">수요 생성기</text>
-      <text class="bl" x="445" y="104" text-anchor="middle">주문 프로파일 λ 재생</text>
+      <rect class="cbox" x="40" y="176" width="480" height="84"/>
+      <rect x="40" y="176" width="26" height="26" fill="#6DB33F"/>
+      <use href="#si-springboot" x="44.5" y="180.5" width="17" height="17" style="color:#ffffff"/>
+      <text class="chead" x="76" y="194">견적 BE — Spring</text>
+      <use href="#si-docker" x="492" y="182" width="16" height="16" style="color:#2496ED"/>
+      <text class="bl" x="56" y="240">요청 접수 · 검토 워크플로 · 스윕 잡 발행 · 리포트 발송</text>
+
+      <rect class="cbox" x="40" y="296" width="480" height="76"/>
+      <rect x="40" y="296" width="26" height="26" fill="#336791"/>
+      <use href="#si-postgresql" x="44.5" y="300.5" width="17" height="17" style="color:#ffffff"/>
+      <text class="chead" x="76" y="314">PostgreSQL</text>
+      <use href="#si-docker" x="492" y="302" width="16" height="16" style="color:#2496ED"/>
+      <text class="bl mono" x="56" y="352" font-size="11">requests · jobs · reports · run_kpi</text>
+
+      <rect class="cbox" x="40" y="408" width="480" height="228"/>
+      <text class="chead" x="58" y="436">견적 산출 — 도입 의사결정 지원</text>
+      <use href="#si-docker" x="492" y="414" width="16" height="16" style="color:#2496ED"/>
+
+      <rect class="sbox" x="60" y="452" width="210" height="80"/>
+      <text class="bt" x="165" y="488" text-anchor="middle">대수–성능 곡선</text>
+      <text class="bl" x="165" y="510" text-anchor="middle">대수별 처리량 P50 · P10</text>
+
+      <rect class="sbox" x="290" y="452" width="210" height="80"/>
+      <text class="bt" x="395" y="488" text-anchor="middle">비용·ROI 모델</text>
+      <text class="bl" x="395" y="510" text-anchor="middle">TCO · 건당 처리 원가</text>
+
+      <rect class="sbox" x="60" y="552" width="440" height="64"/>
+      <text class="bt" x="280" y="578" text-anchor="middle">견적 리포트 생성기</text>
+      <text class="bl" x="280" y="600" text-anchor="middle">LLM 초안 + 운영자 검수 → 견적서 발송(웹·PDF)</text>
+
+      <path class="edge-in" d="M165 532 L165 552" marker-end="url(#ahi)"/>
+      <path class="edge-in" d="M395 532 L395 552" marker-end="url(#ahi)"/>
     </g>
 
-    <!-- ============ 02 WMS ============ -->
+    <!-- ============ 시뮬 WMS (런 단위) ============ -->
     <g>
-      <rect class="cbox" x="40" y="180" width="480" height="280"/>
-      <rect x="40" y="180" width="26" height="26" fill="#6DB33F"/>
-      <use href="#si-springboot" x="44.5" y="184.5" width="17" height="17" style="color:#ffffff"/>
-      <text class="chead" x="76" y="198">WMS — Spring BE</text>
-      <use href="#si-docker" x="492" y="186" width="16" height="16" style="color:#2496ED"/>
+      <rect class="cbox" x="40" y="680" width="480" height="280"/>
+      <rect x="40" y="680" width="26" height="26" fill="#6DB33F"/>
+      <use href="#si-springboot" x="44.5" y="684.5" width="17" height="17" style="color:#ffffff"/>
+      <text class="chead" x="76" y="698">시뮬 WMS — Spring</text>
+      <use href="#si-docker" x="492" y="686" width="16" height="16" style="color:#2496ED"/>
 
-      <rect class="sbox" x="60" y="226" width="210" height="92"/>
-      <text class="bt" x="165" y="268" text-anchor="middle">주문 상태기계</text>
-      <text class="bl mono" x="165" y="290" text-anchor="middle" font-size="11">RECEIVED → SHIPPED</text>
+      <rect class="sbox" x="60" y="726" width="210" height="74"/>
+      <text class="bt" x="165" y="756" text-anchor="middle">주문 상태기계</text>
+      <text class="bl mono" x="165" y="778" text-anchor="middle" font-size="11">RECEIVED → SHIPPED</text>
 
-      <rect class="sbox" x="290" y="226" width="210" height="92"/>
-      <text class="bt" x="395" y="268" text-anchor="middle">재고·로케이션</text>
-      <text class="bl" x="395" y="290" text-anchor="middle">zones A–V · 132랙 · 57 ST</text>
+      <rect class="sbox" x="290" y="726" width="210" height="74"/>
+      <text class="bt" x="395" y="756" text-anchor="middle">재고·로케이션</text>
+      <text class="bl" x="395" y="778" text-anchor="middle">zones A–V · 132랙 · 57 ST</text>
 
-      <rect class="sbox" x="60" y="346" width="210" height="92"/>
-      <text class="bt" x="165" y="388" text-anchor="middle">태스크 분해</text>
-      <text class="bl" x="165" y="410" text-anchor="middle">주문 → 운송오더(TO)</text>
+      <rect class="sbox" x="60" y="816" width="210" height="74"/>
+      <text class="bt" x="165" y="846" text-anchor="middle">태스크 분해</text>
+      <text class="bl" x="165" y="868" text-anchor="middle">주문 → 운송오더(TO)</text>
 
-      <rect class="sbox" x="290" y="346" width="210" height="92"/>
-      <text class="bt" x="395" y="388" text-anchor="middle">피킹·재고 전이</text>
-      <text class="bl" x="395" y="410" text-anchor="middle">이벤트 → 재고 차감</text>
+      <rect class="sbox" x="290" y="816" width="210" height="74"/>
+      <text class="bt" x="395" y="846" text-anchor="middle">피킹·재고 전이</text>
+      <text class="bl" x="395" y="868" text-anchor="middle">이벤트 → 재고 차감</text>
+
+      <rect class="sbox" x="60" y="906" width="440" height="42"/>
+      <text class="bt" x="280" y="932" text-anchor="middle">수요 생성기 — 주문 프로파일 λ 재생</text>
     </g>
 
-    <!-- PostgreSQL -->
+    <!-- ============ EMQX 백본 (런 단위) ============ -->
     <g>
-      <rect class="cbox" x="40" y="500" width="480" height="80"/>
-      <rect x="40" y="500" width="26" height="26" fill="#336791"/>
-      <use href="#si-postgresql" x="44.5" y="504.5" width="17" height="17" style="color:#ffffff"/>
-      <text class="chead" x="76" y="518">PostgreSQL</text>
-      <use href="#si-docker" x="492" y="506" width="16" height="16" style="color:#2496ED"/>
-      <text class="bl" x="56" y="556">주문 · 재고 · Task · run_kpi</text>
-    </g>
-
-    <!-- ============ 06 의사결정 지원 (견적) ============ -->
-    <g>
-      <rect class="cbox" x="40" y="620" width="480" height="260"/>
-      <text class="chead" x="58" y="648">견적 산출 — 도입 의사결정 지원</text>
-      <use href="#si-docker" x="492" y="626" width="16" height="16" style="color:#2496ED"/>
-
-      <rect class="sbox" x="60" y="666" width="210" height="92"/>
-      <text class="bt" x="165" y="708" text-anchor="middle">대수–성능 곡선</text>
-      <text class="bl" x="165" y="730" text-anchor="middle">대수별 처리량 P50 · P10</text>
-
-      <rect class="sbox" x="290" y="666" width="210" height="92"/>
-      <text class="bt" x="395" y="708" text-anchor="middle">비용·ROI 모델</text>
-      <text class="bl" x="395" y="730" text-anchor="middle">TCO · 건당 처리 원가</text>
-
-      <rect class="sbox" x="60" y="778" width="440" height="80"/>
-      <text class="bt" x="280" y="812" text-anchor="middle">견적 리포트 생성기</text>
-      <text class="bl" x="280" y="834" text-anchor="middle">LLM 초안 + 운영자 검수 → 견적서 발송(웹·PDF)</text>
-
-      <path class="edge-in" d="M165 758 L165 778" marker-end="url(#ahi)"/>
-      <path class="edge-in" d="M395 758 L395 778" marker-end="url(#ahi)"/>
-    </g>
-
-    <!-- ============ 03 EMQX 백본 ============ -->
-    <g>
-      <rect x="580" y="180" width="140" height="680" fill="#F7F6F1" stroke="#6f6e64" stroke-width="1.2"/>
+      <rect x="580" y="180" width="140" height="790" fill="#F7F6F1" stroke="#6f6e64" stroke-width="1.2"/>
       <rect x="580" y="180" width="26" height="26" fill="#660066"/>
       <use href="#si-mqtt" x="584.5" y="184.5" width="17" height="17" style="color:#ffffff"/>
       <text class="chead" x="612" y="198">EMQX</text>
       <use href="#si-docker" x="698" y="186" width="16" height="16" style="color:#2496ED"/>
       <text class="ctag" x="650" y="236" text-anchor="middle">MQTT 브로커</text>
-      <text class="bl mono" x="650" y="500" text-anchor="middle" font-size="11">biz/*  fms/*</text>
-      <text class="bl mono" x="650" y="518" text-anchor="middle" font-size="11">uagv/v2/*</text>
-      <text class="ctag" x="650" y="836" text-anchor="middle">QoS1 · retained state</text>
+      <text class="bl mono" x="650" y="470" text-anchor="middle" font-size="11">biz/*  fms/*</text>
+      <text class="bl mono" x="650" y="488" text-anchor="middle" font-size="11">uagv/v2/*</text>
+      <text class="ctag" x="650" y="948" text-anchor="middle">QoS1 · retained state</text>
     </g>
 
-    <!-- ============ 04 FMS 코어 ============ -->
+    <!-- ============ FMS 코어 (런 단위) ============ -->
     <g>
       <rect class="cbox" x="780" y="40" width="560" height="460"/>
       <rect x="780" y="40" width="26" height="26" fill="#3776AB"/>
@@ -238,7 +240,7 @@
       <path class="edge-in" d="M1070 376 L1050 376" marker-end="url(#ahi)"/>
     </g>
 
-    <!-- ============ 05 실행 계층 ============ -->
+    <!-- ============ 실행 계층 (GPU) ============ -->
     <g>
       <rect class="cbox" x="780" y="540" width="560" height="110"/>
       <rect x="780" y="540" width="26" height="26" fill="#22314E"/>
@@ -259,10 +261,10 @@
       <text class="ctag" x="798" y="850">슬립 · 지연 · 혼잡 = 실제 물리</text>
     </g>
 
-    <!-- ============ R 연구 트랙 ============ -->
+    <!-- ============ 견적 계산 엔진 (배치) ============ -->
     <g>
       <rect x="1400" y="40" width="280" height="840" fill="#ffffff" stroke="#6f6e64" stroke-width="1.2" stroke-dasharray="7 5"/>
-      <text class="chead" x="1418" y="68">구성 스윕 엔진 — 견적 계산</text>
+      <text class="chead" x="1418" y="68">견적 계산 엔진 — 배치 워커</text>
 
       <rect class="sbox" x="1420" y="96" width="240" height="120"/>
       <text class="bt" x="1540" y="146" text-anchor="middle">구성 탐색 — Optuna</text>
@@ -283,8 +285,6 @@
       <rect class="sbox" x="1420" y="602" width="240" height="70"/>
       <text class="bt" x="1540" y="628" text-anchor="middle">산출물</text>
       <text class="bl" x="1540" y="652" text-anchor="middle">권장 구성 · 대수–성능 곡선</text>
-      <rect class="badge" x="1409" y="229" width="22" height="22"/><text class="badge-t" x="1420" y="245" text-anchor="middle">4</text>
-      <rect class="badge" x="1409" y="343" width="22" height="22"/><text class="badge-t" x="1420" y="359" text-anchor="middle">6</text>
 
       <path class="edge-in" d="M1540 216 L1540 240" marker-end="url(#ahi)"/>
       <path class="edge-in" d="M1540 330 L1540 354" marker-end="url(#ahi)"/>
@@ -292,23 +292,31 @@
       <path class="edge-in" d="M1540 578 L1540 602" marker-end="url(#ahi)"/>
       <path class="edge-in" d="M1420 396 L1406 396 L1406 156 L1418 156" marker-end="url(#ahi)"/>
       <text class="bl" x="1402" y="225" text-anchor="end" font-size="10.5">탐색 루프</text>
+      <rect class="badge" x="1409" y="229" width="22" height="22"/><text class="badge-t" x="1420" y="245" text-anchor="middle">4</text>
+      <rect class="badge" x="1409" y="343" width="22" height="22"/><text class="badge-t" x="1420" y="359" text-anchor="middle">6</text>
     </g>
 
-    <!-- ============ 워크플로우 화살표 ============ -->
-    <path class="edge" d="M195 136 L195 180" marker-end="url(#ah)"/>
-    <text class="el mono" x="208" y="162">REST POST /api/requests</text>
-    <rect class="badge" x="169" y="147" width="22" height="22"/><text class="badge-t" x="180" y="163" text-anchor="middle">1</text>
-    <path class="edge" d="M445 136 L445 180" marker-end="url(#ah)"/>
-    <text class="el" x="458" y="162">부하 주문 스트림</text>
-    <path class="edge" d="M100 180 L100 136" marker-end="url(#ah)"/>
-    <text class="el" x="100" y="152" text-anchor="middle">WS 관제 push</text>
-    <rect class="badge" x="462" y="183" width="22" height="22"/><text class="badge-t" x="473" y="199" text-anchor="middle">2</text>
-    <path class="edge" d="M280 460 L280 500" marker-end="url(#ah)"/>
-    <text class="el mono" x="293" y="484">JDBC 트랜잭션</text>
-    <path class="edge" d="M520 270 L580 270" marker-end="url(#ah)"/>
-    <text class="el mono" x="550" y="256" text-anchor="middle">pub biz/order</text>
-    <path class="edge" d="M580 390 L520 390" marker-end="url(#ah)"/>
-    <text class="el mono" x="550" y="376" text-anchor="middle">sub fms/event</text>
+    <!-- ============ 견적 파이프라인 화살표 ============ -->
+    <path class="edge" d="M195 136 L195 176" marker-end="url(#ah)"/>
+    <text class="el mono" x="208" y="160">REST POST /api/requests</text>
+    <rect class="badge" x="169" y="145" width="22" height="22"/><text class="badge-t" x="180" y="161" text-anchor="middle">1</text>
+    <path class="edge" d="M100 176 L100 136" marker-end="url(#ah)"/>
+    <text class="el" x="100" y="152" text-anchor="middle">WS 상태 알림</text>
+    <rect class="badge" x="458" y="183" width="22" height="22"/><text class="badge-t" x="469" y="199" text-anchor="middle">2</text>
+    <path class="edge" d="M280 260 L280 296" marker-end="url(#ah)"/>
+    <text class="el mono" x="293" y="282">JDBC — requests · jobs</text>
+    <path class="edge" d="M280 372 L280 408" marker-end="url(#ah)"/>
+    <text class="el mono" x="293" y="394">run_kpi · 실측 근거</text>
+    <rect class="badge" x="49" y="541" width="22" height="22"/><text class="badge-t" x="60" y="557" text-anchor="middle">7</text>
+    <path class="edge" d="M40 500 L20 500 L20 88 L40 88" marker-end="url(#ah)"/>
+    <text class="el" transform="rotate(-90 14 300)" x="14" y="300" text-anchor="middle">견적서 발송 · 대수–성능 곡선</text>
+    <rect class="badge" x="9" y="290" width="22" height="22"/><text class="badge-t" x="20" y="306" text-anchor="middle">8</text>
+
+    <!-- ============ 시뮬 내부 주문 체인 ============ -->
+    <path class="edge" d="M520 760 L580 760" marker-end="url(#ah)"/>
+    <text class="el mono" x="550" y="746" text-anchor="middle">pub biz/order</text>
+    <path class="edge" d="M580 812 L520 812" marker-end="url(#ah)"/>
+    <text class="el mono" x="550" y="834" text-anchor="middle">sub fms/event</text>
     <path class="edge" d="M720 140 L780 140" marker-end="url(#ah)"/>
     <text class="el mono" x="750" y="126" text-anchor="middle">sub biz/order</text>
     <path class="edge" d="M780 360 L720 360" marker-end="url(#ah)"/>
@@ -327,59 +335,52 @@
     <path class="edge" d="M1200 700 L1200 650" marker-end="url(#ah)"/>
     <text class="el mono" x="1188" y="694" text-anchor="end">DDS /odom · /scan · /tf</text>
 
-    <!-- ============ 연구 트랙 연결 (점선) ============ -->
+    <!-- ============ 배치 흐름 (점선) ============ -->
+    <path class="edge-r" d="M520 330 L540 330 L540 964 L1600 964 L1600 884" marker-end="url(#ah)"/>
+    <text class="el" x="1060" y="956" text-anchor="middle">시나리오 로드 · 스윕 잡 클레임 (SQL, 워커 폴링)</text>
+    <rect class="badge" x="529" y="700" width="22" height="22"/><text class="badge-t" x="540" y="716" text-anchor="middle">3</text>
+    <path class="edge-r" d="M1540 880 L1540 934 L556 934 L556 520 L520 520" marker-end="url(#ah)"/>
+    <text class="el" x="1050" y="926" text-anchor="middle">대수별 KPI · 권장 구성 (적재)</text>
     <path class="edge-r" d="M1340 285 L1398 285" marker-end="url(#ah)"/>
     <text class="el" x="1369" y="272" text-anchor="middle">코어 임베드</text>
     <path class="edge-r" d="M1340 790 L1384 790 L1384 560 L1398 560" marker-start="url(#ah)" marker-end="url(#ah)"/>
     <text class="el" x="1378" y="778" text-anchor="end">검증 런 지시 · 로그</text>
-
-    <!-- ============ 견적 플로우 (⑩) ============ -->
-    <path class="edge" d="M280 580 L280 620" marker-end="url(#ah)"/>
-    <text class="el mono" x="293" y="604">run_kpi · 실측 근거</text>
-    <path class="edge-r" d="M1540 880 L1540 936 L280 936 L280 884" marker-end="url(#ah)"/>
-    <text class="el" x="910" y="928" text-anchor="middle">대수별 KPI · 권장 구성 (적재)</text>
-    <path class="edge-r" d="M520 540 L540 540 L540 952 L1600 952 L1600 884" marker-end="url(#ah)"/>
-    <text class="el" x="1060" y="946" text-anchor="middle">시나리오 로드 · 스윕 잡 클레임 (SQL, 워커 폴링)</text>
-    <rect class="badge" x="529" y="740" width="22" height="22"/><text class="badge-t" x="540" y="756" text-anchor="middle">3</text>
-    <rect class="badge" x="49" y="767" width="22" height="22"/><text class="badge-t" x="60" y="783" text-anchor="middle">7</text>
-    <path class="edge" d="M40 700 L20 700 L20 88 L40 88" marker-end="url(#ah)"/>
-    <text class="el" transform="rotate(-90 14 400)" x="14" y="400" text-anchor="middle">견적서 · 대수–성능 곡선</text>
-    <rect class="badge" x="9" y="549" width="22" height="22"/><text class="badge-t" x="20" y="565" text-anchor="middle">8</text>
   </svg>
   <figcaption>
     <span class="lg"><span class="sw"></span> 실시간 데이터 흐름 (REST · MQTT · DDS)</span>
     <span class="lg"><span class="sw swd"></span> 배치 흐름 (SQL · parquet)</span>
-    <span class="lg"><b>①–⑧</b> 견적 파이프라인 (비동기 접수형) · 번호 없는 실선 = 시뮬 내부 주문 체인(⑤ 검증 런·라이브 데모에서 실행)</span>
+    <span class="lg"><b>①–⑧</b> 견적 파이프라인 (비동기 접수형)</span>
+    <span class="lg"><b>상시 / 런 단위</b> = 견적 서비스는 상시 가동, 시뮬 스택은 시나리오별 기동·리셋</span>
     <span class="lg"><b>굵은 테두리</b> = 고정 MAPF 코어</span>
-    <span class="lg"><b>외곽 프레임</b> = 배포 인스턴스 (EC2 · GPU 서버) · <b>Docker 로고</b> = k3s 파드 (시뮬 섬은 네이티브)</span>
+    <span class="lg"><b>외곽 프레임</b> = 배포 인스턴스 · <b>Docker 로고</b> = k3s 파드</span>
   </figcaption>
   </figure>
 
   <h2>견적 파이프라인 ①–⑧ — 구간별 인터페이스</h2>
   <table>
     <tr><th style="width:44px">단계</th><th style="width:150px">이름</th><th style="width:210px">구간</th><th style="width:280px">인터페이스</th><th>내용</th></tr>
-    <tr><td>①</td><td>견적 요청 접수</td><td>고객 폼 → WMS</td><td><code>REST POST /api/requests</code></td><td>레이아웃 · 물동량 · 주문 프로파일 · 기종 후보 제출 — 비동기 접수, 즉시 응답 없음</td></tr>
-    <tr><td>②</td><td>운영 검토·컴파일</td><td>운영자 콘솔 + WMS</td><td>검토 승인 → in-process → PG</td><td><b>운영자가 요청을 검토·정제</b>한 뒤 맵·존·스테이션·수요 프로파일을 도메인 데이터로 컴파일</td></tr>
-    <tr><td>③</td><td>스윕 잡 클레임</td><td>PG → 스윕 엔진</td><td><code>SQL FOR UPDATE SKIP LOCKED</code></td><td>워커가 시나리오·스윕 잡을 폴링 — 웹 응답과 무거운 계산의 분리</td></tr>
-    <tr><td>④</td><td>구성 탐색·DES</td><td>스윕 엔진 내부</td><td>in-process (SimPy)</td><td>Optuna가 대수×기종 제안 → FMS 코어+고정 MAPF로 가상 시간 실행 × 시드 반복</td></tr>
-    <tr><td>⑤</td><td>Isaac 물리 검증 런</td><td>엔진 → GPU 섬</td><td>전 체인 (MQTT · DDS)</td><td>상위 구성만 물리 검증 런(배치, 시간 제약 없음) — 아래 "시뮬 내부 주문 체인"이 실제로 흐름. 갭을 DES에 캘리브레이션</td></tr>
-    <tr><td>⑥</td><td>KPI 집계·보정</td><td>엔진 내부</td><td>parquet · SQL</td><td>구성별 처리량 P50·P10 분포 + 물리 보정 — "최악의 달에도 보장되는 숫자"</td></tr>
-    <tr><td>⑦</td><td>견적 리포트 작성</td><td>KPI → 견적 엔진</td><td>SQL · LLM 서술 → <b>운영자 검수</b></td><td>권장 대수·기종, 보장 처리량(P10), TCO/ROI, 증설 로드맵 — LLM 초안을 사람이 최종 검수</td></tr>
-    <tr><td>⑧</td><td>견적서 발송</td><td>견적 엔진 → 고객</td><td>이메일 알림 · <code>REST GET /api/reports</code></td><td>완결 후 발송 — 견적서(웹·PDF) + 대수–성능 곡선. 고객은 링크로 열람</td></tr>
+    <tr><td>①</td><td>견적 요청 접수</td><td>고객 폼 → 견적 BE</td><td><code>REST POST /api/requests</code></td><td>레이아웃 · 물동량 · 주문 프로파일 · 기종 후보 제출 — 비동기 접수, 즉시 응답 없음</td></tr>
+    <tr><td>②</td><td>운영 검토·컴파일</td><td>운영 콘솔 + 견적 BE</td><td>검토 승인 → PG 저장</td><td><b>운영자가 요청을 검토·정제</b>한 뒤 맵·존·수요 프로파일을 시나리오로 컴파일</td></tr>
+    <tr><td>③</td><td>스윕 잡 클레임</td><td>PG → 계산 엔진</td><td><code>SQL FOR UPDATE SKIP LOCKED</code></td><td>배치 워커가 시나리오·스윕 잡을 폴링 — 상시 서비스와 무거운 계산의 분리</td></tr>
+    <tr><td>④</td><td>구성 탐색·DES</td><td>계산 엔진 내부</td><td>in-process (SimPy)</td><td>Optuna가 대수×기종 제안 → FMS 코어+고정 MAPF로 가상 시간 실행 × 시드 반복</td></tr>
+    <tr><td>⑤</td><td>Isaac 물리 검증 런</td><td>엔진 → 시뮬 스택 기동</td><td>전 체인 (MQTT · DDS)</td><td>상위 구성만 물리 검증 런(배치) — <b>시뮬 WMS·EMQX·FMS를 런 단위로 기동</b>하고 주문 체인이 실제로 흐름</td></tr>
+    <tr><td>⑥</td><td>KPI 집계·보정</td><td>엔진 내부</td><td>parquet · SQL</td><td>구성별 처리량 P50·P10 분포 + 물리 갭 캘리브레이션 — "최악의 달에도 보장되는 숫자"</td></tr>
+    <tr><td>⑦</td><td>견적 리포트 작성</td><td>KPI → 견적 산출</td><td>SQL · LLM 서술 → <b>운영자 검수</b></td><td>권장 대수·기종, 보장 처리량(P10), TCO/ROI, 증설 로드맵 — LLM 초안을 사람이 최종 검수</td></tr>
+    <tr><td>⑧</td><td>견적서 발송</td><td>견적 BE → 고객</td><td>이메일 알림 · <code>REST GET /api/reports</code></td><td>완결 후 발송 — 견적서(웹·PDF) + 대수–성능 곡선. 고객은 링크로 열람</td></tr>
   </table>
 
   <h2>시뮬 내부 주문 체인 — ⑤ 검증 런·라이브 데모 공통</h2>
   <table>
     <tr><th style="width:280px">인터페이스</th><th style="width:230px">구간</th><th>역할</th></tr>
-    <tr><td><code>MQTT biz/order</code></td><td>WMS → FMS</td><td>수요 생성기의 주문 → 운송오더(TO) 발행. 느슨한 결합</td></tr>
+    <tr><td><code>MQTT biz/order</code></td><td>시뮬 WMS → FMS</td><td>수요 생성기의 주문 → 운송오더(TO) 발행. 느슨한 결합</td></tr>
     <tr><td>500ms 제어 사이클</td><td>FMS 내부</td><td>배차 → 고정 MAPF 계획 → 시공간 예약 커밋</td></tr>
     <tr><td><code>MQTT uagv/v2/{serial}/order</code></td><td>FMS → agent</td><td>VDA 5050 노드·엣지 시퀀스, released=base만 승인</td></tr>
     <tr><td><code>DDS /cmd_vel · /odom · /scan</code></td><td>agent ↔ Isaac</td><td>Pure Pursuit 추종 + AMCL — 슬립·지연이 실제 물리로 발생</td></tr>
     <tr><td><code>MQTT uagv/…/state</code> 2Hz</td><td>agent → FMS</td><td>지나간 예약 해제 · base 연장(stitching) — 교통 관제</td></tr>
-    <tr><td><code>MQTT fms/event</code></td><td>FMS → WMS</td><td>피킹 완료 → 재고 원자적 차감 → 주문 SHIPPED</td></tr>
+    <tr><td><code>MQTT fms/event</code></td><td>FMS → 시뮬 WMS</td><td>피킹 완료 → 재고 원자적 차감 → 주문 SHIPPED</td></tr>
   </table>
 
-  <p class="note"><b>설계 원칙</b> — 셀프서브 SaaS가 아니라 <b>요청 접수형 비동기 서비스</b>다: 접수(①)와 발송(⑧) 사이는 전부 내부 배치이며, 검토(②)와 검수(⑦) 두 곳에 운영자가 개입한다. MAPF는 연구 대상이 아니라 <b>고정 솔버</b>(v1 = PP+시공간 예약, 슬롯 구조만 유지)이고, 스윕이 탐색하는 것은 알고리즘이 아니라 <b>구성(AMR 대수 × 기종)</b>이다. SimPy DES가 구성별 분포를 만들고, Isaac 물리 검증 런이 갭을 보정하며(비동기라 런 길이 제약 없음), 그 숫자가 그대로 견적서가 된다 — 같은 FMS 코어가 DES·검증 런·라이브 데모 세 곳에서 돌기 때문에 견적과 시연이 한 몸이다.</p>
+  <p class="note"><b>설계 원칙</b> — 웹 인프라는 두 층으로 분리한다: <b>견적 서비스(FE·견적 BE·PG)는 상시 가동</b>이고 고객·운영자 대면이며, <b>시뮬 스택(시뮬 WMS·EMQX·FMS)은 런 단위로 기동·리셋</b>되는 내부 엔진이라 런 스코프 상태가 영속 DB와 섞이지 않는다. 접수(①)와 발송(⑧) 사이는 전부 내부 배치이고, 검토(②)·검수(⑦) 두 곳에 운영자가 개입한다. MAPF는 <b>고정 솔버</b>(v1 = PP+시공간 예약, 슬롯만 유지)이며 스윕이 탐색하는 것은 <b>구성(AMR 대수 × 기종)</b>이다. SimPy DES가 구성별 분포를 만들고 Isaac 물리 검증 런이 갭을 보정하며, 같은 FMS 코어가 DES·검증 런·라이브 데모 세 곳에서 돌기 때문에 견적과 시연이 한 몸이다.</p>
 </div>
 </body>
 </html>
