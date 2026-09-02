@@ -55,7 +55,7 @@
 <body>
 <div class="wrap">
   <h1>AMR 도입 견적 서비스 — FMS-WMS 통합 시스템 아키텍처</h1>
-  <p class="sub">요청 접수형(비동기) · 웹 인프라 2층 분리 — 상시 견적 서비스 / 런 단위 시뮬 스택 · 고정 MAPF · SimPy DES + Optuna 스윕 + Isaac 물리 검증 런 · EC2 t3.xlarge(k3s, IAM 없음) / GPU 서버 2-인스턴스 · v3.6 · 2026-09-02</p>
+  <p class="sub">요청 접수형(비동기) · 웹 인프라 2층 분리 — 상시 견적 서비스 / 런 단위 시뮬 스택 · 고정 MAPF · SimPy DES + Optuna 스윕 + Isaac 물리 검증 런 · EC2 t3.xlarge(k3s, IAM 없음) / GPU 서버 2-인스턴스 · v3.7 · 2026-09-02</p>
 
   <figure>
   <svg viewBox="-40 0 1800 1040" role="img" aria-label="AMR 도입 견적 서비스(요청 접수형) 아키텍처. 상시 가동 견적 서비스(FE·견적 BE·PostgreSQL·견적 산출)와 런 단위로 기동되는 시뮬 스택(시뮬 WMS·EMQX·FMS 코어), GPU 서버의 ROS2·Isaac 실행 계층, k3s 배치 견적 계산 엔진이 파이프라인 번호 1~8로 연결된다.">
@@ -397,6 +397,11 @@
     <text class="el" x="1074" y="944" text-anchor="middle">AMQP — 잡 소비 → (워커 ×N 수평 확장) · ← 결과 이벤트 (KPI · 아티팩트 키)</text>
     <rect class="badge" x="537" y="700" width="22" height="22"/><text class="badge-t" x="548" y="716" text-anchor="middle">3</text>
     <path class="edge-r" d="M548 738 L520 738" marker-end="url(#ah)"/>
+    <!-- 두 WMS 관계선: 동일 시나리오 패키지 (논리 관계, 흐름 아님) -->
+    <path d="M300 960 L300 1004 L1720 1004 L1720 285 L1662 285" fill="none" stroke="#0F8B8D" stroke-width="2.2" stroke-dasharray="2 5" stroke-linecap="round"/>
+    <circle cx="300" cy="960" r="5" fill="#ffffff" stroke="#0F8B8D" stroke-width="2.2"/>
+    <circle cx="1662" cy="285" r="5" fill="#ffffff" stroke="#0F8B8D" stroke-width="2.2"/>
+    <text class="el" x="1010" y="998" text-anchor="middle" fill="#0B6D6F" font-weight="700">≡ 동일 시나리오 패키지 공유 — zones.json · 맵 · 분해 규칙 · 수요 프로파일 (두 WMS의 공통 환경 정의, 흐름 아님)</text>
     <path class="edge-r" d="M1340 285 L1398 285" marker-end="url(#ah)"/>
     <text class="el" x="1369" y="272" text-anchor="middle">코어 임베드</text>
     <path class="edge-r" d="M1340 790 L1384 790 L1384 735 L1418 735" marker-start="url(#ah)" marker-end="url(#ah)"/>
@@ -410,6 +415,7 @@
     <span class="lg"><b>상시 / 런 단위</b> = 견적 서비스는 상시 가동, 시뮬 스택은 시나리오별 기동·리셋</span>
     <span class="lg"><b>굵은 테두리</b> = 고정 MAPF 코어</span>
     <span class="lg"><b>외곽 프레임</b> = 배포 인스턴스 · <b>Docker 로고</b> = k3s 파드</span>
+    <span class="lg"><span class="sw" style="border-top:2.5px dotted #0F8B8D"></span> 청록 점선 = 동일 시나리오 패키지 공유 관계 (두 WMS)</span>
     <span class="lg"><span class="swb" style="background:rgba(31,95,191,.16);border:2.5px solid #1F5FBF"></span> EC2 <span class="swb" style="background:rgba(62,155,62,.18);border:2.5px solid #2E8B3A"></span> GPU 서버 (굵은 실선 = 기기 경계) · <span class="swb" style="background:rgba(107,79,187,.18);border:1.5px dashed #6B4FBB"></span> 견적 서비스 도메인 <span class="swb" style="background:rgba(217,138,30,.18);border:1.5px dashed #D98A1E"></span> 시뮬레이션 도메인 · 색 점선 = 도메인 경계, 상대 색 점선 조각 = 공용</span>
   </figcaption>
   </figure>
