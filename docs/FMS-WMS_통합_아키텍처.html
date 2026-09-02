@@ -108,7 +108,7 @@
 
     <!-- ============ 계층 눈썹 라벨 ============ -->
     <text class="eyebrow" x="40" y="668">02 · 시뮬 스택 — 런 단위 기동</text>
-    <text class="eyebrow" x="580" y="170">03 · 메시지 백본 — 런 단위</text>
+    <text class="eyebrow" x="580" y="170">03 · 메시지 백본 — 상시</text>
     <text class="eyebrow" x="780" y="28">04 · FMS 코어 — 런 단위</text>
     <rect x="776" y="519" width="176" height="15" fill="#ffffff"/>
     <text class="eyebrow" x="780" y="530">05 · 실행 계층 (SIL)</text>
@@ -195,6 +195,7 @@
       <text class="ctag" x="650" y="236" text-anchor="middle">MQTT 브로커</text>
       <text class="bl mono" x="650" y="470" text-anchor="middle" font-size="11">biz/*  fms/*</text>
       <text class="bl mono" x="650" y="488" text-anchor="middle" font-size="11">uagv/v2/*</text>
+      <text class="bl mono" x="650" y="506" text-anchor="middle" font-size="11">sim/control</text>
       <text class="ctag" x="650" y="948" text-anchor="middle">QoS1 · retained state</text>
     </g>
 
@@ -329,6 +330,10 @@
     <text class="el mono" x="775" y="566" text-anchor="end">sub uagv/…/order</text>
     <path class="edge" d="M780 622 L720 622" marker-end="url(#ah)"/>
     <text class="el mono" x="775" y="644" text-anchor="end">pub state 2Hz</text>
+    <rect class="chip" x="784" y="656" width="130" height="38"/>
+    <text class="chipt" x="849" y="680" text-anchor="middle" font-weight="700">sim-runner 데몬</text>
+    <path class="edge-r" d="M720 675 L784 675" marker-start="url(#ah)" marker-end="url(#ah)"/>
+    <text class="el mono" x="752" y="662" text-anchor="middle">sim/control</text>
     <path class="edge" d="M950 650 L950 700" marker-end="url(#ah)"/>
     <text class="el mono" x="963" y="672">DDS /cmd_vel 20Hz</text>
     <rect class="badge" x="924" y="661" width="22" height="22"/><text class="badge-t" x="935" y="677" text-anchor="middle">5</text>
@@ -363,7 +368,7 @@
     <tr><td>②</td><td>운영 검토·컴파일</td><td>운영 콘솔 + 견적 BE</td><td>검토 승인 → PG 저장</td><td><b>운영자가 요청을 검토·정제</b>한 뒤 맵·존·수요 프로파일을 시나리오로 컴파일</td></tr>
     <tr><td>③</td><td>스윕 잡 클레임</td><td>PG → 계산 엔진</td><td><code>SQL FOR UPDATE SKIP LOCKED</code></td><td>배치 워커가 시나리오·스윕 잡을 폴링 — 상시 서비스와 무거운 계산의 분리</td></tr>
     <tr><td>④</td><td>구성 탐색·DES</td><td>계산 엔진 내부</td><td>in-process (SimPy)</td><td>Optuna가 대수×기종 제안 → FMS 코어+고정 MAPF로 가상 시간 실행 × 시드 반복</td></tr>
-    <tr><td>⑤</td><td>Isaac 물리 검증 런</td><td>엔진 → 시뮬 스택 기동</td><td>전 체인 (MQTT · DDS)</td><td>상위 구성만 물리 검증 런(배치) — <b>시뮬 WMS·EMQX·FMS를 런 단위로 기동</b>하고 주문 체인이 실제로 흐름</td></tr>
+    <tr><td>⑤</td><td>Isaac 물리 검증 런</td><td>엔진 → 시뮬 스택 기동</td><td><code>k8s API</code> · <code>MQTT sim/control</code></td><td>상위 구성만 물리 검증 런(배치) — 워커가 시뮬 WMS·FMS 파드를 k8s API로 기동하고, GPU 측은 <b>sim-runner 데몬</b>이 sim/control로 Isaac·agent를 스폰·정리. 주문 체인이 실제로 흐름</td></tr>
     <tr><td>⑥</td><td>KPI 집계·보정</td><td>엔진 내부</td><td>parquet · SQL</td><td>구성별 처리량 P50·P10 분포 + 물리 갭 캘리브레이션 — "최악의 달에도 보장되는 숫자"</td></tr>
     <tr><td>⑦</td><td>견적 리포트 작성</td><td>KPI → 견적 산출</td><td>SQL · LLM 서술 → <b>운영자 검수</b></td><td>권장 대수·기종, 보장 처리량(P10), TCO/ROI, 증설 로드맵 — LLM 초안을 사람이 최종 검수</td></tr>
     <tr><td>⑧</td><td>견적서 발송</td><td>견적 BE → 고객</td><td>이메일 알림 · <code>REST GET /api/reports</code></td><td>완결 후 발송 — 견적서(웹·PDF) + 대수–성능 곡선. 고객은 링크로 열람</td></tr>
@@ -380,7 +385,7 @@
     <tr><td><code>MQTT fms/event</code></td><td>FMS → 시뮬 WMS</td><td>피킹 완료 → 재고 원자적 차감 → 주문 SHIPPED</td></tr>
   </table>
 
-  <p class="note"><b>설계 원칙</b> — 웹 인프라는 두 층으로 분리한다: <b>견적 서비스(FE·견적 BE·PG)는 상시 가동</b>이고 고객·운영자 대면이며, <b>시뮬 스택(시뮬 WMS·EMQX·FMS)은 런 단위로 기동·리셋</b>되는 내부 엔진이라 런 스코프 상태가 영속 DB와 섞이지 않는다. 접수(①)와 발송(⑧) 사이는 전부 내부 배치이고, 검토(②)·검수(⑦) 두 곳에 운영자가 개입한다. MAPF는 <b>고정 솔버</b>(v1 = PP+시공간 예약, 슬롯만 유지)이며 스윕이 탐색하는 것은 <b>구성(AMR 대수 × 기종)</b>이다. SimPy DES가 구성별 분포를 만들고 Isaac 물리 검증 런이 갭을 보정하며, 같은 FMS 코어가 DES·검증 런·라이브 데모 세 곳에서 돌기 때문에 견적과 시연이 한 몸이다.</p>
+  <p class="note"><b>설계 원칙</b> — 웹 인프라는 두 층으로 분리한다: <b>견적 서비스(FE·견적 BE·PG)는 상시 가동</b>이고 고객·운영자 대면이며, <b>시뮬 스택(시뮬 WMS·EMQX·FMS)은 런 단위로 기동·리셋</b>되는 내부 엔진이라 런 스코프 상태가 영속 DB와 섞이지 않는다. 접수(①)와 발송(⑧) 사이는 전부 내부 배치이고, 검토(②)·검수(⑦) 두 곳에 운영자가 개입한다. MAPF는 <b>고정 솔버</b>(v1 = PP+시공간 예약, 슬롯만 유지)이며 스윕이 탐색하는 것은 <b>구성(AMR 대수 × 기종)</b>이다. SimPy DES가 구성별 분포를 만들고 Isaac 물리 검증 런이 갭을 보정하며, 같은 FMS 코어가 DES·검증 런·라이브 데모 세 곳에서 돌기 때문에 견적과 시연이 한 몸이다. <b>런 오케스트레이션</b>은 계산 엔진 워커가 전담한다: EC2 측 시뮬 파드는 k8s API로 생성·삭제하고, GPU 측은 상주 sim-runner 데몬에 <code>MQTT sim/control</code>로 start/stop을 지시한다(헬스비트 감시·타임아웃 강제 정리, GPU 1대라 Isaac 런은 직렬 큐). 이 제어 채널이 런보다 먼저 있어야 하므로 EMQX는 상시 가동이다.</p>
 </div>
 </body>
 </html>
