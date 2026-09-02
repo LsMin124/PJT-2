@@ -56,10 +56,10 @@
 <body>
 <div class="wrap">
   <h1>주문 기반 FMS-WMS 통합 시스템 아키텍처</h1>
-  <p class="sub">주문 1건의 워크플로우 ①–⑨를 따라 배치한 소프트웨어 구성 · MAPF 최적화 연구 트랙(그리드×물리 2계층 검증) 포함 · v1 · 2026-09-02</p>
+  <p class="sub">주문 워크플로우 ①–⑨ + 견적 산출 ⑩ · MAPF 최적화 연구 트랙(그리드×물리 2계층 검증) · 3PL AMR 도입 의사결정 지원 · v1.1 · 2026-09-02</p>
 
   <figure>
-  <svg viewBox="0 0 1720 960" role="img" aria-label="주문에서 출고까지의 FMS-WMS 통합 아키텍처. 주문 계층, WMS, EMQX 메시지 백본, FMS 코어, ROS2·Isaac 실행 계층, MAPF 연구 트랙이 워크플로우 번호 1~9로 연결된다.">
+  <svg viewBox="0 0 1720 1000" role="img" aria-label="주문에서 출고까지의 FMS-WMS 통합 아키텍처. 주문 계층, WMS, EMQX 메시지 백본, FMS 코어, ROS2·Isaac 실행 계층, MAPF 연구 트랙, 3PL 견적 산출 계층이 워크플로우 번호 1~10으로 연결된다.">
     <defs>
       <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
         <path d="M2 1L8 5L2 9" fill="none" stroke="#8a8878" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -79,13 +79,14 @@
     <text class="eyebrow" x="780" y="28">04 · FMS — 배차·경로·교통</text>
     <text class="eyebrow" x="780" y="530">05 · 실행 계층 (SIL)</text>
     <text class="eyebrow" x="1400" y="28" fill="#993C1D">R · MAPF 연구 트랙</text>
+    <text class="eyebrow" x="40" y="610">06 · 의사결정 지원 — 3PL 견적</text>
 
     <!-- ============ 01 주문 계층 ============ -->
     <g>
       <rect x="40" y="40" width="310" height="96" rx="10" fill="var(--purple-50)" stroke="var(--purple-600)"/>
       <text class="chead" x="58" y="70" fill="var(--purple-800)">React 관제 콘솔</text>
       <text class="bl" x="58" y="94">주문 입력 · 라이브 관제 맵</text>
-      <text class="bl" x="58" y="112">주문 상태 추적 · KPI 뷰</text>
+      <text class="bl" x="58" y="112">KPI 뷰 · 견적 리포트 뷰</text>
       <rect x="370" y="40" width="150" height="96" rx="10" fill="var(--purple-50)" stroke="var(--purple-600)"/>
       <text class="bt" x="388" y="70" fill="var(--purple-800)">주문 생성기</text>
       <text class="bl" x="388" y="94">부하 프로파일 λ</text>
@@ -128,6 +129,32 @@
       <rect x="40" y="500" width="480" height="80" rx="10" fill="var(--gray-50)" stroke="var(--gray-600)"/>
       <text class="bt" x="58" y="532" fill="var(--gray-800)">PostgreSQL</text>
       <text class="bl" x="58" y="554">주문 · 재고 · Task · 결정 로그 · run_kpi</text>
+    </g>
+
+    <!-- ============ 06 의사결정 지원 (견적) ============ -->
+    <g>
+      <rect x="40" y="620" width="480" height="260" rx="10" fill="var(--purple-50)" stroke="var(--purple-600)"/>
+      <text class="chead" x="58" y="650" fill="var(--purple-800)">견적 산출 — 도입 의사결정 지원</text>
+      <text class="ctag" x="502" y="650" text-anchor="end">서비스 산출물</text>
+
+      <rect x="60" y="666" width="210" height="92" rx="6" fill="#fff" stroke="var(--purple-600)" stroke-opacity=".45"/>
+      <text class="bt" x="74" y="690" fill="var(--purple-800)">대수–성능 곡선</text>
+      <text class="bl" x="74" y="712">구성별 처리량 P50 · P10</text>
+      <text class="bl" x="74" y="728">사이클타임 · 혼잡 민감도</text>
+      <text class="bl" x="74" y="744">솔버×대수 스윕 집계</text>
+
+      <rect x="290" y="666" width="210" height="92" rx="6" fill="#fff" stroke="var(--purple-600)" stroke-opacity=".45"/>
+      <text class="bt" x="304" y="690" fill="var(--purple-800)">비용·ROI 모델</text>
+      <text class="bl" x="304" y="712">CAPEX · RaaS 요율</text>
+      <text class="bl" x="304" y="728">건당 처리 원가 곡선</text>
+      <text class="bl" x="304" y="744">증설 로드맵</text>
+
+      <rect x="60" y="778" width="440" height="80" rx="6" fill="#fff" stroke="var(--purple-600)" stroke-opacity=".45"/>
+      <text class="bt" x="74" y="802" fill="var(--purple-800)">견적 리포트 생성기</text>
+      <text class="bl" x="74" y="824">권장 대수 · 보장 처리량(P10) · TCO/ROI — LLM 서술 → 견적서(웹·PDF)</text>
+
+      <path class="edge-in" d="M165 758 L165 778" marker-end="url(#ahi)"/>
+      <path class="edge-in" d="M395 758 L395 778" marker-end="url(#ahi)"/>
     </g>
 
     <!-- ============ 03 EMQX 백본 ============ -->
@@ -245,7 +272,7 @@
 
       <rect x="1420" y="646" width="240" height="70" rx="6" fill="#fff" stroke="var(--coral-600)" stroke-opacity=".5"/>
       <text class="bt" x="1434" y="672" fill="var(--coral-800)">산출물</text>
-      <text class="bl" x="1434" y="694">솔버 권고 · 운영 파라미터 · 갭 리포트</text>
+      <text class="bl" x="1434" y="694">솔버 권고 · 대수별 KPI · 갭 리포트</text>
 
       <path class="edge-in" d="M1540 246 L1540 286" marker-end="url(#ahi)"/>
       <path class="edge-in" d="M1540 416 L1540 456" marker-end="url(#ahi)"/>
@@ -311,16 +338,25 @@
     <path class="edge-r" d="M1420 680 L1358 680 L1358 300 L1342 300" marker-end="url(#ahc)"/>
     <text class="el elc" x="1354" y="490" text-anchor="end">솔버·파라미터 환류</text>
     <circle class="badge" cx="1358" cy="620" r="12"/><text class="badge-t" x="1358" y="625" text-anchor="middle">9</text>
+
+    <!-- ============ 견적 플로우 (⑩) ============ -->
+    <path class="edge" d="M280 580 L280 620" marker-end="url(#ah)"/>
+    <text class="el mono" x="293" y="604">run_kpi · 실측 근거</text>
+    <path class="edge-r" d="M1540 880 L1540 936 L280 936 L280 884" marker-end="url(#ahc)"/>
+    <text class="el elc" x="910" y="928" text-anchor="middle">스윕 KPI · 솔버 권고 (오프라인 적재)</text>
+    <path class="edge" d="M40 700 L20 700 L20 88 L40 88" marker-end="url(#ah)"/>
+    <text class="el" transform="rotate(-90 14 400)" x="14" y="400" text-anchor="middle">견적서 · 대수–성능 곡선</text>
+    <circle class="badge" cx="20" cy="560" r="13"/><text class="badge-t" x="20" y="565" text-anchor="middle" font-size="12">10</text>
   </svg>
   <figcaption>
     <span class="lg"><span class="sw"></span> 운영 데이터 흐름 (REST · MQTT · DDS)</span>
     <span class="lg"><span class="sw swd"></span> 연구 트랙 (오프라인)</span>
-    <span class="lg"><b>①–⑨</b> 주문 1건의 워크플로우</span>
+    <span class="lg"><b>①–⑨</b> 주문 1건의 워크플로우 · <b>⑩</b> 견적 산출</span>
     <span class="lg"><b>주황 테두리</b> = 연구 코어 (교체형 MAPF 솔버 슬롯)</span>
   </figcaption>
   </figure>
 
-  <h2>워크플로우 ①–⑨ — 구간별 인터페이스</h2>
+  <h2>워크플로우 ①–⑩ — 구간별 인터페이스</h2>
   <table>
     <tr><th style="width:44px">단계</th><th style="width:150px">이름</th><th style="width:210px">구간</th><th style="width:280px">인터페이스</th><th>내용</th></tr>
     <tr><td>①</td><td>주문 투입</td><td>FE·생성기 → WMS</td><td><code>REST POST /api/orders</code></td><td>화주·품목·수량. 데모는 FE 직접 입력, 벤치는 부하 프로파일 λ로 자동 생성</td></tr>
@@ -332,6 +368,7 @@
     <tr><td>⑦</td><td>상태 보고·교통 관제</td><td>agent → FMS</td><td><code>MQTT uagv/…/state</code> 2Hz</td><td>지나간 예약 해제, base 연장(stitching). 로봇 간 간섭이 여기서 조정됨</td></tr>
     <tr><td>⑧</td><td>피킹·출고</td><td>FMS → WMS → FE</td><td><code>fms/event</code> · WS push</td><td>피킹 완료 → 재고 원자적 차감 → 주문 SHIPPED → 관제 화면 갱신</td></tr>
     <tr><td>⑨</td><td>연구 환류</td><td>실행 로그 → 벤치 → FMS</td><td>오프라인 (parquet · SQL)</td><td>그리드 벤치 KPI + SIL 갭 분석 → 솔버·파라미터 선정으로 환류</td></tr>
+    <tr><td>⑩</td><td>견적 산출</td><td>벤치 KPI·실측 → 견적 엔진 → FE</td><td>오프라인 집계 · <code>REST GET /api/reports</code></td><td>솔버×대수 스윕을 대수–성능 곡선으로 집계, 비용·ROI 모델 결합 → 권장 대수·보장 처리량(P10)·TCO를 담은 견적서. 3PL AMR 도입 의사결정 지원 산출물</td></tr>
   </table>
 
   <h2>MAPF 솔버 슬롯 — 벤치 대상</h2>
@@ -344,7 +381,7 @@
     <tr><td>CBS / ECBS</td><td>충돌 기반 탐색 (최적·유계)</td><td>소규모 정답 기준선 (해질 검증용)</td></tr>
   </table>
 
-  <p class="note"><b>2계층 검증 원칙</b> — 모든 솔버는 같은 FMS 코어 인터페이스로 꽂힌다. 그리드(1m 셀 고속 시뮬)에서 솔버×로봇 수×부하를 스윕하고, 승자를 Isaac 물리(슬립·지연·혼잡 포함)에서 재검증한다. 같은 코드가 벤치와 라이브 관제 양쪽에서 돌기 때문에, 벤치 결과가 곧 운영 파라미터가 된다.</p>
+  <p class="note"><b>2계층 검증 원칙</b> — 모든 솔버는 같은 FMS 코어 인터페이스로 꽂힌다. 그리드(1m 셀 고속 시뮬)에서 솔버×로봇 수×부하를 스윕하고, 승자를 Isaac 물리(슬립·지연·혼잡 포함)에서 재검증한다. 같은 코드가 벤치와 라이브 관제 양쪽에서 돌기 때문에, 벤치 결과가 곧 운영 파라미터이자 견적(⑩)의 근거 데이터가 된다 — 연구 트랙과 서비스 산출물이 한 파이프라인으로 이어진다.</p>
 </div>
 </body>
 </html>
