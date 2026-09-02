@@ -55,7 +55,7 @@
 <body>
 <div class="wrap">
   <h1>AMR 도입 견적 서비스 — FMS-WMS 통합 시스템 아키텍처</h1>
-  <p class="sub">요청 접수형(비동기) · 웹 인프라 2층 분리 — 상시 견적 서비스 / 런 단위 시뮬 스택 · 고정 MAPF · SimPy DES + Optuna 스윕 + Isaac 물리 검증 런 · EC2 t3.xlarge(k3s, IAM 없음) / GPU 서버 2-인스턴스 · v3.7 · 2026-09-02</p>
+  <p class="sub">요청 접수형(비동기) · 웹 인프라 2층 분리 — 상시 견적 서비스 / 런 단위 시뮬 스택 · 고정 MAPF · SimPy DES + Optuna 스윕 + Isaac 물리 검증 런 · EC2 t3.xlarge(k3s, IAM 없음) / GPU 서버 2-인스턴스 · v3.8 · 2026-09-02</p>
 
   <figure>
   <svg viewBox="-40 0 1800 1040" role="img" aria-label="AMR 도입 견적 서비스(요청 접수형) 아키텍처. 상시 가동 견적 서비스(FE·견적 BE·PostgreSQL·견적 산출)와 런 단위로 기동되는 시뮬 스택(시뮬 WMS·EMQX·FMS 코어), GPU 서버의 ROS2·Isaac 실행 계층, k3s 배치 견적 계산 엔진이 파이프라인 번호 1~8로 연결된다.">
@@ -103,8 +103,8 @@
     <rect x="1676" y="4" width="24" height="24" fill="#FFC61C"/>
     <use href="#si-k3s" x="1680" y="8" width="16" height="16" style="color:#1a1a17"/>
     <rect x="760" y="524" width="596" height="376" fill="#3E9B3E" fill-opacity="0.09" stroke="#2E8B3A" stroke-width="3"/>
-    <rect x="966" y="518" width="364" height="15" fill="#ffffff"/>
-    <text class="fl" x="1324" y="529" text-anchor="end" fill="#2E8B3A">GPU 서버 ×N (RTX 5080) — 시뮬 섬 · 네이티브</text>
+    <rect x="900" y="518" width="430" height="15" fill="#ffffff"/>
+    <text class="fl" x="1324" y="529" text-anchor="end" fill="#2E8B3A">GPU 서버 ×1 (RTX 5080, ×N 확장) — 시뮬 섬 · 네이티브</text>
     <rect x="1332" y="512" width="24" height="24" fill="#76B900"/>
     <use href="#si-nvidia" x="1336" y="516" width="16" height="16" style="color:#ffffff"/>
 
@@ -119,7 +119,7 @@
     <text class="fl" x="524" y="33" text-anchor="end" fill="#5A3FA8">01 · 견적 서비스 — 상시 가동</text>
 
     <!-- ============ 계층 눈썹 라벨 ============ -->
-    <text class="eyebrow" x="40" y="668" fill="#B8741A">02 · 시뮬레이션 도메인 — 런 단위 기동</text>
+    <text class="eyebrow" x="40" y="668" fill="#B8741A">02 · 시뮬레이션 도메인 — WMS·FMS 런 단위, 백본 상시</text>
     <text class="eyebrow" x="580" y="88">03 · 메시지 백본 — 상시</text>
     <text class="eyebrow" x="780" y="28">04 · FMS 코어 — 런 단위</text>
     <rect x="776" y="519" width="176" height="15" fill="#ffffff"/>
@@ -148,7 +148,7 @@
       <use href="#si-minio" x="44.5" y="300.5" width="17" height="17" style="color:#ffffff"/>
       <text class="chead" x="76" y="314" font-size="14">MinIO</text>
       <use href="#si-docker" x="148" y="302" width="16" height="16" style="color:#2496ED"/>
-      <text class="bl" x="56" y="352" font-size="10.5">아티팩트 · S3 API</text>
+      <text class="bl" x="56" y="352" font-size="10.5">아티팩트 (runner PUT)</text>
 
       <rect class="cbox" x="190" y="296" width="180" height="76"/>
       <rect x="190" y="296" width="26" height="26" fill="#336791"/>
@@ -243,7 +243,7 @@
       <use href="#si-python" x="784.5" y="44.5" width="17" height="17" style="color:#ffffff"/>
       <text class="chead" x="816" y="58">FMS 코어 — Python (결정 커널)</text>
       <use href="#si-docker" x="1316" y="46" width="16" height="16" style="color:#2496ED"/>
-      <text class="ctag" x="1296" y="58" text-anchor="end">500ms 제어 사이클</text>
+      <text class="ctag" x="1296" y="58" text-anchor="end">런 단위 k8s Job · 500ms 제어 사이클</text>
 
       <rect class="sbox" x="800" y="96" width="250" height="88"/>
       <text class="bt" x="925" y="136" text-anchor="middle">월드모델</text>
@@ -348,6 +348,7 @@
       <text class="bl" x="1402" y="225" text-anchor="end" font-size="10.5">탐색 루프</text>
       <rect class="badge" x="1409" y="229" width="22" height="22"/><text class="badge-t" x="1420" y="245" text-anchor="middle">4</text>
       <rect class="badge" x="1409" y="343" width="22" height="22"/><text class="badge-t" x="1420" y="359" text-anchor="middle">6</text>
+      <path class="edge-in" d="M1660 540 L1670 540 L1670 735 L1662 735" marker-end="url(#ahi)"/>
     </g>
     <rect x="1406" y="458" width="268" height="130" fill="#D98A1E" fill-opacity="0.12" stroke="#D98A1E" stroke-width="1.4" stroke-dasharray="5 4"/>
     <rect x="1406" y="690" width="268" height="90" fill="#D98A1E" fill-opacity="0.12" stroke="#D98A1E" stroke-width="1.4" stroke-dasharray="5 4"/>
@@ -405,7 +406,7 @@
     <path class="edge-r" d="M1340 285 L1398 285" marker-end="url(#ah)"/>
     <text class="el" x="1369" y="272" text-anchor="middle">코어 임베드</text>
     <path class="edge-r" d="M1340 790 L1384 790 L1384 735 L1418 735" marker-start="url(#ah)" marker-end="url(#ah)"/>
-    <text class="el" x="1378" y="778" text-anchor="end">검증 런 지시 · 로그·영상</text>
+    <text class="el" x="1378" y="778" text-anchor="end">런 지시(sim/control 경유) · 로그·영상 → MinIO</text>
   </svg>
   <figcaption>
     <span class="lg"><span class="sw"></span> 실시간 데이터 흐름 (REST · MQTT · DDS)</span>
