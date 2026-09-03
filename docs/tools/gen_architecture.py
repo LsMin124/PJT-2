@@ -107,6 +107,10 @@ def branch(y, title, subs, port, x0=505, x1=810, whale_x=722):
 # ============ EC2 ============
 EC2_X, EC2_W = 260, 1370
 device(EC2_X, 20, EC2_W, 960, "EC2", "EC2", None, "#FFFBF5", "#C9A27A")
+# platform badge: everything on EC2 runs as k3s pods
+add(f'<rect x="{EC2_X + 168}" y="{20 + 34}" width="112" height="40" rx="20" fill="#fff" stroke="{CARD}" stroke-width="1.6"/>')
+img("k8s", EC2_X + 178, 20 + 39, 30, 30)
+t(EC2_X + 216, 20 + 62, "k3s", 21, 700, "#3a5fbf")
 card(290, 160, 190, 80, "nginx", "Nginx", iw=48, ih=48)
 line([(480, 200), (505, 200)]); line([(505, 145), (505, 660)])
 branch(145, "웹 화면", ["location /"], ["웹 파일"])
@@ -126,9 +130,9 @@ CR = 810 + CW  # 1110
 
 # k3s groups
 GX, GW = 1220, 380
-group(GX, 80, GW, 300, "계산 엔진", "#F7F5FD")
+group(GX, 80, GW, 300, "계산 · 실행 관리", "#F7F5FD")
 card(GX + 20, 130, GW - 40, 80, "simpy", "DES", "빠른 시뮬레이션 · 후보 탐색", iw=52, ih=52)
-card(GX + 20, 260, GW - 40, 80, "k8s", "런 오케스트레이터", "검증 실행 관리", iw=48, ih=48)
+card(GX + 20, 260, GW - 40, 80, "python", "런 오케스트레이터", "검증 실행 관리")
 GC = GX + GW / 2
 line([(GC, 210), (GC, 260)]); t(GC + 13, 241, "상위 후보 전달", 17, 400, GREY)
 group(GX, 560, GW, 300, "시뮬 서버 · 검증 때만 실행", "#FFF8EE")
