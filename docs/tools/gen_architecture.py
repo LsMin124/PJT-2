@@ -50,7 +50,7 @@ def img(name, x, y, w, h):
     add(f'<image href="{href}" x="{x}" y="{y}" width="{w}" height="{h}" preserveAspectRatio="xMidYMid meet"/>')
 
 
-def device(x, y, w, h, icon, title, sub, fill, stroke, iw=56, ih=56, stack=0, badge=None):
+def device(x, y, w, h, icon, title, sub, fill, stroke, iw=56, ih=56, stack=0, badge=None, title_shift=0):
     for k in range(stack, 0, -1):   # ghost boxes behind, offset to the top-right
         add(f'<rect x="{x + 14 * k}" y="{y - 14 * k}" width="{w}" height="{h}" rx="26" fill="{fill}" stroke="{stroke}" stroke-width="1.6" opacity="{0.55 - 0.15 * (k - 1)}"/>')
     add(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="26" fill="{fill}" stroke="{stroke}" stroke-width="2"/>')
@@ -59,7 +59,7 @@ def device(x, y, w, h, icon, title, sub, fill, stroke, iw=56, ih=56, stack=0, ba
         add(f'<rect x="{x + w - bw - 24}" y="{y + 22}" width="{bw}" height="36" rx="18" fill="#fff" stroke="{stroke}" stroke-width="1.6"/>')
         t(x + w - 24 - bw / 2, y + 47, badge, 20, 700, "#3a6b2a", "middle")
     img(icon, x + 26, y + 24, iw, ih)
-    tx = x + 26 + iw + 14
+    tx = x + 26 + iw + 14 + title_shift
     t(tx, y + 24 + 40, title, 32, 700, limit=w - (tx - x) - 20)
     if sub:
         t(tx, y + 24 + 40 + 30, sub, 19, 400, GREY, limit=w - (tx - x) - 20)
@@ -106,11 +106,9 @@ def branch(y, title, subs, port, x0=505, x1=810, whale_x=722):
 
 # ============ EC2 ============
 EC2_X, EC2_W = 260, 1370
-device(EC2_X, 20, EC2_W, 960, "EC2", "EC2", None, "#FFFBF5", "#C9A27A")
-# platform bookmark on the left edge of the EC2 box: everything inside runs as k3s pods
-BKW, BKH, BKY = 68, 100, 300
-add(f'<rect x="{EC2_X - BKW / 2}" y="{BKY}" width="{BKW}" height="{BKH}" rx="22" fill="#EEF1FC" stroke="#3a5fbf" stroke-width="2.4"/>')
-img("k8s", EC2_X - 27, BKY + 23, 54, 54)
+device(EC2_X, 20, EC2_W, 960, "EC2", "EC2", None, "#FFFBF5", "#C9A27A", title_shift=68)
+# k3s logo sits beside the EC2 logo in the title row: everything inside runs as k3s pods
+img("k8s", EC2_X + 26 + 56 + 12, 20 + 24, 56, 56)
 card(290, 160, 190, 80, "nginx", "Nginx", iw=48, ih=48)
 line([(480, 200), (505, 200)]); line([(505, 145), (505, 660)])
 branch(145, "웹 화면", ["location /"], ["웹 파일"])
