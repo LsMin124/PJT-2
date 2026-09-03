@@ -107,8 +107,8 @@ def branch(y, title, subs, port, x0=505, x1=810, whale_x=722):
 # ============ EC2 ============
 EC2_X, EC2_W = 260, 1370
 device(EC2_X, 20, EC2_W, 960, "EC2", "EC2", None, "#FFFBF5", "#C9A27A")
-card(290, 160, 190, 80, "nginx", "Nginx", iw=58, ih=58)
-line([(480, 200), (505, 200)]); line([(505, 145), (505, 660)])
+card(280, 160, 210, 80, "nginx", "Nginx", iw=68, ih=68)
+line([(490, 200), (505, 200)]); line([(505, 145), (505, 660)])
 branch(145, "프론트엔드", ["location /"], ["정적 빌드"])
 branch(235, "견적 BE", ["location /api", "8080"], ["8080:8080"])
 line([(650, 235), (650, 550)])
@@ -118,7 +118,7 @@ branch(660, "MQTT / WSS", ["location /mqtt", "8083"], ["wss:8083", "tcp:1883"])
 CW = 300
 card(810, 105, CW, 80, "react", "React", "웹 콘솔")
 card(810, 195, CW, 80, "springboot", "Spring Boot", "견적 BE · REST", iw=46, ih=42)
-card(810, 300, CW, 80, "postgres", "PostgreSQL", "견적 · KPI · 아티팩트", iw=58, ih=58)
+card(810, 300, CW, 80, "postgres", "PostgreSQL", "견적 · KPI · 아티팩트", iw=68, ih=68)
 card(810, 405, CW, 80, "minio", "MinIO", "영상 · 리플레이 · 히트맵", iw=50, ih=50)
 card(810, 510, CW, 80, "rabbitmq", "RabbitMQ", "잡 큐 · GPU 런 큐 · DLQ")
 card(810, 620, CW, 80, "emqx", "EMQX", "MQTT 브로커 · 상시")
@@ -127,8 +127,8 @@ CR = 810 + CW  # 1110
 # k3s groups
 GX, GW = 1220, 380
 group(GX, 80, GW, 300, "계산 엔진 · k3s Job", "#F7F5FD")
-card(GX + 20, 130, GW - 40, 80, "python", "계산 엔진 워커", "탐색 · θ 추론 · DES · KPI")
-card(GX + 20, 260, GW - 40, 80, "k8s", "런 오케스트레이터", "GPU 런 큐 · k8s API", iw=58, ih=58)
+card(GX + 20, 130, GW - 40, 80, "simpy", "DES", "SimPy · 탐색 · θ 추론 · KPI", iw=52, ih=52)
+card(GX + 20, 260, GW - 40, 80, "k8s", "런 오케스트레이터", "GPU 런 큐 · k8s API", iw=68, ih=68)
 GC = GX + GW / 2
 line([(GC, 210), (GC, 260)]); t(GC + 13, 241, "상위 구성", 17, 400, GREY)
 group(GX, 560, GW, 300, "시뮬 스택 · 런 단위 파드", "#FFF8EE")
