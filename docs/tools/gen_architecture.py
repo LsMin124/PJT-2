@@ -107,35 +107,35 @@ def branch(y, title, subs, port, x0=505, x1=810, whale_x=722):
 # ============ EC2 ============
 EC2_X, EC2_W = 260, 1370
 device(EC2_X, 20, EC2_W, 960, "EC2", "EC2", None, "#FFFBF5", "#C9A27A")
-card(280, 160, 210, 80, "nginx", "Nginx", iw=68, ih=68)
-line([(490, 200), (505, 200)]); line([(505, 145), (505, 660)])
-branch(145, "프론트엔드", ["location /"], ["정적 빌드"])
-branch(235, "견적 BE", ["location /api", "8080"], ["8080:8080"])
+card(290, 160, 190, 80, "nginx", "Nginx", iw=48, ih=48)
+line([(480, 200), (505, 200)]); line([(505, 145), (505, 660)])
+branch(145, "웹 화면", ["location /"], ["웹 파일"])
+branch(235, "서비스 서버", ["location /api", "8080"], ["8080:8080"])
 line([(650, 235), (650, 550)])
 for y, port in ((340, "5432:5432"), (445, "9000:9000"), (550, "5672:5672")):
     line([(650, y), (810, y)]); img("docker", 722, y - 34, 44, 24); t(744, y + 26, port, 19, 400, GREY, "middle")
-branch(660, "MQTT / WSS", ["location /mqtt", "8083"], ["wss:8083", "tcp:1883"])
+branch(660, "로봇 메시지", ["location /mqtt", "8083"], ["wss:8083", "tcp:1883"])
 CW = 300
-card(810, 105, CW, 80, "react", "React", "웹 콘솔")
-card(810, 195, CW, 80, "springboot", "Spring Boot", "견적 BE · REST", iw=46, ih=42)
-card(810, 300, CW, 80, "postgres", "PostgreSQL", "견적 · KPI · 아티팩트", iw=68, ih=68)
-card(810, 405, CW, 80, "minio", "MinIO", "영상 · 리플레이 · 히트맵", iw=50, ih=50)
-card(810, 510, CW, 80, "rabbitmq", "RabbitMQ", "잡 큐 · GPU 런 큐 · DLQ")
-card(810, 620, CW, 80, "emqx", "EMQX", "MQTT 브로커 · 상시")
+card(810, 105, CW, 80, "react", "React", "웹 화면")
+card(810, 195, CW, 80, "springboot", "Spring Boot", "요청 접수 · 견적 처리", iw=46, ih=42)
+card(810, 300, CW, 80, "postgres", "PostgreSQL", "요청 · 결과 저장", iw=50, ih=50)
+card(810, 405, CW, 80, "minio", "MinIO", "영상 · 파일 저장", iw=50, ih=50)
+card(810, 510, CW, 80, "rabbitmq", "RabbitMQ", "작업 대기열")
+card(810, 620, CW, 80, "emqx", "EMQX", "로봇 메시지 중계")
 CR = 810 + CW  # 1110
 
 # k3s groups
 GX, GW = 1220, 380
-group(GX, 80, GW, 300, "계산 엔진 · k3s Job", "#F7F5FD")
-card(GX + 20, 130, GW - 40, 80, "simpy", "DES", "SimPy · 탐색 · θ 추론 · KPI", iw=52, ih=52)
-card(GX + 20, 260, GW - 40, 80, "k8s", "런 오케스트레이터", "GPU 런 큐 · k8s API", iw=68, ih=68)
+group(GX, 80, GW, 300, "계산 엔진", "#F7F5FD")
+card(GX + 20, 130, GW - 40, 80, "simpy", "DES", "빠른 시뮬레이션 · 후보 탐색", iw=52, ih=52)
+card(GX + 20, 260, GW - 40, 80, "k8s", "런 오케스트레이터", "검증 실행 관리", iw=48, ih=48)
 GC = GX + GW / 2
-line([(GC, 210), (GC, 260)]); t(GC + 13, 241, "상위 구성", 17, 400, GREY)
-group(GX, 560, GW, 300, "시뮬 스택 · 런 단위 파드", "#FFF8EE")
-card(GX + 20, 620, GW - 40, 80, "springboot", "시뮬 WMS", "H2 인메모리 · 런 스코프", iw=46, ih=42)
-card(GX + 20, 750, GW - 40, 80, "python", "FMS 코어", "PIBT 헤딩 모델 · θ 통행 비용")
+line([(GC, 210), (GC, 260)]); t(GC + 13, 241, "상위 후보 전달", 17, 400, GREY)
+group(GX, 560, GW, 300, "시뮬 서버 · 검증 때만 실행", "#FFF8EE")
+card(GX + 20, 620, GW - 40, 80, "springboot", "시뮬 WMS", "가상 창고 주문 관리", iw=46, ih=42)
+card(GX + 20, 750, GW - 40, 80, "python", "FMS 코어", "로봇 배차 · 경로 계산")
 line([(GC, 340), (GC, 560)], LINE, "8 8")
-t(GC + 16, 450, "k8s API · 파드 기동", 17, 400, GREY, "middle", extra=f'transform="rotate(-90 {GC + 16} 450)"')
+t(GC + 16, 450, "검증용 서버 띄우기", 17, 400, GREY, "middle", extra=f'transform="rotate(-90 {GC + 16} 450)"')
 # AMQP: RabbitMQ → worker
 AX = CR + 62
 line([(CR, 550), (AX, 550), (AX, 170), (GX + 20, 170)], ORANGE, "8 7", 2.4)
@@ -152,12 +152,12 @@ GPX, GPW = 1700, 640
 device(GPX, 260, GPW, 560, "nvidia", "L40S", None, "#F6FBF4", "#8DBB7A", stack=2, badge="× N")
 PC = 360
 PX = GPX + (GPW - PC) / 2  # centered cards
-card(PX, 370, PC, 80, "python", "sim-runner", "sim/control · 런 아티팩트")
-card(PX, 500, PC, 80, "ros2", "amr-agent × N", "VDA 5050 · 그리드 프리미티브", iw=70, ih=40)
-card(PX, 630, PC, 80, "nvidia", "Isaac Sim", "창고 씬 · iw.hub · 라이다", iw=46, ih=46)
+card(PX, 370, PC, 80, "python", "sim-runner", "시뮬 실행 · 영상 녹화")
+card(PX, 500, PC, 80, "ros2", "amr-agent × N", "로봇 제어 프로그램", iw=70, ih=40)
+card(PX, 630, PC, 80, "nvidia", "Isaac Sim", "3D 물리 시뮬레이션", iw=46, ih=46)
 PCX = PX + PC / 2
-line([(PCX, 450), (PCX, 500)]); t(PCX + 14, 481, "스폰 · 녹화", 17, 400, GREY)
-line([(PCX, 580), (PCX, 630)]); t(PCX + 14, 611, "DDS  /cmd_vel · /odom · /scan", 17, 400, GREY)
+line([(PCX, 450), (PCX, 500)]); t(PCX + 14, 481, "실행 · 녹화", 17, 400, GREY)
+line([(PCX, 580), (PCX, 630)]); t(PCX + 14, 611, "이동 명령 · 위치 · 센서", 17, 400, GREY)
 
 # MQTT to GPU (EMQX ↔ agents/runner)
 MX = EC2_X + EC2_W + 30  # between the two boxes
@@ -173,7 +173,7 @@ add('<circle cx="90" cy="158" r="30" fill="#1f1f1f"/>')
 add('<path d="M40 262 Q40 191 90 191 Q140 191 140 262 Z" fill="#1f1f1f"/>')
 t(90, 306, "고객 · 운영자", 24, 700, anchor="middle")
 line([(145, 200), (258, 200)])
-t(201, 184, "웹 콘솔", 20, 700, anchor="middle"); t(201, 228, "https / 443", 19, 400, GREY, "middle")
+t(201, 184, "웹 접속", 20, 700, anchor="middle"); t(201, 228, "https / 443", 19, 400, GREY, "middle")
 
 svg = "\n".join(E)
 html = f'''<!DOCTYPE html>
