@@ -1,0 +1,26 @@
+# Reference parameter set for one agent. Launch args override serial/manufacturer/mqtt.
+/**:
+  primitive_controller:
+    ros__parameters:
+      pose_source: odom      # odom = Isaac ground truth, amcl = closed loop on localization
+      rate_hz: 20.0
+      tol_xy: 0.05           # stop radius at a node [m]  (FMS requirement: error <= 0.1)
+      tol_theta: 0.03        # spot-turn settle tolerance [rad] (~1.7 deg)
+      timeout_s: 30.0
+      v_max: 0.8             # asset tops out at 0.835 m/s (T1)
+      w_max: 1.2
+      a_max: 1.0             # real iw.hub class ramp; the asset itself responds at ~6 m/s^2
+      alpha_max: 2.5
+      v_min: 0.05
+      w_min: 0.12
+      k_turn: 2.5
+      k_heading: 2.5
+      k_lateral: 1.5
+  order_executor:
+    ros__parameters:
+      tol_xy: 0.05
+      tol_theta: 0.03
+      turn_threshold: 0.12   # pre-rotate before driving if heading error exceeds this [rad]
+      zero_edge_eps: 0.05    # nodes closer than this = pure spot turn [m]
+      state_rate_hz: 2.0
+      first_node_tol: 0.5    # max distance to a new order's first node [m]

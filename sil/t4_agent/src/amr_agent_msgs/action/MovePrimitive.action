@@ -1,0 +1,29 @@
+# Grid motion primitive for the AMR agent (T4).
+#
+# TURN  : rotate in place to `theta` (spot turn). x/y ignored.
+# DRIVE : straight line to (x, y) while holding heading `theta`.
+#         reverse=false → robot faces `theta` and drives forward along it.
+#         reverse=true  → robot faces `theta` and drives backward (v < 0), heading kept.
+# Units: metres, radians, seconds. A zero means "use the controller default".
+uint8 TURN=0
+uint8 DRIVE=1
+
+uint8 kind
+float64 x
+float64 y
+float64 theta
+bool reverse
+float64 tolerance_xy
+float64 tolerance_theta
+float64 max_speed
+float64 timeout_s
+---
+bool success
+string message
+float64 final_error_xy
+float64 final_error_theta
+float64 elapsed_s
+---
+float64 distance_remaining
+float64 heading_error
+float64 speed

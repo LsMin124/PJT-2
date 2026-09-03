@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>amr_agent</name>
+  <version>0.1.0</version>
+  <description>AMR agent (T4): VDA 5050 MQTT bridge, order executor (one released node per FMS tick), grid primitive controller (spot turn / straight drive / reverse), kinematic fake robot and a fake FMS for barrier-tick tests.</description>
+  <maintainer email="leesmin124@gmail.com">lsmin124</maintainer>
+  <license>MIT</license>
+
+  <depend>rclpy</depend>
+  <depend>rclpy_action</depend>
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>tf2_ros</depend>
+  <depend>amr_agent_msgs</depend>
+  <exec_depend>python3-paho-mqtt</exec_depend>
+
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
