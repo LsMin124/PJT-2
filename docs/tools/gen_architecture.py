@@ -8,7 +8,7 @@ import base64, io, os, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DOCS = os.path.normpath(os.path.join(HERE, ".."))
-IMGDIR = os.path.join(DOCS, "images")
+IMGDIR = os.path.join(DOCS, "images", "trimmed")   # margins trimmed, white backgrounds removed
 EMBED = "--embed" in sys.argv
 OUT = os.path.join(DOCS, "architecture_embed.html" if EMBED else "architecture.html")
 
@@ -44,7 +44,7 @@ def t(x, y, s, size=22, weight=400, fill=INK, anchor="start", extra="", limit=No
 
 
 def img(name, x, y, w, h):
-    href = f"images/{name}.png"
+    href = f"images/trimmed/{name}.png"
     if EMBED:
         href = "data:image/png;base64," + base64.b64encode(open(os.path.join(IMGDIR, name + ".png"), "rb").read()).decode()
     add(f'<image href="{href}" x="{x}" y="{y}" width="{w}" height="{h}" preserveAspectRatio="xMidYMid meet"/>')
@@ -61,7 +61,8 @@ def device(x, y, w, h, icon, title, sub, fill, stroke, iw=56, ih=56, stack=0, ba
     img(icon, x + 26, y + 24, iw, ih)
     tx = x + 26 + iw + 14
     t(tx, y + 24 + 40, title, 32, 700, limit=w - (tx - x) - 20)
-    t(tx, y + 24 + 40 + 30, sub, 19, 400, GREY, limit=w - (tx - x) - 20)
+    if sub:
+        t(tx, y + 24 + 40 + 30, sub, 19, 400, GREY, limit=w - (tx - x) - 20)
 
 
 def group(x, y, w, h, title, fill):
@@ -105,8 +106,8 @@ def branch(y, title, subs, port, x0=505, x1=810, whale_x=722):
 
 # ============ EC2 ============
 EC2_X, EC2_W = 260, 1370
-device(EC2_X, 20, EC2_W, 960, "EC2", "EC2", "k3s 자체 호스팅 · 관리형 서비스 없음", "#FFFBF5", "#C9A27A")
-card(290, 160, 190, 80, "nginx", "Nginx", iw=60, ih=42)
+device(EC2_X, 20, EC2_W, 960, "EC2", "EC2", None, "#FFFBF5", "#C9A27A")
+card(290, 160, 190, 80, "nginx", "Nginx", iw=48, ih=48)
 line([(480, 200), (505, 200)]); line([(505, 145), (505, 660)])
 branch(145, "프론트엔드", ["location /"], ["정적 빌드"])
 branch(235, "견적 BE", ["location /api", "8080"], ["8080:8080"])
@@ -117,7 +118,7 @@ branch(660, "MQTT / WSS", ["location /mqtt", "8083"], ["wss:8083", "tcp:1883"])
 CW = 300
 card(810, 105, CW, 80, "react", "React", "웹 콘솔")
 card(810, 195, CW, 80, "springboot", "Spring Boot", "견적 BE · REST", iw=46, ih=42)
-card(810, 300, CW, 80, "postgres", "PostgreSQL", "견적 · KPI · 아티팩트", iw=56, ih=40)
+card(810, 300, CW, 80, "postgres", "PostgreSQL", "견적 · KPI · 아티팩트", iw=50, ih=50)
 card(810, 405, CW, 80, "minio", "MinIO", "영상 · 리플레이 · 히트맵", iw=50, ih=50)
 card(810, 510, CW, 80, "rabbitmq", "RabbitMQ", "잡 큐 · GPU 런 큐 · DLQ")
 card(810, 620, CW, 80, "emqx", "EMQX", "MQTT 브로커 · 상시")
@@ -127,7 +128,7 @@ CR = 810 + CW  # 1110
 GX, GW = 1220, 380
 group(GX, 80, GW, 300, "계산 엔진 · k3s Job", "#F7F5FD")
 card(GX + 20, 130, GW - 40, 80, "python", "계산 엔진 워커", "탐색 · θ 추론 · DES · KPI")
-card(GX + 20, 260, GW - 40, 80, "k8s", "런 오케스트레이터", "GPU 런 큐 · k8s API", iw=60, ih=40)
+card(GX + 20, 260, GW - 40, 80, "k8s", "런 오케스트레이터", "GPU 런 큐 · k8s API", iw=48, ih=48)
 GC = GX + GW / 2
 line([(GC, 210), (GC, 260)]); t(GC + 13, 241, "상위 구성", 17, 400, GREY)
 group(GX, 560, GW, 300, "시뮬 스택 · 런 단위 파드", "#FFF8EE")
@@ -147,7 +148,7 @@ t(BX - 14, 715, "MQTT", 17, 700, BLUE, "middle", extra=f'transform="rotate(-90 {
 
 # ============ GPU server ============
 GPX, GPW = 1700, 640
-device(GPX, 260, GPW, 560, "nvidia", "L40S", "GPU 노드 × N · GPU 런 큐 소비자 = N", "#F6FBF4", "#8DBB7A", stack=2, badge="× N")
+device(GPX, 260, GPW, 560, "nvidia", "L40S", None, "#F6FBF4", "#8DBB7A", stack=2, badge="× N")
 PC = 360
 PX = GPX + (GPW - PC) / 2  # centered cards
 card(PX, 370, PC, 80, "python", "sim-runner", "sim/control · 런 아티팩트")
@@ -156,22 +157,19 @@ card(PX, 630, PC, 80, "nvidia", "Isaac Sim", "창고 씬 · iw.hub · 라이다"
 PCX = PX + PC / 2
 line([(PCX, 450), (PCX, 500)]); t(PCX + 14, 481, "스폰 · 녹화", 17, 400, GREY)
 line([(PCX, 580), (PCX, 630)]); t(PCX + 14, 611, "DDS  /cmd_vel · /odom · /scan", 17, 400, GREY)
-t(GPX + GPW / 2, 770, "노드당 로봇 N대 = 에이전트 N개 · Isaac 1 인스턴스", 18, 400, GREY, "middle")
 
 # MQTT to GPU (EMQX ↔ agents/runner)
 MX = EC2_X + EC2_W + 30  # between the two boxes
 line([(960, 700), (960, 920), (MX, 920), (MX, 540), (PX, 540)], BLUE, "9 8", 2.6)
 pill(1320, 920, "MQTT", BLUE, "#EEF1FC", 110)
-t(1320, 957, "VDA 5050 order / state · sim/control · tailscale", 18, 400, GREY, "middle")
 # S3 API: sim-runner → MinIO
 SX = CR + 48
 line([(PX, 395), (MX + 12, 395), (MX + 12, 40), (SX, 40), (SX, 445), (CR, 445)], GREEN, "9 8", 2.6)
 pill(1320, 40, "S3 API", GREEN, "#EEF6E8", 120)
-t(1395, 68, "presigned PUT · 런 아티팩트", 18, 400, GREY)
 
 # ============ client (drawn last so nothing covers it) ============
 add('<circle cx="90" cy="158" r="30" fill="#1f1f1f"/>')
-add('<path d="M40 262 C40 212 140 212 140 262 L140 268 L40 268 Z" fill="#1f1f1f"/>')
+add('<path d="M40 262 Q40 191 90 191 Q140 191 140 262 Z" fill="#1f1f1f"/>')
 t(90, 306, "고객 · 운영자", 24, 700, anchor="middle")
 line([(145, 200), (258, 200)])
 t(201, 184, "웹 콘솔", 20, 700, anchor="middle"); t(201, 228, "https / 443", 19, 400, GREY, "middle")
