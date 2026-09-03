@@ -132,8 +132,8 @@ card(GX + 20, 260, GW - 40, 80, "k8s", "런 오케스트레이터", "GPU 런 큐
 GC = GX + GW / 2
 line([(GC, 210), (GC, 260)]); t(GC + 13, 241, "상위 구성", 17, 400, GREY)
 group(GX, 560, GW, 300, "시뮬 스택 · 런 단위 파드", "#FFF8EE")
-card(GX + 20, 610, GW - 40, 80, "springboot", "시뮬 WMS", "H2 인메모리 · 런 스코프", iw=46, ih=42)
-card(GX + 20, 740, GW - 40, 80, "python", "FMS 코어", "PIBT 헤딩 모델 · θ 통행 비용")
+card(GX + 20, 620, GW - 40, 80, "springboot", "시뮬 WMS", "H2 인메모리 · 런 스코프", iw=46, ih=42)
+card(GX + 20, 750, GW - 40, 80, "python", "FMS 코어", "PIBT 헤딩 모델 · θ 통행 비용")
 line([(GC, 340), (GC, 560)], LINE, "8 8")
 t(GC + 16, 450, "k8s API · 파드 기동", 17, 400, GREY, "middle", extra=f'transform="rotate(-90 {GC + 16} 450)"')
 # AMQP: RabbitMQ → worker
@@ -142,9 +142,10 @@ line([(CR, 550), (AX, 550), (AX, 170), (GX + 20, 170)], ORANGE, "8 7", 2.4)
 pill(AX, 497, "AMQP", ORANGE, "#FFF4E8", 96)
 # MQTT: EMQX → sim WMS / FMS core
 BX = CR + 40
-line([(CR, 660), (BX, 660), (BX, 650), (GX + 20, 650)], BLUE, "8 7", 2.4)
-line([(BX, 660), (BX, 780), (GX + 20, 780)], BLUE, "8 7", 2.4)
-t(BX - 14, 715, "MQTT", 17, 700, BLUE, "middle", extra=f'transform="rotate(-90 {BX - 14} 715)"')
+# straight EMQX → 시뮬 WMS, with a branch dropping to FMS 코어
+line([(CR, 660), (GX + 20, 660)], BLUE, "8 7", 2.4)
+line([(BX, 660), (BX, 790), (GX + 20, 790)], BLUE, "8 7", 2.4)
+t(BX - 14, 725, "MQTT", 17, 700, BLUE, "middle", extra=f'transform="rotate(-90 {BX - 14} 725)"')
 
 # ============ GPU server ============
 GPX, GPW = 1700, 640
