@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-<title>AMR 경로계획 이론 기반 — MAPF (Theory Base)</title>
+<title>경로계획 이론 기반 — PIBT (Theory Base)</title>
 <style>
   :root{
     --bg:#14181D;
@@ -64,7 +64,12 @@
   section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
   .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
   .sec-no{font-family:var(--mono);font-size:12px;color:var(--machine);font-weight:700;letter-spacing:.1em}
-  h2{font-size:clamp(19px,2.2vw,27px);font-weight:800;line-height:1.3;letter-spacing:-.025em}
+  h2{font-size:clamp(19px,2.2vw,27px);font-weight:800;letter-spacing:-.025em;line-height:1.3}
+  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
+  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
+  .kcard b{display:block;font-size:15px;margin-bottom:4px}
+  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
   .sec-body{padding:16px 26px 26px}
   h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
   h3::before{content:"";width:8px;height:8px;background:var(--machine);flex:none}
@@ -75,24 +80,10 @@
 
   .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
   .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
+  .plain.warn{background:#2A2019;border-left-color:var(--amber)}
+  .plain.warn .pl-tag{color:var(--amber)}
 
-  details.more{border:1px solid var(--panel-edge);background:#20272F;margin:12px 0}
-  details.more summary{cursor:pointer;padding:11px 14px;font-weight:700;font-size:13px;list-style:none}
-  details.more summary::-webkit-details-marker{display:none}
-  details.more summary::before{content:"▸ ";color:var(--amber)}
-  details.more[open] summary::before{content:"▾ "}
-  details.more>*:not(summary){margin-left:14px;margin-right:14px}
-  details.more>*:last-child{margin-bottom:14px}
-
-  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
-  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
-  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
-  .kcard b{display:block;font-size:15px;margin-bottom:4px}
-  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
-
-  pre{font-family:var(--mono);font-size:12px;line-height:1.7;background:#20272F;border:1px solid var(--panel-edge);border-left:4px solid var(--steel);padding:12px 16px;overflow-x:auto;margin:12px 0}
   code{font-family:var(--mono);font-size:.92em;background:#232B34;padding:1px 5px;border:1px solid var(--grid)}
-  pre code{background:none;border:none;padding:0}
 
   table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
   th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F}
@@ -117,6 +108,14 @@
   .ms h4{font-size:14px;font-weight:700;margin:2px 0 2px}
   .ms p{font-size:12.5px;color:var(--ink-soft);margin:0}
 
+  details.more{border:1px solid var(--panel-edge);background:#20272F;margin:12px 0}
+  details.more summary{cursor:pointer;padding:11px 14px;font-weight:700;font-size:13px;list-style:none}
+  details.more summary::-webkit-details-marker{display:none}
+  details.more summary::before{content:"▸ ";color:var(--amber)}
+  details.more[open] summary::before{content:"▾ "}
+  details.more>*:not(summary){margin-left:14px;margin-right:14px}
+  details.more>*:last-child{margin-bottom:14px}
+
   footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
 
   @media (max-width:820px){
@@ -126,22 +125,38 @@
     .sec-head,.sec-body{padding-left:16px;padding-right:16px}
   }
 </style>
+<style>
+  /* sil_roadmap.html · runtime_architecture.html · 3pl_industry.html */
+  .note{margin:14px 0 8px;padding:12px 16px;background:#2A2019;border-left:4px solid var(--amber);font-size:14px;line-height:1.8}
+  .note .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--amber);font-weight:700;margin-bottom:4px}
+  /* 동 페이지들 — 칩 줄바꿈 금지 + slate 칩 */
+  .chip{white-space:nowrap}
+  .c-slate{color:var(--slate)}
+  /* sil_roadmap.html · runtime_architecture.html — 넓은 SVG 래퍼(가로 스크롤) */
+  .viz{background:#0E1318;border:1px solid var(--panel-edge);padding:12px 14px;margin:14px 0;overflow-x:auto}
+  .viz svg{display:block;min-width:780px;width:100%;height:auto}
+  /* amr_mapf_theory.html — 코드 블록 */
+  pre{font-family:var(--mono);font-size:12px;line-height:1.7;background:#20272F;border:1px solid var(--panel-edge);border-left:4px solid var(--steel);padding:12px 16px;overflow-x:auto;margin:12px 0}
+  pre code{background:none;border:none;padding:0}
+  /* working · research 페이지 — 키보드 포커스 링 */
+  :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+</style>
 </head>
 <body>
 
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow">TECH 03 / 04 · THEORY-BASE · <b>REV A</b> · 2026-08</div>
-      <h1>AMR 경로계획 이론 기반 — MAPF
-        <span class="sub">"대수–처리량 곡선이 왜 꺾이는가"를 설명하는 이론 체계와 핵심 문헌</span>
+      <div class="doc-eyebrow">TECH 04 / 05 · THEORY-PIBT · <b>REV C</b> · 2026-09</div>
+      <h1>경로계획 이론 기반 — PIBT
+        <span class="sub">대수를 늘려도 처리량이 꺾이는 이유, 그리고 그 경합을 매 틱 한 칸씩 푸는 PIBT · 헤딩 모델 · θ 통행 규칙</span>
       </h1>
     </div>
     <div class="meta">
-      SCOPE · <b>AMR 견적 시뮬레이션의 이론층</b><br>
-      FORMAT · <b>이론 → 문헌 → 학습 로드맵</b><br>
-      PAIR · <b>TECH 04 구현 결정 인벤토리</b><br>
-      USE · <b>설계 근거 · 면접 대비</b>
+      SCOPE · <b>견적 시뮬레이션의 경로계획 이론층</b><br>
+      METHOD · <b>PIBT 헤딩 모델 + θ 통행 규칙</b><br>
+      PAIR · <b>TECH 05 구현 결정 인벤토리</b><br>
+      SOURCE · <b>AMR_기획_기준선_v3.md (2026-09-03)</b>
     </div>
   </div>
 </header>
@@ -149,51 +164,125 @@
 <nav aria-label="문서 내 탐색">
   <div class="wrap">
     <a class="nav-home" href="../../index.html">⌂ INDEX</a>
-    <a href="#t0">읽는 법</a>
-    <a href="#t1">01 왜 경로계획인가</a>
-    <a href="#t2">02 MAPF 스펙트럼</a>
-    <a href="#t3">03 TAPF·데드락</a>
-    <a href="#t4">04 집계 이론</a>
-    <a href="#t5">05 핵심 문헌</a>
-    <a href="#t6">06 학습 로드맵</a>
+    <a href="#t0">00 한눈에</a>
+    <a href="#t1">01 곡선·경합</a>
+    <a href="#t2">02 PIBT</a>
+    <a href="#t3">03 헤딩 모델</a>
+    <a href="#t4">04 θ 통행 규칙</a>
+    <a href="#t5">05 라이브니스</a>
+    <a href="#t6">06 부록</a>
     <a class="nav-cross" href="amr_decision_inventory.html">결정 인벤토리 ↗</a>
   </div>
 </nav>
 
 <main class="wrap">
 
-<!-- ══════════ T0 읽는 법 ══════════ -->
+<!-- ══════════ T0 한눈에 보기 ══════════ -->
 <section id="t0">
-  <div class="sec-head"><span class="sec-no">READ ME · 이 문서를 읽는 법</span><h2>이론은 견적의 물리학이다</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 00 · 한눈에 보기</span><h2>경합은 매 틱, 한 칸씩 푼다</h2></div>
   <div class="sec-body">
-    <p class="lead">견적 숫자의 이론적 근거만 다룹니다 — 제품 전체는 <a href="amr_overview.html">TECH 01</a>,
-    구현 결정은 <a href="amr_decision_inventory.html">TECH 04</a> 담당입니다.</p>
+    <p class="lead"><b>"대수를 늘려도 처리량이 꺾이는 원인은 경로 경합이다."</b> 본 프로젝트의 FMS는 그 경합을 <b>PIBT 헤딩 모델</b>로 매 틱 한 칸씩 풀고, 통행 규칙 <b>θ</b>로 길의 비용을 바꿉니다.</p>
+    <div class="note"><span class="pl-tag">기준선 개정 (2026-09-03)</span>REV C. v2의 "우선순위 순차 계획 + 시공간 예약" 서술을 <b>PIBT 헤딩 모델 + AI가 예측한 θ 통행 규칙</b>으로 교체했습니다. PP·CBS·RHCR 비교와 Little's Law 검산은 SEC 06 부록으로 옮겼습니다. 근거: 기준선 v3 §1(FMS 경로계획 행) · §4.1~4.3.</div>
 
-    <div class="kcards">
-      <div class="kcard"><b>Q1 · 왜 정비례로 안 느는가</b><span>로봇을 늘려도 처리량이 꺾이는 이유 → SEC 01</span></div>
-      <div class="kcard s"><b>Q2 · 어떤 알고리즘을 쓰는가</b><span>A*부터 RHCR까지의 계보와 v1의 선택 → SEC 02·03</span></div>
-      <div class="kcard g"><b>Q3 · 숫자를 어떻게 검산하는가</b><span>Little's Law·대기행렬·교통류 → SEC 04</span></div>
-    </div>
+    <h3>이 문서가 답하는 질문</h3>
+    <ul class="rules">
+      <li>① 왜 대수를 늘려도 처리량이 꺾이나 — SEC 01</li>
+      <li>② PIBT는 매 틱 무엇을 하나 — 아래 그림 · SEC 02 · 03</li>
+      <li>③ θ는 무엇을 바꾸나 — SEC 04</li>
+    </ul>
 
-    <details class="more"><summary>먼저 알아둘 용어 6개 — 경로계획 문헌의 기본 어휘 (펼쳐 보기)</summary>
+    <h3>대표 그림 — PIBT의 한 틱</h3>
+    <svg viewBox="0 0 900 312" role="img" aria-label="격자 위 로봇 두 대. 우선순위가 높은 A가 B의 칸을 요청하면 B가 A의 우선순위를 물려받아 먼저 비켜나고, A가 그 칸으로 들어가는 한 틱" style="max-width:100%;height:auto;display:block;margin:14px 0">
+      <defs>
+        <marker id="mt-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker>
+        <marker id="mt-arr-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#F08A32"/></marker>
+        <marker id="mt-arr-g" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#3BAF77"/></marker>
+      </defs>
+      <!-- 패널 1: 틱 시작 -->
+      <text x="150" y="42" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">틱 시작 — A가 B의 칸을 원한다</text>
+      <rect x="30" y="56" width="80" height="80" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="110" y="56" width="80" height="80" fill="#20272F" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <rect x="190" y="56" width="80" height="80" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="30" y="136" width="80" height="80" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="110" y="136" width="80" height="80" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="190" y="136" width="80" height="80" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="30" y="216" width="80" height="80" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="110" y="216" width="80" height="80" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="190" y="216" width="80" height="80" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <text x="150" y="101" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">랙</text>
+      <rect x="206" y="152" width="48" height="48" fill="none" stroke="#F08A32" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <text x="230" y="180" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#F08A32">목표</text>
+      <line x1="92" y1="176" x2="126" y2="176" stroke="#F08A32" stroke-width="2.5" marker-end="url(#mt-arr-a)"/>
+      <text x="109" y="164" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#F08A32">요청</text>
+      <line x1="150" y1="198" x2="150" y2="236" stroke="#3BAF77" stroke-width="2.5" stroke-dasharray="5 4" marker-end="url(#mt-arr-g)"/>
+      <text x="160" y="262" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#3BAF77">비켜남</text>
+      <circle cx="70" cy="176" r="20" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="70" y="181" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">A</text>
+      <circle cx="150" cy="176" r="20" fill="#1A222B" stroke="#8FB4D9" stroke-width="2"/>
+      <text x="150" y="181" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">B</text>
+      <!-- 1틱 화살표 -->
+      <line x1="278" y1="176" x2="320" y2="176" stroke="#8FB4D9" stroke-width="2" marker-end="url(#mt-arr)"/>
+      <text x="299" y="166" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">1 틱</text>
+      <!-- 패널 2: 틱 끝 -->
+      <text x="450" y="42" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">틱 끝 — B가 비키고 A가 들어간다</text>
+      <rect x="330" y="56" width="80" height="80" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="410" y="56" width="80" height="80" fill="#20272F" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <rect x="490" y="56" width="80" height="80" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="330" y="136" width="80" height="80" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="410" y="136" width="80" height="80" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="490" y="136" width="80" height="80" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="330" y="216" width="80" height="80" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="410" y="216" width="80" height="80" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="490" y="216" width="80" height="80" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <text x="450" y="101" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">랙</text>
+      <rect x="506" y="152" width="48" height="48" fill="none" stroke="#F08A32" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <text x="530" y="180" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#F08A32">목표</text>
+      <circle cx="450" cy="176" r="20" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="450" y="181" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">A</text>
+      <circle cx="450" cy="256" r="20" fill="#1A222B" stroke="#8FB4D9" stroke-width="2"/>
+      <text x="450" y="261" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">B</text>
+      <!-- 패널 3: 한 틱의 4단계 -->
+      <text x="600" y="42" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">PIBT가 한 틱에 하는 일</text>
+      <rect x="600" y="56" width="284" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="614" y="77" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">① 우선순위로 정렬</text>
+      <text x="614" y="96" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">오래 기다린 로봇이 위 (A &gt; B)</text>
+      <rect x="600" y="118" width="284" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="614" y="139" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">② A가 목표 쪽 최선 칸을 요청</text>
+      <text x="614" y="158" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">그 칸에는 아직 안 움직인 B가 있다</text>
+      <rect x="600" y="180" width="284" height="52" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="614" y="201" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">③ B가 A의 우선순위를 상속</text>
+      <text x="614" y="220" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">A보다 먼저, 비켜날 칸을 고른다</text>
+      <rect x="600" y="242" width="284" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="614" y="263" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">④ 비킬 곳이 없으면 백트래킹</text>
+      <text x="614" y="282" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">A는 차선 칸(제자리 포함)을 다시 고른다</text>
+    </svg>
+    <p class="soft">주황 = 우선순위가 높은 로봇과 그 요청, 초록 점선 = 상속받은 우선순위로 비켜나는 이동, 회색 점선 칸 = 랙(진입 불가). 매 틱 전 로봇이 한 칸씩 확정되고, 다음 틱은 새 우선순위로 다시 계산합니다.</p>
+
+    <details class="more"><summary>먼저 알아둘 용어 12개 — 펼쳐 보기</summary>
     <div class="tbl-scroll"><table>
-      <tr><th>용어</th><th>쉬운 설명</th></tr>
-      <tr><td><b>에이전트(agent)</b></td><td>경로를 계획해야 하는 주체. 이 프로젝트에서는 AMR 한 대가 에이전트 하나</td></tr>
-      <tr><td><b>그리드 / 노드-엣지</b></td><td>창고 바닥을 표현하는 두 방식. 그리드는 바둑판 격자, 노드-엣지는 지점(노드)과 그 사이 길(엣지)의 그래프. 서로 변환 가능</td></tr>
-      <tr><td><b>sum-of-costs / makespan</b></td><td>계획의 좋고 나쁨을 재는 두 잣대. 전자는 모든 로봇의 이동시간 합, 후자는 마지막 로봇이 도착하는 시각</td></tr>
-      <tr><td><b>최적(optimal) / 준최적(suboptimal)</b></td><td>수학적으로 가장 좋은 답을 보장하는가(느림) vs 조금 손해 보더라도 빠르게 답을 내는가. 실무는 대부분 준최적을 쓴다</td></tr>
-      <tr><td><b>lifelong</b></td><td>작업이 한 번 끝나면 종료가 아니라, 끝나는 즉시 새 작업이 발급되는 "끝없는 운영" 조건. 실제 창고가 이 조건이다</td></tr>
-      <tr><td><b>경합(congestion)</b></td><td>여러 로봇이 같은 통로·교차로를 원해서 생기는 정체·대기. 이 문서 전체의 주인공</td></tr>
+      <tr><th style="width:190px">용어</th><th>쉬운 설명</th></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#mapf">MAPF</a></b></td><td>Multi-Agent Path Finding. 여러 로봇의 충돌 없는 경로를 한꺼번에 찾는 문제</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#pibt">PIBT</a></b></td><td>Priority Inheritance with Backtracking. 우선순위 상속과 되돌리기로 매 틱 다음 한 칸만 정하는 경로계획</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#heading-model">헤딩 모델</a></b></td><td>로봇 상태에 방향을 넣은 격자 모델. 회전이 틱을 소모한다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#swing-reservation">스윙 예약</a></b></td><td>회전할 때 차체 뒤쪽이 쓸고 가는 칸을 그 틱 동안 잡아 두는 것</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#theta">θ (세타)</a></b></td><td>통행 규칙 파라미터 11개. 통로 방향성·교차로 진입·스테이션 출입의 비용을 정한다</td></tr>
+      <tr><td><b>거리장</b></td><td>각 칸에서 목표까지의 비용 지도. θ를 가중치로 넣은 다익스트라로 계산한다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#barrier-tick">틱 · 배리어 틱</a></b></td><td>FMS가 한 번 결정하는 시간 단위. 배리어 틱은 전 로봇의 완료 응답(ack)을 받은 뒤 다음 틱으로 넘어가는 방식</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#primitive">그리드 프리미티브</a></b></td><td>전진·회전·후진·대기처럼 로봇이 실제로 수행하는 격자 단위 동작</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#decision-kernel">결정 커널</a> · <a class="term" href="../ref/glossary_robotics.html#execution-shell">실행 셸</a></b></td><td>입출력 없이 결정만 내는 순수 함수 · 그 함수를 가상 시계 또는 MQTT 틱으로 돌리는 껍데기</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#trial">trial</a></b></td><td>대수 스윕에서 구성 1개(창고·기종·대수·수요)를 시드 반복으로 돌리는 단위</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#des">DES</a></b></td><td>Discrete Event Simulation. 이산 사건 시뮬레이션. 본 프로젝트의 현재 실체는 틱 시뮬</td></tr>
+      <tr><td><b>경합 · 교착</b></td><td>여러 로봇이 같은 칸을 원해 생기는 대기 · 서로 비켜줄 수 없어 영원히 멈추는 상태</td></tr>
     </table></div>
     </details>
   </div>
 </section>
 
-<!-- ══════════ T1 ══════════ -->
+<!-- ══════════ T1 곡선과 경합 ══════════ -->
 <section id="t1">
-  <div class="sec-head"><span class="sec-no">SEC 01 · 왜 경로계획인가</span><h2>경합이 곡선의 모양을 결정한다</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 01 · 곡선과 경합</span><h2>곡선이 눕는 이유는 경합이다</h2></div>
   <div class="sec-body">
-    <p class="lead">견적의 헤드라인인 <b>대수–처리량 곡선</b>은 경로계획 이론 없이는 그려지지 않습니다.</p>
+    <p class="lead">견적의 답은 <b>대수–처리량 곡선의 무릎</b>에 있습니다. 무릎을 만드는 것은 경로 경합입니다.</p>
 
     <svg viewBox="0 0 880 330" role="img" aria-label="로봇 대수와 처리량의 관계 곡선 — 선형 구간, 포화 구간, 과밀 구간" style="max-width:100%;height:auto;display:block;margin:14px 0">
       <line x1="70" y1="100" x2="850" y2="100" stroke="#2A323B" stroke-width="1"/>
@@ -208,169 +297,334 @@
       <text x="140" y="66" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">① 선형 구간</text>
       <text x="140" y="84" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">1대 더 = 1대 몫</text>
       <text x="440" y="66" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">② 포화 구간</text>
-      <text x="440" y="84" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">경합 시작 — 곡선이 눕는다</text>
+      <text x="440" y="84" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">경합 시작. 곡선이 눕는다</text>
       <text x="680" y="66" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">③ 과밀 구간</text>
       <text x="680" y="84" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12.5" fill="#9AA7B4">서로 길을 막아 오히려 감소</text>
       <path d="M80,272 C180,230 300,160 390,122 C470,90 530,86 585,87 C650,89 730,108 830,142" fill="none" stroke="#8FB4D9" stroke-width="2.5"/>
       <line x1="575" y1="92" x2="575" y2="280" stroke="#F08A32" stroke-width="1.5" stroke-dasharray="3 3"/>
       <circle cx="575" cy="87" r="6" fill="#F08A32" stroke="#1C2229" stroke-width="2"/>
-      <text x="560" y="130" text-anchor="end" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">견적의 답 — 이 부근이 최적 대수</text>
+      <text x="560" y="130" text-anchor="end" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">견적의 답. 이 부근이 권장 대수</text>
       <text x="575" y="300" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#F08A32">N*</text>
     </svg>
-    <p class="soft">답은 곡선이 꺾이는 지점(N*)에 있고, 꺾임의 원인은 <b>경로 경합</b>입니다 —
-    경합을 모델링하지 못하는 시뮬레이션은 낙관 편향 견적을 냅니다.</p>
+    <p class="soft">개념 곡선입니다(수치 없음). 스윕은 대수를 바꿔가며 이 곡선을 그리고, 무릎 판정(N*)은 계산 엔진이 합니다. 스윕 루프의 소유는 <a href="system_architecture.html">TECH 02</a>에 있습니다.</p>
 
-    <h3>용어 3계층 — 혼용 금지</h3>
-    <svg viewBox="0 0 900 252" role="img" aria-label="할당·경로·주행 3계층 구조 — 이 문서는 2층 경로 계획을 다룬다" style="max-width:100%;height:auto;display:block;margin:14px 0">
-      <defs><marker id="tl-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
-      <rect x="150" y="14" width="600" height="56" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
-      <text x="170" y="38" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">1층 · 작업 할당 (Task Allocation)</text>
-      <text x="170" y="58" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4">어느 로봇이 어느 작업을 맡을까 — 디스패처 (TECH 04 SEC C)</text>
-      <line x1="450" y1="70" x2="450" y2="94" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tl-arr)"/>
-      <rect x="150" y="100" width="600" height="56" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
-      <text x="170" y="124" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">2층 · 경로 계획 (MAPF)</text>
-      <text x="170" y="144" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4">서로 부딪히지 않는 경로 집합 — 이 문서의 본체, 견적 엔진의 핵심</text>
-      <text x="770" y="132" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#3BAF77">★ 이 문서</text>
-      <line x1="450" y1="156" x2="450" y2="180" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tl-arr)"/>
-      <rect x="150" y="186" width="600" height="56" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
-      <text x="170" y="210" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">3층 · 주행 제어 (Motion Control)</text>
-      <text x="170" y="230" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4">정해진 경로를 실제로 따라감 — Nav2, 3D 검증 계층 담당</text>
-    </svg>
-    <p class="soft">위에서 아래로 명령이 흐릅니다. 층을 섞어 부르면 대화가 꼬이므로, 팀 안에서는 이 세 이름을 구분해서 씁니다.</p>
+    <h3>경합 3종 — 곡선을 눕히는 것들</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:150px">경합</th><th>무엇인가</th><th style="width:230px">곡선에 미치는 영향</th><th style="width:120px">다루는 절</th></tr>
+      <tr><td><b>통로 정체</b></td><td>같은 통로를 여러 대가 같은 방향 또는 마주 보고 쓴다</td><td>② 포화 구간의 주원인</td><td>SEC 04 θ</td></tr>
+      <tr><td><b>교차로 대기</b></td><td>교차로 한 칸을 두고 순서를 기다린다</td><td>②에서 ③으로 넘어가는 지점</td><td>SEC 02 PIBT</td></tr>
+      <tr><td><b>교착</b></td><td>서로 비켜줄 수 없어 영원히 멈춘다</td><td>③ 과밀 구간의 급락</td><td>SEC 05 라이브니스</td></tr>
+    </table></div>
+
+    <h3>3계층 — 이 문서는 2층만 다룬다</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:150px">층</th><th>질문</th><th style="width:300px">본 프로젝트에서의 자리</th></tr>
+      <tr><td><b>1층 · 배차</b></td><td>어느 로봇이 어느 작업을 맡나</td><td>FMS 코어의 Dispatcher. <a href="system_architecture.html">TECH 02</a></td></tr>
+      <tr><td><b>2층 · 경로 <span class="chip c-green">이 문서</span></b></td><td>서로 부딪히지 않는 다음 칸은 무엇인가</td><td>PIBT 헤딩 모델 + θ 통행 비용</td></tr>
+      <tr><td><b>3층 · 주행</b></td><td>정해진 한 칸을 실제로 어떻게 가나</td><td>T4 에이전트의 그리드 프리미티브. <a class="term" href="../ref/glossary_industrial.html#vda5050">VDA 5050</a>으로 하달</td></tr>
+    </table></div>
+
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>
+      로봇이 적을 때는 한 대를 더 넣으면 한 대 몫이 늘어납니다. 많아지면 서로 길을 막아 기다리는 시간이 늘고, 더 많아지면 오히려 줄어듭니다. 회전을 모델에 넣으면 이 꺾이는 지점이 이동합니다(기준선 §4.2). 그래서 경로계획 모델이 견적 숫자를 결정합니다.</div>
   </div>
 </section>
 
-<!-- ══════════ T2 ══════════ -->
+<!-- ══════════ T2 PIBT ══════════ -->
 <section id="t2">
-  <div class="sec-head"><span class="sec-no">SEC 02 · MAPF 스펙트럼</span><h2>A*에서 RHCR까지 — 우리는 실용선을 탄다</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 02 · PIBT</span><h2>전체 경로 대신, 매 틱 다음 한 칸을 정한다</h2></div>
   <div class="sec-body">
-    <p class="lead"><a class="term" href="../ref/glossary_robotics.html#mapf"><b>MAPF</b></a>는 N대의 무충돌 경로 집합을 찾아
-    총 이동시간을 최소화하는 문제 — 창고 AMR이 대표 응용입니다.</p>
+    <p class="lead"><b>PIBT</b>(Priority Inheritance with Backtracking, 우선순위 상속과 되돌리기)는 경로 전체를 미리 계획하지 않습니다. 매 틱 우선순위 순으로 <b>다음 한 칸</b>만 정합니다.</p>
 
-    <h3>알고리즘 스펙트럼 — 학습 순서대로 7단계</h3>
-    <div class="milestones">
-      <div class="ms"><span class="ms-tag">STEP 1 · A*</span><h4>단일 에이전트 최단경로</h4>
-      <p>로봇 한 대의 최단경로 탐색. 모든 것의 출발점.</p></div>
-      <div class="ms"><span class="ms-tag">STEP 2 · 시공간 예약 테이블</span><h4>Space-Time Reservation</h4>
-      <p>"(칸, 시각)"을 먼저 찜한 로봇이 임자 — 뒤 로봇은 찜된 조합을 피해 계획한다. 모든 방법의 기저 부품.</p></div>
-      <div class="ms"><span class="ms-tag">STEP 3 · Prioritized Planning</span><h4>우선순위 순차 계획 <span class="chip c-amber">v1 구현 타겟</span></h4>
-      <p>순번대로 앞 로봇의 예약을 피해 계획. 최적성은 없지만 빠르고 단순해 실무 최다 사용.</p></div>
-      <div class="ms"><span class="ms-tag">STEP 4 · CBS</span><h4><a class="term" href="../ref/glossary_robotics.html#cbs">Conflict-Based Search</a> — 최적의 대표</h4>
-      <p>충돌마다 금지 제약을 걸어 두 갈래로 나눠 다시 푸는 트리 탐색. 최적 보장, 대신 로봇 수에 지수적으로 느려짐.</p></div>
-      <div class="ms"><span class="ms-tag">STEP 5 · ECBS / EECBS</span><h4>유계 준최적 변형</h4>
-      <p>"최적 대비 x% 이내" 보장으로 완화해 속도를 버는 실용선.</p></div>
-      <div class="ms"><span class="ms-tag">STEP 6 · Lifelong MAPF</span><h4>끝없는 운영 조건</h4>
-      <p>작업이 끝나는 즉시 새 작업이 발급되는, 실제 창고의 문제 설정.</p></div>
-      <div class="ms"><span class="ms-tag">STEP 7 · RHCR</span><h4><a class="term" href="../ref/glossary_robotics.html#rhcr">Rolling-Horizon Collision Resolution</a> <span class="chip c-green">직접 기반 문헌</span></h4>
-      <p>앞 W스텝만 충돌 해소 + 주기적 재계획. 대규모 창고의 사실상 표준이자 본 프로젝트 재계획 구조(TECH 04 B4)의 원형.</p></div>
+    <div class="kcards">
+      <div class="kcard"><b>우선순위</b><span>목표에 못 간 채 기다린 시간이 길수록 높다. 도달하면 초기화</span></div>
+      <div class="kcard s"><b>상속</b><span>내가 원하는 칸에 서 있는 낮은 로봇에게 내 우선순위를 물려주고 먼저 비키게 한다</span></div>
+      <div class="kcard g"><b>백트래킹</b><span>상대가 비킬 곳이 없으면 실패를 돌려받고 다음 후보 칸을 시도한다</span></div>
+      <div class="kcard"><b>매 틱 계획</b><span>틱마다 처음부터 다시. 새 작업이 생겨도 그대로 흡수한다</span></div>
     </div>
+
+    <h3>규칙 6개</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:150px">규칙</th><th>내용</th><th style="width:230px">효과</th></tr>
+      <tr><td><b>우선순위</b></td><td>목표에 도달하지 못한 채 지난 틱 수가 클수록 높다. 도달하면 초기화된다</td><td>오래 기다린 로봇이 결국 이긴다. 굶는 로봇이 없다</td></tr>
+      <tr><td><b>후보 순서</b></td><td>거리장 값이 작은 이웃 칸부터 시도한다. 제자리(대기)도 후보다</td><td>목표 쪽으로 간다. 막히면 기다린다</td></tr>
+      <tr><td><b>상속</b></td><td>원하는 칸에 이번 틱 아직 안 움직인 낮은 로봇이 있으면, 그 로봇이 내 우선순위로 먼저 비켜날 칸을 고른다. 재귀적으로 이어진다</td><td>줄지어 선 로봇 사슬을 한 틱에 밀어낸다</td></tr>
+      <tr><td><b>백트래킹</b></td><td>비켜날 곳이 없으면 실패가 돌아온다. 요청한 로봇은 다음 후보 칸을 시도한다</td><td>막다른 요청에 매달리지 않는다</td></tr>
+      <tr><td><b>맞바꿈 금지</b></td><td>같은 틱에 두 로봇이 자리를 바꾸는 이동은 허용하지 않는다</td><td>통로에서 몸을 스치는 충돌이 없다</td></tr>
+      <tr><td><b>매 틱 계획</b></td><td>위 과정을 틱마다 처음부터 반복한다. 사전 전체 경로가 없다</td><td>작업이 계속 발급되는 운영(lifelong)에 그대로 맞는다</td></tr>
+    </table></div>
+
+    <h3>왜 대수 스윕 서비스에 맞는가</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:170px">요구</th><th>PIBT의 성질</th><th style="width:230px">본 프로젝트와의 연결</th></tr>
+      <tr><td><b>틱당 계산이 가벼울 것</b></td><td>로봇마다 이웃 몇 칸만 본다. 틱당 비용이 대수에 대략 선형이다</td><td>대수 n을 바꿔가며 trial × 시드를 돌리는 스윕(기준선 ④)이 가능하다</td></tr>
+      <tr><td><b>작업이 계속 생길 것</b></td><td>사전 전체 계획이 없어 새 목표가 끼어들어도 구조가 바뀌지 않는다</td><td>입고·출고 미션이 계속 발급되는 운영(§4.5)</td></tr>
+      <tr><td><b>한 틱 안에 끝날 것</b></td><td>재귀 깊이가 로봇 수를 넘지 않는다. 틱마다 결정이 닫힌다</td><td>가상 시계 하네스와 MQTT 틱 데몬이 같은 <code>step(world, now, events)</code>를 부른다(§4.3)</td></tr>
+      <tr><td><b>대가</b></td><td>준최적이다. 한 스텝만 본다. 좁은 곳에서 우회 판단이 약하다</td><td>θ 통행 비용(SEC 04)과 라이브니스 장치(SEC 05)로 보완한다</td></tr>
+    </table></div>
+    <p class="soft">공식 레퍼런스: Okumura, Machida, Défago, Tamura. "Priority Inheritance with Backtracking for Iterative Multi-agent Path Finding." <a href="https://www.ijcai.org/proceedings/2019/76">IJCAI 2019</a> · 확장판 <a href="https://doi.org/10.1016/j.artint.2022.103752"><i>Artificial Intelligence</i> 310, 103752 (2022)</a> · <a href="https://arxiv.org/abs/1901.11282">arXiv</a>.</p>
+
+    <details class="more"><summary>PIBT 한 틱 의사코드 — 펼쳐 보기</summary>
+<pre><code>매 틱:
+  로봇을 우선순위 내림차순으로 정렬
+  for 로봇 a in 정렬:
+      if a가 아직 미결정: PIBT(a, 부모=없음)
+
+PIBT(a, 부모):
+  후보 = a의 이웃 칸 + 제자리, 거리장 오름차순
+  for 칸 v in 후보:
+      if v가 이번 틱 이미 예약됨: 계속
+      if 부모가 a의 칸으로 오는 중이고 v가 부모의 칸: 계속     # 맞바꿈 금지
+      a를 v에 예약
+      b = 이번 틱 미결정인 채 v에 서 있는 로봇
+      if b 있음 and PIBT(b, 부모=a) == 실패:                 # 상속 → 실패면 백트래킹
+          예약 취소; 계속
+      return 성공
+  a를 제자리에 예약
+  return 실패</code></pre>
+    <p class="soft">원 논문의 알고리즘을 우리말로 옮긴 것입니다. 상속은 "b가 a보다 먼저 결정한다"는 호출 순서로 구현됩니다.</p>
+    </details>
+
+    <details class="more"><summary>보장과 한계 — 펼쳐 보기</summary>
+    <ul class="rules">
+      <li><b>보장</b> — 격자가 양연결(어느 칸을 하나 빼도 끊기지 않음)이면, 각 로봇은 유한 틱 안에 자기 목표에 도달한다. 우선순위가 기다린 시간과 함께 오르기 때문이다</li>
+      <li><b>보장하지 않는 것</b> — 모든 로봇이 동시에 목표에 서 있는 상태. 한 번에 푸는 MAPF의 완전성은 없다. 창고 운영은 작업이 계속 발급되므로 이 한계가 문제되지 않는다</li>
+      <li><b>조건 밖</b> — 막다른 칸(도킹·충전 칸)이 있으면 양연결이 깨진다. 그 자리의 처리는 SEC 05와 <a href="amr_decision_inventory.html#dd">TECH 05 D 절</a></li>
+      <li><b>준최적</b> — 한 스텝만 본다. 전체 경로 품질은 거리장(θ 가중)이 좌우한다</li>
+    </ul>
+    </details>
   </div>
 </section>
 
-<!-- ══════════ T3 ══════════ -->
+<!-- ══════════ T3 헤딩 모델 ══════════ -->
 <section id="t3">
-  <div class="sec-head"><span class="sec-no">SEC 03 · TAPF · 데드락</span><h2>충돌보다 무서운 것은 교착이다</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 03 · 헤딩 모델</span><h2>차체가 셀보다 길어서, 방향이 상태가 된다</h2></div>
   <div class="sec-body">
-    <p class="lead">경로계획만으로는 부족한 두 가지 — 할당과의 결합(TAPF), 그리고 교착(데드락)입니다.</p>
+    <p class="lead">기본 PIBT는 로봇을 점으로 봅니다. 본 프로젝트의 기준 기종은 격자 한 칸보다 깁니다. 그래서 상태에 <b>방향</b>을 넣고 <b>두 칸</b>을 점유합니다.</p>
 
-    <h3>TAPF — 할당·경로의 결합 최적화</h3>
-    <p><a class="term" href="../ref/glossary_robotics.html#tapf"><b>TAPF</b></a>: 할당("누가")과 경로("어떻게")를 따로 풀면 준최적 —
-    v1 절충은 <b>경합 페널티를 할당 비용행렬에 피드백</b>하는 것입니다.</p>
-    <details class="more"><summary>왜 따로 풀면 손해인가 — 예시와 v1 설계 (펼쳐 보기)</summary>
-    <p>예: 작업장 바로 옆에 있는 로봇이 "가장 가깝다"고 뽑혔는데 그 사이에 정체 구간이 있다면,
-    멀리 있지만 한산한 우회로를 가진 로봇이 실제로는 먼저 도착합니다.
-    v1은 분리해서 풀되 경합 페널티를 포함한 경로 비용을 할당에 피드백하고,
-    RL 디스패처 상태에 경합 정보를 포함시키는 것도 같은 맥락입니다.</p>
-    </details>
+    <svg viewBox="0 0 900 300" role="img" aria-label="왼쪽: 동쪽을 보는 로봇이 자기 칸과 뒤 칸 두 칸을 점유. 가운데: 좌회전 한 틱 동안 뒤쪽이 쓸고 가는 모서리 칸과 새 뒤 칸을 예약. 오른쪽: 액션 4종과 거리장 정의" style="max-width:100%;height:auto;display:block;margin:14px 0">
+      <defs>
+        <marker id="mt-arr-g2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#3BAF77"/></marker>
+      </defs>
+      <!-- 패널 1: 2칸 점유 -->
+      <text x="138" y="42" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">상태 = (칸, 방향) · 점유 = 자기 칸 + 뒤 칸</text>
+      <rect x="30" y="56" width="72" height="72" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="102" y="56" width="72" height="72" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="174" y="56" width="72" height="72" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="30" y="128" width="72" height="72" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <rect x="102" y="128" width="72" height="72" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <rect x="174" y="128" width="72" height="72" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="30" y="200" width="72" height="72" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="102" y="200" width="72" height="72" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="174" y="200" width="72" height="72" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <text x="66" y="118" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">뒤 칸</text>
+      <text x="138" y="118" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">자기 칸</text>
+      <polygon points="40,146 150,146 166,164 150,182 40,182" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="96" y="169" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12" font-weight="700" fill="#E8ECF1">차체 · 동쪽 향함</text>
+      <text x="138" y="290" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">앞은 셀 중심에 정지</text>
+      <!-- 패널 2: 좌회전 스윙 -->
+      <text x="438" y="42" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">좌회전 1틱 — 뒤쪽이 쓸고 가는 칸을 예약</text>
+      <rect x="330" y="56" width="72" height="72" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="402" y="56" width="72" height="72" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="474" y="56" width="72" height="72" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="330" y="128" width="72" height="72" fill="#2A2019" stroke="#F08A32" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <rect x="402" y="128" width="72" height="72" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <rect x="474" y="128" width="72" height="72" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <rect x="330" y="200" width="72" height="72" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
+      <rect x="402" y="200" width="72" height="72" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
+      <rect x="474" y="200" width="72" height="72" fill="#1C2229" stroke="#2A323B" stroke-width="1"/>
+      <polygon points="338,146 452,146 468,164 452,182 338,182" fill="none" stroke="#E8ECF1" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <polygon points="416,152 438,136 460,152 460,262 416,262" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+      <path d="M366,164 A72,72 0 0 0 438,236" fill="none" stroke="#3BAF77" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#mt-arr-g2)"/>
+      <text x="366" y="118" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">회전 전 뒤 칸</text>
+      <text x="366" y="290" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#3BAF77">쓸고 가는 칸</text>
+      <text x="510" y="290" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#3BAF77">회전 후 뒤 칸</text>
+      <text x="510" y="118" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">동 → 북</text>
+      <!-- 패널 3: 범례·액션 -->
+      <text x="620" y="42" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">액션 4종 — 전부 틱 1개 소모</text>
+      <rect x="620" y="60" width="14" height="14" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="644" y="72" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#E8ECF1">점유 칸 = 자기 칸 + 뒤 칸</text>
+      <rect x="620" y="90" width="14" height="14" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
+      <text x="644" y="102" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#E8ECF1">스윙 예약 칸 (그 틱 동안만)</text>
+      <line x1="620" y1="120" x2="884" y2="120" stroke="#2A323B" stroke-width="1"/>
+      <text x="620" y="146" font-family="JetBrains Mono, monospace" font-size="12" fill="#F08A32">전진</text>
+      <text x="690" y="146" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#E8ECF1">향한 방향으로 1칸</text>
+      <text x="620" y="176" font-family="JetBrains Mono, monospace" font-size="12" fill="#F08A32">회전</text>
+      <text x="690" y="176" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#E8ECF1">제자리 ±90°, 스윙 칸 예약</text>
+      <text x="620" y="206" font-family="JetBrains Mono, monospace" font-size="12" fill="#F08A32">후진</text>
+      <text x="690" y="206" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#E8ECF1">방향 유지, 뒤로 1칸</text>
+      <text x="620" y="236" font-family="JetBrains Mono, monospace" font-size="12" fill="#F08A32">대기</text>
+      <text x="690" y="236" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#E8ECF1">제자리, 점유 유지</text>
+      <line x1="620" y1="256" x2="884" y2="256" stroke="#2A323B" stroke-width="1"/>
+      <text x="620" y="282" font-family="JetBrains Mono, monospace" font-size="12" fill="#3BAF77">거리장 = θ 가중 다익스트라 (방향 포함)</text>
+    </svg>
+    <p class="soft">주황 = 점유 칸, 초록 = 회전하는 틱 동안만 잡아 두는 스윙 예약 칸. 뒤쪽이 모서리 칸을 쓸고 지나가므로 그 칸에 다른 로봇이 들어오면 안 됩니다.</p>
 
-    <h3>데드락 이론 — AGV 고전 문헌</h3>
-    <p>좁은 외길에서 마주 본 두 로봇은 충돌 없이도 영원히 멈춥니다 — 그것이 <b>교착</b>이고, 시뮬레이션 지표 "데드락 발생 횟수"의 근거입니다.</p>
-    <details class="more"><summary>교착 대응의 고전 기법 3가지 (펼쳐 보기)</summary>
+    <h3>확장 항목 — 인터페이스 수준</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:150px">항목</th><th>기본 PIBT</th><th>헤딩 모델</th></tr>
+      <tr><td><b>상태</b></td><td>칸</td><td>(칸, 방향)</td></tr>
+      <tr><td><b>점유</b></td><td>1칸</td><td>자기 칸 + 뒤 칸. 2칸</td></tr>
+      <tr><td><b>액션</b></td><td>이웃 칸으로 이동 · 대기</td><td>대기 · 전진 · 좌/우 회전(틱 소모, 스윙 칸 예약) · 후진</td></tr>
+      <tr><td><b>거리장</b></td><td>칸 단위 최단거리</td><td>θ 가중 다익스트라. 방향을 포함하므로 회전 비용이 들어간다</td></tr>
+      <tr><td><b>실행</b></td><td>—</td><td>액션 1개 = VDA 5050 노드·엣지 1개 = T4 에이전트의 <a class="term" href="../ref/glossary_robotics.html#spot-turn">스팟턴</a>·직진·후진 프리미티브 1개(§5.1)</td></tr>
+    </table></div>
+
+    <h3>왜 필요한가 — 기준선 §4.2</h3>
     <ul class="rules">
-      <li><b>Zone Control</b> — 구역당 1대만 허용 (반도체 팹 OHT 방식). 단순·보수적</li>
-      <li><b>Banker's Algorithm 계열</b> — 구역 요청 시 안전 상태 검사 후 승인</li>
-      <li>프레임: <b>예방 / 회피 / 탐지·복구</b> 3분류 — 1990년대 AGV 문헌과 OS 자원 할당 이론이 원류</li>
+      <li><b>차체가 셀보다 길다</b> — 격자 1.0 m에 기준 기종 iw.hub 차체 1.44 m. 점 모델은 회전 중 이웃 칸을 침범한다</li>
+      <li><b>Isaac에서 회전 중 충돌이 실측됐다</b> — 헤딩 확장의 발단</li>
+      <li><b>셀 확대(2.0 m)는 기각</b> — 도킹칸이 겹친다</li>
+      <li><b>효과</b> — 회전을 넣으면 권장 대수의 포화점이 이동한다. 회전 시간 상수는 Isaac 실측(시뮬 파트)으로 확정한다</li>
     </ul>
-    </details>
+
+    <div class="plain warn"><span class="pl-tag">확인 중 — 기준선 §9</span>
+      틱 배리어 방식(lockstep인지 고정 주기인지, 타임아웃 처리)은 FMS 파트가 확인 중입니다. iw.hub 앞축 위치와 회전 각속도는 시뮬 파트가 실측 예정입니다. 두 값이 회전 틱의 시간 상수를 정합니다.</div>
   </div>
 </section>
 
-<!-- ══════════ T4 ══════════ -->
+<!-- ══════════ T4 θ 통행 규칙 ══════════ -->
 <section id="t4">
-  <div class="sec-head"><span class="sec-no">SEC 04 · 집계 이론</span><h2>Little's Law로 검산한다</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 04 · θ 통행 규칙</span><h2>θ는 길의 값을 바꾼다, 알고리즘은 그대로다</h2></div>
   <div class="sec-body">
-    <p class="lead">매 틱 CBS는 배속을 파괴하므로 경량 MAPF를 내장하고, 결과는 아래 세 도구로 검산·해석합니다.</p>
-    <div class="kcards">
-      <div class="kcard s"><b>대기행렬 M/M/c</b><span>스테이션 앞 로봇 줄서기의 수학 — 대기·병목 해석의 언어</span></div>
-      <div class="kcard g"><b><a class="term" href="../ref/glossary_industrial.html#littleslaw">Little's Law</a> (L = λW)</b><span>등식이 어긋나면 버그 — 검산 도구이자 VDI 3633 verification의 실체</span></div>
-      <div class="kcard"><b>Fundamental diagram</b><span>임계 밀도를 넘으면 흐름 감소 — 곡선 ③구간(과밀)의 이론적 설명</span></div>
-    </div>
+    <p class="lead"><b>θ</b>(세타)는 통행 규칙 파라미터 11개(연속 8 + 범주 3)입니다. PIBT는 바뀌지 않습니다. 거리장에 들어가는 <b>통행 비용</b>만 바뀝니다.</p>
+
+    <svg viewBox="0 0 900 240" role="img" aria-label="창고 텐서와 운영 조건에서 AI가 θ 11개를 추론하고, from_theta가 통행 비용으로 바꿔 PIBT 결정 커널의 거리장에 넣는다. 같은 커널을 DES 하네스와 Isaac 검증 런의 MQTT 데몬이 공유하며, trial마다 반복된다" style="max-width:100%;height:auto;display:block;margin:14px 0">
+      <defs>
+        <marker id="mt-arr2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker>
+        <marker id="mt-arr-g3" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#3BAF77"/></marker>
+      </defs>
+      <rect x="16" y="16" width="196" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="30" y="40" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">창고 텐서 + 운영 조건</text>
+      <text x="30" y="60" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">생김새 · 짐 흐름 · 통로 구조</text>
+      <line x1="212" y1="45" x2="236" y2="45" stroke="#8FB4D9" stroke-width="2" marker-end="url(#mt-arr2)"/>
+      <rect x="240" y="16" width="196" height="58" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="254" y="40" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">AI · θ 11개 추론</text>
+      <text x="254" y="60" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">연속 8 + 범주 3 · 스키마 v2</text>
+      <line x1="436" y1="45" x2="460" y2="45" stroke="#8FB4D9" stroke-width="2" marker-end="url(#mt-arr2)"/>
+      <rect x="464" y="16" width="196" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="478" y="40" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">from_theta → 통행 비용</text>
+      <text x="478" y="60" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">통로 방향 · 교차로 · 스테이션</text>
+      <line x1="660" y1="45" x2="684" y2="45" stroke="#8FB4D9" stroke-width="2" marker-end="url(#mt-arr2)"/>
+      <rect x="688" y="16" width="196" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="702" y="40" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">PIBT 결정 커널</text>
+      <text x="702" y="60" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">θ 가중 거리장 · step()</text>
+      <!-- 커널 → 두 셸 -->
+      <polyline points="786,74 786,110 562,110 562,146" fill="none" stroke="#8FB4D9" stroke-width="2" marker-end="url(#mt-arr2)"/>
+      <line x1="786" y1="74" x2="786" y2="146" stroke="#8FB4D9" stroke-width="2" marker-end="url(#mt-arr2)"/>
+      <rect x="452" y="134" width="444" height="94" fill="none" stroke="#3BAF77" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <rect x="464" y="150" width="196" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="478" y="174" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">하네스 셸 — DES ④</text>
+      <text x="478" y="194" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">가상 시계 · 동기 in-process</text>
+      <rect x="688" y="150" width="196" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="702" y="174" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">MQTT 데몬 — 검증 런 ⑤</text>
+      <text x="702" y="194" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">틱 기반 · Isaac + 에이전트</text>
+      <text x="674" y="223" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#3BAF77">같은 θ · 같은 결정 커널 → 두 결과가 비교 가능</text>
+      <!-- trial 반복 -->
+      <rect x="16" y="150" width="420" height="58" fill="#20272F" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <text x="30" y="174" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">trial = 구성 1개 (창고 · 기종 · 대수 · 수요)</text>
+      <text x="30" y="194" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">θ 추론 → 통행 비용 → 커널 실행 × 시드 반복</text>
+      <polyline points="338,150 338,80" fill="none" stroke="#3BAF77" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#mt-arr-g3)"/>
+      <text x="350" y="118" font-family="JetBrains Mono, monospace" font-size="12" fill="#3BAF77">trial마다</text>
+    </svg>
+    <p class="soft">주황 상자가 AI 파트와의 계약 경계, 초록 점선이 "같은 θ를 두 실행 셸이 공유한다"는 원칙입니다. 계약 파일은 팀 레포 <code>3_FMS/contracts/guidance_types.py</code>(스키마 v2, 합의 진행 중)입니다.</p>
+
+    <h3>θ가 바꾸는 것</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:160px">대상</th><th>어떤 비용이 바뀌나</th><th style="width:260px">곡선에 미치는 영향(정성)</th></tr>
+      <tr><td><b>통로 방향성</b></td><td>한 통로를 한쪽으로만 쓰게 하거나, 양방향 통행의 비용을 높인다</td><td>마주 보는 정체가 줄고, 대신 우회 거리가 는다</td></tr>
+      <tr><td><b>교차로 진입</b></td><td>교차로 칸에 들어가는 비용. 혼잡한 교차로를 피하게 한다</td><td>교차로 대기가 분산된다</td></tr>
+      <tr><td><b>스테이션 출입</b></td><td>스테이션 앞 칸의 진입·이탈 비용</td><td>스테이션 앞 줄서기의 모양이 바뀐다</td></tr>
+    </table></div>
+
+    <h3>θ의 생애 — 예측에서 공유까지</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:120px">단계</th><th>누가</th><th>무엇을</th></tr>
+      <tr><td><b>예측</b></td><td>AI 파트(A 트랙)</td><td>창고 생김새·짐 흐름·통로 구조 텐서 + 운영 조건 → θ 11개</td></tr>
+      <tr><td><b>적용</b></td><td>FMS 파트(B 트랙)</td><td><code>from_theta</code>가 θ를 통행 비용으로 바꾼다. trial마다 새로 계산한다</td></tr>
+      <tr><td><b>공유</b></td><td>계산 엔진 ④ · 검증 런 ⑤</td><td>DES와 Isaac 검증 런이 <b>같은 θ</b>를 쓴다. 그래서 두 결과의 차이를 물리 차이로 읽을 수 있다</td></tr>
+      <tr><td><b>계약</b></td><td>AI · FMS 파트</td><td><code>3_FMS/contracts/guidance_types.py</code> 스키마 v2. 미합의 항목은 기준선 §9</td></tr>
+    </table></div>
+
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>
+      창고마다 "이 통로는 한쪽으로만" 같은 교통 규칙이 다릅니다. AI가 창고 생김새를 보고 규칙 11개를 고르고, 로봇은 그 규칙대로 길의 값을 매겨 다닙니다. 규칙이 바뀌어도 로봇이 길을 고르는 방법(PIBT)은 같습니다.</div>
   </div>
 </section>
 
-<!-- ══════════ T5 ══════════ -->
+<!-- ══════════ T5 라이브니스 ══════════ -->
 <section id="t5">
-  <div class="sec-head"><span class="sec-no">SEC 05 · 핵심 문헌</span><h2>세 편이면 서사를 논문으로 말할 수 있다</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 05 · 라이브니스</span><h2>충돌보다 무서운 것은 멈춤이다</h2></div>
   <div class="sec-body">
-    <p class="lead">필독 3편 — 전부 무료 공개본이 있습니다.</p>
-    <div class="kcards">
-      <div class="kcard"><b>① CBS</b><span>이 분야의 관문 논문 — 충돌 제약 트리로 최적 보장 (Sharon et al. 2015)</span></div>
-      <div class="kcard g"><b>② RHCR</b><span>본 프로젝트의 직접 기반 — lifelong 창고의 표준 프레임 (Li et al. AAAI 2021)</span></div>
-      <div class="kcard s"><b>③ MAPF 벤치마크</b><span>용어·검증의 표준 — 자체 플래너 검증에 사용 (Stern et al. 2019)</span></div>
-    </div>
-    <details class="more"><summary>문헌 6편 전체 + 링크 · 검색 키워드 (펼쳐 보기)</summary>
-    <h3>필독 — 프로젝트 직결</h3>
+    <p class="lead">PIBT는 칸 단위로 충돌을 막습니다. 남는 문제는 <b>정체</b>와 <b>교착</b>입니다. 라이브니스는 "모든 로봇이 결국 앞으로 나아간다"는 성질입니다.</p>
+
     <div class="tbl-scroll"><table>
-      <tr><th>#</th><th>논문</th><th>왜 읽나</th><th>링크</th></tr>
-      <tr><td>①</td><td>Sharon, Stern, Felner, Sturtevant. <b>"Conflict-Based Search for Optimal Multi-Agent Pathfinding."</b> <i>Artificial Intelligence</i> 219, pp. 40–66, 2015. DOI: 10.1016/j.artint.2014.11.006</td><td>CBS — 이 분야의 관문 논문</td><td><a href="https://digitalcommons.du.edu/computer_science_faculty/7/">원문(무료)</a> · <a href="https://ojs.aaai.org/index.php/AAAI/article/view/8140">AAAI 초기판</a></td></tr>
-      <tr><td>②</td><td>Li, Tinka, Kiesel, Durham, Kumar, Koenig. <b>"Lifelong Multi-Agent Path Finding in Large-Scale Warehouses."</b> AAAI 2021, pp. 11272–11281. 1,000대 규모 창고 시뮬레이션에서 검증 — 스윕 규모 상한의 참고점</td><td>RHCR / Lifelong MAPF — <b>본 프로젝트의 직접 기반</b></td><td><a href="https://arxiv.org/abs/2005.07371">arXiv</a> · <a href="https://ojs.aaai.org/index.php/AAAI/article/view/17344">AAAI</a></td></tr>
-      <tr><td>③</td><td>Stern et al. <b>"Multi-Agent Pathfinding: Definitions, Variants, and Benchmarks."</b> SoCS 2019, pp. 151–158. 자체 구현을 공개 벤치마크로 검증 → 또 하나의 V&amp;V 스토리</td><td>용어와 벤치마크의 표준</td><td><a href="https://arxiv.org/abs/1906.08291">arXiv</a> · <a href="https://ojs.aaai.org/index.php/SOCS/article/view/18510">공식</a></td></tr>
+      <tr><th style="width:120px">현상</th><th>무엇인가</th><th>대응 장치</th><th style="width:150px">시뮬 지표</th></tr>
+      <tr><td><b>정체</b></td><td>같은 통로·교차로를 여러 대가 원해 기다린다</td><td>θ 통행 비용(통로 방향성)으로 마주 보기를 줄인다. 기다린 시간만큼 우선순위가 올라 결국 지나간다</td><td>대기 틱 비율 · 처리량</td></tr>
+      <tr><td><b>교착</b></td><td>서로 비켜줄 수 없어 영원히 멈춘다</td><td>우선순위 상속으로 로봇 사슬을 한 틱에 밀어낸다. 못 밀면 백트래킹으로 다른 칸을 고른다. 맞바꿈 금지로 스침 충돌을 막는다</td><td>데드락 발생 횟수</td></tr>
+      <tr><td><b>라이브락</b></td><td>서로 비켜주기만 반복하며 아무도 못 간다</td><td>매 틱 재계획하되 우선순위는 기다린 시간으로 단조 증가한다. 한쪽이 결국 이긴다</td><td>목표 도달 지연</td></tr>
+      <tr><td><b>조건 밖</b></td><td>막다른 칸(도킹·충전 칸)은 양연결 조건 밖이다</td><td>스테이션 출입 비용(θ)과 별도 장치가 필요하다. 설계는 팀 FMS 파트, 결정은 TECH 05 D 절</td><td>스테이션 앞 대기</td></tr>
     </table></div>
 
-    <h3>확장 — 면접 깊이용</h3>
-    <div class="tbl-scroll"><table>
-      <tr><th>#</th><th>논문</th><th>왜 읽나</th><th>링크</th></tr>
-      <tr><td>④</td><td>Ma, Koenig. <b>"Optimal Target Assignment and Path Finding for Teams of Agents."</b> AAMAS 2016. CBM: 하위층 min-cost max-flow 할당 + 상위층 CBS 충돌 해소</td><td>TAPF — 할당·경로 결합 최적화</td><td><a href="https://arxiv.org/abs/1612.05693">arXiv</a></td></tr>
-      <tr><td>⑤</td><td>Li, Ruml, Koenig. <b>"EECBS: A Bounded-Suboptimal Search for Multi-Agent Path Finding."</b> AAAI 2021</td><td>유계 준최적 실용선</td><td><a href="https://arxiv.org/abs/2010.01367">arXiv</a></td></tr>
-      <tr><td>⑥</td><td>Ma, Li, Kumar, Koenig. <b>"Lifelong Multi-Agent Path Finding for Online Pickup and Delivery Tasks."</b> AAMAS 2017</td><td>창고 작업 모델의 원형</td><td><a href="https://arxiv.org/abs/1705.10868">arXiv</a></td></tr>
-    </table></div>
+    <div class="plain warn"><span class="pl-tag">보장의 경계</span>
+      PIBT의 도달 보장은 양연결 격자에서 성립합니다. 도킹칸·충전칸처럼 들어갔다 나와야 하는 막다른 칸은 그 조건 밖입니다. 이 자리의 대기 상승·재계획 장치는 팀 FMS 파트의 설계 사항이며, 본 문서는 장치가 필요하다는 사실만 적습니다.</div>
 
-    <h3>링크 미확정 — 제목·키워드로 검색</h3>
+    <details class="more"><summary>교착 대응의 고전 기법 3가지 — 펼쳐 보기</summary>
     <ul class="rules">
-      <li><b>Silver (2005)</b> "Cooperative Pathfinding." AIIDE 2005 — WHCA*, 시공간 예약의 원류. 검색: <code>Silver cooperative pathfinding WHCA</code></li>
-      <li><b>ECBS</b> — Barer, Sharon, Stern, Felner. "Suboptimal Variants of the Conflict-Based Search Algorithm…" SoCS 2014</li>
-      <li><b>PRIMAL2</b> — 학습 기반 lifelong MAPF (분산 RL 정책). RL 디스패처 확장 시 참고. 검색: <code>PRIMAL2 lifelong MAPF</code></li>
-      <li><b>AGV 데드락</b> — 검색 키워드 <code>AGV deadlock avoidance zone control</code>, <code>Reveliotis AGV deadlock</code></li>
-      <li>커뮤니티 허브: <a href="https://mapf.info"><b>mapf.info</b></a> — 논문·벤치마크·코드 집대성</li>
+      <li><b>Zone Control</b> — 구역당 1대만 허용(반도체 팹 OHT 방식). 단순하고 보수적이다</li>
+      <li><b>Banker's Algorithm 계열</b> — 구역 요청 시 안전 상태를 검사한 뒤 승인한다</li>
+      <li><b>예방 / 회피 / 탐지·복구</b> — 1990년대 AGV 문헌과 운영체제 자원 할당 이론이 원류인 3분류. PIBT의 상속·백트래킹은 "회피"에 속한다</li>
+      <li>검색 키워드: <code>AGV deadlock avoidance zone control</code>, <code>Reveliotis AGV deadlock</code></li>
     </ul>
     </details>
   </div>
 </section>
 
-<!-- ══════════ T6 ══════════ -->
+<!-- ══════════ T6 부록 ══════════ -->
 <section id="t6">
-  <div class="sec-head"><span class="sec-no">SEC 06 · 학습 로드맵</span><h2>주말 하나로 시작할 수 있다</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 06 · 부록</span><h2>PIBT를 고른 자리를 문헌으로 확인한다</h2></div>
   <div class="sec-body">
-    <p class="lead">순서는 6단계 — A*·예약 테이블(주말) → Prioritized(v1 플래너) → CBS 정독 → RHCR·벤치마크 → Little's Law → (선택) TAPF·데드락.</p>
-    <details class="more"><summary>로드맵 상세 표 — 소요·산출물 (펼쳐 보기)</summary>
+    <p class="lead">본문 밖의 비교·검산·문헌은 접어 둡니다. 필요할 때 펼쳐 보십시오.</p>
+
+    <details class="more"><summary>알고리즘 스펙트럼 7단 비교 — 펼쳐 보기</summary>
     <div class="tbl-scroll"><table>
-      <tr><th>순서</th><th>항목</th><th>소요</th><th>산출물</th></tr>
-      <tr><td>1</td><td>A* + 시공간 예약 테이블</td><td>주말 1회</td><td>단일/2대 데모 구현</td></tr>
-      <tr><td>2</td><td>Prioritized Planning</td><td>1주</td><td><b>v1 SimPy 내장 플래너</b></td></tr>
-      <tr><td>3</td><td>CBS 논문(①) 정독</td><td>1주</td><td>이론 베이스, 면접 대비</td></tr>
-      <tr><td>4</td><td>RHCR(②) + 벤치마크(③)</td><td>1~2주</td><td>windowed 재계획 구조 반영</td></tr>
-      <tr><td>5</td><td>Little's Law + M/M/c</td><td>반나절</td><td>결과 검산·해석 언어</td></tr>
-      <tr><td>6</td><td>(선택) TAPF(④), 데드락 이론</td><td>여유 시</td><td>면접 심화</td></tr>
+      <tr><th style="width:150px">방법</th><th style="width:170px">계획 단위</th><th style="width:110px">최적성</th><th>계산 특성</th><th style="width:220px">본 프로젝트에서의 자리</th></tr>
+      <tr><td><b>A*</b></td><td>로봇 1대의 전체 경로</td><td>최적(단일)</td><td>가볍다</td><td>거리장 계산의 기초. θ 가중 다익스트라가 그 자리</td></tr>
+      <tr><td><b>시공간 A* · 예약 테이블</b></td><td>로봇별 (칸, 시각) 경로</td><td>없음</td><td>예약 테이블 관리 비용</td><td>v2 기획의 부품. v3에서 PIBT로 교체(기준선 §1)</td></tr>
+      <tr><td><b>PP (우선순위 순차 계획)</b></td><td>순번대로 전체 경로</td><td>없음</td><td>빠르다. 완전성 없음</td><td>v2 기획의 v1 타겟. v3에서 PIBT로 교체</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#cbs">CBS</a></b></td><td>전 로봇 동시, 충돌 트리</td><td>최적</td><td>대수에 지수적</td><td>이론 기준점. 매 틱 실행은 불가</td></tr>
+      <tr><td><b>PIBT <span class="chip c-green">채택</span></b></td><td>매 틱 다음 1칸</td><td>준최적</td><td>틱당 대수에 대략 선형</td><td>헤딩 확장으로 채택. SEC 02·03</td></tr>
+      <tr><td><b>LaCAM</b></td><td>PIBT를 부품으로 쓰는 전체 경로 탐색</td><td>준최적(완전)</td><td>빠르다</td><td>PIBT 계열의 확장. 참고 문헌</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#rhcr">RHCR</a></b></td><td>앞 W스텝만 충돌 해소 + 주기 재계획</td><td>준최적</td><td>창 크기에 좌우</td><td>lifelong 운영 프레임의 참고</td></tr>
     </table></div>
     </details>
 
-    <div class="plain"><span class="pl-tag">프로젝트 서사와의 연결</span>
-    현상 수준 — "AMR을 늘렸더니 처리량이 포화됐다"<br>
-    이론 수준 — <b>"이것은 MAPF 문헌에서 정립된 경합 구조이며, 우리 모델의 포화 거동은 lifelong MAPF 연구(RHCR) 및 교통류 이론과 정합한다"</b><br>
-    검증 수준 — 공개 MAPF 벤치마크 + Little's Law 검산 + <a class="term" href="../ref/glossary_robotics.html#isaac">Isaac Sim</a> 교차검증 = VDI 3633 V&amp;V 체계의 구체적 실행</div>
+    <details class="more"><summary>TAPF — 배차와 경로를 같이 푸는 문제 — 펼쳐 보기</summary>
+    <p><a class="term" href="../ref/glossary_robotics.html#tapf"><b>TAPF</b></a>(Combined Target Assignment and Path Finding)는 배차("누가")와 경로("어떻게")를 따로 풀면 손해가 난다는 문제 설정입니다. 작업장 옆 로봇이 "가장 가깝다"고 뽑혀도 그 사이에 정체가 있으면, 멀리 있지만 한산한 길을 가진 로봇이 먼저 도착합니다.</p>
+    <p>본 프로젝트에서 배차는 FMS 코어의 Dispatcher, 경로는 PIBT가 맡습니다. 둘의 결합은 이론 참고 항목입니다. 인터페이스는 <a href="system_architecture.html">TECH 02</a>, 결정은 <a href="amr_decision_inventory.html#dd">TECH 05 D 절</a>을 따릅니다.</p>
+    </details>
 
-    <p class="soft">다음 설계 과제: SimPy 이산사건 세계에서 Prioritized Planning + 예약 테이블을 어떻게 구현할지 — 연속 시간 vs 틱 기반의 절충 설계
-    (→ <a href="amr_decision_inventory.html">TECH 04 결정 인벤토리</a> B1·D 계열에서 결정).</p>
+    <details class="more" id="little"><summary>Little's Law 검산 — 펼쳐 보기</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:190px">도구</th><th>내용</th><th style="width:260px">쓰임</th></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#littleslaw">Little's Law</a> (L = λW)</b></td><td>시스템 안 평균 작업 수 = 도착률 × 평균 리드타임</td><td>시뮬 산출값이 등식을 어기면 집계 버그. <a class="term" href="../ref/glossary_industrial.html#vdi3633">VDI 3633</a> verification의 실체</td></tr>
+      <tr><td><b>대기행렬 M/M/c</b></td><td>스테이션 앞 로봇 줄서기의 수학</td><td>대기·병목 해석의 언어</td></tr>
+      <tr><td><b>Fundamental diagram</b></td><td>밀도가 임계치를 넘으면 흐름이 줄어드는 교통류 관계</td><td>곡선 ③ 과밀 구간의 이론적 설명</td></tr>
+    </table></div>
+    </details>
+
+    <details class="more"><summary>읽을 논문 목록 8편 — 펼쳐 보기</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:40px">#</th><th>논문</th><th style="width:200px">왜 읽나</th><th style="width:170px">링크</th></tr>
+      <tr><td>①</td><td>Okumura, Machida, Défago, Tamura. <b>"Priority Inheritance with Backtracking for Iterative Multi-agent Path Finding."</b> IJCAI 2019 · <i>Artificial Intelligence</i> 310, 103752 (2022)</td><td>PIBT 원문. 본 프로젝트의 직접 기반</td><td><a href="https://www.ijcai.org/proceedings/2019/76">IJCAI</a> · <a href="https://doi.org/10.1016/j.artint.2022.103752">AIJ</a> · <a href="https://arxiv.org/abs/1901.11282">arXiv</a></td></tr>
+      <tr><td>②</td><td>Okumura. <b>"LaCAM: Search-Based Algorithm for Quick Multi-Agent Pathfinding."</b> AAAI 2023</td><td>PIBT를 부품으로 쓰는 확장</td><td><a href="https://arxiv.org/abs/2211.13432">arXiv</a></td></tr>
+      <tr><td>③</td><td>Li, Tinka, Kiesel, Durham, Kumar, Koenig. <b>"Lifelong Multi-Agent Path Finding in Large-Scale Warehouses."</b> AAAI 2021</td><td>RHCR. lifelong 창고의 표준 프레임</td><td><a href="https://arxiv.org/abs/2005.07371">arXiv</a> · <a href="https://ojs.aaai.org/index.php/AAAI/article/view/17344">AAAI</a></td></tr>
+      <tr><td>④</td><td>Sharon, Stern, Felner, Sturtevant. <b>"Conflict-Based Search for Optimal Multi-Agent Pathfinding."</b> <i>Artificial Intelligence</i> 219 (2015)</td><td>CBS. 최적 알고리즘의 기준점</td><td><a href="https://digitalcommons.du.edu/computer_science_faculty/7/">원문(무료)</a> · <a href="https://ojs.aaai.org/index.php/AAAI/article/view/8140">AAAI 초기판</a></td></tr>
+      <tr><td>⑤</td><td>Stern et al. <b>"Multi-Agent Pathfinding: Definitions, Variants, and Benchmarks."</b> SoCS 2019</td><td>용어와 벤치마크의 표준</td><td><a href="https://arxiv.org/abs/1906.08291">arXiv</a> · <a href="https://ojs.aaai.org/index.php/SOCS/article/view/18510">공식</a></td></tr>
+      <tr><td>⑥</td><td>Ma, Koenig. <b>"Optimal Target Assignment and Path Finding for Teams of Agents."</b> AAMAS 2016</td><td>TAPF</td><td><a href="https://arxiv.org/abs/1612.05693">arXiv</a></td></tr>
+      <tr><td>⑦</td><td>Ma, Li, Kumar, Koenig. <b>"Lifelong Multi-Agent Path Finding for Online Pickup and Delivery Tasks."</b> AAMAS 2017</td><td>창고 작업 모델의 원형</td><td><a href="https://arxiv.org/abs/1705.10868">arXiv</a></td></tr>
+      <tr><td>⑧</td><td>Silver. <b>"Cooperative Pathfinding."</b> AIIDE 2005</td><td>시공간 예약(WHCA*)의 원류</td><td>검색: <code>Silver cooperative pathfinding WHCA</code></td></tr>
+    </table></div>
+    <p class="soft">커뮤니티 허브: <a href="https://mapf.info">mapf.info</a>. 논문·벤치마크·코드가 모여 있습니다.</p>
+    </details>
   </div>
 </section>
 
@@ -379,9 +633,9 @@
   <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
   <div class="sec-body">
     <ul class="rules">
-      <li><a href="amr_decision_inventory.html"><b>TECH 04 구현 결정 인벤토리</b></a> — 이 이론이 실제 구현 결정(시간 모델·플래너 선택·재계획 주기)으로 어떻게 번역되는지 — 메인 트랙의 다음 문서</li>
-      <li><a href="../ref/glossary_robotics.html#mapf"><b>REF A 용어사전 · MAPF 계열 항목</b></a> — MAPF·CBS·RHCR을 그림 도해와 함께 한 번 더 복습</li>
-      <li><a href="../archive/archive.html#induction"><b>ARCHIVE 02 검토 아카이브 · 인덕션 병목</b></a> — 같은 대기행렬 이론이 소터 병목 분석에 쓰이는 실제 사례</li>
+      <li><a href="amr_decision_inventory.html#dd"><b>TECH 05 구현 결정 인벤토리 · D 절</b></a> — 이 이론이 어떤 구현 결정(헤딩 모델·2칸 점유·커널과 셸·배리어 틱)으로 번역됐는지. 메인 트랙의 다음 문서</li>
+      <li><a href="system_architecture.html"><b>TECH 02 시스템 아키텍처</b></a> — PIBT 커널이 계산 엔진 ④와 검증 런 ⑤의 어디에 놓이는지, θ 계약이 어느 경로로 흐르는지</li>
+      <li><a href="../ref/glossary_robotics.html#pibt"><b>REF A 용어사전 · PIBT 계열 항목</b></a> — PIBT · θ · 헤딩 모델 · 스윙 예약 · 배리어 틱을 그림과 함께 복습</li>
     </ul>
   </div>
 </section>
@@ -389,12 +643,12 @@
 </main>
 
 <div class="wrap flow-nav">
-  <a class="prev" href="amr_tech_plan.html"><small>← 이전</small>TECH 02 · 실행 계획서</a>
-  <a class="next" href="amr_decision_inventory.html"><small>다음 →</small>TECH 04 · 결정 인벤토리</a>
+  <a class="prev" href="amr_tech_plan.html"><small>← 이전</small>TECH 03 · 실행 계획서</a>
+  <a class="next" href="amr_decision_inventory.html"><small>다음 →</small>TECH 05 · 결정 인벤토리</a>
 </div>
 
 <footer>
-  <div class="wrap">TECH 03 · THEORY-BASE — 원본: AMR_경로계획_기반이론_정리.md (2026-08-19) · 짝 문서: <a href="amr_decision_inventory.html">TECH 04 구현 결정 인벤토리</a></div>
+  <div class="wrap">TECH 04 · THEORY-PIBT — 원천: AMR_기획_기준선_v3.md (2026-09-03) · REV C: PIBT 헤딩 모델·θ 통행 규칙 중심으로 전면 재작성, PP·CBS·RHCR 비교는 부록으로 · 짝 문서: <a href="amr_decision_inventory.html">TECH 05 구현 결정 인벤토리</a> · <a href="../../index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>

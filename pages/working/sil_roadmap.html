@@ -6,11 +6,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-<title>SIL 구현 로드맵</title>
+<title>SIL 구현 로드맵 — T1~T4 상태와 다음 단계 (SIL Roadmap)</title>
 <style>
   :root{
-    --bg:#14181D; --panel:#1C2229; --panel-edge:#2C343D; --ink:#E8ECF1; --ink-soft:#9AA7B4;
-    --amber:#F08A32; --machine:#3BAF77; --steel:#8FB4D9; --slate:#8A96A3; --grid:#2A323B;
+    --bg:#14181D;
+    --panel:#1C2229;
+    --panel-edge:#2C343D;
+    --ink:#E8ECF1;
+    --ink-soft:#9AA7B4;
+    --amber:#F08A32;
+    --machine:#3BAF77;
+    --steel:#8FB4D9;
+    --slate:#8A96A3;
+    --grid:#2A323B;
     --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
     --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
   }
@@ -24,15 +32,26 @@
     color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px;
   }
   a{color:var(--steel)}
+  a.term{color:inherit;text-decoration:underline;text-decoration-style:dotted;text-decoration-color:var(--steel);text-underline-offset:3px}
+  a.term:hover{color:var(--steel);text-decoration-style:solid}
   .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
   header{border-bottom:3px solid var(--ink);background:var(--panel)}
   .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
   .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
   .doc-eyebrow b{color:var(--amber);font-weight:600}
+  .flow-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px auto 40px}
+  .flow-nav a{background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
+  .flow-nav a:hover{border-color:var(--amber)}
+  .flow-nav .prev{grid-column:1}
+  .flow-nav .next{grid-column:2;text-align:right}
+  .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
+  @media(max-width:640px){.flow-nav{grid-template-columns:1fr}.flow-nav .prev,.flow-nav .next{grid-column:auto;text-align:left}}
   h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
   h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
   .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
   .meta b{color:var(--ink);font-weight:600}
+
   nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
   nav::-webkit-scrollbar{display:none}
   nav .wrap{display:flex;gap:2px;padding:0 20px}
@@ -40,11 +59,17 @@
   nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--amber);outline:none}
   nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
   nav a.nav-cross{margin-left:auto;color:var(--amber);font-weight:700}
+
   main{padding:44px 0 80px}
   section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
   .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
   .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
-  h2{font-size:clamp(19px,2.2vw,27px);font-weight:800;line-height:1.3;letter-spacing:-.025em}
+  h2{font-size:clamp(19px,2.2vw,27px);font-weight:800;letter-spacing:-.025em;line-height:1.3}
+  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
+  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
+  .kcard b{display:block;font-size:15px;margin-bottom:4px}
+  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
   .sec-body{padding:16px 26px 26px}
   h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
   h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
@@ -52,238 +77,296 @@
   .sec-body p{max-width:76ch}
   .lead{font-size:15.5px}
   .soft{color:var(--ink-soft)}
+
   .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
   .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
-  .note{margin:14px 0 8px;padding:12px 16px;background:#2A2019;border-left:4px solid var(--amber);font-size:14px;line-height:1.8}
-  .note .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--amber);font-weight:700;margin-bottom:4px}
+  .plain.warn{background:#2A2019;border-left-color:var(--amber)}
+  .plain.warn .pl-tag{color:var(--amber)}
+
+  code{font-family:var(--mono);font-size:.92em;background:#232B34;padding:1px 5px;border:1px solid var(--grid)}
+
   table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
   th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F}
   td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
   tr:last-child td{border-bottom:none}
   table tr:nth-child(even) td{background:#1E252D}
   .tbl-scroll{overflow-x:auto}
-  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px;white-space:nowrap}
-  .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)} .c-slate{color:var(--slate)}
-  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
-  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
-  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
-  .kcard b{display:block;font-size:15px;margin-bottom:4px}
-  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
+
+  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px}
+  .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)}
+
+  ul.rules{list-style:none;margin:10px 0}
+  ul.rules li{padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--grid);font-size:13.5px}
+  ul.rules li:last-child{border-bottom:none}
+  ul.rules li::before{content:"▸";position:absolute;left:6px;color:var(--amber);font-weight:700}
+
+  .milestones{display:grid;gap:0;margin:14px 0;border-left:3px solid var(--ink)}
+  .ms{position:relative;padding:12px 18px 12px 28px;border-bottom:1px dashed var(--grid)}
+  .ms:last-child{border-bottom:none}
+  .ms::before{content:"";position:absolute;left:-8px;top:18px;width:13px;height:13px;background:var(--panel);border:3px solid var(--amber)}
+  .ms .ms-tag{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--amber);letter-spacing:.08em}
+  .ms h4{font-size:14px;font-weight:700;margin:2px 0 2px}
+  .ms p{font-size:12.5px;color:var(--ink-soft);margin:0}
+
+  details.more{border:1px solid var(--panel-edge);background:#20272F;margin:12px 0}
+  details.more summary{cursor:pointer;padding:11px 14px;font-weight:700;font-size:13px;list-style:none}
+  details.more summary::-webkit-details-marker{display:none}
+  details.more summary::before{content:"▸ ";color:var(--amber)}
+  details.more[open] summary::before{content:"▾ "}
+  details.more>*:not(summary){margin-left:14px;margin-right:14px}
+  details.more>*:last-child{margin-bottom:14px}
+
+  footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+
+  @media (max-width:820px){
+    .titleblock{grid-template-columns:1fr}
+    .meta{border-left:none;padding-left:0;text-align:left}
+    body{font-size:14px}
+    .sec-head,.sec-body{padding-left:16px;padding-right:16px}
+  }
+</style>
+<style>
+  /* sil_roadmap.html · runtime_architecture.html · 3pl_industry.html */
+  .note{margin:14px 0 8px;padding:12px 16px;background:#2A2019;border-left:4px solid var(--amber);font-size:14px;line-height:1.8}
+  .note .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--amber);font-weight:700;margin-bottom:4px}
+  /* 동 페이지들 — 칩 줄바꿈 금지 + slate 칩 */
+  .chip{white-space:nowrap}
+  .c-slate{color:var(--slate)}
+  /* sil_roadmap.html · runtime_architecture.html — 넓은 SVG 래퍼(가로 스크롤) */
   .viz{background:#0E1318;border:1px solid var(--panel-edge);padding:12px 14px;margin:14px 0;overflow-x:auto}
   .viz svg{display:block;min-width:780px;width:100%;height:auto}
-  code{font-family:var(--mono);font-size:12.5px;background:#0E1318;border:1px solid var(--panel-edge);padding:1px 6px;white-space:nowrap}
-  footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
-  @media (max-width:820px){ .titleblock{grid-template-columns:1fr} .meta{border-left:none;padding-left:0;text-align:left} }
+  /* amr_mapf_theory.html — 코드 블록 */
+  pre{font-family:var(--mono);font-size:12px;line-height:1.7;background:#20272F;border:1px solid var(--panel-edge);border-left:4px solid var(--steel);padding:12px 16px;overflow-x:auto;margin:12px 0}
+  pre code{background:none;border:none;padding:0}
+  /* working · research 페이지 — 키보드 포커스 링 */
   :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 </style>
 </head>
 <body>
 
+<!-- ══════════ 헤더 ══════════ -->
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow"><b>WORKING · IMPLEMENTATION</b> · SIL BRING-UP · 4 TASKS</div>
-      <h1>SIL 구현 로드맵 — Teleop 한 대에서 다중 로봇 FMS 결합까지
-        <span class="sub">ROS2–Isaac Sim 구현 4태스크 · 매 태스크가 DES 보정 수치로 끝난다</span>
+      <div class="doc-eyebrow"><b>WORKING · IMPLEMENTATION</b> · SIL T1–T4 · NEXT STEPS · <b>REV C</b></div>
+      <h1>SIL 구현 로드맵 — T3까지 완료, T4는 뼈대에서 Isaac 결합으로
+        <span class="sub">시뮬 파트의 4태스크 상태와 다음 단계. 매 태스크는 DES로 돌려줄 실측 수치로 끝난다</span>
       </h1>
     </div>
     <div class="meta">
       DOC. <b>SIL-ROADMAP</b><br>
-      REV. <b>B</b> · 작성 <b>2026-08-25 / 개정 08-26</b><br>
-      상태 <b>T1·T2 완료 (08-27) · T3 대기</b>
+      REV. <b>C</b> · 작성 <b>2026-08-25</b> / 개정 <b>2026-09-03</b><br>
+      상태 <b>T1·T2·T3 완료 · T4 뼈대 완료</b>
     </div>
   </div>
 </header>
 
-<nav><div class="wrap">
-  <a class="nav-home" href="../../index.html">⌂ INDEX</a>
-  <a href="#s0">00 한눈에</a>
-  <a href="#s1">01 왜 이 트랙인가</a>
-  <a href="#s2">02 공통 기반</a>
-  <a href="#s3">03 T1 Teleop</a>
-  <a href="#s4">04 T2 매핑·추종</a>
-  <a href="#s5">05 T3 물류 씬</a>
-  <a href="#s6">06 T4 다중 로봇</a>
-  <a href="#s7">07 리스크·축소선</a>
-  <a class="nav-cross" href="runtime_architecture.html">런타임 아키텍처 ↗</a>
-</div></nav>
+<!-- ══════════ nav ══════════ -->
+<nav aria-label="문서 내 탐색">
+  <div class="wrap">
+    <a class="nav-home" href="../../index.html">⌂ INDEX</a>
+    <a href="#s0">00 한눈에</a>
+    <a href="#s1">01 왜 이 트랙</a>
+    <a href="#s2">02 태스크 상태</a>
+    <a href="#s3">03 T4 다음 단계</a>
+    <a href="#s4">04 FMS 요구 4건</a>
+    <a href="#s5">05 축소선·부록</a>
+    <a class="nav-cross" href="t3_t4_progress.html">T3·T4 진행 ↗</a>
+  </div>
+</nav>
 
 <main class="wrap">
 
-  <!-- ══════════ S0 한눈에 ══════════ -->
-  <section id="s0">
-    <div class="sec-head"><span class="sec-no">SEC 00 · 한눈에</span><h2>4태스크 사다리 — 한 대의 손 조작에서 함대의 중앙 하달까지</h2></div>
-    <div class="sec-body">
-      <div class="viz"><svg viewBox="0 0 920 258" role="img" aria-label="4태스크 사다리와 DES 환류 구조">
-        <defs><marker id="sr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A96A3"/></marker>
-        <marker id="sg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3BAF77"/></marker></defs>
-        <rect x="40" y="36" width="180" height="76" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
-        <text x="130" y="62" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">T1 · Teleop</text>
-        <text x="130" y="84" text-anchor="middle" fill="#9AA7B4" font-size="10.5">iw.hub 1대 · /cmd_vel</text>
-        <text x="130" y="102" text-anchor="middle" fill="#9AA7B4" font-size="10.5">브리지 개통</text>
-        <line x1="220" y1="74" x2="260" y2="74" stroke="#8A96A3" stroke-width="1.5" marker-end="url(#sr)"/>
-        <rect x="262" y="36" width="180" height="76" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
-        <text x="352" y="62" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">T2 · 매핑·자율 추종</text>
-        <text x="352" y="84" text-anchor="middle" fill="#9AA7B4" font-size="10.5">SLAM 매핑 런 + 추종기</text>
-        <text x="352" y="102" text-anchor="middle" fill="#9AA7B4" font-size="10.5">간단 씬</text>
-        <line x1="442" y1="74" x2="482" y2="74" stroke="#8A96A3" stroke-width="1.5" marker-end="url(#sr)"/>
-        <rect x="484" y="36" width="180" height="76" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
-        <text x="574" y="62" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">T3 · 물류 씬 투입</text>
-        <text x="574" y="84" text-anchor="middle" fill="#9AA7B4" font-size="10.5">full_warehouse</text>
-        <text x="574" y="102" text-anchor="middle" fill="#9AA7B4" font-size="10.5">반송 사이클 실측</text>
-        <line x1="664" y1="74" x2="704" y2="74" stroke="#8A96A3" stroke-width="1.5" marker-end="url(#sr)"/>
-        <rect x="706" y="36" width="180" height="76" fill="#1C2229" stroke="#F08A32" stroke-width="1.5"/>
-        <text x="796" y="62" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">T4 · 다중 로봇</text>
-        <text x="796" y="84" text-anchor="middle" fill="#F08A32" font-size="10.5" font-weight="700">3~5대 + FMS 스텁</text>
-        <text x="796" y="102" text-anchor="middle" fill="#9AA7B4" font-size="10.5">중앙 하달 첫 결합</text>
-        <line x1="130" y1="112" x2="130" y2="168" stroke="#3BAF77" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#sg)"/>
-        <line x1="352" y1="112" x2="352" y2="168" stroke="#3BAF77" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#sg)"/>
-        <line x1="574" y1="112" x2="574" y2="168" stroke="#3BAF77" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#sg)"/>
-        <line x1="796" y1="112" x2="796" y2="168" stroke="#3BAF77" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#sg)"/>
-        <rect x="40" y="170" width="846" height="48" fill="#17251E" stroke="#3BAF77" stroke-width="1.5"/>
-        <text x="463" y="199" text-anchor="middle" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">DES 견적 엔진 — 매 태스크의 실측 수치가 파라미터 보정으로 환류</text>
-        <text x="40" y="244" fill="#9AA7B4" font-size="10.5">가속·감속(T1) · 엣지 통과시간 분포(T2) · 사이클 타임 분해(T3) · 간섭 계수(T4) — 환류가 없는 태스크는 완료로 치지 않는다</text>
-      </svg></div>
-      <div class="kcards">
-        <div class="kcard s"><b>원칙 1</b><span>각 태스크는 독립 체크포인트 — 어디서 멈춰도 그 지점까지의 산출은 유효</span></div>
-        <div class="kcard g"><b>원칙 2</b><span>모든 태스크는 DES로 돌려주는 실측 수치 ≥ 1건으로 끝난다 (겉치레 방지)</span></div>
-        <div class="kcard"><b>원칙 3</b><span>표준 스택 준수 — Humble + Fast DDS + 자체 추종기, <a href="runtime_architecture.html" style="color:inherit">런타임 아키텍처</a> REV C의 채택 그대로</span></div>
-      </div>
-    </div>
-  </section>
+<!-- ══════════ S0 한눈에 보기 ══════════ -->
+<section id="s0">
+  <div class="sec-head"><span class="sec-no">SEC 00 · 한눈에 보기</span><h2>네 칸 사다리에서 세 칸을 채웠다. 네 번째는 가짜 로봇까지 통과했다</h2></div>
+  <div class="sec-body">
+    <p class="lead"><b>"텔레옵 한 대에서 시작해, 창고 씬 위에서 FMS 틱을 받는 에이전트까지."</b> <a class="term" href="../ref/glossary_robotics.html#sil">SIL</a>(Software-In-the-Loop, 실제 소프트웨어를 가상 로봇에 물려 검증)의 4태스크가 이 문서의 단위다.</p>
+    <div class="note"><span class="pl-tag">기준선 개정 (2026-09-03)</span>REV C는 <a href="../../docs/AMR_기획_기준선_v3.md">기준선 v3</a> §5를 따른다. T3는 계획에서 완료로, T4는 계획에서 뼈대 완료로 바뀌었다. T2의 자체 추종기(Pure Pursuit)는 T4의 그리드 프리미티브로 대체됐다(§1). 부록 실험 3종은 현재 상태를 다시 적었다. 태스크별 상세 기록은 <a href="t3_t4_progress.html">T3·T4 진행</a>이 맡는다.</div>
 
-  <!-- ══════════ S1 왜 이 트랙인가 ══════════ -->
-  <section id="s1">
-    <div class="sec-head"><span class="sec-no">SEC 01 · 왜 이 트랙인가</span><h2>"시뮬+ROS2는 조연 아닌가"에 대한 답 — 맞다, 그리고 그게 설계다</h2></div>
-    <div class="sec-body">
-      <p class="lead">2026-08-26 기준선에서 두 계층은 각각 실존 산업 프로세스를 맡는다 — DES는 개략 검토(rough planning), SIL은 가상 시운전(virtual commissioning). 제품의 주연은 여전히 견적 엔진(DES 스윕 + 원가 모델)이다. 물리 시뮬+ROS2는 조연이 맞고, 아키텍처 원칙("물리는 좁고 깊게, 견적은 넓고 얕게")이 처음부터 그렇게 배역을 나눴다. 문제는 조연이 필요하냐가 아니라, 조연이 <b>소품으로 전락하지 않게 하는 규율</b>이다.</p>
-      <table>
-        <tr><th style="width:200px">역할</th><th>내용</th></tr>
-        <tr><td><b>① 견적의 증거 층</b></td><td>DES 숫자는 가정 위의 숫자다. 벤더도 아닌 우리가 "이 대수면 이 처리량"을 주장하려면 근거가 필요하고, 물리 검증은 그 근거를 <b>직접 측정한 오차 모델</b>로 만든다. 벤더 공개 수치로 보정하는 대안도 있으나, 그 수치는 판매용이라 중립·검증 서사와 충돌한다</td></tr>
-        <tr><td><b>② 발표·영업 자산</b></td><td>제안서 생성기의 차별점은 "고객 도면 위에서 실물 상용 기종이 굴러가는 장면"이다. 팀 관점에서도 6인 구성(로봇/시뮬 트랙 보유)과 발표 평가에서 웹앱+수식만으로는 기술 볼륨이 부족하다</td></tr>
-        <tr><td><b>③ 성장 경로</b></td><td>VDA 5050 어댑터는 견적 도구가 훗날 실로봇·실FMS와 붙는 인터페이스다. 견적 → 도입 검증 → 운영 보조로 자라는 길이 이 트랙에 있다</td></tr>
-        <tr><td><b>④ 업계 명칭이 있다 — Virtual Commissioning</b> <span class="chip c-green">2026-08-25 추가</span></td><td>이 트랙은 업계 표준 관행인 <b>가상 시운전(VC)</b>의 SiL 구성과 일치한다 — 실제 제어 소프트웨어(FMS)를 가상 플랜트(Isaac 창고+로봇)에 물려 실 설치 전에 검증하는 방식. <a href="https://www.vdi.de/en/home/vdi-standards/details/vdivde-3693-blatt-1-virtual-commissioning-model-types-terms-and-definitions">VDI/VDE 3693</a>이 모델 유형·용어를 표준화했고, Siemens는 <a href="https://blogs.sw.siemens.com/tecnomatix/plant-simulation-software-virtual-commissioning/">AGV 시스템 VC</a>와 <a href="https://www.siemens.com/en-us/products/simove/fleetmanager/">가상 환경에서의 AMR 함대 규모 평가·최적화</a>를 공식 워크플로로 제공한다 — 우리 제품이 서는 지점과 동일하다. 업계 자료는 배치 기간 단축(<a href="https://www.controleng.com/how-software-helps-manufacturers-better-manage-mobile-robot-fleets/">~30% 보고 사례</a>)을 근거로 VC를 권장 관행으로 다룬다</td></tr>
-      </table>
-      <div class="note"><span class="pl-tag">전락 조건과 방어</span>영상만 찍고 수치를 돌려주지 않는 순간 이 트랙은 장식이 된다. 방어는 SEC 00 원칙 2 — <b>매 태스크가 DES 보정 수치로 끝난다</b>. 반대로 시간이 부족하면 축소선도 명확하다: T4를 잘라 T3까지만 해도 제품(견적+단일 로봇 물리 검증)은 성립한다(SEC 07)</div>
-    </div>
-  </section>
+    <h3>이 문서가 답하는 질문</h3>
+    <ul class="rules">
+      <li>① 네 태스크는 각각 무엇을 만들었고, DES에 무엇을 돌려줬나 · SEC 02</li>
+      <li>② T4를 Isaac에 붙이기까지 무엇이 남았나 · SEC 03 · 04</li>
+      <li>③ 어디서 멈춰도 제품이 성립하는가 · SEC 05</li>
+    </ul>
 
-  <!-- ══════════ S2 공통 기반 ══════════ -->
-  <section id="s2">
-    <div class="sec-head"><span class="sec-no">SEC 02 · 공통 기반 (T0)</span><h2>제로에서 시작하지 않는다 — 검증된 자산 위에서 출발</h2></div>
-    <div class="sec-body">
-      <table>
-        <tr><th style="width:190px">항목</th><th>내용</th></tr>
-        <tr><td><b>실행 환경</b></td><td>홈서버 (32GB · RTX 5080) · Isaac Sim 6.0.1 (~/isaacsim) · ROS2 Humble (/opt/ros/humble) · <span class="chip c-amber">Isaac 동시 1인스턴스 규칙</span></td></tr>
-        <tr><td><b>브리지</b></td><td>isaacsim.ros2.bridge 확장 — 시스템 Humble을 소싱한 뒤 Isaac 기동(외부 노드와 같은 DDS 도메인). RMW는 미설정 = Fast DDS 기본, ROS_DOMAIN_ID 통일</td></tr>
-        <tr><td><b>검증된 자산</b></td><td>iw.hub 공식 USD(조인트 구조 확인: 차동 2륜 + 캐스터 4 + 리프트) · full_warehouse 씬(전 메시 콜라이더 확인) · 주행 데모 스크립트(WheeledRobot + DifferentialController, 2026-08-24 실구동) — <a href="../research/amr_model_selection.html">기준 기종 문서</a></td></tr>
-        <tr><td><b>학습 전이</b></td><td>colcon·launch·URDF 경험은 <a href="../archive/ros2_arm_lab.html">ROS2 랩 노트</a>에서 계승. 시뮬 시간 규율: 전 노드 use_sim_time, /clock은 Isaac이 발행</td></tr>
-        <tr><td><b>시각화 (헤드리스 제약)</b></td><td>이 서버는 X 없음 → RViz2 직접 실행 불가. 대안 2개: ① Isaac 뷰포트를 WebRTC 스트리밍으로(검증 경로) ② <b>foxglove_bridge</b>(웹소켓 8765)를 띄우고 노트북 브라우저에서 토픽 시각화 — tailscale 경유</td></tr>
-      </table>
-    </div>
-  </section>
+    <h3>4태스크 사다리와 DES 환류</h3>
+    <div class="viz"><svg viewBox="0 0 900 262" role="img" aria-label="T1 텔레옵, T2 매핑·추종, T3 창고 씬은 완료, T4 에이전트는 뼈대 완료. 각 태스크의 실측이 DES로 환류하는 구조">
+      <defs>
+        <marker id="sr-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8FB4D9"/></marker>
+        <marker id="sr-arr-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3BAF77"/></marker>
+      </defs>
+      <!-- T1 -->
+      <rect x="20" y="36" width="190" height="84" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
+      <text x="115" y="60" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">T1 · 텔레옵</text>
+      <text x="115" y="80" text-anchor="middle" fill="#9AA7B4" font-size="12">Isaac × ROS 2 브리지</text>
+      <text x="115" y="100" text-anchor="middle" fill="#3BAF77" font-size="12" font-weight="700">완료 · 0.835 m/s 실측</text>
+      <line x1="210" y1="78" x2="238" y2="78" stroke="#8FB4D9" stroke-width="2" marker-end="url(#sr-arr)"/>
+      <!-- T2 -->
+      <rect x="240" y="36" width="190" height="84" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
+      <text x="335" y="60" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">T2 · 매핑·추종</text>
+      <text x="335" y="80" text-anchor="middle" fill="#9AA7B4" font-size="12">slam_toolbox · 추종기</text>
+      <text x="335" y="100" text-anchor="middle" fill="#3BAF77" font-size="12" font-weight="700">완료 · 오차 3.4 cm</text>
+      <line x1="430" y1="78" x2="458" y2="78" stroke="#8FB4D9" stroke-width="2" marker-end="url(#sr-arr)"/>
+      <!-- T3 -->
+      <rect x="460" y="36" width="190" height="84" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
+      <text x="555" y="60" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">T3 · 창고 씬</text>
+      <text x="555" y="80" text-anchor="middle" fill="#9AA7B4" font-size="12">DXF → USD · 라이다 · AMCL</text>
+      <text x="555" y="100" text-anchor="middle" fill="#3BAF77" font-size="12" font-weight="700">완료 · 스테이션 46</text>
+      <line x1="650" y1="78" x2="678" y2="78" stroke="#8FB4D9" stroke-width="2" marker-end="url(#sr-arr)"/>
+      <!-- T4 -->
+      <rect x="680" y="36" width="200" height="84" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="780" y="60" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">T4 · 에이전트</text>
+      <text x="780" y="80" text-anchor="middle" fill="#9AA7B4" font-size="12">VDA 5050 ↔ PIBT 틱</text>
+      <text x="780" y="100" text-anchor="middle" fill="#F08A32" font-size="12" font-weight="700">뼈대 완료 · 다음: Isaac 결합</text>
+      <!-- 환류 -->
+      <line x1="115" y1="120" x2="115" y2="166" stroke="#3BAF77" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#sr-arr-g)"/>
+      <line x1="335" y1="120" x2="335" y2="166" stroke="#3BAF77" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#sr-arr-g)"/>
+      <line x1="555" y1="120" x2="555" y2="166" stroke="#3BAF77" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#sr-arr-g)"/>
+      <line x1="780" y1="120" x2="780" y2="166" stroke="#3BAF77" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#sr-arr-g)"/>
+      <rect x="20" y="168" width="860" height="48" fill="#17251E" stroke="#3BAF77" stroke-width="1.5"/>
+      <text x="450" y="197" text-anchor="middle" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">DES(계산 엔진) · 각 태스크의 실측이 파라미터로 환류</text>
+      <text x="20" y="246" fill="#9AA7B4" font-size="12">가감속·최고 속도(T1) · 지도 오차(T2) · 씬·스테이션 좌표(T3) · 틱 시간 상수 2.2 s / 2.3 s(T4)</text>
+    </svg></div>
+    <p class="soft">초록 상자 = 완료, 주황 상자 = 뼈대 완료. 초록 점선이 DES 환류다. 환류 수치가 없는 태스크는 완료로 치지 않는다.</p>
 
-  <!-- ══════════ S3 T1 ══════════ -->
-  <section id="s3">
-    <div class="sec-head"><span class="sec-no">SEC 03 · TASK 1</span><h2>Teleop — 키보드로 iw.hub 한 대를 몬다</h2></div>
-    <div class="sec-body">
-      <table>
-        <tr><th style="width:150px">항목</th><th>내용</th></tr>
-        <tr><td><b>목표</b></td><td>기존 데모의 스크립트 직접 제어를 <b>ROS2 토픽 제어로 교체</b> — 브리지 파이프라인 개통이 본질</td></tr>
-        <tr><td><b>구현 골자</b></td><td>간단 씬에 iw.hub 로드 → OmniGraph 액션 그래프 구성: /cmd_vel 구독 → 차동 컨트롤러(바퀴 반경 0.115m·축간 0.413m, 실측 확인값) → 아티큘레이션, 그리고 /odom·/tf·/clock 발행. 외부에서 <code>teleop_twist_keyboard</code>로 조종(터미널 기반이라 SSH만으로 충분)</td></tr>
-        <tr><td><b>완료 기준</b></td><td>SSH 키 입력으로 전진·후진·회전 동작 / <code>ros2 topic hz</code>로 /odom·/clock 주기 확인 / 스트리밍 클라이언트 육안 확인</td></tr>
-        <tr><td><b>DES 환류</b></td><td><span class="chip c-green">필수</span> 최고 속도·가감속 곡선 실측 → robot_landscape 파라미터 시트의 iw.hub 추정값 1차 보정</td></tr>
-        <tr><td><b>예상 함정</b></td><td>/clock 미발행 시 외부 노드 시간 정지(use_sim_time 확인) · cmd_vel 부호/좌표계 뒤집힘 · 브리지가 시스템 Humble 대신 내장 라이브러리를 잡는 소싱 순서 문제</td></tr>
-        <tr><td><b>예상 소요</b></td><td>2~3일 (추정)</td></tr>
-      </table>
-    </div>
-  </section>
+    <details class="more"><summary>먼저 알아둘 용어 9개 — 펼쳐 보기</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:170px">용어</th><th>쉬운 설명</th></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#des">DES</a></b></td><td>Discrete Event Simulation. 이벤트 단위로 시간을 건너뛰며 돌리는 시뮬레이션. 견적 숫자를 만드는 계산 엔진</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#vda5050">VDA 5050</a></b></td><td>FMS와 로봇 사이의 표준 인터페이스. 경로(order)는 중앙이 내려주고 로봇은 상태(state)를 올린다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#pibt">PIBT</a></b></td><td>Priority Inheritance with Backtracking. 팀 FMS가 채택한 다중 로봇 경로계획. 틱마다 로봇별 다음 칸을 정한다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#barrier-tick">배리어 틱</a></b></td><td>모든 로봇이 이번 틱을 끝냈다고 알린 뒤에야 FMS가 다음 틱을 내는 동기 방식</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#primitive">그리드 프리미티브</a></b></td><td>1 m 격자 위의 기본 동작 단위. 직진 1칸 · 후진 1칸 · 제자리 회전 ±90°</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#spot-turn">스팟턴</a></b></td><td>셀 중심에 정지한 뒤 제자리에서 도는 회전. 차체가 셀보다 길어 회전 중 옆 칸을 스친다</td></tr>
+      <tr><td><b>AMCL</b></td><td><a class="term" href="../ref/glossary_robotics.html#nav2">nav2</a>의 자기위치 추정 노드. 지도와 라이다를 맞춰 로봇의 위치를 잡는다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#sim-runner">sim-runner</a></b></td><td>GPU 서버에 상주하는 데몬. 런 지시를 받아 Isaac과 에이전트를 띄우고 정리한다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#stitching">스티칭</a></b></td><td>VDA 5050 order 업데이트를 마지막 노드에서 이어 붙이는 규칙. 틱마다 노드 하나를 더 푼다</td></tr>
+    </table></div>
+    </details>
+  </div>
+</section>
 
-  <!-- ══════════ S4 T2 ══════════ -->
-  <section id="s4">
-    <div class="sec-head"><span class="sec-no">SEC 04 · TASK 2</span><h2>매핑과 자율 추종 — 커미셔닝 절차를 그대로 재현한다</h2></div>
-    <div class="sec-body">
-      <table>
-        <tr><th style="width:150px">항목</th><th>내용</th></tr>
-        <tr><td><b>목표</b></td><td>실제 AMR 설치 절차(설치 시 SLAM 1회 → 지도 고정 → 경로망 위 주행)의 재현 — 간단 씬에서 매핑 런 1회 + 경로망 자율 추종</td></tr>
-        <tr><td><b>구현 골자</b></td><td>iw_hub_sensors(라이다) → <code>slam_toolbox</code>로 2D 점유격자 지도 생성(산출물: 지도 + 씬 그라운드 트루스 대비 오차 = V&amp;V 자료) → 지도 고정 → 노드-엣지 경로망 정의 → <b>추종기 노드</b>(노드 시퀀스 수신 → 경로 보간 → Pure Pursuit → cmd_vel) + 안전 필드 정지(라이다 근접 시 정지→해제 시 재개). 운영 위치는 GT+노이즈</td></tr>
-        <tr><td><b>완료 기준</b></td><td>지도 생성·저장 / 경로망 5개 엣지 왕복 자율 주행 / 장애물 투척 시 정지, 제거 시 재개 / foxglove로 지도·경로 시각 확인</td></tr>
-        <tr><td><b>DES 환류</b></td><td><span class="chip c-green">필수</span> 직선·코너 엣지 통과시간 <b>분포</b> 실측 → DES 엣지 이동 모델 1차 보정 (정합성 지표 = 엣지 통과시간 분포 일치)</td></tr>
-        <tr><td><b>예상 함정</b></td><td>slam_toolbox 스캔 매칭 파라미터 · 추종기 코너 오버슈트 튜닝 · 정지 필드 반경 과소/과대</td></tr>
-        <tr><td><b>예상 소요</b></td><td>3~5일 (추정)</td></tr>
-      </table>
-    </div>
-  </section>
+<!-- ══════════ S1 왜 이 트랙인가 ══════════ -->
+<section id="s1">
+  <div class="sec-head"><span class="sec-no">SEC 01 · 왜 이 트랙인가</span><h2>견적의 증거 층. 숫자는 DES가, 근거와 영상은 여기서 나온다</h2></div>
+  <div class="sec-body">
+    <p class="lead">DES가 견적 숫자를 만들고, 시뮬 트랙은 그 숫자의 물리 근거와 검증 영상을 만든다. 주연은 견적 엔진이지만 서비스 8단계 중 ⑤ 물리 검증 런과 ⑥ 아티팩트는 이 트랙에서 나온다. 실측 수치를 DES로 돌려주지 않는 태스크는 완료로 치지 않는다.</p>
+    <p class="soft">8단계와 검증 런의 자리는 <a href="../tech/system_architecture.html">TECH 02 시스템 아키텍처</a>를 본다.</p>
+  </div>
+</section>
 
-  <!-- ══════════ S5 T3 ══════════ -->
-  <section id="s5">
-    <div class="sec-head"><span class="sec-no">SEC 05 · TASK 3</span><h2>물류 씬 투입 — 창고에서 반송 사이클을 돈다</h2></div>
-    <div class="sec-body">
-      <table>
-        <tr><th style="width:150px">항목</th><th>내용</th></tr>
-        <tr><td><b>목표</b></td><td>full_warehouse에서 스테이션 A↔B 반복 반송 — 데모(demo.html)의 파킹·스테이션 개념과 좌표 체계를 맞춘다</td></tr>
-        <tr><td><b>구현 골자</b></td><td>창고 오큐펀시 맵 생성 → 스테이션·파킹 좌표 정의 → 경로망 위 스테이션 왕복 order 연쇄 → 사이클 타임 로거. <b>리프트 도킹(토트 랙 상차·하차) 1장면 포함</b> — 피킹 투어 미션(08-26 확정)의 물리 대표 장면</td></tr>
-        <tr><td><b>완료 기준</b></td><td>왕복 반송 20회 무충돌 완주 / 사이클 타임 로그 자동 수집</td></tr>
-        <tr><td><b>DES 환류</b></td><td><span class="chip c-green">필수</span> 사이클 타임 분해(주행/회전/정지·재출발) + <b>리프트 도킹 시간 분포</b> → DES의 속도·회전 페널티·도킹 분포 보정. 여기서 나온 값이 견적 엔진 신뢰도의 첫 실증</td></tr>
-        <tr><td><b>예상 함정</b></td><td>3,473 콜라이더 씬에서 통로 폭 대비 경로망 배치 · 랙 근접 구간의 정지 필드 오탐 · RAM은 Isaac 16GB + 추종기 1대라 여유(<a href="runtime_architecture.html">SEC 04</a>)</td></tr>
-        <tr><td><b>예상 소요</b></td><td>3~4일 (추정)</td></tr>
-      </table>
-    </div>
-  </section>
+<!-- ══════════ S2 태스크 상태 ══════════ -->
+<section id="s2">
+  <div class="sec-head"><span class="sec-no">SEC 02 · 태스크 상태</span><h2>T1~T3는 실측으로 닫혔고, T4는 가짜 로봇으로 틱 계약을 통과했다</h2></div>
+  <div class="sec-body">
+    <p class="lead">태스크마다 목표, 산출물, 상태, DES 환류 한 줄이다. 수치는 기준선 v3 §5 그대로다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:110px">태스크</th><th style="width:200px">목표</th><th style="width:220px">산출물</th><th style="width:110px">상태</th><th>DES 환류 수치 · 교훈</th></tr>
+      <tr><td><b>T1 텔레옵</b></td><td>Isaac × <a class="term" href="../ref/glossary_robotics.html#ros2">ROS 2</a> 브리지 개통. 키보드로 iw.hub 한 대 조종</td><td><code>sil/t1_teleop</code> · <a href="t1_guide.html">T1 가이드</a></td><td><span class="chip c-green">완료</span></td><td>최고 0.835 m/s, 응답 즉답형. 교훈: 가감속 램프는 컨트롤러가 모델링한다</td></tr>
+      <tr><td><b>T2 매핑·추종</b></td><td>매핑 1회 → 지도 고정 → 경로망 자율 추종</td><td><code>sil/t2_mapping</code> · <code>sil/t2_follower</code> · <a href="t2_guide.html">T2 가이드</a></td><td><span class="chip c-green">완료</span></td><td>slam_toolbox 오차 평균 3.4 cm, 추종기 20엣지 완주. 교훈: 연속 경로 추종기는 T4의 그리드 프리미티브로 대체됐다</td></tr>
+      <tr><td><b>T3 창고 씬</b></td><td>도면 DXF → 그리드 → USD 씬. 물리 라이다, 자기위치, 관전</td><td><code>sil/t3_warehouse</code> · <code>sil/t3_warehouse_map</code>(map.pgm · stations.json · zones.json)</td><td><span class="chip c-green">완료</span></td><td>스테이션 46 · 충전 6, 라이다 720빔 0.5° 0.4~20 m, nav2 AMCL 자기위치, Foxglove·MJPEG 관전. 교훈: 관전은 TCP 경로로 둔다</td></tr>
+      <tr><td><b>T4 에이전트</b></td><td>VDA 5050 브리지 + order executor + 그리드 프리미티브 컨트롤러. FMS 틱을 로봇 동작으로</td><td><code>sil/t4_agent</code>(amr_agent 패키지, fake_robot · fake_fms)</td><td><span class="chip c-amber">뼈대 완료</span></td><td>가짜 로봇 E2E 7틱 통과, 정지 오차 4 mm, 헤딩 1.2°, 1 m 틱당 2.2 s, 90° 회전 2.3 s. 교훈: FMS의 틱 1 s 가정보다 길다. 틱 시간 상수는 Isaac 실측으로 확정한다</td></tr>
+    </table></div>
+    <div class="plain"><span class="pl-tag">틱이 길다는 것의 의미</span>배리어 틱이면 Isaac 런은 실시간의 절반 이하로 돈다. 검증 런은 분 단위 미니 시나리오라 허용된다. 하루치 재생은 처음부터 계획에 없다(기준선 §1 · §6).</div>
 
-  <!-- ══════════ S6 T4 ══════════ -->
-  <section id="s6">
-    <div class="sec-head"><span class="sec-no">SEC 06 · TASK 4</span><h2>다중 로봇 — 표준 아키텍처(중앙 하달)로 전환한다</h2></div>
-    <div class="sec-body">
-      <table>
-        <tr><th style="width:150px">항목</th><th>내용</th></tr>
-        <tr><td><b>목표</b></td><td>3~5대 + FMS 스텁의 첫 결합 — 여기서부터가 우리 아키텍처의 본 모습이다. <b>중앙이 경로를 하달</b>하고 로봇은 추종한다</td></tr>
-        <tr><td><b>구현 골자</b></td><td>네임스페이스 분리(/robot1…)로 추종기·어댑터 노드 복제 · FMS 스텁(간단 중앙 하달기 — 팀 MAPF 로직이 붙기 전의 대체)이 VDA 5050 order(노드 시퀀스)를 하달 · 어댑터 초판(order 수신·state 보고, MQTT)</td></tr>
-        <tr><td><b>완료 기준</b></td><td>3대가 교차 경로에서 중앙 하달 경로로 무충돌 운행 / 어댑터 경유로 상태가 MQTT에 올라옴 / 경로 막힘 시 재계획 없이 FMS 보고 동작</td></tr>
-        <tr><td><b>DES 환류</b></td><td><span class="chip c-green">필수</span> 다중 로봇 간섭 실측(합류 대기·양보 시간) → DES 간섭 계수 보정. 부가로 추종기 대당 RAM/CPU 실측 → <a href="runtime_architecture.html">런타임 아키텍처</a> SEC 04 추정치를 실측 칩으로 교체</td></tr>
-        <tr><td><b>예상 함정</b></td><td>네임스페이스별 TF 충돌(frame 이름 접두) · /clock 단일화 · DDS 참가자 수 증가 시 디스커버리 지연 · 대수 확대는 스케일 사다리(런타임 아키텍처 SEC 05) 적용</td></tr>
-        <tr><td><b>예상 소요</b></td><td>5~7일 (추정)</td></tr>
-      </table>
-      <div class="plain"><span class="pl-tag">T4가 끝나면</span>SIL 트랙이 팀 FMS(MAPF)와 결합할 소켓이 완성된다 — FMS 스텁 자리에 실제 디스패처를 꽂으면 검증 런 파이프라인이 된다. 이후는 로드맵 밖: 보정 루프 반복, 최적 구성 검증 런, 발표 장면 촬영.</div>
-    </div>
-  </section>
+    <details class="more"><summary>완료 기준 — 무엇을 완료로 쳤나 — 상세</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:110px">태스크</th><th>완료로 친 조건</th></tr>
+      <tr><td><b>T1</b></td><td>SSH 키 입력으로 전진·후진·회전 동작. /odom · /clock 주기 확인. 속도·응답 실측 기록</td></tr>
+      <tr><td><b>T2</b></td><td>지도 생성·저장. 씬 기준 지도 오차 기록. 경로망 20엣지 자율 완주</td></tr>
+      <tr><td><b>T3</b></td><td>도면에서 만든 씬 로드. 라이다 발행. AMCL 수렴. 스테이션·충전 좌표 파일 생성. 관전 경로 확인</td></tr>
+      <tr><td><b>T4 뼈대</b></td><td>Isaac 없이 가짜 로봇·가짜 FMS로 배리어 틱 E2E 통과. 단위 테스트 통과. Isaac 결합은 SEC 03</td></tr>
+    </table></div>
+    </details>
+  </div>
+</section>
 
-  <!-- ══════════ S7 리스크·축소선 ══════════ -->
-  <section id="s7">
-    <div class="sec-head"><span class="sec-no">SEC 07 · 리스크와 축소선</span><h2>어디서 멈춰도 제품은 성립한다</h2></div>
-    <div class="sec-body">
-      <table>
-        <tr><th style="width:220px">시간 압박 시나리오</th><th>축소선</th><th style="width:250px">그때도 남는 것</th></tr>
-        <tr><td>T4 진입 불가</td><td>T3까지 — 단일 로봇 물리 검증 체제</td><td>견적 + 사이클 타임 보정 + 창고 주행 영상. 다중 로봇 수치는 DES 단독 + 문헌 근거로 대체</td></tr>
-        <tr><td>T3 진입 불가</td><td>T2까지 — 간단 씬 검증</td><td>견적 + 주행시간 오차 데이터 + 자율주행 시연</td></tr>
-        <tr><td>SLAM 매핑이 막힘</td><td>Isaac 오큐펀시 맵 생성기(GT 지도)로 대체 — 주행·환류는 그대로 진행</td><td>V&amp;V 자료 1건(SLAM vs GT 오차)만 손실</td></tr>
-      </table>
-      <table>
-        <tr><th style="width:220px">기술 리스크</th><th>대응</th></tr>
-        <tr><td>브리지·Humble 소싱 충돌</td><td>T1에서 가장 먼저 부딪히는 이유 — 사다리의 맨 아래 단에 배치해 조기 검출</td></tr>
-        <tr><td>헤드리스 시각화 병목</td><td>foxglove_bridge를 T2 시작 전에 셋업(공통 기반) — RViz 부재를 상수로 취급</td></tr>
-        <tr><td>Isaac 인스턴스 충돌</td><td>동시 1인스턴스 규칙(OOM 실측 사고 기록) — 개발 중 스크립트 재실행 전 기존 프로세스 종료 습관화</td></tr>
-        <tr><td>일정 전체</td><td>4태스크 합산 추정 12~17일 — 주차 배정은 팀 마일스톤 확정 후 이 문서에 기입</td></tr>
-      </table>
-      <h3>부록 실험 3종 — "알고 배제했다"의 물증 (본선 완료 후)</h3>
-      <table>
-        <tr><th style="width:230px">실험</th><th>내용</th></tr>
-        <tr><td>AMCL 검증 1대</td><td>지도 고정 + AMCL 위치추정 1대 실험 — GT+노이즈 대체의 타당성 물증</td></tr>
-        <tr><td>Nav2 비교 1대</td><td>추종기 vs Nav2 풀스택 동일 코스 비교 — 로컬 회피가 산업 거동과 다름을 실측으로 제시</td></tr>
-        <tr><td>솔버 스왑 벤치</td><td>PP/CBS/ECBS/PIBT/LaCAM을 동일 DES 위에서 교체 비교(플러그인 설계 증명) — DES 트랙과 공동, 시뮬 트랙은 인터페이스 제공</td></tr>
-      </table>
-      <div class="kcards">
-        <div class="kcard s"><b><a href="runtime_architecture.html" style="color:inherit">런타임 아키텍처</a></b><span>표준 스택 채택·배치·스케일 사다리 (WORKING)</span></div>
-        <div class="kcard"><b><a href="../tech/amr_tech_plan.html" style="color:inherit">기술 실행 계획</a></b><span>2계층 구조와 SIL 검증 트랙의 원 설계 (TECH 02)</span></div>
-        <div class="kcard g"><b><a href="../research/amr_model_selection.html" style="color:inherit">기준 기종 선정</a></b><span>iw.hub 고정 근거와 실구동 검증 기록 (RESEARCH 04)</span></div>
-      </div>
-    </div>
-  </section>
+<!-- ══════════ S3 T4 다음 단계 ══════════ -->
+<section id="s3">
+  <div class="sec-head"><span class="sec-no">SEC 03 · T4 다음 단계</span><h2>남은 것은 넷. 다중 로봇, 실측 2건, sim-runner, AMCL 폐루프</h2></div>
+  <div class="sec-body">
+    <p class="lead">전부 시뮬 파트 몫이다. 각 항목에 막혔을 때의 대안을 같이 적는다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:200px">항목</th><th>내용</th><th style="width:260px">막히면</th></tr>
+      <tr><td><b>① Isaac 다중 로봇 네임스페이스</b></td><td>warehouse_sim이 로봇별 네임스페이스(<code>/amr01/odom</code> …)로 발행하도록 확장. 에이전트 ×N 기동</td><td>로봇 1대로 검증 런. 다중 로봇 수치는 DES 단독</td></tr>
+      <tr><td><b>② 실측 2건</b></td><td>iw.hub 앞축 종방향 위치 · 회전 각속도. FMS 헤딩 모델 상수(뒤 칸 점유 · 회전 틱 수)의 확정 근거. 바퀴 반경 0.08 m · 트랙 0.58 m는 실측됨</td><td>T4 E2E 값(1 m 2.2 s · 90° 2.3 s)을 임시 상수로 FMS 파트에 전달</td></tr>
+      <tr><td><b>③ sim-runner 데몬</b></td><td><code>sim/control</code>로 start/stop 수신. Isaac·에이전트 ×N 스폰·정리. 런 <a class="term" href="../ref/glossary_industrial.html#artifact">아티팩트</a>(리플레이 · 영상) 업로드</td><td>운영자가 GPU 서버에서 수동 기동. 8단계 중 ⑤ 자동화만 손실</td></tr>
+      <tr><td><b>④ AMCL 폐루프 정밀도</b></td><td><code>pose_source:=amcl</code>에서 정지 정밀도 실측. 오돔 노이즈 주입</td><td><code>pose_source:=odom</code> 유지. 자기위치 검증 1건 손실</td></tr>
+    </table></div>
+    <p class="soft">진행 기록과 명령은 <a href="t3_t4_progress.html">T3·T4 진행</a>과 <code>sil/t4_agent/README.md</code>에 둔다. 이 문서는 목록만 유지한다.</p>
+  </div>
+</section>
+
+<!-- ══════════ S4 FMS 요구 4건 ══════════ -->
+<section id="s4">
+  <div class="sec-head"><span class="sec-no">SEC 04 · FMS 요구 4건</span><h2>넷 중 셋은 구현됐고, 배리어 방식은 FMS 파트가 재확인 중이다</h2></div>
+  <div class="sec-body">
+    <p class="lead">FMS 파트가 Isaac 실행에 요구한 4건과 실측 1건의 상태다(기준선 §5.2). 인터페이스 수준만 적는다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:280px">요구</th><th style="width:170px">상태</th><th>비고</th></tr>
+      <tr><td><b>스팟턴</b> (셀 중심 정지 · 제자리 회전 · 직진)</td><td><span class="chip c-green">T4 구현</span></td><td>헤딩 정렬 → 직진 → 셀 중심 정지</td></tr>
+      <tr><td><b>경유점 오차 ≤ 0.1 m</b></td><td><span class="chip c-green">T4 구현</span></td><td>가짜 로봇 기준 4 mm. Isaac 폐루프 값은 SEC 03 ④</td></tr>
+      <tr><td><b>틱 배리어 동기</b></td><td><span class="chip c-amber">ack 구현 · 방식 재확인 중</span></td><td>에이전트는 <code>state.lastNodeId</code> 변화를 즉시 발행. lockstep인지 고정 주기인지, 타임아웃 처리는 FMS 파트 확인 대기(기준선 §9)</td></tr>
+      <tr><td><b>후진 1칸 프리미티브</b></td><td><span class="chip c-green">T4 구현</span></td><td>엣지 orientation π, TANGENTIAL. 헤딩 유지</td></tr>
+      <tr><td><b>iw.hub 앞축 위치 · 회전 각속도 실측</b></td><td><span class="chip c-amber">미완</span></td><td>SEC 03 ②. 바퀴 반경 0.08 m · 트랙 0.58 m는 실측됨</td></tr>
+    </table></div>
+
+    <details class="more"><summary>PIBT 액션 ↔ VDA 5050 ↔ 에이전트 동작 매핑 5건 — 펼쳐 보기</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:150px">PIBT 액션</th><th style="width:300px">VDA 5050 표현</th><th>에이전트 동작</th></tr>
+      <tr><td><b>전진 1칸</b></td><td>다음 노드 released</td><td>헤딩 정렬(스팟턴) → 직진 → 셀 중심 정지</td></tr>
+      <tr><td><b>후진 1칸</b></td><td>엣지 orientation π, TANGENTIAL</td><td>헤딩 유지, 후진</td></tr>
+      <tr><td><b>회전 ±90°</b></td><td>같은 좌표 노드 + 새 theta</td><td>제자리 회전</td></tr>
+      <tr><td><b>대기</b></td><td>새 노드 없음</td><td>정지</td></tr>
+      <tr><td><b>ack</b></td><td><code>state.lastNodeId</code> 변화 즉시 발행</td><td>FMS는 전 로봇 ack 후 다음 틱</td></tr>
+    </table></div>
+    <p class="soft">한 틱 = orderUpdateId를 1 올리며 노드 하나를 더 released로 보내는 order 업데이트. 스티칭 규칙은 <code>sil/t4_agent/README.md</code>.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ══════════ S5 축소선·부록 ══════════ -->
+<section id="s5">
+  <div class="sec-head"><span class="sec-no">SEC 05 · 축소선·부록</span><h2>어디서 멈춰도 제품은 성립한다. 세 칸이 이미 채워졌기 때문이다</h2></div>
+  <div class="sec-body">
+    <p class="lead">REV B의 축소선은 "T3 진입 불가"까지 다뤘다. T3가 끝났으므로 축소선은 T4 안쪽으로 옮긴다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:230px">상황</th><th>축소선</th><th style="width:300px">그때도 남는 것</th></tr>
+      <tr><td><b>T4 Isaac 결합 불가</b> (① 네임스페이스 · ③ sim-runner 미완)</td><td>가짜 로봇 E2E까지. 검증 런은 로봇 1대 장면</td><td>견적(DES) + T1~T3 실측 보정 + 창고 주행·AMCL 영상</td></tr>
+      <tr><td><b>sim-runner만 미완</b></td><td>운영자가 GPU 서버에서 수동 기동</td><td>8단계 중 ⑤ 자동화만 손실. 나머지 흐름 유지</td></tr>
+      <tr><td><b>실측 2건 미완</b></td><td>T4 E2E 값을 임시 상수로</td><td>회전 모델은 유지. 상수 정밀도만 손실</td></tr>
+      <tr><td><b>AMCL 폐루프 정밀도 미달</b></td><td><code>pose_source:=odom</code></td><td>자기위치 검증 1건 손실</td></tr>
+      <tr><td><b>일정 전체 압박</b></td><td>T3 + T4 뼈대에서 멈춤</td><td>견적 + 로봇 1대 물리 검증. 다중 로봇 수치는 DES 단독</td></tr>
+    </table></div>
+
+    <h3>부록 실험 3종 — 현재 상태</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:170px">실험</th><th>원래 목적</th><th style="width:330px">현재 상태</th></tr>
+      <tr><td><b>AMCL 검증 1대</b></td><td>지도 고정 + AMCL 자기위치. GT+노이즈 대체의 타당성 물증</td><td><span class="chip c-green">본선 편입</span> T3에서 nav2 AMCL 채택. 폐루프 정밀도는 SEC 03 ④</td></tr>
+      <tr><td><b>Nav2 비교 1대</b></td><td>추종기 vs Nav2 풀스택 동일 코스 비교</td><td><span class="chip c-slate">미착수</span> 로봇 실행이 그리드 프리미티브로 확정돼 우선순위가 낮다</td></tr>
+      <tr><td><b>솔버 스왑 벤치</b></td><td>여러 <a class="term" href="../ref/glossary_robotics.html#mapf">MAPF</a> 솔버를 같은 DES 위에서 교체 비교</td><td><span class="chip c-steel">FMS 파트로 이관</span> PIBT 확정. 대수 스윕 벤치는 팀 레포 <code>3_FMS/docs/</code></td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- ══════════ NEXT ══════════ -->
+<section id="snext">
+  <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
+  <div class="sec-body">
+    <ul class="rules">
+      <li><a href="t3_t4_progress.html"><b>WORKING · T3 창고 씬 · T4 에이전트 진행</b></a> · 이 문서의 표 한 줄이 실제로 어떤 파일과 명령인지</li>
+      <li><a href="t1_guide.html"><b>T1 텔레옵 가이드</b></a> · <a href="t2_guide.html"><b>T2 매핑·추종 가이드</b></a> · 완료된 두 태스크의 재현 절차</li>
+      <li><a href="../tech/system_architecture.html"><b>TECH 02 시스템 아키텍처</b></a> · 검증 런이 8단계 어디에 꽂히는지, 두 WMS와 시나리오 패키지</li>
+    </ul>
+  </div>
+</section>
 
 </main>
 
 <footer>
-  <div class="wrap">WORKING · SIL-ROADMAP · REV B — 개정 2026-08-26 (B: T2를 SLAM 매핑+자체 추종으로 재정의, Nav2는 부록 비교 실험으로, 부록 실험 3종 신설) · 소요는 전부 추정 · 기술 전제는 런타임 아키텍처 REV C 준수 · <a href="../../index.html">문서 인덱스로</a></div>
+  <div class="wrap">WORKING · SIL-ROADMAP · REV C — 개정 2026-09-03 (C: 기준선 v3 §5 반영. T3 완료·T4 뼈대 완료, 자체 추종기 → 그리드 프리미티브, T4 다음 단계 4건·FMS 요구 4건 상태·축소선 갱신, 부록 실험 상태 갱신 / B: T2 SLAM+자체 추종, Nav2 부록 / A: 초판) · 원천: AMR_기획_기준선_v3.md (2026-09-03) · <a href="../../index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>

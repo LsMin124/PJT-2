@@ -85,8 +85,9 @@
 <div class="toc-chips">
   <a href="#ros2">ROS 2</a><a href="#urdf">URDF</a><a href="#ros2control">ros2_control</a><a href="#pid">PID</a>
   <a href="#nav2">Nav2</a><a href="#mapf">MAPF</a><a href="#cbs">CBS</a><a href="#rhcr">RHCR</a><a href="#tapf">TAPF</a>
+  <a href="#pibt">PIBT</a><a href="#theta">θ</a><a href="#heading-model">헤딩 모델</a><a href="#swing-reservation">스윙 예약</a><a href="#barrier-tick">배리어 틱</a><a href="#decision-kernel">결정 커널</a><a href="#execution-shell">실행 셸</a><a href="#primitive">그리드 프리미티브</a><a href="#spot-turn">스팟턴</a><a href="#stitching">스티칭</a>
   <a href="#ekf">칼만 필터·EKF</a><a href="#moveit2">MoveIt2 · FK/IK</a><a href="#bt">Behavior Tree</a>
-  <a href="#omni">홀로노믹·옴니휠</a><a href="#gazebo">Gazebo</a><a href="#isaac">Isaac Sim · USD</a><a href="#rtf">RTF</a><a href="#sil">SIL</a>
+  <a href="#omni">홀로노믹·옴니휠</a><a href="#gazebo">Gazebo</a><a href="#isaac">Isaac Sim · USD</a><a href="#rtf">RTF</a><a href="#sil">SIL</a><a href="#sim-runner">sim-runner</a>
   <a href="#replicator">Replicator</a><a href="#isaaclab">Isaac Lab · 강화학습</a><a href="#sim2real">Sim-to-Real</a>
 </div>
 
@@ -258,7 +259,7 @@
     <figcaption>두 로봇의 경로가 한 칸에서 겹칠 때 — 경로를 바꾸거나, 한 대가 잠깐 기다리도록 시각을 배정한다</figcaption>
   </figure>
   <p>핵심 도구는 <b>시공간 예약</b>이다. 지도를 격자로 나누고 "로봇 A가 이 칸을 3틱째에 지나간다"처럼 시간까지 포함해 칸을 예약해 두면, 다른 로봇은 그 시각의 그 칸을 피해 계획한다. 창고 AMR이 대표 응용 분야이고, Amazon 물류로봇 연구가 이 분야를 견인해 왔다. 로봇이 몇 대 안 될 때는 쉬운 문제지만, 수십 대가 좁은 통로를 공유하는 순간 통로 정체·교차로 대기가 급증한다 — "로봇을 늘려도 처리량이 안 느는" 현상의 원인이 바로 이것이다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — AMR 견적 시뮬레이션의 견적 엔진 그 자체다. SimPy 시뮬레이션 안에서 경량 MAPF(우선순위 계획 + 예약 테이블)가 돌며 정체·대기가 자연스럽게 나타나고, 그 결과가 "몇 대가 적정인가"의 근거가 된다. 최적 해법은 <a href="#cbs">CBS</a>, 연속 운영 확장은 <a href="#rhcr">RHCR</a> 참조.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — AMR 견적 시뮬레이션의 견적 엔진 그 자체다. SimPy 시뮬레이션 안에서 경량 MAPF(우선순위 계획 + 예약 테이블)가 돌며 정체·대기가 자연스럽게 나타나고, 그 결과가 "몇 대가 적정인가"의 근거가 된다. 최적 해법은 <a href="#cbs">CBS</a>, 연속 운영 확장은 <a href="#rhcr">RHCR</a> 참조. 기준선 v3(2026-09-03)부터 본 프로젝트 v1의 이동 계층은 <a href="#pibt">PIBT</a> 헤딩 모델이다.</div>
 </section>
 
 <section class="term" id="cbs">
@@ -282,7 +283,7 @@
     <figcaption>충돌마다 트리가 두 갈래로 자란다 — 최적을 보장하지만 로봇·정체가 늘면 트리가 폭발한다</figcaption>
   </figure>
   <p>2단 구조다. 아래층은 로봇 한 대씩의 최단 경로 계산(A*)이고, 위층은 충돌이 나올 때마다 제약을 추가하며 가지를 뻗는 탐색 트리다. "A에게 금지를 걸까, B에게 걸까"라는 두 갈래가 반복되므로 로봇 수가 늘면 계산량이 폭발한다. 그래서 실무는 최적성을 조금 양보한 변형(ECBS·EECBS)이나 더 단순한 우선순위 계획을 쓰고, CBS는 "정답 기준"으로 삼는 경우가 많다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 매 조합 수백 번 돌리는 스윕 특성상 CBS를 시뮬레이션 안에서 직접 쓰지는 않는다(느림). 대신 v1 플래너(우선순위 계획)의 품질을 가늠하는 기준이자, 이론 문서(TECH 03)의 관문 논문 정독 대상이다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 매 조합 수백 번 돌리는 스윕 특성상 CBS를 시뮬레이션 안에서 직접 쓰지는 않는다(느림). 대신 v1 플래너(우선순위 계획)의 품질을 가늠하는 기준이자, 이론 문서(TECH 03)의 관문 논문 정독 대상이다. 본 프로젝트 v1은 <a href="#pibt">PIBT</a>를 쓰고, CBS는 품질 기준으로만 남는다.</div>
 </section>
 
 <section class="term" id="rhcr">
@@ -302,7 +303,7 @@
     <figcaption>가까운 미래만 정밀하게, 먼 미래는 다음 재계획에 맡긴다 — 계산량과 품질의 균형점</figcaption>
   </figure>
   <p>교과서의 MAPF는 "각 로봇이 목적지에 도착하면 끝"인 일회성 문제다. 실제 창고는 도착 즉시 다음 작업이 떨어지는 연속 운영(lifelong)이라 이 가정이 깨진다. RHCR의 통찰은 "어차피 곧 새 작업 때문에 계획이 바뀔 텐데 끝까지 완벽하게 풀 필요가 없다"는 것이다. 가까운 미래(W스텝)만 충돌을 해소하고, h스텝마다 굴러가듯 재계획한다. 1,000대 규모 창고 시뮬레이션에서 검증된, 대규모 AMR 운영의 사실상 표준 프레임이다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — SimPy 엔진의 재계획 구조가 RHCR 방식(고정 윈도우 + 작업 이벤트 병행)이며, 윈도우 크기가 실험 파라미터다(TECH 04 B4). 원 논문(Li et al., AAAI 2021)이 본 프로젝트의 직접 기반 문헌이다.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — SimPy 엔진의 재계획 구조가 RHCR 방식(고정 윈도우 + 작업 이벤트 병행)이며, 윈도우 크기가 실험 파라미터다(TECH 04 B4). 원 논문(Li et al., AAAI 2021)이 본 프로젝트의 직접 기반 문헌이다. 본 프로젝트 v1은 <a href="#pibt">PIBT</a>다. 매 틱 한 칸씩 결정하므로 별도의 윈도우 재계획이 없다.</div>
 </section>
 
 <section class="term" id="tapf">
@@ -329,6 +330,297 @@
   </figure>
   <p>보통은 할당을 먼저 하고(가장 가까운 로봇에게) 경로는 그다음 푼다. 그런데 가장 가까운 로봇이 정체 구간을 지나야 한다면, 거리상 먼 로봇이 실제로는 더 빨리 도착할 수 있다 — "거리"와 "걸리는 시간"이 다르기 때문이다. TAPF는 이 상호작용까지 반영해 함께 최적화한다. 대가는 계산량이므로, 실무에서는 "정체 페널티를 포함한 경로 비용을 할당 판단에 피드백"하는 절충이 흔하다.</p>
   <div class="ctx"><b>이 프로젝트에서</b> — v1은 할당(디스패처)과 경로(플래너)를 분리하되, 정체 페널티가 든 경로 비용을 할당 비용행렬에 넣는 절충 설계를 쓴다(TECH 04 C3). RL 디스패처의 관측에 구역 혼잡도를 넣는 것도 같은 맥락이다.</div>
+</section>
+
+<section class="term" id="pibt">
+  <h2>PIBT<span class="en">Priority Inheritance with Backtracking — 우선순위 상속·되돌리기 경로 탐색</span></h2>
+  <p class="def">여러 로봇의 "다음 한 칸"을 매 틱 우선순위 순으로 정하는 MAPF 알고리즘. 높은 우선순위 로봇이 가려는 칸에 낮은 로봇이 있으면, 그 로봇이 우선순위를 물려받아 먼저 비킨다.</p>
+  <figure>
+    <svg viewBox="0 0 900 230" role="img" aria-label="PIBT 우선순위 상속 — 높은 로봇이 가려는 칸의 낮은 로봇이 먼저 비킨다">
+      <g fill="#222A33" stroke="#E8ECF1" stroke-width="1.5">
+        <rect x="40" y="80" width="64" height="64"/><rect x="104" y="80" width="64" height="64"/><rect x="168" y="80" width="64" height="64"/><rect x="232" y="80" width="64" height="64"/><rect x="296" y="80" width="64" height="64"/>
+      </g>
+      <rect x="168" y="80" width="64" height="64" fill="none" stroke="#F08A32" stroke-width="2"/>
+      <circle cx="72" cy="112" r="16" fill="#F08A32"/>
+      <text x="72" y="117" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#14181D">A</text>
+      <circle cx="200" cy="112" r="16" fill="#8FB4D9"/>
+      <text x="200" y="117" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#14181D">B</text>
+      <line x1="92" y1="112" x2="160" y2="112" stroke="#F08A32" stroke-width="2" marker-end="url(#nx-pibt-a)"/>
+      <line x1="220" y1="112" x2="288" y2="112" stroke="#8FB4D9" stroke-width="2" marker-end="url(#nx-pibt-b)"/>
+      <text x="200" y="62" text-anchor="middle" font-family="monospace" font-size="12" fill="#F08A32">A(우선순위 높음)가 B의 칸을 원함</text>
+      <text x="200" y="172" text-anchor="middle" font-family="monospace" font-size="12" fill="#8FB4D9">B가 우선순위를 물려받아 먼저 비킴</text>
+      <text x="420" y="72" font-family="monospace" font-size="13" font-weight="bold" fill="#E8ECF1">틱마다 반복하는 세 단계</text>
+      <text x="420" y="102" font-family="monospace" font-size="12" fill="#9AA7B4">① 우선순위 순으로 다음 칸 선택</text>
+      <text x="420" y="128" font-family="monospace" font-size="12" fill="#9AA7B4">② 그 칸의 로봇에게 우선순위 상속 → 먼저 이동</text>
+      <text x="420" y="154" font-family="monospace" font-size="12" fill="#9AA7B4">③ 비킬 곳이 없으면 되돌아가 다른 칸 선택</text>
+      <text x="420" y="196" font-family="monospace" font-size="12" fill="#3BAF77">경로 전체가 아니라 다음 1칸만 결정 · 매 틱 충돌 없음</text>
+      <defs>
+        <marker id="nx-pibt-a" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#F08A32" stroke-width="1.5"/></marker>
+        <marker id="nx-pibt-b" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#8FB4D9" stroke-width="1.5"/></marker>
+      </defs>
+    </svg>
+    <figcaption>우선순위가 낮은 로봇이 길을 비켜야 할 때, 우선순위를 잠시 물려받아 먼저 움직인다</figcaption>
+  </figure>
+  <p>경로 전체를 미리 풀지 않는다. 틱마다 ① 우선순위가 높은 로봇부터 목적지에 가까운 이웃 칸을 고르고 ② 그 칸에 다른 로봇이 있으면 그 로봇에게 우선순위를 물려줘 먼저 움직이게 하며 ③ 비킬 곳이 없으면 되돌아가(backtracking) 다른 칸을 고른다. 한 틱의 계산이 가볍고 로봇 수백 대에서도 동작한다. 작업이 계속 재발급되는 창고(lifelong) 환경에 맞는다. 대신 전역 최적은 보장하지 않는다. 오래 기다린 로봇의 우선순위를 올려 굶주림을 막는다. 원 논문·구현: <a href="https://kei18.github.io/pibt2/" target="_blank" rel="noopener">Okumura et al., PIBT (AIJ 2022)</a>.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 본 프로젝트 v1의 이동 계층이다(팀 FMS 파트 결정, 2026-09-02). 격자 1.0 m 위에서 <a href="#heading-model">헤딩 모델</a>로 확장해 회전을 틱에 반영하고, 거리장은 <a href="#theta">θ</a> 가중 다익스트라로 만든다. 계약과 벤치 결과는 팀 레포 <code>3_FMS/docs/</code>. 이론 배경은 TECH 04 <a href="../tech/amr_mapf_theory.html">경로계획 이론 기반</a>.</div>
+</section>
+
+<section class="term" id="theta">
+  <h2>θ<span class="en">Traffic-rule Parameters — 통행 규칙 파라미터 11개</span></h2>
+  <p class="def">창고 생김새·짐 흐름·통로 구조와 운영 조건에서 AI 모델이 추론하는 통행 규칙 값 11개(연속 8 · 범주 3). PIBT가 쓰는 통행 비용의 재료다.</p>
+  <figure>
+    <svg viewBox="0 0 900 190" role="img" aria-label="θ 흐름 — 창고 텐서와 운영 조건에서 AI가 θ를 추론하고 from_theta가 통행 비용으로 바꿔 PIBT 거리장에 넣는다">
+      <g fill="#222A33" stroke="#E8ECF1" stroke-width="1.5">
+        <rect x="20" y="50" width="150" height="60"/><rect x="190" y="50" width="150" height="60"/><rect x="530" y="50" width="150" height="60"/><rect x="700" y="50" width="180" height="60"/>
+      </g>
+      <rect x="360" y="50" width="150" height="60" fill="#222A33" stroke="#F08A32" stroke-width="2"/>
+      <g font-family="monospace" font-size="12" fill="#E8ECF1" text-anchor="middle">
+        <text x="95" y="76">창고 텐서</text><text x="95" y="96" fill="#9AA7B4">+ 운영 조건</text>
+        <text x="265" y="76">AI 모델</text><text x="265" y="96" fill="#9AA7B4">A안 트랙</text>
+        <text x="435" y="76" fill="#F08A32" font-weight="bold">θ 11개</text><text x="435" y="96" fill="#9AA7B4">연속 8 · 범주 3</text>
+        <text x="605" y="76">from_theta</text><text x="605" y="96" fill="#9AA7B4">통행 비용</text>
+        <text x="790" y="76">PIBT 거리장</text><text x="790" y="96" fill="#9AA7B4">B안 트랙</text>
+      </g>
+      <g stroke="#8FB4D9" stroke-width="2" marker-end="url(#nx-theta)">
+        <line x1="170" y1="80" x2="186" y2="80"/><line x1="340" y1="80" x2="356" y2="80"/><line x1="510" y1="80" x2="526" y2="80"/><line x1="680" y1="80" x2="696" y2="80"/>
+      </g>
+      <text x="450" y="148" text-anchor="middle" font-family="monospace" font-size="12" fill="#3BAF77">trial마다 한 번 추론 · DES(④)와 Isaac 검증 런(⑤)이 같은 θ를 사용</text>
+      <text x="450" y="172" text-anchor="middle" font-family="monospace" font-size="12" fill="#8A96A3">계약: 3_FMS/contracts/guidance_types.py (스키마 v2, 합의 진행 중)</text>
+      <defs><marker id="nx-theta" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#8FB4D9" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>θ는 경로가 아니라 "어느 통로를 얼마나 비싸게 볼지"를 정하는 값이다</figcaption>
+  </figure>
+  <p>θ 자체는 경로가 아니다. 통로별 가중치와 통행 규칙을 정하는 값이다. 함수 <code>from_theta</code>가 θ를 칸·엣지별 통행 비용으로 바꾸고, PIBT는 그 비용으로 거리장을 만든다. 팀 구조는 2-트랙이다. A안(AI)이 θ를 예측하고, B안(알고리즘)이 θ를 받아 이동 계층을 돈다. 두 트랙의 계약은 <code>3_FMS/contracts/guidance_types.py</code>(스키마 v2)다. 미합의 항목이 6건 남아 있다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 스윕의 trial마다 θ를 한 번 추론한다. DES(④)와 Isaac 검증 런(⑤)은 같은 θ를 쓴다. 그래서 두 결과를 나란히 비교할 수 있다. 미합의 항목은 TECH 05 <a href="../tech/amr_decision_inventory.html">구현 결정 인벤토리</a>에서 추적한다.</div>
+</section>
+
+<section class="term" id="heading-model">
+  <h2>헤딩 모델<span class="en">Heading Model — 방향을 상태에 넣은 격자 모델</span></h2>
+  <p class="def">로봇 상태를 (칸)이 아니라 (칸, 방향)으로 두고, 회전도 틱을 소모하는 동작으로 계산하는 격자 모델. 차체가 셀보다 길어 자기 칸과 뒤 칸 2칸을 점유한다.</p>
+  <figure>
+    <svg viewBox="0 0 900 230" role="img" aria-label="헤딩 모델 — 로봇이 자기 칸과 뒤 칸 2칸을 점유하고 방향 4개와 액션 5개를 가진다">
+      <g fill="#222A33" stroke="#E8ECF1" stroke-width="1.5">
+        <rect x="40" y="30" width="56" height="56"/><rect x="96" y="30" width="56" height="56"/><rect x="152" y="30" width="56" height="56"/>
+        <rect x="40" y="86" width="56" height="56"/><rect x="96" y="86" width="56" height="56"/><rect x="152" y="86" width="56" height="56"/>
+        <rect x="40" y="142" width="56" height="56"/><rect x="96" y="142" width="56" height="56"/><rect x="152" y="142" width="56" height="56"/>
+      </g>
+      <rect x="106" y="40" width="36" height="92" rx="6" fill="#F08A32" opacity="0.9"/>
+      <path d="M116 56 L124 44 L132 56" fill="none" stroke="#14181D" stroke-width="2"/>
+      <text x="216" y="62" font-family="monospace" font-size="12" fill="#F08A32">자기 칸</text>
+      <text x="216" y="118" font-family="monospace" font-size="12" fill="#F08A32">뒤 칸</text>
+      <text x="124" y="222" text-anchor="middle" font-family="monospace" font-size="12" fill="#9AA7B4">상태 = (칸, 방향) · 2칸 점유</text>
+      <circle cx="390" cy="110" r="6" fill="#E8ECF1"/>
+      <g stroke="#8FB4D9" stroke-width="2" marker-end="url(#nx-head)">
+        <line x1="390" y1="100" x2="390" y2="60"/><line x1="400" y1="110" x2="440" y2="110"/><line x1="390" y1="120" x2="390" y2="160"/><line x1="380" y1="110" x2="340" y2="110"/>
+      </g>
+      <text x="390" y="196" text-anchor="middle" font-family="monospace" font-size="12" fill="#9AA7B4">방향 4개</text>
+      <text x="520" y="48" font-family="monospace" font-size="13" font-weight="bold" fill="#E8ECF1">액션 5개</text>
+      <g font-family="monospace" font-size="12" fill="#9AA7B4">
+        <text x="520" y="78">대기 — 제자리</text>
+        <text x="520" y="104">전진 — 앞 칸으로 1칸</text>
+        <text x="520" y="130">좌/우 회전 — 틱 소모 · 스윙 칸 예약</text>
+        <text x="520" y="156">후진 — 뒤로 1칸 (헤딩 유지)</text>
+      </g>
+      <text x="520" y="196" font-family="monospace" font-size="12" fill="#3BAF77">회전 시간 상수는 Isaac 실측으로 확정</text>
+      <defs><marker id="nx-head" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#8FB4D9" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>1.0 m 격자 위의 1.44 m 차체(iw.hub) — 점이 아니라 2칸짜리 막대로 다룬다</figcaption>
+  </figure>
+  <p>교과서 MAPF는 로봇을 점으로 본다. 1.0 m 격자에 1.44 m 차체(iw.hub)를 올리면 회전 중 옆 로봇과 부딪힌다. Isaac에서 이 충돌이 실측되어 모델을 바꿨다. 셀을 2.0 m로 키우는 안은 도킹 칸이 겹쳐 기각했다. 액션은 대기 · 전진 · 좌/우 회전 · 후진 다섯 가지다. 회전은 틱을 쓰고 <a href="#swing-reservation">스윙 칸</a>을 예약한다. 회전이 모델에 들어가면 권장 대수의 포화점이 달라진다. 회전 시간 상수는 Isaac 실측으로 확정한다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — FMS 파트 결정(2026-09-02). 시뮬 파트는 iw.hub의 회전 각속도·앞축 위치 실측을 넘기는 쪽이다(기준선 v3 §5.2, 미완). 로봇 쪽 실행은 <a href="#primitive">그리드 프리미티브</a> 참조.</div>
+</section>
+
+<section class="term" id="swing-reservation">
+  <h2>스윙 예약<span class="en">Swing Reservation — 회전 시 쓸고 지나가는 칸 예약</span></h2>
+  <p class="def">로봇이 제자리 회전할 때 차체가 쓸고 지나가는 옆 칸을 그 틱 동안 예약해, 다른 로봇의 진입을 막는 규칙.</p>
+  <figure>
+    <svg viewBox="0 0 900 210" role="img" aria-label="스윙 예약 — 회전 시 뒤 칸이 옆 칸으로 옮겨 가며, 그 칸을 회전 틱 동안 예약한다">
+      <g fill="#222A33" stroke="#E8ECF1" stroke-width="1.5">
+        <rect x="60" y="30" width="50" height="50"/><rect x="110" y="30" width="50" height="50"/><rect x="160" y="30" width="50" height="50"/>
+        <rect x="60" y="80" width="50" height="50"/><rect x="110" y="80" width="50" height="50"/><rect x="160" y="80" width="50" height="50"/>
+        <rect x="60" y="130" width="50" height="50"/><rect x="110" y="130" width="50" height="50"/><rect x="160" y="130" width="50" height="50"/>
+      </g>
+      <rect x="60" y="80" width="50" height="50" fill="#2A2019" stroke="#F08A32" stroke-width="2" stroke-dasharray="5 3"/>
+      <rect x="120" y="90" width="30" height="80" rx="5" fill="#8FB4D9" opacity="0.9"/>
+      <path d="M128 104 L135 94 L142 104" fill="none" stroke="#14181D" stroke-width="2"/>
+      <path d="M135 165 A 50 50 0 0 1 85 115" fill="none" stroke="#F08A32" stroke-width="2" marker-end="url(#nx-swing)"/>
+      <text x="230" y="60" font-family="monospace" font-size="12" fill="#8FB4D9">로봇: 자기 칸 + 뒤 칸</text>
+      <text x="230" y="110" font-family="monospace" font-size="12" fill="#F08A32">스윙 칸 — 회전 틱 동안 예약</text>
+      <text x="230" y="160" font-family="monospace" font-size="12" fill="#9AA7B4">뒤 칸이 옆으로 옮겨 가는 경로</text>
+      <text x="540" y="48" font-family="monospace" font-size="13" font-weight="bold" fill="#E8ECF1">회전 액션의 조건</text>
+      <g font-family="monospace" font-size="12" fill="#9AA7B4">
+        <text x="540" y="78">① 목표 방향의 스윙 칸이 비어 있어야 함</text>
+        <text x="540" y="104">② 비어 있으면 회전 틱 동안 함께 잠금</text>
+        <text x="540" y="130">③ 다른 로봇은 그 틱에 진입 불가</text>
+      </g>
+      <text x="540" y="172" font-family="monospace" font-size="12" fill="#3BAF77">1칸 폭 통로에서는 회전이 막힐 수 있음</text>
+      <text x="540" y="192" font-family="monospace" font-size="12" fill="#3BAF77">→ 교차로·버퍼 칸 배치가 중요</text>
+      <defs><marker id="nx-swing" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#F08A32" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>2칸 차체가 90° 돌면 뒤 칸이 옆으로 이동한다 — 그 경로의 칸을 미리 잠근다</figcaption>
+  </figure>
+  <p>2칸을 점유한 차체가 90° 돌면 뒤 칸이 옆으로 옮겨 간다. 그 경로에 있는 칸이 스윙 칸이다. 예약 없이 돌면 옆 통로의 로봇과 겹친다. PIBT는 회전 액션을 고를 때 스윙 칸이 비어 있는지 확인하고, 비어 있으면 회전 틱 동안 함께 잠근다. 통로 폭이 1칸인 곳에서는 회전 자체가 막힐 수 있다. 그래서 교차로·버퍼 칸 배치가 중요해진다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — <a href="#heading-model">헤딩 모델</a>의 일부. Isaac 회전 충돌 실측이 발단이다. 실제 스윙 반경은 iw.hub 앞축 위치 실측 후 확정한다(기준선 v3 §9).</div>
+</section>
+
+<section class="term" id="barrier-tick">
+  <h2>배리어 틱<span class="en">Barrier Tick — 전원 완료 후 다음 틱</span></h2>
+  <p class="def">FMS가 틱 하나의 명령을 모든 로봇에 내리고, 로봇 전원의 완료 보고(ack)가 모이면 그제야 다음 틱을 계산하는 동기 방식.</p>
+  <figure>
+    <svg viewBox="0 0 900 210" role="img" aria-label="배리어 틱 — 틱 k 명령 후 로봇 셋의 완료 시각이 다르고, 가장 늦은 ack 뒤에 틱 k+1이 시작된다">
+      <line x1="40" y1="170" x2="600" y2="170" stroke="#8A96A3" stroke-width="1.5"/>
+      <line x1="90" y1="30" x2="90" y2="180" stroke="#F08A32" stroke-width="2"/>
+      <line x1="520" y1="30" x2="520" y2="180" stroke="#F08A32" stroke-width="2"/>
+      <text x="90" y="22" text-anchor="middle" font-family="monospace" font-size="12" fill="#F08A32">tick k 발행</text>
+      <text x="520" y="22" text-anchor="middle" font-family="monospace" font-size="12" fill="#F08A32">전원 ack → tick k+1</text>
+      <g stroke="#8FB4D9" stroke-width="6" stroke-linecap="round">
+        <line x1="100" y1="60" x2="300" y2="60"/><line x1="100" y1="95" x2="410" y2="95"/><line x1="100" y1="130" x2="510" y2="130"/>
+      </g>
+      <g fill="#3BAF77"><circle cx="300" cy="60" r="6"/><circle cx="410" cy="95" r="6"/><circle cx="510" cy="130" r="6"/></g>
+      <g font-family="monospace" font-size="12" fill="#9AA7B4" text-anchor="end">
+        <text x="82" y="64">로봇 1</text><text x="82" y="99">로봇 2</text><text x="82" y="134">로봇 3</text>
+      </g>
+      <text x="318" y="64" font-family="monospace" font-size="12" fill="#3BAF77">ack</text>
+      <text x="428" y="99" font-family="monospace" font-size="12" fill="#3BAF77">ack</text>
+      <text x="300" y="196" text-anchor="middle" font-family="monospace" font-size="12" fill="#9AA7B4">가장 늦은 로봇이 틱 길이를 정한다</text>
+      <text x="640" y="56" font-family="monospace" font-size="13" font-weight="bold" fill="#E8ECF1">실측 (가짜 로봇 E2E)</text>
+      <g font-family="monospace" font-size="12" fill="#9AA7B4">
+        <text x="640" y="86">1 m 전진 = 2.2 s</text>
+        <text x="640" y="112">90° 회전 = 2.3 s</text>
+        <text x="640" y="138">FMS 가정 1 s보다 길다</text>
+      </g>
+      <text x="640" y="176" font-family="monospace" font-size="12" fill="#F08A32">Isaac 런 = 실시간의 절반 이하</text>
+    </svg>
+    <figcaption>틱 길이는 명령이 아니라 가장 느린 로봇의 완료 시각이 정한다</figcaption>
+  </figure>
+  <p>DES에서는 틱이 가상 시간이라 문제가 없다. Isaac은 실시간이라 로봇마다 걸리는 시간이 다르다. 배리어 틱은 가장 늦은 로봇이 끝날 때까지 기다린다. 그래서 틱 길이가 FMS 가정(1 s)보다 길어진다. 가짜 로봇 E2E 실측은 1 m 전진 2.2 s, 90° 회전 2.3 s였다(램프 1.0 m/s², 최고 0.8 m/s). 이 조건이면 Isaac 런은 실시간의 절반 이하로 돈다. 대안은 고정 주기 틱이다. 늦은 로봇을 기다리지 않는 대신 타임아웃 처리와 시뮬 시각 기록 규칙이 필요하다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — T4 에이전트는 <code>state.lastNodeId</code>가 바뀌는 즉시 ack를 발행한다. lockstep(배리어)과 고정 주기 중 어느 쪽인지는 FMS 파트가 확인 중이다(기준선 v3 §9). 진행 상황은 WORKING <a href="../working/t3_t4_progress.html">T3 창고 씬 · T4 에이전트 진행</a>.</div>
+</section>
+
+<section class="term" id="decision-kernel">
+  <h2>결정 커널<span class="en">Decision Kernel — I/O 없는 순수 FMS 코어</span></h2>
+  <p class="def">시계와 난수를 밖에서 주입받고 파일·소켓·스레드를 전혀 쓰지 않는 FMS 코어. 호출 형태는 <code>step(world, now, events) → decisions</code> 하나다.</p>
+  <figure>
+    <svg viewBox="0 0 900 180" role="img" aria-label="결정 커널 — world·now·events를 받아 decisions를 돌려주는 순수 함수">
+      <g fill="#222A33" stroke="#E8ECF1" stroke-width="1.5">
+        <rect x="30" y="34" width="200" height="32"/><rect x="30" y="76" width="200" height="32"/><rect x="30" y="118" width="200" height="32"/>
+        <rect x="670" y="72" width="200" height="40"/>
+      </g>
+      <rect x="300" y="40" width="300" height="104" fill="#222A33" stroke="#F08A32" stroke-width="2"/>
+      <g font-family="monospace" font-size="12" fill="#E8ECF1">
+        <text x="40" y="55">world · 세계 상태</text>
+        <text x="40" y="97">now · 주입된 시계</text>
+        <text x="40" y="139">events · 로봇 상태·사건</text>
+        <text x="770" y="97" text-anchor="middle">decisions · 로봇별 다음 액션</text>
+      </g>
+      <text x="450" y="76" text-anchor="middle" font-family="monospace" font-size="14" font-weight="bold" fill="#F08A32">결정 커널</text>
+      <text x="450" y="102" text-anchor="middle" font-family="monospace" font-size="12" fill="#E8ECF1">step(world, now, events)</text>
+      <text x="450" y="126" text-anchor="middle" font-family="monospace" font-size="12" fill="#9AA7B4">PIBT 이동 계층 · 배차 · 미션 상태기</text>
+      <g stroke="#8FB4D9" stroke-width="2" marker-end="url(#nx-kern)">
+        <line x1="230" y1="50" x2="296" y2="70"/><line x1="230" y1="92" x2="296" y2="92"/><line x1="230" y1="134" x2="296" y2="114"/>
+        <line x1="600" y1="92" x2="666" y2="92"/>
+      </g>
+      <text x="450" y="168" text-anchor="middle" font-family="monospace" font-size="12" fill="#8A96A3">파일·소켓·스레드·시계 읽기 없음 · 난수는 시드로 주입 · ROS 비참여 순수 Python</text>
+      <defs><marker id="nx-kern" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#8FB4D9" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>같은 입력이면 같은 출력 — 그래서 DES와 Isaac 검증 런이 같은 커널을 쓸 수 있다</figcaption>
+  </figure>
+  <p>커널은 "지금 세계가 이렇고 이런 사건이 있었다"를 받아 "각 로봇의 다음 액션"을 돌려준다. 시간을 스스로 읽지 않으므로 가상 시계로도, 실제 시계로도 돌릴 수 있다. 난수도 주입받아 시드만 같으면 결과가 같다. 이 성질 덕에 같은 커널을 DES와 Isaac 검증 런이 공유한다. 커널 안에는 PIBT 이동 계층, 배차, 미션 상태기가 들어간다. ROS에는 참여하지 않는 순수 Python이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 기준선 v3 §4.3. 커널을 감싸는 껍데기는 <a href="#execution-shell">실행 셸</a> 2종이다. "측정 대상은 공유, 환경은 모델링" 원칙(§4.4)에서 공유되는 쪽이 이 커널이다.</div>
+</section>
+
+<section class="term" id="execution-shell">
+  <h2>실행 셸<span class="en">Execution Shell — 커널을 돌리는 껍데기 2종</span></h2>
+  <p class="def">결정 커널에 시계·사건을 넣고 결과를 밖으로 내보내는 바깥 층. 가상 시계용 하네스와 MQTT 데몬 두 가지가 있다.</p>
+  <figure>
+    <svg viewBox="0 0 900 240" role="img" aria-label="실행 셸 2종 — 공유 커널 아래에 DES용 하네스와 Isaac 검증 런용 MQTT 데몬이 있다">
+      <rect x="330" y="20" width="240" height="50" fill="#222A33" stroke="#F08A32" stroke-width="2"/>
+      <text x="450" y="50" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#F08A32">결정 커널 (공유)</text>
+      <g fill="#222A33" stroke="#E8ECF1" stroke-width="1.5">
+        <rect x="60" y="120" width="340" height="86"/><rect x="500" y="120" width="340" height="86"/>
+      </g>
+      <g font-family="monospace" font-size="13" font-weight="bold" fill="#E8ECF1">
+        <text x="80" y="146">하네스</text><text x="520" y="146">MQTT 데몬</text>
+      </g>
+      <g font-family="monospace" font-size="12" fill="#9AA7B4">
+        <text x="80" y="170">가상 시계 · 동기 in-process</text>
+        <text x="80" y="192">용도: DES (서비스 흐름 ④)</text>
+        <text x="520" y="170">틱 기반 · EMQX 위 VDA 5050</text>
+        <text x="520" y="192">용도: Isaac 검증 런 (⑤)</text>
+      </g>
+      <g stroke="#8FB4D9" stroke-width="2" marker-end="url(#nx-shell)">
+        <line x1="400" y1="70" x2="240" y2="116"/><line x1="500" y1="70" x2="660" y2="116"/>
+      </g>
+      <text x="450" y="230" text-anchor="middle" font-family="monospace" font-size="12" fill="#3BAF77">셸이 달라도 커널은 같다 → 결과 차이는 환경 모델의 차이로 좁혀진다</text>
+      <defs><marker id="nx-shell" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#8FB4D9" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>하네스는 함수 호출, MQTT 데몬은 메시지 — 안쪽 커널은 한 벌이다</figcaption>
+  </figure>
+  <p>하네스는 DES 안에서 커널을 함수처럼 호출한다. 시계는 가상이고 모든 것이 한 프로세스 안에서 동기로 돈다. MQTT 데몬은 Isaac 검증 런용이다. EMQX에서 로봇 상태를 받아 events로 넣고, 커널의 decisions를 VDA 5050 order로 바꿔 발행한다. 틱 진행은 배리어 또는 고정 주기다. 셸이 다르지만 커널은 같다. 그래서 DES 결과와 Isaac 결과의 차이는 환경 모델의 차이로 좁혀진다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 하네스 = 서비스 흐름 ④, MQTT 데몬 = ⑤. 로봇 쪽 대응물은 T4 에이전트의 VDA 5050 브리지다. 틱 동기 방식은 <a href="#barrier-tick">배리어 틱</a> 참조.</div>
+</section>
+
+<section class="term" id="primitive">
+  <h2>그리드 프리미티브<span class="en">Grid Primitive — 격자 이동의 기본 동작 단위</span></h2>
+  <p class="def">로봇이 실행할 수 있는 고정 동작 3종(스팟턴 · 직진 1칸 · 후진 1칸). VDA 5050 노드·엣지를 이 단위로 분해해 실행한다.</p>
+  <figure>
+    <svg viewBox="0 0 900 200" role="img" aria-label="그리드 프리미티브 — VDA 5050 노드·엣지가 스팟턴·직진·후진 세 동작으로 분해된다">
+      <rect x="300" y="18" width="300" height="40" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="450" y="43" text-anchor="middle" font-family="monospace" font-size="12" fill="#E8ECF1">VDA 5050 노드 · 엣지 (FMS 틱 1개)</text>
+      <g stroke="#8FB4D9" stroke-width="2" marker-end="url(#nx-prim)">
+        <line x1="380" y1="58" x2="180" y2="96"/><line x1="450" y1="58" x2="450" y2="96"/><line x1="520" y1="58" x2="720" y2="96"/>
+      </g>
+      <g fill="#222A33" stroke="#F08A32" stroke-width="2">
+        <rect x="50" y="100" width="260" height="60"/><rect x="320" y="100" width="260" height="60"/><rect x="590" y="100" width="260" height="60"/>
+      </g>
+      <g font-family="monospace" font-size="13" font-weight="bold" fill="#F08A32" text-anchor="middle">
+        <text x="180" y="124">스팟턴</text><text x="450" y="124">직진 1칸</text><text x="720" y="124">후진 1칸</text>
+      </g>
+      <g font-family="monospace" font-size="12" fill="#9AA7B4" text-anchor="middle">
+        <text x="180" y="146">제자리 회전 · 헤딩 정렬</text><text x="450" y="146">셀 중심 정지</text><text x="720" y="146">헤딩 유지 · orientation π</text>
+      </g>
+      <text x="450" y="188" text-anchor="middle" font-family="monospace" font-size="12" fill="#3BAF77">E2E 실측: 정지 오차 4 mm · 헤딩 1.2° (요구 0.1 m 이하)</text>
+      <defs><marker id="nx-prim" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#8FB4D9" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>곡선 추종 대신 격자에 맞는 동작 3개만 남겼다</figcaption>
+  </figure>
+  <p>곡선 경로를 따라가는 추종기(T2의 Pure Pursuit) 대신, 격자에 맞는 동작만 남겼다. 전진 명령은 "헤딩 정렬(스팟턴) → 직진 → 셀 중심 정지"로 풀린다. 후진은 헤딩을 유지한 채 1칸 물러난다. 동작이 단순해 정지 오차와 헤딩 오차를 작게 유지할 수 있다. 가짜 로봇 E2E에서 정지 오차 4 mm, 헤딩 1.2°였다. FMS 파트가 요구한 4건(스팟턴 · 오차 0.1 m 이하 · 배리어 틱 · 후진)이 이 컨트롤러로 채워진다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — T4 에이전트의 컨트롤러 계층. 대응표(PIBT 액션 ↔ VDA 5050 ↔ 에이전트)는 기준선 v3 §5.1. 코드는 <code>sil/t4_agent/</code>. T2 추종기는 <a href="../working/t2_guide.html">T2 가이드</a>.</div>
+</section>
+
+<section class="term" id="spot-turn">
+  <h2>스팟턴<span class="en">Spot Turn — 제자리 회전</span></h2>
+  <p class="def">바퀴 두 개를 반대로 돌려 차체 중심을 움직이지 않고 방향만 바꾸는 동작. 셀 중심에 멈춘 뒤 수행한다.</p>
+  <p>차동 구동 로봇(iw.hub)이 할 수 있는 가장 작은 회전이다. 격자 이동에서는 곡선 회전 대신 스팟턴을 쓴다. 곡선 회전은 옆 칸을 크게 침범하기 때문이다. 순서는 "셀 중심 정지 → 제자리 회전 → 헤딩 정렬 확인 → 직진"이다. 실측은 90° 회전 2.3 s(가짜 로봇, 램프 1.0 m/s²)다. Isaac 안에서의 각속도 실측은 미완이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — FMS 요구 4건 중 첫 항목. PIBT의 "회전 ±90°" 액션이 VDA 5050에서는 "같은 좌표 노드 + 새 theta"로 내려오고, 에이전트가 스팟턴으로 수행한다. <a href="#swing-reservation">스윙 예약</a>과 짝이다.</div>
+</section>
+
+<section class="term" id="stitching">
+  <h2>스티칭<span class="en">Stitching — VDA 5050 order update로 경로 이어 붙이기</span></h2>
+  <p class="def">같은 orderId에 orderUpdateId를 올려 새 노드를 뒤에 붙이는 VDA 5050 방식. 로봇이 멈추지 않고 다음 구간을 받는다.</p>
+  <figure>
+    <svg viewBox="0 0 900 200" role="img" aria-label="스티칭 — 연속된 order update가 이전 마지막 노드를 첫 노드로 공유하며 이어진다">
+      <line x1="100" y1="40" x2="740" y2="40" stroke="#8A96A3" stroke-width="1.5"/>
+      <g fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"><circle cx="100" cy="40" r="10"/><circle cx="580" cy="40" r="10"/><circle cx="740" cy="40" r="10"/></g>
+      <g fill="#2A2019" stroke="#F08A32" stroke-width="2"><circle cx="260" cy="40" r="10"/><circle cx="420" cy="40" r="10"/></g>
+      <g font-family="monospace" font-size="12" fill="#E8ECF1" text-anchor="middle">
+        <text x="100" y="22">n0</text><text x="260" y="22">n1</text><text x="420" y="22">n2</text><text x="580" y="22">n3</text><text x="740" y="22">n4</text>
+      </g>
+      <g fill="#222A33" stroke="#8FB4D9" stroke-width="1.5">
+        <rect x="80" y="70" width="200" height="30"/><rect x="240" y="110" width="200" height="30"/><rect x="400" y="150" width="200" height="30"/>
+      </g>
+      <g font-family="monospace" font-size="12" fill="#8FB4D9" text-anchor="middle">
+        <text x="180" y="90">update 0 : n0 → n1</text><text x="340" y="130">update 1 : n1 → n2</text><text x="500" y="170">update 2 : n2 → n3</text>
+      </g>
+      <text x="640" y="90" font-family="monospace" font-size="12" fill="#9AA7B4">같은 orderId · orderUpdateId 증가</text>
+      <text x="640" y="116" font-family="monospace" font-size="12" fill="#F08A32">첫 노드 = 이전 마지막 노드 (이음매)</text>
+      <text x="640" y="142" font-family="monospace" font-size="12" fill="#9AA7B4">released = 주행 확정 · horizon = 예고</text>
+      <text x="640" y="176" font-family="monospace" font-size="12" fill="#3BAF77">틱마다 1칸 released = update 1개</text>
+    </svg>
+    <figcaption>주황 노드가 이음매 — 이전 order의 끝이 다음 order의 시작이다</figcaption>
+  </figure>
+  <p>VDA 5050 order는 노드·엣지 목록이다. 앞부분(base)은 released로 주행이 확정되고, 뒷부분(horizon)은 예고다. 다음 update는 이전 order의 마지막 노드로 시작해야 한다. 이 겹치는 노드가 이음매다. FMS가 틱마다 다음 1칸을 released로 내리면 로봇은 이 규칙으로 계속 달린다. 규격: <a href="https://github.com/VDA5050/VDA5050" target="_blank" rel="noopener">VDA 5050 (GitHub)</a>.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — T4 에이전트의 order executor가 담당한다. 배리어 틱에서는 ack 후 다음 update가 오므로 1틱 = 1 update가 된다. 표준 자체는 REF B <a href="glossary_industrial.html#vda5050">VDA 5050</a>.</div>
 </section>
 
 <section class="term" id="ekf">
@@ -482,6 +774,40 @@
   <p class="def">실물 하드웨어 없이, 실제로 배포될 소프트웨어 스택을 시뮬레이터에 그대로 물려서 돌려보는 검증 방식. 실물 장비까지 물리면 HIL(Hardware-in-the-Loop)이 된다.</p>
   <p>핵심 가치는 "테스트한 코드가 곧 배포되는 코드"라는 점이다. 시뮬레이션 전용 코드를 따로 만들면 검증한 것과 실전에 나가는 것이 어긋나지만, SIL은 통신 표준·제어 스택을 실전과 동일하게 쓰기 때문에 가상에서 현실로 넘어갈 때 소프트웨어를 바꿀 필요가 없다.</p>
   <div class="ctx"><b>이 프로젝트에서</b> — 검증 트랙의 정체성(개괄 §4). 플랫폼 코어가 <a href="glossary_industrial.html#vda5050">VDA 5050</a>으로 주행 지시를 내리면, ROS2 어댑터 + <a href="#nav2">Nav2</a>가 <a href="#isaac">Isaac Sim</a> 속 가상 AMR(iw.hub·MiR 250)을 실제 스택 그대로 구동한다. "VDA 5050 경계선 위 코드는 가상↔현실 전환 시 불변"이라는 핵심 주장이 이 SIL 구조에서 나온다.</div>
+</section>
+
+<section class="term" id="sim-runner">
+  <h2>sim-runner<span class="en">Sim Runner — GPU 서버의 검증 런 실행 데몬</span></h2>
+  <p class="def">GPU 서버에 상주하며 런 오케스트레이터의 start/go/stop 명령을 받아 Isaac Sim과 로봇 에이전트를 띄우고, 끝나면 산출물을 올리는 데몬.</p>
+  <figure>
+    <svg viewBox="0 0 900 230" role="img" aria-label="sim-runner — EC2의 오케스트레이터가 EMQX sim/control로 명령을 보내고, GPU 서버의 sim-runner가 Isaac과 에이전트를 띄운 뒤 산출물을 MinIO에 올린다">
+      <g fill="#222A33" stroke="#E8ECF1" stroke-width="1.5">
+        <rect x="30" y="40" width="220" height="60"/><rect x="320" y="40" width="160" height="60"/>
+      </g>
+      <rect x="560" y="20" width="310" height="110" fill="#222A33" stroke="#3BAF77" stroke-width="2"/>
+      <rect x="560" y="166" width="310" height="44" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <g font-family="monospace" font-size="12" fill="#E8ECF1" text-anchor="middle">
+        <text x="140" y="66">런 오케스트레이터</text><text x="140" y="86" fill="#9AA7B4">EC2 k3s 파드</text>
+        <text x="400" y="66">EMQX</text><text x="400" y="86" fill="#9AA7B4">sim/control</text>
+        <text x="715" y="46" font-weight="bold" fill="#3BAF77">sim-runner 데몬 (GPU 서버)</text>
+        <text x="715" y="72" fill="#9AA7B4">Isaac Sim 6.0.1 씬 열기</text>
+        <text x="715" y="94" fill="#9AA7B4">amr-agent ×N (ROS 2) 스폰</text>
+        <text x="715" y="116" fill="#9AA7B4">하트비트 · 시뮬 시각 보고</text>
+        <text x="715" y="192">MinIO ← MP4 · 리플레이 · 히트맵</text>
+      </g>
+      <g stroke="#8FB4D9" stroke-width="2" marker-end="url(#nx-runner)">
+        <line x1="250" y1="70" x2="316" y2="70"/><line x1="480" y1="70" x2="556" y2="70"/><line x1="715" y1="130" x2="715" y2="162"/>
+      </g>
+      <text x="283" y="30" text-anchor="middle" font-family="monospace" font-size="12" fill="#8FB4D9">start · go · stop</text>
+      <text x="740" y="152" font-family="monospace" font-size="12" fill="#8FB4D9">presigned PUT</text>
+      <text x="140" y="150" text-anchor="middle" font-family="monospace" font-size="12" fill="#8A96A3">홈서버 → EC2: tailscale 아웃바운드</text>
+      <text x="140" y="172" text-anchor="middle" font-family="monospace" font-size="12" fill="#8A96A3">(캠퍼스 UDP 차단 시 DERP 릴레이)</text>
+      <defs><marker id="nx-runner" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#8FB4D9" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>오케스트레이터는 GPU 서버에 직접 들어가지 않는다 — 명령은 MQTT, 산출물은 presigned URL로 오간다</figcaption>
+  </figure>
+  <p>EC2의 오케스트레이터는 GPU 서버에 직접 들어갈 수 없다. 대신 EMQX의 <code>sim/control</code> 토픽으로 명령을 보낸다. sim-runner가 이를 받아 Isaac Sim 6.0.1 씬을 열고 amr-agent(ROS 2)를 N대 스폰한다. 런 중에는 하트비트와 시뮬 시각을 보고한다. 종료 후 MP4·리플레이·히트맵을 presigned URL로 MinIO에 PUT하고 키를 돌려준다. 홈서버는 tailscale 아웃바운드로 EC2에 붙는다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 시뮬 파트 담당, 미완(기준선 v3 §9). 다중 로봇 네임스페이스와 함께 다음 작업이다. 오케스트레이터 쪽은 REF B <a href="glossary_industrial.html#orchestrator">런 오케스트레이터</a>, 저장소는 <a href="glossary_industrial.html#minio">MinIO</a>.</div>
 </section>
 
 <section class="term" id="replicator">

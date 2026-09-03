@@ -88,6 +88,7 @@
   <a href="#des">이산사건 시뮬레이션 · SimPy</a><a href="#littleslaw">Little's Law</a><a href="#vdi3633">VDI 3633</a><a href="#mqtt">MQTT</a><a href="#sparkplug">Sparkplug B</a>
   <a href="#vda5050">VDA 5050</a><a href="#amr">AMR vs AGV</a><a href="#gtp">GTP</a><a href="#andon">Andon</a>
   <a href="#oee">OEE</a><a href="#tco">TCO · ROI</a><a href="#closedloop">폐루프 품질관리</a>
+  <a href="#intake-service">요청 접수형 서비스</a><a href="#two-tier-web">웹 인프라 2층</a><a href="#run">런</a><a href="#trial">trial</a><a href="#scenario-package">시나리오 패키지</a><a href="#sim-wms">시뮬 WMS</a><a href="#wms-lite">WMS 라이트</a><a href="#orchestrator">런 오케스트레이터</a><a href="#gpu-run-queue">GPU 런 큐</a><a href="#dlq">DLQ</a><a href="#artifact">아티팩트</a><a href="#presigned-url">presigned URL</a><a href="#emqx">EMQX</a><a href="#minio">MinIO</a><a href="#h2">H2</a><a href="#k3s">k3s</a>
 </div>
 
 <section class="term" id="smartfactory">
@@ -114,7 +115,7 @@
     <figcaption>전통 현장에서는 IT와 OT가 단절되어 있었다 — 이 단절을 잇는 것이 본 프로젝트의 핵심 주제</figcaption>
   </figure>
   <p>OT(Operational Technology)는 물리 세계를 직접 움직이는 기술이고, IT는 정보를 다루는 기술이다. 두 세계는 쓰는 프로토콜·시간 단위·안정성 요구가 완전히 달라서 오랫동안 분리되어 있었다. 스마트팩토리·스마트 물류센터는 이 사이에 표준화된 데이터 파이프라인을 놓아 "현장에서 일어나는 일"을 실시간으로 위(경영·분석)까지 올리고, "위의 결정"을 현장까지 내리는 것이다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — IT(견적 SaaS의 웹·백엔드·분석)와 OT(가상 AMR·Isaac Sim)를 VDA 5050·Sparkplug B 표준으로 잇는다. 물리 계층만 가상일 뿐 그 위의 소프트웨어는 실제 배포될 스택 그대로다 — 이것이 검증 트랙(SIL)의 요지다(개괄 §4).</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — IT(견적 서비스의 웹·백엔드·계산 엔진)와 OT(가상 AMR·Isaac Sim)를 VDA 5050(MQTT 위 JSON) 표준으로 잇는다. 물리 계층만 가상일 뿐 그 위의 소프트웨어는 실제 배포될 스택 그대로다. 이것이 검증 트랙(SIL)의 요지다(기준선 v3 §5).</div>
 </section>
 
 <section class="term" id="fulfillment">
@@ -277,7 +278,7 @@
     <figcaption>사건 사이 구간은 계산하지 않고 건너뜀 — 센터 하루치를 몇 초 만에, 수천 번 반복 실험 가능</figcaption>
   </figure>
   <p>물리 시뮬레이션이 "로봇이 어떻게 움직이는가"에 답한다면, DES는 "센터 전체가 얼마나 잘 흘러가는가"에 답한다. AMR을 3대에서 4대로 늘리면 처리량이 얼마나 오르는지, 어느 스테이션이 병목인지 같은 질문은 DES로 수천 번 돌려 통계로 확인한다. <b>물류센터는 DES의 대표 적용 분야</b>다. 창고 설계·운영 분석의 표준 방법론이 바로 이것이다. 시뮬레이션 결과가 말이 되는지 검산하는 짝꿍 도구는 <a href="#littleslaw">Little's Law</a>다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — SimPy DES가 <b>견적 엔진의 본체</b>다. 기종 × 대수 × 시드 스윕을 K8s에서 수백 런 병렬 실행하고, 내장 경량 MAPF(틱 기반, 1틱=1셀)가 경합을 만들어 대수–처리량 곡선의 모양을 결정한다(개괄 §4·8).</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — SimPy DES가 <b>견적 엔진의 본체</b>다. 기종 × 대수 × 시드 스윕을 K8s에서 수백 런 병렬 실행하고, 내장 경량 MAPF(틱 기반, 1틱=1셀)가 경합을 만들어 대수–처리량 곡선의 모양을 결정한다(개괄 §4·8). 현재(기준선 v3, 2026-09-03) DES의 실체는 팀의 틱 시뮬(sim_v2)이고, SimPy는 후속 계획이다.</div>
 </section>
 
 <section class="term" id="littleslaw">
@@ -338,7 +339,7 @@
     <figcaption>발행자와 구독자는 서로를 모른다 — 결합도가 낮아 시스템을 자유롭게 추가·교체할 수 있다</figcaption>
   </figure>
   <p>HTTP가 "요청하면 응답"(1:1, 클라이언트가 물어봐야 함)이라면, MQTT는 "일어난 일을 방송"(1:N, 상태가 바뀌면 즉시 전파)이다. 헤더가 몇 바이트로 극단적으로 가볍고, 불안정한 네트워크를 견디도록 설계되어 제조·IoT의 사실상 표준이 됐다. 메시지 안에 뭘 담을지는 정하지 않기 때문에, 그 위에 Sparkplug B나 VDA 5050 같은 페이로드 표준이 얹힌다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — 검증 트랙의 전송 계층. 플랫폼 코어의 VDA 5050 지시가 MQTT(EMQX 브로커) 위로 흐르고, 가상 AMR의 Sparkplug B 텔레메트리도 같은 브로커를 쓴다(개괄 §4).</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — 검증 트랙의 전송 계층. FMS의 VDA 5050 order·state가 MQTT(EMQX 브로커) 위로 흐르고, 런 제어(sim/control)도 같은 브로커를 쓴다(기준선 v3 §3.1·§5.1). Sparkplug B는 쓰지 않는다.</div>
 </section>
 
 <section class="term" id="sparkplug">
@@ -366,7 +367,7 @@
     </svg>
     <figcaption>접속 시 전체 상태를 선언(BIRTH), 이후엔 변경분만(DATA), 끊기면 브로커가 대신 부고(DEATH)를 발행</figcaption>
   </figure>
-  <p>MQTT만 쓰면 팀마다 토픽 구조와 JSON 형식을 제각각 정하게 된다. Sparkplug B는 네임스페이스(<code>spBv1.0/그룹/메시지타입/노드/디바이스</code>), 데이터 형식(Protobuf), 상태 관리(BIRTH/DEATH)를 표준화해서, 처음 보는 설비도 구독만 하면 바로 해석할 수 있게 만든다. "설비가 지금 온라인인가"라는 제조 현장의 핵심 질문에 프로토콜 차원에서 답하는 것이 특징이다.</p>
+  <p><b>본 프로젝트에서는 쓰지 않는다</b>(2026-08-20 폐기. 페이로드는 VDA 5050 JSON으로 통일). 참고용 설명만 남긴다. MQTT만 쓰면 팀마다 토픽 구조와 JSON 형식을 제각각 정하게 된다. Sparkplug B는 네임스페이스(<code>spBv1.0/그룹/메시지타입/노드/디바이스</code>), 데이터 형식(Protobuf), 상태 관리(BIRTH/DEATH)를 표준화해서, 처음 보는 설비도 구독만 하면 바로 해석할 수 있게 만든다. "설비가 지금 온라인인가"라는 제조 현장의 핵심 질문에 프로토콜 차원에서 답하는 것이 특징이다.</p>
   <div class="ctx"><b>이 프로젝트에서</b> — 가상 AMR 텔레메트리에 적용한다. 제품 정체성이 "로봇을 움직이는 시스템"에서 "신뢰할 수 있는 분석"으로 이동하면서 역할은 얇아졌지만(개괄 §10, '축소'), 검증 트랙의 상태 스트림 표준으로 유지된다.</div>
 </section>
 
@@ -431,7 +432,7 @@
   <h2>GTP<span class="en">Goods-to-Person — 물건이 사람에게 오는 방식</span></h2>
   <p class="def">작업자가 선반으로 걸어가는 대신, 로봇이 선반·토트를 작업자 앞까지 가져다주는 창고 자동화 방식. Amazon Kiva 시스템이 원형이다.</p>
   <p>사람의 이동 시간을 없애 피킹 생산성을 크게 올리지만, 전용 선반·스테이션·관제 소프트웨어까지 통째로 새로 까는 대규모 공사가 필요하다. 그래서 GTP 도입은 벤더가 설계부터 견적까지 도맡는 턴키(turn-key) 거래로 이뤄진다. 시장 매출 1위 세그먼트(약 38%)이지만, 바로 그 구매 구조 때문에 제3자 중립 견적이 끼어들 틈이 구조적으로 좁다.</p>
-  <div class="ctx"><b>이 프로젝트에서</b> — v1 정밀 견적에서 의도적으로 제외한 카테고리(개괄 §2·6). 대신 카테고리 게이트가 "GTP가 더 적합한 고객"을 판별해 배제 사유와 함께 벤더 직행을 안내한다 — 중립 라우팅 서사의 근거. "왜 시장 1위를 안 했나"라는 발표 예상 질문의 답이 이 구매 경로 논리다. GTP 전용 공정 모델은 v2 로드맵.</div>
+  <div class="ctx"><b>이 프로젝트에서</b> — v1 범위 밖 카테고리(기준선 v3 §4.5: 입고·출고 반송과 피킹 보조가 범위). GTP가 더 맞는 고객은 검토 단계(②)에서 운영자가 사유와 함께 안내한다. "왜 시장 1위를 안 했나"라는 발표 예상 질문의 답이 이 구매 경로 논리다. GTP 전용 공정 모델은 후속.</div>
 </section>
 
 <section class="term" id="andon">
@@ -503,6 +504,311 @@
   </figure>
   <p>많은 데모가 "AI가 문제를 찾았다"에서 끝난다(열린 루프). 진짜 스마트 물류센터의 가치는 그 판정이 자동으로 조치까지 이어지는 데 있다. 시스템 전 계층(비전 → AI → WMS → 배차 → 로봇)이 실제로 연결되어야만 가능하므로, 통합 완성도의 증명이기도 하다.</p>
   <div class="ctx"><b>이 프로젝트에서</b> — 품질관리 자체는 범위 밖이지만, "감지 → 판정 → 조치"가 자동으로 닫히는 구조는 본 프로젝트의 <b>보정 루프</b>와 동형이다: 에뮬레이션 실측(감지) → SimPy 유효속도 계수 갱신(판정) → 재스윕(조치)의 고리가 자동으로 닫힌다(개괄 §4).</div>
+</section>
+
+<section class="term" id="intake-service">
+  <h2>요청 접수형 서비스<span class="en">Intake Service — 요청을 받아 나중에 결과를 보내는 비동기 서비스</span></h2>
+  <p class="def">고객이 조건을 남기면 요청이 큐에 쌓이고, 운영자가 검토·검수한 뒤 결과를 나중에 발송하는 서비스 형태. 즉시 계산해 보여 주는 셀프서브 SaaS의 반대다.</p>
+  <figure>
+    <svg viewBox="0 0 900 200" role="img" aria-label="요청 접수형 서비스 8단계 — 접수, 검토·컴파일, 잡 소비, θ·DES, Isaac 검증, KPI·산출물, 리포트, 발송. 운영자는 2단계와 7단계에 개입">
+      <line x1="38" y1="80" x2="862" y2="80" stroke="#8FB4D9" stroke-width="2"/>
+      <g fill="#222A33" stroke="#E8ECF1" stroke-width="1.5">
+        <rect x="38" y="50" width="96" height="60"/><rect x="246" y="50" width="96" height="60"/><rect x="350" y="50" width="96" height="60"/><rect x="454" y="50" width="96" height="60"/><rect x="558" y="50" width="96" height="60"/><rect x="766" y="50" width="96" height="60"/>
+      </g>
+      <g fill="#222A33" stroke="#F08A32" stroke-width="2">
+        <rect x="142" y="50" width="96" height="60"/><rect x="662" y="50" width="96" height="60"/>
+      </g>
+      <g font-family="monospace" font-size="13" fill="#E8ECF1" text-anchor="middle">
+        <text x="86" y="74">①</text><text x="190" y="74" fill="#F08A32">②</text><text x="294" y="74">③</text><text x="398" y="74">④</text><text x="502" y="74">⑤</text><text x="606" y="74">⑥</text><text x="710" y="74" fill="#F08A32">⑦</text><text x="814" y="74">⑧</text>
+      </g>
+      <g font-family="monospace" font-size="12" fill="#9AA7B4" text-anchor="middle">
+        <text x="86" y="98">접수</text><text x="190" y="98">검토·컴파일</text><text x="294" y="98">잡 소비</text><text x="398" y="98">θ·DES</text><text x="502" y="98">Isaac 검증</text><text x="606" y="98">KPI·산출물</text><text x="710" y="98">리포트</text><text x="814" y="98">발송</text>
+      </g>
+      <text x="450" y="150" text-anchor="middle" font-family="monospace" font-size="12" fill="#F08A32">주황 테두리 = 운영자 개입(② · ⑦) · 나머지는 내부 배치</text>
+      <text x="450" y="176" text-anchor="middle" font-family="monospace" font-size="12" fill="#9AA7B4">① 접수 시 큐 순번·예상 소요 회신 → ⑧ 발송 후 요청 종료</text>
+    </svg>
+    <figcaption>요청과 발송 사이는 전부 내부 배치다 — 사람이 보는 곳은 두 군데뿐이다</figcaption>
+  </figure>
+  <p>본 프로젝트가 v3에서 택한 제품 형태다. 이유는 세 가지다. GPU가 1대라 검증 런을 줄 세워야 한다. 5분 숏런으로는 결과를 믿기 어렵다. 영상·리플레이를 견적서에 넣으려면 사람이 검수해야 한다. 흐름은 8단계다. 접수 → 운영 검토·시나리오 컴파일 → 스윕 잡 소비 → 구성 탐색·θ 추론·DES → Isaac 물리 검증 런 → KPI·아티팩트 → 리포트 작성 → 발송. 운영자가 개입하는 곳은 ②와 ⑦ 두 곳이다. 접수 시 큐 순번과 예상 소요를 회신한다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 기준선 v3 §0·§2. 제품 페이지는 PRODUCT <a href="../product/landing.html">Santa Factory 랜딩</a>, 브라우저 체험판은 <a href="../product/demo.html">데모</a>. 흐름 상세는 TECH 02 <a href="../tech/system_architecture.html">시스템 아키텍처</a>.</div>
+</section>
+
+<section class="term" id="two-tier-web">
+  <h2>웹 인프라 2층<span class="en">Two-tier Web Infrastructure — 상시 층과 런 단위 층</span></h2>
+  <p class="def">늘 떠 있는 견적 서비스 층과, 런마다 만들었다 없애는 시뮬 스택 층으로 나눈 구조. 원칙은 "영속은 견적 도메인, 휘발은 시뮬 도메인".</p>
+  <figure>
+    <svg viewBox="0 0 900 240" role="img" aria-label="웹 인프라 2층 — 상시 견적 서비스 층, 런 단위 시뮬 스택 층, 그리고 상시 EMQX">
+      <rect x="30" y="30" width="840" height="80" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="50" y="56" font-family="monospace" font-size="13" font-weight="bold" fill="#E8ECF1">상시 견적 서비스 층 — 영속</text>
+      <text x="50" y="84" font-family="monospace" font-size="12" fill="#9AA7B4">React 콘솔 · nginx :443 · 견적 BE(Spring) · PostgreSQL · RabbitMQ · MinIO · 런 오케스트레이터</text>
+      <rect x="30" y="140" width="560" height="70" fill="#222A33" stroke="#F08A32" stroke-width="2" stroke-dasharray="6 4"/>
+      <text x="50" y="166" font-family="monospace" font-size="13" font-weight="bold" fill="#F08A32">런 단위 시뮬 스택 층 — 런마다 기동·폐기</text>
+      <text x="50" y="192" font-family="monospace" font-size="12" fill="#9AA7B4">시뮬 WMS(Spring + H2) · FMS 코어(Python) · 수요 생성기</text>
+      <rect x="620" y="140" width="250" height="70" fill="#222A33" stroke="#3BAF77" stroke-width="2"/>
+      <text x="745" y="166" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#3BAF77">EMQX — 상시</text>
+      <text x="745" y="192" text-anchor="middle" font-family="monospace" font-size="12" fill="#9AA7B4">제어 채널은 런보다 먼저</text>
+      <text x="450" y="232" text-anchor="middle" font-family="monospace" font-size="12" fill="#8A96A3">EC2 t3.xlarge · 전부 k3s 파드 · 영속은 견적 도메인, 휘발은 시뮬 도메인</text>
+    </svg>
+    <figcaption>점선 층은 런이 끝나면 통째로 사라진다 — 위 층의 DB는 그대로 남는다</figcaption>
+  </figure>
+  <p>상시 층에는 React 웹 콘솔, nginx(:443 단일 인그레스), 견적 BE(Spring Boot), PostgreSQL, RabbitMQ, MinIO가 있다. 런 단위 층에는 시뮬 WMS(Spring + H2 인메모리), FMS 코어(Python), 수요 생성기가 있고, 런이 끝나면 파드째 사라진다. EMQX는 상시다. 제어 채널이 런보다 먼저 있어야 하기 때문이다. 이렇게 나누면 런 하나가 죽어도 견적 데이터는 안전하고, 런 상태가 영속 DB를 더럽히지 않는다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 기준선 v3 §3.1. 두 층 모두 EC2 t3.xlarge의 k3s 위에 올라간다(§3.2). 다이어그램 원본은 <a href="../../docs/FMS-WMS_통합_아키텍처.html">FMS-WMS 통합 아키텍처 v3.10</a>.</div>
+</section>
+
+<section class="term" id="run">
+  <h2>런<span class="en">Run — Isaac 검증 런 한 번</span></h2>
+  <p class="def">시뮬 WMS·FMS 파드를 띄우고 Isaac Sim에서 로봇을 움직여 KPI와 산출물을 얻는 실행 단위 하나. 런 ID로 식별하고 상태기로 관리한다.</p>
+  <figure>
+    <svg viewBox="0 0 900 150" role="img" aria-label="런 상태 전이 — QUEUED, PROVISIONING, LOADING, RUNNING, COLLECTING, DONE. RUNNING에서 FAILED로 갈 수 있다">
+      <g fill="#222A33" stroke="#E8ECF1" stroke-width="1.5">
+        <rect x="40" y="30" width="120" height="40"/><rect x="180" y="30" width="120" height="40"/><rect x="320" y="30" width="120" height="40"/><rect x="460" y="30" width="120" height="40"/><rect x="600" y="30" width="120" height="40"/>
+      </g>
+      <rect x="740" y="30" width="120" height="40" fill="#222A33" stroke="#3BAF77" stroke-width="2"/>
+      <rect x="460" y="100" width="120" height="36" fill="#222A33" stroke="#F08A32" stroke-width="2"/>
+      <g font-family="monospace" font-size="12" fill="#E8ECF1" text-anchor="middle">
+        <text x="100" y="55">QUEUED</text><text x="240" y="55">PROVISIONING</text><text x="380" y="55">LOADING</text><text x="520" y="55">RUNNING</text><text x="660" y="55">COLLECTING</text>
+        <text x="800" y="55" fill="#3BAF77">DONE</text><text x="520" y="123" fill="#F08A32">FAILED</text>
+      </g>
+      <g stroke="#8FB4D9" stroke-width="2" marker-end="url(#nb-run)">
+        <line x1="160" y1="50" x2="176" y2="50"/><line x1="300" y1="50" x2="316" y2="50"/><line x1="440" y1="50" x2="456" y2="50"/><line x1="580" y1="50" x2="596" y2="50"/><line x1="720" y1="50" x2="736" y2="50"/>
+      </g>
+      <line x1="520" y1="70" x2="520" y2="96" stroke="#F08A32" stroke-width="2" marker-end="url(#nb-runf)"/>
+      <text x="600" y="123" font-family="monospace" font-size="12" fill="#9AA7B4">→ DLQ · 런 ID 기준 멱등 · 재기동 시 조정</text>
+      <defs>
+        <marker id="nb-run" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#8FB4D9" stroke-width="1.5"/></marker>
+        <marker id="nb-runf" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#F08A32" stroke-width="1.5"/></marker>
+      </defs>
+    </svg>
+    <figcaption>런 하나의 생애 — 큐에서 나와 파드가 뜨고, 돌고, 산출물을 모으고, 끝난다</figcaption>
+  </figure>
+  <p>런은 분 단위 미니 시나리오다. Isaac이 실시간이라 하루치를 재생할 수 없다. 상태는 QUEUED → PROVISIONING → LOADING → RUNNING → COLLECTING → DONE 또는 FAILED로 흐른다. 런 ID 기준으로 멱등하게 처리해 재시도해도 두 번 세지 않는다. 실패는 DLQ로 보낸다. 한 trial에 검증 런은 0개 또는 1개다. 상위 구성만 GPU 런 큐에 올라가기 때문이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 기준선 v3 §6·§8. 상태 전이는 <a href="#orchestrator">런 오케스트레이터</a>가 맡고, GPU 쪽 실행은 REF A <a href="glossary_robotics.html#sim-runner">sim-runner</a>가 맡는다. 재현성 키는 시나리오 해시 + 시드.</div>
+</section>
+
+<section class="term" id="trial">
+  <h2>trial<span class="en">Trial — 스윕 안의 구성 하나</span></h2>
+  <p class="def">스윕 잡 안에서 "대수 n · 기종 · 시드" 한 조합을 DES로 돌린 단위. 요청 1 : N 잡 1 : N trial 1 : 0..1 검증 런 계층의 가운데 칸이다.</p>
+  <figure>
+    <svg viewBox="0 0 900 170" role="img" aria-label="데이터 계층 — 요청 1:N 잡 1:N trial 1:0..1 검증 런">
+      <g fill="#222A33" stroke="#E8ECF1" stroke-width="1.5">
+        <rect x="30" y="40" width="170" height="56"/><rect x="250" y="40" width="170" height="56"/><rect x="690" y="40" width="170" height="56"/>
+      </g>
+      <rect x="470" y="40" width="170" height="56" fill="#222A33" stroke="#F08A32" stroke-width="2"/>
+      <g font-family="monospace" font-size="13" fill="#E8ECF1" text-anchor="middle">
+        <text x="115" y="62">요청</text><text x="335" y="62">잡</text><text x="555" y="62" fill="#F08A32" font-weight="bold">trial</text><text x="775" y="62">검증 런</text>
+      </g>
+      <g font-family="monospace" font-size="12" fill="#9AA7B4" text-anchor="middle">
+        <text x="115" y="84">quote_request</text><text x="335" y="84">sweep_job</text><text x="555" y="84">대수·기종·시드 1조합</text><text x="775" y="84">verify_run</text>
+      </g>
+      <g stroke="#8FB4D9" stroke-width="2" marker-end="url(#nb-trial)">
+        <line x1="200" y1="68" x2="246" y2="68"/><line x1="420" y1="68" x2="466" y2="68"/><line x1="640" y1="68" x2="686" y2="68"/>
+      </g>
+      <g font-family="monospace" font-size="12" fill="#8FB4D9" text-anchor="middle">
+        <text x="225" y="30">1 : N</text><text x="445" y="30">1 : N</text><text x="665" y="30">1 : 0..1</text>
+      </g>
+      <text x="450" y="140" text-anchor="middle" font-family="monospace" font-size="12" fill="#3BAF77">trial의 KPI가 모여 대수–처리량 곡선 · 무릎(포화점) 판정은 계산 엔진이 소유</text>
+      <defs><marker id="nb-trial" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#8FB4D9" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>PostgreSQL 테이블 이름이 곧 계층이다 — 상위 trial만 검증 런을 갖는다</figcaption>
+  </figure>
+  <p>요청 하나가 잡 여러 개로, 잡 하나가 trial 여러 개로 갈라진다. trial마다 AI 모델이 θ를 추론하고 FMS 커널이 가상 시간으로 돌며 시드를 바꿔 반복한다. trial의 KPI가 모여 대수–처리량 곡선이 된다. 곡선의 무릎(포화점)을 정하는 정지 규칙은 계산 엔진이 소유한다. 견적 BE는 대수 n을 반복 호출하지 않고 스윕 범위만 잡에 싣는다. 팀 백엔드↔AI API 초안의 요청·응답 스키마(run_id·seed·warehouse·amr·orders → kpi)는 trial 단위 어댑터 계약으로 채택했다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 기준선 v3 §3.3·§7. PostgreSQL 테이블 <code>trial</code>이 이 단위다. 상위 trial만 <a href="#gpu-run-queue">GPU 런 큐</a>로 넘어가 <a href="#run">런</a>이 된다.</div>
+</section>
+
+<section class="term" id="scenario-package">
+  <h2>시나리오 패키지<span class="en">Scenario Package — 컴파일된 시뮬 입력 묶음</span></h2>
+  <p class="def">운영자가 요청을 정제해 만든 시뮬 입력 묶음. zones.json · 맵 · 주문 분해 규칙 · 수요 프로파일 · rack_id↔시뮬 좌표 매핑으로 구성된다.</p>
+  <figure>
+    <svg viewBox="0 0 900 200" role="img" aria-label="시나리오 패키지 하나를 DES의 WMS 라이트와 검증 런의 시뮬 WMS가 함께 읽고, 골든 시나리오 패리티 테스트로 정합성을 지킨다">
+      <rect x="40" y="40" width="300" height="120" fill="#222A33" stroke="#F08A32" stroke-width="2"/>
+      <text x="190" y="66" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#F08A32">시나리오 패키지 (②에서 컴파일)</text>
+      <g font-family="monospace" font-size="12" fill="#9AA7B4" text-anchor="middle">
+        <text x="190" y="92">zones.json · 맵</text><text x="190" y="114">주문 분해 규칙 · 수요 프로파일</text><text x="190" y="136">rack_id ↔ 시뮬 좌표 매핑</text>
+      </g>
+      <g fill="#222A33" stroke="#E8ECF1" stroke-width="1.5">
+        <rect x="520" y="30" width="340" height="56"/><rect x="520" y="114" width="340" height="56"/>
+      </g>
+      <g font-family="monospace" font-size="12" fill="#E8ECF1" text-anchor="middle">
+        <text x="690" y="52">WMS 라이트 — 확률 모델</text><text x="690" y="74" fill="#9AA7B4">DES (④)</text>
+        <text x="690" y="136">시뮬 WMS — Spring + H2</text><text x="690" y="158" fill="#9AA7B4">Isaac 검증 런 (⑤)</text>
+      </g>
+      <g stroke="#8FB4D9" stroke-width="2" marker-end="url(#nb-pkg)">
+        <line x1="340" y1="80" x2="516" y2="58"/><line x1="340" y1="120" x2="516" y2="142"/>
+      </g>
+      <line x1="690" y1="86" x2="690" y2="114" stroke="#3BAF77" stroke-width="2" stroke-dasharray="4 3"/>
+      <text x="705" y="104" font-family="monospace" font-size="12" fill="#3BAF77">골든 시나리오 패리티 테스트</text>
+      <text x="190" y="186" text-anchor="middle" font-family="monospace" font-size="12" fill="#8A96A3">재현성 키 = 시나리오 해시 + 시드</text>
+      <defs><marker id="nb-pkg" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#8FB4D9" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>같은 입력을 두 WMS가 읽는다 — 그래서 DES와 검증 런의 결과를 비교할 수 있다</figcaption>
+  </figure>
+  <p>서비스 흐름 ②에서 만들어진다. 이 묶음 하나를 두 소비자가 읽는다. DES의 WMS 라이트와 검증 런의 Spring 시뮬 WMS다. 같은 입력을 쓰므로 두 결과를 비교할 수 있다. 정합성은 골든 시나리오 패리티 테스트로 지킨다. 재현성 키는 시나리오 해시 + 시드다. 파일은 MinIO에 둔다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 기준선 v3 §4.4·§6. 시뮬 파트의 T3 창고 씬(<code>sil/t3_warehouse_map/</code>)이 zones.json·맵의 출처다. 소비자 둘은 <a href="#wms-lite">WMS 라이트</a>와 <a href="#sim-wms">시뮬 WMS</a>.</div>
+</section>
+
+<section class="term" id="sim-wms">
+  <h2>시뮬 WMS<span class="en">Simulation WMS — 검증 런용 실제 창고관리 서버</span></h2>
+  <p class="def">Isaac 검증 런 동안 실제로 주문을 만들고 작업을 나눠 주는 Spring Boot 서버. H2 인메모리 DB를 쓰고, 런이 끝나면 함께 사라진다.</p>
+  <p>검증 런은 실제 소프트웨어를 루프에 넣는 SIL이다. 그래서 WMS도 확률 모델이 아닌 진짜 서버로 돈다. 테이블은 run_context, zone, location, station, sku, inventory, order, order_line, task다. 작업 이벤트 로그는 H2 밖(JSONL → MinIO)에 쓴다. JPQL만 쓰고 네이티브 쿼리를 금지해, 프로파일만 바꾸면 PostgreSQL로 승격할 수 있다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 기준선 v3 §3.1·§7. 런 단위 층의 파드다. DES 쪽 짝은 <a href="#wms-lite">WMS 라이트</a>. 일반 WMS 개념은 <a href="#wms">WMS · WES · WCS</a>.</div>
+</section>
+
+<section class="term" id="wms-lite">
+  <h2>WMS 라이트<span class="en">WMS Lite — DES 안의 확률 모델 WMS</span></h2>
+  <p class="def">DES(④) 안에서 주문 생성 · 라인 합침 · 배차 · 서비스 타이머만 확률 모델로 흉내 내는 경량 WMS.</p>
+  <p>DES는 수백 번 돌린다. 그때마다 Spring 서버를 띄울 수 없다. 그래서 WMS의 결정만 남기고 서버는 뺐다. 원칙은 "측정 대상은 공유, 환경은 모델링"이다. 측정 대상인 FMS 커널은 검증 런과 같은 코드이고, 환경인 WMS는 모델이다. 같은 시나리오 패키지를 읽고, 골든 시나리오 패리티 테스트로 시뮬 WMS와 맞춘다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 기준선 v3 §4.4(C안). 현재 DES의 실체는 팀의 틱 시뮬(sim_v2)이며 WMS 라이트도 그 안에 있다. SimPy 전환은 후속(§6). 커널 쪽은 REF A <a href="glossary_robotics.html#decision-kernel">결정 커널</a>.</div>
+</section>
+
+<section class="term" id="orchestrator">
+  <h2>런 오케스트레이터<span class="en">Run Orchestrator — 검증 런의 생애를 관리하는 파드</span></h2>
+  <p class="def">GPU 런 큐를 소비해 시뮬 스택 파드를 띄우고, sim-runner에 start/go/stop을 보내고, 산출물 키를 모아 결과 이벤트를 발행한 뒤 파드를 지우는 단일 파드.</p>
+  <figure>
+    <svg viewBox="0 0 900 210" role="img" aria-label="런 오케스트레이터 8단계 — 큐 소비, 파드 기동, 시나리오 주입 대기, start/go, 하트비트 감시, stop·키 수집, 결과 발행·ack, 파드 삭제">
+      <g fill="#222A33" stroke="#E8ECF1" stroke-width="1.5">
+        <rect x="40" y="30" width="190" height="50"/><rect x="250" y="30" width="190" height="50"/><rect x="460" y="30" width="190" height="50"/><rect x="670" y="30" width="190" height="50"/>
+        <rect x="40" y="130" width="190" height="50"/><rect x="250" y="130" width="190" height="50"/><rect x="460" y="130" width="190" height="50"/><rect x="670" y="130" width="190" height="50"/>
+      </g>
+      <g font-family="monospace" font-size="12" fill="#E8ECF1" text-anchor="middle">
+        <text x="135" y="60">① GPU 런 큐 소비</text><text x="345" y="60">② 파드 기동 (WMS·FMS)</text><text x="555" y="60">③ 시나리오 주입 대기</text><text x="765" y="60">④ start / go 전송</text>
+        <text x="135" y="160">⑤ 하트비트 감시</text><text x="345" y="160">⑥ stop · 키 수집</text><text x="555" y="160">⑦ 결과 발행 · ack</text><text x="765" y="160">⑧ 파드 삭제</text>
+      </g>
+      <g stroke="#8FB4D9" stroke-width="2" marker-end="url(#nb-orch)">
+        <line x1="230" y1="55" x2="246" y2="55"/><line x1="440" y1="55" x2="456" y2="55"/><line x1="650" y1="55" x2="666" y2="55"/>
+        <line x1="230" y1="155" x2="246" y2="155"/><line x1="440" y1="155" x2="456" y2="155"/><line x1="650" y1="155" x2="666" y2="155"/>
+        <polyline points="765,80 765,105 135,105 135,126" fill="none"/>
+      </g>
+      <text x="450" y="200" text-anchor="middle" font-family="monospace" font-size="12" fill="#8A96A3">EC2 k3s 위 단일 파드 · 런 ID 기준 멱등 · 실패는 DLQ · 재기동 시 조정 단계</text>
+      <defs><marker id="nb-orch" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#8FB4D9" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>큐에서 꺼내 파드를 띄우고, 명령하고, 거두고, 지운다 — 런 하나마다 이 8단계를 반복한다</figcaption>
+  </figure>
+  <p>순서는 정해져 있다. 큐 소비 → 시뮬 WMS·FMS 파드 기동(k8s API) → WMS 시나리오 주입 완료 대기 → sim-runner에 start/go(MQTT <code>sim/control</code>) → 하트비트·시뮬 시각 감시 → stop → 아티팩트 키 수집 → 결과 이벤트 발행·ack → 파드 삭제. 런 ID 기준 멱등이다. 실패는 DLQ로 보낸다. 재기동하면 조정 단계에서 떠 있는 파드와 큐 상태를 맞춘다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 기준선 v3 §8. EC2 k3s 위 단일 파드. GPU 쪽 짝은 REF A <a href="glossary_robotics.html#sim-runner">sim-runner</a>. 런 상태기는 <a href="#run">런</a> 항목.</div>
+</section>
+
+<section class="term" id="gpu-run-queue">
+  <h2>GPU 런 큐<span class="en">GPU Run Queue — 검증 런을 줄 세우는 큐</span></h2>
+  <p class="def">Isaac 검증 런을 GPU 수만큼만 동시에 돌리도록 직렬화하는 RabbitMQ 큐. 소비자 수 = GPU 수다.</p>
+  <figure>
+    <svg viewBox="0 0 900 170" role="img" aria-label="GPU 런 큐 — 런 다섯 개가 줄 서 있고 소비자는 GPU 1대뿐이라 한 번에 하나씩 처리한다">
+      <text x="40" y="44" font-family="monospace" font-size="12" fill="#9AA7B4">GPU 런 큐 (RabbitMQ) — 큐 깊이 = 대기 순번</text>
+      <rect x="40" y="60" width="460" height="50" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <g fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5">
+        <rect x="52" y="68" width="76" height="34"/><rect x="136" y="68" width="76" height="34"/><rect x="220" y="68" width="76" height="34"/><rect x="304" y="68" width="76" height="34"/><rect x="388" y="68" width="76" height="34"/>
+      </g>
+      <g font-family="monospace" font-size="12" fill="#8FB4D9" text-anchor="middle">
+        <text x="90" y="90">run 5</text><text x="174" y="90">run 4</text><text x="258" y="90">run 3</text><text x="342" y="90">run 2</text><text x="426" y="90">run 1</text>
+      </g>
+      <line x1="500" y1="85" x2="556" y2="85" stroke="#8FB4D9" stroke-width="2" marker-end="url(#nb-gpu)"/>
+      <rect x="560" y="45" width="300" height="80" fill="#222A33" stroke="#3BAF77" stroke-width="2"/>
+      <text x="710" y="78" text-anchor="middle" font-family="monospace" font-size="13" font-weight="bold" fill="#3BAF77">소비자 1 = GPU 1대 (RTX 5080)</text>
+      <text x="710" y="102" text-anchor="middle" font-family="monospace" font-size="12" fill="#9AA7B4">한 번에 런 1개 · 직렬</text>
+      <text x="450" y="150" text-anchor="middle" font-family="monospace" font-size="12" fill="#3BAF77">ETA = 순번 × 런 평균 시간 · GPU 노드 추가 = 소비자 추가</text>
+      <defs><marker id="nb-gpu" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#8FB4D9" stroke-width="1.5"/></marker></defs>
+    </svg>
+    <figcaption>접수 시 회신하는 "큐 순번·예상 소요"의 근거가 이 큐다</figcaption>
+  </figure>
+  <p>큐잉은 2단이다. 1단 요청 잡 큐는 CPU 워커 N개가 스윕 잡을 소비한다. 2단 GPU 런 큐는 검증 런만 받는다. 현재 GPU는 RTX 5080 1대라 소비자도 1개다. 큐 깊이가 곧 대기 순번이고, 런 평균 시간을 곱하면 ETA가 된다. 접수 시 회신하는 큐 순번·예상 소요의 근거가 이 큐다. GPU 노드를 늘리면 소비자를 늘리면 된다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 기준선 v3 §3.3. 확장 시나리오(임대 GPU, 큐 깊이 기반 오토스케일)는 §3.2. 실패 처리는 <a href="#dlq">DLQ</a>.</div>
+</section>
+
+<section class="term" id="dlq">
+  <h2>DLQ<span class="en">Dead Letter Queue — 처리 실패 메시지 보관 큐</span></h2>
+  <p class="def">정해진 횟수만큼 재시도해도 실패한 메시지를 따로 모아 두는 큐. 실패를 버리지 않고 사람이 볼 수 있게 남긴다.</p>
+  <figure>
+    <svg viewBox="0 0 900 170" role="img" aria-label="DLQ — 큐에서 소비자로 간 메시지가 성공하면 ack, 재시도 초과로 실패하면 DLQ로 간다">
+      <g fill="#222A33" stroke="#E8ECF1" stroke-width="1.5">
+        <rect x="40" y="40" width="220" height="50"/><rect x="340" y="40" width="220" height="50"/>
+      </g>
+      <rect x="640" y="40" width="220" height="50" fill="#222A33" stroke="#3BAF77" stroke-width="2"/>
+      <rect x="340" y="115" width="220" height="44" fill="#222A33" stroke="#F08A32" stroke-width="2"/>
+      <g font-family="monospace" font-size="12" fill="#E8ECF1" text-anchor="middle">
+        <text x="150" y="70">요청 잡 큐 · GPU 런 큐</text><text x="450" y="70">워커 · 오케스트레이터</text>
+        <text x="750" y="70" fill="#3BAF77">완료 (ack)</text><text x="450" y="142" fill="#F08A32">DLQ — 운영자 확인</text>
+      </g>
+      <line x1="260" y1="65" x2="336" y2="65" stroke="#8FB4D9" stroke-width="2" marker-end="url(#nb-dlq-b)"/>
+      <line x1="560" y1="65" x2="636" y2="65" stroke="#3BAF77" stroke-width="2" marker-end="url(#nb-dlq-g)"/>
+      <line x1="450" y1="90" x2="450" y2="111" stroke="#F08A32" stroke-width="2" marker-end="url(#nb-dlq-a)"/>
+      <text x="470" y="106" font-family="monospace" font-size="12" fill="#F08A32">nack · 재시도 초과</text>
+      <text x="580" y="142" font-family="monospace" font-size="12" fill="#9AA7B4">재투입 또는 요청 종료 · 런 ID 멱등</text>
+      <defs>
+        <marker id="nb-dlq-b" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#8FB4D9" stroke-width="1.5"/></marker>
+        <marker id="nb-dlq-g" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#3BAF77" stroke-width="1.5"/></marker>
+        <marker id="nb-dlq-a" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#F08A32" stroke-width="1.5"/></marker>
+      </defs>
+    </svg>
+    <figcaption>실패한 메시지는 사라지지 않고 DLQ에 남는다 — 운영자가 보고 다시 넣거나 닫는다</figcaption>
+  </figure>
+  <p>RabbitMQ에서 소비자가 메시지를 거부(nack)하거나 TTL이 지나면 dead-letter 교환기로 넘어간다. 본 프로젝트는 요청 잡 큐와 GPU 런 큐 둘 다 DLQ를 둔다. 재시도 횟수를 넘긴 스윕 잡, 파드 기동에 실패한 런이 여기에 남는다. 운영자는 웹 콘솔에서 DLQ를 보고 재투입하거나 요청을 종료한다. 공식 문서: <a href="https://www.rabbitmq.com/docs/dlx" target="_blank" rel="noopener">RabbitMQ Dead Letter Exchanges</a>.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 기준선 v3 §2③·§3.3·§8. 런 ID 멱등과 짝을 이룬다. 재투입해도 두 번 세지 않는다.</div>
+</section>
+
+<section class="term" id="artifact">
+  <h2>아티팩트<span class="en">Artifact — 런이 남기는 산출 파일</span></h2>
+  <p class="def">검증 런이 만드는 파일들. 배속 영상(MP4) · 리플레이(JSON) · 히트맵(PNG) · 로그. MinIO에 저장하고, 메타는 PostgreSQL <code>artifact</code> 테이블에 둔다.</p>
+  <p>견적서에 들어가는 실물이다. 영상은 고객이 결과를 눈으로 확인하는 용도, 리플레이는 브라우저에서 다시 돌려 보는 용도, 히트맵은 정체 구간을 보는 용도다. 시나리오 파일도 같은 저장소에 둔다. 작업 이벤트 로그(JSONL)도 여기로 온다. 업로드는 sim-runner가 presigned URL로 직접 한다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 기준선 v3 §2⑥·§7. 리포트(⑦)에 임베드된다. 저장소는 <a href="#minio">MinIO</a>, 업로드 방식은 <a href="#presigned-url">presigned URL</a>.</div>
+</section>
+
+<section class="term" id="presigned-url">
+  <h2>presigned URL<span class="en">Pre-signed URL — 기한부 서명 업로드·다운로드 주소</span></h2>
+  <p class="def">서버가 미리 서명해 준 S3 호환 주소. 이 주소를 가진 쪽은 자격 증명 없이 정해진 시간 동안 특정 키에 PUT 또는 GET을 할 수 있다.</p>
+  <figure>
+    <svg viewBox="0 0 900 200" role="img" aria-label="presigned URL 흐름 — 견적 BE가 PUT URL을 발급하고, sim-runner가 MinIO에 직접 올린 뒤, 결과 이벤트에 키를 실어 보낸다">
+      <g fill="#222A33" stroke="#E8ECF1" stroke-width="1.5">
+        <rect x="40" y="20" width="220" height="44"/><rect x="340" y="20" width="220" height="44"/><rect x="640" y="20" width="220" height="44"/>
+      </g>
+      <g font-family="monospace" font-size="12" fill="#E8ECF1" text-anchor="middle">
+        <text x="150" y="47">견적 BE (Spring)</text><text x="450" y="47">sim-runner (GPU 서버)</text><text x="750" y="47">MinIO (S3 API)</text>
+      </g>
+      <g stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="4 4">
+        <line x1="150" y1="64" x2="150" y2="190"/><line x1="450" y1="64" x2="450" y2="190"/><line x1="750" y1="64" x2="750" y2="190"/>
+      </g>
+      <line x1="150" y1="98" x2="446" y2="98" stroke="#8FB4D9" stroke-width="2" marker-end="url(#nb-ps)"/>
+      <text x="300" y="90" text-anchor="middle" font-family="monospace" font-size="12" fill="#8FB4D9">① PUT URL 발급 (키 = run_id/…)</text>
+      <line x1="450" y1="136" x2="746" y2="136" stroke="#F08A32" stroke-width="2" marker-end="url(#nb-psa)"/>
+      <text x="600" y="128" text-anchor="middle" font-family="monospace" font-size="12" fill="#F08A32">② 파일 PUT · 자격 증명 없음 · 기한부</text>
+      <line x1="450" y1="174" x2="154" y2="174" stroke="#3BAF77" stroke-width="2" marker-end="url(#nb-psg)"/>
+      <text x="300" y="166" text-anchor="middle" font-family="monospace" font-size="12" fill="#3BAF77">③ 결과 이벤트에 키 실어 보냄</text>
+      <defs>
+        <marker id="nb-ps" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#8FB4D9" stroke-width="1.5"/></marker>
+        <marker id="nb-psa" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#F08A32" stroke-width="1.5"/></marker>
+        <marker id="nb-psg" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6" fill="none" stroke="#3BAF77" stroke-width="1.5"/></marker>
+      </defs>
+    </svg>
+    <figcaption>GPU 서버에 저장소 계정을 심지 않는다 — 주소 하나가 기한부 열쇠다</figcaption>
+  </figure>
+  <p>GPU 서버의 sim-runner에 MinIO 계정을 심지 않기 위해 쓴다. 흐름은 세 단계다. 견적 BE가 런 ID별 키로 PUT용 URL을 발급한다. sim-runner가 그 URL로 파일을 직접 올린다. 결과 이벤트에 키를 실어 보낸다. 고객 다운로드도 GET용 URL로 같은 방식이다. S3 API를 그대로 따르므로 MinIO를 S3로 바꿔도 코드가 같다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 기준선 v3 §2⑥. 기관 EC2는 IAM을 못 써 S3 대신 <a href="#minio">MinIO</a>를 쓴다. 올리는 쪽은 REF A <a href="glossary_robotics.html#sim-runner">sim-runner</a>.</div>
+</section>
+
+<section class="term" id="emqx">
+  <h2>EMQX<span class="en">EMQX — MQTT 브로커</span></h2>
+  <p class="def">본 프로젝트의 MQTT 브로커. 런 제어(<code>sim/control</code>)와 로봇 상태·VDA 5050 메시지가 지나가는 상시 채널이다.</p>
+  <p>메시징은 두 갈래다. RabbitMQ(AMQP)는 잡과 결과 이벤트를, EMQX(MQTT)는 제어와 상태를 맡는다. Kafka는 쓰지 않는다. 도메인 이벤트는 AMQP 결과 이벤트로 충분하기 때문이다. EMQX는 상시 파드다. 런이 뜨기 전에 제어 채널이 먼저 있어야 한다. 공식 문서: <a href="https://docs.emqx.com/" target="_blank" rel="noopener">EMQX Docs</a>.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 기준선 v3 §1·§3.1. MQTT 개념은 <a href="#mqtt">MQTT</a>, 메시지 규격은 <a href="#vda5050">VDA 5050</a>. FMS 쪽 소비자는 REF A <a href="glossary_robotics.html#execution-shell">실행 셸</a>의 MQTT 데몬.</div>
+</section>
+
+<section class="term" id="minio">
+  <h2>MinIO<span class="en">MinIO — S3 호환 오브젝트 저장소</span></h2>
+  <p class="def">S3 API를 그대로 쓰는 자체 호스팅 오브젝트 저장소. 아티팩트와 시나리오 파일을 보관한다.</p>
+  <p>기관 EC2는 IAM을 못 쓴다. 관리형 S3 대신 k3s 파드로 MinIO를 올렸다. 클라이언트 코드는 S3 SDK 그대로다. 임대 GPU나 계정 제약이 풀리면 버킷만 S3로 옮기면 된다. 저장 대상은 MP4·리플레이·히트맵·로그·시나리오 파일이다. 공식 문서: <a href="https://min.io/docs/minio/kubernetes/upstream/" target="_blank" rel="noopener">MinIO Docs</a>.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 기준선 v3 §1·§7. 상시 층 소속. 업로드는 <a href="#presigned-url">presigned URL</a>, 내용물은 <a href="#artifact">아티팩트</a>.</div>
+</section>
+
+<section class="term" id="h2">
+  <h2>H2<span class="en">H2 Database — 자바 인메모리 DB</span></h2>
+  <p class="def">JVM 안에서 도는 경량 관계형 DB. 시뮬 WMS가 런 스코프 데이터를 여기에 두고, 런이 끝나면 함께 버린다.</p>
+  <p>런마다 깨끗한 DB가 필요하다. PostgreSQL을 런마다 만들고 지우는 것보다 인메모리가 간단하다. 조건이 있다. JPQL만 쓰고 네이티브 쿼리를 금지하며 PG 호환 모드로 돈다. 그래야 프로파일만 바꿔 PostgreSQL로 승격할 수 있다. 영속이 필요한 이벤트 로그는 H2 밖(JSONL → MinIO)에 쓴다. 공식 문서: <a href="https://www.h2database.com/" target="_blank" rel="noopener">H2 Database</a>.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 기준선 v3 §3.1·§7. 사용자는 <a href="#sim-wms">시뮬 WMS</a> 하나다. 영속 데이터는 PostgreSQL(견적 도메인)에만 둔다.</div>
+</section>
+
+<section class="term" id="k3s">
+  <h2>k3s<span class="en">k3s — 경량 Kubernetes</span></h2>
+  <p class="def">단일 노드에서도 가볍게 도는 Kubernetes 배포판. EC2 t3.xlarge 한 대 위에서 상시 서비스와 런 단위 파드를 모두 돌린다.</p>
+  <p>기관 EC2는 IAM이 없어 관리형 AWS 서비스를 쓸 수 없다. 전부 자체 호스팅이다. k3s 위에 견적 서비스 파드, EMQX, RabbitMQ, MinIO, 시뮬 스택 파드, 계산 엔진 Job, 런 오케스트레이터가 올라간다. 이미지는 GHCR, 인증서는 certbot이다. 다이어그램의 Docker 배지는 k3s 파드를 뜻한다. 공식 문서: <a href="https://docs.k3s.io/" target="_blank" rel="noopener">k3s Docs</a>.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 기준선 v3 §3.2·§3.4. 실행 환경 상세는 WORKING <a href="../working/runtime_architecture.html">실행 환경과 리소스</a>.</div>
 </section>
 
 </main>

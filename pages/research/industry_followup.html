@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<title>업계 현황과 다음 단계 — 상용 FMS/WMS 지도와 본 프로젝트의 위치 (Industry Follow-up)</title>
+<style>
+  :root{
+    --bg:#14181D;
+    --panel:#1C2229;
+    --panel-edge:#2C343D;
+    --ink:#E8ECF1;
+    --ink-soft:#9AA7B4;
+    --amber:#F08A32;
+    --machine:#3BAF77;
+    --steel:#8FB4D9;
+    --slate:#8A96A3;
+    --grid:#2A323B;
+    --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important;animation:none!important}}
+  body{
+    background:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:32px 32px;
+    color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px;
+  }
+  a{color:var(--steel)}
+  a.term{color:inherit;text-decoration:underline;text-decoration-style:dotted;text-decoration-color:var(--steel);text-underline-offset:3px}
+  a.term:hover{color:var(--steel);text-decoration-style:solid}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+  header{border-bottom:3px solid var(--ink);background:var(--panel)}
+  .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
+  .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
+  .doc-eyebrow b{color:var(--amber);font-weight:600}
+  .flow-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px auto 40px}
+  .flow-nav a{background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
+  .flow-nav a:hover{border-color:var(--amber)}
+  .flow-nav .prev{grid-column:1}
+  .flow-nav .next{grid-column:2;text-align:right}
+  .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
+  @media(max-width:640px){.flow-nav{grid-template-columns:1fr}.flow-nav .prev,.flow-nav .next{grid-column:auto;text-align:left}}
+  h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
+  h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
+  .meta b{color:var(--ink);font-weight:600}
+
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav .wrap{display:flex;gap:2px;padding:0 20px}
+  nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
+  nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--amber);outline:none}
+  nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
+  nav a.nav-cross{margin-left:auto;color:var(--amber);font-weight:700}
+
+  main{padding:44px 0 80px}
+  section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
+  .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
+  h2{font-size:clamp(19px,2.2vw,27px);font-weight:800;letter-spacing:-.025em;line-height:1.3}
+  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
+  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
+  .kcard b{display:block;font-size:15px;margin-bottom:4px}
+  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
+  .sec-body{padding:16px 26px 26px}
+  h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+  h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
+  p{margin-bottom:10px}
+  .sec-body p{max-width:76ch}
+  .lead{font-size:15.5px}
+  .soft{color:var(--ink-soft)}
+
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
+  .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
+  .plain.warn{background:#2A2019;border-left-color:var(--amber)}
+  .plain.warn .pl-tag{color:var(--amber)}
+
+  code{font-family:var(--mono);font-size:.92em;background:#232B34;padding:1px 5px;border:1px solid var(--grid)}
+
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F}
+  td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
+  tr:last-child td{border-bottom:none}
+  table tr:nth-child(even) td{background:#1E252D}
+  .tbl-scroll{overflow-x:auto}
+
+  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px}
+  .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)}
+
+  ul.rules{list-style:none;margin:10px 0}
+  ul.rules li{padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--grid);font-size:13.5px}
+  ul.rules li:last-child{border-bottom:none}
+  ul.rules li::before{content:"▸";position:absolute;left:6px;color:var(--amber);font-weight:700}
+
+  .milestones{display:grid;gap:0;margin:14px 0;border-left:3px solid var(--ink)}
+  .ms{position:relative;padding:12px 18px 12px 28px;border-bottom:1px dashed var(--grid)}
+  .ms:last-child{border-bottom:none}
+  .ms::before{content:"";position:absolute;left:-8px;top:18px;width:13px;height:13px;background:var(--panel);border:3px solid var(--amber)}
+  .ms .ms-tag{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--amber);letter-spacing:.08em}
+  .ms h4{font-size:14px;font-weight:700;margin:2px 0 2px}
+  .ms p{font-size:12.5px;color:var(--ink-soft);margin:0}
+
+  details.more{border:1px solid var(--panel-edge);background:#20272F;margin:12px 0}
+  details.more summary{cursor:pointer;padding:11px 14px;font-weight:700;font-size:13px;list-style:none}
+  details.more summary::-webkit-details-marker{display:none}
+  details.more summary::before{content:"▸ ";color:var(--amber)}
+  details.more[open] summary::before{content:"▾ "}
+  details.more>*:not(summary){margin-left:14px;margin-right:14px}
+  details.more>*:last-child{margin-bottom:14px}
+
+  footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+
+  @media (max-width:820px){
+    .titleblock{grid-template-columns:1fr}
+    .meta{border-left:none;padding-left:0;text-align:left}
+    body{font-size:14px}
+    .sec-head,.sec-body{padding-left:16px;padding-right:16px}
+  }
+</style>
+<style>
+  /* sil_roadmap.html · runtime_architecture.html · 3pl_industry.html */
+  .note{margin:14px 0 8px;padding:12px 16px;background:#2A2019;border-left:4px solid var(--amber);font-size:14px;line-height:1.8}
+  .note .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--amber);font-weight:700;margin-bottom:4px}
+  /* 동 페이지들 — 칩 줄바꿈 금지 + slate 칩 */
+  .chip{white-space:nowrap}
+  .c-slate{color:var(--slate)}
+  /* sil_roadmap.html · runtime_architecture.html — 넓은 SVG 래퍼(가로 스크롤) */
+  .viz{background:#0E1318;border:1px solid var(--panel-edge);padding:12px 14px;margin:14px 0;overflow-x:auto}
+  .viz svg{display:block;min-width:780px;width:100%;height:auto}
+  /* amr_mapf_theory.html — 코드 블록 */
+  pre{font-family:var(--mono);font-size:12px;line-height:1.7;background:#20272F;border:1px solid var(--panel-edge);border-left:4px solid var(--steel);padding:12px 16px;overflow-x:auto;margin:12px 0}
+  pre code{background:none;border:none;padding:0}
+  /* working · research 페이지 — 키보드 포커스 링 */
+  :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<!-- ══════════ 헤더 ══════════ -->
+<header>
+  <div class="wrap titleblock">
+    <div>
+      <div class="doc-eyebrow"><b>RESEARCH 04 / 04</b> · INDUSTRY-FOLLOWUP · REV A · 2026-09</div>
+      <h1>업계 현황과 다음 단계 — 주문 기반 실시간 통합은 이미 상품이다
+        <span class="sub">상용 FMS/WMS가 어디까지 왔고 각사가 다음 단계를 어디로 보는지, 근거 URL과 함께 정리한 지도. 본 프로젝트가 그중 무엇을 골랐는지까지</span>
+      </h1>
+    </div>
+    <div class="meta">
+      DOC. <b>INDUSTRY-FOLLOWUP</b><br>
+      REV. <b>A</b> · 조사 <b>2026-09-01</b> · 작성 <b>2026-09-03</b><br>
+      기준 <b>근거 URL 있는 항목만 · 웹 재검증 없음</b><br>
+      SOURCE · <b>세션 기록 추출본 (조사 에이전트 보고 3건)</b>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════ nav ══════════ -->
+<nav aria-label="문서 내 탐색">
+  <div class="wrap">
+    <a class="nav-home" href="../../index.html">⌂ INDEX</a>
+    <a href="#f0">00 한눈에</a>
+    <a href="#f1">01 조사 기준</a>
+    <a href="#f2">02 상용 현황</a>
+    <a href="#f3">03 다음 단계</a>
+    <a href="#f4">04 표준·플랫폼</a>
+    <a href="#f5">05 본 프로젝트 위치</a>
+    <a href="#f6">06 추출 한계</a>
+    <a class="nav-cross" href="../archive/topic_journey.html">주제 확정 여정 ↗</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ══════════ F0 한눈에 보기 ══════════ -->
+<section id="f0">
+  <div class="sec-head"><span class="sec-no">SEC 00 · 한눈에 보기</span><h2>기본은 이미 상품이고, 다음 단계는 개방·트윈·AI로 갈린다</h2></div>
+  <div class="sec-body">
+    <p class="lead"><b>"주문 기반 실시간 FMS-WMS 통합은 2026-09-01 조사 시점에 이미 상용 제품이다."</b> 각사의 다음 단계는 표준 개방, 운영 디지털 트윈, 에이전틱 AI, 임바디드 AI 네 갈래로 나뉜다. 본 프로젝트는 그중 배치 전 트윈 검증과 플릿 조정 AI의 일부를 골라 시뮬레이션 기반 견적 서비스로 조합했다.</p>
+    <div class="note"><span class="pl-tag">신규 작성 (2026-09-03)</span>조사는 2026-09-01에 웹 검색·페치 에이전트 3기로 수행했다. 이 페이지의 URL·날짜·수치는 그날의 보고 기록에서 옮긴 것이고, 작성 시점에 웹 재검증은 하지 않았다. 조사 결과가 주제 확정으로 이어진 흐름은 <a href="../archive/topic_journey.html">ARCHIVE 01 주제 확정 여정</a>, 확정된 기획은 <a href="../tech/amr_overview.html">TECH 01 전체 조망</a>에 있다.</div>
+
+    <h3>이 문서가 답하는 질문</h3>
+    <ul class="rules">
+      <li>① 상용 FMS/WMS는 지금 어디까지 왔나 — SEC 02</li>
+      <li>② 각사는 다음 단계를 어디로 보나 — SEC 03 · SEC 04</li>
+      <li>③ 본 프로젝트는 그중 무엇을 골랐나 — 아래 그림 · SEC 05</li>
+    </ul>
+
+    <h3>성숙도 지도 — 상용 출시 → 파일럿 → 발표된 로드맵</h3>
+    <svg viewBox="0 0 900 490" role="img" aria-label="상용 출시, 파일럿, 발표된 로드맵 세 구간에 회사와 기능을 배치하고 본 프로젝트가 참조한 항목을 주황 점으로 표시한 지도" style="max-width:100%;height:auto;display:block;margin:14px 0">
+      <defs>
+        <marker id="if-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker>
+      </defs>
+      <!-- 성숙도 축 -->
+      <line x1="16" y1="34" x2="878" y2="34" stroke="#8FB4D9" stroke-width="2" marker-end="url(#if-arr)"/>
+      <text x="156" y="22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#3BAF77">상용 출시 · 제공 중</text>
+      <text x="450" y="22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#E8ECF1">파일럿 · 초기 상용</text>
+      <text x="744" y="22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#8A96A3">발표된 로드맵</text>
+      <line x1="303" y1="44" x2="303" y2="358" stroke="#2A323B" stroke-width="1" stroke-dasharray="4 4"/>
+      <line x1="597" y1="44" x2="597" y2="358" stroke="#2A323B" stroke-width="1" stroke-dasharray="4 4"/>
+
+      <!-- 구간 1 상용 (초록) -->
+      <rect x="16" y="48" width="280" height="44" fill="#17251E" stroke="#3BAF77" stroke-width="1.5"/>
+      <text x="28" y="66" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">Manhattan · Blue Yonder · SAP</text>
+      <text x="28" y="83" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">WMS 내장 WES · 로봇 허브 · VDA 5050 I/F</text>
+
+      <rect x="16" y="100" width="280" height="44" fill="#17251E" stroke="#3BAF77" stroke-width="1.5"/>
+      <text x="28" y="118" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">SVT SOFTBOT × DHL</text>
+      <text x="28" y="135" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">30개 사이트 라이브 · 2026-03</text>
+
+      <rect x="16" y="152" width="280" height="44" fill="#17251E" stroke="#3BAF77" stroke-width="1.5"/>
+      <text x="28" y="170" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">Locus · Geek+ · MiR · OTTO</text>
+      <text x="28" y="187" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">벤더 FMS · 1,000대+ / 5,000대+ 규모</text>
+
+      <rect x="16" y="204" width="280" height="44" fill="#17251E" stroke="#3BAF77" stroke-width="1.5"/>
+      <text x="28" y="222" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">Ocado 라이브 트윈</text>
+      <text x="28" y="239" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">상시 what-if 운영 실증 · 2025-06</text>
+
+      <rect x="16" y="256" width="280" height="44" fill="#17251E" stroke="#3BAF77" stroke-width="1.5"/>
+      <text x="28" y="274" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">Amazon DeepFleet</text>
+      <text x="28" y="291" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">플릿 조정 기반 모델 · 2025-07</text>
+      <circle cx="284" cy="268" r="5" fill="#F08A32"/>
+
+      <rect x="16" y="308" width="280" height="44" fill="#17251E" stroke="#3BAF77" stroke-width="1.5"/>
+      <text x="28" y="326" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">idealworks iw.sim</text>
+      <text x="28" y="343" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">계약 전 플릿 규모 사전 검증</text>
+      <circle cx="284" cy="320" r="5" fill="#F08A32"/>
+
+      <!-- 구간 2 파일럿 (기본 상자) -->
+      <rect x="310" y="48" width="280" height="44" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="322" y="66" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">KION + NVIDIA Mega</text>
+      <text x="322" y="83" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">GXO 창고 라이브 미션 · 2026-03</text>
+      <circle cx="578" cy="60" r="5" fill="#F08A32"/>
+
+      <rect x="310" y="100" width="280" height="44" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="322" y="118" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">Dematic AI Control Tower</text>
+      <text x="322" y="135" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">GTC 2025 데모 · 2025-03</text>
+      <circle cx="578" cy="112" r="5" fill="#F08A32"/>
+
+      <rect x="310" y="152" width="280" height="44" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="322" y="170" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">Siemens + KION Twin Composer</text>
+      <text x="322" y="187" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">CES 2026 데뷔 · 초기 상용 · 2026-04</text>
+
+      <rect x="310" y="204" width="280" height="44" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="322" y="222" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">Locus Array</text>
+      <text x="322" y="239" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">DHL 3대 선행 배치 · 2026-04</text>
+
+      <rect x="310" y="256" width="280" height="44" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="322" y="274" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">VDA 5050 3.0</text>
+      <text x="322" y="291" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">2026-04 공개 · 구현 초기</text>
+
+      <rect x="310" y="308" width="280" height="44" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="322" y="326" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">에이전틱 AI 운영 보조</text>
+      <text x="322" y="343" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">Blue Yonder · Formant · InOrbit</text>
+
+      <!-- 구간 3 로드맵 (회색 점선) -->
+      <rect x="604" y="48" width="280" height="44" fill="#20272F" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <text x="616" y="66" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">GreyOrange DeepNav</text>
+      <text x="616" y="83" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">2026 초 GA 예정 · 2025-08 발표</text>
+      <circle cx="872" cy="60" r="5" fill="#F08A32"/>
+
+      <rect x="604" y="100" width="280" height="44" fill="#20272F" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <text x="616" y="118" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">Geek+ Geekplus Brain</text>
+      <text x="616" y="135" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">임바디드 AI · 휴머노이드 · 2026-03</text>
+
+      <rect x="604" y="152" width="280" height="44" fill="#20272F" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <text x="616" y="170" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">idealworks AnyFleet 확장</text>
+      <text x="616" y="187" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">휴머노이드 폼팩터 · Mega 결합 · 2025-06</text>
+
+      <rect x="604" y="204" width="280" height="44" fill="#20272F" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <text x="616" y="222" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">Skild AI × Fetch Symmetry</text>
+      <text x="616" y="239" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">이기종 지능 레이어 · 2026-04</text>
+
+      <rect x="604" y="256" width="280" height="44" fill="#20272F" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <text x="616" y="274" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">MiR Fleet Enterprise</text>
+      <text x="616" y="291" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">모듈 추가 예고 · 명칭 미공개</text>
+
+      <rect x="604" y="308" width="280" height="44" fill="#20272F" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <text x="616" y="326" font-family="IBM Plex Sans KR, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1">GreyOrange 로드맵 3축</text>
+      <text x="616" y="343" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">DeepNav · RaaS · 생태계 · 2025-10</text>
+
+      <!-- 본 프로젝트 (주황 강조) -->
+      <rect x="16" y="376" width="868" height="58" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="30" y="400" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">본 프로젝트 — 시뮬 기반 대수·기종 견적 + 고정 PIBT + AI 통행 규칙 θ + 물리 검증 영상</text>
+      <text x="30" y="420" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">배치 전 트윈 검증을 제3자 견적 서비스로 · 플릿 AI는 θ 예측으로 축소 · 라이브 운영 제어·임바디드 AI는 범위 밖</text>
+
+      <text x="450" y="468" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">초록 = 상용 · 흰 테두리 = 파일럿·초기 상용 · 회색 점선 = 발표된 로드맵 · 주황 점 = 본 프로젝트가 참조한 항목</text>
+    </svg>
+    <p class="soft">왼쪽으로 갈수록 이미 돈을 받고 파는 것, 오른쪽으로 갈수록 발표만 된 것이다. 주황 점이 붙은 다섯 항목이 본 프로젝트가 참조한 축이고, 아래 주황 상자가 그 조합이다(SEC 05).</p>
+
+    <details class="more"><summary>먼저 알아둘 용어 10개 — 펼쳐 보기</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:170px">용어</th><th>쉬운 설명</th></tr>
+      <tr><td><b>FMS</b></td><td>Fleet Management System. 로봇 여러 대에 일을 나눠 주고 길을 정해 주는 관제 소프트웨어</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#wms">WMS</a> / WES</b></td><td>Warehouse Management / Execution System. 창고 관리 시스템과, 그 아래에서 설비·로봇에 실제 작업을 흘려보내는 실행 계층</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#vda5050">VDA 5050</a></b></td><td>FMS와 로봇 사이의 표준 인터페이스. 중앙이 경로를 내려주고 로봇이 따른다. 프로토콜은 MQTT+JSON</td></tr>
+      <tr><td><b>주문 스트리밍</b></td><td>주문을 묶음(wave)으로 처리하지 않고 들어오는 대로 연속 처리하는 방식. 이벤트 기반 WMS↔FMS 연동이 전제</td></tr>
+      <tr><td><b>MAOP</b></td><td>Multiagent Orchestration Platform. Gartner가 2025년에 붙인 이름. 여러 회사의 로봇과 사람을 한 소프트웨어가 조정하는 플랫폼 범주</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#digitaltwin">디지털 트윈</a></b></td><td>실제 창고를 컴퓨터 안에 복제한 모델. 배치 전 검증용과 운영 중 상시 예측용(라이브 what-if)이 구분된다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#mapf">MAPF</a></b></td><td>Multi-Agent Path Finding. 여러 로봇이 서로 부딪히지 않게 경로를 동시에 찾는 문제</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#pibt">PIBT</a></b></td><td>Priority Inheritance with Backtracking. 본 프로젝트가 고정 채택한 MAPF 알고리즘(<a href="../tech/amr_mapf_theory.html">TECH 04</a>)</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#theta">θ (통행 규칙)</a></b></td><td>창고 모양과 물동 조건에서 AI가 예측하는 통행 규칙 파라미터 11개. PIBT의 통행 비용에 반영된다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#intake-service">요청 접수형</a></b></td><td>고객이 직접 돌리는 셀프서브가 아니라, 요청을 받아 운영자가 검토하고 시뮬레이션을 돌린 뒤 견적을 보내는 비동기 서비스 형태</td></tr>
+    </table></div>
+    </details>
+  </div>
+</section>
+
+<!-- ══════════ F1 조사 방법과 기준 ══════════ -->
+<section id="f1">
+  <div class="sec-head"><span class="sec-no">SEC 01 · 조사 방법과 기준</span><h2>근거 URL과 날짜가 있는 주장만 남겼다</h2></div>
+  <div class="sec-body">
+    <p class="lead">조사 수행일은 <b>2026-09-01</b>이다. 이 페이지의 "지금"은 전부 그 시점 기준이며, 작성일(2026-09-03)에 웹 재검증은 하지 않았다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:150px">항목</th><th>내용</th></tr>
+      <tr><td><b>조사 시점</b></td><td>2026-09-01 (KST 10:09 ~ 10:20). 요청 → 에이전트 보고 3건 → 종합 순</td></tr>
+      <tr><td><b>요구 사항</b></td><td>① 실제 출시·제공 수준 ② 각사가 공표한 다음 단계 ③ 웹 검색 기반의 근거(URL·날짜)</td></tr>
+      <tr><td><b>방법</b></td><td>웹 검색·페치 에이전트 3기 병렬. 공통 규칙: 모든 주장에 출처 URL + 날짜, 공식 발표와 기사 추정을 구분, 검증 못 한 것은 그렇게 표기</td></tr>
+      <tr><td><b>채택 규칙</b></td><td>근거 URL이 있는 항목만 표에 올린다. [공식] / [기사] / [2차] 표기는 보고 원문 그대로. 발표일이 없는 제품 페이지는 "시점 미기재"</td></tr>
+      <tr><td><b>재검증</b></td><td>없음. URL·날짜·수치는 2026-09-01 보고 기록에서 옮겼다. 한계는 SEC 06</td></tr>
+    </table></div>
+
+    <h3>조사 축 3개</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:60px">축</th><th style="width:220px">주제</th><th>범위</th></tr>
+      <tr><td><b>1</b></td><td>AMR 벤더 FMS 로드맵</td><td>Locus, Geek+, MiR, Zebra/Fetch, idealworks, OTTO/Rockwell, Exotec, Hai, GreyOrange. 현재 FMS·WMS 연동·다음 단계·VDA 5050</td></tr>
+      <tr><td><b>2</b></td><td>오케스트레이션·표준 계층</td><td>멀티벤더 오케스트레이션(Körber, SVT, InOrbit, Formant, Meili), WMS/WES 융합(Manhattan, Blue Yonder, Körber, SAP, Gartner), 표준(VDA 5050, MassRobotics, openTCS), 주문 스트리밍</td></tr>
+      <tr><td><b>3</b></td><td>디지털 트윈·AI 관제 방향</td><td>NVIDIA Mega/Omniverse·KION, Siemens, 플릿 AI(GreyOrange·Geek+·Locus·Amazon), 시뮬레이션 연동 운영(Ocado·Amazon·JD), 애널리스트(Gartner·DHL·Interact·MHI)</td></tr>
+    </table></div>
+    <p class="soft">아래 SEC 02~04의 표는 세 축의 보고를 성숙도(상용 / 다음 단계 / 표준·플랫폼) 기준으로 다시 묶은 것이다.</p>
+  </div>
+</section>
+
+<!-- ══════════ F2 지금 상용으로 나와 있는 것 ══════════ -->
+<section id="f2">
+  <div class="sec-head"><span class="sec-no">SEC 02 · 지금 상용으로 나와 있는 것</span><h2>주문 기반 실시간 통합은 차별점이 아니라 따라야 할 기본선이다</h2></div>
+  <div class="sec-body">
+    <p class="lead">WMS 계층, 통합 미들웨어, 벤더 FMS, 운영 디지털 트윈 네 계층 모두에 이미 팔리는 제품이 있다. 조사 종합의 첫 결론이 이것이었다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:170px">계층</th><th>상용으로 확인된 것</th><th style="width:230px">대표 회사</th></tr>
+      <tr><td><b>WMS / WES</b></td><td>WMS 안에 WES와 로봇 허브 내장. VDA 5050 표준 인터페이스 탑재. 주문 스트리밍(wave·waveless 동시 운용). 에이전틱 AI 보조 계층은 2025년 하반기 GA(정식 출시)</td><td>Manhattan · Blue Yonder · SAP · Körber(Infios)</td></tr>
+      <tr><td><b>통합 미들웨어</b></td><td>사전 구축 커넥터로 WMS와 이기종 로봇을 잇는 벤더 중립 레이어. DHL 30개 사이트 라이브가 규모 근거</td><td>SVT Robotics · InOrbit · GreyOrange GreyMatter · Roboteon</td></tr>
+      <tr><td><b>벤더 FMS</b></td><td>단일 사이트 1,000대+(Locus), 5,000대+(Geek+), 100대+(MiR) 운용. 교통관제·자동 배차·Open API·사전 시뮬레이션이 표준 기능</td><td>Locus · Geek+ · MiR · OTTO · idealworks · Exotec · Hai</td></tr>
+      <tr><td><b>운영 트윈 · 플릿 AI</b></td><td>라이브 what-if 트윈 상시 운영은 Ocado가 유일한 공식 실증. 플릿 조정 기반 모델은 Amazon DeepFleet이 프로덕션 규모</td><td>Ocado · Amazon · Dexory · Siemens+KION</td></tr>
+    </table></div>
+    <div class="plain"><span class="pl-tag">조사 종합의 결론 ①</span>주문에서 출발하는 실시간 WMS↔FMS 통합 그 자체는 이미 상품이다. 본 프로젝트의 주문 스트리밍·이벤트 기반 골격은 차별점으로 내세울 것이 아니라 <b>당연히 따라야 할 기본선</b>으로 둔다.</div>
+
+    <details class="more"><summary>2-A WMS / WES 계층 9건 — 펼쳐 보기</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:130px">회사</th><th>기능</th><th style="width:130px">시점</th><th style="width:170px">근거</th></tr>
+      <tr><td><b>Manhattan</b></td><td>Order Streaming — wave·waveless(묶음·연속) 주문 처리 동시 운용, ML(기계학습)로 오케스트레이션 로직을 실시간 조정한다고 주장 [공식 제품 페이지, 상용 출하]</td><td>시점 미기재</td><td><a href="https://www.manh.com/solutions/supply-chain-management-software/warehouse-management/order-streaming">manh.com</a></td></tr>
+      <tr><td><b>Manhattan</b></td><td>Active WM — WMS에 WES 내장 + Manhattan Automation Network(사전 인증 파트너, 예: GreyOrange·Locus) [공식]</td><td>시점 미기재</td><td><a href="https://www.manh.com/en-in/our-solutions/supply-chain-management-software/warehouse-management-system">manh.com</a> · <a href="https://developer.manh.com/docs/reference/app/mawm/automation-and-robotics/">developer.manh.com</a></td></tr>
+      <tr><td><b>Manhattan</b></td><td>Agentic AI + Agent Foundry 발표(Momentum 2025), 2025 가을 GA → AI Agent Workforce 상용화. WMS 예외처리·의사결정 보조 계층</td><td>2025-05-22</td><td><a href="https://www.manh.com/about-us/newsroom/press-releases/manhattan-associates-unveils-agentic-ai-innovation-at-momentum-2025">manh.com PR</a></td></tr>
+      <tr><td><b>Blue Yonder</b></td><td>Robotics Hub — 별도 SKU, 벤더 중립 SaaS 오케스트레이션 레이어. WMS 태스크를 기계별 명령으로 번역 [공식]</td><td>시점 미기재</td><td><a href="https://blueyonder.com/solutions/warehouse-management/robotics-hub">blueyonder.com</a></td></tr>
+      <tr><td><b>Blue Yonder</b></td><td>Warehouse Ops Agent(에이전틱 AI), 리소스 오케스트레이션, WMS↔자동화 실시간 통신으로 배칭 제거, 12+ 벤더 온보딩 가속 [공식]</td><td>2025-10-28</td><td><a href="https://blueyonder.com/media/2025/blue-yonder-transforms-warehouse-management">blueyonder.com</a> · <a href="https://www.businesswire.com/news/home/20251028303156/en/">businesswire.com</a></td></tr>
+      <tr><td><b>Blue Yonder</b></td><td>SaaS WMS 2025.2부터 agentic AI 탑재. NVIDIA와 Model Training Factory</td><td>2026-05-19</td><td><a href="https://www.dcvelocity.com/technology/artificial-intelligence/blue-yonder-launches-ai-agent-testing-system">dcvelocity.com</a></td></tr>
+      <tr><td><b>SAP</b></td><td>EWM에 VDA 5050 표준 인터페이스 탑재 + BTP 기반 SAP Warehouse Robotics 애드온. S/4HANA 2025 FPS0부터 Warehouse Order Business Event → Event Mesh로 FMS에 이벤트 기반 전달 [공식 블로그]</td><td>S/4HANA 2025 FPS0</td><td><a href="https://community.sap.com/t5/supply-chain-management-blog-posts-by-sap/the-sap-extended-warehouse-management-faq-series-robotic-integration-for/ba-p/14261381">community.sap.com (FAQ)</a> · <a href="https://community.sap.com/t5/supply-chain-management-blog-posts-by-members/automate-digital-and-physical-together-intralogistics-fleet-orchestration/ba-p/14263076">community.sap.com (오케스트레이션)</a></td></tr>
+      <tr><td><b>Körber → Infios</b></td><td>UCS(Unified Control System) — WMS 데이터를 받아 AMR·사람·MHE(물류 설비)에 태스크를 자동 할당하는 벤더 중립 레이어. "UNISON"이라는 제품명은 검증 불가</td><td>2022-10 (UCS 발표) / 2025-03-04 (Infios 리브랜딩)</td><td><a href="https://www.prnewswire.com/news-releases/korber-unveils-unified-control-system-ucs-to-optimize-end-to-end-material-flows-301646322.html">prnewswire.com</a> · <a href="https://www.businesswire.com/news/home/20250304096055/en/">businesswire.com</a></td></tr>
+      <tr><td><b>Gartner MQ WMS 2025</b></td><td>SAP(12년)·Oracle(10년)·Infios(7년) 리더. 2026 MQ에서 Blue Yonder 18회 연속 리더 (각사 공식 PR)</td><td>2025-05 / 2026</td><td><a href="https://news.sap.com/2025/05/sap-leader-gartner-magic-quadrant-warehouse-management-systems/">news.sap.com</a> · <a href="https://www.oracle.com/news/announcement/oracle-named-a-leader-in-2025-gartner-magic-quadrant-for-warehouse-management-systems-2025-05-22/">oracle.com</a> · <a href="https://www.businesswire.com/news/home/20250506287889/en/">businesswire.com</a> · <a href="https://blueyonder.com/blog/2026/blue-yonder-named-a-leader-in-the-gartner-magic-quadrant-for-warehouse-management-systems">blueyonder.com</a></td></tr>
+    </table></div>
+    </details>
+
+    <details class="more"><summary>2-B 통합 미들웨어 · 멀티벤더 오케스트레이션 10건 — 펼쳐 보기</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:130px">회사</th><th>기능</th><th style="width:130px">시점</th><th style="width:170px">근거</th></tr>
+      <tr><td><b>SVT Robotics</b></td><td>SOFTBOT — 사전 구축 커넥터 + 태스크 핸드오프 + 워크플로 추적·실행 로그 모니터링(트래픽 제어는 안 함). ProMat 2025에서 클라우드 SOFTBOT Portal [기사]</td><td>2025-03</td><td><a href="https://www.robotics247.com/article/promat-2025-svt-robotics-launches-cloud-based-softbot-portal">robotics247.com</a></td></tr>
+      <tr><td><b>SVT Robotics + DHL Supply Chain</b></td><td>글로벌 8,000+ 협동로봇 환경에서 30개 사이트 라이브 → 3년 내 100+ 사이트 확장. 통합 기간 최대 12배 단축(6~8주 → GtP 통합 3시간 사례) [DHL 공식]</td><td>2026-03-17</td><td><a href="https://group.dhl.com/en/media-relations/press-releases/2026/dhl-supply-chain-accelerates-automation-deployments-with-stv-robotics-softbot-platform.html">group.dhl.com</a> · <a href="https://roboticsandautomationnews.com/2026/03/17/dhl-deploys-svt-robotics-platform-to-integrate-warehouse-robots-up-to-12-times-faster/99803/">roboticsandautomationnews.com</a></td></tr>
+      <tr><td><b>SVT Robotics</b></td><td>Tecsys WMS 커넥터 [공식 PR]</td><td>시점 미기재</td><td><a href="https://seekingalpha.com/pr/19299539-svt-robotics-delivers-rapid-warehouse-automation-integration-for-tecsys-wms-customers-with-a">seekingalpha.com</a></td></tr>
+      <tr><td><b>InOrbit</b></td><td>RobOps(관측성 + 오케스트레이션). Space Intelligence 발표, 제품 3종(Space Intelligence / Ground Control / OpenRobOps) + LLM 기반 RobOps Copilot. VDA 5050·MassRobotics·Open-RMF 지원, RMF Fleet Adapter 오픈소스 [공식]</td><td>2025-01</td><td><a href="https://www.inorbit.ai/news">inorbit.ai/news</a> · <a href="https://www.inorbit.ai/blog/inorbit-rmf-adapter">inorbit.ai/blog</a></td></tr>
+      <tr><td><b>Formant</b></td><td>F3 AI 네이티브 로봇 관리 플랫폼, 누적 $39.1M 펀딩. 원격 조작·데이터·관측성 성격 [기사·회사 발표]</td><td>2025-07</td><td><a href="https://www.robotics247.com/company/formant">robotics247.com</a> · <a href="https://www.therobotreport.com/formant-launches-cloud-based-robot-fleet-management-platform/">therobotreport.com</a></td></tr>
+      <tr><td><b>Meili Robots</b></td><td>소스코드 제공형 Code License 출시. Multifloor 대형 업데이트 [공식]</td><td>2025-04 / 2025-11-04</td><td><a href="https://www.robotics247.com/article/meili-robots-launches-code-license-for-fleet-management-system">robotics247.com</a> · <a href="https://meilirobots.com/resources-list/meilifms-big-release">meilirobots.com</a></td></tr>
+      <tr><td><b>GreyOrange</b></td><td>GreyMatter — open API 멀티플릿 오케스트레이션 + Certified Ranger Network(HAI Robotics, Zebra/Fetch, Mushiny 등). "분당 100만 오퍼레이션 최적화" 주장(회사 발표, 독립 검증 불가)</td><td>시점 미기재</td><td><a href="https://www.greyorange.com/press-release/greyorange-transforms-warehouse-fulfillment-with-its-greymatter-open-api/">greyorange.com</a></td></tr>
+      <tr><td><b>GreyOrange</b></td><td>ProMat 2025 시연 — Rack-to-Person / Tote-to-Person 하이브리드, AMR 지게차 오케스트레이션 [공식]</td><td>2025-03-06</td><td><a href="https://www.greyorange.com/press-release/greyorange-to-showcase-ai-powered-warehouse-orchestration-at-promat-2025/">greyorange.com</a></td></tr>
+      <tr><td><b>GreyOrange</b></td><td>Interact Analysis 창고 SW 리포트 등재(로봇+인력 애그노스틱 오케스트레이션) [공식]</td><td>2025-02-27</td><td><a href="https://www.globenewswire.com/news-release/2025/02/27/3033967/0/en/">globenewswire.com</a></td></tr>
+      <tr><td><b>Roboteon</b></td><td>SAP EWM 인증 통합 로보틱스 풀필먼트·오케스트레이션 플랫폼. MS Dynamics 365 인증 (회사 발표)</td><td>2025-12</td><td><a href="https://www.roboteon.com/platform">roboteon.com</a> · <a href="https://www.automate.org/news/roboteon-announces-powerful-certified-warehouse-automation-solution-for-microsoft-dynamics-365">automate.org</a></td></tr>
+    </table></div>
+    </details>
+
+    <details class="more"><summary>2-C 벤더 FMS 20건 — 펼쳐 보기</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:130px">회사</th><th>기능</th><th style="width:130px">시점</th><th style="width:170px">근거</th></tr>
+      <tr><td><b>Locus Robotics</b></td><td>LocusONE — 멀티 폼팩터(Origin·Vector·Max) 통합 오케스트레이션, 동시 1,000대+, LocusView 대시보드, OTA(원격 업데이트), RaaS(로봇 구독형). "any WMS와 통합"(API 직접 연동 주장) [공식]</td><td>2023-03-20</td><td><a href="https://www.prnewswire.com/news-releases/locus-robotics-introduces-locusone-the-warehouse-orchestration-platform-powering-centrally-managed-multi-bot-amr-automation-301776014.html">prnewswire.com</a></td></tr>
+      <tr><td><b>Locus Robotics</b></td><td>LocusINTELLIGENCE — LocusONE 위 AI/BI 레이어(장애물 인식·회피, 작업자 태스크 지시, AI 시뮬레이션, RFID 검증) [공식]</td><td>2025-03-10</td><td><a href="https://www.prnewswire.com/news-releases/locus-robotics-introduces-locusintelligence-the-future-of-ai-driven-warehouse-automation-302396286.html">prnewswire.com</a></td></tr>
+      <tr><td><b>Locus Robotics</b></td><td>실배포 실적 50억 픽(2025-04) → 60억 픽</td><td>2025-10-23</td><td><a href="https://roboticsandautomationnews.com/2025/10/23/locus-robotics-reports-record-growth-achieving-6-billion-picks-in-fastest-time-yet/95773/">roboticsandautomationnews.com</a></td></tr>
+      <tr><td><b>Locus Robotics</b></td><td>LocusONE 실시간 수요 기반 태스크 인터리빙(주문 스트림 소화) [공식]</td><td>시점 미기재</td><td><a href="https://locusrobotics.com/locusone/fleet">locusrobotics.com</a></td></tr>
+      <tr><td><b>Geek+</b></td><td>RMS + WES + IOP. RMS 업그레이드: 단일 사이트 5,000대+, 초당 10,000 태스크, CPU −35% / 메모리 −50%, MAPF 알고리즘으로 처리량 +15% [공식]</td><td>2024-11-26</td><td><a href="https://www.geekplus.com/resources/news/geekplus_rms_upgrade">geekplus.com</a></td></tr>
+      <tr><td><b>Geek+</b></td><td>WMS/ERP/MES와 open API 연동 [기사/2차]</td><td>—</td><td><a href="https://bestopschainai.com/warehouse-inventory/geek-plus-overview-and-features">bestopschainai.com</a></td></tr>
+      <tr><td><b>Geek+</b></td><td>홍콩 상장(AMR 최초), 2025 매출 RMB 31.7억(+31.6%)</td><td>2025-07-15 (축3) / "2025-07 [기사], 별도 검증 안 함" (축1)</td><td><a href="https://www.geekplus.com/resources/robotics-blogs/the-road-to-ipo">geekplus.com</a></td></tr>
+      <tr><td><b>MiR</b></td><td>MiR Fleet Enterprise — 폴링 API → pub-sub, 100대+ 확장, SSO(통합 로그인)·감사로그·권한(IEC 62443-4-2 SL-C 3), Windows Server·가상화·클라우드 배포 [공식]. WMS 직결 언급 없음</td><td>2024-10-18</td><td><a href="https://mobile-industrial-robots.com/blog/new-mir-fleet-enterprise">mobile-industrial-robots.com</a> · <a href="https://www.businesswire.com/news/home/20241018417118/en/">businesswire.com</a></td></tr>
+      <tr><td><b>MiR</b></td><td>MiR Insights 클라우드 분석 [공식]</td><td>2023-03-20</td><td><a href="https://www.businesswire.com/news/home/20230320005222/en/">businesswire.com</a></td></tr>
+      <tr><td><b>MiR</b></td><td>VDA 5050 Adapter — MiR REST↔MQTT 브리지, MHP·SYNAOS·Siemens SIMOVE·KINEXON 공동 개발. 서드파티 FMS가 MiR 로봇을 직접 지휘 [공식]</td><td>2025-03-11</td><td><a href="https://mobile-industrial-robots.com/news-center/mir-supports-interoperability-with-vda5050">mobile-industrial-robots.com</a> · <a href="https://www.businesswire.com/news/home/20250311785814/en/">businesswire.com</a></td></tr>
+      <tr><td><b>MiR</b></td><td>MiR1200 Pallet Jack(NVIDIA Jetson AGX Orin, AI 팔레트 인식) + 생성형 AI MiR Insights 프리뷰 (Automate 2024) [공식]</td><td>2024-05-01</td><td><a href="https://www.globenewswire.com/news-release/2024/05/01/2873332/0/en/">globenewswire.com</a></td></tr>
+      <tr><td><b>Zebra (Fetch)</b></td><td>Symmetry Fulfillment 확장 — Connect Fulfillment AMR + 탈착식 카트(로봇 −30%, 처리 부피 +300%) [공식]. 이후 사업 철수(SEC 03)</td><td>2025-01-30</td><td><a href="https://www.zebra.com/us/en/about-zebra/newsroom/press-releases/2025/zebra-technologies-expands-symmetry-fulfillment-solution-to-increase-productivity-with-30-fewer-robots.html">zebra.com</a></td></tr>
+      <tr><td><b>idealworks</b></td><td>iw.hub + iw.os + AnyFleet(클라우드 FMS, VDA 5050 기반 멀티벤더 통합), ROS-VDA5050-Connector·Cloud Connector [공식]</td><td>2024</td><td><a href="https://idealworks.com/en/news/en/introducing-the-cloud-connectors/">idealworks.com</a></td></tr>
+      <tr><td><b>idealworks</b></td><td>iw.os에 Isaac Perceptor 탑재, iw.sim으로 계약 전 플릿 규모·라우팅 사전 검증, iw.hub 1,000대+ 가동(BMW·Zalando 등)</td><td>시점 미기재</td><td><a href="https://idealworks.com/en/idealworks-robotics-ecosystem-to-integrate-nvidia-ai-nvidia-omniverse-and-nvidia-isaac-technologies/">idealworks.com</a></td></tr>
+      <tr><td><b>OTTO Motors / Rockwell</b></td><td>OTTO Fleet Manager — 교통관제(교차로 예측·회피), 배터리·가동률 기반 자동 배차, Open API(MES·ERP·WMS), OPC-UA PLC 직결, 사전 시뮬레이션. OTTO AMR은 VDA 5050 준수(서드파티 컨트롤러 명령 수신) [공식]</td><td>시점 미기재</td><td><a href="https://ottomotors.com/fleet-manager/">ottomotors.com</a></td></tr>
+      <tr><td><b>OTTO Motors</b></td><td>v2.32 — Yield Line 무정차 교차로, OTTO 1500 최대 2배 증속, 반기 릴리스 주기 [공식]</td><td>2024-10-08</td><td><a href="https://ottomotors.com/company/newsroom/press-releases/otto-boosts-material-flow-efficiency-with-advanced-traffic-management-in-latest-software-update/">ottomotors.com</a></td></tr>
+      <tr><td><b>OTTO Motors</b></td><td>통로 폭 적응형 장애물 회피(벤치마크 1.9배), 선택적 리매핑 [공식]</td><td>2025-06-03</td><td><a href="https://ottomotors.com/blog/amr-productivity-software-release/">ottomotors.com</a></td></tr>
+      <tr><td><b>Exotec</b></td><td>Deepsky WES — Skypod + 서드파티 설비 오케스트레이션, WMS/WCS 연동 실행 계층 [기사 2022-12 / 공식]</td><td>2022-12</td><td><a href="https://www.robotics247.com/article/exotec_builds_5000th_robot_launches_three_new_technologies_hires_executives">robotics247.com</a> · <a href="https://www.exotec.com/system/warehouse-optimization-software/">exotec.com</a></td></tr>
+      <tr><td><b>Exotec</b></td><td>차세대 Skypod 상용 출시 — 스테이션당 처리량 +50%, 밀도 +30%, Deepsky 기능 확장 [공식]</td><td>2025-02-06</td><td><a href="https://www.exotec.com/news/exotec-launches-next-generation-of-skypod-system-an-all-in-one-robot-based-as-rs-that-addresses-the-majority-of-processes-within-a-warehouse/">exotec.com</a></td></tr>
+      <tr><td><b>Hai Robotics</b></td><td>HaiQ — 주문 실행·로봇 디스패치·실시간 인사이트(ACR, 케이스 핸들링 로봇 전용) [공식]</td><td>2025-04-25</td><td><a href="https://www.hairobotics.com/news/hai-robotics-unveils-haipick-climb-innovation-summit-2025">hairobotics.com</a></td></tr>
+    </table></div>
+    </details>
+
+    <details class="more"><summary>2-D 운영 단계 디지털 트윈 · 플릿 AI 중 "상용" 판정 7건 — 펼쳐 보기</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:130px">회사</th><th>기능</th><th style="width:130px">시점</th><th style="width:170px">근거</th></tr>
+      <tr><td><b>Ocado</b></td><td>12개월간 "270년치 창고 운영 시뮬레이션". 배치 전·중·후 트윈 운영, 라이브 운영 데이터로 미래 성능 예측, 변경을 가상에서 먼저 테스트. 자사+파트너 CFC(고객 풀필먼트 센터)의 일상 도구 [공식]. 라이브 what-if 상시 운영을 공식 문서로 실증한 유일 사례</td><td>2025-06-04</td><td><a href="https://www.ocadogroup.com/newsroom/stories/digital-twins-and-simulations">ocadogroup.com</a></td></tr>
+      <tr><td><b>Amazon</b></td><td>DeepFleet — 100만 번째 로봇과 함께 발표한 모바일 로봇 플릿 조정용 기반 모델(foundation model). 플릿 이동시간 10% 개선 주장, arXiv 논문(2025-08). 프로덕션 규모 근거가 가장 강함</td><td>2025-07-01</td><td><a href="https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model">aboutamazon.com</a> · <a href="https://arxiv.org/abs/2508.08574">arxiv.org</a></td></tr>
+      <tr><td><b>Amazon</b></td><td>Omniverse/Isaac Sim으로 FC(풀필먼트 센터) 전체 가상 검증(설계·검증 중심). 라이브 what-if 오퍼레이터 툴 여부는 확인 불가</td><td>시점 미기재</td><td><a href="https://www.aboutamazon.com/news/operations/amazon-robotics-robots-fulfillment-center">aboutamazon.com</a> · <a href="https://www.youtube.com/watch?v=-VQLqs6s9y0">youtube.com</a></td></tr>
+      <tr><td><b>Dexory</b></td><td>로봇이 시간당 1만 로케이션 스캔, 실시간 트윈 유지 — GXO·Maersk·DHL·ODW 배치. 라이브 상태 미러이지 what-if 엔진은 아님</td><td>시점 미기재</td><td><a href="https://www.dexory.com/">dexory.com</a> · <a href="https://www.odwlogistics.com/resources/odw-logistics-enhances-warehouse-automation-with-dexory-robotics-deployment">odwlogistics.com</a></td></tr>
+      <tr><td><b>JD Logistics</b></td><td>미국 창고 디지털 트윈, 예측 정확도 90%+ 주장 (자사 블로그, 게시일 확인 불가)</td><td>날짜 없음</td><td><a href="https://jdcorporateblog.com/elevating-logistics-jd-logistics-u-s-warehouses-leverage-digital-twin-technology/">jdcorporateblog.com</a></td></tr>
+      <tr><td><b>Siemens</b></td><td>기계 → 설비 → 창고 "홀리스틱 디지털 트윈", 엔지니어링 기간 최대 35% 단축 주장(자사 수치)</td><td>시점 미기재</td><td><a href="https://press.siemens.com/global/en/pressrelease/maximum-transparency-siemens-shows-holistic-digital-twin-logistics-center">press.siemens.com (global)</a> · <a href="https://press.siemens.com/gr/en/pressrelease/flexible-fast-and-sustainable-comprehensive-digital-twin-intralogistics">press.siemens.com (gr)</a></td></tr>
+      <tr><td><b>Siemens + KION</b></td><td>Digital Twin Composer — CES 2026 데뷔, KION 유럽 첫 도입(제품 출시 + 초기 상용)</td><td>2026-01 / 2026-04-16</td><td><a href="https://press.siemens.com/global/en/pressrelease/siemens-and-kion-partner-shape-supply-chains-future">press.siemens.com</a></td></tr>
+    </table></div>
+    </details>
+  </div>
+</section>
+
+<!-- ══════════ F3 각사가 말하는 다음 단계 ══════════ -->
+<section id="f3">
+  <div class="sec-head"><span class="sec-no">SEC 03 · 각사가 말하는 다음 단계</span><h2>다섯 갈래로 갈리고, 개방의 방향은 회사마다 반대다</h2></div>
+  <div class="sec-body">
+    <p class="lead">공표된 다음 단계를 묶으면 다섯 클러스터가 된다. 성숙도는 클러스터마다 다르다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:60px">군</th><th style="width:230px">방향</th><th>내용</th><th style="width:170px">성숙도 (조사 판정)</th></tr>
+      <tr><td><b>A</b></td><td>VDA 5050 기반 이기종 개방</td><td>MiR 어댑터, SAP EWM 탑재, idealworks 코어팀 참여. 3.0은 2026-04 공개</td><td><span class="chip c-amber">표준 공개 4개월 · 구현 초기</span></td></tr>
+      <tr><td><b>B</b></td><td>운영 단계 디지털 트윈</td><td>KION+NVIDIA Mega 라이브 파일럿, Dematic AI Control Tower 데모, Siemens+KION Composer 초기 상용</td><td><span class="chip c-steel">파일럿 ~ 초기 상용</span></td></tr>
+      <tr><td><b>C</b></td><td>멀티에이전트 오케스트레이션</td><td>Gartner MAOP 카테고리 신설, GreyOrange DeepNav, Skild AI × Symmetry</td><td><span class="chip c-steel">카테고리 형성기</span></td></tr>
+      <tr><td><b>D</b></td><td>에이전틱 AI 운영 보조</td><td>Blue Yonder Ops Agent, Formant F3, InOrbit RobOps Copilot, Manhattan Agent Foundry</td><td><span class="chip c-green">상용 진입</span></td></tr>
+      <tr><td><b>E</b></td><td>임바디드 · Physical AI 수직 확장</td><td>Locus Array, Geek+ Geekplus Brain·휴머노이드, idealworks AnyFleet 휴머노이드 확장</td><td><span class="chip c-slate">본 프로젝트 범위 밖</span></td></tr>
+    </table></div>
+
+    <h3>축1 교차 관찰 — 같은 표준 진영 안에서도 방향이 반대다</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:200px">관찰</th><th>내용</th></tr>
+      <tr><td><b>개방의 두 방향</b></td><td>서구 AMR 진영(MiR·OTTO·idealworks)은 VDA 5050 개방으로 수렴한다. 단 MiR·OTTO는 "로봇을 개방"(타사 FMS 밑으로 들어감), idealworks·GreyOrange는 "FMS를 개방"(타사 로봇을 수용)으로 방향이 반대다</td></tr>
+      <tr><td><b>수직 확장</b></td><td>Locus·Geek+는 임바디드 AI·매니퓰레이션으로 스택을 위로 넓힌다</td></tr>
+      <tr><td><b>범용 FMS 단독 사업</b></td><td>Zebra의 Fetch 철수(2025-12) → Skild AI 매각(2026-04)은 범용 FMS만으로 수익을 내기 어렵다는 사례다</td></tr>
+    </table></div>
+
+    <details class="more"><summary>회사별 다음 단계 20건 — 펼쳐 보기</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:130px">회사</th><th>다음 단계(공표 내용)</th><th style="width:110px">시점</th><th style="width:170px">근거</th></tr>
+      <tr><td><b>Locus Robotics</b></td><td>Locus Array(MODEX) — 옴니휠 + 로봇팔 + AI 비전 모바일 매니퓰레이터, "Physical AI", robots-to-goods 완전 자동 피킹(수작업 90% 감소 주장), NVIDIA 엣지 LocusINTELLIGENCE 오케스트레이션, DHL 콜럼버스 3대 선행 배치 [공식+기사]</td><td>2026-04-13</td><td><a href="https://www.therobotreport.com/locus-robotics-launches-locus-array-for-fully-autonomous-fulfillment/">therobotreport.com</a> · <a href="https://www.businesswire.com/news/home/20260410524554/en/">businesswire.com</a></td></tr>
+      <tr><td><b>Geek+</b></td><td>"Geekplus Brain" 임바디드 인텔리전스 플랫폼 + 휴머노이드 Gino 1 + Robot Arm Picking Station (LogiMAT 2026) [공식]</td><td>2026-03-12</td><td><a href="https://www.globenewswire.com/news-release/2026/03/12/3254307/0/en/">globenewswire.com</a></td></tr>
+      <tr><td><b>Geek+</b></td><td>MODEX 2026 미국 데뷔 + RoboShuttle V5 [공식]. 방향: "모바일 로봇 → 로봇팔 → 임바디드 AI를 단일 통합 플랫폼으로"</td><td>2026-04-14</td><td><a href="https://www.globenewswire.com/news-release/2026/04/14/3273793/0/en/">globenewswire.com</a></td></tr>
+      <tr><td><b>MiR</b></td><td>VDA 5050 어댑터로 이기종 혼류 현장 대응이 공식 전략. Fleet Enterprise는 "고객 요구에 따라 진화하는 모듈 추가" 예고(구체 모듈명 미공개)</td><td>2025-03-11</td><td><a href="https://mobile-industrial-robots.com/news-center/mir-supports-interoperability-with-vda5050">mobile-industrial-robots.com</a></td></tr>
+      <tr><td><b>Zebra (Fetch)</b></td><td>AMR 사업 wind-down — 인력 대부분 2025년 말 정리, 25%만 2026-03까지 유지 [기사]</td><td>2025-12-12</td><td><a href="https://www.therobotreport.com/zebra-technologies-winding-down-fetch-based-mobile-robot-group/">therobotreport.com</a></td></tr>
+      <tr><td><b>Skild AI</b></td><td>Fetch AMR 플랫폼 + Symmetry 오케스트레이션 SW 인수(금액 비공개, Zebra는 Skild 지분 취득). Symmetry를 Skild Brain과 결합해 이기종 로봇 통합 지능 레이어로 [기사]</td><td>2026-04-16</td><td><a href="https://www.therobotreport.com/skild-acquires-fetch-robotics-assets-from-zebra-automation/">therobotreport.com</a> · <a href="https://www.dcvelocity.com/material-handling/robotics/zebra-sells-off-its-fetch-amr-division">dcvelocity.com</a></td></tr>
+      <tr><td><b>idealworks</b></td><td>AnyFleet 지원 범위를 AMR/AGV → 휴머노이드 포함 신규 폼팩터로 확장, NVIDIA Mega Omniverse Blueprint 기반 플릿 시뮬레이션 결합 [공식]</td><td>2025-06</td><td><a href="https://www.idealworks.com/en/news/anyfleet-expands-robotic-systems-mega-nvidia">idealworks.com</a></td></tr>
+      <tr><td><b>idealworks</b></td><td>VDA 5050 3.0.0 릴리스 코어팀 참여 [공식]</td><td>시점 미기재</td><td><a href="https://idealworks.com/en/vda-5050-3-0-0-pre-release-paves-the-way-for-standardization-of-autonomous-robots/">idealworks.com</a></td></tr>
+      <tr><td><b>idealworks / Agile Robots</b></td><td>Agile Robots가 잔여 지분 인수, 100% 자회사화(BMW는 파트너 유지) [공식]</td><td>2025-09-16</td><td><a href="https://www.agile-robots.com/en/news/detail/agile-robots-completes-acquisition-of-bmw-group-spin-off-idealworks/">agile-robots.com</a></td></tr>
+      <tr><td><b>OTTO / Rockwell</b></td><td>밀워키 본사에서 OTTO 600/1200 미국 생산 개시(25,000 sqft) [공식]. 명시적 로드맵 문서 없음, "반기 단위 기능 릴리스"가 공식 입장</td><td>2025-10-30</td><td><a href="https://www.rockwellautomation.com/en-us/company/news/press-releases/First-Autonomous-Mobile-Robots-Roll-Off-the-Line-at-Rockwell-Automations-Milwaukee-Headquarters.html">rockwellautomation.com</a></td></tr>
+      <tr><td><b>Exotec</b></td><td>Skyfleet 멀티사이트 자동화 프로그램(Decathlon 유럽 전개) [공식]</td><td>2026-03-24</td><td><a href="https://www.prnewswire.com/news-releases/decathlon-scales-european-logistics-with-exotecs-skyfleet-multi-site-automation-program-302723027.html">prnewswire.com</a></td></tr>
+      <tr><td><b>Hai Robotics</b></td><td>HaiPick Climb 업그레이드(처리량·밀도·워크플로 유연성) + 글로벌 12개국 확산, 10,000대 마일스톤 [공식]</td><td>2026-03-09</td><td><a href="https://www.hairobotics.com/news/hai-robotics-announces-upgrade-haipick-climb-delivering-faster-fulfillment-and-higher-storage-density-proven-platform">hairobotics.com</a></td></tr>
+      <tr><td><b>GreyOrange</b></td><td>GreyMatter DeepNav — Google Cloud 공동 개발 대규모 로봇 동적 최적화 AI, 2026 초 GA 예정 [공식] (축3: "DeepNav(RL 내비) 개발 중", 2025-08-14 기사)</td><td>2025-08-12</td><td><a href="https://www.globenewswire.com/news-release/2025/08/12/3131636/0/en/">globenewswire.com</a> · <a href="https://roboticsandautomationnews.com/2025/08/14/greyorange-teams-up-with-google-cloud-on-breakthrough-warehouse-ai/93692/">roboticsandautomationnews.com</a></td></tr>
+      <tr><td><b>GreyOrange</b></td><td>공식 로드맵 3축: DeepNav AI 고도화 / enMotion RaaS / OEM·SI 생태계 확장 (Gartner Representative Provider PR 내) [공식]</td><td>2025-10-09</td><td><a href="https://www.globenewswire.com/news-release/2025/10/09/3164170/0/en/">globenewswire.com</a></td></tr>
+      <tr><td><b>KION + NVIDIA + Accenture</b></td><td>Mega 블루프린트로 "로봇 플릿을 실제 시설 배치 전에 디지털 트윈에서 개발·테스트·최적화", KION 첫 도입사 (CES 2025) [공식]</td><td>2025-01</td><td><a href="https://newsroom.accenture.com/news/2025/kion-teams-with-nvidia-and-accenture-to-optimize-supply-chains-with-ai-powered-robots-and-digital-twins">newsroom.accenture.com</a> · <a href="https://www.kiongroup.com/en/News-Stories/KION-Stories/Innovation/Article/KION-Teams-with-NVIDIA-and-Accenture-to-Optimize-Supply-Chains-with-AI-Powered-Robots-and-Digital-Twins.html">kiongroup.com</a> · <a href="https://www.forbes.com/sites/patrickmoorhead/2025/01/15/nvidia-accenture-and-kion-use-physical-ai-to-transform-warehousing/">forbes.com</a></td></tr>
+      <tr><td><b>Dematic / KION</b></td><td>GTC 2025 — Grand Rapids Solution Center의 AI 생성 디지털 트윈 + "AI Control Tower" 시연. 트윈 역할: ① virtual commissioning(가상 시운전) ② 레이아웃·흐름 사전 시각화 ③ 시나리오 대량 시뮬레이션. 라이브 동기화는 지향점(데모 단계)</td><td>2025-03-27</td><td><a href="https://www.dematic.com/en-us/newsroom/press-releases/2025/dematic-showcases-ai-generated-digital-twin-at-2025-gtc-conference/">dematic.com</a> · <a href="https://www.kiongroup.com/en/Press/Press-Releases/Press-Releases-Detail.html?id=2954666&amp;type=corporate&amp;title=KION+presents+AI+Control+Tower+at+GTC+in+San+Jos%C3%A9%2C+California">kiongroup.com</a></td></tr>
+      <tr><td><b>KION</b></td><td>GTC 2026 — "시뮬레이션 기반 개발에서 실환경 배치로 전환" 공식화. GXO 프랑스 Épinoy 창고에서 자율 산업 트럭이 라이브 end-to-end 운송 미션 수행(파일럿). Mega로 Jetson 기반 자율 지게차 플릿 훈련·테스트. 트레일러 적재 PoC(개념 검증) 2026 후반 예정</td><td>2026-03-16</td><td><a href="https://www.kiongroup.com/en/Press/Press-Releases/Press-Releases-Detail.html?id=1099696911">kiongroup.com</a> · <a href="https://blogs.nvidia.com/blog/gtc-2026-virtual-worlds-physical-ai/">blogs.nvidia.com</a></td></tr>
+      <tr><td><b>Manhattan + Agility Robotics</b></td><td>휴머노이드 Digit + Agility Arc ↔ Manhattan Active WM 통합 파트너십 [공식] (발표/파일럿)</td><td>2024-04-04</td><td><a href="https://www.businesswire.com/news/home/20240404339029/en/">businesswire.com</a></td></tr>
+      <tr><td><b>Manhattan</b></td><td>Momentum 2025 — "자동화 확대가 WES 재설계를 강제한다" (애널리스트 블로그)</td><td>2025-05-29</td><td><a href="https://logisticsviewpoints.com/2025/05/29/manhattan-associates-momentum-2025-new-horizons/">logisticsviewpoints.com</a></td></tr>
+      <tr><td><b>Blue Yonder / Formant / InOrbit</b></td><td>에이전틱 AI 창고 운영 에이전트(Ops Agent, F3, RobOps Copilot) — 발표 ~ 초기 출하</td><td>2025-07 ~ 2025-10</td><td><a href="https://blueyonder.com/media/2025/blue-yonder-transforms-warehouse-management">blueyonder.com</a></td></tr>
+    </table></div>
+    </details>
+  </div>
+</section>
+
+<!-- ══════════ F4 표준·플랫폼 ══════════ -->
+<section id="f4">
+  <div class="sec-head"><span class="sec-no">SEC 04 · 표준·플랫폼</span><h2>VDA 5050 3.0은 공개 4개월, MAOP는 이름이 생긴 지 1년이다</h2></div>
+  <div class="sec-body">
+    <p class="lead">표준과 플랫폼 계층은 제품보다 어리다. 조사 시점 기준으로 VDA 5050 3.0은 공개 4개월, Gartner MAOP 범주는 신설 1년 안팎, NVIDIA Mega는 preview 공개 후 첫 라이브 파일럿 단계였다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:190px">항목</th><th>내용</th><th style="width:110px">시점</th><th style="width:170px">근거</th></tr>
+      <tr><td><b>VDA 5050 v3.0</b></td><td>VDA 공식 프레스(2026-04-21) 기준 2026-04-20 공개, GitHub 오픈소스. 신기능: 자유주행용 존(zone), 패스 셰어링(주행계획·ETA 공유), 다국어 에러, 절전모드. 프로토콜 MQTT+JSON. 차기 버전 로드맵은 공식 문서에서 미확인</td><td>2026-04-20</td><td><a href="https://www.vda.de/en/press/press-releases/2026/260421_PM_VDA_5050_EN">vda.de</a></td></tr>
+      <tr><td><b>VDA 5050 채택</b></td><td>SAP EWM 표준 인터페이스(공식), OTTO Motors 오픈소스 커넥터(기사), Kollmorgen 2025 지원(공식), KINEXON, MiR 어댑터(2025-03-11), idealworks 코어팀. "유럽 중심 사실상 표준". Locus·Geek+·Zebra(Symmetry)·Exotec·Hai의 지원 여부는 공식 1차 출처에서 확인 못 함</td><td>—</td><td><a href="https://www.robotics247.com/article/otto_motors_adds_support_vda_5050_mobile_robot_interoperability_standard">robotics247.com</a> · <a href="https://www.kollmorgen.com/en-us/company/press-releases/2024/kollmorgen-autonomous-mobile-solutions-ams-add-vda-5050-support-its">kollmorgen.com</a></td></tr>
+      <tr><td><b>Gartner MAOP</b></td><td>Innovation Insight: Multiagent Orchestration Platforms(Tunstall·Klappich·Narang·Stufano). 2028년까지 창고 80% 자동화 도입, 2027년까지 WMS 구매 최우선 고려사항이 로보틱스 지원, 이기종 플릿엔 "표준화된 오케스트레이션 소프트웨어" 필요 (애널리스트 리포트, 벤더 PR 경유 인용)</td><td>2025-06-27 (리포트) / 2025-10-09 (PR)</td><td><a href="https://www.roboticstomorrow.com/news/2025/10/09/greyorange-recognized-as-a-representative-provider-in-gartner-innovation-insight-multiagent-orchestration-platforms/25650/">roboticstomorrow.com</a> · <a href="https://www.globenewswire.com/news-release/2025/10/09/3164170/0/en/greyorange-recognized-as-a-representative-provider-in-gartner-innovation-insight.html">globenewswire.com</a> · <a href="https://www.gartner.com/reviews/market/multiagent-orchestration-platforms">gartner.com (Peer Insights)</a></td></tr>
+      <tr><td><b>NVIDIA Mega</b></td><td>Mega Omniverse Blueprint preview를 build.nvidia.com에 공개. Accenture(Digit 휴머노이드 시뮬), Schaeffler, Rockwell(Emulate3D 통합), Siemens 등 채택. 적용 경로: CES 2025 발표 → GTC 2025 데모 → GTC 2026 GXO 라이브 파일럿</td><td>2025-03-31</td><td><a href="https://blogs.nvidia.com/blog/mega-omniverse-blueprint-industrial-digital-twins/">blogs.nvidia.com</a></td></tr>
+      <tr><td><b>AMR 벤더의 Isaac 사용</b></td><td>idealworks iw.os Isaac Perceptor·iw.sim(상용, 1,000+ 로봇). Amazon Robotics Omniverse/Isaac Sim FC 트윈. idealworks AnyFleet + Mega 결합 발표(2025-06)</td><td>—</td><td><a href="https://idealworks.com/en/idealworks-robotics-ecosystem-to-integrate-nvidia-ai-nvidia-omniverse-and-nvidia-isaac-technologies/">idealworks.com</a> · <a href="https://www.idealworks.com/en/news/anyfleet-expands-robotic-systems-mega-nvidia">idealworks.com (AnyFleet)</a></td></tr>
+    </table></div>
+    <div class="plain"><span class="pl-tag">축3 판정 원문</span>"디지털 트윈의 실무 역할은 아직 '배치 전 플릿 테스트 + virtual commissioning + what-if'가 중심. 라이브 운영 제어는 2026년에 파일럿으로 막 진입."</div>
+
+    <details class="more"><summary>VDA 5050 버전 이력 · 기타 상호운용 표준 6건 — 펼쳐 보기</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:190px">항목</th><th>내용</th><th style="width:110px">시점</th><th style="width:170px">근거</th></tr>
+      <tr><td><b>VDA 5050 v2.0 → v2.1</b></td><td>v2.0(2022-01) → v2.1 VDMA 공지(2024-08), 문서판 2025-01</td><td>2024-08 / 2025-01</td><td><a href="https://www.vdma.eu/documents/34570/3317035/24-08-15_PI_VDMA_VDA5050_EN.pdf">vdma.eu (PDF)</a> · <a href="https://www.vda.de/dam/jcr:f0c9c019-1506-4dee-998a-e92723fbf025/VDA5050-V2.1.0-2025-01.pdf?mode=view">vda.de (PDF)</a></td></tr>
+      <tr><td><b>MassRobotics AMR Interoperability Standard</b></td><td>v1.0(2021-05). v2.0은 ARM Institute 프로젝트(Siemens·FedEx 주도)로 미션 통신 API 추가, ISO가 v1.0 채택 절차 진행(기사). 참여 ~30개 조직 중 활발 ~12개로 채택 제한적. v2.0 릴리스 일자 미확인</td><td>2021-05 (v1.0)</td><td><a href="https://www.robotics247.com/article/what_is_massrobotics_amr_interoperability_standard">robotics247.com</a></td></tr>
+      <tr><td><b>Open-RMF</b></td><td>2024년부터 OSRA 관리. 이기종 플릿 + 빌딩 인프라(문·엘리베이터) 조정. 창고보다 병원·시설 중심</td><td>2024~</td><td><a href="https://www.open-rmf.org/">open-rmf.org</a> · <a href="https://www.robotics247.com/article/open_rmf_addresses_growing_interoperability_needs">robotics247.com</a></td></tr>
+      <tr><td><b>openTCS</b></td><td>2024~2026 신뢰할 만한 최신 동향 확보 못 함 — 미확인</td><td>—</td><td>—</td></tr>
+      <tr><td><b>Interact Analysis (멀티플릿 오케스트레이션)</b></td><td>세그먼트 CAGR(연평균 성장률) 138%(2021~27) 전망. 통합 깊이 두 갈래: 로봇 직접 제어(low-level, Synaos 류) vs 벤더 FMS 위 태스크 배분(high-level, InOrbit·Waku·CoEvolution 류)</td><td>2023-01</td><td><a href="https://interactanalysis.com/insight/amr-multi-fleet-orchestration-software/">interactanalysis.com</a></td></tr>
+      <tr><td><b>Gartner 예측 · 시장 규모</b></td><td>"2026년까지 인트라로지스틱스 로봇 도입 기업의 50%+가 MAOP 보유"(기사 경유). 2030년까지 선진 시장 신규 창고 절반이 human-optional(2026-04-13). WES 시장 $1.64B(2024) → $4.28B(2030)은 비공식 블로그 인용으로 신뢰도 낮음</td><td>— / 2026-04-13</td><td><a href="https://www.robotics247.com/article/multiagent_orchestration_platforms_directs_warehouse_robot_fleets_predicts_gartner_research">robotics247.com</a> · <a href="https://www.gartner.com/en/newsroom/2026-04-13-gartner-predicts-half-of-new-warehouses-built-in-developed-markets-will-be-human-optional-facilities-by-2030">gartner.com</a> · <a href="https://cxtms.com/blog/warehouse-execution-systems-wes-middleware-wms-automation-explained-2026">cxtms.com</a></td></tr>
+    </table></div>
+    </details>
+
+    <details class="more"><summary>애널리스트·업계 전망 6건 — 펼쳐 보기</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:190px">출처</th><th>내용</th><th style="width:110px">시점</th><th style="width:170px">근거</th></tr>
+      <tr><td><b>Gartner Top Supply Chain Tech Trends 2026</b></td><td>agentic AI·physical AI·디지털 트윈·다기능 창고 로봇 지목. 트윈 성과 "지연 최대 80% 감소, 예측 정확도 20~30% 개선" 인용. (원문 403 → Inside Logistics로 2차 확인)</td><td>2026-06-30</td><td><a href="https://www.gartner.com/en/newsroom/press-releases/2026-06-30-gartner-identifies-top-supply-chain-technology-trends-for-2026">gartner.com</a> · <a href="https://www.insidelogistics.ca/artificial-intelligence-ai/gartner-identifies-agentic-ai-physical-ai-among-top-supply-chain-technology-trends-for-2026/">insidelogistics.ca</a></td></tr>
+      <tr><td><b>Gartner 2025판</b></td><td>—</td><td>2025-03-18</td><td><a href="https://www.gartner.com/en/newsroom/press-releases/2025-03-18-gartner-identifies-top-supply-chain-technology-trends-for-2025">gartner.com</a></td></tr>
+      <tr><td><b>DHL Logistics Trend Radar 7.0</b></td><td>40개 트렌드, AI 클러스터 확장, AI가 44% 응답자의 최우선 변혁 동인, 창고 3D 트윈 언급</td><td>2024-09-03</td><td><a href="https://group.dhl.com/en/media-relations/press-releases/2024/dhl-logistics-trend-radar-unveils-emerging-ai-trends-and-sustainable-solutions.html">group.dhl.com</a> · <a href="https://www.dhl.com/content/dam/dhl/global/csi/documents/pdf/glo-csi-logistics-trend-radar-7-0.pdf">dhl.com (PDF)</a></td></tr>
+      <tr><td><b>Interact Analysis</b></td><td>2025 창고자동화 주문접수 +7% 전망(5월 +1%에서 상향), 창고 신축 2026 말 회복·2027 가속, EMEA CAGR ~7%(2025~2030)</td><td>—</td><td><a href="https://interactanalysis.com/warehouse-automation-order-intake-up-by-7/">interactanalysis.com</a> · <a href="https://www.mmh.com/article/interact_analysis_bumps_up_its_warehouse_automation_market_forecast">mmh.com</a></td></tr>
+      <tr><td><b>MHI/Deloitte 2025 연례 보고서</b></td><td>"The Digital Supply Chain Ecosystem" — 리더 55% 기술 투자 확대, 60% $1M+ 지출 계획, 700+ 응답</td><td>2025-03-19</td><td><a href="https://www.businesswire.com/news/home/20250319048739/en/New-MHI-and-Deloitte-Report-Focuses-on-Orchestrating-End-to-End-Digital-Supply-Chain-Solutions">businesswire.com</a> · <a href="https://og.mhi.org/publications/report">og.mhi.org</a></td></tr>
+      <tr><td><b>GreyOrange GreyMatter 해설</b></td><td>"분당 최대 100만 오퍼레이션", RL(강화학습) 태스크 할당 — 마케팅 표현 (Robotics247)</td><td>—</td><td><a href="https://www.robotics247.com/article/how-greyorange-greymatter-makes-warehouse-orchestration-intelligent">robotics247.com</a></td></tr>
+    </table></div>
+    </details>
+  </div>
+</section>
+
+<!-- ══════════ F5 본 프로젝트의 위치 ══════════ -->
+<section id="f5">
+  <div class="sec-head"><span class="sec-no">SEC 05 · 본 프로젝트의 위치</span><h2>업계 파일럿의 재현이지, 발명이 아니다</h2></div>
+  <div class="sec-body">
+    <p class="lead">본 프로젝트의 조합은 <b>시뮬레이션 기반 대수·기종 견적 + 고정 PIBT + AI 통행 규칙 θ + 물리 검증 영상</b>이다(기준선 v3 §0·§1·§4.1). 위 지도에서 배치 전 트윈 검증 축과 플릿 조정 AI 축에 걸쳐 있고, 라이브 운영 제어와 임바디드 AI는 범위 밖이다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:190px">본 프로젝트 요소</th><th style="width:150px">지도 위 위치</th><th>업계 대응 사례 (SEC 02~04)</th><th>본 프로젝트와의 차이</th></tr>
+      <tr><td><b>시뮬 기반 대수·기종 견적</b><br><span class="soft">요청 접수형, 기준선 §0·§2</span></td><td>배치 전 트윈 검증 <span class="chip c-green">상용~파일럿</span></td><td>idealworks iw.sim(계약 전 플릿 규모·라우팅 사전 검증, 상용) · KION+NVIDIA Mega(배치 전 트윈에서 개발·테스트, 파일럿) · Dematic 트윈 역할 ③ 시나리오 대량 시뮬레이션(데모)</td><td>벤더가 자사 로봇 판매를 위해 하는 사전 검증을 제3자 견적 서비스로 옮긴다. 대수·기종을 스윕해 KPI 곡선과 검증 영상을 견적서에 담는다</td></tr>
+      <tr><td><b>고정 PIBT 헤딩 모델</b><br><span class="soft">기준선 §1·§4.2</span></td><td>플릿 조정 알고리즘 <span class="chip c-green">상용</span></td><td>Geek+ RMS의 MAPF 알고리즘(처리량 +15% 주장) · Amazon DeepFleet · GreyOrange DeepNav(개발 중)</td><td>알고리즘을 연구하거나 바꿔 끼우지 않는다. PIBT 하나로 고정하고 대수·기종 스윕에 집중한다</td></tr>
+      <tr><td><b>AI 통행 규칙 θ 11개</b><br><span class="soft">기준선 §4.1</span></td><td>플릿 AI <span class="chip c-steel">상용~로드맵</span></td><td>Amazon DeepFleet(플릿 조정 기반 모델, 이동시간 10% 개선 주장) · GreyOrange DeepNav(RL 내비, 2026 초 GA 예정)</td><td>실시간 제어 모델이 아니다. trial마다 θ를 추론해 PIBT 통행 비용에 반영하고, DES와 Isaac 검증 런이 같은 θ를 쓴다</td></tr>
+      <tr><td><b>물리 검증 영상</b><br><span class="soft">Isaac 분 단위 미니 시나리오, 기준선 §2 ⑥·§6</span></td><td>배치 전 트윈 검증 <span class="chip c-green">상용~파일럿</span></td><td>Amazon Omniverse/Isaac Sim FC 가상 검증 · KION Mega로 Jetson 기반 지게차 플릿 훈련·테스트 · idealworks iw.os Isaac Perceptor</td><td>검증 런의 산출물(MP4·리플레이·히트맵)을 견적서 첨부 아티팩트로 쓴다. 하루치 재생이 아니라 분 단위 장면이다</td></tr>
+      <tr><td><b>VDA 5050 브리지</b><br><span class="soft">FMS 틱 ↔ VDA 5050, 기준선 §5.1</span></td><td>표준 개방 <span class="chip c-amber">구현 초기</span></td><td>SAP EWM 표준 인터페이스 · MiR 어댑터(2025-03) · idealworks 3.0 코어팀 · 3.0 공개(2026-04)</td><td>시뮬 안에서 FMS 틱을 VDA 5050 메시지로 로봇 에이전트에 전달한다. 3.0의 존·패스 셰어링은 기준선 v3에 없다</td></tr>
+      <tr><td><b>주문 스트리밍 · 이벤트 기반 통합</b><br><span class="soft">시뮬 WMS + WMS 라이트, 기준선 §4.4</span></td><td>기본선 <span class="chip c-green">상용</span></td><td>Manhattan Order Streaming · SAP Event Mesh · Locus 태스크 인터리빙</td><td>제품이 아니라 시뮬 환경이다. 두 WMS(확률 모델·Spring 시뮬 WMS)가 하나의 시나리오 패키지를 소비한다</td></tr>
+    </table></div>
+
+    <h3>고르지 않은 것</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:230px">클러스터 (SEC 03)</th><th>본 프로젝트의 입장</th></tr>
+      <tr><td><b>E 임바디드 · Physical AI</b></td><td>범위 밖. 기준 기종은 iw.hub 1종(<a href="amr_model_selection.html">RESEARCH 03</a>)</td></tr>
+      <tr><td><b>D 에이전틱 AI 운영 보조</b></td><td>창고 운영 에이전트는 없다. LLM은 리포트 초안 작성(⑦)에만 쓰고 운영자가 검수한다(기준선 §1·§2)</td></tr>
+      <tr><td><b>B 라이브 운영 트윈</b></td><td>Ocado식 상시 what-if는 범위 밖. 요청 접수형 비동기 서비스이므로 트윈은 배치 전 검증에만 쓴다</td></tr>
+      <tr><td><b>A VDA 5050 3.0 존·패스 셰어링</b></td><td>기준선 v3에 없음. 2026-09-01 종합에서 추천됐던 조합(A+C)은 같은 날 팀 논의로 대체됐다</td></tr>
+    </table></div>
+
+    <div class="plain"><span class="pl-tag">프레임</span>Isaac 트윈에서 플릿을 검증한 뒤 투입하는 구조는 KION+NVIDIA+Accenture가 공식으로 미는 방향이고 2026-03에 라이브 파일럿에 들어갔다. 본 프로젝트는 이것을 <b>"업계 파일럿의 재현"</b>으로 프레임한다. 발명이 아니라 재현이므로, 근거는 이 페이지의 URL이고 차이는 위 표의 오른쪽 열이다.</div>
+    <div class="note"><span class="pl-tag">조사에서 주제까지 (요약)</span>09-01 종합은 "VDA 5050 3.0 기반 주문발 오케스트레이션 참조 구현"(A+C, B 확장)을 추천했다. 같은 날 팀 논의로 MAPF 최적화 방향이 검토됐고, 09-02에 요청 접수형 견적 서비스로 재정의됐다. 상세 경로는 <a href="../archive/topic_journey.html">ARCHIVE 01 주제 확정 여정</a>에 있다.</div>
+  </div>
+</section>
+
+<!-- ══════════ F6 추출 한계 ══════════ -->
+<section id="f6">
+  <div class="sec-head"><span class="sec-no">SEC 06 · 추출 한계</span><h2>기록에 없는 것은 이 페이지에도 없다</h2></div>
+  <div class="sec-body">
+    <p class="lead">이 페이지는 2026-09-01 조사 기록에서 추출한 것이다. 기록에서 못 찾은 것, URL 없이 남은 것, 에이전트가 검증 불가로 표시한 것을 그대로 적는다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:190px">구분</th><th>내용</th></tr>
+      <tr><td><b>기록에서 못 찾은 것</b></td><td>AutoStore·Symbotic·Mujin은 세 보고 어디에도 없다(검색 스니펫에 "autostore"·"Symbotic"이 각 2회 스쳤으나 채택되지 않음). Körber "UNISON"은 확인 불가(실제 제품은 UCS). openTCS 2024~2026 동향, VDA 5050 차기 버전 로드맵, MassRobotics v2.0 릴리스 일자는 미확인</td></tr>
+      <tr><td><b>조사일 표기</b></td><td>기록상 조사는 2026-09-01(KST 10시대)에 수행됐다. "9월 2일 조사"라는 표현은 기록에 없고, 09-02 주제 확정 논의와 혼동된 것이다</td></tr>
+      <tr><td><b>URL 없이 남은 주장</b></td><td>종합 보고의 "근거" 열은 출처명만 있고 URL이 없다. URL은 에이전트 보고 3건에만 있으며, 이 페이지는 그 완전한 URL을 썼다. 보고 간 정밀도 차이: Geek+ 상장(축3 2025-07-15 / 축1 "2025-07, 별도 검증 안 함"), Gartner Innovation Insight 날짜(리포트 2025-06-27 vs PR 2025-10-09), DeepNav(발표 2025-08-12 vs 기사 2025-08-14). JD Logistics 기사는 게시일 없음. 제품 페이지 근거는 발표 시점이 없어 "시점 미기재"</td></tr>
+      <tr><td><b>에이전트가 검증 불가로 표시한 것</b></td><td>KION/Dematic 트윈의 유료 상용 고객 수 · GreyOrange "분당 100만 오퍼레이션" · Amazon 라이브 what-if 오퍼레이터 툴 존재 · Locus·Geek+·Zebra·Exotec·Hai의 VDA 5050 지원 · GreyMatter WMS 연동 API 스펙 · CXTMS 시장 규모($2.89B 오케스트레이션 / $4.28B WES) · Gartner 2026 트렌드 PR 원문(403, 2차 소스로 확인) · Geek+ open API 연동(2차 출처만)</td></tr>
+      <tr><td><b>기록 형식</b></td><td>보고에 실린 URL 116개(축1 36 / 축2 45 / 축3 38, 중복 제거)는 모두 에이전트 원본 트랜스크립트에 문자열 그대로 존재한다. 다만 각 URL이 실제로 열렸는지(스니펫만 봤는지)는 URL 단위로 확인하지 않았다. KION AI Control Tower URL의 <code>&amp;</code>는 기록의 이스케이프 형태를 그대로 옮겼다. 에이전트 자체 보고의 검색 횟수와 도구 호출 수는 집계 기준이 달라 일치하지 않는다</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- ══════════ NEXT ══════════ -->
+<section id="fnext">
+  <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
+  <div class="sec-body">
+    <ul class="rules">
+      <li><a href="../archive/topic_journey.html"><b>ARCHIVE 01 주제 확정 여정</b></a> — 이 조사가 09-01 추천에서 09-02 요청 접수형 견적 서비스로 이어진 경로</li>
+      <li><a href="../tech/amr_overview.html"><b>TECH 01 전체 조망</b></a> — SEC 05의 조합이 실제 서비스 흐름 8단계와 시스템으로 어떻게 놓이는지</li>
+      <li><a href="3pl_industry.html"><b>RESEARCH 02 3PL 업계 구조</b></a> — 이 지도의 구매자 쪽. 3PL이 왜 대수 견적을 반복해서 필요로 하는지</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<div class="wrap flow-nav">
+  <a class="prev" href="amr_model_selection.html"><small>← 이전</small>RESEARCH 03 · 기준 기종 선정</a>
+  <a class="next" href="../tech/amr_overview.html"><small>다음 →</small>TECH 01 · 전체 조망</a>
+</div>
+
+<footer>
+  <div class="wrap">RESEARCH 04 · INDUSTRY-FOLLOWUP — 원천: 세션 기록 추출본 industry_followup_sources.md (조사 2026-09-01 · 작성 2026-09-03) · REV A: 신규 작성 · 웹 재검증 없음, 근거 URL 있는 항목만 · <a href="../../index.html">문서 인덱스로</a></div>
+</footer>
+
+</body>
+</html>

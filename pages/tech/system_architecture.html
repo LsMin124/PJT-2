@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<title>시스템 아키텍처 — 요청 접수형 AMR 견적 서비스의 부품과 흐름 (System Architecture)</title>
+<style>
+  :root{
+    --bg:#14181D;
+    --panel:#1C2229;
+    --panel-edge:#2C343D;
+    --ink:#E8ECF1;
+    --ink-soft:#9AA7B4;
+    --amber:#F08A32;
+    --machine:#3BAF77;
+    --steel:#8FB4D9;
+    --slate:#8A96A3;
+    --grid:#2A323B;
+    --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important;animation:none!important}}
+  body{
+    background:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:32px 32px;
+    color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px;
+  }
+  a{color:var(--steel)}
+  a.term{color:inherit;text-decoration:underline;text-decoration-style:dotted;text-decoration-color:var(--steel);text-underline-offset:3px}
+  a.term:hover{color:var(--steel);text-decoration-style:solid}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+  header{border-bottom:3px solid var(--ink);background:var(--panel)}
+  .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
+  .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
+  .doc-eyebrow b{color:var(--amber);font-weight:600}
+  .flow-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px auto 40px}
+  .flow-nav a{background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
+  .flow-nav a:hover{border-color:var(--amber)}
+  .flow-nav .prev{grid-column:1}
+  .flow-nav .next{grid-column:2;text-align:right}
+  .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
+  @media(max-width:640px){.flow-nav{grid-template-columns:1fr}.flow-nav .prev,.flow-nav .next{grid-column:auto;text-align:left}}
+  h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
+  h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
+  .meta b{color:var(--ink);font-weight:600}
+
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav .wrap{display:flex;gap:2px;padding:0 20px}
+  nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
+  nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--amber);outline:none}
+  nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
+  nav a.nav-cross{margin-left:auto;color:var(--amber);font-weight:700}
+
+  main{padding:44px 0 80px}
+  section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
+  .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
+  h2{font-size:clamp(19px,2.2vw,27px);font-weight:800;letter-spacing:-.025em;line-height:1.3}
+  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
+  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
+  .kcard b{display:block;font-size:15px;margin-bottom:4px}
+  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
+  .sec-body{padding:16px 26px 26px}
+  h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+  h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
+  p{margin-bottom:10px}
+  .sec-body p{max-width:76ch}
+  .lead{font-size:15.5px}
+  .soft{color:var(--ink-soft)}
+
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
+  .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
+  .plain.warn{background:#2A2019;border-left-color:var(--amber)}
+  .plain.warn .pl-tag{color:var(--amber)}
+
+  code{font-family:var(--mono);font-size:.92em;background:#232B34;padding:1px 5px;border:1px solid var(--grid)}
+
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F}
+  td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
+  tr:last-child td{border-bottom:none}
+  table tr:nth-child(even) td{background:#1E252D}
+  .tbl-scroll{overflow-x:auto}
+
+  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px}
+  .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)}
+
+  ul.rules{list-style:none;margin:10px 0}
+  ul.rules li{padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--grid);font-size:13.5px}
+  ul.rules li:last-child{border-bottom:none}
+  ul.rules li::before{content:"▸";position:absolute;left:6px;color:var(--amber);font-weight:700}
+
+  .milestones{display:grid;gap:0;margin:14px 0;border-left:3px solid var(--ink)}
+  .ms{position:relative;padding:12px 18px 12px 28px;border-bottom:1px dashed var(--grid)}
+  .ms:last-child{border-bottom:none}
+  .ms::before{content:"";position:absolute;left:-8px;top:18px;width:13px;height:13px;background:var(--panel);border:3px solid var(--amber)}
+  .ms .ms-tag{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--amber);letter-spacing:.08em}
+  .ms h4{font-size:14px;font-weight:700;margin:2px 0 2px}
+  .ms p{font-size:12.5px;color:var(--ink-soft);margin:0}
+
+  details.more{border:1px solid var(--panel-edge);background:#20272F;margin:12px 0}
+  details.more summary{cursor:pointer;padding:11px 14px;font-weight:700;font-size:13px;list-style:none}
+  details.more summary::-webkit-details-marker{display:none}
+  details.more summary::before{content:"▸ ";color:var(--amber)}
+  details.more[open] summary::before{content:"▾ "}
+  details.more>*:not(summary){margin-left:14px;margin-right:14px}
+  details.more>*:last-child{margin-bottom:14px}
+
+  footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+
+  @media (max-width:820px){
+    .titleblock{grid-template-columns:1fr}
+    .meta{border-left:none;padding-left:0;text-align:left}
+    body{font-size:14px}
+    .sec-head,.sec-body{padding-left:16px;padding-right:16px}
+  }
+</style>
+<style>
+  /* sil_roadmap.html · runtime_architecture.html · 3pl_industry.html */
+  .note{margin:14px 0 8px;padding:12px 16px;background:#2A2019;border-left:4px solid var(--amber);font-size:14px;line-height:1.8}
+  .note .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--amber);font-weight:700;margin-bottom:4px}
+  /* 동 페이지들 — 칩 줄바꿈 금지 + slate 칩 */
+  .chip{white-space:nowrap}
+  .c-slate{color:var(--slate)}
+  /* sil_roadmap.html · runtime_architecture.html — 넓은 SVG 래퍼(가로 스크롤) */
+  .viz{background:#0E1318;border:1px solid var(--panel-edge);padding:12px 14px;margin:14px 0;overflow-x:auto}
+  .viz svg{display:block;min-width:780px;width:100%;height:auto}
+  /* amr_mapf_theory.html — 코드 블록 */
+  pre{font-family:var(--mono);font-size:12px;line-height:1.7;background:#20272F;border:1px solid var(--panel-edge);border-left:4px solid var(--steel);padding:12px 16px;overflow-x:auto;margin:12px 0}
+  pre code{background:none;border:none;padding:0}
+  /* working · research 페이지 — 키보드 포커스 링 */
+  :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<!-- ══════════ 헤더 — 도면 표제란 ══════════ -->
+<header>
+  <div class="wrap titleblock">
+    <div>
+      <div class="doc-eyebrow">TECH 02 / 05 · SYSTEM-ARCHITECTURE · <b>REV A</b> · 2026-09-03</div>
+      <h1>시스템 아키텍처 — 상시 견적 서비스 위에 런 단위 시뮬 스택을 얹는다
+        <span class="sub">8단계 파이프라인 · 웹 인프라 2층 · 기기 2대 · 큐 2단 · 메시징 계약 · 데이터 3곳 · 런 오케스트레이터. 아키텍처 서술의 단일 소스</span>
+      </h1>
+    </div>
+    <div class="meta">
+      TRACK · <b>TECH 02 / 05</b><br>
+      BASE · <b>기준선 v3 §2 · §3 · §7 · §8</b><br>
+      DIAGRAM · <b>FMS-WMS 통합 아키텍처 v3.10</b><br>
+      SOURCE · <b>AMR_기획_기준선_v3.md (2026-09-03)</b>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════ nav — sticky · 앵커 접두 a ══════════ -->
+<nav aria-label="문서 내 탐색">
+  <div class="wrap">
+    <a class="nav-home" href="../../index.html">⌂ INDEX</a>
+    <a href="#a0">00 한눈에</a>
+    <a href="#a1">01 8단계</a>
+    <a href="#a2">02 인프라 2층</a>
+    <a href="#a3">03 기기 배치</a>
+    <a href="#a4">04 큐잉 2단</a>
+    <a href="#a5">05 메시징·계약</a>
+    <a href="#a6">06 데이터</a>
+    <a href="#a7">07 오케스트레이터</a>
+    <a href="#a8">08 상세 다이어그램</a>
+    <a class="nav-cross" href="amr_overview.html">전체 조망 ↗</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ══════════ A0 한눈에 보기 ══════════ -->
+<section id="a0">
+  <div class="sec-head"><span class="sec-no">SEC 00 · 한눈에 보기</span><h2>요청은 큐에 쌓이고, 런은 기동했다 사라진다</h2></div>
+  <div class="sec-body">
+    <p class="lead"><b>"창고·물류 조건을 받아 시뮬레이션으로 권장 대수·기종, KPI, 검증 영상을 담은 견적서를 만들어 보내는 <a class="term" href="../ref/glossary_industrial.html#intake-service">요청 접수형 서비스</a>."</b> 셀프서브 SaaS가 아니다. 요청은 큐에 쌓이고, 운영자가 검토·검수하며, 결과는 나중에 발송된다.</p>
+    <div class="note"><span class="pl-tag">신규 작성 (2026-09-03)</span>기준선 v3의 §2(8단계)·§3(아키텍처)·§7(데이터)·§8(런 오케스트레이터)과 상세 다이어그램 v3.10의 표·설계 원칙을 옮겼다. 아키텍처 상세는 이 페이지에만 쓴다. 이론은 <a href="amr_mapf_theory.html">TECH 04</a>, 결정 목록은 <a href="amr_decision_inventory.html">TECH 05</a>, SIL 진행은 <a href="../working/sil_roadmap.html">WORKING</a>이 맡는다.</div>
+
+    <h3>이 문서가 답하는 질문</h3>
+    <ul class="rules">
+      <li>① 요청 하나가 견적서가 되기까지 어떤 8단계를 지나고, 사람은 어디에 개입하는가 — SEC 01</li>
+      <li>② 왜 웹 인프라를 2층으로 나누고, 기기 2대에 무엇을 올리는가 — SEC 02 · 03</li>
+      <li>③ 잡과 런은 어떤 큐·계약·저장소를 거치고, 런 하나는 누가 어떻게 관리하는가 — SEC 04 ~ 07</li>
+    </ul>
+
+    <h3>요약 다이어그램</h3>
+    <iframe src="../../docs/FMS-WMS_아키텍처_요약.html" title="아키텍처 요약" style="width:100%;height:760px;border:1px solid var(--border,#1B2430);background:#fff" loading="lazy"></iframe>
+    <p class="soft"><a href="../../docs/FMS-WMS_아키텍처_요약.html" target="_blank" rel="noopener">새 창에서 열기 ↗</a></p>
+    <p class="soft">EC2와 GPU 서버 위에 견적 서비스·계산 엔진·시뮬 스택·실행 계층이 어떻게 놓이는지를 아이콘 타일과 화살표만으로 그린 요약본이다.</p>
+
+    <details class="more"><summary>먼저 알아둘 용어 14개 — 펼쳐 보기</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:190px">용어</th><th>쉬운 설명</th></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#intake-service">요청 접수형 서비스</a></b></td><td>요청을 큐에 쌓고, 운영자가 검토·검수한 뒤, 결과를 나중에 발송하는 방식. 셀프서브 SaaS가 아니다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#two-tier-web">웹 인프라 2층</a></b></td><td>상시 가동하는 견적 서비스 층과, 런마다 기동·폐기하는 시뮬 스택 층</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#run">런(run)</a></b></td><td>Isaac 물리 검증 1회. 시뮬 WMS·FMS 파드 기동부터 파드 삭제까지가 한 런이다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#trial">trial</a></b></td><td>스윕 안의 구성 1개(대수 × 기종)를 시드 1개로 돌리는 DES 실행 단위</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#scenario-package">시나리오 패키지</a></b></td><td>zones.json · 맵 · 주문 분해 규칙 · 수요 프로파일 · rack_id↔시뮬 좌표 매핑 묶음. DES와 검증 런이 같은 것을 쓴다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#sim-wms">시뮬 WMS</a> / <a class="term" href="../ref/glossary_industrial.html#wms-lite">WMS 라이트</a></b></td><td>검증 런에서 도는 실제 Spring <a class="term" href="../ref/glossary_industrial.html#wms">WMS</a>(창고관리시스템) / DES에서 WMS를 대신하는 확률 모델</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#des">DES</a></b></td><td>Discrete Event Simulation. 이산 사건 시뮬레이션. 가상 시계로 빠르게 돌린다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#pibt">PIBT</a></b></td><td>Priority Inheritance with Backtracking. FMS가 쓰는 다중 로봇 경로계획 방법</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#theta">θ</a></b></td><td>통행 규칙 파라미터 11개(연속 8 + 범주 3). AI 모델이 trial마다 추론한다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#decision-kernel">결정 커널</a> / <a class="term" href="../ref/glossary_robotics.html#execution-shell">실행 셸</a></b></td><td>시계·난수를 주입받고 I/O가 없는 순수 FMS 코어 / 코어에 시계를 붙여 돌리는 껍데기 2종(하네스·MQTT 데몬)</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#k3s">k3s</a></b></td><td>경량 Kubernetes 배포판. EC2 1대에 모든 서비스를 파드로 자체 호스팅한다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#orchestrator">런 오케스트레이터</a></b></td><td>런 하나의 기동·감시·수집·정리를 맡는 단일 파드</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#sim-runner">sim-runner</a></b></td><td>GPU 서버에 상주하는 데몬. MQTT <code>sim/control</code>로 Isaac·에이전트를 스폰·정리한다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#artifact">아티팩트</a></b></td><td>런 산출물. 배속 영상(MP4) · 리플레이(JSON) · 궤적 히트맵(PNG)</td></tr>
+    </table></div>
+    </details>
+  </div>
+</section>
+
+<!-- ══════════ A1 서비스 흐름 8단계 ══════════ -->
+<section id="a1">
+  <div class="sec-head"><span class="sec-no">SEC 01 · 서비스 흐름 8단계</span><h2>접수와 발송 사이는 전부 내부 배치다</h2></div>
+  <div class="sec-body">
+    <p class="lead">요청 하나는 8단계를 지난다. 운영자는 ② 검토와 ⑦ 검수 두 곳에만 개입한다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:50px">단계</th><th style="width:150px">이름</th><th style="width:170px">주체</th><th style="width:190px">인터페이스</th><th>무엇을</th></tr>
+      <tr><td><b>①</b></td><td><b>견적 요청 접수</b></td><td>고객 → 견적 BE</td><td>REST <code>/api/requests</code></td><td>창고·물류 조건 입력. 큐 순번·예상 소요 회신</td></tr>
+      <tr><td><b>②</b></td><td><b>운영 검토·시나리오 컴파일</b> <span class="chip c-amber">운영자</span></td><td>운영자</td><td>웹 콘솔</td><td>요청을 정제해 시나리오 패키지(zones.json · 맵 · 분해 규칙 · 수요)로 컴파일</td></tr>
+      <tr><td><b>③</b></td><td><b>스윕 잡 소비</b></td><td>RabbitMQ → 계산 엔진 워커</td><td>AMQP, 우선순위 큐, DLQ</td><td>잡 = 시나리오 패키지 + 스윕 범위. 워커는 수평 확장</td></tr>
+      <tr><td><b>④</b></td><td><b>구성 탐색·θ 추론·DES</b></td><td>계산 엔진(EC2 k3s Job)</td><td>in-process</td><td>trial마다 AI 모델이 θ 11개 추론 → 통행 비용 → FMS 커널로 가상 시간 실행 × 시드 반복</td></tr>
+      <tr><td><b>⑤</b></td><td><b>Isaac 물리 검증 런</b></td><td>런 오케스트레이터 → 시뮬 스택 + GPU</td><td>k8s API, MQTT <code>sim/control</code></td><td>상위 구성만 GPU 런 큐에 적재. 시뮬 WMS·FMS 파드 기동, Isaac·에이전트 스폰</td></tr>
+      <tr><td><b>⑥</b></td><td><b>KPI 집계·아티팩트</b></td><td>sim-runner → MinIO, 워커 → BE</td><td>S3 API presigned PUT, AMQP 결과 이벤트</td><td>배속 영상(MP4) · 리플레이(JSON) · 히트맵(PNG). PG에 KPI·아티팩트 메타</td></tr>
+      <tr><td><b>⑦</b></td><td><b>리포트 작성</b> <span class="chip c-amber">운영자</span></td><td>LLM 초안 + 운영자 검수</td><td>웹 콘솔</td><td>권장 구성 · 곡선 · 영상 임베드</td></tr>
+      <tr><td><b>⑧</b></td><td><b>견적서 발송</b></td><td>견적 BE</td><td>이메일 · 다운로드</td><td>발송 후 요청 종료</td></tr>
+    </table></div>
+    <p class="soft">KPI(Key Performance Indicator)는 처리량 같은 핵심 성과 지표다. AMQP·MQTT·DLQ 같은 계약 이름은 SEC 05에서 풀어 쓴다.</p>
+
+    <div class="kcards">
+      <div class="kcard"><b>운영자 개입 2곳</b><span>② 검토·컴파일, ⑦ 리포트 검수. 나머지는 사람 없이 돈다</span></div>
+      <div class="kcard s"><b>①~⑧ 사이 = 내부 배치</b><span>고객은 접수 시 큐 순번과 예상 소요만 받는다. 결과는 발송으로 돌아온다</span></div>
+      <div class="kcard g"><b>산출물 = 견적의 증거</b><span>영상 · 리플레이 · 히트맵이 견적서에 들어간다. 그래서 ⑤ 물리 검증 런이 파이프라인 안에 있다</span></div>
+    </div>
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>
+      고객은 조건을 내고 순번표를 받는다. 시스템이 계산과 물리 검증을 마치면, 운영자가 리포트를 확인하고 보낸다.</div>
+  </div>
+</section>
+
+<!-- ══════════ A2 웹 인프라 2층 ══════════ -->
+<section id="a2">
+  <div class="sec-head"><span class="sec-no">SEC 02 · 웹 인프라 2층</span><h2>영속은 견적 도메인, 휘발은 시뮬 도메인</h2></div>
+  <div class="sec-body">
+    <p class="lead">상시 가동하는 견적 서비스와, 런마다 기동·폐기하는 시뮬 스택을 층으로 나눈다. 런 하나의 상태가 영속 DB와 섞이지 않는다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:150px">층</th><th>구성</th><th style="width:130px">수명</th><th style="width:200px">저장소</th></tr>
+      <tr><td><b>상시 견적 서비스</b></td><td>React 웹 콘솔 + nginx(:443 단일 인그레스), 견적 BE(Spring), PostgreSQL, RabbitMQ, <a class="term" href="../ref/glossary_industrial.html#minio">MinIO</a>, 견적 산출</td><td><span class="chip c-steel">상시</span></td><td>PostgreSQL(영속), MinIO(아티팩트)</td></tr>
+      <tr><td><b>런 단위 시뮬 스택</b></td><td>시뮬 WMS(Spring + <a class="term" href="../ref/glossary_industrial.html#h2">H2</a> 인메모리), FMS 코어(Python), 수요 생성기</td><td><span class="chip c-amber">런마다 기동·폐기</span></td><td>H2(런과 함께 소멸)</td></tr>
+      <tr><td><b>공용</b></td><td><a class="term" href="../ref/glossary_industrial.html#emqx">EMQX</a>(MQTT 브로커)</td><td><span class="chip c-steel">상시</span></td><td>없음</td></tr>
+    </table></div>
+    <p class="soft">MinIO는 S3 호환 오브젝트 저장소, H2는 자바 인메모리 DB, EMQX는 MQTT 브로커다. 셋 다 EC2 안의 k3s 파드로 돈다.</p>
+
+    <div class="plain"><span class="pl-tag">원칙</span>
+      <b>영속은 견적 도메인, 휘발은 시뮬 도메인.</b> 견적 서비스는 고객·운영자를 대면하고, 시뮬 스택은 내부 엔진이다.
+      EMQX만 두 층의 공용이다. 제어 채널이 런보다 먼저 있어야 하므로 상시 가동한다.</div>
+
+    <details class="more"><summary>왜 시뮬 WMS 저장소가 H2인가 — 이유 3개 — 펼쳐 보기</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:130px">이유</th><th>내용</th></tr>
+      <tr><td><b>런 스코프</b></td><td>시뮬 WMS의 주문·재고는 런 하나의 상태다. 런이 끝나면 함께 사라져야 한다. 인메모리 DB는 수명이 런과 같다</td></tr>
+      <tr><td><b>격리</b></td><td>런 상태가 견적 PG에 섞이지 않는다. 영속이 필요한 것(KPI · 아티팩트 메타)만 결과 이벤트로 견적 PG에 들어간다. 작업 이벤트 로그는 H2 밖에 둔다(JSONL → MinIO)</td></tr>
+      <tr><td><b>인프라 여유</b></td><td>EC2 1대에 전부 자체 호스팅한다. 런마다 DB 파드를 따로 띄우지 않고 시뮬 WMS 파드 안에서 끝낸다</td></tr>
+    </table></div>
+    <p class="soft">H2를 실물 PG로 승격하는 경로와 두 DB의 방언이 무관한 이유는 SEC 06에 있다.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ══════════ A3 기기 배치 ══════════ -->
+<section id="a3">
+  <div class="sec-head"><span class="sec-no">SEC 03 · 기기 배치</span><h2>EC2 한 대와 GPU 서버 한 대, 관리형 서비스는 0</h2></div>
+  <div class="sec-body">
+    <p class="lead">기관 제공 EC2에는 IAM(Identity and Access Management, AWS 권한 관리)이 없다. 관리형 AWS 서비스를 하나도 쓰지 못하므로 전부 k3s 위에 자체 호스팅한다. GPU 서버는 홈서버 1대다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:140px">기기</th><th style="width:300px">사양</th><th>올라가는 것</th></tr>
+      <tr><td><b>EC2 t3.xlarge</b></td><td>4 vCPU · 16 GB · IAM 불가 → 관리형 AWS 서비스 0, 전부 k3s 자체 호스팅</td><td>상시 견적 서비스, 시뮬 스택 파드, 계산 엔진 Job, 런 오케스트레이터, EMQX. 이미지는 GHCR, 인증서는 certbot</td></tr>
+      <tr><td><b>GPU 서버 ×1</b></td><td>RTX 5080 16 GB, 홈서버, <a class="term" href="../ref/glossary_robotics.html#isaac">Isaac Sim</a> 6.0.1</td><td>amr-agent(<a class="term" href="../ref/glossary_robotics.html#ros2">ROS 2</a>) ×N, Isaac, sim-runner 데몬. 네이티브 실행</td></tr>
+      <tr><td><b>연결</b></td><td colspan="2">홈서버 → EC2 tailscale 아웃바운드. 캠퍼스 UDP 차단 시 DERP 릴레이</td></tr>
+    </table></div>
+    <p class="soft">GHCR(GitHub Container Registry)은 컨테이너 이미지 저장소, certbot은 Let's Encrypt 인증서 자동 발급 도구, tailscale은 WireGuard 기반 사설망, DERP는 tailscale의 중계 서버다.</p>
+
+    <div class="kcards">
+      <div class="kcard"><b>IAM 불가의 의미</b><span>S3 대신 MinIO, 관리형 DB·큐 대신 PostgreSQL·RabbitMQ 파드. 외부 노출은 nginx :443 하나</span></div>
+      <div class="kcard s"><b>계산은 EC2, 물리는 GPU</b><span>DES 워커는 EC2 k3s Job이다. 견적 계산이 홈서버 가용성에 묶이지 않는다</span></div>
+      <div class="kcard g"><b>GPU 1대 = N=1</b><span>확장 그림의 첫 칸이다. GPU 노드를 붙이면 GPU 런 큐 소비자가 하나 늘어난다</span></div>
+    </div>
+
+    <details class="more"><summary>확장 시나리오 — GPU 추가 · 임대 GPU — 펼쳐 보기</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:170px">경우</th><th>바뀌는 것</th><th style="width:220px">바뀌지 않는 것</th></tr>
+      <tr><td><b>GPU 노드 추가</b></td><td>GPU 런 큐 소비자 추가</td><td>견적 서비스, 계산 엔진, 큐 구조</td></tr>
+      <tr><td><b>임대 GPU(L40S 등)</b></td><td>Isaac을 컨테이너 Job으로 전환. 시뮬 스택 파드를 GPU 노드로 이동. 큐 깊이 기반 오토스케일</td><td>런 오케스트레이터의 상태 머신, MQTT <code>sim/control</code> 계약</td></tr>
+      <tr><td><b>현재</b></td><td colspan="2">RTX 5080 1대. 위 그림의 N=1</td></tr>
+    </table></div>
+    </details>
+  </div>
+</section>
+
+<!-- ══════════ A4 큐잉 2단 ══════════ -->
+<section id="a4">
+  <div class="sec-head"><span class="sec-no">SEC 04 · 큐잉 2단</span><h2>스윕 루프는 계산 엔진이, 런 직렬화는 GPU 런 큐가</h2></div>
+  <div class="sec-body">
+    <p class="lead">큐는 두 개다. 요청 잡 큐는 CPU 워커가 수평 확장하고, <a class="term" href="../ref/glossary_industrial.html#gpu-run-queue">GPU 런 큐</a>는 GPU 수만큼만 소비자를 둔다.</p>
+
+    <svg viewBox="0 0 900 250" role="img" aria-label="견적 BE가 요청 잡 큐에 잡을 넣고, CPU 워커가 스윕을 돌린 뒤 상위 구성만 GPU 런 큐로 보내며, 런 오케스트레이터가 GPU 서버 한 대에서 런을 돌려 아티팩트와 결과 이벤트를 견적 BE로 되돌리는 흐름" style="max-width:100%;height:auto;display:block;margin:14px 0">
+      <defs>
+        <marker id="sa-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker>
+        <marker id="sa-arr-g" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#3BAF77"/></marker>
+      </defs>
+      <rect x="16" y="16" width="170" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="30" y="40" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">견적 BE (Spring)</text>
+      <text x="30" y="60" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">스윕 범위만 잡에 싣는다</text>
+      <line x1="186" y1="45" x2="220" y2="45" stroke="#8FB4D9" stroke-width="2" marker-end="url(#sa-arr)"/>
+      <rect x="220" y="16" width="200" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="234" y="40" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">요청 잡 큐 · RabbitMQ</text>
+      <text x="234" y="60" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">우선순위 · DLQ · 재시도</text>
+      <line x1="420" y1="45" x2="454" y2="45" stroke="#8FB4D9" stroke-width="2" marker-end="url(#sa-arr)"/>
+      <rect x="454" y="16" width="190" height="58" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="468" y="40" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">계산 엔진 · CPU 워커 ×N</text>
+      <text x="468" y="60" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">k3s Job · 스윕 루프 소유</text>
+      <line x1="644" y1="45" x2="690" y2="45" stroke="#8FB4D9" stroke-width="2" marker-end="url(#sa-arr)"/>
+      <text x="667" y="94" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#F08A32">상위 구성만</text>
+      <rect x="690" y="16" width="194" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="704" y="40" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">GPU 런 큐 · RabbitMQ</text>
+      <text x="704" y="60" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">검증 런 직렬화 · ETA 근거</text>
+      <line x1="787" y1="74" x2="787" y2="128" stroke="#8FB4D9" stroke-width="2" marker-end="url(#sa-arr)"/>
+      <text x="779" y="122" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">소비자 수 = GPU 수 · 현재 1</text>
+      <rect x="690" y="134" width="194" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="704" y="158" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">런 오케스트레이터</text>
+      <text x="704" y="178" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">EC2 k3s 단일 파드</text>
+      <line x1="690" y1="163" x2="650" y2="163" stroke="#8FB4D9" stroke-width="2" marker-end="url(#sa-arr)"/>
+      <rect x="454" y="134" width="190" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="468" y="158" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">GPU 서버 · sim-runner</text>
+      <text x="468" y="178" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">Isaac · amr-agent ×N</text>
+      <line x1="454" y1="163" x2="426" y2="163" stroke="#8FB4D9" stroke-width="2" marker-end="url(#sa-arr)"/>
+      <rect x="220" y="134" width="200" height="58" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
+      <text x="234" y="158" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">아티팩트 · 결과 이벤트</text>
+      <text x="234" y="178" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">MinIO · AMQP → 견적 BE</text>
+      <polyline points="220,163 100,163 100,80" fill="none" stroke="#3BAF77" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#sa-arr-g)"/>
+      <text x="450" y="232" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">── 스윕 루프·정지 규칙(무릎 판정)은 계산 엔진이 소유 · 견적 BE는 대수 n을 반복 호출하지 않는다 ──</text>
+    </svg>
+    <p class="soft">주황 상자가 스윕 루프를 소유하는 계산 엔진이고, 초록 점선이 결과가 견적 BE로 되돌아가는 경로다.</p>
+
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:140px">큐</th><th style="width:120px">브로커</th><th style="width:180px">소비자</th><th>목적</th></tr>
+      <tr><td><b>요청 잡 큐</b></td><td>RabbitMQ</td><td>CPU 워커 ×N</td><td>스윕 잡. 우선순위 · <a class="term" href="../ref/glossary_industrial.html#dlq">DLQ</a> · 재시도</td></tr>
+      <tr><td><b>GPU 런 큐</b></td><td>RabbitMQ</td><td>GPU 수 = 소비자 수</td><td>Isaac 검증 런 직렬화. 큐 순번 · ETA 회신의 근거</td></tr>
+    </table></div>
+    <p class="soft">DLQ(Dead Letter Queue)는 처리에 실패한 메시지를 따로 모으는 큐다. ETA(Estimated Time of Arrival)는 예상 완료 시각이다. GPU가 병목이므로 접수 시 큐 깊이로 순번·ETA를 회신하고, 운영자 콘솔에서 우선순위를 조정한다.</p>
+
+    <div class="plain"><span class="pl-tag">소유 원칙</span>
+      <b>스윕 루프와 정지 규칙(무릎 판정)은 계산 엔진이 소유한다.</b> 견적 BE는 대수 n을 반복 호출하지 않고, 스윕 범위만 잡에 싣는다.</div>
+
+    <h3>팀 API 계약 = trial 단위 어댑터</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:140px">항목</th><th>내용</th></tr>
+      <tr><td><b>단위</b></td><td>trial 1개(구성 1개 × 시드 1개)</td></tr>
+      <tr><td><b>요청</b></td><td>run_id · seed · warehouse · amr · orders</td></tr>
+      <tr><td><b>응답</b></td><td>kpi</td></tr>
+      <tr><td><b>소유</b></td><td>스윕 루프 · 무릎 판정 · 최적 대수 산출은 계산 엔진. 어댑터는 trial 하나만 안다</td></tr>
+      <tr><td><b>원천</b></td><td>팀 백엔드↔AI API 초안. 팀 레포 <code>5_Docs/AI/AI입출력명세서.md</code></td></tr>
+      <tr><td><b>확인 대기</b></td><td><span class="chip c-amber">웹 파트</span> 초안의 n 반복 호출을 스윕 범위 1회 발행으로 바꾸는 것</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- ══════════ A5 메시징·계약 ══════════ -->
+<section id="a5">
+  <div class="sec-head"><span class="sec-no">SEC 05 · 메시징·계약</span><h2>프로토콜 4개, 각자 한 가지 일만 한다</h2></div>
+  <div class="sec-body">
+    <p class="lead">REST는 고객·운영자 대면, AMQP는 잡·결과, MQTT는 제어·상태, DDS는 로봇 내부다. Kafka는 없다. 도메인 이벤트는 AMQP 결과 이벤트로 충분하다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:120px">규약</th><th>뜻</th><th style="width:200px">브로커·구현</th></tr>
+      <tr><td><b>REST</b></td><td>Representational State Transfer. HTTP 요청·응답 API</td><td>견적 BE(Spring), nginx :443</td></tr>
+      <tr><td><b>AMQP</b></td><td>Advanced Message Queuing Protocol. 잡 큐용 메시지 규약</td><td>RabbitMQ</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#mqtt">MQTT</a></b></td><td>Message Queuing Telemetry Transport. 가벼운 발행·구독 메시징</td><td>EMQX</td></tr>
+      <tr><td><b>DDS</b></td><td>Data Distribution Service. ROS 2가 쓰는 실시간 발행·구독 미들웨어</td><td>ROS 2 Humble (GPU 서버 안)</td></tr>
+    </table></div>
+
+    <h3>계약 목록</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:230px">계약</th><th style="width:220px">방향</th><th>무엇</th></tr>
+      <tr><td><b>REST <code>/api/requests</code></b></td><td>고객 → 견적 BE</td><td>① 견적 요청 접수. 큐 순번 · 예상 소요 회신</td></tr>
+      <tr><td><b>REST 웹 콘솔</b></td><td>운영자 ↔ 견적 BE</td><td>② 검토·컴파일, ⑦ 검수, 우선순위 조정</td></tr>
+      <tr><td><b>REST 다운로드 · 이메일</b></td><td>견적 BE → 고객</td><td>⑧ 견적서 발송</td></tr>
+      <tr><td><b>AMQP 요청 잡 큐</b></td><td>견적 BE → RabbitMQ → CPU 워커</td><td>③ 잡 = 시나리오 패키지 + 스윕 범위. 우선순위 · DLQ · 재시도</td></tr>
+      <tr><td><b>AMQP GPU 런 큐</b></td><td>계산 엔진 → RabbitMQ → 런 오케스트레이터</td><td>⑤ 상위 구성의 검증 런 요청. 직렬 소비</td></tr>
+      <tr><td><b>AMQP 결과 이벤트</b></td><td>워커 · 오케스트레이터 → 견적 BE</td><td>⑥ KPI · 아티팩트 메타. BE가 PG에 기록하고 ack</td></tr>
+      <tr><td><b>MQTT <code>sim/control</code></b></td><td>런 오케스트레이터 → sim-runner</td><td>⑤ start/go · stop 지시. 하트비트 · 시뮬 시각 회신</td></tr>
+      <tr><td><b>MQTT <code>uagv/v2/{serial}/order</code> · <code>state</code></b></td><td>FMS ↔ amr-agent</td><td><a class="term" href="../ref/glossary_industrial.html#vda5050">VDA 5050</a>. 노드·엣지 시퀀스 하달, <code>state.lastNodeId</code>로 ack. 전 로봇 ack 후 다음 틱(<a class="term" href="../ref/glossary_robotics.html#barrier-tick">배리어 틱</a>)</td></tr>
+      <tr><td><b>MQTT <code>biz/order</code> · <code>fms/event</code></b></td><td>시뮬 WMS ↔ FMS</td><td>주문 → 운송오더 발행 / 피킹 완료 → 재고 차감. 팀 파트 인터페이스, 이름만 적는다</td></tr>
+      <tr><td><b>k8s API</b></td><td>런 오케스트레이터 → k3s</td><td>⑤ 시뮬 WMS · FMS 파드 생성, 런 종료 시 삭제</td></tr>
+      <tr><td><b>S3 API presigned PUT</b></td><td>sim-runner → MinIO</td><td>⑥ MP4 · 리플레이 JSON · 히트맵 PNG 업로드. <a class="term" href="../ref/glossary_industrial.html#presigned-url">presigned URL</a>은 기한 있는 서명된 업로드·다운로드 주소</td></tr>
+      <tr><td><b>DDS · ROS 2 토픽</b></td><td>amr-agent ↔ Isaac Sim</td><td><code>/cmd_vel</code> · <code>/odom</code> · <code>/scan</code>. 그리드 프리미티브 컨트롤러 + AMCL 자기위치</td></tr>
+      <tr><td><b>in-process</b></td><td>계산 엔진 내부</td><td>④ θ 추론 → 통행 비용 → FMS 결정 커널 <code>step(world, now, events) → decisions</code>. 하네스 셸이 가상 시계로 호출</td></tr>
+    </table></div>
+    <p class="soft">VDA 5050은 독일 자동차산업협회의 AGV/AMR–관제 표준 인터페이스다. FMS 틱과 VDA 5050의 대응표는 <a href="../working/sil_roadmap.html">WORKING · SIL 로드맵</a>에 있다.</p>
+
+    <div class="kcards">
+      <div class="kcard"><b>EMQX는 상시</b><span><code>sim/control</code>이 런보다 먼저 있어야 한다. 시뮬 스택은 런마다 새로 뜨지만 브로커는 남는다</span></div>
+      <div class="kcard s"><b>커널 하나, 셸 둘</b><span>DES는 하네스(가상 시계, 동기), 검증 런은 MQTT 데몬(틱 기반). 같은 <code>step()</code>을 부른다</span></div>
+      <div class="kcard g"><b>같은 θ, 같은 시나리오 패키지</b><span>DES와 검증 런은 같은 θ와 같은 패키지를 쓴다. 두 WMS는 한 패키지의 두 소비자다</span></div>
+    </div>
+
+    <details class="more"><summary>공식 레퍼런스 12개 — 펼쳐 보기</summary>
+    <ul class="rules">
+      <li><a href="https://github.com/VDA5050/VDA5050" target="_blank" rel="noopener">VDA 5050</a> — AGV 통신 인터페이스 사양(GitHub)</li>
+      <li><a href="https://mqtt.org/" target="_blank" rel="noopener">MQTT</a> · <a href="https://www.emqx.com/en" target="_blank" rel="noopener">EMQX</a> — 규약 · 브로커</li>
+      <li><a href="https://www.amqp.org/" target="_blank" rel="noopener">AMQP</a> · <a href="https://www.rabbitmq.com/" target="_blank" rel="noopener">RabbitMQ</a> — 규약 · 브로커</li>
+      <li><a href="https://www.omg.org/spec/DDS/" target="_blank" rel="noopener">DDS</a> · <a href="https://docs.ros.org/en/humble/" target="_blank" rel="noopener">ROS 2 Humble</a></li>
+      <li><a href="https://k3s.io/" target="_blank" rel="noopener">k3s</a> · <a href="https://spring.io/projects/spring-boot" target="_blank" rel="noopener">Spring Boot</a></li>
+      <li><a href="https://min.io/" target="_blank" rel="noopener">MinIO</a> · <a href="https://www.h2database.com/" target="_blank" rel="noopener">H2</a> · <a href="https://www.postgresql.org/" target="_blank" rel="noopener">PostgreSQL</a></li>
+      <li><a href="https://developer.nvidia.com/isaac/sim" target="_blank" rel="noopener">Isaac Sim</a> · <a href="https://tailscale.com/" target="_blank" rel="noopener">tailscale</a></li>
+    </ul>
+    </details>
+  </div>
+</section>
+
+<!-- ══════════ A6 데이터 ══════════ -->
+<section id="a6">
+  <div class="sec-head"><span class="sec-no">SEC 06 · 데이터</span><h2>PG는 견적, H2는 런, MinIO는 파일</h2></div>
+  <div class="sec-body">
+    <p class="lead">저장소는 셋이다. 성격이 다르므로 섞지 않는다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:150px">저장소</th><th>테이블 · 파일</th><th style="width:260px">성격</th></tr>
+      <tr><td><b>PostgreSQL(견적)</b></td><td>customer, quote_request, amr_model, scenario, sweep_job, trial, verify_run, kpi_result, artifact, quote_report, operator, review_log, event_log</td><td><span class="chip c-steel">영속</span> 계층 request 1:N job 1:N trial 1:0..1 verify_run</td></tr>
+      <tr><td><b>H2(시뮬 WMS)</b></td><td>run_context, zone, location, station, sku, inventory, order, order_line, task</td><td><span class="chip c-amber">런 스코프</span> 작업 이벤트 로그는 H2 밖(JSONL → MinIO)</td></tr>
+      <tr><td><b>MinIO</b></td><td>시나리오 파일, MP4 · 리플레이 · 히트맵 · 로그</td><td><span class="chip c-steel">영속 파일</span></td></tr>
+    </table></div>
+
+    <div class="kcards">
+      <div class="kcard"><b>재현성 키</b><span>시나리오 해시 + 시드. 같은 키면 같은 결과가 나와야 한다</span></div>
+      <div class="kcard s"><b>두 DB는 서로 모른다</b><span>견적 PG와 시뮬 H2는 참조 관계가 없다. 연결 고리는 AMQP 결과 이벤트와 MinIO 키뿐이다</span></div>
+      <div class="kcard g"><b>아티팩트는 파일로</b><span>영상·리플레이·히트맵은 MinIO에 두고, PG에는 메타(키·크기·런 ID)만 적는다</span></div>
+    </div>
+
+    <div class="plain"><span class="pl-tag">원칙</span>
+      <b>영속은 견적, 휘발은 시뮬.</b> 런이 끝나면 H2는 사라진다. 남겨야 할 것은 결과 이벤트로 PG에, 파일은 MinIO에 남긴다.</div>
+
+    <details class="more"><summary>두 DB의 방언이 무관한 이유 — 펼쳐 보기</summary>
+    <ul class="rules">
+      <li><b>JPQL만 쓴다</b> — JPQL(Java Persistence Query Language)은 JPA 객체 질의어다. 시뮬 WMS는 네이티브 SQL 쿼리를 금지한다</li>
+      <li><b>PG 호환 모드</b> — H2를 PostgreSQL 호환 모드로 띄운다. 함수·타입 차이를 미리 줄인다</li>
+      <li><b>프로파일 전환으로 승격</b> — Spring 프로파일만 바꾸면 H2 → 실물 PG로 승격된다. 코드 변경 없음</li>
+      <li><b>참조 없음</b> — 견적 PG와 시뮬 H2는 조인하지 않는다. 방언이 달라도 서로 영향이 없다</li>
+    </ul>
+    </details>
+  </div>
+</section>
+
+<!-- ══════════ A7 런 오케스트레이터 ══════════ -->
+<section id="a7">
+  <div class="sec-head"><span class="sec-no">SEC 07 · 런 오케스트레이터</span><h2>런 하나는 상태 6개를 지나고, 어느 쪽으로 끝나든 파드는 지운다</h2></div>
+  <div class="sec-body">
+    <p class="lead">EC2 k3s 위 단일 파드다. GPU 런 큐를 소비해 시뮬 스택을 띄우고, sim-runner에 시작·정지를 지시하고, 아티팩트 키를 모아 결과를 발행한다.</p>
+
+    <svg viewBox="0 0 900 300" role="img" aria-label="런 오케스트레이터 상태 머신. QUEUED에서 PROVISIONING, LOADING, RUNNING, COLLECTING을 거쳐 DONE으로 가고, 중간 네 상태에서 타임아웃이나 실패가 나면 FAILED로 빠진다" style="max-width:100%;height:auto;display:block;margin:14px 0">
+      <defs>
+        <marker id="sa-st" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker>
+        <marker id="sa-st-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#F08A32"/></marker>
+      </defs>
+      <text x="75" y="28" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">RabbitMQ</text>
+      <text x="225" y="28" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">k8s API</text>
+      <text x="375" y="28" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">시뮬 WMS</text>
+      <text x="525" y="28" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">MQTT sim/control</text>
+      <text x="675" y="28" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">MinIO</text>
+      <text x="825" y="28" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">AMQP → 견적 BE</text>
+
+      <rect x="10" y="40" width="130" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="24" y="64" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="#E8ECF1">QUEUED</text>
+      <text x="24" y="84" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">GPU 런 큐 대기</text>
+      <line x1="140" y1="69" x2="158" y2="69" stroke="#8FB4D9" stroke-width="2" marker-end="url(#sa-st)"/>
+
+      <rect x="160" y="40" width="130" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="174" y="64" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="#E8ECF1">PROVISIONING</text>
+      <text x="174" y="84" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">WMS·FMS 파드 기동</text>
+      <line x1="290" y1="69" x2="308" y2="69" stroke="#8FB4D9" stroke-width="2" marker-end="url(#sa-st)"/>
+
+      <rect x="310" y="40" width="130" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="324" y="64" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="#E8ECF1">LOADING</text>
+      <text x="324" y="84" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">시나리오 주입 대기</text>
+      <line x1="440" y1="69" x2="458" y2="69" stroke="#8FB4D9" stroke-width="2" marker-end="url(#sa-st)"/>
+
+      <rect x="460" y="40" width="130" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="474" y="64" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="#E8ECF1">RUNNING</text>
+      <text x="474" y="84" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">start/go · 감시</text>
+      <line x1="590" y1="69" x2="608" y2="69" stroke="#8FB4D9" stroke-width="2" marker-end="url(#sa-st)"/>
+
+      <rect x="610" y="40" width="130" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="624" y="64" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="#E8ECF1">COLLECTING</text>
+      <text x="624" y="84" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">stop · 아티팩트 키</text>
+      <line x1="740" y1="69" x2="758" y2="69" stroke="#8FB4D9" stroke-width="2" marker-end="url(#sa-st)"/>
+
+      <rect x="760" y="40" width="130" height="58" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
+      <text x="774" y="64" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="#E8ECF1">DONE</text>
+      <text x="774" y="84" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">결과 이벤트 · ack</text>
+
+      <line x1="225" y1="98" x2="225" y2="170" stroke="#F08A32" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <line x1="375" y1="98" x2="375" y2="170" stroke="#F08A32" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <line x1="525" y1="98" x2="525" y2="170" stroke="#F08A32" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <line x1="675" y1="98" x2="675" y2="170" stroke="#F08A32" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <line x1="225" y1="170" x2="675" y2="170" stroke="#F08A32" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <line x1="450" y1="170" x2="450" y2="204" stroke="#F08A32" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#sa-st-a)"/>
+      <text x="690" y="175" font-family="JetBrains Mono, monospace" font-size="12" fill="#F08A32">타임아웃 · 하트비트 끊김 · 파드 실패</text>
+
+      <rect x="385" y="210" width="130" height="58" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="399" y="234" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="#E8ECF1">FAILED</text>
+      <text x="399" y="254" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">DLQ · 파드 삭제</text>
+
+      <text x="450" y="292" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">── DONE · FAILED 모두 파드 삭제로 끝난다 · 런 ID 기준 멱등 · 재기동 시 조정 단계 ──</text>
+    </svg>
+    <p class="soft">상자 위 회색 라벨이 각 상태에서 상대하는 인터페이스이고, 주황 점선이 실패 경로다.</p>
+
+    <h3>시퀀스</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:50px">순서</th><th>동작</th><th style="width:200px">상대</th><th style="width:230px">상태</th></tr>
+      <tr><td><b>1</b></td><td>GPU 런 큐 소비</td><td>RabbitMQ</td><td>QUEUED → PROVISIONING</td></tr>
+      <tr><td><b>2</b></td><td>시뮬 WMS · FMS 파드 기동</td><td>k8s API</td><td>PROVISIONING</td></tr>
+      <tr><td><b>3</b></td><td>WMS 시나리오 주입 완료 대기</td><td>시뮬 WMS</td><td>LOADING</td></tr>
+      <tr><td><b>4</b></td><td>sim-runner에 <code>start</code>/<code>go</code></td><td>MQTT <code>sim/control</code></td><td>LOADING → RUNNING</td></tr>
+      <tr><td><b>5</b></td><td>하트비트 · 시뮬 시각 감시</td><td>sim-runner</td><td>RUNNING</td></tr>
+      <tr><td><b>6</b></td><td><code>stop</code></td><td>MQTT <code>sim/control</code></td><td>RUNNING → COLLECTING</td></tr>
+      <tr><td><b>7</b></td><td>아티팩트 키 수집</td><td>MinIO</td><td>COLLECTING</td></tr>
+      <tr><td><b>8</b></td><td>결과 이벤트 발행 · ack</td><td>AMQP → 견적 BE</td><td>COLLECTING → DONE</td></tr>
+      <tr><td><b>9</b></td><td>파드 삭제</td><td>k8s API</td><td>DONE / FAILED 공통</td></tr>
+    </table></div>
+
+    <div class="kcards">
+      <div class="kcard"><b>런 ID 기준 멱등</b><span>같은 런 ID가 두 번 오면 한 번만 처리한다. 큐 재전송에 안전하다</span></div>
+      <div class="kcard s"><b>DLQ</b><span>실패한 런 메시지는 DLQ로 보낸다. 운영자가 콘솔에서 재시도 여부를 정한다</span></div>
+      <div class="kcard g"><b>재기동 시 조정 단계</b><span>오케스트레이터가 다시 뜨면 살아 있는 파드와 큐 메시지를 대조해 상태를 맞춘다</span></div>
+    </div>
+
+    <h3>GPU 슬롯 모델</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:150px">항목</th><th>값</th></tr>
+      <tr><td><b>슬롯 수</b></td><td>GPU 수. 현재 1</td></tr>
+      <tr><td><b>소비</b></td><td>슬롯 하나에 런 하나. 직렬</td></tr>
+      <tr><td><b>대기</b></td><td>큐 깊이가 순번 · ETA의 근거</td></tr>
+      <tr><td><b>런 길이</b></td><td>분 단위 미니 시나리오. Isaac은 실시간이라 하루치를 재생하지 못한다</td></tr>
+      <tr><td><b>확장</b></td><td>GPU 노드 추가 = 소비자 추가. 상세는 SEC 03 확장 시나리오</td></tr>
+    </table></div>
+    <p class="soft">틱 배리어 동기 방식(lockstep · 고정 주기 · 타임아웃 처리 · 시뮬 시각 기록)은 FMS 파트 확인 대기 항목이다. 확정되면 5번 감시 규칙이 정해진다.</p>
+  </div>
+</section>
+
+<!-- ══════════ A8 상세 다이어그램 ══════════ -->
+<section id="a8">
+  <div class="sec-head"><span class="sec-no">SEC 08 · 상세 다이어그램</span><h2>상세본 v3.10은 표기 규칙과 함께 본다</h2></div>
+  <div class="sec-body">
+    <p class="lead">아래 상세본이 이 페이지의 그림 원본이다. 표기 규칙은 기준선 v3 §3.4를 따른다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:190px">표기</th><th>뜻</th></tr>
+      <tr><td><b>Docker 배지</b></td><td>k3s 파드</td></tr>
+      <tr><td><b>파랑 실선 / 초록 실선</b></td><td>EC2 / GPU 서버. 굵은 실선은 기기 경계</td></tr>
+      <tr><td><b>보라 점선 / 앰버 점선</b></td><td>견적 도메인 / 시뮬 도메인</td></tr>
+      <tr><td><b>청록 관계선</b></td><td>두 WMS가 같은 시나리오 패키지를 공유하는 관계</td></tr>
+      <tr><td><b>①~⑧</b></td><td>SEC 01의 8단계</td></tr>
+    </table></div>
+    <iframe src="../../docs/FMS-WMS_통합_아키텍처.html" title="아키텍처 상세" style="width:100%;height:1500px;border:1px solid #1B2430;background:#fff" loading="lazy"></iframe>
+    <p class="soft"><a href="../../docs/FMS-WMS_통합_아키텍처.html" target="_blank" rel="noopener">새 창에서 열기 ↗</a></p>
+    <p class="soft">상세본의 표와 설계 원칙 노트는 이 페이지 SEC 01~07에 사이트 문체로 옮겨져 있다. 상세본 서술이 기준선 v3와 다르면 기준선이 우선한다.</p>
+  </div>
+</section>
+
+<!-- ══════════ NEXT — 다음으로 읽기 ══════════ -->
+<section id="anext">
+  <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
+  <div class="sec-body">
+    <ul class="rules">
+      <li><a href="amr_tech_plan.html"><b>TECH 03 실행 계획서</b></a> — 이 아키텍처를 어떤 순서와 결정으로 구현하는지. 메인 트랙의 다음 문서</li>
+      <li><a href="amr_decision_inventory.html"><b>TECH 05 구현 결정 인벤토리</b></a> — 이 페이지의 결정이 어떤 항목으로 등록되어 있는지 전수 목록</li>
+      <li><a href="../working/runtime_architecture.html"><b>WORKING · 실행 환경과 리소스</b></a> — EC2 · GPU 서버의 실제 실행 환경과 리소스 배분</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<!-- ══════════ flow-nav — TECH 트랙 순서 ══════════ -->
+<div class="wrap flow-nav">
+  <a class="prev" href="amr_overview.html"><small>← 이전</small>TECH 01 · 전체 조망</a>
+  <a class="next" href="amr_tech_plan.html"><small>다음 →</small>TECH 03 · 실행 계획서</a>
+</div>
+
+<footer>
+  <div class="wrap">TECH 02 · SYSTEM-ARCHITECTURE — 원천: AMR_기획_기준선_v3.md (2026-09-03) · 그림: docs/FMS-WMS_통합_아키텍처.html v3.10 · REV A: 신규 작성 · <a href="../../index.html">문서 인덱스로</a></div>
+</footer>
+
+</body>
+</html>

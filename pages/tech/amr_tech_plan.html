@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-<title>실행 계획서 — 기술 결정과 로드맵 (Tech Plan)</title>
+<title>실행 계획서 — 계약·결정·로드맵 (Tech Plan)</title>
 <style>
   :root{
     --bg:#14181D;
@@ -125,22 +125,38 @@
     .sec-head,.sec-body{padding-left:16px;padding-right:16px}
   }
 </style>
+<style>
+  /* sil_roadmap.html · runtime_architecture.html · 3pl_industry.html */
+  .note{margin:14px 0 8px;padding:12px 16px;background:#2A2019;border-left:4px solid var(--amber);font-size:14px;line-height:1.8}
+  .note .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--amber);font-weight:700;margin-bottom:4px}
+  /* 동 페이지들 — 칩 줄바꿈 금지 + slate 칩 */
+  .chip{white-space:nowrap}
+  .c-slate{color:var(--slate)}
+  /* sil_roadmap.html · runtime_architecture.html — 넓은 SVG 래퍼(가로 스크롤) */
+  .viz{background:#0E1318;border:1px solid var(--panel-edge);padding:12px 14px;margin:14px 0;overflow-x:auto}
+  .viz svg{display:block;min-width:780px;width:100%;height:auto}
+  /* amr_mapf_theory.html — 코드 블록 */
+  pre{font-family:var(--mono);font-size:12px;line-height:1.7;background:#20272F;border:1px solid var(--panel-edge);border-left:4px solid var(--steel);padding:12px 16px;overflow-x:auto;margin:12px 0}
+  pre code{background:none;border:none;padding:0}
+  /* working · research 페이지 — 키보드 포커스 링 */
+  :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+</style>
 </head>
 <body>
 
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow">TECH 02 / 04 · TECH-PLAN · <b>REV C</b> · 2026-08</div>
-      <h1>실행 계획서 — 기술 결정과 로드맵
-        <span class="sub">AMR 견적 시뮬레이션 서비스를 어떤 기술로, 어떤 순서로 만들 것인가</span>
+      <div class="doc-eyebrow">TECH 03 / 05 · TECH-PLAN · <b>REV D</b> · 2026-09</div>
+      <h1>실행 계획서 — 계약 4개를 동결하고, 세 파트가 병렬로 만든다
+        <span class="sub">무엇을 어떤 순서로 만들고, 무엇이 동결됐고, 무엇이 남았나 — 기준선 v3 기준 실행 문서</span>
       </h1>
     </div>
     <div class="meta">
       BASE · <b>TECH 01 전체 조망</b><br>
-      DETAIL · <b>TECH 04 결정 인벤토리</b><br>
-      THEORY · <b>TECH 03 경로계획 이론</b><br>
-      SOURCE · <b>전체 개괄 (Master Overview)</b>
+      ARCH · <b>TECH 02 시스템 아키텍처</b><br>
+      DETAIL · <b>TECH 05 결정 인벤토리</b><br>
+      SOURCE · <b>AMR_기획_기준선_v3.md (2026-09-03)</b>
     </div>
   </div>
 </header>
@@ -149,215 +165,287 @@
   <div class="wrap">
     <a class="nav-home" href="../../index.html">⌂ INDEX</a>
     <a href="#s0">00 한눈에</a>
-    <a href="#s1">01 아키텍처</a>
-    <a href="#s2">02 이론 기반</a>
-    <a href="#s3">03 AI 파트</a>
-    <a href="#s4">04 표준 스택</a>
-    <a href="#s5">05 V&amp;V</a>
-    <a href="#s6">06 크리티컬 패스</a>
-    <a href="#s7">07 로드맵</a>
-    <a href="#s8">08 발표 메시지</a>
-    <a class="nav-cross" href="amr_overview.html">전체 조망 ↗</a>
+    <a href="#s1">01 계약 4개</a>
+    <a href="#s2">02 기술 결정</a>
+    <a href="#s3">03 로드맵</a>
+    <a href="#s4">04 검증 체계</a>
+    <a href="#s5">05 리스크</a>
+    <a href="#s6">06 미결</a>
+    <a class="nav-cross" href="system_architecture.html">시스템 아키텍처 ↗</a>
   </div>
 </nav>
 
 <main class="wrap">
 
-<!-- ══════════ S0 한눈에 ══════════ -->
+<!-- ══════════ S0 한눈에 보기 ══════════ -->
 <section id="s0">
-  <div class="sec-head"><span class="sec-no">SEC 00 · 한눈에 보기</span><h2>테스트한 코드가 그대로 배포된다</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 00 · 한눈에 보기</span><h2>계약 4개 위에서 세 파트가 병렬로 달린다</h2></div>
   <div class="sec-body">
-    <p class="lead"><a href="amr_overview.html">전체 조망(TECH 01)</a>의 시스템을 성립시키는 큰 기술 결정과 실행 순서 — 결정의 전수 목록은 <a href="amr_decision_inventory.html">TECH 04</a>가 맡습니다.</p>
+    <p class="lead"><b>"계약 4개를 동결하고, 세 파트가 병렬로 만든다."</b> 이 문서는 <a class="term" href="../ref/glossary_industrial.html#intake-service">요청 접수형</a> <a class="term" href="../ref/glossary_industrial.html#amr">AMR</a>(자율이동로봇) 견적 서비스를 만드는 순서, 동결된 계약, 남은 일을 정리한다. 아키텍처 상세는 <a href="system_architecture.html">TECH 02</a>, 결정 전수 목록은 <a href="amr_decision_inventory.html">TECH 05</a>가 맡는다.</p>
+    <div class="note"><span class="pl-tag">기준선 개정 (2026-09-03)</span>
+      ① 제품 형태: 셀프서브 SaaS를 기각하고 요청 접수형 비동기 서비스로 확정.
+      ② <a class="term" href="../ref/glossary_industrial.html#two-tier-web">웹 인프라 2층</a>(상시 견적 서비스 / 런 단위 시뮬 스택) 분리. Kafka·S3 제외.
+      ③ 경로계획: <a class="term" href="../ref/glossary_robotics.html#pibt">PIBT</a>(Priority Inheritance with Backtracking, 우선순위 상속 경로계획) <a class="term" href="../ref/glossary_robotics.html#heading-model">헤딩 모델</a> + AI가 예측한 통행 규칙 <a class="term" href="../ref/glossary_robotics.html#theta">θ</a> 11개.
+      ④ 로봇 실행: 자체 추종기 대신 <a class="term" href="../ref/glossary_industrial.html#vda5050">VDA 5050</a> 틱 = <a class="term" href="../ref/glossary_robotics.html#primitive">그리드 프리미티브</a>.
+      ⑤ <a class="term" href="../ref/glossary_robotics.html#sil">SIL</a>(Software-In-the-Loop, 실제 소프트웨어를 가상 로봇에 물려 검증) 진행: T3 완료, T4 뼈대 완료.
+      근거: 기준선 v3 §1, <a href="../../docs/FMS-WMS_통합_아키텍처.html">아키텍처 v3.10</a>.</div>
 
     <h3>이 문서가 답하는 질문</h3>
     <ul class="rules">
-      <li>① 왜 시뮬레이션이 두 계층이고, 그 사이 경계는 무엇인가? — SEC 01</li>
-      <li>② 견적 숫자의 근거가 되는 이론과 AI는 무엇인가? — SEC 02 · 03</li>
-      <li>③ 어떤 산업 표준을 따르고, 결과를 어떻게 검증하며, 8주를 어떤 순서로 쓰는가? — SEC 04 · 05 · 07</li>
+      <li>① 세 파트가 무엇을 기준으로 따로 만들 수 있나 — SEC 01 계약 4개</li>
+      <li>② 무엇을 채택하고 무엇을 버렸나, 지금 어디까지 왔나 — SEC 02 · 03</li>
+      <li>③ 결과를 어떻게 믿고, 막히면 어디로 물러서나 — SEC 04 · 05 · 06</li>
     </ul>
 
-    <h3>핵심 구조 — 2계층 시뮬레이션과 보정 루프</h3>
-    <svg viewBox="0 0 900 320" role="img" aria-label="SimPy 견적 계층과 ROS2+Isaac 검증 계층의 분업, 그리고 보정 루프" style="max-width:100%;height:auto;display:block;margin:14px 0">
-      <defs><marker id="tp-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker><marker id="tp-arr-g" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#3BAF77"/></marker></defs>
-      <rect x="16" y="30" width="400" height="150" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
-      <text x="32" y="58" font-family="IBM Plex Sans KR, sans-serif" font-size="15" font-weight="700" fill="#E8ECF1">SimPy DES — 견적 본체</text>
-      <text x="32" y="84" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">질문: 몇 대가 최적인가 (정량 스윕)</text>
-      <text x="32" y="106" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">속도: 수백~수천 배속 · 수백 런 (K8s)</text>
-      <text x="32" y="128" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">내장: 경량 MAPF 플래너 (고정 틱 · 1틱=1셀)</text>
-      <text x="32" y="150" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">출력: 대수–처리량–TCO 곡선</text>
-      <rect x="484" y="30" width="400" height="150" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
-      <text x="500" y="58" font-family="IBM Plex Sans KR, sans-serif" font-size="15" font-weight="700" fill="#E8ECF1">ROS2 + Isaac SIL — 검증 트랙</text>
-      <text x="500" y="84" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">질문: 그 답이 실제 스택에서 성립하는가</text>
-      <text x="500" y="106" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">속도: RTF ≈ 1 · 최적 구성 1~2개만</text>
-      <text x="500" y="128" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">구성: ROS2 어댑터 + 자체 추종기</text>
-      <text x="500" y="150" font-family="IBM Plex Sans KR, sans-serif" font-size="13" fill="#9AA7B4">기종: iw.hub 메인 · MiR 250 서브</text>
-      <line x1="416" y1="80" x2="478" y2="80" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-arr)"/>
-      <text x="447" y="70" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#E8ECF1">최적 구성 전달</text>
-      <line x1="478" y1="140" x2="422" y2="140" stroke="#3BAF77" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#tp-arr-g)"/>
-      <text x="450" y="162" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" font-weight="700" fill="#3BAF77">실측 주행시간 → 보정</text>
-      <rect x="16" y="216" width="868" height="52" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
-      <text x="450" y="238" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">VDA 5050 경계 — 이 선 위의 플랫폼 코드는 가상↔현실 전환 시 불변</text>
-      <text x="450" y="258" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">테스트한 코드가 그대로 배포된다 = v2(실로봇 관제) 확장이 아키텍처에 내장</text>
-      <line x1="216" y1="180" x2="216" y2="210" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-arr)"/>
-      <line x1="684" y1="180" x2="684" y2="210" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-arr)"/>
-      <text x="450" y="296" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">보정 루프: 에뮬레이션 실측 엣지 주행시간 → SimPy 유효속도 계수 캘리브레이션 → 재스윕</text>
+    <h3>3파트 병렬 + 계약 4개</h3>
+    <svg viewBox="0 0 900 340" role="img" aria-label="웹, FMS·AI, 시뮬 세 파트가 동결된 계약 4개(시나리오 패키지, θ 계약, VDA 5050 틱 매핑, trial 어댑터 API) 위에서 병렬로 작업하고, 그 결과 DES와 Isaac 검증 런을 같은 조건으로 비교할 수 있는 구조" style="max-width:100%;height:auto;display:block;margin:14px 0">
+      <defs>
+        <marker id="tp-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker>
+        <marker id="tp-arr-g" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#3BAF77"/></marker>
+      </defs>
+      <!-- 파트 3개 -->
+      <rect x="16" y="16" width="270" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="30" y="40" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">웹 파트</text>
+      <text x="30" y="60" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">견적 BE · 운영 콘솔 · 큐 · 저장소</text>
+      <rect x="315" y="16" width="270" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="329" y="40" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">FMS · AI 파트</text>
+      <text x="329" y="60" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">PIBT 커널 · θ 추론 · DES 스윕</text>
+      <rect x="614" y="16" width="270" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="628" y="40" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">시뮬 파트</text>
+      <text x="628" y="60" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">Isaac 씬 · T4 에이전트 · sim-runner</text>
+      <line x1="151" y1="74" x2="151" y2="118" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-arr)"/>
+      <line x1="450" y1="74" x2="450" y2="118" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-arr)"/>
+      <line x1="749" y1="74" x2="749" y2="118" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-arr)"/>
+      <!-- 계약 띠 -->
+      <rect x="16" y="124" width="868" height="116" fill="#171D24" stroke="#F08A32" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <text x="30" y="144" font-family="JetBrains Mono, monospace" font-size="12" fill="#F08A32">동결된 계약 4개 — SEC 01</text>
+      <text x="870" y="144" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">W = 웹 · F = FMS·AI · S = 시뮬</text>
+      <rect x="30" y="156" width="200" height="58" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="44" y="180" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">① 시나리오 패키지</text>
+      <text x="44" y="200" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">소유 W · 소비 F·S</text>
+      <rect x="243" y="156" width="200" height="58" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="257" y="180" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">② θ 계약 (v2)</text>
+      <text x="257" y="200" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">소유 F · 소비 F·S</text>
+      <rect x="456" y="156" width="200" height="58" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="470" y="180" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">③ VDA 5050 틱 매핑</text>
+      <text x="470" y="200" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">소유 S · 소비 F</text>
+      <rect x="669" y="156" width="200" height="58" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="683" y="180" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">④ trial 어댑터 API</text>
+      <text x="683" y="200" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">소유 W · 소비 F</text>
+      <!-- 결과 -->
+      <line x1="450" y1="240" x2="450" y2="268" stroke="#3BAF77" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#tp-arr-g)"/>
+      <rect x="190" y="274" width="520" height="58" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
+      <text x="204" y="298" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">같은 커널 · 같은 θ · 같은 시나리오 패키지</text>
+      <text x="204" y="318" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">DES 결과와 Isaac 검증 런을 같은 조건으로 비교한다 — SEC 04</text>
     </svg>
-    <p class="soft">두 계층 모두 같은 VDA 5050 경계 위에서 동작합니다. 경로는 중앙에서 하달하고 로봇 추종기는 구간 주행만 맡아야
-    두 계층이 "같은 시스템"을 시뮬레이션하게 됩니다 — 오차 비교가 성립하는 조건입니다.</p>
+    <p class="soft">주황 상자가 세 파트가 공유하는 계약이다. W·F·S는 각 계약을 소유하거나 소비하는 파트다. 초록 상자가 계약을 동결하는 이유다.</p>
 
-    <details class="more"><summary>먼저 알아둘 용어 7개 — 펼쳐 보기</summary>
+    <details class="more"><summary>먼저 알아둘 용어 9개 — 펼쳐 보기</summary>
     <div class="tbl-scroll"><table>
-      <tr><th>용어</th><th>쉬운 설명</th></tr>
-      <tr><td><b>SIL</b></td><td>Software-In-the-Loop. 실제 소프트웨어 스택을 가상 하드웨어에 물려 검증하는 방식. 본 프로젝트 검증 트랙의 정체</td></tr>
-      <tr><td><b>VDI 3633</b></td><td>시뮬레이션 프로젝트의 절차와 검증(V&amp;V)을 정리한 독일 공학 지침. "투명한 견적" 주장의 표준 준거</td></tr>
-      <tr><td><b>ISO 22400 · ISO 3691-4</b></td><td>제조 운영 KPI 정의 표준(리포트 용어의 출처) · 무인 운반차 안전 표준(안전 거동 파라미터의 출처)</td></tr>
-      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#sparkplug">Sparkplug B</a></b></td><td>MQTT 위에서 장비 상태를 구조화해 보내는 규약. 가상 AMR 텔레메트리에 사용(역할은 얇게)</td></tr>
-      <tr><td><b>sim-to-sim 분리</b></td><td>RL 학습은 빠른 SimPy-Gymnasium에서, 검증은 정밀한 Isaac에서 — 학습과 검증 시뮬레이터를 분리하는 설계</td></tr>
-      <tr><td><b>Gymnasium</b></td><td>강화학습 환경의 표준 인터페이스. SimPy 시뮬레이션을 RL이 학습할 수 있는 형태로 감싼다</td></tr>
-      <tr><td><b>OAT · CI</b></td><td>변수 하나씩 흔드는 민감도 분석(One-At-a-Time) · 95% 신뢰구간(Confidence Interval). 통계적 정직함의 도구</td></tr>
+      <tr><th style="width:190px">용어</th><th>쉬운 설명</th></tr>
+      <tr><td><b>PIBT</b></td><td>Priority Inheritance with Backtracking. 우선순위를 물려주며 되돌아가는 다중 로봇 경로계획. 본 프로젝트 FMS의 이동 계층</td></tr>
+      <tr><td><b>θ (세타)</b></td><td>통행 규칙 파라미터 11개(연속 8 + 범주 3). AI가 trial마다 추론하고, DES와 검증 런이 같은 값을 쓴다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#barrier-tick">배리어 틱</a></b></td><td>모든 로봇의 ack가 모여야 FMS가 다음 틱으로 넘어가는 동기 방식. 방식은 FMS 파트가 확인 중</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#scenario-package">시나리오 패키지</a></b></td><td>요청을 컴파일한 입력 묶음(zones.json · 맵 · 주문 분해 규칙 · 수요 프로파일 · 좌표 매핑). 두 WMS의 공통 입력</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#trial">trial</a></b></td><td>스윕 안의 구성 1개(대수 · 기종 · 시드)를 실행하는 단위. trial 어댑터 API의 단위</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#run">런 (run)</a></b></td><td><a class="term" href="../ref/glossary_robotics.html#isaac">Isaac Sim</a> 물리 검증 1회. 런마다 시뮬 스택을 기동하고 폐기한다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#decision-kernel">결정 커널</a> / <a class="term" href="../ref/glossary_robotics.html#execution-shell">실행 셸</a></b></td><td>커널은 I/O 없는 순수 결정 함수 <code>step(world, now, events) → decisions</code>. 셸은 시계·통신을 붙이는 껍데기(하네스 · MQTT 데몬)</td></tr>
+      <tr><td><b>VDA 5050</b></td><td>FMS↔로봇 표준 인터페이스. 본 프로젝트는 틱 1개 = 프리미티브 1개로 매핑한다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#des">DES</a></b></td><td>Discrete Event Simulation. 이산사건 시뮬레이션. 현재 실체는 팀의 틱 시뮬(sim_v2)</td></tr>
     </table></div>
     </details>
   </div>
 </section>
 
-<!-- ══════════ S1 아키텍처 ══════════ -->
+<!-- ══════════ S1 계약 4개 ══════════ -->
 <section id="s1">
-  <div class="sec-head"><span class="sec-no">SEC 01 · 아키텍처</span><h2>모든 컴포넌트는 하나의 계약만 바라본다</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 01 · 동결된 계약 4개</span><h2>계약이 동결돼야 세 파트가 따로 만든다</h2></div>
   <div class="sec-body">
-    <p class="lead">전체 그림은 <a href="amr_overview.html#o0">TECH 01 시스템 지도</a> — 여기서는 그 그림을 성립시키는 결정 세 가지입니다.</p>
-    <div class="kcards">
-      <div class="kcard"><b>단일 내부 표현 = 계약</b><span>인테이크가 어떤 형태로 들어와도 "시맨틱 그리드 + 수요 프로파일 JSON" 하나로 변환 — 이후 전부 이것만 바라본다</span></div>
-      <div class="kcard s"><b>스윕 = K8s Indexed Job</b><span>스윕 1회 = 잡 1벌, 인덱스 = 기종×대수×시드. Kafka→TimescaleDB 집계, Redis→WebSocket 진행률</span></div>
-      <div class="kcard g"><b>경로는 중앙 하달</b><span>VDA 5050 노드/엣지를 내려보내고 로봇은 자체 추종기로 구간 주행만(<a class="term" href="../ref/glossary_robotics.html#nav2">Nav2</a>·AMCL은 부록 실험) — 아니면 두 계층의 정합성 비교가 무너진다</span></div>
-    </div>
-    <div class="note"><span class="pl-tag">기준선 반영 (2026-08-26)</span>① 정합성 지표를 <b>"엣지 통과시간 분포의 일치"</b>로 정량화 — SIL 실측 분포(통과시간·도킹)를 DES 입력으로 역주입하는 캘리브레이션은 오프라인 캠페인 1회로 수행해 파라미터 라이브러리화. ② 차량 파라미터 입력은 <b>VDA 5050 factsheet 포맷</b>(사양 원문에 planning·dimensioning·simulation 용도 명시) — 타 VDA 5050 차량으로의 일반화가 포맷 수준에서 보장. ③ 도면 파싱은 v2 로드맵 이관 — v1 입력은 SLAM 스캔 지도 또는 파라메트릭 사양 + 지도 위 그래프 에디터. ④ MAPF v1은 Prioritized Planning + space-time 예약, 솔버 스왑 벤치(PP/CBS/ECBS/PIBT/LaCAM)는 부록. 원천: 기획 보충자료 v2.</div>
-    <p class="soft">이 제품에 이르게 된 5단계 의사결정 여정과 교훈은 <a href="../archive/topic_journey.html#p2">PLAN 02 · 확정 여정</a>에 있습니다.</p>
+    <p class="lead">계약은 파트 사이의 데이터 형식과 호출 규칙이다. 넷 중 셋은 형식이 확정됐고, θ 스키마는 합의가 진행 중이다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:150px">계약</th><th style="width:150px">소유</th><th>담는 것</th><th style="width:170px">소비</th><th style="width:130px">상태</th></tr>
+      <tr><td><b>① 시나리오 패키지</b></td><td>운영 콘솔(웹 파트). 서비스 흐름 ②에서 컴파일</td><td>zones.json · 맵 · 주문 분해 규칙 · 수요 프로파일 · rack_id ↔ 시뮬 좌표 매핑. 재현성 키 = 시나리오 해시 + 시드</td><td><a class="term" href="../ref/glossary_industrial.html#wms-lite">WMS 라이트</a>(DES ④) · <a class="term" href="../ref/glossary_industrial.html#sim-wms">시뮬 WMS</a>(검증 런 ⑤)</td><td><span class="chip c-green">구성 확정</span></td></tr>
+      <tr><td><b>② θ 계약</b></td><td>FMS·AI 파트. <code>3_FMS/contracts/guidance_types.py</code></td><td>통행 규칙 파라미터 θ 11개(연속 8 + 범주 3). 입력은 창고 생김새 · 짐 흐름 · 통로 구조 텐서 + 운영 조건</td><td>DES(④)와 Isaac 검증 런(⑤). trial마다 추론, 둘이 같은 θ</td><td><span class="chip c-amber">스키마 v2 · 합의 진행</span></td></tr>
+      <tr><td><b>③ VDA 5050 틱 매핑</b></td><td>시뮬 파트(T4 에이전트)</td><td>PIBT 액션 5종(전진 · 후진 · 회전 · 대기 · ack) ↔ VDA 5050 order/state ↔ 그리드 프리미티브. ack는 <code>state.lastNodeId</code> 변화 즉시 발행</td><td>FMS <a class="term" href="../ref/glossary_industrial.html#mqtt">MQTT</a> 데몬 셸</td><td><span class="chip c-green">구현 · E2E 통과</span><br><span class="soft" style="font-size:12px">배리어 방식 확인 중</span></td></tr>
+      <tr><td><b>④ trial 어댑터 API</b></td><td>웹 파트(견적 BE)와 계산 엔진</td><td>요청 <code>run_id · seed · warehouse · amr · orders</code> → 응답 <code>kpi</code>. trial 1개 단위. 팀 백엔드↔AI API 초안을 그대로 채택</td><td>견적 BE → 계산 엔진 워커. 스윕 루프·정지 규칙은 엔진 소유</td><td><span class="chip c-steel">채택</span><br><span class="soft" style="font-size:12px">n 반복 호출 → 스윕 범위 1회 발행으로 변경 대기</span></td></tr>
+    </table></div>
+    <p class="soft">계약이 어느 컴포넌트 사이에 놓이는지는 <a href="system_architecture.html">TECH 02 시스템 아키텍처</a>에 그림이 있다. 팀원 파트의 내부 구현은 팀 레포 <code>3_FMS/docs/</code>를 본다.</p>
+
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>
+      계약은 파트 사이의 약속이다. 형식이 먼저 정해지면 서로 기다리지 않고 만들 수 있다. 마지막에 맞춰 보면 된다.</div>
+
+    <details class="more"><summary>③ VDA 5050 틱 매핑 — 액션 5종 상세 (기준선 §5.1)</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:150px">PIBT 액션</th><th>VDA 5050</th><th>T4 에이전트</th></tr>
+      <tr><td><b>전진 1칸</b></td><td>다음 노드 released</td><td>헤딩 정렬(<a class="term" href="../ref/glossary_robotics.html#spot-turn">스팟턴</a>) → 직진 → 셀 중심 정지</td></tr>
+      <tr><td><b>후진 1칸</b></td><td>엣지 orientation π, TANGENTIAL</td><td>헤딩 유지, 후진</td></tr>
+      <tr><td><b>회전 ±90°</b></td><td>같은 좌표 노드 + 새 theta</td><td>제자리 회전</td></tr>
+      <tr><td><b>대기</b></td><td>새 노드 없음</td><td>정지</td></tr>
+      <tr><td><b>ack</b></td><td><code>state.lastNodeId</code> 변화 즉시 발행</td><td>FMS는 전 로봇 ack 후 다음 틱</td></tr>
+    </table></div>
+    <p class="soft">FMS 파트가 넘긴 Isaac 실행 요구 4건(스팟턴 · 경유점 오차 ≤ 0.1 m · 틱 배리어 동기 · 후진 1칸)이 이 매핑의 근거다. SIL 진행 상세는 <a href="../working/sil_roadmap.html">WORKING · SIL 구현 로드맵</a>.</p>
+    </details>
   </div>
 </section>
 
-<!-- ══════════ S2 이론 기반 ══════════ -->
+<!-- ══════════ S2 기술 결정 ══════════ -->
 <section id="s2">
-  <div class="sec-head"><span class="sec-no">SEC 02 · 이론 기반</span><h2>경합이 곡선의 모양을 결정한다</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 02 · 기술 결정 요약</span><h2>필요한 것만 채택하고, 뺀 것은 이유를 남겼다</h2></div>
   <div class="sec-body">
-    <p class="lead">대수–처리량 곡선이 꺾이는 이유는 <b>경로 경합</b>이고, 그 수학이
-    <a class="term" href="../ref/glossary_robotics.html#mapf">MAPF</a>입니다. 계보(A*→예약 테이블→Prioritized→CBS→RHCR)·문헌·집계 이론 전체는
-    <b><a href="amr_mapf_theory.html">TECH 03 경로계획 이론</a></b> 한 곳에서 다룹니다.
-    이 계획서에 남는 결정은 하나 — <b>SimPy 계층에는 경량 MAPF를 내장</b>(고정 틱, 1틱=1셀)하며, 매 틱 CBS는 배속을 파괴하므로 배제.</p>
+    <p class="lead">기준선 v3 §1의 변경 표를 결정 단위로 다시 정리했다. 결정 전수 목록과 배경은 <a href="amr_decision_inventory.html">TECH 05</a>에 있다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:120px">결정</th><th>채택</th><th style="width:200px">기각 · 보류</th><th>이유</th></tr>
+      <tr><td><b>제품 형태</b></td><td>요청 접수형 비동기 견적 서비스. 큐 → 운영자 검토 → 나중 발송</td><td>셀프서브 SaaS, 사이징 엔진</td><td>GPU 1대, 5분 숏런의 허점, 운영자 검수 필요</td></tr>
+      <tr><td><b>메시징</b></td><td>RabbitMQ(AMQP, 잡·결과) + <a class="term" href="../ref/glossary_industrial.html#emqx">EMQX</a>(MQTT 브로커, 제어·상태)</td><td>Kafka</td><td>도메인 이벤트는 AMQP 결과 이벤트로 충분</td></tr>
+      <tr><td><b>저장소</b></td><td>PostgreSQL(견적) + <a class="term" href="../ref/glossary_industrial.html#h2">H2</a>(인메모리 DB, 시뮬 WMS) + <a class="term" href="../ref/glossary_industrial.html#minio">MinIO</a>(S3 호환 객체 저장소, 아티팩트)</td><td>S3, Timescale</td><td>기관 EC2는 IAM(AWS 권한 관리) 불가. 관리형 AWS 서비스 0, 전부 <a class="term" href="../ref/glossary_industrial.html#k3s">k3s</a>(경량 Kubernetes) 자체 호스팅</td></tr>
+      <tr><td><b>웹 인프라</b></td><td>2층 분리: 상시 견적 서비스 / 런 단위 시뮬 스택. 영속은 견적 도메인, 휘발은 시뮬 도메인</td><td>단일 스택</td><td>런 스코프 상태와 영속 상태의 분리</td></tr>
+      <tr><td><b>경로계획</b></td><td>PIBT 헤딩 모델 + AI 예측 θ 11개(2-트랙). 격자 1.0 m, 로봇 상태 = (칸, 방향), 2칸 점유</td><td>PP + 시공간 예약, 솔버 스왑 벤치(부록), 셀 확대 2.0 m</td><td>팀 FMS 결정(9/2). Isaac 회전 충돌 실측. 셀 확대는 도킹칸 겹침</td></tr>
+      <tr><td><b>FMS 구조</b></td><td><a class="term" href="../ref/glossary_robotics.html#ros2">ROS 2</a> 비참여 순수 Python. 결정 커널 + 실행 셸 2종(하네스 · MQTT 데몬)</td><td>ROS 노드화</td><td>DES와 Isaac이 같은 커널을 공유해야 함</td></tr>
+      <tr><td><b>로봇 실행</b></td><td>VDA 5050 틱 = 그리드 프리미티브(스팟턴 · 직진 · 후진)</td><td>자체 추종기(Pure Pursuit)</td><td>FMS 요구 4건(스팟턴 · 오차 0.1 m · 배리어 틱 · 후진)</td></tr>
+    </table></div>
+
+    <details class="more"><summary>결정 5건 더 — 펼쳐 보기</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:120px">결정</th><th>채택</th><th style="width:200px">기각 · 보류</th><th>이유</th></tr>
+      <tr><td><b>AI 범위</b></td><td>θ 통행 규칙 예측(A 트랙) + 리포트 초안(LLM)</td><td>서러게이트 · 액티브 러닝 · SHAP 보류</td><td>팀 AI 파트의 실체에 맞춤</td></tr>
+      <tr><td><b>탐색</b></td><td>대수 그리드 스윕. DES 실체는 팀 틱 시뮬(sim_v2)</td><td>Optuna TPE · SimPy는 후속</td><td>1차원 정수 스윕에 Optuna는 과함</td></tr>
+      <tr><td><b>검증 런 길이</b></td><td>분 단위 미니 시나리오</td><td>하루 단위</td><td>Isaac은 실시간이라 하루치 재생 불가</td></tr>
+      <tr><td><b>큐잉</b></td><td>2단: 요청 잡 큐(CPU 워커 ×N) / <a class="term" href="../ref/glossary_industrial.html#gpu-run-queue">GPU 런 큐</a>(GPU 수 = 소비자 수). 우선순위 · <a class="term" href="../ref/glossary_industrial.html#dlq">DLQ</a>(실패 메시지 보관 큐) · 재시도</td><td>견적 BE가 대수 n을 반복 호출</td><td>큐 순번 · ETA 회신의 근거. 스윕 루프와 정지 규칙은 계산 엔진 소유</td></tr>
+      <tr><td><b>WMS 공유</b></td><td>C안: 측정 대상(FMS 커널)은 공유, 환경(WMS)은 모델링. DES는 WMS 라이트, 검증 런은 Spring 시뮬 WMS</td><td>WMS 실체를 둘 다 실제 Spring으로</td><td>두 WMS는 하나의 시나리오 패키지의 두 소비자. 골든 시나리오 패리티로 정합성 유지</td></tr>
+    </table></div>
+    </details>
   </div>
 </section>
 
-<!-- ══════════ S3 AI 파트 ══════════ -->
+<!-- ══════════ S3 로드맵 ══════════ -->
 <section id="s3">
-  <div class="sec-head"><span class="sec-no">SEC 03 · AI 의사결정 엔진</span><h2>시뮬이 곡선을 그리고, AI가 곡선 위의 답을 찾는다</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 03 · 로드맵</span><h2>뼈대는 끝났고, 합의와 실측이 남았다</h2></div>
   <div class="sec-body">
-    <p class="lead">시뮬레이션은 물리 엔진, AI는 그 위의 의사결정 엔진입니다 — 역할은 네 가지입니다 (2026-08-20 확장).</p>
+    <p class="lead">간트 대신 3열이다. 열은 상태, 행은 영역이다. 주차 단위 일정은 기준선 v3에 없으므로 순서와 상태만 적는다.</p>
     <div class="tbl-scroll"><table>
-      <tr><th style="width:170px">역할</th><th>하는 일</th><th style="width:110px">티어</th></tr>
-      <tr><td><b>① 역방향 구성 최적화</b></td><td>그 고객 도면의 스윕 결과로 학습한 서러게이트가 구성 공간(대수 × 스테이션 수 × 통로 단방향)을 초 단위로 스코어링하고, 상위 후보만 시뮬로 재검증 → <b>"7대 대신 6대 + 스테이션 증설이 더 쌉니다"</b> 같은 설계 제안</td><td>확장 (추천)</td></tr>
-      <tr><td><b>② 액티브 러닝 스윕</b></td><td>예측 불확실성(앙상블 분산)이 큰 지점 — 곡선이 꺾이는 근처 — 에 시뮬 예산을 집중 배분. 같은 정확도를 더 적은 런으로</td><td>확장 (추천)</td></tr>
-      <tr><td><b>③ SHAP 설명 계층</b></td><td>서러게이트의 기여도 분해로 병목 진단을 자동 문장화("제약 1순위: 스테이션 용량 42%"). 투명성이 철학인 서비스에서 AI만 블랙박스면 모순 — 그 구멍을 막는 장치</td><td>확실</td></tr>
-      <tr><td><b>④ 지능형 배차 옵션 축</b></td><td>디스패처 3단 비교를 견적서의 옵션 축으로 — 기본 배차 곡선과 지능형 배차 곡선을 겹쳐 <b>"기본 9대 vs 지능형 7대"</b>로 CAPEX 절감을 환산</td><td>확실 (RL은 연구)</td></tr>
+      <tr><th style="width:130px">영역</th><th><span class="chip c-green">완료</span></th><th><span class="chip c-amber">진행</span></th><th><span class="chip c-steel">다음</span></th></tr>
+      <tr><td><b>기획 · 아키텍처</b></td><td>기준선 v3(2026-09-03) · 시스템 아키텍처 v3.10 · 기기 배치(EC2 t3.xlarge k3s + GPU RTX 5080)</td><td>기관 EC2 인스턴스 타입 · 크레딧 모드 확인(IMDS)</td><td>견적 단가 근거(기종 카탈로그) · LLM 리포트 초안 범위</td></tr>
+      <tr><td><b>시뮬 트랙(SIL)</b></td><td>T1 텔레옵 · T2 매핑·추종 · T3 창고 씬(라이다 · AMCL · 관전) · T4 에이전트 뼈대(가짜 로봇 E2E 통과)</td><td>iw.hub 앞축 위치 · 회전 각속도 실측 · 배리어 틱 방식 확인(FMS 파트와)</td><td>Isaac 다중 로봇 네임스페이스 · <a class="term" href="../ref/glossary_robotics.html#sim-runner">sim-runner</a> 데몬 · 리프트 도킹 1장면</td></tr>
+      <tr><td><b>FMS · AI 파트</b></td><td>PIBT 헤딩 모델 채택(9/2) · 커널/셸 구조</td><td>θ 스키마 v2 합의(미합의 6건) · 회전 시간 상수(실측 대기)</td><td>θ 추론 → 통행 비용 → DES 연결(흐름 ④)</td></tr>
+      <tr><td><b>웹 · 견적</b></td><td>trial 어댑터 계약 채택(§3.3)</td><td>백엔드 API를 스윕 범위 1회 발행으로 변경</td><td>견적 BE(<code>/api/requests</code>, 큐 순번 회신) · 운영 콘솔(검토 ② · 검수 ⑦) · 리포트 초안(LLM)</td></tr>
+      <tr><td><b>런 실행 경로</b></td><td>큐잉 2단 설계 · 런 상태 6단계 정의</td><td>—</td><td>런 <a class="term" href="../ref/glossary_industrial.html#orchestrator">오케스트레이터</a>(k3s 단일 파드) · GPU 런 큐 소비자 · sim-runner → MinIO <a class="term" href="../ref/glossary_industrial.html#artifact">아티팩트</a>(MP4 · 리플레이 · 히트맵)</td></tr>
     </table></div>
-    <p class="soft">①②③은 별개 기능이 아니라 <b>하나의 서러게이트 파이프라인</b>(그 도면의 스윕 데이터 → 지도 회귀 → 탐색·배분·설명)을 셋이 나눠 쓰는 구조입니다 — 8주 안에 가능한 이유. 서러게이트는 T1 러프 견적의 몇 초 즉답에도 쓰입니다.</p>
+    <p class="soft">SIL 태스크별 상세는 <a href="../working/sil_roadmap.html">WORKING · SIL 구현 로드맵</a>, 실행 환경은 <a href="../working/runtime_architecture.html">WORKING · 실행 환경과 리소스</a>.</p>
 
-    <details class="more"><summary>④ 디스패처 3단 비교 — 상세</summary>
-    <div class="tbl-scroll"><table>
-      <tr><th>단계</th><th>방식</th><th>역할</th></tr>
-      <tr><td><b>규칙</b></td><td>FIFO + 최근접</td><td>기준선(baseline). 주 1~2차 E2E 루프의 기본</td></tr>
-      <tr><td><b>휴리스틱</b></td><td>헝가리안 배치 매칭</td><td>제품 기본 탑재 — 안정적이고 설명 가능</td></tr>
-      <tr><td><b>RL</b></td><td>PPO + Stable-Baselines3</td><td>연구 요소 — 성능 상한 탐색</td></tr>
-    </table></div>
+    <h3>이 순서인 이유</h3>
     <ul class="rules">
-      <li><b>학습·검증 분리(sim-to-sim)</b> — RL 학습은 SimPy-Gymnasium 환경에서, Isaac은 검증만</li>
-      <li><b>평가 규칙</b> — 동일 시드 쌍대 비교, 학습/평가 시나리오 완전 분리</li>
+      <li><b>계약이 먼저다</b> — 계약 4개가 동결돼야 세 파트가 서로 기다리지 않는다. θ만 합의 중이고, 합의 전에도 스윕은 돌릴 수 있다(SEC 05)</li>
+      <li><b>검증 런 경로는 T4 뼈대 위에 올린다</b> — 오케스트레이터 · sim-runner · 다중 로봇은 모두 T4 에이전트의 틱 매핑을 전제로 한다</li>
+      <li><b>실측이 상수를 정한다</b> — 회전 각속도 실측이 끝나야 회전 시간 상수가 확정되고, 권장 대수의 포화점이 자리를 잡는다</li>
     </ul>
-    </details>
-
-    <div class="plain warn"><span class="pl-tag">맵 일반화 리스크 — 관리 방식이 역할별로 다르다</span>
-    ①②는 <b>해당 고객 도면 안</b>에서만 작동합니다 — 학습 데이터가 그 도면의 스윕 결과라 분포 밖 예측이 없습니다. 교차 도면 예측은 T1 러프 견적 전용(틀려도 되는 자리). RL만 진짜 일반화 문제를 가지며, 대응은 기존 합의 그대로: 맵 불변 관측(경로비용·구역 혼잡도) + 랜덤 레이아웃 학습, 실패 시 후퇴선 <b>"RL은 연구 항목, 제품 기본은 휴리스틱"</b>.</div>
   </div>
 </section>
 
-<!-- ══════════ S4 표준 스택 ══════════ -->
+<!-- ══════════ S4 검증 체계 ══════════ -->
 <section id="s4">
-  <div class="sec-head"><span class="sec-no">SEC 04 · 표준 스택</span><h2>프로토콜이 아니라 방법론이 정체성이다</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 04 · 검증 체계</span><h2>같은 조건으로 두 번 돌려 맞춰 본다</h2></div>
   <div class="sec-body">
-    <p class="lead">정체성이 "로봇을 움직이는 시스템"에서 "신뢰할 수 있는 분석"으로 이동하며, 표준도 방법론(검증·KPI·안전) 중심으로 재편했습니다.</p>
+    <p class="lead">검증은 세 겹이다. 두 WMS와 두 셸의 정합(패리티), DES와 Isaac의 차이(갭), 그리고 재현성(결정론).</p>
+
+    <svg viewBox="0 0 900 250" role="img" aria-label="하나의 시나리오 패키지가 DES 경로(WMS 라이트 + 하네스 셸)와 Isaac 검증 런 경로(시뮬 WMS + MQTT 데몬 셸)로 갈라지고, 두 경로가 같은 FMS 커널과 θ를 공유하며 결과를 비교하는 골든 시나리오 패리티 구조" style="max-width:100%;height:auto;display:block;margin:14px 0">
+      <defs>
+        <marker id="tp-par" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker>
+      </defs>
+      <!-- 입력 -->
+      <rect x="16" y="96" width="196" height="58" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="30" y="120" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">시나리오 패키지</text>
+      <text x="30" y="140" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">해시 + 시드 = 재현성 키</text>
+      <line x1="212" y1="125" x2="236" y2="125" stroke="#8FB4D9" stroke-width="2"/>
+      <polyline points="236,125 236,45 256,45" fill="none" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-par)"/>
+      <polyline points="236,125 236,205 256,205" fill="none" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-par)"/>
+      <!-- 행 라벨 -->
+      <text x="262" y="92" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">④ DES 경로 ↑</text>
+      <text x="262" y="166" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">⑤ Isaac 검증 런 경로 ↓</text>
+      <!-- 행 A: DES -->
+      <rect x="262" y="16" width="196" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="276" y="40" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">WMS 라이트</text>
+      <text x="276" y="60" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">확률 모델 · DES 환경</text>
+      <line x1="458" y1="45" x2="482" y2="45" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-par)"/>
+      <rect x="488" y="16" width="206" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="502" y="40" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">FMS 커널 + 하네스 셸</text>
+      <text x="502" y="60" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">가상 시계 · in-process</text>
+      <line x1="694" y1="45" x2="718" y2="45" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-par)"/>
+      <rect x="724" y="16" width="160" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="738" y="40" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">DES 결과</text>
+      <text x="738" y="60" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">KPI</text>
+      <!-- 행 B: Isaac -->
+      <rect x="262" y="176" width="196" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="276" y="200" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">시뮬 WMS</text>
+      <text x="276" y="220" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">Spring + H2 · 검증 런 환경</text>
+      <line x1="458" y1="205" x2="482" y2="205" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-par)"/>
+      <rect x="488" y="176" width="206" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="502" y="200" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">FMS 커널 + MQTT 데몬 셸</text>
+      <text x="502" y="220" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">틱 기반 · Isaac 로봇</text>
+      <line x1="694" y1="205" x2="718" y2="205" stroke="#8FB4D9" stroke-width="2" marker-end="url(#tp-par)"/>
+      <rect x="724" y="176" width="160" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="738" y="200" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">검증 런 결과</text>
+      <text x="738" y="220" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">KPI · 아티팩트</text>
+      <!-- 공유·비교 -->
+      <line x1="591" y1="74" x2="591" y2="176" stroke="#3BAF77" stroke-width="2" stroke-dasharray="5 4"/>
+      <text x="600" y="118" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" font-weight="700" fill="#3BAF77">같은 커널 · 같은 θ</text>
+      <line x1="804" y1="74" x2="804" y2="176" stroke="#3BAF77" stroke-width="2" stroke-dasharray="5 4"/>
+      <text x="796" y="140" text-anchor="end" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" font-weight="700" fill="#3BAF77">패리티 · 갭</text>
+    </svg>
+    <p class="soft">주황 상자가 하나의 입력, 초록 점선이 "같아야 하는 것"이다. 측정 대상(커널)은 공유하고 환경(WMS)만 다르게 두므로 두 결과의 차이는 환경 차이로 해석할 수 있다.</p>
+
     <div class="tbl-scroll"><table>
-      <tr><th>표준</th><th>역할</th><th>채택 수준</th></tr>
-      <tr><td><b>VDI 3633</b></td><td>DES 절차·V&amp;V — 투명성 주장의 표준 준거</td><td><span class="chip c-green">필수</span></td></tr>
-      <tr><td><b>ISO 22400</b></td><td>KPI 정의 — 리포트 용어집의 출처</td><td><span class="chip c-green">필수</span></td></tr>
-      <tr><td><b>ISO 3691-4</b></td><td>안전 거동 → 시뮬 파라미터 출처 (낙관 편향 방지)</td><td><span class="chip c-steel">강추</span></td></tr>
-      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#vda5050">VDA 5050</a></b> (2.0)</td><td>검증 트랙 인터페이스 + v2 호환. order/state/connection + instantActions</td><td><span class="chip c-steel">유지</span></td></tr>
-      <tr><td><b>Sparkplug B</b></td><td>가상 AMR 텔레메트리 — 역할이 얇음을 인정하고 축소</td><td><span class="chip c-amber">축소</span></td></tr>
-      <tr><td><b>MassRobotics / OPC UA·ISA-95</b></td><td>비교 검토 후 기각 / v2 백로그</td><td><span class="chip c-amber">지식·백로그</span></td></tr>
+      <tr><th style="width:170px">검증</th><th style="width:230px">비교 대상</th><th>방법</th></tr>
+      <tr><td><b>골든 시나리오 패리티</b></td><td>WMS 라이트 vs 시뮬 WMS · 하네스 셸 vs MQTT 데몬 셸</td><td>같은 시나리오 패키지를 두 WMS에 넣고, 같은 커널을 두 셸로 돌려 결과가 맞는지 본다. 두 WMS의 정합성을 지키는 장치</td></tr>
+      <tr><td><b>갭 캘리브레이션</b></td><td>DES 결과 vs Isaac 검증 런 결과</td><td>검증 대상 구성에 한해 DES를 같은 분 단위 시간창으로 재실행해 비교한다. 하루치 DES와 몇 분짜리 런을 직접 비교하지 않는다</td></tr>
+      <tr><td><b>결정론</b></td><td>모든 trial · 런</td><td>재현성 키 = 시나리오 해시 + 시드. 같은 키면 같은 결과가 나와야 한다. 런은 런 ID 기준 멱등</td></tr>
     </table></div>
+
+    <h3>T4 E2E 수치와 그 의미</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:150px">항목</th><th style="width:130px">값</th><th>의미</th></tr>
+      <tr><td><b>7틱 계획</b></td><td><span class="chip c-green">통과</span></td><td>가짜 로봇 + 가짜 FMS로 배리어 틱 E2E 통과. Isaac 없이 확인한 값이다</td></tr>
+      <tr><td><b>정지 오차</b></td><td>4 mm</td><td>FMS 요구 경유점 오차 ≤ 0.1 m를 충족</td></tr>
+      <tr><td><b>헤딩 오차</b></td><td>1.2°</td><td>스팟턴 뒤 직진 정렬이 성립</td></tr>
+      <tr><td><b>1 m 틱</b></td><td>2.2 s</td><td>FMS의 틱 1 s 가정보다 길다. 배리어 틱이면 Isaac 런은 실시간의 절반 이하가 된다 (램프 1.0 m/s², 최고 0.8 m/s)</td></tr>
+      <tr><td><b>90° 회전</b></td><td>2.3 s</td><td>회전 시간 상수의 첫 근거. 확정은 Isaac 실측 뒤</td></tr>
+    </table></div>
+    <p class="soft">2.2 s/틱은 계획을 바꾸는 숫자다. 배리어 틱 방식과 검증 런 길이(분 단위)가 이 값에 걸려 있다. 대응은 SEC 05.</p>
   </div>
 </section>
 
-<!-- ══════════ S5 V&V ══════════ -->
+<!-- ══════════ S5 리스크·후퇴선 ══════════ -->
 <section id="s5">
-  <div class="sec-head"><span class="sec-no">SEC 05 · V&amp;V</span><h2>검산 없는 숫자는 내보내지 않는다</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 05 · 리스크 · 후퇴선</span><h2>막히면 어디로 물러설지 미리 정했다</h2></div>
   <div class="sec-body">
-    <p class="lead">Verification은 "올바르게 구현했는가", Validation은 "현실을 닮았는가"입니다.</p>
-    <div class="kcards">
-      <div class="kcard"><b>Verification</b><span>보존 법칙(주문 수 일치) · Little's Law 검산 · 로봇 1대 극한 케이스의 해석해 대조</span></div>
-      <div class="kcard s"><b>Validation</b><span>MAPF 공개 벤치마크 대조 · SimPy vs 에뮬레이션 3단 오차(주행시간→사이클타임→처리량) · 예측 오차 공개</span></div>
-      <div class="kcard g"><b>문서화</b><span>모든 가정·분포·보정 계수를 리포트 부록 "가정 명세서"로 — 투명성 주장의 실체</span></div>
-    </div>
+    <p class="lead">리스크마다 신호와 후퇴선을 한 줄로 둔다. 후퇴선은 견적서 파이프라인을 세우지 않기 위한 사전 합의다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:160px">리스크</th><th style="width:230px">신호</th><th>후퇴선</th><th style="width:110px">근거</th></tr>
+      <tr><td><b>배리어 틱이 느리다</b></td><td>1 m 틱 2.2 s. 실시간의 절반 이하. 분 단위 시나리오도 길어진다</td><td>lockstep 대신 <b>고정 주기 틱</b>으로 전환. 타임아웃 처리와 시뮬 시각 기록 방식은 FMS 파트와 함께 확정</td><td>§5.1 · §9</td></tr>
+      <tr><td><b>GPU 1대 큐 적체</b></td><td>GPU 런 큐 대기 증가, 큐 순번 · ETA 회신 악화</td><td><b>요청당 검증 런 상한</b>. 상위 구성만 GPU 런 큐에 적재. 확장은 GPU 노드 추가 = 큐 소비자 추가</td><td>§2 ⑤ · §3.2 · §3.3</td></tr>
+      <tr><td><b>θ 미합의</b></td><td>스키마 v2 미합의 6건이 이어진다</td><td><b>uniform 통행 비용</b>으로 대수 스윕을 먼저 돌린다. θ는 합의 뒤 같은 자리에 끼운다</td><td>§4.1 · §9</td></tr>
+      <tr><td><b>기관 EC2 크레딧 · 타입</b></td><td>IMDS(인스턴스 메타데이터 서비스) 확인 결과가 t3.xlarge 가정과 다르거나 크레딧 모드가 제한된다</td><td>먼저 IMDS로 확인한다. 결과에 따라 EC2 위 파드 배치(상시 서비스 · 시뮬 스택 · 계산 엔진 Job · 오케스트레이터 · EMQX)를 조정한다</td><td>§3.2 · §9</td></tr>
+    </table></div>
+    <div class="plain warn"><span class="pl-tag">후퇴선 발동 규칙</span>
+      후퇴선은 사전 합의다. 발동 여부와 시점은 SEC 06 미결 항목과 함께 파트 회의에서 정한다. 발동해도 결과 형식(KPI · 아티팩트 · 리포트)은 바꾸지 않는다.</div>
   </div>
 </section>
 
-<!-- ══════════ S6 크리티컬 패스 ══════════ -->
+<!-- ══════════ S6 미결 ══════════ -->
 <section id="s6">
-  <div class="sec-head"><span class="sec-no">SEC 06 · 크리티컬 패스</span><h2>이 7건을 동결해야 병렬이 시작된다</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 06 · 미결</span><h2>남은 일곱 건에는 책임자와 다음 행동이 있다</h2></div>
   <div class="sec-body">
-    <p class="lead">다른 모든 작업이 이 결정들 위에 서 있습니다. 상세 배경은 <a href="amr_decision_inventory.html">TECH 04</a>의 해당 섹션 참조.</p>
-    <div class="milestones">
-      <div class="ms"><span class="ms-tag">CP 1</span><h4>맵 표현 · 셀 크기 · 좌표계 단일 소스</h4><p>미터 좌표를 원본으로, 1로봇 = 1셀. 전 컴포넌트가 종속되는 결정.</p></div>
-      <div class="ms"><span class="ms-tag">CP 2</span><h4>시간 모델 — 고정 틱</h4><p>1틱 = 1셀 이동. MAPF 예약 테이블·재계획·통계의 전제.</p></div>
-      <div class="ms"><span class="ms-tag">CP 3</span><h4>경로 지시 — 중앙 하달</h4><p>두 시뮬레이션 계층의 정합성이 성립하는 조건.</p></div>
-      <div class="ms"><span class="ms-tag">CP 4</span><h4>RL 일반화 전략 + 후퇴선</h4><p>맵 불변 관측 + 랜덤 레이아웃. 실패 시 휴리스틱 기본 탑재로 후퇴(사전 합의).</p></div>
-      <div class="ms"><span class="ms-tag">CP 5</span><h4>K8s Indexed Job + 결과 저장 정책</h4><p>집계 기본, 상세 로그는 대표 런만. 인프라 골격.</p></div>
-      <div class="ms"><span class="ms-tag">CP 6</span><h4>RTX 5080 RTF 실측</h4><p>검증 트랙이 감당할 수 있는 로봇 대수의 물리적 상한 확정.</p></div>
-      <div class="ms"><span class="ms-tag">CP 7</span><h4>4대 계약 동결</h4><p>입력 스키마 / Kafka 스키마 / 디스패처 인터페이스 / VDA 5050 서브셋 (<a href="amr_overview.html#o4">TECH 01 SEC 04</a>).</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════ S7 로드맵 ══════════ -->
-<section id="s7">
-  <div class="sec-head"><span class="sec-no">SEC 07 · 로드맵</span><h2>최악의 경우에도 완결된 데모가 남는다</h2></div>
-  <div class="sec-body">
-    <p class="lead">타임라인 그림은 <a href="amr_overview.html#o5">TECH 01 SEC 08</a>에 있습니다. 여기서는 주차별 산출물과 순서의 이유를 적습니다.</p>
+    <p class="lead">기준선 v3 §9의 확인 대기 목록이다. <a href="amr_overview.html">TECH 01</a>은 항목만 적고, 여기서는 책임자와 다음 행동을 붙인다.</p>
     <div class="tbl-scroll"><table>
-      <tr><th>주차</th><th>산출물</th><th>이 순서인 이유</th></tr>
-      <tr><td><b>주 1–2</b></td><td>4대 계약 동결 + SimPy DES + 규칙 디스패처 (E2E 최소 루프) + RTF 실측</td><td>계약이 동결돼야 4트랙이 병렬로 출발. RTF 실측이 검증 스코프의 상한을 정한다</td></tr>
-      <tr><td><b>주 3</b></td><td>Kafka→DB→차트 + Scenario API + 에디터 골격</td><td>데이터가 끝까지 흐르는 배관을 먼저 뚫는다</td></tr>
-      <tr><td><b>주 4–5</b></td><td>휴리스틱+RL 디스패처, K8s 스윕, 곡선/리포트 화면, 카테고리 게이트</td><td>견적 본체의 완성 — 여기까지가 "최악에도 남는 데모"</td></tr>
-      <tr><td><b>주 6–7</b></td><td>에뮬레이션 검증 트랙 + 보정 루프 1회전 + 오차 분석</td><td>완성된 견적을 검증으로 보강. Isaac이 마지막인 이유</td></tr>
-      <tr><td><b>주 8</b></td><td>통합, VDI 3633 준거 리포트, 발표</td><td>—</td></tr>
+      <tr><th>항목</th><th style="width:120px">책임자</th><th>다음 행동</th><th style="width:190px">막히는 것</th></tr>
+      <tr><td><b>틱 배리어 방식</b> (lockstep vs 고정 주기 · 타임아웃 · 시뮬 시각 기록)</td><td>FMS 파트</td><td>방식 확정 후 MQTT 데몬 셸과 T4 ack 규칙을 맞춘다</td><td>Isaac 검증 런 속도 · sim-runner 설계</td></tr>
+      <tr><td><b>θ 스키마 미합의 6건</b></td><td>AI · FMS 파트</td><td><code>guidance_types.py</code> v2 확정</td><td>θ 추론 → DES 연결(④)</td></tr>
+      <tr><td><b>iw.hub 앞축 종방향 위치 · 회전 각속도</b> (바퀴 반경 0.08 m · 트랙 0.58 m는 실측됨)</td><td>시뮬 파트</td><td>Isaac에서 실측하고 T4 컨트롤러 상수를 갱신한다</td><td>회전 시간 상수 · <a class="term" href="../ref/glossary_robotics.html#swing-reservation">스윙 예약</a> 정확도</td></tr>
+      <tr><td><b>Isaac 다중 로봇 네임스페이스 · sim-runner 데몬</b></td><td>시뮬 파트</td><td>네임스페이스 분리 후 N대 스폰. <code>start</code> / <code>go</code> / <code>stop</code>과 하트비트를 받는 데몬</td><td>검증 런(⑤) 실행</td></tr>
+      <tr><td><b>백엔드 API의 n 반복 호출 → 스윕 범위 1회 발행</b></td><td>웹 파트</td><td>잡에 스윕 범위 필드를 싣고, 최적 대수 산출은 계산 엔진으로 옮긴다</td><td>큐잉 2단 구조</td></tr>
+      <tr><td><b>LLM 리포트 초안 범위 · 견적 단가 근거</b> (기종 카탈로그)</td><td>전체</td><td>리포트 항목 목록과 카탈로그 출처를 정한다</td><td>리포트(⑦) · 발송(⑧)</td></tr>
+      <tr><td><b>기관 EC2 인스턴스 타입 · 크레딧 모드</b></td><td>인프라</td><td>IMDS 확인</td><td>파드 배치 확정</td></tr>
     </table></div>
-    <div class="plain"><span class="pl-tag">생존 원칙</span>
-    ① Plan(견적) 먼저 완성 — 최악의 경우에도 완결된 데모가 남는다
-    ② Isaac은 마지막 — 검증은 보강이지 본체가 아니다
-    ③ what-if 라이브는 사수, 나머지(스윕·에뮬레이션)는 캐시·녹화 폴백을 준비한다.</div>
-  </div>
-</section>
-
-<!-- ══════════ S8 발표 메시지 ══════════ -->
-<section id="s8">
-  <div class="sec-head"><span class="sec-no">SEC 08 · 발표 메시지</span><h2>청중마다 다른 층위로 말한다</h2></div>
-  <div class="sec-body">
-    <p class="lead">같은 시스템을 청중에 따라 다른 층위로 설명합니다. 발표 준비 시 펼쳐 보세요.</p>
-    <details class="more"><summary>청중별 핵심 메시지 — 펼쳐 보기</summary>
-    <div class="tbl-scroll"><table>
-      <tr><th>청중</th><th>메시지</th></tr>
-      <tr><td><b>비전문가</b></td><td>"입찰 마감은 2주, 벤더 견적은 4주 — 중립적인 답을 당일에 냅니다." + T1 3분 체험 + 스윕 매트릭스가 실시간으로 채워지는 화면</td></tr>
-      <tr><td><b>기술 면접관</b></td><td>2계층 분리의 물리적 필연성 / VDA 5050 경계 불변("테스트한 코드가 배포된다") / SimPy vs Isaac 오차 분석(디지털 트윈 정합성) / RHCR·MAPF 이론 정합 / VDI 3633 V&amp;V / CI·민감도의 통계적 정직함</td></tr>
-      <tr><td><b>트랙별</b></td><td>대기업 생산기술 지원 → DES·반송 최적화·V&amp;V 중심 / AMR 기업 지원 → VDA 5050·Isaac 검증 트랙 중심</td></tr>
-    </table></div>
-    </details>
+    <p class="soft">단계 번호(④⑤⑦⑧)는 서비스 흐름 8단계의 번호다. 흐름 전체는 <a href="amr_overview.html">TECH 01</a>, 컴포넌트 배치는 <a href="system_architecture.html">TECH 02</a>.</p>
   </div>
 </section>
 
@@ -366,9 +454,9 @@
   <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
   <div class="sec-body">
     <ul class="rules">
-      <li><a href="amr_mapf_theory.html"><b>TECH 03 경로계획 이론</b></a> — SEC 02 요약의 원본: MAPF 계보·문헌·학습 로드맵 — 메인 트랙의 다음 문서</li>
-      <li><a href="amr_decision_inventory.html"><b>TECH 04 구현 결정 인벤토리</b></a> — 이 계획의 각 항목을 실제 결정 60여 개로 분해한 전수 목록</li>
-      <li><a href="../archive/logistics_domain_research.html"><b>ARCHIVE 01 도메인 리서치</b></a> — 이 서비스가 다루는 물류 현장의 실제 모습</li>
+      <li><a href="system_architecture.html"><b>TECH 02 시스템 아키텍처</b></a> — 계약 4개가 어느 컴포넌트 사이에 놓이는지, 웹 2층과 기기 배치의 그림</li>
+      <li><a href="amr_decision_inventory.html"><b>TECH 05 구현 결정 인벤토리</b></a> — SEC 02 요약 표의 원본. 결정 전수 목록과 배경</li>
+      <li><a href="../working/sil_roadmap.html"><b>WORKING · SIL 구현 로드맵</b></a> — SEC 03 시뮬 트랙 행의 상세. T1~T4 태스크 순서와 상태</li>
     </ul>
   </div>
 </section>
@@ -376,12 +464,12 @@
 </main>
 
 <div class="wrap flow-nav">
-  <a class="prev" href="amr_overview.html"><small>← 이전</small>TECH 01 · 전체 조망</a>
-  <a class="next" href="amr_mapf_theory.html"><small>다음 →</small>TECH 03 · 이론 기반</a>
+  <a class="prev" href="system_architecture.html"><small>← 이전</small>TECH 02 · 시스템 아키텍처</a>
+  <a class="next" href="amr_mapf_theory.html"><small>다음 →</small>TECH 04 · 경로계획 이론 기반 — PIBT</a>
 </div>
 
 <footer>
-  <div class="wrap">TECH 02 · TECH PLAN — 원천: AMR_프로젝트_전체개괄.md (2026-08-19) · REV C: 주제 확정(AMR 견적 시뮬레이션)에 따른 전면 개정</div>
+  <div class="wrap">TECH 03 · TECH PLAN — 원천: AMR_기획_기준선_v3.md (2026-09-03) · REV D: 기준선 v3 반영 전면 재작성(요청 접수형 · 계약 4개 · PIBT 헤딩 모델 · T4 뼈대) · <a href="../../index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>

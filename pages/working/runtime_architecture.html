@@ -6,11 +6,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-<title>런타임 아키텍처와 리소스 견적</title>
+<title>실행 환경과 리소스 — 무엇이 몇 개 떠서 어디서 도는가 (Runtime &amp; Resources)</title>
 <style>
   :root{
-    --bg:#14181D; --panel:#1C2229; --panel-edge:#2C343D; --ink:#E8ECF1; --ink-soft:#9AA7B4;
-    --amber:#F08A32; --machine:#3BAF77; --steel:#8FB4D9; --slate:#8A96A3; --grid:#2A323B;
+    --bg:#14181D;
+    --panel:#1C2229;
+    --panel-edge:#2C343D;
+    --ink:#E8ECF1;
+    --ink-soft:#9AA7B4;
+    --amber:#F08A32;
+    --machine:#3BAF77;
+    --steel:#8FB4D9;
+    --slate:#8A96A3;
+    --grid:#2A323B;
     --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
     --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
   }
@@ -24,15 +32,26 @@
     color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px;
   }
   a{color:var(--steel)}
+  a.term{color:inherit;text-decoration:underline;text-decoration-style:dotted;text-decoration-color:var(--steel);text-underline-offset:3px}
+  a.term:hover{color:var(--steel);text-decoration-style:solid}
   .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
   header{border-bottom:3px solid var(--ink);background:var(--panel)}
   .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
   .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
   .doc-eyebrow b{color:var(--amber);font-weight:600}
+  .flow-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px auto 40px}
+  .flow-nav a{background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
+  .flow-nav a:hover{border-color:var(--amber)}
+  .flow-nav .prev{grid-column:1}
+  .flow-nav .next{grid-column:2;text-align:right}
+  .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
+  @media(max-width:640px){.flow-nav{grid-template-columns:1fr}.flow-nav .prev,.flow-nav .next{grid-column:auto;text-align:left}}
   h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
   h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
   .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
   .meta b{color:var(--ink);font-weight:600}
+
   nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
   nav::-webkit-scrollbar{display:none}
   nav .wrap{display:flex;gap:2px;padding:0 20px}
@@ -40,11 +59,17 @@
   nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--amber);outline:none}
   nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
   nav a.nav-cross{margin-left:auto;color:var(--amber);font-weight:700}
+
   main{padding:44px 0 80px}
   section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
   .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
   .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
-  h2{font-size:clamp(19px,2.2vw,27px);font-weight:800;line-height:1.3;letter-spacing:-.025em}
+  h2{font-size:clamp(19px,2.2vw,27px);font-weight:800;letter-spacing:-.025em;line-height:1.3}
+  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
+  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
+  .kcard b{display:block;font-size:15px;margin-bottom:4px}
+  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
   .sec-body{padding:16px 26px 26px}
   h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
   h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
@@ -52,354 +77,428 @@
   .sec-body p{max-width:76ch}
   .lead{font-size:15.5px}
   .soft{color:var(--ink-soft)}
+
   .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
   .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
-  .note{margin:14px 0 8px;padding:12px 16px;background:#2A2019;border-left:4px solid var(--amber);font-size:14px;line-height:1.8}
-  .note .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--amber);font-weight:700;margin-bottom:4px}
+  .plain.warn{background:#2A2019;border-left-color:var(--amber)}
+  .plain.warn .pl-tag{color:var(--amber)}
+
+  code{font-family:var(--mono);font-size:.92em;background:#232B34;padding:1px 5px;border:1px solid var(--grid)}
+
   table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
   th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F}
   td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
   tr:last-child td{border-bottom:none}
   table tr:nth-child(even) td{background:#1E252D}
   .tbl-scroll{overflow-x:auto}
-  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px;white-space:nowrap}
-  .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)} .c-slate{color:var(--slate)}
-  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
-  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
-  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
-  .kcard b{display:block;font-size:15px;margin-bottom:4px}
-  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
+
+  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px}
+  .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)}
+
+  ul.rules{list-style:none;margin:10px 0}
+  ul.rules li{padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--grid);font-size:13.5px}
+  ul.rules li:last-child{border-bottom:none}
+  ul.rules li::before{content:"▸";position:absolute;left:6px;color:var(--amber);font-weight:700}
+
+  .milestones{display:grid;gap:0;margin:14px 0;border-left:3px solid var(--ink)}
+  .ms{position:relative;padding:12px 18px 12px 28px;border-bottom:1px dashed var(--grid)}
+  .ms:last-child{border-bottom:none}
+  .ms::before{content:"";position:absolute;left:-8px;top:18px;width:13px;height:13px;background:var(--panel);border:3px solid var(--amber)}
+  .ms .ms-tag{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--amber);letter-spacing:.08em}
+  .ms h4{font-size:14px;font-weight:700;margin:2px 0 2px}
+  .ms p{font-size:12.5px;color:var(--ink-soft);margin:0}
+
+  details.more{border:1px solid var(--panel-edge);background:#20272F;margin:12px 0}
+  details.more summary{cursor:pointer;padding:11px 14px;font-weight:700;font-size:13px;list-style:none}
+  details.more summary::-webkit-details-marker{display:none}
+  details.more summary::before{content:"▸ ";color:var(--amber)}
+  details.more[open] summary::before{content:"▾ "}
+  details.more>*:not(summary){margin-left:14px;margin-right:14px}
+  details.more>*:last-child{margin-bottom:14px}
+
+  footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+
+  @media (max-width:820px){
+    .titleblock{grid-template-columns:1fr}
+    .meta{border-left:none;padding-left:0;text-align:left}
+    body{font-size:14px}
+    .sec-head,.sec-body{padding-left:16px;padding-right:16px}
+  }
+</style>
+<style>
+  /* sil_roadmap.html · runtime_architecture.html · 3pl_industry.html */
+  .note{margin:14px 0 8px;padding:12px 16px;background:#2A2019;border-left:4px solid var(--amber);font-size:14px;line-height:1.8}
+  .note .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--amber);font-weight:700;margin-bottom:4px}
+  /* 동 페이지들 — 칩 줄바꿈 금지 + slate 칩 */
+  .chip{white-space:nowrap}
+  .c-slate{color:var(--slate)}
+  /* sil_roadmap.html · runtime_architecture.html — 넓은 SVG 래퍼(가로 스크롤) */
   .viz{background:#0E1318;border:1px solid var(--panel-edge);padding:12px 14px;margin:14px 0;overflow-x:auto}
   .viz svg{display:block;min-width:780px;width:100%;height:auto}
-  footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
-  @media (max-width:820px){ .titleblock{grid-template-columns:1fr} .meta{border-left:none;padding-left:0;text-align:left} }
+  /* amr_mapf_theory.html — 코드 블록 */
+  pre{font-family:var(--mono);font-size:12px;line-height:1.7;background:#20272F;border:1px solid var(--panel-edge);border-left:4px solid var(--steel);padding:12px 16px;overflow-x:auto;margin:12px 0}
+  pre code{background:none;border:none;padding:0}
+  /* working · research 페이지 — 키보드 포커스 링 */
   :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 </style>
 </head>
 <body>
 
+<!-- ══════════ 헤더 ══════════ -->
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow"><b>WORKING · ARCHITECTURE</b> · PROCESS MODEL · DEPLOYMENT · SIZING</div>
-      <h1>런타임 아키텍처 — 무엇이 몇 개 떠서, 어디서 도는가
-        <span class="sub">프로세스 모델부터 통신 경계·배치·리소스 견적까지 · 인프라 논의의 공통 기반 문서</span>
+      <div class="doc-eyebrow"><b>WORKING · ARCHITECTURE</b> · PROCESS INVENTORY · GPU SLOT · NETWORK · <b>REV D</b></div>
+      <h1>실행 환경과 리소스 — 무엇이 몇 개 떠서, 어디서 도는가
+        <span class="sub">운영 관점 문서. 프로세스 전수, GPU 슬롯, EC2 제약, 네트워크, 확장 경로. 구조 설명은 TECH 02가 맡는다</span>
       </h1>
     </div>
     <div class="meta">
       DOC. <b>RUNTIME-ARCH</b><br>
-      REV. <b>C</b> · 작성 <b>2026-08-25 / 개정 08-26</b><br>
-      상태 <b>스택·실행기 확정 · 배치 일부 대기</b>
+      REV. <b>D</b> · 작성 <b>2026-08-25</b> / 개정 <b>2026-09-03</b><br>
+      상태 <b>기기 2대 확정 · 크레딧 모드 확인 대기</b>
     </div>
   </div>
 </header>
 
-<nav><div class="wrap">
-  <a class="nav-home" href="../../index.html">⌂ INDEX</a>
-  <a href="#r0">00 한눈에</a>
-  <a href="#r1">01 프로세스 기초</a>
-  <a href="#r2">02 경로계획 두 층</a>
-  <a href="#r3">03 통신 경계</a>
-  <a href="#r4">04 리소스 목록</a>
-  <a href="#r5">05 배치 토폴로지</a>
-  <a href="#r6">06 견적 시나리오</a>
-  <a href="#r7">07 결정 현황</a>
-  <a class="nav-cross" href="../tech/amr_tech_plan.html">기술 계획 ↗</a>
-</div></nav>
+<!-- ══════════ nav ══════════ -->
+<nav aria-label="문서 내 탐색">
+  <div class="wrap">
+    <a class="nav-home" href="../../index.html">⌂ INDEX</a>
+    <a href="#r0">00 한눈에</a>
+    <a href="#r1">01 프로세스 전수</a>
+    <a href="#r2">02 GPU 슬롯</a>
+    <a href="#r3">03 EC2 제약</a>
+    <a href="#r4">04 네트워크</a>
+    <a href="#r5">05 확장</a>
+    <a href="#r6">06 확정·남은 것</a>
+    <a class="nav-cross" href="../tech/system_architecture.html">시스템 아키텍처 ↗</a>
+  </div>
+</nav>
 
 <main class="wrap">
 
-  <!-- ══════════ R0 한눈에 ══════════ -->
-  <section id="r0">
-    <div class="sec-head"><span class="sec-no">SEC 00 · 한눈에</span><h2>이 문서가 답하는 세 가지 질문</h2></div>
-    <div class="sec-body">
-      <p class="lead">① 시스템이 실제로 몇 개의 프로세스로 구성되는가. ② 어느 경계에서 갈라 어느 기기에 배치하는가. ③ 그래서 RAM과 비용이 얼마나 드는가. 인프라·견적 논의를 하려면 팀 전원이 이 세 답을 같은 그림으로 공유해야 한다.</p>
-      <div class="kcards">
-        <div class="kcard"><b>구조</b><span>시뮬 섬(Isaac+ROS2)과 서비스 섬(FMS 이하) — 절단선은 VDA 5050/MQTT 하나뿐</span></div>
-        <div class="kcard g"><b>견적</b><span>서비스 경로는 GPU 없이 16GB 인스턴스 1대에 수용(추정 5~8GB)</span></div>
-        <div class="kcard s"><b>물리</b><span>Isaac+ROS는 홈서버 32GB 한 덩어리 — 갈라서 얻는 것이 없다</span></div>
-      </div>
-      <h3>먼저, 자주 생기는 오해 세 가지</h3>
-      <table>
-        <tr><th style="width:290px">오해</th><th>정정</th></tr>
-        <tr><td>"시뮬 안에서 ROS2 프로세스가 돈다"</td><td>포함 관계가 아니라 <b>동등한 참여</b>다. Isaac은 ROS2 그래프에 붙는 프로세스 하나이고, Nav2·에이전트는 그 옆의 별도 프로세스다 → <a href="#r1">SEC 01</a></td></tr>
-        <tr><td>"FMS의 경로계획 = Nav2"</td><td>경로계획은 두 층이다. 함대 조정(MAPF)은 자체 구현이 담당하고, 로봇 1대의 경로 추종·정지는 경량 추종기가 담당한다 → <a href="#r2">SEC 02</a></td></tr>
-        <tr><td>"로봇을 컨테이너로 띄우면 무겁다"</td><td>컨테이너·k8s의 격리 비용은 수 MB 수준으로 거의 0이다. 무게는 컨테이너 <b>안에 넣는 스택</b>이 결정한다 → <a href="#r4">SEC 04</a></td></tr>
-      </table>
-    </div>
-  </section>
+<!-- ══════════ R0 한눈에 보기 ══════════ -->
+<section id="r0">
+  <div class="sec-head"><span class="sec-no">SEC 00 · 한눈에 보기</span><h2>기기는 둘, 상시 프로세스는 EC2에 8개, 런마다 양쪽에서 N개가 뜬다</h2></div>
+  <div class="sec-body">
+    <p class="lead"><b>"EC2 한 대가 상시 견적 서비스를, GPU 서버 한 대가 물리 검증 런을 맡는다."</b> 이 문서는 그 두 기기 위에서 실제로 무엇이 도는지만 다룬다.</p>
+    <div class="note"><span class="pl-tag">기준선 개정 (2026-09-03)</span>REV D는 <a href="../../docs/AMR_기획_기준선_v3.md">기준선 v3</a> §3.2 기기 배치와 §3.3 큐잉을 따른다. 이전 REV C의 "시뮬 섬·서비스 섬" 구분, Nav2 설명, Kafka·Mosquitto, 외부 GPU 시세 표는 v2 잔재라 삭제했다. 구조와 흐름은 <a href="../tech/system_architecture.html">TECH 02 시스템 아키텍처</a>가 단일 소스다. 이 문서는 운영 관점만 쓴다.</div>
 
-  <!-- ══════════ R1 프로세스 기초 ══════════ -->
-  <section id="r1">
-    <div class="sec-head"><span class="sec-no">SEC 01 · 프로세스 기초</span><h2>ROS2에는 "안"이 없다 — 마스터 없는 피어들의 그래프</h2></div>
-    <div class="sec-body">
-      <p><a href="../ref/glossary_robotics.html">ROS2</a>에는 ROS1의 roscore 같은 중심 런타임이 없다. 여러 개의 평범한 리눅스 프로세스가 <b>DDS</b>라는 공용 버스로 서로를 자동 발견하고 토픽·서비스로 통신할 뿐이다(<a href="https://docs.ros.org/en/jazzy/Concepts.html">ROS 2 Concepts</a>). 그래서 무언가가 무언가 "안에서" 도는 그림 자체가 성립하지 않는다.</p>
-      <div class="viz"><svg viewBox="0 0 900 236" role="img" aria-label="DDS 버스에 동등하게 참여하는 세 종류의 프로세스">
-        <text x="450" y="34" text-anchor="middle" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">DDS 버스 — 토픽 · 서비스 · TF</text>
-        <text x="450" y="54" text-anchor="middle" fill="#9AA7B4" font-size="11">중심 런타임(마스터) 없음 · 모든 참여자 동등 · 같은 호스트에선 공유메모리 전송</text>
-        <line x1="60" y1="72" x2="840" y2="72" stroke="#F08A32" stroke-width="2.5"/>
-        <line x1="190" y1="72" x2="190" y2="122" stroke="#5A6672" stroke-width="1.5"/>
-        <line x1="450" y1="72" x2="450" y2="122" stroke="#5A6672" stroke-width="1.5"/>
-        <line x1="710" y1="72" x2="710" y2="122" stroke="#5A6672" stroke-width="1.5"/>
-        <rect x="85" y="122" width="210" height="92" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
-        <text x="190" y="148" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">Isaac Sim 프로세스</text>
-        <text x="190" y="172" text-anchor="middle" fill="#9AA7B4" font-size="11">물리·센서 담당 노드</text>
-        <text x="190" y="192" text-anchor="middle" fill="#9AA7B4" font-size="11">ROS2 브리지 확장 내장 · ×1</text>
-        <rect x="345" y="122" width="210" height="92" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
-        <text x="450" y="148" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">추종기 프로세스들</text>
-        <text x="450" y="172" text-anchor="middle" fill="#9AA7B4" font-size="11">Pure Pursuit · 안전 필드 정지</text>
-        <text x="450" y="192" text-anchor="middle" fill="#9AA7B4" font-size="11">로봇 1대당 1개 · ×N</text>
-        <rect x="605" y="122" width="210" height="92" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
-        <text x="710" y="148" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">에이전트 프로세스</text>
-        <text x="710" y="172" text-anchor="middle" fill="#3BAF77" font-size="11">VDA 5050 어댑터</text>
-        <text x="710" y="192" text-anchor="middle" fill="#9AA7B4" font-size="11">로봇 1대당 1개 · ×N</text>
-      </svg></div>
-      <table>
-        <tr><th style="width:210px">참여자</th><th>정체</th></tr>
-        <tr><td><b>Isaac Sim</b></td><td>ROS2 그래프에 참여하는 프로세스 하나. 내부의 ROS2 브리지 확장이 노드 역할로 /clock·TF·센서 토픽을 발행하고 조인트 명령을 구독한다. 6.0은 브리지가 ROS2 라이브러리를 자체 내장해 시스템에 ROS2가 없어도 DDS로 통신한다(<a href="https://docs.isaacsim.omniverse.nvidia.com/">Isaac Sim Docs</a>)</td></tr>
-        <tr><td><b>Nav2 · 에이전트</b></td><td>Isaac <b>바깥</b>의 별도 OS 프로세스. Isaac이 죽어도 살아 있다(토픽만 끊김) — 장애 격리와 리소스 합산이 별도로 성립하는 이유</td></tr>
-      </table>
-      <div class="plain"><span class="pl-tag">올바른 문장</span>"Isaac이 ROS2 그래프의 한 참여자(물리·센서 노드)로 붙고, 제어 스택은 별도 프로세스로 같은 호스트에서 돌며 DDS로 통신한다." 다이어그램을 그릴 때도 포함 박스(시뮬 ⊃ ROS)가 아니라 버스에 매달린 동등한 노드로 그린다.</div>
-    </div>
-  </section>
+    <h3>이 문서가 답하는 질문</h3>
+    <ul class="rules">
+      <li>① 프로세스가 몇 개이고, 어느 기기에서, 상시인지 런마다인지, 파드인지 네이티브인지 · SEC 01</li>
+      <li>② GPU 한 대에 Isaac을 둘 띄워도 되는가, 무엇을 보고 판단하는가 · SEC 02</li>
+      <li>③ EC2와 네트워크의 제약(IAM 불가, 버스트 크레딧, 캠퍼스 UDP 차단)을 어떻게 다루고, 어디까지 늘릴 수 있는가 · SEC 03 · 04 · 05</li>
+    </ul>
 
-  <!-- ══════════ R2 경로계획 두 층 ══════════ -->
-  <section id="r2">
-    <div class="sec-head"><span class="sec-no">SEC 02 · 경로계획 두 층</span><h2>FMS의 최적화는 자체 구현, Nav2는 로봇 1대의 실행기</h2></div>
-    <div class="sec-body">
-      <div class="tbl-scroll"><table>
-        <tr><th></th><th>FMS 레벨 (함대)</th><th>로봇 레벨 (개체)</th></tr>
-        <tr><td><b>하는 일</b></td><td>작업 할당(디스패칭) + 다중 로봇 경로 조정 — <a href="../tech/amr_mapf_theory.html">MAPF</a>, RHCR 윈도우, 충돌·교착 회피</td><td>받은 경로의 물리적 수행 — 경로 추종, 국지 장애물 회피, 속도 명령 생성</td></tr>
-        <tr><td><b>구현</b></td><td><span class="chip c-amber">자체 구현</span> 이 프로젝트의 코어 자산 — DES 스윕과 SIL 검증이 같은 로직을 공유</td><td><span class="chip c-steel">자체 추종기</span> 노드 시퀀스 보간 + Pure Pursuit + 안전 필드 정지 — SIL 트랙에서만 등장 (2026-08-26 확정)</td></tr>
-        <tr><td><b>다루는 단위</b></td><td>로봇 N대 전체 · 1m 셀 그리드 · 고정 틱</td><td>로봇 1대 · 연속 공간 · 센서</td></tr>
-      </table></div>
-      <p><a href="https://docs.nav2.org/">Nav2</a>는 태생이 로봇 1대의 내비게이션 스택이라 다중 로봇 조정 개념이 없다. 네임스페이스로 여러 대를 띄울 수는 있으나 서로의 경로를 모른 채 각자 계획할 뿐이어서, 교차로 교착·협로 양보를 풀지 못한다 — 그것이 FMS/MAPF 층이 존재하는 이유다.</p>
-      <h3>VDA 5050이 이 분업을 프로토콜로 강제한다</h3>
-      <p><a href="https://github.com/VDA5050/VDA5050">VDA 5050</a>의 order 메시지는 경로 자체(노드·엣지 시퀀스)를 담아 하달된다. "경로를 정하는 것은 중앙, 따라가는 것은 로봇"이 표준 수준에서 갈리며, 우리 설계의 중앙 하달 원칙(<a href="../tech/amr_overview.html">개괄</a>)과 일치한다. 상용 AMR도 동일 구조다 — 온보드 내비와 FMS 트래픽 관리는 분리되고, 그 경계가 VDA 5050이다.</p>
-      <div class="note"><span class="pl-tag">로봇 실행기 확정 (2026-08-26)</span>로봇 레벨은 Nav2가 아니라 <b>자체 경량 추종기</b>로 확정한다. 산업 AMR의 장애물 대응은 로컬 회피가 아니라 감속→정지→대기→재개라서, Nav2의 로컬 회피는 오히려 실제 거동과 다른 움직임을 만든다. 글로벌 플래너는 FMS가 대체하고 복구 비헤이비어도 산업 관행(정지·보고)상 불필요하다. 경로가 막히면 로봇이 재계획하지 않고 FMS에 보고해 중앙이 다시 푼다. Nav2·AMCL은 "알고 배제했다"의 물증으로 <a href="sil_roadmap.html">부록 비교 실험</a>에만 등장한다.</div>
-    </div>
-  </section>
+    <h3>기기 2대와 프로세스 배치</h3>
+    <div class="viz"><svg viewBox="0 0 900 520" role="img" aria-label="EC2 한 대에 k3s 파드로 뜨는 상시 서비스와 런 단위 시뮬 스택, GPU 서버 한 대에 네이티브로 뜨는 sim-runner·Isaac·에이전트, 둘을 잇는 tailscale 위의 MQTT·S3 채널">
+      <defs>
+        <marker id="ra-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8FB4D9"/></marker>
+        <marker id="ra-arr-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3BAF77"/></marker>
+      </defs>
 
-  <!-- ══════════ R3 통신 경계 ══════════ -->
-  <section id="r3">
-    <div class="sec-head"><span class="sec-no">SEC 03 · 통신 경계</span><h2>기기를 갈라도 되는 경계는 하나뿐이다</h2></div>
-    <div class="sec-body">
-      <div class="tbl-scroll"><table>
-        <tr><th style="width:190px">경계</th><th style="width:170px">프로토콜</th><th>트래픽 특성</th><th style="width:130px">기기 분리</th></tr>
-        <tr><td>ROS2 ↔ Isaac</td><td>DDS (공유메모리)</td><td>/clock·TF·조인트 명령·라이다·카메라 — 고빈도·대용량(카메라 raw는 수백 Mbps급)</td><td><span class="chip c-slate">금지</span> 같은 호스트</td></tr>
-        <tr><td>로봇 어댑터 ↔ FMS</td><td>VDA 5050 / MQTT</td><td>주기 상태 보고 + order 하달 — 저대역·비동기</td><td><span class="chip c-green">절단선 ✂</span> WAN 가능</td></tr>
-        <tr><td>FMS 내부</td><td>AMQP(RabbitMQ)·Kafka</td><td>스윕 잡 큐·도메인 이벤트 — 서비스 섬 내부</td><td>섬 내부에 유지</td></tr>
-        <tr><td>프론트 ↔ 백엔드</td><td>REST / WebSocket</td><td>견적 요청·결과 조회</td><td><span class="chip c-green">가능</span></td></tr>
-      </table></div>
-      <h3>미들웨어 구성 — 표준 채택 (2026-08-25)</h3>
-      <table>
-        <tr><th style="width:150px">계층</th><th>선택</th><th style="width:320px">근거</th></tr>
-        <tr><td>ROS2 배포판</td><td><b>Humble</b></td><td>팀 환경(/opt/ros/humble) 기설치 · Isaac Sim 6.0 브리지 지원 쌍(Humble/Jazzy)에 포함</td></tr>
-        <tr><td>RMW (미들웨어)</td><td><b>rmw_fastrtps_cpp</b> (Fast DDS)</td><td>Isaac 기본·권장값 — 미설정 시 자동 선택 (<a href="https://docs.isaacsim.omniverse.nvidia.com/6.0.0/installation/install_ros_other_platforms.html">Isaac ROS 설치 문서</a>)</td></tr>
-        <tr><td>로봇 실행기</td><td><b>자체 추종기 (ROS2 노드)</b></td><td>Pure Pursuit + 안전 필드 정지 — 경로는 FMS 하달, 로봇당 1노드로 ROS2 그래프 참여 (2026-08-26 확정)</td></tr>
-        <tr><td>전송</td><td>같은 호스트 공유메모리</td><td>시뮬 섬 뭉치기 배치(SEC 05)의 전제 — 별도 설정 불요</td></tr>
-      </table>
-      <p class="soft">비DDS 대안은 채택하지 않고 예비 경로로만 기록한다. ROS2의 RMW 계층은 교체 가능하고 비DDS인 rmw_zenoh가 Kilted(2025-05)에서 Tier 1이 됐지만(<a href="https://docs.ros.org/en/kilted/Releases/Release-Kilted-Kaiju.html">릴리스 노트</a>), Isaac은 Fast DDS·Cyclone DDS만 번들한다 — zenoh는 시스템 ROS2 소싱 시 가능하다는 <a href="https://github.com/isaac-sim/IsaacSim/discussions/540">공식 논의</a>만 존재하며 미검증이다.</p>
-      <table>
-        <tr><th style="width:280px">예비 경로 트리거</th><th>대안</th></tr>
-        <tr><td>ROS 트래픽을 WAN 너머로 보내야 할 때</td><td>zenoh-bridge-ros2dds — 로컬 DDS 무변경, 구간만 터널링</td></tr>
-        <tr><td>로봇 노드를 ROS2 없이 더 줄이고 싶을 때</td><td>Isaac 직결 MQTT 어댑터 — 단, 현 확정은 ROS2 노드 유지(주제 정합·멀티로봇 그래프 실증)</td></tr>
-        <tr><td>DDS 자체 교체 요구가 생길 때</td><td>rmw_zenoh — 비번들·검증 부담을 안는 최후 선택지</td></tr>
-      </table>
-      <table>
-        <tr><th style="width:230px">DDS를 WAN에 태우면 안 되는 이유</th><th>내용</th></tr>
-        <tr><td><b>디스커버리</b></td><td>멀티캐스트 기반 상호 발견이라 tailscale·VPN 너머로는 그냥 붙지 않는다(디스커버리 서버 별도 구성 필요). 참가자 수가 늘면 디스커버리 트래픽이 O(N²)로 증가</td></tr>
-        <tr><td><b>대역폭</b></td><td>센서 토픽이 회선을 포화시킨다. 같은 호스트에서는 공유메모리 전송으로 이 비용이 사라진다</td></tr>
-        <tr><td><b>시각 동기</b></td><td>/clock 지터가 제어 품질을 흔든다</td></tr>
-      </table>
-      <div class="plain"><span class="pl-tag">CPU 경합은 치명적이지 않다</span>Isaac과 Nav2가 한 기기에서 CPU를 다투면 시뮬이 실시간보다 느려질 뿐이다. SIL은 use_sim_time으로 전부 /clock에 물려 있어 RTF가 0.5×로 떨어져도 결과의 정합성은 유지된다 — 검증 트랙에 실시간성은 요구사항이 아니다.</div>
-    </div>
-  </section>
+      <!-- EC2 프레임 (파랑 실선) -->
+      <rect x="16" y="16" width="540" height="430" fill="#171D24" stroke="#8FB4D9" stroke-width="1.5"/>
+      <text x="30" y="40" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">EC2 t3.xlarge · 4 vCPU · 16 GB · k3s 파드</text>
+      <text x="542" y="40" text-anchor="end" fill="#9AA7B4" font-size="12">IAM 불가 · nginx :443 하나</text>
 
-  <!-- ══════════ R4 리소스 목록 ══════════ -->
-  <section id="r4">
-    <div class="sec-head"><span class="sec-no">SEC 04 · 리소스 목록</span><h2>프로세스 전수 목록 — 무거운 것은 Isaac 하나다</h2></div>
-    <div class="sec-body">
-      <div class="tbl-scroll"><table>
-        <tr><th style="width:110px">섬</th><th style="width:230px">구성요소</th><th style="width:150px">RAM</th><th>근거</th></tr>
-        <tr><td rowspan="3">시뮬 섬</td><td>Isaac Sim 1인스턴스</td><td><b>~16GB</b></td><td><span class="chip c-green">실측</span> 2026-08-24, RTX 5080 · full_warehouse + iw.hub 주행 데모 기준</td></tr>
-        <tr><td>자체 추종기 노드 × 3~5대 (검증 런은 N대)</td><td>50~150MB /대</td><td><span class="chip c-amber">추정</span> rclpy Pure Pursuit 기준 — 실측 예정. 부록 Nav2 비교 실험 시에만 일시적으로 0.5~1GB/대</td></tr>
-        <tr><td>rclpy 노드·VDA 5050 어댑터</td><td>80~150MB /개</td><td><span class="chip c-amber">추정</span> rclpy + DDS 참가자 기준</td></tr>
-        <tr><td rowspan="8">서비스 섬</td><td>k3s 서버</td><td>0.6~1GB</td><td>공식 최소 서버 512MB / 에이전트 256MB (<a href="https://docs.k3s.io/installation/requirements">k3s Docs</a>)</td></tr>
-        <tr><td>RabbitMQ (워커 큐+DLQ)</td><td>0.2~0.5GB</td><td>유휴 기준 (<a href="https://www.rabbitmq.com/docs/memory-use">RabbitMQ Memory Use</a>)</td></tr>
-        <tr><td>Kafka KRaft 싱글노드</td><td>1.5~2GB</td><td>시작 스크립트 기본 힙 1GB + 오프힙·페이지캐시 (<a href="https://kafka.apache.org/documentation/">Kafka Docs</a>)</td></tr>
-        <tr><td>Mosquitto (MQTT)</td><td>~10MB</td><td><span class="chip c-amber">추정</span> 경량 브로커 통상치</td></tr>
-        <tr><td>PostgreSQL</td><td>0.3~1GB</td><td><span class="chip c-amber">추정</span> shared_buffers 설정 의존</td></tr>
-        <tr><td>백엔드 API (Spring 가정)</td><td>0.5~1GB</td><td><span class="chip c-amber">추정</span> FastAPI 계열이면 0.1~0.2GB</td></tr>
-        <tr><td>로봇 경량 에이전트 × 15</td><td>30~80MB /개</td><td><span class="chip c-amber">추정</span> 순수 Python MQTT 클라이언트+상태기계 기준</td></tr>
-        <tr><td>DES 스윕 워커 × n</td><td>~0.2GB /개</td><td><span class="chip c-amber">추정</span> SimPy는 CPU 바운드·RAM 소식</td></tr>
-      </table></div>
-      <div class="note"><span class="pl-tag">실측 사고 기록</span>2026-08-24 Isaac 2인스턴스 동시 구동으로 32GB 초과 OOM 발생(커널 로그 anon-rss 15.8GB 확인). <b>Isaac은 호스트당 동시 1인스턴스</b>가 운영 규칙이다. 컨테이너·k3s 자체의 격리 비용은 수 MB로, 총량은 전적으로 페이로드가 결정한다.</div>
-    </div>
-  </section>
+      <!-- 상시 그룹 -->
+      <rect x="30" y="56" width="512" height="196" fill="#8FB4D9" fill-opacity="0.07" stroke="#8FB4D9" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="40" y="74" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">상시 · 견적 서비스 층 + 공용</text>
+      <rect x="40" y="84" width="118" height="58" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+      <text x="99" y="108" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">nginx + 웹 콘솔</text>
+      <text x="99" y="128" text-anchor="middle" fill="#9AA7B4" font-size="12">:443 · React 정적</text>
+      <rect x="166" y="84" width="118" height="58" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+      <text x="225" y="108" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">견적 BE</text>
+      <text x="225" y="128" text-anchor="middle" fill="#9AA7B4" font-size="12">Spring · REST</text>
+      <rect x="292" y="84" width="118" height="58" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+      <text x="351" y="108" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">PostgreSQL</text>
+      <text x="351" y="128" text-anchor="middle" fill="#9AA7B4" font-size="12">견적 영속</text>
+      <rect x="418" y="84" width="118" height="58" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+      <text x="477" y="108" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">RabbitMQ</text>
+      <text x="477" y="128" text-anchor="middle" fill="#9AA7B4" font-size="12">잡 큐 · GPU 런 큐</text>
+      <rect x="40" y="152" width="118" height="58" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+      <text x="99" y="176" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">EMQX</text>
+      <text x="99" y="196" text-anchor="middle" fill="#9AA7B4" font-size="12">MQTT · 제어·상태</text>
+      <rect x="166" y="152" width="118" height="58" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+      <text x="225" y="176" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">MinIO</text>
+      <text x="225" y="196" text-anchor="middle" fill="#9AA7B4" font-size="12">아티팩트 · S3 API</text>
+      <rect x="292" y="152" width="118" height="58" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="351" y="176" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">런 오케스트레이터</text>
+      <text x="351" y="196" text-anchor="middle" fill="#9AA7B4" font-size="12">파드 1 · k8s API</text>
+      <rect x="418" y="152" width="118" height="58" fill="#20272F" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <text x="477" y="176" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">tailscale</text>
+      <text x="477" y="196" text-anchor="middle" fill="#9AA7B4" font-size="12">호스트 · 피어</text>
+      <text x="40" y="238" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="12">certbot 인증서 · GHCR 이미지 · 공용 채널(EMQX)은 런보다 먼저 떠 있다</text>
 
-  <!-- ══════════ R5 배치 토폴로지 ══════════ -->
-  <section id="r5">
-    <div class="sec-head"><span class="sec-no">SEC 05 · 배치 토폴로지</span><h2>시뮬 섬은 홈서버에 뭉치고, 서비스 섬만 클라우드로</h2></div>
-    <div class="sec-body">
-      <div class="viz"><svg viewBox="0 0 960 648" role="img" aria-label="시뮬 섬(홈서버)과 서비스 섬(EC2)의 배치 다이어그램">
-        <defs>
-          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8FB4D9"/></marker>
-          <marker id="arg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3BAF77"/></marker>
-        </defs>
-        <rect x="30" y="24" width="620" height="254" fill="#171D24" stroke="#8FB4D9" stroke-width="1.5"/>
-        <text x="46" y="52" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">홈서버 · 32GB · RTX 5080 — 시뮬 섬</text>
-        <text x="634" y="52" text-anchor="end" fill="#9AA7B4" font-size="11">개발 전용 · 점유 ~18GB</text>
-        <rect x="62" y="116" width="186" height="128" fill="#8FB4D9" fill-opacity="0.07" stroke="#8FB4D9" stroke-width="1" stroke-dasharray="4 4"/>
-        <text x="155" y="262" text-anchor="middle" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="10.5" font-weight="700">ISAAC SIM 프로세스</text>
-        <rect x="256" y="116" width="372" height="128" fill="#3BAF77" fill-opacity="0.07" stroke="#3BAF77" stroke-width="1" stroke-dasharray="4 4"/>
-        <text x="442" y="262" text-anchor="middle" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="10.5" font-weight="700">ROS2 프로세스 — 로봇 제어 스택</text>
-        <text x="340" y="86" text-anchor="middle" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="11.5" font-weight="700">DDS 버스 (Fast DDS · 공유메모리)</text>
-        <line x1="60" y1="100" x2="620" y2="100" stroke="#F08A32" stroke-width="2"/>
-        <line x1="155" y1="100" x2="155" y2="128" stroke="#5A6672" stroke-width="1.5"/>
-        <line x1="342" y1="100" x2="342" y2="128" stroke="#5A6672" stroke-width="1.5"/>
-        <line x1="532" y1="100" x2="532" y2="128" stroke="#5A6672" stroke-width="1.5"/>
-        <rect x="70" y="128" width="170" height="104" fill="#1C2229" stroke="#2C343D"/>
-        <text x="155" y="152" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">Isaac Sim ×1</text>
-        <text x="155" y="174" text-anchor="middle" fill="#9AA7B4" font-size="10.5">물리·센서 노드</text>
-        <text x="155" y="192" text-anchor="middle" fill="#9AA7B4" font-size="10.5">브리지·Fast DDS 내장</text>
-        <text x="155" y="212" text-anchor="middle" fill="#3BAF77" font-size="10.5" font-weight="700">~16GB 실측</text>
-        <rect x="262" y="128" width="160" height="104" fill="#1C2229" stroke="#2C343D"/>
-        <text x="342" y="152" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">추종기 ×N</text>
-        <text x="342" y="174" text-anchor="middle" fill="#9AA7B4" font-size="10.5">Pure Pursuit · 기본 3~5</text>
-        <text x="342" y="192" text-anchor="middle" fill="#9AA7B4" font-size="10.5">정지·보고 — 회피 없음</text>
-        <text x="342" y="212" text-anchor="middle" fill="#9AA7B4" font-size="10.5">50~150MB/대 추정</text>
-        <rect x="444" y="128" width="176" height="104" fill="#1C2229" stroke="#2C343D"/>
-        <text x="532" y="152" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">VDA 5050 어댑터 ×N</text>
-        <text x="532" y="174" text-anchor="middle" fill="#9AA7B4" font-size="10.5">ROS2 ↔ MQTT 변환</text>
-        <text x="532" y="192" text-anchor="middle" fill="#9AA7B4" font-size="10.5">로봇 1대당 1개</text>
-        <text x="532" y="212" text-anchor="middle" fill="#9AA7B4" font-size="10.5">80~150MB/개 추정</text>
-        <line x1="30" y1="312" x2="930" y2="312" stroke="#3BAF77" stroke-width="1.5" stroke-dasharray="7 6"/>
-        <text x="46" y="302" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="11.5" font-weight="700">✂ MQTT (VDA 5050) — 유일한 절단선 · WAN 통과 가능</text>
-        <line x1="580" y1="232" x2="580" y2="384" stroke="#3BAF77" stroke-width="2" marker-end="url(#arg)"/>
-        <rect x="30" y="346" width="620" height="252" fill="#20211C" stroke="#F08A32" stroke-width="1.5"/>
-        <text x="46" y="374" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">EC2 · 16GB — 서비스 섬</text>
-        <text x="634" y="374" text-anchor="end" fill="#9AA7B4" font-size="11">상시 · 점유 ~8GB</text>
-        <rect x="58" y="386" width="170" height="86" fill="#1C2229" stroke="#F08A32"/>
-        <text x="143" y="410" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">FMS — 자체 구현</text>
-        <text x="143" y="432" text-anchor="middle" fill="#F08A32" font-size="10.5" font-weight="700">MAPF · RHCR · 디스패칭</text>
-        <text x="143" y="452" text-anchor="middle" fill="#9AA7B4" font-size="10.5">코어 자산 · DES와 로직 공유</text>
-        <rect x="248" y="386" width="130" height="86" fill="#1C2229" stroke="#2C343D"/>
-        <text x="313" y="410" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">백엔드 API</text>
-        <text x="313" y="432" text-anchor="middle" fill="#9AA7B4" font-size="10.5">견적 요청·결과</text>
-        <text x="313" y="452" text-anchor="middle" fill="#9AA7B4" font-size="10.5">0.5~1GB 추정</text>
-        <rect x="398" y="386" width="110" height="86" fill="#1C2229" stroke="#2C343D"/>
-        <text x="453" y="410" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="11.5" font-weight="700">PostgreSQL</text>
-        <text x="453" y="432" text-anchor="middle" fill="#9AA7B4" font-size="10.5">견적·잡 상태</text>
-        <text x="453" y="452" text-anchor="middle" fill="#9AA7B4" font-size="10.5">0.3~1GB 추정</text>
-        <rect x="528" y="386" width="104" height="86" fill="#1C2229" stroke="#2C343D"/>
-        <text x="580" y="410" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">Mosquitto</text>
-        <text x="580" y="432" text-anchor="middle" fill="#9AA7B4" font-size="10.5">MQTT 브로커</text>
-        <text x="580" y="452" text-anchor="middle" fill="#9AA7B4" font-size="10.5">~10MB 추정</text>
-        <rect x="58" y="496" width="150" height="86" fill="#1C2229" stroke="#2C343D"/>
-        <text x="133" y="520" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">경량 에이전트 ×15</text>
-        <text x="133" y="542" text-anchor="middle" fill="#9AA7B4" font-size="10.5">가상 로봇 상태기계</text>
-        <text x="133" y="562" text-anchor="middle" fill="#9AA7B4" font-size="10.5">30~80MB/개 추정</text>
-        <rect x="228" y="496" width="140" height="86" fill="#1C2229" stroke="#2C343D"/>
-        <text x="298" y="520" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">RabbitMQ</text>
-        <text x="298" y="542" text-anchor="middle" fill="#9AA7B4" font-size="10.5">스윕 잡 큐 + DLQ</text>
-        <text x="298" y="562" text-anchor="middle" fill="#9AA7B4" font-size="10.5">0.2~0.5GB</text>
-        <rect x="388" y="496" width="110" height="86" fill="#1C2229" stroke="#2C343D"/>
-        <text x="443" y="520" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">Kafka</text>
-        <text x="443" y="542" text-anchor="middle" fill="#9AA7B4" font-size="10.5">도메인 이벤트</text>
-        <text x="443" y="562" text-anchor="middle" fill="#9AA7B4" font-size="10.5">1.5~2GB</text>
-        <rect x="518" y="496" width="114" height="86" fill="#1C2229" stroke="#2C343D"/>
-        <text x="575" y="520" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">DES 워커 ×n</text>
-        <text x="575" y="542" text-anchor="middle" fill="#9AA7B4" font-size="10.5">SimPy 스윕</text>
-        <text x="575" y="562" text-anchor="middle" fill="#9AA7B4" font-size="10.5">~0.2GB/개 추정</text>
-        <rect x="700" y="386" width="230" height="72" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
-        <text x="815" y="412" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">사용자 브라우저</text>
-        <text x="815" y="436" text-anchor="middle" fill="#9AA7B4" font-size="10.5">견적 요청 · 결과 조회</text>
-        <text x="696" y="412" text-anchor="end" fill="#8FB4D9" font-size="10.5" font-family="'JetBrains Mono',monospace">REST/WS</text>
-        <line x1="700" y1="422" x2="654" y2="422" stroke="#8FB4D9" stroke-width="1.5" marker-end="url(#ar)"/>
-        <rect x="700" y="496" width="230" height="96" fill="#171D24" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 5"/>
-        <text x="815" y="522" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">옵션 워커</text>
-        <text x="815" y="546" text-anchor="middle" fill="#9AA7B4" font-size="10.5">스팟 EC2(c계열) / RunPod</text>
-        <text x="815" y="566" text-anchor="middle" fill="#9AA7B4" font-size="10.5">전체 스윕 잡 · 발표 주간만 기동</text>
-        <text x="696" y="532" text-anchor="end" fill="#8A96A3" font-size="10.5" font-family="'JetBrains Mono',monospace">AMQP</text>
-        <line x1="700" y1="540" x2="654" y2="540" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ar)"/>
-        <text x="30" y="634" fill="#9AA7B4" font-size="10.5">초록 굵은 수치 = 실측(2026-08-24) · 나머지 용량 수치 = 추정 — 근거와 출처는 SEC 04 표</text>
-      </svg></div>
-      <table>
-        <tr><th style="width:210px">머신</th><th>역할</th><th style="width:190px">비고</th></tr>
-        <tr><td><b>홈서버</b> 32GB+5080</td><td>개발·SIL 검증·라이브 시연 1순위(tailscale 스트리밍 검증 경로)</td><td>서비스 트래픽은 받지 않음</td></tr>
-        <tr><td><b>EC2</b> 16GB</td><td>상시 서비스 본체 — 도메인·HTTPS가 물리는 곳</td><td>~8GB 사용, 8GB 여유</td></tr>
-        <tr><td><b>옵션 워커</b></td><td>전체 스윕 잡 전용, 큐에서 수령</td><td>발표 주간만 기동</td></tr>
-      </table>
-      <h3>최적 대수 검증 런 — 추종기 확정으로 사다리가 접혔다</h3>
-      <p>SIL은 <b>보정 루프</b>(3~5대 반복)와 DES가 뽑은 <b>최적 구성의 검증 런</b>(단발, 대수 N 그대로) 두 종류가 돈다. 추종기 확정(REV C)으로 로봇당 RAM이 50~150MB로 떨어져, 이전 REV B의 경량화·혼합 충실도 사다리는 대부분 불필요해졌다.</p>
-      <div class="tbl-scroll"><table>
-        <tr><th style="width:200px">구성</th><th>내용</th><th style="width:170px">ROS 몫 RAM (추정)</th></tr>
-        <tr><td><b>~15대 전 대수</b></td><td>전 로봇 자체 추종기 — 풀 충실도 검증 런 가능</td><td>0.8~2.3GB <span class="chip c-green">여유</span></td></tr>
-        <tr><td>부록 Nav2 비교 실험</td><td>로봇 1대만 Nav2 풀스택 장착</td><td>+0.5~1GB 일시</td></tr>
-        <tr><td>병렬 캘리브레이션 캠페인</td><td>다구성 동시 실행이 필요할 때 외부 GPU 배치(SEC 06 RunPod A5000) — 초 단위 과금과 궁합</td><td>홈서버 밖</td></tr>
-      </table></div>
-      <p class="soft">검증 런은 단발 실행이라 실시간성 요구가 없다 — CPU 경합으로 RTF가 떨어져도 use_sim_time 덕에 결과는 유효하다(SEC 03). "ROS만 다른 기기로 분리"는 SEC 03의 이유로 여전히 선택지가 아니다.</p>
-    </div>
-  </section>
+      <!-- 런·잡 그룹 -->
+      <rect x="30" y="264" width="512" height="170" fill="#F08A32" fill-opacity="0.06" stroke="#F08A32" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="40" y="282" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">런·잡마다 기동 → 폐기 · 시뮬 스택 층</text>
+      <rect x="40" y="292" width="118" height="58" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+      <text x="99" y="316" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">계산 엔진 워커</text>
+      <text x="99" y="336" text-anchor="middle" fill="#9AA7B4" font-size="12">k3s Job · DES+θ</text>
+      <rect x="166" y="292" width="118" height="58" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+      <text x="225" y="316" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">시뮬 WMS</text>
+      <text x="225" y="336" text-anchor="middle" fill="#9AA7B4" font-size="12">Spring + H2</text>
+      <rect x="292" y="292" width="118" height="58" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+      <text x="351" y="316" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">FMS 코어</text>
+      <text x="351" y="336" text-anchor="middle" fill="#9AA7B4" font-size="12">Python · MQTT 셸</text>
+      <rect x="418" y="292" width="118" height="58" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+      <text x="477" y="316" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">수요 생성기</text>
+      <text x="477" y="336" text-anchor="middle" fill="#9AA7B4" font-size="12">주문 스트림</text>
+      <text x="40" y="380" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="12">잡 = 스윕 1건(워커 ×N 병렬) · 런 = Isaac 검증 1건(파드 3종)</text>
+      <text x="40" y="402" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="12">런 스코프 상태(H2)는 파드와 함께 소멸 · 영속은 PG·MinIO만</text>
 
-  <!-- ══════════ R6 견적 시나리오 ══════════ -->
-  <section id="r6">
-    <div class="sec-head"><span class="sec-no">SEC 06 · 견적 시나리오</span><h2>구성별 RAM 합산과 비용 — 상시 GPU는 어느 안에도 없다</h2></div>
-    <div class="sec-body">
-      <div class="tbl-scroll"><table>
-        <tr><th style="width:270px">시나리오</th><th style="width:110px">총 RAM</th><th style="width:200px">인스턴스</th><th>월 비용 (us-east-1 온디맨드 기준 · 서울 약 1할 상회 추정)</th></tr>
-        <tr><td><b>A. 경량 에이전트 15대 + 인프라</b> <span class="chip c-green">권장</span></td><td>5~8GB</td><td>t3.xlarge (4vCPU/16GB)</td><td>~$121 (<a href="https://cloudprice.net/aws/ec2/instances/t3.xlarge">CloudPrice</a>)</td></tr>
-        <tr><td>B. rclpy 노드 15대 + 인프라</td><td>6~9GB</td><td>t3.xlarge</td><td>~$121</td></tr>
-        <tr><td>C. Nav2 풀스택 15대 + 인프라</td><td>13~21GB+α</td><td>t3.2xlarge (8vCPU/32GB)</td><td>~$243 (<a href="https://calculator.holori.com/aws/ec2/t3.2xlarge">Holori</a>) · CPU가 먼저 병목</td></tr>
-        <tr><td>D. Isaac까지 클라우드</td><td>+16GB·GPU 필수</td><td>g4dn.2xlarge / g5.2xlarge</td><td>~$549 / ~$885 (<a href="https://www.economize.cloud/resources/aws/pricing/ec2/g5.2xlarge/">economize</a>) — 상시 구동 비현실적</td></tr>
-      </table></div>
-      <div class="note"><span class="pl-tag">t계열 주의</span>t3는 버스터블 인스턴스다(베이스라인 vCPU당 40%, <a href="https://aws.amazon.com/ec2/instance-types/t3/">AWS T3</a>). API·DB 상시 서비스에는 적합하지만 장시간 스윕을 돌리면 CPU 크레딧 고갈로 스로틀된다 — 스윕은 c/m계열 워커 또는 unlimited 모드로.</div>
-      <h3>외부 GPU 옵션 — RunPod (2026-08 조사 시점 시세, 변동)</h3>
-      <div class="tbl-scroll"><table>
-        <tr><th style="width:170px">GPU</th><th style="width:110px">시간당</th><th>Isaac 적합성</th></tr>
-        <tr><td><b>RTX A5000 24GB</b></td><td>$0.27</td><td><span class="chip c-green">배치 1순위</span> RT 코어 보유(Ampere) — 최저가. 5080 대비 체감 절반 이하(추정)로 느리나 헤드리스 배치는 RTF 저하 허용이라 작업당 총비용 우위 (포드 요금 2026-08-25 확인)</td></tr>
-        <tr><td>A40 48GB</td><td>$0.44</td><td>가능 — RT 코어 보유, 구세대. VRAM 48GB 필요 시</td></tr>
-        <tr><td>RTX 4090 24GB</td><td>$0.69</td><td>적합 — 리허설+시연 20시간에 ~$14</td></tr>
-        <tr><td><b>RTX PRO 4500 32GB</b></td><td>$0.72</td><td><span class="chip c-green">시연 1순위</span> 홈서버 5080과 같은 Blackwell 세대 — 실시간 렌더·스트리밍 품질이 필요한 시연 백업용 (포드 요금 2026-08-25 확인)</td></tr>
-        <tr><td>RTX 5090 32GB / L40S 48GB</td><td>$0.99</td><td>적합 — 홈서버 5080의 상위 호환</td></tr>
-        <tr><td>A100 80GB</td><td>$1.39</td><td><span class="chip c-slate">부적합</span> RT 코어가 없어 Isaac 렌더링 불가</td></tr>
-      </table></div>
-      <table>
-        <tr><th style="width:210px">용도 판정</th><th>내용</th></tr>
-        <tr><td><b>배치 잡</b> (RL·대량 SIL)</td><td><span class="chip c-green">최적</span> 헤드리스라 스트리밍 제약이 안 걸림. 초 단위 과금으로 켰다 끄는 운용. 현 계획의 서러게이트(XGBoost)는 CPU로 충분해, 실수요는 RL 옵션 축을 팔 때 발생</td></tr>
-        <tr><td><b>라이브 시연</b></td><td><span class="chip c-amber">우회 필요</span> RunPod은 UDP 미포워딩이라 Isaac 기본 WebRTC 불가 — noVNC HTTP 우회(<a href="https://github.com/Sa3d-99/runpod_noVNC_isaac_sim">커뮤니티 레포</a>, 기본 무인증 주의) 사전 리허설 필수. 1순위는 홈서버+tailscale, RunPod은 발표 당일 회선 리스크의 백업</td></tr>
-        <tr><td><b>상시 서비스</b></td><td><span class="chip c-slate">불필요</span> 서비스 경로(견적 API+DES)는 GPU를 쓰지 않는 설계</td></tr>
-      </table>
-      <p class="soft">시세 출처: <a href="https://www.runpod.io/product/cloud-gpus">RunPod 공식</a> · <a href="https://gpuperhour.com/providers/runpod">GPUPerHour</a> · <a href="https://hackceleration.com/labs/runpod-pricing">Hack'celeration 분석</a>. EC2 GPU 대비 우위: g5.2xlarge(A10G) $1.21/h vs RunPod 4090 $0.69/h — 성능 위, 가격 절반 근처.</p>
-    </div>
-  </section>
+      <!-- GPU 프레임 (초록 실선) -->
+      <rect x="650" y="16" width="234" height="430" fill="#171D24" stroke="#3BAF77" stroke-width="1.5"/>
+      <text x="664" y="40" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">GPU 서버 · RTX 5080 16 GB</text>
+      <text x="664" y="60" fill="#9AA7B4" font-size="12">홈서버 · 네이티브 · Isaac Sim 6.0.1</text>
+      <rect x="662" y="84" width="210" height="58" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="767" y="108" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">sim-runner 데몬</text>
+      <text x="767" y="128" text-anchor="middle" fill="#9AA7B4" font-size="12">상시 · sim/control 수신</text>
+      <rect x="662" y="152" width="210" height="44" fill="#20272F" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <text x="767" y="179" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">tailscale · 아웃바운드만</text>
+      <rect x="662" y="210" width="210" height="224" fill="#3BAF77" fill-opacity="0.07" stroke="#3BAF77" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="672" y="228" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">런마다 스폰 → 정리</text>
+      <rect x="672" y="238" width="190" height="58" fill="#1C2229" stroke="#3BAF77" stroke-width="1.5"/>
+      <text x="767" y="262" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">Isaac Sim ×1</text>
+      <text x="767" y="282" text-anchor="middle" fill="#9AA7B4" font-size="12">물리·라이다 · VRAM 관심</text>
+      <rect x="672" y="306" width="190" height="58" fill="#1C2229" stroke="#3BAF77" stroke-width="1.5"/>
+      <text x="767" y="330" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">amr-agent ×N + AMCL ×N</text>
+      <text x="767" y="350" text-anchor="middle" fill="#9AA7B4" font-size="12">ROS 2 · VDA 5050</text>
+      <rect x="672" y="374" width="190" height="52" fill="#1C2229" stroke="#3BAF77" stroke-width="1.5"/>
+      <text x="767" y="396" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">관전·수집</text>
+      <text x="767" y="416" text-anchor="middle" fill="#9AA7B4" font-size="12">Foxglove · MJPEG → MP4</text>
 
-  <!-- ══════════ R7 미확정 결정 ══════════ -->
-  <section id="r7">
-    <div class="sec-head"><span class="sec-no">SEC 07 · 결정 현황</span><h2>확정된 것과 남은 것</h2></div>
-    <div class="sec-body">
-      <table>
-        <tr><th style="width:230px">결정</th><th>선택지</th><th style="width:270px">이 문서의 기본 권고</th></tr>
-        <tr><td><b>D-1 추가 EC2 증설</b></td><td>증설 없음 / 프로덕션 미러 분리</td><td>증설 없음 — 서비스 경로가 기존 16GB에 수용됨. 스테이징 분리 욕구가 생기면 그때 미러</td></tr>
-        <tr><td><b>D-2 스윕 워커</b></td><td>없음 / c계열 스팟 / RunPod</td><td>발표 주간만 기동하는 c7i.xlarge 스팟 — 잡 큐 구조라 나중에 붙여도 무변경</td></tr>
-        <tr><td><b>D-3 Kafka v1 포함</b></td><td>유지 / RabbitMQ로 임시 통합</td><td>명세서 스택 준수가 평가 항목이면 유지(16GB 내 문제없음). 아니면 통합 시 −2GB</td></tr>
-        <tr><td><b>D-4 SIL 로봇 대수</b></td><td>보정 3~5대 / 검증 런은 최적 대수 N</td><td><span class="chip c-green">확정 08-26</span> 보정 루프 3~5대, 검증 런은 최적 대수 N 그대로 — 추종기 확정으로 15대 풀 충실도까지 홈서버 수용(SEC 05)</td></tr>
-        <tr><td><b>D-5 로봇 레벨 실행기</b></td><td>자체 추종기 / Nav2</td><td><span class="chip c-green">확정 08-26</span> 자체 추종기(ROS2 노드) — 산업 거동 충실(정지·보고) + 리소스 절감. Nav2·AMCL은 부록 비교 실험으로만 수행("알고 배제했다" 물증)</td></tr>
-        <tr><td><b>D-6 시연 백업 리허설</b></td><td>실시 / 생략</td><td>발표 2주 전 RunPod noVNC 경로 1회 리허설(~$3) — 당일 회선 리스크 보험</td></tr>
-      </table>
-      <div class="kcards">
-        <div class="kcard"><b><a href="../tech/amr_tech_plan.html" style="color:inherit">기술 실행 계획</a></b><span>2계층(DES+SIL) 구조와 검증 트랙의 원 설계 (TECH 02)</span></div>
-        <div class="kcard s"><b><a href="sil_roadmap.html" style="color:inherit">SIL 구현 로드맵</a></b><span>이 아키텍처의 구현 순서 — 4태스크·부록 실험 (WORKING)</span></div>
-        <div class="kcard g"><b><a href="../tech/amr_mapf_theory.html" style="color:inherit">MAPF 이론</a></b><span>FMS 층이 푸는 문제의 이론 배경 (TECH 03)</span></div>
-      </div>
+      <!-- 두 기기 사이 채널 -->
+      <text x="603" y="102" text-anchor="middle" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="12">MQTT 제어·상태</text>
+      <line x1="558" y1="112" x2="648" y2="112" stroke="#8FB4D9" stroke-width="2" marker-start="url(#ra-arr)" marker-end="url(#ra-arr)"/>
+      <text x="603" y="240" text-anchor="middle" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="12">presigned PUT</text>
+      <line x1="648" y1="250" x2="558" y2="250" stroke="#8FB4D9" stroke-width="2" marker-end="url(#ra-arr)"/>
+      <text x="603" y="320" text-anchor="middle" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="12">VDA 5050 MQTT</text>
+      <line x1="558" y1="330" x2="648" y2="330" stroke="#8FB4D9" stroke-width="2" marker-start="url(#ra-arr)" marker-end="url(#ra-arr)"/>
+
+      <!-- tailscale 밑줄 -->
+      <line x1="300" y1="472" x2="800" y2="472" stroke="#3BAF77" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#ra-arr-g)"/>
+      <text x="550" y="462" text-anchor="middle" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700">tailscale · 홈서버 → EC2 아웃바운드 · 캠퍼스 UDP 차단 시 DERP 릴레이(TCP)</text>
+      <text x="16" y="506" fill="#9AA7B4" font-size="12">파랑 실선 = EC2(k3s 파드) · 초록 실선 = GPU 서버(네이티브) · 주황 상자 = 런 제어 끝점 · 점선 그룹 = 런·잡마다 기동</text>
+    </svg></div>
+    <p class="soft">위 세 채널은 전부 TCP라서 DERP 릴레이 경유에도 끊기지 않는다. ROS 2 DDS 트래픽은 GPU 서버 안에서만 돈다. 흐름 순서와 8단계는 <a href="../tech/system_architecture.html">TECH 02</a>를 본다.</p>
+
+    <details class="more"><summary>먼저 알아둘 용어 9개 — 펼쳐 보기</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:170px">용어</th><th>쉬운 설명</th></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#k3s">k3s</a></b></td><td>경량 쿠버네티스. EC2 한 대에서 파드(컨테이너 묶음)와 Job(한 번 돌고 끝나는 컨테이너)을 관리한다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#emqx">EMQX</a></b></td><td><a class="term" href="../ref/glossary_industrial.html#mqtt">MQTT</a> 브로커. 런 제어(sim/control)와 로봇 상태가 지나가는 상시 채널</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#minio">MinIO</a></b></td><td>S3 호환 객체 저장소. IAM이 없어 AWS S3 대신 EC2 안에 파드로 둔다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#h2">H2</a></b></td><td>인메모리 관계형 DB. 시뮬 WMS의 런 스코프 상태를 담고 런과 함께 사라진다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#gpu-run-queue">GPU 런 큐</a></b></td><td>Isaac 검증 런을 직렬로 세우는 RabbitMQ 큐. 소비자 수 = GPU 수</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#orchestrator">런 오케스트레이터</a></b></td><td>EC2 k3s 위 파드 1개. GPU 런 큐를 소비해 시뮬 파드를 띄우고 sim-runner에 시작·정지를 지시한다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#sim-runner">sim-runner</a></b></td><td>GPU 서버에 상주하는 데몬. 지시를 받아 Isaac과 에이전트를 스폰·정리하고 아티팩트를 올린다</td></tr>
+      <tr><td><b>DERP</b></td><td>tailscale의 릴레이 서버. 직결 UDP가 막히면 TCP로 우회한다(<a href="https://tailscale.com/kb/1232/derp-servers">tailscale 문서</a>)</td></tr>
+      <tr><td><b>IMDS</b></td><td>EC2 인스턴스 메타데이터 서비스. 인스턴스 안에서 자기 타입을 확인하는 표준 경로(<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html">AWS 문서</a>)</td></tr>
+    </table></div>
+    </details>
+  </div>
+</section>
+
+<!-- ══════════ R1 프로세스 전수 ══════════ -->
+<section id="r1">
+  <div class="sec-head"><span class="sec-no">SEC 01 · 프로세스 전수</span><h2>EC2는 파드 11종, GPU 서버는 네이티브 5종. 무거운 것은 Isaac과 시뮬 WMS 둘뿐이다</h2></div>
+  <div class="sec-body">
+    <p class="lead">전수 표다. 메모리는 수치 대신 관심도로 적는다. 실측 수치는 확보되는 대로 <a href="t3_t4_progress.html">T3·T4 진행</a>에 기록한다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:230px">프로세스</th><th style="width:90px">기기</th><th style="width:90px">상시/런</th><th style="width:150px">형태</th><th style="width:110px">메모리 관심도</th><th>비고</th></tr>
+      <tr><td><b>nginx + React 웹 콘솔</b></td><td>EC2</td><td>상시</td><td>k3s 파드</td><td><span class="chip c-slate">낮음</span></td><td>:443 단일 인그레스. 정적 파일 서빙</td></tr>
+      <tr><td><b>견적 BE</b> (Spring Boot)</td><td>EC2</td><td>상시</td><td>k3s 파드</td><td><span class="chip c-steel">중</span></td><td>JVM 힙. REST <code>/api/requests</code>, 잡 발행, 결과 이벤트 수신</td></tr>
+      <tr><td><b>PostgreSQL</b></td><td>EC2</td><td>상시</td><td>k3s 파드</td><td><span class="chip c-steel">중</span></td><td>견적 도메인 영속. 버퍼 설정에 따라 달라짐</td></tr>
+      <tr><td><b>RabbitMQ</b></td><td>EC2</td><td>상시</td><td>k3s 파드</td><td><span class="chip c-slate">낮음</span></td><td>요청 잡 큐(우선순위·<a class="term" href="../ref/glossary_industrial.html#dlq">DLQ</a>) + GPU 런 큐</td></tr>
+      <tr><td><b>EMQX</b></td><td>EC2</td><td>상시</td><td>k3s 파드</td><td><span class="chip c-slate">낮음</span></td><td>연결 수에 비례. 런보다 먼저 떠 있어야 하는 공용 채널</td></tr>
+      <tr><td><b>MinIO</b></td><td>EC2</td><td>상시</td><td>k3s 파드</td><td><span class="chip c-slate">낮음</span></td><td>관심은 메모리가 아니라 디스크. MP4·리플레이·히트맵 누적</td></tr>
+      <tr><td><b>런 오케스트레이터</b></td><td>EC2</td><td>상시</td><td>k3s 파드 ×1</td><td><span class="chip c-slate">낮음</span></td><td>QUEUED → … → DONE 상태기계. 런 ID 기준 멱등</td></tr>
+      <tr><td><b>계산 엔진 워커</b> (DES + θ 추론)</td><td>EC2</td><td>잡</td><td>k3s Job ×N</td><td><span class="chip c-steel">중</span></td><td>관심은 CPU. θ 추론 모델을 메모리에 올린다. 워커 수는 수평 확장</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#sim-wms">시뮬 WMS</a></b> (Spring + H2)</td><td>EC2</td><td>런</td><td>k3s 파드</td><td><span class="chip c-amber">높음</span></td><td>JVM + 인메모리 DB. 시나리오 규모(위치·SKU·주문)에 비례</td></tr>
+      <tr><td><b>FMS 코어</b> (Python)</td><td>EC2</td><td>런</td><td>k3s 파드</td><td><span class="chip c-slate">낮음</span></td><td>결정 커널 + MQTT 데몬 셸. 로봇 수에 비례하지만 작다</td></tr>
+      <tr><td><b>수요 생성기</b></td><td>EC2</td><td>런</td><td>k3s 파드</td><td><span class="chip c-slate">낮음</span></td><td>시나리오 패키지의 수요 프로파일을 주문 스트림으로</td></tr>
+      <tr><td><b>sim-runner 데몬</b></td><td>GPU</td><td>상시</td><td>네이티브</td><td><span class="chip c-slate">낮음</span></td><td>sim/control 수신. Isaac·에이전트 스폰·정리, 아티팩트 업로드</td></tr>
+      <tr><td><b>Isaac Sim 6.0.1</b></td><td>GPU</td><td>런</td><td>네이티브 ×1</td><td><span class="chip c-amber">높음</span></td><td>호스트 RAM과 VRAM 모두. 호스트당 동시 1인스턴스가 기본(SEC 02)</td></tr>
+      <tr><td><b>amr-agent</b> (<a class="term" href="../ref/glossary_robotics.html#ros2">ROS 2</a> Humble)</td><td>GPU</td><td>런</td><td>네이티브 ×N</td><td><span class="chip c-slate">낮음</span></td><td>로봇 1대당 1세트(VDA 5050 브리지 · order executor · 프리미티브 컨트롤러)</td></tr>
+      <tr><td><b>nav2 AMCL</b></td><td>GPU</td><td>런</td><td>네이티브 ×N</td><td><span class="chip c-slate">낮음</span></td><td>로봇별 자기위치. 라이다 720빔 입력</td></tr>
+      <tr><td><b>관전·수집</b> (Foxglove 브리지 · MJPEG 프레임 허브 · ffmpeg NVENC)</td><td>GPU</td><td>런</td><td>네이티브</td><td><span class="chip c-slate">낮음</span></td><td>NVENC는 GPU 인코더를 쓴다. Isaac 렌더와 같은 GPU</td></tr>
+      <tr><td><b>tailscale</b></td><td>EC2 · GPU</td><td>상시</td><td>호스트 네이티브</td><td><span class="chip c-slate">낮음</span></td><td>GPU 서버 쪽이 아웃바운드로 붙는다</td></tr>
+    </table></div>
+    <p class="soft">관심도: <span class="chip c-amber">높음</span> = 이 프로세스가 기기 메모리를 결정한다 · <span class="chip c-steel">중</span> = 설정값에 따라 달라진다 · <span class="chip c-slate">낮음</span> = 합산해도 작다.</p>
+
+    <div class="plain"><span class="pl-tag">쉽게 말하면</span>
+      EC2에는 늘 켜져 있는 것 8개가 있고, 견적 요청이 들어오면 계산 Job이, 검증 런이 시작되면 시뮬 파드 3개가 잠깐 더 뜬다.
+      GPU 서버에는 sim-runner 하나만 늘 켜져 있고, 런이 오면 Isaac과 로봇 수만큼의 에이전트가 떴다가 사라진다.</div>
+
+    <details class="more"><summary>형태 기준 — 왜 EC2는 파드이고 GPU 서버는 네이티브인가 — 상세</summary>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:170px">기기</th><th>이유</th></tr>
+      <tr><td><b>EC2 = k3s 파드</b></td><td>IAM이 없어 관리형 서비스를 못 쓴다. 전부 자체 호스팅이라 기동·폐기·재시작을 k3s에 맡기는 편이 낫다. 런 단위 파드는 k8s API로 만들고 지운다</td></tr>
+      <tr><td><b>GPU 서버 = 네이티브</b></td><td>Isaac Sim은 GPU 드라이버와 직접 붙는다. ROS 2 DDS는 같은 호스트 안에서 공유메모리로 도는 편이 단순하다. 컨테이너화는 임대 GPU로 갈 때 한다(SEC 05)</td></tr>
+    </table></div>
+    </details>
+  </div>
+</section>
+
+<!-- ══════════ R2 GPU 슬롯 ══════════ -->
+<section id="r2">
+  <div class="sec-head"><span class="sec-no">SEC 02 · GPU 슬롯</span><h2>5080 한 대 = GPU 런 큐 소비자 하나. 둘 띄우기는 실측 후에만</h2></div>
+  <div class="sec-body">
+    <p class="lead">GPU 수가 곧 동시 런 수다. 현재는 1이다. 한 GPU에 Isaac을 둘 띄우는 것은 "가능한가"가 아니라 "재 보고 결정한다"의 문제다.</p>
+    <div class="kcards">
+      <div class="kcard g"><b>기본 규칙</b><span>GPU 1대 = 소비자 1. Isaac은 호스트당 동시 1인스턴스. 런은 직렬</span></div>
+      <div class="kcard"><b>둘 띄우기 조건</b><span>nvidia-smi로 이용률·VRAM을 런 중에 재서 둘 다 여유가 확인될 때만</span></div>
+      <div class="kcard s"><b>MIG 없음</b><span>RTX 5080은 소비자용이라 하드웨어 분할(MIG)이 없다. 시간 분할만 가능</span></div>
     </div>
-  </section>
+
+    <h3>둘 띄우기 판단 기준</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:170px">기준</th><th style="width:260px">확인 방법</th><th>판단</th></tr>
+      <tr><td><b>GPU 이용률</b></td><td><code>nvidia-smi</code> utilization.gpu, 런 중 주기 샘플</td><td>단일 런에서 이미 높으면 둘 띄워도 총 처리량은 늘지 않는다. 각 런만 느려진다</td></tr>
+      <tr><td><b>VRAM</b></td><td><code>nvidia-smi</code> memory.used / 16 GB</td><td>단일 런 사용량의 2배가 16 GB를 넘으면 불가</td></tr>
+      <tr><td><b>호스트 RAM</b></td><td>런 중 <code>free</code>, 커널 OOM 로그</td><td>Isaac은 호스트 메모리도 많이 쓴다. 둘 띄우기의 첫 실패 지점은 보통 여기다</td></tr>
+      <tr><td><b>NVENC</b></td><td>MP4 인코딩 동시 세션 수</td><td>관전·영상 인코딩이 Isaac 렌더와 같은 GPU를 쓴다. 런 수만큼 인코더 부하도 는다</td></tr>
+      <tr><td><b>실측 런 여부</b></td><td>런 목적 확인</td><td>회전 시간 상수·정지 오차 같은 실측 런은 단독 실행. 다른 런과 겹치면 수치가 오염된다</td></tr>
+    </table></div>
+<pre><code>nvidia-smi --query-gpu=utilization.gpu,memory.used,memory.total --format=csv -l 5</code></pre>
+    <div class="plain warn"><span class="pl-tag">운영 규칙</span>둘 띄우기가 통과해도 GPU 런 큐 소비자는 여전히 1로 둔다. 두 번째 인스턴스는 개발·리허설용이다. 소비자를 2로 올리는 것은 GPU 노드를 추가할 때다(SEC 05).</div>
+  </div>
+</section>
+
+<!-- ══════════ R3 EC2 제약 ══════════ -->
+<section id="r3">
+  <div class="sec-head"><span class="sec-no">SEC 03 · EC2 제약</span><h2>t3.xlarge 한 대, IAM 없음, 크레딧은 기관 제공 형태에 달렸다</h2></div>
+  <div class="sec-body">
+    <p class="lead">EC2는 4 vCPU · 16 GB 한 대다. 세 가지 제약이 배치를 정한다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:150px">제약</th><th>내용</th><th style="width:330px">대응</th></tr>
+      <tr><td><b>크기</b></td><td>4 vCPU · 16 GB. 상시 서비스, 런 파드, 계산 Job이 전부 여기서 돈다</td><td>계산 Job에 CPU limit을 걸어 상시 서비스 몫을 보존한다. 런 파드는 런이 끝나면 지운다</td></tr>
+      <tr><td><b>IAM 불가</b></td><td>관리형 AWS 서비스를 하나도 못 쓴다</td><td>S3 → MinIO 파드 · RDS → PostgreSQL 파드 · ECR → GHCR · ACM → certbot. 전부 k3s 자체 호스팅</td></tr>
+      <tr><td><b>버스트 크레딧</b></td><td>t 계열은 베이스라인 이상으로 CPU를 쓰면 크레딧을 소모한다(<a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-performance-instances.html">AWS 문서</a>). 실제 인스턴스 타입과 크레딧 모드(standard / unlimited)는 기관 제공 형태에 따라 다르다</td><td>인스턴스 안에서 IMDS로 타입을 확인하고, 크레딧 모드는 기관에 확인한다(기준선 §9). 고갈돼도 느려질 뿐 멈추지 않는다. 요청 접수형이라 허용된다</td></tr>
+      <tr><td><b>외부 노출</b></td><td>nginx :443 하나. 나머지는 tailscale 안에서만 보인다</td><td>고객·운영자는 :443, GPU 서버는 tailscale 피어로 EMQX·MinIO에 붙는다</td></tr>
+    </table></div>
+    <h3>인스턴스 타입 확인 (IMDSv2)</h3>
+<pre><code>TOKEN=$(curl -sX PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 60")
+curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-type</code></pre>
+    <p class="soft">크레딧 모드는 IMDS에 없다. 콘솔 권한이 없으므로 기관 담당자에게 확인하고 결과를 SEC 06 표에 기록한다.</p>
+  </div>
+</section>
+
+<!-- ══════════ R4 네트워크 ══════════ -->
+<section id="r4">
+  <div class="sec-head"><span class="sec-no">SEC 04 · 네트워크</span><h2>홈서버가 EC2로 나가는 tailscale 한 줄. 캠퍼스가 UDP를 막으면 DERP로 돈다</h2></div>
+  <div class="sec-body">
+    <p class="lead">GPU 서버는 인바운드가 없다. tailscale 아웃바운드 하나로 EC2에 붙고, 그 위로 MQTT · S3 · 관전 채널이 지나간다. 전부 TCP다.</p>
+    <div class="viz"><svg viewBox="0 0 900 200" role="img" aria-label="홈서버가 캠퍼스 망에서 UDP 직결이 막히면 DERP 릴레이를 거쳐 TCP로 EC2에 붙는 경로">
+      <defs>
+        <marker id="rn-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8FB4D9"/></marker>
+        <marker id="rn-arr-s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A96A3"/></marker>
+      </defs>
+      <rect x="16" y="70" width="200" height="58" fill="#1C2229" stroke="#3BAF77" stroke-width="1.5"/>
+      <text x="116" y="94" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">GPU 서버 (홈서버)</text>
+      <text x="116" y="114" text-anchor="middle" fill="#9AA7B4" font-size="12">tailscale 아웃바운드</text>
+      <line x1="216" y1="99" x2="268" y2="99" stroke="#8FB4D9" stroke-width="2" marker-end="url(#rn-arr)"/>
+      <rect x="270" y="70" width="170" height="58" fill="#20272F" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <text x="355" y="94" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">캠퍼스 망</text>
+      <text x="355" y="114" text-anchor="middle" fill="#F08A32" font-size="12" font-weight="700">UDP 차단</text>
+      <!-- 직결 경로(막힘) -->
+      <line x1="440" y1="99" x2="698" y2="99" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <text x="569" y="92" text-anchor="middle" fill="#8A96A3" font-family="'JetBrains Mono',monospace" font-size="12">직결 WireGuard UDP ✕</text>
+      <!-- DERP 우회 -->
+      <polyline points="440,86 470,86 470,49 488,49" fill="none" stroke="#8FB4D9" stroke-width="2" marker-end="url(#rn-arr)"/>
+      <rect x="490" y="20" width="170" height="58" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="575" y="44" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">DERP 릴레이</text>
+      <text x="575" y="64" text-anchor="middle" fill="#9AA7B4" font-size="12">TCP · 우회 경로</text>
+      <polyline points="660,49 680,49 680,86 698,86" fill="none" stroke="#8FB4D9" stroke-width="2" marker-end="url(#rn-arr)"/>
+      <rect x="700" y="70" width="184" height="58" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+      <text x="792" y="94" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">EC2 · EMQX · MinIO</text>
+      <text x="792" y="114" text-anchor="middle" fill="#9AA7B4" font-size="12">tailscale 피어</text>
+      <!-- 관전 -->
+      <line x1="116" y1="128" x2="116" y2="160" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#rn-arr-s)"/>
+      <text x="132" y="176" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="12">관전: Foxglove 웹소켓 · MJPEG HTTP → 노트북 브라우저 (TCP, 같은 tailscale)</text>
+    </svg></div>
+    <p class="soft">실선 파랑 = 실제로 쓰는 경로, 회색 점선 = 캠퍼스에서 막히는 직결. 릴레이는 지연과 대역이 늘지만 제어 채널은 저대역이라 문제가 없다.</p>
+
+    <h3>채널별 정리</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:200px">채널</th><th style="width:220px">방향</th><th style="width:200px">전송</th><th>UDP 차단 영향</th></tr>
+      <tr><td><b>MQTT sim/control · state</b></td><td>EC2 EMQX ↔ GPU sim-runner · 에이전트</td><td>MQTT / TCP</td><td>없음. 릴레이 경유 시 지연만 는다</td></tr>
+      <tr><td><b>VDA 5050 order · state</b></td><td>EC2 FMS 코어 ↔ GPU 에이전트 ×N</td><td>MQTT / TCP (EMQX 경유)</td><td>없음. 배리어 틱 지연에 릴레이 왕복이 더해진다</td></tr>
+      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#artifact">아티팩트</a> 업로드</b></td><td>GPU sim-runner → EC2 MinIO</td><td>S3 API <a class="term" href="../ref/glossary_industrial.html#presigned-url">presigned</a> PUT / HTTPS</td><td>없음. 런 종료 후 배치라 대역 부담이 분산된다</td></tr>
+      <tr><td><b>관전</b></td><td>GPU → 노트북 브라우저</td><td>Foxglove 웹소켓 · MJPEG HTTP / TCP</td><td>없음</td></tr>
+      <tr><td><b>Isaac WebRTC 스트리밍</b></td><td>GPU → 브라우저</td><td>UDP</td><td><span class="chip c-amber">차단 시 불가</span> MJPEG 뷰어로 대체한다</td></tr>
+      <tr><td><b>ROS 2 DDS</b></td><td>GPU 서버 내부</td><td>공유메모리</td><td>WAN에 태우지 않는다. 해당 없음</td></tr>
+      <tr><td><b>고객·운영자</b></td><td>브라우저 → EC2 nginx</td><td>HTTPS :443</td><td>공인 경로. tailscale과 무관</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- ══════════ R5 확장 ══════════ -->
+<section id="r5">
+  <div class="sec-head"><span class="sec-no">SEC 05 · 확장</span><h2>확장은 GPU 노드를 붙이는 것으로 끝난다. 5080 한 대는 N=1이다</h2></div>
+  <div class="sec-body">
+    <p class="lead">GPU 런 큐 구조 덕에 GPU를 붙이면 소비자가 하나 는다. 임대 GPU로 가면 실행 형태가 바뀐다.</p>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:170px">단계</th><th>무엇을 바꾸나</th><th style="width:150px">소비자 수</th></tr>
+      <tr><td><b>N=1 현재</b></td><td>홈서버 5080 한 대. sim-runner 네이티브</td><td>1</td></tr>
+      <tr><td><b>GPU 노드 추가</b></td><td>같은 sim-runner 데몬을 새 기기에 올리고 tailscale 피어로 붙인다. 코드 변경 없음</td><td>GPU 수</td></tr>
+      <tr><td><b>임대 GPU (L40S 등)</b></td><td>① Isaac을 컨테이너 Job으로 바꾼다 ② 시뮬 WMS·FMS 파드를 GPU 노드로 옮겨 EC2 부담을 줄인다 ③ GPU 런 큐 깊이 기반 오토스케일을 붙인다</td><td>큐 깊이에 따라</td></tr>
+    </table></div>
+
+    <h3>확장 뒤에 새로 생기는 병목</h3>
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:190px">병목 후보</th><th>왜</th><th style="width:230px">신호</th></tr>
+      <tr><td><b>MinIO 디스크·업로드</b></td><td>런당 MP4·리플레이·히트맵이 동시 런 수만큼 는다</td><td>디스크 사용률, presigned PUT 실패</td></tr>
+      <tr><td><b>EC2 4 vCPU</b></td><td>시뮬 파드 3종이 동시 런 수만큼 는다. 파드를 GPU 노드로 옮기기 전까지</td><td>CPU 스로틀, 크레딧 잔액</td></tr>
+      <tr><td><b>EMQX 연결 수</b></td><td>에이전트 ×N × 동시 런</td><td>연결 수, 메시지 지연</td></tr>
+      <tr><td><b>DERP 릴레이</b></td><td>노드가 늘어도 전부 릴레이 경유면 대역을 나눠 쓴다</td><td>MQTT 왕복 지연</td></tr>
+      <tr><td><b>운영자 검수 ⑦</b></td><td>런이 늘면 검수 대기열이 는다. 사람 병목</td><td>발송까지의 대기 시간</td></tr>
+      <tr><td><b>큐 순번·ETA</b></td><td>소비자 수를 반영해 다시 계산해야 한다</td><td>접수 시 회신 ETA와 실제의 차이</td></tr>
+    </table></div>
+    <p class="soft">임대 GPU 단가와 기종 비교는 이 문서에서 다루지 않는다. 결정이 나면 <a href="../tech/amr_decision_inventory.html">TECH 05 결정 인벤토리</a>에 기록한다.</p>
+  </div>
+</section>
+
+<!-- ══════════ R6 확정·남은 것 ══════════ -->
+<section id="r6">
+  <div class="sec-head"><span class="sec-no">SEC 06 · 확정·남은 것</span><h2>기기와 배치는 확정, 크레딧 모드와 sim-runner는 대기</h2></div>
+  <div class="sec-body">
+    <div class="tbl-scroll"><table>
+      <tr><th style="width:280px">항목</th><th style="width:120px">상태</th><th>내용 · 상대</th></tr>
+      <tr><td><b>EC2 t3.xlarge · k3s 자체 호스팅</b></td><td><span class="chip c-green">확정</span></td><td>관리형 서비스 0. 이미지 GHCR, 인증서 certbot</td></tr>
+      <tr><td><b>GPU 서버 5080 · 네이티브 · sim-runner 상시</b></td><td><span class="chip c-green">확정</span></td><td>GPU 런 큐 소비자 1</td></tr>
+      <tr><td><b>EMQX 상시 · RabbitMQ 2단 큐</b></td><td><span class="chip c-green">확정</span></td><td>Kafka 없음. 도메인 이벤트는 AMQP 결과 이벤트로</td></tr>
+      <tr><td><b>MinIO on EC2</b></td><td><span class="chip c-green">확정</span></td><td>S3는 IAM 불가로 기각</td></tr>
+      <tr><td><b>tailscale 아웃바운드 · DERP 허용</b></td><td><span class="chip c-green">확정</span></td><td>모든 런 채널이 TCP</td></tr>
+      <tr><td><b>기관 EC2 실제 타입 · 크레딧 모드</b></td><td><span class="chip c-amber">대기</span></td><td>IMDS + 기관 확인 · 인프라</td></tr>
+      <tr><td><b>sim-runner 데몬 · Isaac 다중 로봇 네임스페이스</b></td><td><span class="chip c-amber">대기</span></td><td>시뮬 파트. 진행은 <a href="t3_t4_progress.html">T3·T4 진행</a></td></tr>
+      <tr><td><b>둘 띄우기 여부</b></td><td><span class="chip c-amber">대기</span></td><td>SEC 02 기준으로 실측 후 결정 · 시뮬 파트</td></tr>
+      <tr><td><b>틱 배리어 방식</b></td><td><span class="chip c-amber">대기</span></td><td>lockstep vs 고정 주기. 릴레이 지연이 틱 시간에 더해지므로 이 문서와도 관련 · FMS 파트</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- ══════════ NEXT ══════════ -->
+<section id="rnext">
+  <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
+  <div class="sec-body">
+    <ul class="rules">
+      <li><a href="../tech/system_architecture.html"><b>TECH 02 시스템 아키텍처</b></a> · 이 문서가 생략한 구조와 8단계 흐름, 두 WMS 관계</li>
+      <li><a href="t3_t4_progress.html"><b>WORKING · T3 창고 씬 · T4 에이전트 진행</b></a> · GPU 서버 쪽 프로세스의 실제 구현 상태와 실측</li>
+      <li><a href="sil_roadmap.html"><b>WORKING · SIL 구현 로드맵</b></a> · 검증 런이 성립하기까지 남은 태스크</li>
+    </ul>
+  </div>
+</section>
 
 </main>
 
 <footer>
-  <div class="wrap">WORKING · RUNTIME-ARCH · REV C — 개정 2026-08-26 (C: 로봇 실행기 = 자체 추종기 확정, Nav2는 부록 실험으로 · 스케일 사다리 축소 / B: 표준 미들웨어 확정 · SVG · 사다리) · Isaac 수치는 프로젝트 장비(RTX 5080 · Isaac Sim 6.0.1) 실측, 표기 없는 수치는 추정으로 명기 · 시세는 조사 시점 기준 변동 가능 · <a href="../../index.html">문서 인덱스로</a></div>
+  <div class="wrap">WORKING · RUNTIME-ARCH · REV D — 개정 2026-09-03 (D: 기준선 v3 §3.2·§3.3 반영. 프로세스 전수·GPU 슬롯·EC2 제약·네트워크·확장으로 재구성. 시뮬 섬/서비스 섬·Nav2·Kafka·외부 GPU 시세 삭제 / C: 자체 추종기 확정 / B: 미들웨어 확정) · 원천: AMR_기획_기준선_v3.md (2026-09-03) · <a href="../../index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>
