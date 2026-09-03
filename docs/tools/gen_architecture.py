@@ -107,10 +107,11 @@ def branch(y, title, subs, port, x0=505, x1=810, whale_x=722):
 # ============ EC2 ============
 EC2_X, EC2_W = 260, 1370
 device(EC2_X, 20, EC2_W, 960, "EC2", "EC2", None, "#FFFBF5", "#C9A27A")
-# platform badge: everything on EC2 runs as k3s pods
-add(f'<rect x="{EC2_X + 168}" y="{20 + 34}" width="112" height="40" rx="20" fill="#fff" stroke="{CARD}" stroke-width="1.6"/>')
-img("k8s", EC2_X + 178, 20 + 39, 30, 30)
-t(EC2_X + 216, 20 + 62, "k3s", 21, 700, "#3a5fbf")
+# platform tab on the top edge of the EC2 box: everything inside runs as k3s pods
+TABX, TABW = EC2_X + 300, 124
+add(f'<rect x="{TABX}" y="0" width="{TABW}" height="40" rx="20" fill="#fff" stroke="#C9A27A" stroke-width="2"/>')
+img("k8s", TABX + 14, 6, 28, 28)
+t(TABX + 52, 28, "k3s", 21, 700, "#3a5fbf")
 card(290, 160, 190, 80, "nginx", "Nginx", iw=48, ih=48)
 line([(480, 200), (505, 200)]); line([(505, 145), (505, 660)])
 branch(145, "웹 화면", ["location /"], ["웹 파일"])
