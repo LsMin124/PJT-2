@@ -1,0 +1,257 @@
+{
+ "file": "/tmp/claude-1000/-home-lsmin124-workspace-PJT-2/2a0a4be2-809c-4c21-b8e3-b26c5f602b63/scratchpad/amr_assets/Robots/NVIDIA/Carter/carter_v1.usd",
+ "defaultPrim": "/carter",
+ "upAxis": "Z",
+ "metersPerUnit": 1.0,
+ "bbox_min_max": null,
+ "articulationRoots": [
+  "/carter"
+ ],
+ "rigidBodies": 7,
+ "rigidBodyNames": [
+  "chassis_link",
+  "left_wheel_link",
+  "right_wheel_link",
+  "rear_pivot_link",
+  "rear_wheel_link",
+  "com_offset",
+  "imu"
+ ],
+ "colliders": {
+  "Cube": 1,
+  "Cylinder": 3,
+  "Cube [disabled]": 3,
+  "Plane": 1
+ },
+ "massTotal": 76.201,
+ "masses": [
+  [
+   "/carter/chassis_link",
+   45.880001068115234
+  ],
+  [
+   "/carter/left_wheel_link",
+   4.195728778839111
+  ],
+  [
+   "/carter/right_wheel_link",
+   4.195728778839111
+  ],
+  [
+   "/carter/rear_pivot_link",
+   0.5795189738273621
+  ],
+  [
+   "/carter/rear_wheel_link",
+   1.25
+  ],
+  [
+   "/carter/com_offset",
+   20.0
+  ],
+  [
+   "/carter/imu",
+   0.10000000149011612
+  ]
+ ],
+ "joints": [
+  {
+   "path": "/carter/chassis_link/left_wheel",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "chassis_link"
+   ],
+   "body1": [
+    "left_wheel_link"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 17453.29296875,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": 1000000.0,
+   "body1_size": [
+    55.6059,
+    9.0,
+    55.6059
+   ]
+  },
+  {
+   "path": "/carter/chassis_link/right_wheel",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "chassis_link"
+   ],
+   "body1": [
+    "right_wheel_link"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 17453.29296875,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": 1000000.0,
+   "body1_size": [
+    54.2132,
+    9.0,
+    54.2132
+   ]
+  },
+  {
+   "path": "/carter/chassis_link/rear_pivot",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "chassis_link"
+   ],
+   "body1": [
+    "rear_pivot_link"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "maxJointVelocity": 1800.0
+  },
+  {
+   "path": "/carter/chassis_link/com_joint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "chassis_link"
+   ],
+   "body1": [
+    "com_offset"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/carter/chassis_link/imu_joint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "chassis_link"
+   ],
+   "body1": [
+    "imu"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/carter/rear_pivot_link/rear_axle",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "rear_pivot_link"
+   ],
+   "body1": [
+    "rear_wheel_link"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "maxJointVelocity": 1000000.0
+  }
+ ],
+ "sensors": [
+  {
+   "path": "/carter/chassis_link/camera_mount",
+   "type": "Xform"
+  },
+  {
+   "path": "/carter/chassis_link/camera_mount/carter_camera_first_person",
+   "type": "Camera"
+  },
+  {
+   "path": "/carter/chassis_link/camera_mount/carter_camera_third_person",
+   "type": "Camera"
+  },
+  {
+   "path": "/carter/chassis_link/camera_mount/carter_camera_stereo_right",
+   "type": "Camera"
+  },
+  {
+   "path": "/carter/chassis_link/camera_mount/carter_camera_stereo_left",
+   "type": "Camera"
+  },
+  {
+   "path": "/carter/chassis_link/imu_joint",
+   "type": "PhysicsFixedJoint"
+  },
+  {
+   "path": "/carter/chassis_link/XT_32_10Hz",
+   "type": "OmniLidar"
+  },
+  {
+   "path": "/carter/imu",
+   "type": "Cube"
+  },
+  {
+   "path": "/OmniverseKit_Persp",
+   "type": "Camera"
+  },
+  {
+   "path": "/OmniverseKit_Front",
+   "type": "Camera"
+  },
+  {
+   "path": "/OmniverseKit_Top",
+   "type": "Camera"
+  },
+  {
+   "path": "/OmniverseKit_Right",
+   "type": "Camera"
+  }
+ ],
+ "omniGraphs": [],
+ "variants": [],
+ "primTypes": {
+  "(untyped)": 10,
+  "Xform": 9,
+  "Camera": 8,
+  "Cube": 4,
+  "PhysicsRevoluteJoint": 4,
+  "Cylinder": 3,
+  "PhysicsFixedJoint": 2,
+  "PhysicsScene": 1,
+  "OmniLidar": 1,
+  "Material": 1,
+  "Mesh": 1,
+  "Plane": 1,
+  "DistantLight": 1,
+  "RenderProduct": 1,
+  "RenderSettings": 1,
+  "RenderVar": 1
+ },
+ "refs": [
+  "../../../Sensors/HESAI/XT32_SD10/Hesai_XT32_SD10.usda",
+  "./Props/carter_backwheel_caster.usd",
+  "./Props/carter_main.usd",
+  "./Props/carter_wheel_center.usd",
+  "./Props/carter_wheel_left.usd",
+  "./Props/carter_wheel_right.usd"
+ ]
+}

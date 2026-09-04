@@ -1,0 +1,257 @@
+{
+ "file": "/tmp/claude-1000/-home-lsmin124-workspace-PJT-2/2a0a4be2-809c-4c21-b8e3-b26c5f602b63/scratchpad/amr_assets/Robots/Idealworks/iwhub/iw_hub.usd",
+ "defaultPrim": "/iw_hub",
+ "upAxis": "Z",
+ "metersPerUnit": 1.0,
+ "bbox_min_max": [
+  [
+   -1.0333,
+   -0.329,
+   -0.0811
+  ],
+  [
+   0.3976,
+   0.3301,
+   0.1501
+  ]
+ ],
+ "size": [
+  1.431,
+  0.659,
+  0.231
+ ],
+ "articulationRoots": [
+  "/iw_hub"
+ ],
+ "rigidBodies": 8,
+ "rigidBodyNames": [
+  "chassis",
+  "left_wheel",
+  "right_wheel",
+  "lift",
+  "left_swivel",
+  "right_swivel",
+  "left_caster",
+  "right_caster"
+ ],
+ "colliders": {
+  "Cube": 3,
+  "Cylinder": 2,
+  "Cube [disabled]": 2,
+  "Sphere": 2,
+  "Plane": 1
+ },
+ "massTotal": 49.0,
+ "masses": [
+  [
+   "/iw_hub/chassis",
+   30.0
+  ],
+  [
+   "/iw_hub/left_wheel",
+   3.0
+  ],
+  [
+   "/iw_hub/right_wheel",
+   3.0
+  ],
+  [
+   "/iw_hub/lift",
+   10.0
+  ],
+  [
+   "/iw_hub/left_swivel",
+   0.5
+  ],
+  [
+   "/iw_hub/right_swivel",
+   0.5
+  ],
+  [
+   "/iw_hub/left_caster",
+   1.0
+  ],
+  [
+   "/iw_hub/right_caster",
+   1.0
+  ]
+ ],
+ "joints": [
+  {
+   "path": "/iw_hub/left_wheel_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "chassis"
+   ],
+   "body1": [
+    "left_wheel"
+   ],
+   "axis": "Y",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "acceleration",
+    "stiffness": 0.0,
+    "damping": 17453292.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": 57295780.0,
+   "body1_size": [
+    0.1621,
+    0.0572,
+    0.1621
+   ]
+  },
+  {
+   "path": "/iw_hub/right_wheel_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "chassis"
+   ],
+   "body1": [
+    "right_wheel"
+   ],
+   "axis": "Y",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "acceleration",
+    "stiffness": 0.0,
+    "damping": 17453292.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": 57295780.0,
+   "body1_size": [
+    0.1621,
+    0.0573,
+    0.1621
+   ]
+  },
+  {
+   "path": "/iw_hub/left_swivel_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "chassis"
+   ],
+   "body1": [
+    "left_swivel"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "maxJointVelocity": 57295780.0
+  },
+  {
+   "path": "/iw_hub/right_swivel_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "chassis"
+   ],
+   "body1": [
+    "right_swivel"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "maxJointVelocity": 57295780.0
+  },
+  {
+   "path": "/iw_hub/left_caster_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "left_swivel"
+   ],
+   "body1": [
+    "left_caster"
+   ],
+   "axis": "Y",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "maxJointVelocity": 57295780.0
+  },
+  {
+   "path": "/iw_hub/right_caster_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "right_swivel"
+   ],
+   "body1": [
+    "right_caster"
+   ],
+   "axis": "Y",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "maxJointVelocity": 57295780.0
+  },
+  {
+   "path": "/iw_hub/lift_joint",
+   "type": "PhysicsPrismaticJoint",
+   "body0": [
+    "chassis"
+   ],
+   "body1": [
+    "lift"
+   ],
+   "axis": "Z",
+   "lower": 0.0,
+   "upper": 0.03999999910593033,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "linear",
+    "type": "acceleration",
+    "stiffness": 1000000.0,
+    "damping": 1000.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": 1000000.0
+  }
+ ],
+ "sensors": [],
+ "omniGraphs": [],
+ "variants": [],
+ "primTypes": {
+  "Xform": 26,
+  "Material": 10,
+  "Mesh": 9,
+  "Scope": 8,
+  "Shader": 8,
+  "PhysicsRevoluteJoint": 6,
+  "Cube": 5,
+  "Cylinder": 2,
+  "Sphere": 2,
+  "(untyped)": 1,
+  "PhysicsPrismaticJoint": 1,
+  "Plane": 1,
+  "PhysicsScene": 1,
+  "DistantLight": 1
+ },
+ "refs": [
+  "./materials.usd",
+  "HighResProps/Body_v2.usd",
+  "HighResProps/Inner_Left_Wheel.usd",
+  "HighResProps/Inner_Right_Wheel.usd",
+  "HighResProps/Left_Swivel.usd",
+  "HighResProps/Left_Wheel.usd",
+  "HighResProps/Lift_v2.usd",
+  "HighResProps/Right_Swivel.usd",
+  "HighResProps/Right_Wheel.usd"
+ ]
+}

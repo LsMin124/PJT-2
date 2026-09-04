@@ -1,0 +1,252 @@
+{
+ "file": "/tmp/claude-1000/-home-lsmin124-workspace-PJT-2/2a0a4be2-809c-4c21-b8e3-b26c5f602b63/scratchpad/amr_assets/Robots/IsaacSim/ForkliftC/forklift_c.usd",
+ "defaultPrim": "/SM_Forklift_C01_01",
+ "upAxis": "Z",
+ "metersPerUnit": 1.0,
+ "bbox_min_max": [
+  [
+   -1.8667,
+   -0.6817,
+   0.0
+  ],
+  [
+   1.8667,
+   0.6817,
+   2.1743
+  ]
+ ],
+ "size": [
+  3.733,
+  1.363,
+  2.174
+ ],
+ "articulationRoots": [
+  "/SM_Forklift_C01_01"
+ ],
+ "rigidBodies": 8,
+ "rigidBodyNames": [
+  "body",
+  "lift",
+  "left_front_wheel",
+  "left_back_wheel",
+  "right_front_wheel",
+  "right_back_wheel",
+  "left_rotator",
+  "right_rotator"
+ ],
+ "colliders": {
+  "convexDecomposition": 5,
+  "Cylinder": 4,
+  "convexHull": 2
+ },
+ "massTotal": 0,
+ "masses": [],
+ "joints": [
+  {
+   "path": "/SM_Forklift_C01_01/left_front_wheel_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "body"
+   ],
+   "body1": [
+    "left_front_wheel"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "acceleration",
+    "stiffness": null,
+    "damping": 0.0,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    65.2038,
+    32.4218,
+    64.6224
+   ]
+  },
+  {
+   "path": "/SM_Forklift_C01_01/left_back_wheel_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "left_rotator"
+   ],
+   "body1": [
+    "left_back_wheel"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 0.0,
+    "damping": 10000.0,
+    "maxForce": null,
+    "targetVel": 0.0
+   },
+   "body1_size": [
+    51.8009,
+    22.7018,
+    51.339
+   ]
+  },
+  {
+   "path": "/SM_Forklift_C01_01/right_front_wheel_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "body"
+   ],
+   "body1": [
+    "right_front_wheel"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    65.2038,
+    32.427,
+    64.6224
+   ]
+  },
+  {
+   "path": "/SM_Forklift_C01_01/right_back_wheel_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "right_rotator"
+   ],
+   "body1": [
+    "right_back_wheel"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 0.0,
+    "damping": 10000.0,
+    "maxForce": null,
+    "targetVel": 0.0
+   },
+   "body1_size": [
+    51.8009,
+    22.7018,
+    51.339
+   ]
+  },
+  {
+   "path": "/SM_Forklift_C01_01/left_rotator_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "body"
+   ],
+   "body1": [
+    "left_rotator"
+   ],
+   "axis": "Z",
+   "lower": -45.0,
+   "upper": 45.0,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 10000000.0,
+    "damping": 1000.0,
+    "maxForce": null,
+    "targetVel": 0.0
+   },
+   "body1_size": [
+    13.3369,
+    12.9575,
+    9.2168
+   ]
+  },
+  {
+   "path": "/SM_Forklift_C01_01/right_rotator_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "body"
+   ],
+   "body1": [
+    "right_rotator"
+   ],
+   "axis": "Z",
+   "lower": -45.0,
+   "upper": 45.0,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 10000000.0,
+    "damping": 1000.0,
+    "maxForce": null,
+    "targetVel": 0.0
+   },
+   "body1_size": [
+    13.3369,
+    12.9575,
+    9.2168
+   ]
+  },
+  {
+   "path": "/SM_Forklift_C01_01/lift_joint",
+   "type": "PhysicsPrismaticJoint",
+   "body0": [
+    "body"
+   ],
+   "body1": [
+    "lift"
+   ],
+   "axis": "Z",
+   "lower": 0.0,
+   "upper": 2.0,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "linear",
+    "type": null,
+    "stiffness": 100000.0,
+    "damping": 10000.0,
+    "maxForce": null,
+    "targetVel": null
+   }
+  }
+ ],
+ "sensors": [],
+ "omniGraphs": [],
+ "variants": [],
+ "primTypes": {
+  "Mesh": 48,
+  "Xform": 9,
+  "PhysicsRevoluteJoint": 6,
+  "Material": 6,
+  "Shader": 6,
+  "Cylinder": 4,
+  "(untyped)": 1,
+  "PhysicsPrismaticJoint": 1,
+  "Scope": 1
+ },
+ "refs": []
+}

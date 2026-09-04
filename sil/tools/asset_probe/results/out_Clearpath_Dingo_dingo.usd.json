@@ -1,0 +1,165 @@
+{
+ "file": "/tmp/claude-1000/-home-lsmin124-workspace-PJT-2/2a0a4be2-809c-4c21-b8e3-b26c5f602b63/scratchpad/amr_assets/Robots/Clearpath/Dingo/dingo.usd",
+ "defaultPrim": "/dingo",
+ "upAxis": "Z",
+ "metersPerUnit": 1.0,
+ "bbox_min_max": [
+  [
+   -0.2756,
+   -0.2586,
+   -0.0167
+  ],
+  [
+   0.2889,
+   0.2586,
+   0.2341
+  ]
+ ],
+ "size": [
+  0.565,
+  0.517,
+  0.251
+ ],
+ "articulationRoots": [
+  "/dingo"
+ ],
+ "rigidBodies": 3,
+ "rigidBodyNames": [
+  "base_link",
+  "left_wheel_link",
+  "right_wheel_link"
+ ],
+ "colliders": {
+  "convexHull": 1,
+  "Cube": 1,
+  "Cylinder": 3,
+  "Sphere": 1,
+  "Plane": 1
+ },
+ "massTotal": 1.222,
+ "masses": [
+  [
+   "/dingo/base_link/collisions/body",
+   1.0
+  ],
+  [
+   "/dingo/left_wheel_link",
+   0.11100000143051147
+  ],
+  [
+   "/dingo/right_wheel_link",
+   0.11100000143051147
+  ]
+ ],
+ "joints": [
+  {
+   "path": "/dingo/left_wheel_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "left_wheel_link"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 10000.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": Infinity,
+   "body1_size": [
+    0.0991,
+    0.098,
+    0.0991
+   ]
+  },
+  {
+   "path": "/dingo/right_wheel_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "right_wheel_link"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 10000.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": Infinity,
+   "body1_size": [
+    0.0991,
+    0.098,
+    0.0991
+   ]
+  }
+ ],
+ "sensors": [
+  {
+   "path": "/dingo/base_link/collisions/realsense_camera",
+   "type": "Cube"
+  },
+  {
+   "path": "/dingo/base_link/collisions/velodyne_lidar",
+   "type": "Cylinder"
+  },
+  {
+   "path": "/dingo/base_link/velodyne_frame",
+   "type": "Xform"
+  },
+  {
+   "path": "/dingo/base_link/velodyne_frame/Lidar",
+   "type": "Lidar",
+   "rotationRate": 20.0,
+   "horizontalFov": 360.0,
+   "verticalFov": 30.0,
+   "maxRange": 100.0,
+   "minRange": 0.4000000059604645
+  },
+  {
+   "path": "/dingo/base_link/realsense_frame/realsense_left_stereo_frame/realsense_left_stereo_camera",
+   "type": "Camera"
+  },
+  {
+   "path": "/dingo/base_link/realsense_frame/realsense_right_stereo_frame/realsense_right_stereo_camera",
+   "type": "Camera"
+  }
+ ],
+ "omniGraphs": [],
+ "variants": [],
+ "primTypes": {
+  "Material": 15,
+  "Shader": 13,
+  "Xform": 10,
+  "Mesh": 9,
+  "Cylinder": 7,
+  "GeomSubset": 4,
+  "(untyped)": 3,
+  "Scope": 3,
+  "Cube": 2,
+  "Sphere": 2,
+  "Camera": 2,
+  "PhysicsRevoluteJoint": 2,
+  "Lidar": 1,
+  "Plane": 1,
+  "PhysicsScene": 1
+ },
+ "refs": []
+}

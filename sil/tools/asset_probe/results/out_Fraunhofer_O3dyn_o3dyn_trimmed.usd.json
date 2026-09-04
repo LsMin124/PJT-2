@@ -1,0 +1,1627 @@
+{
+ "file": "/tmp/claude-1000/-home-lsmin124-workspace-PJT-2/2a0a4be2-809c-4c21-b8e3-b26c5f602b63/scratchpad/amr_assets/Robots/Fraunhofer/O3dyn/o3dyn_trimmed.usd",
+ "defaultPrim": "/Root",
+ "upAxis": "Z",
+ "metersPerUnit": 1.0,
+ "bbox_min_max": [
+  [
+   -1.0685,
+   -0.723,
+   -0.1471
+  ],
+  [
+   0.963,
+   0.723,
+   0.7377
+  ]
+ ],
+ "size": [
+  2.031,
+  1.446,
+  0.885
+ ],
+ "articulationRoots": [
+  "/Root"
+ ],
+ "rigidBodies": 53,
+ "rigidBodyNames": [
+  "base_link",
+  "motor_fr_link",
+  "motor_fl_link",
+  "motor_rr_link",
+  "motor_rl_link",
+  "schwinge_fr_link",
+  "schwinge_fl_link",
+  "schwinge_rr_link",
+  "schwinge_rl_link",
+  "gripper_fr_link",
+  "gripper_fl_link",
+  "gripper_rl_link",
+  "gripper_rr_link",
+  "Roller_1",
+  "Roller_2",
+  "Roller_3",
+  "Roller_4",
+  "Roller_5",
+  "Roller_6",
+  "Roller_7",
+  "omniwheel",
+  "Roller_1",
+  "Roller_2",
+  "Roller_3",
+  "Roller_4",
+  "Roller_5",
+  "Roller_6",
+  "Roller_7",
+  "omniwheel",
+  "Roller_1",
+  "Roller_2",
+  "Roller_3",
+  "Roller_4",
+  "Roller_5",
+  "Roller_6",
+  "Roller_7",
+  "omniwheel",
+  "Roller_1",
+  "Roller_2",
+  "Roller_3"
+ ],
+ "colliders": {
+  "boundingCube": 15,
+  "Xform": 42,
+  "convexDecomposition": 2,
+  "convexHull": 2,
+  "Sphere": 168,
+  "Plane": 1
+ },
+ "massTotal": 513.219,
+ "masses": [
+  [
+   "/Root/base_link",
+   380.0
+  ],
+  [
+   "/Root/base_link/K_Mapix_Velodyne_Puck_Lidar_Sensor_VLP_16/K_Mapix_Velodyne_Puck_Lidar_Sensor_VLP_16",
+   1.3694851398468018
+  ],
+  [
+   "/Root/motor_links/motor_fr_link",
+   0.009999999776482582
+  ],
+  [
+   "/Root/motor_links/motor_fl_link",
+   0.009999999776482582
+  ],
+  [
+   "/Root/motor_links/motor_rr_link",
+   0.009999999776482582
+  ],
+  [
+   "/Root/motor_links/motor_rl_link",
+   0.009999999776482582
+  ],
+  [
+   "/Root/motor_links/schwinge_fr_link",
+   20.0
+  ],
+  [
+   "/Root/motor_links/schwinge_fl_link",
+   20.0
+  ],
+  [
+   "/Root/motor_links/schwinge_rr_link",
+   20.0
+  ],
+  [
+   "/Root/motor_links/schwinge_rl_link",
+   20.0
+  ],
+  [
+   "/Root/gripper_fl_link/small_lever_right",
+   0.6776482462882996
+  ],
+  [
+   "/Root/gripper_rl_link/lever_right",
+   0.8160911202430725
+  ],
+  [
+   "/Root/gripper_rr_link",
+   0.10000000149011612
+  ],
+  [
+   "/Root/gripper_rr_link/Lever_left",
+   0.8160911202430725
+  ],
+  [
+   "/Root/omniwheels/omniwheel_fr/Roller_1",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_fr/Roller_2",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_fr/Roller_3",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_fr/Roller_4",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_fr/Roller_5",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_fr/Roller_6",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_fr/Roller_7",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_fr/omniwheel",
+   12.0
+  ],
+  [
+   "/Root/omniwheels/omniwheel_fl/Roller_1",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_fl/Roller_2",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_fl/Roller_3",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_fl/Roller_4",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_fl/Roller_5",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_fl/Roller_6",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_fl/Roller_7",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_fl/omniwheel",
+   12.0
+  ],
+  [
+   "/Root/omniwheels/omniwheel_rr/Roller_1",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_rr/Roller_2",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_rr/Roller_3",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_rr/Roller_4",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_rr/Roller_5",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_rr/Roller_6",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_rr/Roller_7",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_rr/omniwheel",
+   12.0
+  ],
+  [
+   "/Root/omniwheels/omniwheel_rl/Roller_1",
+   0.05000000074505806
+  ],
+  [
+   "/Root/omniwheels/omniwheel_rl/Roller_2",
+   0.05000000074505806
+  ]
+ ],
+ "joints": [
+  {
+   "path": "/Root/levers/gripper_fl_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "gripper_fl_link"
+   ],
+   "axis": "Z",
+   "lower": 0.0,
+   "upper": 100.0,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 1000000.0,
+    "damping": 10000.0,
+    "maxForce": Infinity,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.2253,
+    0.0726,
+    0.0951
+   ]
+  },
+  {
+   "path": "/Root/levers/gripper_rr_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "gripper_rr_link"
+   ],
+   "axis": "Z",
+   "lower": 0.0,
+   "upper": 31.0,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 1000000.0,
+    "damping": 10000.0,
+    "maxForce": Infinity,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.41,
+    0.062,
+    0.0532
+   ]
+  },
+  {
+   "path": "/Root/levers/gripper_rl_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "gripper_rl_link"
+   ],
+   "axis": "Z",
+   "lower": 0.0,
+   "upper": 31.0,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 1000000.0,
+    "damping": 10000.0,
+    "maxForce": Infinity,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.4101,
+    0.062,
+    0.0536
+   ]
+  },
+  {
+   "path": "/Root/levers/gripper_fr_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "gripper_fr_link"
+   ],
+   "axis": "Z",
+   "lower": 0.0,
+   "upper": 100.0,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 1000000.0,
+    "damping": 10000.0,
+    "maxForce": Infinity,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.2253,
+    0.0726,
+    0.0951
+   ]
+  },
+  {
+   "path": "/Root/lift_joints/motor_rr_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "motor_rr_link"
+   ],
+   "body1": [
+    "schwinge_rr_link"
+   ],
+   "axis": "X",
+   "lower": -13.0,
+   "upper": 20.5,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 800.0,
+    "damping": 250.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": 100000000.0,
+   "body1_size": [
+    0.4596,
+    0.278,
+    0.334
+   ]
+  },
+  {
+   "path": "/Root/lift_joints/motor_rl_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "motor_rl_link"
+   ],
+   "body1": [
+    "schwinge_rl_link"
+   ],
+   "axis": "X",
+   "lower": -13.0,
+   "upper": 20.5,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 800.0,
+    "damping": 250.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": 100000000.0,
+   "body1_size": [
+    0.4701,
+    0.278,
+    0.4138
+   ]
+  },
+  {
+   "path": "/Root/lift_joints/motor_fr_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "motor_fr_link"
+   ],
+   "body1": [
+    "schwinge_fr_link"
+   ],
+   "axis": "X",
+   "lower": -13.0,
+   "upper": 20.5,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 800.0,
+    "damping": 250.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": 100000000.0,
+   "body1_size": [
+    0.4701,
+    0.278,
+    0.4138
+   ]
+  },
+  {
+   "path": "/Root/lift_joints/motor_fl_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "motor_fl_link"
+   ],
+   "body1": [
+    "schwinge_fl_link"
+   ],
+   "axis": "X",
+   "lower": -13.0,
+   "upper": 20.5,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 800.0,
+    "damping": 250.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": 100000000.0,
+   "body1_size": [
+    0.4596,
+    0.278,
+    0.3338
+   ]
+  },
+  {
+   "path": "/Root/wheel_drive/wheel_fl_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_fl_link"
+   ],
+   "body1": [
+    "omniwheel"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 2500.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "body1_size": [
+    0.163,
+    0.3417,
+    0.3462
+   ]
+  },
+  {
+   "path": "/Root/wheel_drive/wheel_fr_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_fr_link"
+   ],
+   "body1": [
+    "omniwheel"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 2500.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "body1_size": [
+    0.163,
+    0.3994,
+    0.3995
+   ]
+  },
+  {
+   "path": "/Root/wheel_drive/wheel_rl_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_rl_link"
+   ],
+   "body1": [
+    "omniwheel"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 2500.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "body1_size": [
+    0.163,
+    0.3995,
+    0.3994
+   ]
+  },
+  {
+   "path": "/Root/wheel_drive/wheel_rr_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_rr_link"
+   ],
+   "body1": [
+    "omniwheel"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 2500.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "body1_size": [
+    0.163,
+    0.3715,
+    0.3682
+   ]
+  },
+  {
+   "path": "/Root/motor_links/motor_fr_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "motor_fr_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/Root/motor_links/motor_fl_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "motor_fl_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/Root/motor_links/motor_rr_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "motor_rr_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/Root/motor_links/motor_rl_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "motor_rl_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_fr/RevoluteJoint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_1"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1554,
+    0.1885
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_fr/RevoluteJoint0",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_2"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1755,
+    0.1767
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_fr/RevoluteJoint1",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_3"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1891,
+    0.1536
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_fr/RevoluteJoint2",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_4"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1853,
+    0.0891
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_fr/RevoluteJoint3",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_5"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1921,
+    0.1263
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_fr/RevoluteJoint4",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_6"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1241,
+    0.192
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_fr/RevoluteJoint5",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_7"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.0916,
+    0.1861
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_fl/RevoluteJoint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_1"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1037,
+    0.1892
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_fl/RevoluteJoint0",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_2"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1124,
+    0.1908
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_fl/RevoluteJoint1",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_3"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1809,
+    0.0763
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_fl/RevoluteJoint2",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_4"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1689,
+    0.182
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_fl/RevoluteJoint3",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_5"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1912,
+    0.1443
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_fl/RevoluteJoint4",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_6"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1636,
+    0.1851
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_fl/RevoluteJoint5",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_7"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.192,
+    0.1371
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_rr/RevoluteJoint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_1"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1823,
+    0.0802
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_rr/RevoluteJoint0",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_2"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1922,
+    0.1339
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_rr/RevoluteJoint1",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_3"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1001,
+    0.1884
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_rr/RevoluteJoint2",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_4"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.171,
+    0.1805
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_rr/RevoluteJoint3",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_5"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1612,
+    0.1863
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_rr/RevoluteJoint4",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_6"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1907,
+    0.1472
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_rr/RevoluteJoint5",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_7"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.116,
+    0.1913
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_rl/RevoluteJoint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_1"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1885,
+    0.1555
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_rl/RevoluteJoint0",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_2"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1767,
+    0.1754
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_rl/RevoluteJoint1",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_3"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1535,
+    0.1891
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_rl/RevoluteJoint2",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_4"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.0889,
+    0.1853
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_rl/RevoluteJoint3",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_5"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1265,
+    0.1921
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_rl/RevoluteJoint4",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_6"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.192,
+    0.1239
+   ]
+  },
+  {
+   "path": "/Root/omniwheels/omniwheel_rl/RevoluteJoint5",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_7"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1862,
+    0.0918
+   ]
+  },
+  {
+   "path": "/Root/sick_tim_left_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "sick_tim_left_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/Root/sick_tim_right_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "sick_tim_right_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/Root/xsens_MTI300_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "xsens_MTI300_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/Root/velodyne_puck_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "velodyne_puck_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/Root/D435_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "D435_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/Root/L515_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "L515_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/Root/gps_r_antenna_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "gps_r_antenna_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/Root/gps_f_antenna_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "gps_f_antenna_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  }
+ ],
+ "sensors": [
+  {
+   "path": "/Root/base_link/K_Mapix_Velodyne_Puck_Lidar_Sensor_VLP_16",
+   "type": "Xform"
+  },
+  {
+   "path": "/Root/base_link/velodyne_puck_link",
+   "type": "Xform"
+  },
+  {
+   "path": "/Root/velodyne_puck_link",
+   "type": "Xform"
+  }
+ ],
+ "omniGraphs": [],
+ "variants": [
+  {
+   "prim": "/Root/SectionTools/Section_Tool_Object",
+   "set": "sectionVariant",
+   "sel": "",
+   "opts": []
+  }
+ ],
+ "primTypes": {
+  "Material": 2096,
+  "Shader": 2068,
+  "GeomSubset": 178,
+  "Sphere": 168,
+  "Xform": 155,
+  "Mesh": 111,
+  "Scope": 99,
+  "PhysicsRevoluteJoint": 40,
+  "PhysicsFixedJoint": 12,
+  "(untyped)": 6,
+  "RectLight": 3,
+  "RenderProduct": 1,
+  "RenderSettings": 1,
+  "RenderVar": 1,
+  "PhysicsScene": 1,
+  "Plane": 1,
+  "DomeLight": 1,
+  "DistantLight": 1
+ },
+ "refs": [
+  "./JFD_JFD_1261.usd",
+  "./JFD_JFD_1262.usd",
+  "./JFD_JFD_1359.usd",
+  "./JFD_JFD_143.usd",
+  "./JFD_JFD_198.usd",
+  "./JFD_JFD_20.usd",
+  "./JFD_JFD_405.usd",
+  "./JFD_JFD_464.usd",
+  "./JFD_JFD_499.usd",
+  "./JFD_JFD_542.usd",
+  "./JFD_JFD_595.usd",
+  "./JFD_JFD_667.usd",
+  "./JFD_JFD_796.usd",
+  "./JFD_JFD_953.usd",
+  "./JFD_JFD_99.usd",
+  "./K_Mapix_Velodyne-Puck_Lidar-Sensor_VLP-16_JFD.usd",
+  "./Parts/back_lever_left.usd",
+  "./Parts/back_lever_right.usd",
+  "./Parts/front_lever_left.usd",
+  "./Parts/front_lever_right.usd",
+  "./Parts/main_body_no_interior.usd",
+  "./Parts/wheel_drive_module_left.usd",
+  "./Parts/wheel_drive_module_right.usd",
+  "./Parts/wheel_left.usd",
+  "./Parts/wheel_right.usd",
+  "./roller.usd",
+  "./wheel_left_core.usd",
+  "./wheel_right_core.usd",
+  "JFD_JFD_1147.usd",
+  "JFD_JFD_1179.usd",
+  "JFD_JFD_1356.usd",
+  "JFD_JFD_506.usd",
+  "JFD_JFD_594.usd",
+  "JFD_JFD_654.usd",
+  "JFD_JFD_711.usd",
+  "JFD_JFD_768.usd"
+ ]
+}

@@ -1,0 +1,239 @@
+{
+ "file": "/tmp/claude-1000/-home-lsmin124-workspace-PJT-2/2a0a4be2-809c-4c21-b8e3-b26c5f602b63/scratchpad/amr_assets/Robots/Clearpath/Jackal/jackal.usd",
+ "defaultPrim": "/jackal",
+ "upAxis": "Z",
+ "metersPerUnit": 1.0,
+ "bbox_min_max": [
+  [
+   -0.2553,
+   -0.215,
+   -0.0653
+  ],
+  [
+   0.2553,
+   0.215,
+   0.3695
+  ]
+ ],
+ "size": [
+  0.511,
+  0.43,
+  0.435
+ ],
+ "articulationRoots": [
+  "/jackal"
+ ],
+ "rigidBodies": 5,
+ "rigidBodyNames": [
+  "base_link",
+  "front_left_wheel_link",
+  "front_right_wheel_link",
+  "rear_left_wheel_link",
+  "rear_right_wheel_link"
+ ],
+ "colliders": {
+  "Cube": 3,
+  "Cylinder": 4,
+  "Plane": 1
+ },
+ "massTotal": 18.908,
+ "masses": [
+  [
+   "/jackal/base_link/collisions/body",
+   17.0
+  ],
+  [
+   "/jackal/front_left_wheel_link",
+   0.47699999809265137
+  ],
+  [
+   "/jackal/front_right_wheel_link",
+   0.47699999809265137
+  ],
+  [
+   "/jackal/rear_left_wheel_link",
+   0.47699999809265137
+  ],
+  [
+   "/jackal/rear_right_wheel_link",
+   0.47699999809265137
+  ]
+ ],
+ "joints": [
+  {
+   "path": "/jackal/front_left_wheel_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "front_left_wheel_link"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 10000000.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": Infinity,
+   "body1_size": [
+    0.2,
+    0.196,
+    0.1997
+   ]
+  },
+  {
+   "path": "/jackal/front_right_wheel_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "front_right_wheel_link"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 10000000.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": Infinity,
+   "body1_size": [
+    0.2,
+    0.196,
+    0.1997
+   ]
+  },
+  {
+   "path": "/jackal/rear_left_wheel_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "rear_left_wheel_link"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 10000000.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": Infinity,
+   "body1_size": [
+    0.2,
+    0.196,
+    0.1997
+   ]
+  },
+  {
+   "path": "/jackal/rear_right_wheel_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "rear_right_wheel_link"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 10000000.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": Infinity,
+   "body1_size": [
+    0.2,
+    0.196,
+    0.1997
+   ]
+  }
+ ],
+ "sensors": [
+  {
+   "path": "/jackal/base_link/collisions/bumblebee_camera",
+   "type": "Cube"
+  },
+  {
+   "path": "/jackal/base_link/collisions/sick_lms1xx_lidar",
+   "type": "Cube"
+  },
+  {
+   "path": "/jackal/base_link/sick_lms1xx_lidar_frame",
+   "type": "Xform"
+  },
+  {
+   "path": "/jackal/base_link/sick_lms1xx_lidar_frame/Lidar",
+   "type": "Lidar",
+   "rotationRate": 20.0,
+   "horizontalFov": 360.0,
+   "verticalFov": 30.0,
+   "maxRange": 100.0,
+   "minRange": 0.4000000059604645
+  },
+  {
+   "path": "/jackal/base_link/bumblebee_stereo_camera_frame",
+   "type": "Xform"
+  },
+  {
+   "path": "/jackal/base_link/bumblebee_stereo_camera_frame/bumblebee_stereo_left_frame/bumblebee_stereo_left_camera",
+   "type": "Camera"
+  },
+  {
+   "path": "/jackal/base_link/bumblebee_stereo_camera_frame/bumblebee_stereo_right_frame/bumblebee_stereo_right_camera",
+   "type": "Camera"
+  },
+  {
+   "path": "/jackal/base_link/com_frame/imu_sensor",
+   "type": "IsaacImuSensor"
+  }
+ ],
+ "omniGraphs": [],
+ "variants": [],
+ "primTypes": {
+  "Xform": 13,
+  "Mesh": 13,
+  "Material": 8,
+  "Shader": 7,
+  "Cylinder": 5,
+  "PhysicsRevoluteJoint": 4,
+  "(untyped)": 3,
+  "Scope": 3,
+  "Cube": 3,
+  "GeomSubset": 2,
+  "Camera": 2,
+  "Lidar": 1,
+  "IsaacImuSensor": 1,
+  "Plane": 1,
+  "PhysicsScene": 1
+ },
+ "refs": []
+}

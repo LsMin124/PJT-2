@@ -1,0 +1,221 @@
+{
+ "file": "/tmp/claude-1000/-home-lsmin124-workspace-PJT-2/2a0a4be2-809c-4c21-b8e3-b26c5f602b63/scratchpad/amr_assets/Robots/IsaacSim/ForkliftB/forklift_b.usd",
+ "defaultPrim": "/SMV_Forklift_B01_01",
+ "upAxis": "Z",
+ "metersPerUnit": 1.0,
+ "bbox_min_max": [
+  [
+   -2.1462,
+   -0.5647,
+   -0.0019
+  ],
+  [
+   0.8851,
+   0.5651,
+   2.9333
+  ]
+ ],
+ "size": [
+  3.031,
+  1.13,
+  2.935
+ ],
+ "articulationRoots": [
+  "/SMV_Forklift_B01_01"
+ ],
+ "rigidBodies": 8,
+ "rigidBodyNames": [
+  "lift",
+  "body",
+  "back_wheel",
+  "roller_front_right",
+  "roller_back_left",
+  "roller_back_right",
+  "roller_front_left",
+  "back_wheel_swivel"
+ ],
+ "colliders": {
+  "convexDecomposition": 2,
+  "Sphere": 1,
+  "Cylinder": 4,
+  "convexDecomposition [disabled]": 1
+ },
+ "massTotal": 0,
+ "masses": [],
+ "joints": [
+  {
+   "path": "/SMV_Forklift_B01_01/lift_joint",
+   "type": "PhysicsPrismaticJoint",
+   "body0": [
+    "body"
+   ],
+   "body1": [
+    "lift"
+   ],
+   "axis": "Z",
+   "lower": -0.14999999105930328,
+   "upper": 2.0,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "linear",
+    "type": null,
+    "stiffness": 100000.0,
+    "damping": 10000.0,
+    "maxForce": 5000.0,
+    "targetVel": 0.0
+   }
+  },
+  {
+   "path": "/SMV_Forklift_B01_01/back_wheel_joints/back_wheel_drive",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "back_wheel"
+   ],
+   "body1": [
+    "back_wheel_swivel"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 100.0,
+    "damping": 10000.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "body1_size": [
+    0.1492,
+    0.1703,
+    0.2901
+   ]
+  },
+  {
+   "path": "/SMV_Forklift_B01_01/back_wheel_joints/back_wheel_swivel",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "back_wheel_swivel"
+   ],
+   "body1": [
+    "body"
+   ],
+   "axis": "Z",
+   "lower": -60.0,
+   "upper": 60.0,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 100000.0,
+    "damping": 100.0,
+    "maxForce": Infinity,
+    "targetVel": null
+   },
+   "body1_size": [
+    1.8732,
+    1.1294,
+    2.8381
+   ]
+  },
+  {
+   "path": "/SMV_Forklift_B01_01/roller_joints/front_right_roller",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "roller_front_right"
+   ],
+   "body1": [
+    "body"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/SMV_Forklift_B01_01/roller_joints/back_left_roller",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "roller_back_left"
+   ],
+   "body1": [
+    "body"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/SMV_Forklift_B01_01/roller_joints/back_right_roller",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "roller_back_right"
+   ],
+   "body1": [
+    "body"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/SMV_Forklift_B01_01/roller_joints/front_left_roller",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "roller_front_left"
+   ],
+   "body1": [
+    "body"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  }
+ ],
+ "sensors": [
+  {
+   "path": "/OmniverseKit_Persp",
+   "type": "Camera"
+  },
+  {
+   "path": "/OmniverseKit_Front",
+   "type": "Camera"
+  },
+  {
+   "path": "/OmniverseKit_Top",
+   "type": "Camera"
+  },
+  {
+   "path": "/OmniverseKit_Right",
+   "type": "Camera"
+  }
+ ],
+ "omniGraphs": [],
+ "variants": [],
+ "primTypes": {
+  "Mesh": 31,
+  "Xform": 10,
+  "PhysicsRevoluteJoint": 6,
+  "Scope": 4,
+  "Material": 4,
+  "Shader": 4,
+  "Cylinder": 4,
+  "Camera": 4,
+  "GeomSubset": 2,
+  "(untyped)": 1,
+  "Sphere": 1,
+  "PhysicsPrismaticJoint": 1
+ },
+ "refs": []
+}

@@ -1,0 +1,2242 @@
+{
+ "file": "/tmp/claude-1000/-home-lsmin124-workspace-PJT-2/2a0a4be2-809c-4c21-b8e3-b26c5f602b63/scratchpad/amr_assets/Robots/Fraunhofer/O3dyn/o3dyn_controller.usd",
+ "defaultPrim": "/O3dyn",
+ "upAxis": "Z",
+ "metersPerUnit": 1.0,
+ "bbox_min_max": [
+  [
+   -1.0685,
+   -0.723,
+   -0.0461
+  ],
+  [
+   0.963,
+   0.723,
+   0.8387
+  ]
+ ],
+ "size": [
+  2.031,
+  1.446,
+  0.885
+ ],
+ "articulationRoots": [
+  "/O3dyn"
+ ],
+ "rigidBodies": 77,
+ "rigidBodyNames": [
+  "base_link",
+  "motor_fr_link",
+  "motor_fl_link",
+  "motor_rr_link",
+  "motor_rl_link",
+  "shaft",
+  "sensor_lever",
+  "pressure_lever",
+  "pressure_cap",
+  "damper_shaft_link",
+  "damper_base_link",
+  "damper_shaft_link",
+  "damper_base_link",
+  "shaft",
+  "pressure_actuator_base",
+  "pressure_actuator_lever",
+  "sensor_lever",
+  "damper_shaft_link",
+  "damper_base_link",
+  "shaft",
+  "pressure_actuator_base",
+  "pressure_actuator_lever",
+  "sensor_lever",
+  "shaft",
+  "sensor_lever",
+  "pressure_lever",
+  "pressure_cap",
+  "damper_shaft_link",
+  "damper_base_link",
+  "schwinge_fr_link",
+  "schwinge_fl_link",
+  "schwinge_rr_link",
+  "schwinge_rl_link",
+  "gripper_fr_link",
+  "gripper_fl_link",
+  "gripper_rl_link",
+  "gripper_rr_link",
+  "Roller_1",
+  "Roller_2",
+  "Roller_3"
+ ],
+ "colliders": {
+  "Plane": 1,
+  "boundingCube": 15,
+  "Xform": 50,
+  "convexDecomposition": 6,
+  "convexHull": 2,
+  "Sphere": 168
+ },
+ "massTotal": 514.837,
+ "masses": [
+  [
+   "/O3dyn/base_link",
+   380.0
+  ],
+  [
+   "/O3dyn/base_link/K_Mapix_Velodyne_Puck_Lidar_Sensor_VLP_16/K_Mapix_Velodyne_Puck_Lidar_Sensor_VLP_16",
+   1.3694851398468018
+  ],
+  [
+   "/O3dyn/motor_links/motor_fr_link",
+   0.009999999776482582
+  ],
+  [
+   "/O3dyn/motor_links/motor_fl_link",
+   0.009999999776482582
+  ],
+  [
+   "/O3dyn/motor_links/motor_rr_link",
+   0.009999999776482582
+  ],
+  [
+   "/O3dyn/motor_links/motor_rl_link",
+   0.009999999776482582
+  ],
+  [
+   "/O3dyn/motor_links/fr/shaft",
+   0.0010000000474974513
+  ],
+  [
+   "/O3dyn/motor_links/fr/sensor_lever",
+   0.009999999776482582
+  ],
+  [
+   "/O3dyn/motor_links/fr/sensor_lever/sensor_lever",
+   0.012994693592190742
+  ],
+  [
+   "/O3dyn/motor_links/fr/pressure_lever",
+   0.009999999776482582
+  ],
+  [
+   "/O3dyn/motor_links/fr/pressure_cap",
+   0.009999999776482582
+  ],
+  [
+   "/O3dyn/motor_links/fr/damper/damper_shaft_link/K_KW_Daempfer_353_99_183_Kolben_01",
+   0.3604948818683624
+  ],
+  [
+   "/O3dyn/motor_links/fl/Damper/damper_shaft_link/K_KW_Daempfer_353_99_183_Kolben_01",
+   0.3604948818683624
+  ],
+  [
+   "/O3dyn/motor_links/fl/shaft",
+   0.0010000000474974513
+  ],
+  [
+   "/O3dyn/motor_links/fl/pressure_actuator_base",
+   0.009999999776482582
+  ],
+  [
+   "/O3dyn/motor_links/fl/pressure_actuator_lever",
+   0.009999999776482582
+  ],
+  [
+   "/O3dyn/motor_links/fl/sensor_lever",
+   0.009999999776482582
+  ],
+  [
+   "/O3dyn/motor_links/fl/sensor_lever/sensor_lever",
+   0.012994693592190742
+  ],
+  [
+   "/O3dyn/motor_links/rr/Damper/damper_shaft_link/K_KW_Daempfer_353_99_183_Kolben_01",
+   0.3604948818683624
+  ],
+  [
+   "/O3dyn/motor_links/rr/shaft",
+   0.0010000000474974513
+  ],
+  [
+   "/O3dyn/motor_links/rr/pressure_actuator_base",
+   0.009999999776482582
+  ],
+  [
+   "/O3dyn/motor_links/rr/pressure_actuator_lever",
+   0.009999999776482582
+  ],
+  [
+   "/O3dyn/motor_links/rr/sensor_lever",
+   0.009999999776482582
+  ],
+  [
+   "/O3dyn/motor_links/rr/sensor_lever/sensor_lever",
+   0.012994693592190742
+  ],
+  [
+   "/O3dyn/motor_links/rl/shaft",
+   0.0010000000474974513
+  ],
+  [
+   "/O3dyn/motor_links/rl/sensor_lever",
+   0.009999999776482582
+  ],
+  [
+   "/O3dyn/motor_links/rl/sensor_lever/sensor_lever",
+   0.012994693592190742
+  ],
+  [
+   "/O3dyn/motor_links/rl/pressure_lever",
+   0.009999999776482582
+  ],
+  [
+   "/O3dyn/motor_links/rl/pressure_cap",
+   0.009999999776482582
+  ],
+  [
+   "/O3dyn/motor_links/rl/damper/damper_shaft_link/K_KW_Daempfer_353_99_183_Kolben_01",
+   0.3604948818683624
+  ],
+  [
+   "/O3dyn/motor_links/schwinge_fr_link",
+   20.0
+  ],
+  [
+   "/O3dyn/motor_links/schwinge_fl_link",
+   20.0
+  ],
+  [
+   "/O3dyn/motor_links/schwinge_rr_link",
+   20.0
+  ],
+  [
+   "/O3dyn/motor_links/schwinge_rl_link",
+   20.0
+  ],
+  [
+   "/O3dyn/gripper_fl_link/small_lever_right",
+   0.6776482462882996
+  ],
+  [
+   "/O3dyn/gripper_rl_link/lever_right",
+   0.8160911202430725
+  ],
+  [
+   "/O3dyn/gripper_rr_link",
+   0.10000000149011612
+  ],
+  [
+   "/O3dyn/gripper_rr_link/Lever_left",
+   0.8160911202430725
+  ],
+  [
+   "/O3dyn/omniwheels/omniwheel_fr/Roller_1",
+   0.05000000074505806
+  ],
+  [
+   "/O3dyn/omniwheels/omniwheel_fr/Roller_2",
+   0.05000000074505806
+  ]
+ ],
+ "joints": [
+  {
+   "path": "/O3dyn/levers/gripper_fl_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "gripper_fl_link"
+   ],
+   "axis": "Z",
+   "lower": 0.0,
+   "upper": 100.0,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 1000000.0,
+    "damping": 10000.0,
+    "maxForce": Infinity,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.2253,
+    0.0726,
+    0.0951
+   ]
+  },
+  {
+   "path": "/O3dyn/levers/gripper_rr_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "gripper_rr_link"
+   ],
+   "axis": "Z",
+   "lower": 0.0,
+   "upper": 31.0,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 1000000.0,
+    "damping": 10000.0,
+    "maxForce": Infinity,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.41,
+    0.062,
+    0.0532
+   ]
+  },
+  {
+   "path": "/O3dyn/levers/gripper_rl_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "gripper_rl_link"
+   ],
+   "axis": "Z",
+   "lower": 0.0,
+   "upper": 31.0,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 1000000.0,
+    "damping": 10000.0,
+    "maxForce": Infinity,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.4101,
+    0.062,
+    0.0536
+   ]
+  },
+  {
+   "path": "/O3dyn/levers/gripper_fr_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "gripper_fr_link"
+   ],
+   "axis": "Z",
+   "lower": 0.0,
+   "upper": 100.0,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 1000000.0,
+    "damping": 10000.0,
+    "maxForce": Infinity,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.2253,
+    0.0726,
+    0.0951
+   ]
+  },
+  {
+   "path": "/O3dyn/lift_joints/motor_rr_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "motor_rr_link"
+   ],
+   "body1": [
+    "schwinge_rr_link"
+   ],
+   "axis": "X",
+   "lower": -13.0,
+   "upper": 20.5,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 800.0,
+    "damping": 250.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": 100000000.0,
+   "body1_size": [
+    0.4596,
+    0.278,
+    0.334
+   ]
+  },
+  {
+   "path": "/O3dyn/lift_joints/motor_rl_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "motor_rl_link"
+   ],
+   "body1": [
+    "schwinge_rl_link"
+   ],
+   "axis": "X",
+   "lower": -13.0,
+   "upper": 20.5,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 800.0,
+    "damping": 250.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": 100000000.0,
+   "body1_size": [
+    0.4701,
+    0.278,
+    0.4138
+   ]
+  },
+  {
+   "path": "/O3dyn/lift_joints/motor_fr_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "motor_fr_link"
+   ],
+   "body1": [
+    "schwinge_fr_link"
+   ],
+   "axis": "X",
+   "lower": -13.0,
+   "upper": 20.5,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 800.0,
+    "damping": 250.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": 100000000.0,
+   "body1_size": [
+    0.4701,
+    0.278,
+    0.4138
+   ]
+  },
+  {
+   "path": "/O3dyn/lift_joints/motor_fl_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "motor_fl_link"
+   ],
+   "body1": [
+    "schwinge_fl_link"
+   ],
+   "axis": "X",
+   "lower": -13.0,
+   "upper": 20.5,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 800.0,
+    "damping": 250.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": 100000000.0,
+   "body1_size": [
+    0.4596,
+    0.278,
+    0.3338
+   ]
+  },
+  {
+   "path": "/O3dyn/wheel_drive/wheel_fl_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_fl_link"
+   ],
+   "body1": [
+    "omniwheel"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 2500.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "body1_size": [
+    0.163,
+    0.3417,
+    0.3462
+   ]
+  },
+  {
+   "path": "/O3dyn/wheel_drive/wheel_fr_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_fr_link"
+   ],
+   "body1": [
+    "omniwheel"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 2500.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "body1_size": [
+    0.163,
+    0.3994,
+    0.3995
+   ]
+  },
+  {
+   "path": "/O3dyn/wheel_drive/wheel_rl_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_rl_link"
+   ],
+   "body1": [
+    "omniwheel"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 2500.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "body1_size": [
+    0.163,
+    0.3995,
+    0.3994
+   ]
+  },
+  {
+   "path": "/O3dyn/wheel_drive/wheel_rr_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_rr_link"
+   ],
+   "body1": [
+    "omniwheel"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 2500.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "body1_size": [
+    0.163,
+    0.3715,
+    0.3682
+   ]
+  },
+  {
+   "path": "/O3dyn/lift_rl/plate_rl_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "pressure_lever"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/lift_rl/sensor_rl_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "sensor_lever"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/lift_rl/damper_rl_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "damper_base_link"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/lift_rr/sensor_rr_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "sensor_lever"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/lift_rr/plate_rr_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "pressure_actuator_lever"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/lift_rr/damper_rr_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "damper_base_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/lift_fl/sensor_fl_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "sensor_lever"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/lift_fl/plate_fl_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "pressure_actuator_lever"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/lift_fl/damper_fl_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "damper_base_link"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/lift_fr/plate_fr_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "pressure_lever"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/lift_fr/damper_fr_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "damper_base_link"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/lift_fr/sensor_fr_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "base_link"
+   ],
+   "body1": [
+    "sensor_lever"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/motor_links/motor_fr_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "motor_fr_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/motor_links/motor_fl_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "motor_fl_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/motor_links/motor_rr_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "motor_rr_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/motor_links/motor_rl_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "motor_rl_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/motor_links/fr/damper/Damper_joint",
+   "type": "PhysicsPrismaticJoint",
+   "body0": [
+    "damper_base_link"
+   ],
+   "body1": [
+    "damper_shaft_link"
+   ],
+   "axis": "Z",
+   "lower": -0.09999999403953552,
+   "upper": 0.19999998807907104,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/motor_links/fr/sensor_mid",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "sensor_lever"
+   ],
+   "body1": [
+    "shaft"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/motor_links/fr/pressure_mid",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "pressure_lever"
+   ],
+   "body1": [
+    "pressure_cap"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/motor_links/fr/damper_shaft",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_fr_link"
+   ],
+   "body1": [
+    "damper_shaft_link"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": true
+  },
+  {
+   "path": "/O3dyn/motor_links/fr/sensor_shaft",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_fr_link"
+   ],
+   "body1": [
+    "shaft"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": true
+  },
+  {
+   "path": "/O3dyn/motor_links/fr/pressure_cap_joint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_fr_link"
+   ],
+   "body1": [
+    "pressure_cap"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": true
+  },
+  {
+   "path": "/O3dyn/motor_links/fl/Damper/Damper_joint",
+   "type": "PhysicsPrismaticJoint",
+   "body0": [
+    "damper_base_link"
+   ],
+   "body1": [
+    "damper_shaft_link"
+   ],
+   "axis": "Z",
+   "lower": -0.09999999403953552,
+   "upper": 0.19999998807907104,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/motor_links/fl/damper_shaft",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_fl_link"
+   ],
+   "body1": [
+    "damper_shaft_link"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": true
+  },
+  {
+   "path": "/O3dyn/motor_links/fl/sensor_shaft",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_fl_link"
+   ],
+   "body1": [
+    "shaft"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": true
+  },
+  {
+   "path": "/O3dyn/motor_links/fl/sensor_mid",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "shaft"
+   ],
+   "body1": [
+    "sensor_lever"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/motor_links/fl/plate_mid",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "pressure_actuator_base"
+   ],
+   "body1": [
+    "pressure_actuator_lever"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/motor_links/fl/plate_shaft",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_fl_link"
+   ],
+   "body1": [
+    "pressure_actuator_base"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": true
+  },
+  {
+   "path": "/O3dyn/motor_links/rr/Damper/Damper_joint",
+   "type": "PhysicsPrismaticJoint",
+   "body0": [
+    "damper_base_link"
+   ],
+   "body1": [
+    "damper_shaft_link"
+   ],
+   "axis": "Z",
+   "lower": -0.09999999403953552,
+   "upper": 0.19999998807907104,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/motor_links/rr/damper_shaft",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_rr_link"
+   ],
+   "body1": [
+    "damper_shaft_link"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": true
+  },
+  {
+   "path": "/O3dyn/motor_links/rr/sensor_shaft",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_rr_link"
+   ],
+   "body1": [
+    "shaft"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": true
+  },
+  {
+   "path": "/O3dyn/motor_links/rr/sensor_mid",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "shaft"
+   ],
+   "body1": [
+    "sensor_lever"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/motor_links/rr/plate_mid",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "pressure_actuator_base"
+   ],
+   "body1": [
+    "pressure_actuator_lever"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/motor_links/rr/plate_shaft",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_rr_link"
+   ],
+   "body1": [
+    "pressure_actuator_base"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": true
+  },
+  {
+   "path": "/O3dyn/motor_links/rl/damper/Damper_joint",
+   "type": "PhysicsPrismaticJoint",
+   "body0": [
+    "damper_base_link"
+   ],
+   "body1": [
+    "damper_shaft_link"
+   ],
+   "axis": "Z",
+   "lower": -0.09999999403953552,
+   "upper": 0.19999998807907104,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/motor_links/rl/damper_shaft",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_rl_link"
+   ],
+   "body1": [
+    "damper_shaft_link"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": true
+  },
+  {
+   "path": "/O3dyn/motor_links/rl/sensor_mid",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "sensor_lever"
+   ],
+   "body1": [
+    "shaft"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/motor_links/rl/sensor_shaft",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_rl_link"
+   ],
+   "body1": [
+    "shaft"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": true
+  },
+  {
+   "path": "/O3dyn/motor_links/rl/pressure_mid",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "pressure_lever"
+   ],
+   "body1": [
+    "pressure_cap"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/motor_links/rl/pressure_shaft",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "schwinge_rl_link"
+   ],
+   "body1": [
+    "pressure_cap"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": true
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_fr/RevoluteJoint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_1"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1554,
+    0.1885
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_fr/RevoluteJoint0",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_2"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1755,
+    0.1767
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_fr/RevoluteJoint1",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_3"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1891,
+    0.1536
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_fr/RevoluteJoint2",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_4"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1853,
+    0.0891
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_fr/RevoluteJoint3",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_5"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1921,
+    0.1263
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_fr/RevoluteJoint4",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_6"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1241,
+    0.192
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_fr/RevoluteJoint5",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_7"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.0916,
+    0.1861
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_fl/RevoluteJoint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_1"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1037,
+    0.1892
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_fl/RevoluteJoint0",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_2"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1124,
+    0.1908
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_fl/RevoluteJoint1",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_3"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1809,
+    0.0763
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_fl/RevoluteJoint2",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_4"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1689,
+    0.182
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_fl/RevoluteJoint3",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_5"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1912,
+    0.1443
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_fl/RevoluteJoint4",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_6"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1636,
+    0.1851
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_fl/RevoluteJoint5",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_7"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.192,
+    0.1371
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_rr/RevoluteJoint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_1"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1823,
+    0.0802
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_rr/RevoluteJoint0",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_2"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1922,
+    0.1339
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_rr/RevoluteJoint1",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_3"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1001,
+    0.1884
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_rr/RevoluteJoint2",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_4"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.171,
+    0.1805
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_rr/RevoluteJoint3",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_5"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1612,
+    0.1863
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_rr/RevoluteJoint4",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_6"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1907,
+    0.1472
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_rr/RevoluteJoint5",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_7"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.116,
+    0.1913
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_rl/RevoluteJoint",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_1"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1885,
+    0.1555
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_rl/RevoluteJoint0",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_2"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1767,
+    0.1754
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_rl/RevoluteJoint1",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_3"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1535,
+    0.1891
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_rl/RevoluteJoint2",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_4"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.0889,
+    0.1853
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_rl/RevoluteJoint3",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_5"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1265,
+    0.1921
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_rl/RevoluteJoint4",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_6"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.192,
+    0.1239
+   ]
+  },
+  {
+   "path": "/O3dyn/omniwheels/omniwheel_rl/RevoluteJoint5",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "omniwheel"
+   ],
+   "body1": [
+    "Roller_7"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 0.0010000000474974513,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.179,
+    0.1862,
+    0.0918
+   ]
+  },
+  {
+   "path": "/O3dyn/sick_tim_left_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "sick_tim_left_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/sick_tim_right_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "sick_tim_right_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/xsens_MTI300_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "xsens_MTI300_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/velodyne_puck_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "velodyne_puck_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/D435_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "D435_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/L515_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "L515_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/gps_r_antenna_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "gps_r_antenna_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/O3dyn/gps_f_antenna_link/FixedJoint",
+   "type": "PhysicsFixedJoint",
+   "body0": [
+    "gps_f_antenna_link"
+   ],
+   "body1": [
+    "base_link"
+   ],
+   "axis": null,
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  }
+ ],
+ "sensors": [
+  {
+   "path": "/O3dyn/base_link/K_Mapix_Velodyne_Puck_Lidar_Sensor_VLP_16",
+   "type": "Xform"
+  },
+  {
+   "path": "/O3dyn/base_link/velodyne_puck_link",
+   "type": "Xform"
+  },
+  {
+   "path": "/O3dyn/lift_rl/sensor_rl_joint",
+   "type": "PhysicsRevoluteJoint"
+  },
+  {
+   "path": "/O3dyn/lift_rr/sensor_rr_joint",
+   "type": "PhysicsRevoluteJoint"
+  },
+  {
+   "path": "/O3dyn/lift_fl/sensor_fl_joint",
+   "type": "PhysicsRevoluteJoint"
+  },
+  {
+   "path": "/O3dyn/lift_fr/sensor_fr_joint",
+   "type": "PhysicsRevoluteJoint"
+  },
+  {
+   "path": "/O3dyn/motor_links/fr/sensor_lever",
+   "type": "Xform"
+  },
+  {
+   "path": "/O3dyn/motor_links/fr/sensor_mid",
+   "type": "PhysicsRevoluteJoint"
+  },
+  {
+   "path": "/O3dyn/motor_links/fr/sensor_shaft",
+   "type": "PhysicsRevoluteJoint"
+  },
+  {
+   "path": "/O3dyn/motor_links/fl/sensor_lever",
+   "type": "Xform"
+  },
+  {
+   "path": "/O3dyn/motor_links/fl/sensor_shaft",
+   "type": "PhysicsRevoluteJoint"
+  },
+  {
+   "path": "/O3dyn/motor_links/fl/sensor_mid",
+   "type": "PhysicsRevoluteJoint"
+  },
+  {
+   "path": "/O3dyn/motor_links/rr/sensor_lever",
+   "type": "Xform"
+  },
+  {
+   "path": "/O3dyn/motor_links/rr/sensor_shaft",
+   "type": "PhysicsRevoluteJoint"
+  },
+  {
+   "path": "/O3dyn/motor_links/rr/sensor_mid",
+   "type": "PhysicsRevoluteJoint"
+  },
+  {
+   "path": "/O3dyn/motor_links/rl/sensor_lever",
+   "type": "Xform"
+  },
+  {
+   "path": "/O3dyn/motor_links/rl/sensor_mid",
+   "type": "PhysicsRevoluteJoint"
+  },
+  {
+   "path": "/O3dyn/motor_links/rl/sensor_shaft",
+   "type": "PhysicsRevoluteJoint"
+  },
+  {
+   "path": "/O3dyn/velodyne_puck_link",
+   "type": "Xform"
+  }
+ ],
+ "omniGraphs": [
+  "/O3dyn/Gamepad_ogn"
+ ],
+ "variants": [
+  {
+   "prim": "/Root/SectionTools/Section_Tool_Object",
+   "set": "sectionVariant",
+   "sel": "",
+   "opts": []
+  },
+  {
+   "prim": "/O3dyn/SectionTools/Section_Tool_Object",
+   "set": "sectionVariant",
+   "sel": "",
+   "opts": []
+  }
+ ],
+ "primTypes": {
+  "Material": 2712,
+  "Shader": 2684,
+  "GeomSubset": 262,
+  "Xform": 184,
+  "Sphere": 168,
+  "Mesh": 135,
+  "Scope": 135,
+  "PhysicsRevoluteJoint": 72,
+  "OmniGraphNode": 45,
+  "PhysicsFixedJoint": 12,
+  "PhysicsPrismaticJoint": 4,
+  "(untyped)": 3,
+  "RectLight": 3,
+  "PhysicsScene": 1,
+  "DomeLight": 1,
+  "Plane": 1,
+  "OmniGraph": 1
+ },
+ "refs": [
+  "./JFD_JFD_1261.usd",
+  "./JFD_JFD_1262.usd",
+  "./JFD_JFD_1359.usd",
+  "./JFD_JFD_143.usd",
+  "./JFD_JFD_198.usd",
+  "./JFD_JFD_20.usd",
+  "./JFD_JFD_405.usd",
+  "./JFD_JFD_464.usd",
+  "./JFD_JFD_499.usd",
+  "./JFD_JFD_542.usd",
+  "./JFD_JFD_595.usd",
+  "./JFD_JFD_667.usd",
+  "./JFD_JFD_796.usd",
+  "./JFD_JFD_953.usd",
+  "./JFD_JFD_99.usd",
+  "./K_KW_Daempfer_353_99_183_Kolben_01_JFD.usd",
+  "./K_Mapix_Velodyne-Puck_Lidar-Sensor_VLP-16_JFD.usd",
+  "./Parts/back_lever_left.usd",
+  "./Parts/back_lever_right.usd",
+  "./Parts/damper.usd",
+  "./Parts/front_lever_left.usd",
+  "./Parts/front_lever_right.usd",
+  "./Parts/main_body_no_interior.usd",
+  "./Parts/pressure_actuator_base_left.usd",
+  "./Parts/pressure_actuator_base_right.usd",
+  "./Parts/pressure_lever_left.usd",
+  "./Parts/pressure_lever_right.usd",
+  "./Parts/sensor_lever.usd",
+  "./Parts/sensor_lever_right.usd",
+  "./Parts/sensor_shaft.usd",
+  "./Parts/sensor_shaft_right.usd",
+  "./Parts/wheel_drive_module_left.usd",
+  "./Parts/wheel_drive_module_right.usd",
+  "./Parts/wheel_left.usd",
+  "./Parts/wheel_right.usd",
+  "./damper_base.usd",
+  "./o3dyn.usd",
+  "./roller.usd",
+  "./wheel_left_core.usd",
+  "./wheel_right_core.usd"
+ ]
+}

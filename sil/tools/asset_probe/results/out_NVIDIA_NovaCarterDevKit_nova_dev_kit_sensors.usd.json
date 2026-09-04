@@ -1,0 +1,43 @@
+{
+ "file": "/tmp/claude-1000/-home-lsmin124-workspace-PJT-2/2a0a4be2-809c-4c21-b8e3-b26c5f602b63/scratchpad/amr_assets/Robots/NVIDIA/NovaCarterDevKit/nova_dev_kit_sensors.usd",
+ "defaultPrim": "/nova_dev_kit",
+ "upAxis": "Z",
+ "metersPerUnit": 1.0,
+ "bbox_min_max": null,
+ "articulationRoots": [
+  "/nova_dev_kit"
+ ],
+ "rigidBodies": 1,
+ "rigidBodyNames": [
+  "chassis_link"
+ ],
+ "colliders": {},
+ "massTotal": 0,
+ "masses": [],
+ "joints": [],
+ "sensors": [
+  {
+   "path": "/nova_dev_kit/chassis_link/front_hawk",
+   "type": "(untyped)"
+  },
+  {
+   "path": "/nova_dev_kit/chassis_link/left_hawk",
+   "type": "(untyped)"
+  },
+  {
+   "path": "/nova_dev_kit/chassis_link/right_hawk",
+   "type": "(untyped)"
+  }
+ ],
+ "omniGraphs": [],
+ "variants": [],
+ "primTypes": {
+  "(untyped)": 8,
+  "Xform": 2
+ },
+ "refs": [
+  "../../../Sensors/LeopardImaging/Hawk/hawk_v1.1_nominal.usd",
+  "../../../Sensors/LeopardImaging/Owl/owl.usd",
+  "./nova_carter_dev_kit/nova_carter_dev_kit_merged.usd"
+ ]
+}

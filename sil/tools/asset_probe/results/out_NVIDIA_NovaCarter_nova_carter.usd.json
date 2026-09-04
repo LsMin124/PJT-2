@@ -1,0 +1,358 @@
+{
+ "file": "/tmp/claude-1000/-home-lsmin124-workspace-PJT-2/2a0a4be2-809c-4c21-b8e3-b26c5f602b63/scratchpad/amr_assets/Robots/NVIDIA/NovaCarter/nova_carter.usd",
+ "defaultPrim": "/nova_carter",
+ "upAxis": "Z",
+ "metersPerUnit": 1.0,
+ "bbox_min_max": [
+  [
+   -0.5877,
+   -0.4479,
+   -0.1402
+  ],
+  [
+   0.1407,
+   0.4479,
+   0.4799
+  ]
+ ],
+ "size": [
+  0.728,
+  0.896,
+  0.62
+ ],
+ "articulationRoots": [
+  "/nova_carter/chassis_link"
+ ],
+ "rigidBodies": 8,
+ "rigidBodyNames": [
+  "chassis_link",
+  "wheel_left",
+  "wheel_right",
+  "caster_frame_base",
+  "caster_swivel_left",
+  "caster_swivel_right",
+  "caster_wheel_left",
+  "caster_wheel_right"
+ ],
+ "colliders": {
+  "Xform": 2,
+  "Cylinder": 8,
+  "boundingCube": 2
+ },
+ "massTotal": 48.72,
+ "masses": [
+  [
+   "/nova_carter/chassis_link",
+   41.68000030517578
+  ],
+  [
+   "/nova_carter/wheel_left",
+   2.2200000286102295
+  ],
+  [
+   "/nova_carter/wheel_right",
+   2.2200000286102295
+  ],
+  [
+   "/nova_carter/caster_frame_base",
+   0.800000011920929
+  ],
+  [
+   "/nova_carter/caster_swivel_left",
+   0.30000001192092896
+  ],
+  [
+   "/nova_carter/caster_swivel_right",
+   0.30000001192092896
+  ],
+  [
+   "/nova_carter/caster_wheel_left",
+   0.6000000238418579
+  ],
+  [
+   "/nova_carter/caster_wheel_right",
+   0.6000000238418579
+  ]
+ ],
+ "joints": [
+  {
+   "path": "/nova_carter/joint_caster_base",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "chassis_link"
+   ],
+   "body1": [
+    "caster_frame_base"
+   ],
+   "axis": "Z",
+   "lower": -2.0,
+   "upper": 2.0,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 100.0,
+    "damping": 10.0,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "body1_size": [
+    0.0995,
+    0.328,
+    0.0798
+   ]
+  },
+  {
+   "path": "/nova_carter/joint_swing_left",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "caster_frame_base"
+   ],
+   "body1": [
+    "caster_swivel_left"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 9.999999747378752e-06,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "maxJointVelocity": 720.0,
+   "body1_size": [
+    0.1414,
+    0.0579,
+    0.1778
+   ]
+  },
+  {
+   "path": "/nova_carter/joint_swing_right",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "caster_frame_base"
+   ],
+   "body1": [
+    "caster_swivel_right"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 9.999999747378752e-06,
+    "maxForce": null,
+    "targetVel": null
+   },
+   "maxJointVelocity": 720.0,
+   "body1_size": [
+    0.1414,
+    0.0579,
+    0.1778
+   ]
+  },
+  {
+   "path": "/nova_carter/joint_caster_left",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "caster_swivel_left"
+   ],
+   "body1": [
+    "caster_wheel_left"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/nova_carter/joint_caster_right",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "caster_swivel_right"
+   ],
+   "body1": [
+    "caster_wheel_right"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/nova_carter/joint_wheel_left",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "chassis_link"
+   ],
+   "body1": [
+    "wheel_left"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 1000000.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": 1200.0,
+   "body1_size": [
+    0.2803,
+    0.2756,
+    0.3824
+   ]
+  },
+  {
+   "path": "/nova_carter/joint_wheel_right",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "chassis_link"
+   ],
+   "body1": [
+    "wheel_right"
+   ],
+   "axis": "Z",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": null,
+    "damping": 1000000.0,
+    "maxForce": Infinity,
+    "targetVel": null
+   },
+   "maxJointVelocity": 1200.0,
+   "body1_size": [
+    0.2803,
+    0.2756,
+    0.3824
+   ]
+  }
+ ],
+ "sensors": [
+  {
+   "path": "/nova_carter/chassis_link/sensors",
+   "type": "Xform"
+  },
+  {
+   "path": "/nova_carter/chassis_link/sensors/front_hawk",
+   "type": "Xform"
+  },
+  {
+   "path": "/nova_carter/chassis_link/sensors/left_hawk",
+   "type": "Xform"
+  },
+  {
+   "path": "/nova_carter/chassis_link/sensors/right_hawk",
+   "type": "Xform"
+  },
+  {
+   "path": "/nova_carter/chassis_link/sensors/back_hawk",
+   "type": "Xform"
+  },
+  {
+   "path": "/nova_carter/chassis_link/sensors/front_RPLidar",
+   "type": "Xform"
+  },
+  {
+   "path": "/nova_carter/chassis_link/sensors/rear_RPLidar",
+   "type": "Xform"
+  },
+  {
+   "path": "/nova_carter/chassis_link/sensors/chassis_imu",
+   "type": "Xform"
+  },
+  {
+   "path": "/nova_carter/chassis_link/sensors/chassis_imu/Imu_Sensor",
+   "type": "IsaacImuSensor"
+  }
+ ],
+ "omniGraphs": [],
+ "variants": [
+  {
+   "prim": "/nova_carter",
+   "set": "Physics",
+   "sel": "physx",
+   "opts": [
+    "None",
+    "physx"
+   ]
+  },
+  {
+   "prim": "/nova_carter",
+   "set": "Sensors",
+   "sel": "All_Sensors",
+   "opts": [
+    "All_Sensors",
+    "None"
+   ]
+  },
+  {
+   "prim": "/nova_carter",
+   "set": "Configuration",
+   "sel": "No_Internals",
+   "opts": [
+    "Base",
+    "Full_Merged",
+    "No_Internals",
+    "Skirt_only"
+   ]
+  },
+  {
+   "prim": "/nova_carter",
+   "set": "ROS",
+   "sel": "Disabled",
+   "opts": [
+    "Disabled",
+    "Enabled"
+   ]
+  }
+ ],
+ "primTypes": {
+  "Material": 298,
+  "Shader": 297,
+  "GeomSubset": 55,
+  "Xform": 36,
+  "Mesh": 13,
+  "Cylinder": 8,
+  "PhysicsRevoluteJoint": 7,
+  "(untyped)": 5,
+  "Scope": 3,
+  "IsaacImuSensor": 1,
+  "RenderProduct": 1,
+  "RenderSettings": 1,
+  "RenderVar": 1
+ },
+ "refs": [
+  "",
+  "../../../../..//Sensors/HESAI/XT-32.usd",
+  "../../../../..//Sensors/LeopardImaging/Hawk/hawk_v1.1_nominal.usd",
+  "../../../../..//Sensors/LeopardImaging/Owl/owl.usd",
+  "../../../../..//Sensors/Slamtec/RPLidar_S2e.usd",
+  "../Parts/carter_v2_wheel_left.usd",
+  "./Variants/Configuration/nova_carter_merged_no_internals.usd",
+  "./Variants/Physics/nova_carter_physics.usd",
+  "./Variants/Sensors/nova_carter_sensors.usd"
+ ]
+}

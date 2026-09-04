@@ -1,0 +1,3 @@
+#!/bin/bash
+export LD_LIBRARY_PATH=/home/lsmin124/isaacsim/extscache/omni.usd.libs-1.0.3+f9bf0dda.lx64.r.cp312/bin:$LD_LIBRARY_PATH PYTHONPATH=/home/lsmin124/isaacsim/extscache/omni.usd.libs-1.0.3+f9bf0dda.lx64.r.cp312
+exec ~/isaacsim/kit/python/bin/python3 "$@"

@@ -1,0 +1,130 @@
+{
+ "file": "/tmp/claude-1000/-home-lsmin124-workspace-PJT-2/2a0a4be2-809c-4c21-b8e3-b26c5f602b63/scratchpad/amr_assets/Robots/IsaacSim/DifferentialBase/differential_base.usd",
+ "defaultPrim": "/differential_base",
+ "upAxis": "Z",
+ "metersPerUnit": 1.0,
+ "bbox_min_max": [
+  [
+   -50.0,
+   -50.5,
+   -50.0
+  ],
+  [
+   50.0,
+   50.5,
+   50.0
+  ]
+ ],
+ "size": [
+  100.0,
+  101.0,
+  100.0
+ ],
+ "articulationRoots": [
+  "/differential_base"
+ ],
+ "rigidBodies": 3,
+ "rigidBodyNames": [
+  "chassis",
+  "left_wheel_link",
+  "right_wheel_link"
+ ],
+ "colliders": {
+  "Cube": 1,
+  "Sphere": 2,
+  "Plane": 1
+ },
+ "massTotal": 12.0,
+ "masses": [
+  [
+   "/differential_base/chassis",
+   10.0
+  ],
+  [
+   "/differential_base/left_wheel_link",
+   1.0
+  ],
+  [
+   "/differential_base/right_wheel_link",
+   1.0
+  ]
+ ],
+ "joints": [
+  {
+   "path": "/differential_base/chassis/left_wheel",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "chassis"
+   ],
+   "body1": [
+    "left_wheel_link"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "acceleration",
+    "stiffness": 0.0,
+    "damping": 174532.921875,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": Infinity,
+   "body1_size": [
+    100.0,
+    100.0,
+    100.0
+   ]
+  },
+  {
+   "path": "/differential_base/chassis/right_wheel",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "chassis"
+   ],
+   "body1": [
+    "right_wheel_link"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "acceleration",
+    "stiffness": 0.0,
+    "damping": 174532.921875,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "maxJointVelocity": Infinity,
+   "body1_size": [
+    100.0,
+    100.0,
+    100.0
+   ]
+  }
+ ],
+ "sensors": [],
+ "omniGraphs": [],
+ "variants": [],
+ "primTypes": {
+  "Xform": 6,
+  "(untyped)": 5,
+  "Sphere": 4,
+  "PhysicsRevoluteJoint": 2,
+  "Cube": 2,
+  "DistantLight": 1,
+  "Mesh": 1,
+  "Plane": 1,
+  "PhysicsScene": 1,
+  "RenderProduct": 1,
+  "RenderSettings": 1,
+  "RenderVar": 1
+ },
+ "refs": []
+}

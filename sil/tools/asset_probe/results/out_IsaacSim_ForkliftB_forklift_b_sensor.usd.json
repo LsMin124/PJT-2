@@ -1,0 +1,228 @@
+{
+ "file": "/tmp/claude-1000/-home-lsmin124-workspace-PJT-2/2a0a4be2-809c-4c21-b8e3-b26c5f602b63/scratchpad/amr_assets/Robots/IsaacSim/ForkliftB/forklift_b_sensor.usd",
+ "defaultPrim": "/forklift_b",
+ "upAxis": "Z",
+ "metersPerUnit": 1.0,
+ "bbox_min_max": [
+  [
+   -5.6933,
+   -1.5647,
+   -0.0019
+  ],
+  [
+   -2.6621,
+   -0.4349,
+   2.9333
+  ]
+ ],
+ "size": [
+  3.031,
+  1.13,
+  2.935
+ ],
+ "articulationRoots": [
+  "/forklift_b"
+ ],
+ "rigidBodies": 8,
+ "rigidBodyNames": [
+  "lift",
+  "body",
+  "back_wheel",
+  "roller_front_right",
+  "roller_back_left",
+  "roller_back_right",
+  "roller_front_left",
+  "back_wheel_swivel"
+ ],
+ "colliders": {
+  "convexDecomposition": 2,
+  "Sphere": 1,
+  "Cylinder": 4,
+  "convexDecomposition [disabled]": 1
+ },
+ "massTotal": 0,
+ "masses": [],
+ "joints": [
+  {
+   "path": "/forklift_b/lift_joint",
+   "type": "PhysicsPrismaticJoint",
+   "body0": [
+    "body"
+   ],
+   "body1": [
+    "lift"
+   ],
+   "axis": "Z",
+   "lower": -0.14999999105930328,
+   "upper": 2.0,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "linear",
+    "type": null,
+    "stiffness": 100000.0,
+    "damping": 10000.0,
+    "maxForce": 5000.0,
+    "targetVel": 0.0
+   }
+  },
+  {
+   "path": "/forklift_b/back_wheel_joints/back_wheel_drive",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "back_wheel"
+   ],
+   "body1": [
+    "back_wheel_swivel"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 100.0,
+    "damping": 10000.0,
+    "maxForce": Infinity,
+    "targetVel": 0.0
+   },
+   "body1_size": [
+    0.1492,
+    0.1703,
+    0.2901
+   ]
+  },
+  {
+   "path": "/forklift_b/back_wheel_joints/back_wheel_swivel",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "back_wheel_swivel"
+   ],
+   "body1": [
+    "body"
+   ],
+   "axis": "Z",
+   "lower": -60.0,
+   "upper": 60.0,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": null,
+    "stiffness": 100000.0,
+    "damping": 100.0,
+    "maxForce": Infinity,
+    "targetVel": null
+   },
+   "body1_size": [
+    1.8732,
+    1.1294,
+    2.8381
+   ]
+  },
+  {
+   "path": "/forklift_b/roller_joints/front_right_roller",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "roller_front_right"
+   ],
+   "body1": [
+    "body"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/forklift_b/roller_joints/back_left_roller",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "roller_back_left"
+   ],
+   "body1": [
+    "body"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/forklift_b/roller_joints/back_right_roller",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "roller_back_right"
+   ],
+   "body1": [
+    "body"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  },
+  {
+   "path": "/forklift_b/roller_joints/front_left_roller",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "roller_front_left"
+   ],
+   "body1": [
+    "body"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false
+  }
+ ],
+ "sensors": [
+  {
+   "path": "/forklift_b/body/sensors",
+   "type": "Xform"
+  },
+  {
+   "path": "/forklift_b/body/sensors/hawk_front",
+   "type": "(untyped)"
+  },
+  {
+   "path": "/forklift_b/body/sensors/hawk_left",
+   "type": "(untyped)"
+  },
+  {
+   "path": "/forklift_b/body/sensors/hawk_right",
+   "type": "(untyped)"
+  },
+  {
+   "path": "/forklift_b/body/sensors/front_2d_lidar",
+   "type": "(untyped)"
+  }
+ ],
+ "omniGraphs": [],
+ "variants": [],
+ "primTypes": {
+  "Mesh": 31,
+  "Xform": 11,
+  "PhysicsRevoluteJoint": 6,
+  "(untyped)": 5,
+  "Material": 4,
+  "Shader": 4,
+  "Cylinder": 4,
+  "Scope": 3,
+  "GeomSubset": 2,
+  "Sphere": 1,
+  "PhysicsPrismaticJoint": 1
+ },
+ "refs": [
+  "../../../Sensors/LeopardImaging/Hawk/hawk_v1.1_nominal.usd",
+  "../../../Sensors/Slamtec/RPLidar_S2e.usd",
+  "./forklift_b.usd"
+ ]
+}

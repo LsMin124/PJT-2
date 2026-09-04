@@ -1,0 +1,204 @@
+{
+ "file": "/tmp/claude-1000/-home-lsmin124-workspace-PJT-2/2a0a4be2-809c-4c21-b8e3-b26c5f602b63/scratchpad/amr_assets/Robots/AgilexRobotics/limo/limo.usd",
+ "defaultPrim": "/limo",
+ "upAxis": "Z",
+ "metersPerUnit": 1.0,
+ "bbox_min_max": [
+  [
+   -0.1631,
+   -0.1087,
+   0.0019
+  ],
+  [
+   0.1586,
+   0.1087,
+   0.2535
+  ]
+ ],
+ "size": [
+  0.322,
+  0.217,
+  0.252
+ ],
+ "articulationRoots": [
+  "/limo"
+ ],
+ "rigidBodies": 5,
+ "rigidBodyNames": [
+  "front_left_wheel_link",
+  "front_right_wheel_link",
+  "rear_left_wheel_link",
+  "rear_right_wheel_link",
+  "chassis_link"
+ ],
+ "colliders": {
+  "Cylinder": 4,
+  "convexDecomposition": 1
+ },
+ "massTotal": 4.156,
+ "masses": [
+  [
+   "/limo/front_left_wheel_link",
+   0.5
+  ],
+  [
+   "/limo/front_right_wheel_link",
+   0.5
+  ],
+  [
+   "/limo/rear_left_wheel_link",
+   0.5
+  ],
+  [
+   "/limo/rear_right_wheel_link",
+   0.5
+  ],
+  [
+   "/limo/chassis_link",
+   2.1556999683380127
+  ]
+ ],
+ "joints": [
+  {
+   "path": "/limo/front_left_wheel",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "chassis_link"
+   ],
+   "body1": [
+    "front_left_wheel_link"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 1000000.0,
+    "maxForce": 3.4028234663852886e+38,
+    "targetVel": null
+   },
+   "maxJointVelocity": Infinity,
+   "body1_size": [
+    0.0963,
+    0.0747,
+    0.0963
+   ]
+  },
+  {
+   "path": "/limo/front_right_wheel",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "chassis_link"
+   ],
+   "body1": [
+    "front_right_wheel_link"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 1000000.0,
+    "maxForce": 3.4028234663852886e+38,
+    "targetVel": null
+   },
+   "maxJointVelocity": Infinity,
+   "body1_size": [
+    0.0964,
+    0.0748,
+    0.0963
+   ]
+  },
+  {
+   "path": "/limo/rear_left_wheel",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "chassis_link"
+   ],
+   "body1": [
+    "rear_left_wheel_link"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 1000000.0,
+    "maxForce": 3.4028234663852886e+38,
+    "targetVel": null
+   },
+   "maxJointVelocity": Infinity,
+   "body1_size": [
+    0.0963,
+    0.0747,
+    0.0963
+   ]
+  },
+  {
+   "path": "/limo/rear_right_wheel",
+   "type": "PhysicsRevoluteJoint",
+   "body0": [
+    "chassis_link"
+   ],
+   "body1": [
+    "rear_right_wheel_link"
+   ],
+   "axis": "X",
+   "lower": null,
+   "upper": null,
+   "enabled": true,
+   "excludeArt": false,
+   "drive": {
+    "kind": "angular",
+    "type": "force",
+    "stiffness": 0.0,
+    "damping": 1000000.0,
+    "maxForce": 3.4028234663852886e+38,
+    "targetVel": null
+   },
+   "maxJointVelocity": Infinity,
+   "body1_size": [
+    0.0964,
+    0.0748,
+    0.0963
+   ]
+  }
+ ],
+ "sensors": [
+  {
+   "path": "/limo/chassis_link/third_person_camera",
+   "type": "Camera"
+  }
+ ],
+ "omniGraphs": [],
+ "variants": [],
+ "primTypes": {
+  "Xform": 7,
+  "Material": 6,
+  "(untyped)": 5,
+  "Shader": 5,
+  "Mesh": 5,
+  "Cylinder": 4,
+  "PhysicsRevoluteJoint": 4,
+  "GeomSubset": 4,
+  "Scope": 1,
+  "Camera": 1,
+  "PhysicsScene": 1,
+  "RenderProduct": 1,
+  "RenderSettings": 1,
+  "RenderVar": 1
+ },
+ "refs": []
+}
