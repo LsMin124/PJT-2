@@ -10,7 +10,7 @@
 | `t2_mapping/` | slam_toolbox 매핑 — GT 대비 오차 평균 3.4 cm · 커버리지 91.6 % | 완료 (8/27) |
 | `t2_follower/` | 자체 추종기(램프·보호 필드) 20엣지 완주 — 이후 T4 그리드 프리미티브로 대체 | 완료·대체 (8/27) |
 | `t3_warehouse_map/` | DXF 도면 → occupancy grid → 랙·스테이션·구역(v6.0.1: A~V 22구역 · 랙 132 · 스테이션 46 · 충전 6). `map/`이 단일 소스, `map2/`는 wallA 변형(보류) | 완료 (8/31) |
-| `t3_warehouse/` | 그리드 → USD 씬 빌더(건물 실측 · 화물 드레싱 · omap V&V) + `warehouse_sim.py`(iw.hub · 물리 라이다 720빔 · ROS 2 개통) + AMCL 런치 · patrol | 완료 (8/31) |
+| `t3_warehouse/` | 그리드 → USD 씬 빌더(건물 실측 · 화물 드레싱 · omap V&V) + `warehouse_sim.py`(iw.hub ×N · 물리 라이다 720빔 · ROS 2 개통, `WSIM_N`으로 `/amr01~/…` 네임스페이스) + AMCL 런치 · patrol · multi_check | 완료 (8/31 · 다중 로봇 9/6) |
 | `t4_agent/` | ROS 2 에이전트 — VDA 5050 MQTT 브리지 + order executor + 그리드 프리미티브(스팟턴 · 직진 · 후진) + fake robot/FMS. Isaac 없이 배리어 틱 E2E 7틱 통과 | 뼈대 완료 (9/3) |
 | `calibration/turn_probe/` | iw.hub 스팟턴 실측 — 회전 중심 · 차체 돌출 · 각속도 응답 · 90° 회전 시간 → FMS 헤딩 상수 인도 | 완료 (9/6) |
 | `tools/asset_probe/` | Isaac 6.0 로봇 에셋 정적 조사 + 헤드리스 주행 프로브(두 번째 AMR 후보: Nova Carter 등) | 완료 (9/4) |
@@ -23,4 +23,4 @@
 
 동시 실행(9/5 실측, `pages/working/isaac_parallel_measure.html`): 원본 구성은 인스턴스당 RAM 8.1 GB · VRAM 5.3 GB로 2개, 렌더·시각화를 끈 경량 구성은 6개 동시 정상(RTF 1.25). 이전의 "동시 1인스턴스" 규칙은 폐기.
 
-남은 것: `warehouse_sim.py` 다중 로봇 네임스페이스(`/amr01/…`), sim-runner 데몬(`sim/control`) · 에이전트 ×N 기동, AMCL 폐루프 정지 정밀도 · 오돔 노이즈, 엣지 통과 · 도킹 시간 분포 실측(DES 환류).
+남은 것: sim-runner 데몬(`sim/control`) · 에이전트 ×N 기동, AMCL 폐루프 정지 정밀도 · 오돔 노이즈, 엣지 통과 · 도킹 시간 분포 실측(DES 환류).

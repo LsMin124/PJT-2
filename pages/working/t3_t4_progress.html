@@ -562,7 +562,7 @@ python3 -m amr_agent.tools.fake_fms --serial amr01 --plan F,F,L,F,B</code></pre>
     <details class="more"><summary>T4 에이전트 — Isaac 상대 — 펼쳐 보기</summary>
 <pre><code># Isaac 상대 (warehouse_sim.py + loc.launch.py 가 떠 있을 때)
 ros2 launch amr_agent agent.launch.py serial:=amr01 flat_topics:=true pose_source:=odom use_sim_time:=true</code></pre>
-    <p class="soft"><code>flat_topics</code>는 Isaac이 네임스페이스 없이 내는 <code>/odom</code> <code>/cmd_vel</code>에 리매핑합니다. 다중 로봇 네임스페이스는 SEC 06.</p>
+    <p class="soft"><code>flat_topics</code>는 단일 모드 Isaac이 네임스페이스 없이 내는 <code>/odom</code> <code>/cmd_vel</code>에 리매핑합니다. <code>WSIM_N≥2</code>면 Isaac이 <code>/amr01/…</code>로 내므로 리매핑 없이 <code>serial:=amr01</code>만 맞추면 됩니다(9/6).</p>
     </details>
 
     <details class="more"><summary>T3 창고 씬 — 빌드 · 시뮬 · 자기위치 — 펼쳐 보기</summary>
@@ -587,13 +587,13 @@ ros2 launch &lt;repo&gt;/sil/t3_warehouse/ros2/loc.launch.py</code></pre>
 
 <!-- ══════════ P6 다음 단계 ══════════ -->
 <section id="p6">
-  <div class="sec-head"><span class="sec-no">SEC 06 · 다음 단계</span><h2>다음은 실측 두 가지, 다중 로봇, sim-runner 연동이다</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 06 · 다음 단계</span><h2>실측과 다중 로봇은 끝났다. 다음은 sim-runner 연동과 AMCL 폐루프다</h2></div>
   <div class="sec-body">
     <p class="lead">기준선 §9의 시뮬 파트 항목과 두 README의 "남은 것"을 합친 목록이다. 위에서부터 순서대로 간다.</p>
     <div class="tbl-scroll"><table>
       <tr><th style="width:300px">항목</th><th>왜 필요한가</th><th style="width:150px">출처</th></tr>
       <tr><td><b>iw.hub 앞축 종방향 위치 · 회전 각속도 실측 — 완료(9/6)</b></td><td>FMS 헤딩 모델 상수 인도: 뒤 칸 점유 1 · 90° 회전 1.9 s(1 s 틱 기준 2틱) · 스윙 반경 1.09 m. 개선점 1건: TurnController가 yaw만으로 done 판정해 관성 초과 4.9° 사례 1/4 → 각속도 정지 조건 추가</td><td>§4.2 · §5.2 · <code>sil/calibration/turn_probe/</code></td></tr>
-      <tr><td><b>Isaac 다중 로봇 네임스페이스</b></td><td><code>warehouse_sim</code>이 <code>/amr01/odom</code>처럼 로봇별로 발행해야 에이전트 ×N이 붙는다</td><td>§9 · T4 README</td></tr>
+      <tr><td><b>Isaac 다중 로봇 네임스페이스 — 완료(9/6)</b></td><td><code>WSIM_N=3 warehouse_sim.py</code>가 <code>/amr01~03/{cmd_vel,odom,scan}</code>과 <code>amr01/base_link</code> 프레임으로 발행. 검증 <code>ros2/multi_check.py</code>: 로봇별 40 Hz · 720빔 유효 · 지정 로봇만 이동. 3대에서 RTF ≈ 0.66(원본 렌더 구성) → 검증 런은 경량 구성 권장</td><td>T3 README · T4 README</td></tr>
       <tr><td><b>sim-runner 데몬 연동</b></td><td>런 오케스트레이터의 <code>sim/control</code>(start · go · stop)을 받아 Isaac·에이전트 ×N 기동. 리플레이·영상 <a class="term" href="../ref/glossary_industrial.html#artifact">아티팩트</a> 업로드</td><td>§9 · §8 · §3.2</td></tr>
       <tr><td><b>AMCL 폐루프 정지 정밀도</b></td><td><code>pose_source:=amcl</code>에서 4 mm가 얼마나 늘어나는지. 오돔 노이즈 주입 포함</td><td>T4 README</td></tr>
       <tr><td><b>T3 본편 — 반송 사이클</b></td><td>스테이션 왕복 order 연쇄, 리프트 도킹 1장면, 사이클 타임 분해와 도킹 시간 분포 → <a class="term" href="../ref/glossary_industrial.html#des">DES</a> 환류</td><td>T3 README · §4.5</td></tr>

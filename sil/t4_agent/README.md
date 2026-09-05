@@ -51,7 +51,7 @@ ros2 launch amr_agent agent.launch.py serial:=amr01 flat_topics:=true pose_sourc
 
 ## 남은 것
 
-- Isaac 다중 로봇: warehouse_sim 이 로봇별 네임스페이스(`/amr01/odom` …)로 발행하도록 확장
+- ~~Isaac 다중 로봇~~ 완료(9/6): `WSIM_N=3 warehouse_sim.py`가 `/amr01~03/{cmd_vel,odom,scan}`·`amr01/base_link`로 발행 — 이 런치의 기본 토픽과 일치해 `flat_topics` 없이 `serial:=amr02`로 붙는다. 개통 검증 `t3_warehouse/ros2/multi_check.py` 통과(로봇별 40 Hz, 지정 로봇만 이동)
 - ~~앞축 종방향 위치·회전 각속도 실측~~ 완료(9/6, `../calibration/turn_probe/`): 회전 중심 = 구동축 = /odom 원점, 앞 0.40 m·뒤 1.03 m 돌출 → REAR_CELLS 1, 스윙 반경 1.09 m, 90° 폐루프 1.9 s → 1 s 틱 기준 TURN_TICKS 2. **개선 1건**: TurnController가 yaw만 보고 done 판정 → 관성으로 4.9° 초과 사례 1/4, 각속도 정지 조건을 done에 추가할 것
 - sim-runner 데몬(`sim/control`)과 에이전트 ×N 기동 연동, 런 아티팩트(리플레이·영상)
 - AMCL 폐루프(`pose_source:=amcl`)에서의 정지 정밀도 실측, 오돔 노이즈 주입

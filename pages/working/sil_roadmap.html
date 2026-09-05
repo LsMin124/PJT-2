@@ -285,12 +285,12 @@
 
 <!-- ══════════ S3 T4 다음 단계 ══════════ -->
 <section id="s3">
-  <div class="sec-head"><span class="sec-no">SEC 03 · T4 다음 단계</span><h2>남은 것은 넷. 다중 로봇, 실측 2건, sim-runner, AMCL 폐루프</h2></div>
+  <div class="sec-head"><span class="sec-no">SEC 03 · T4 다음 단계</span><h2>넷 중 둘(다중 로봇 · 실측 2건)은 끝났다. 남은 것은 sim-runner, AMCL 폐루프</h2></div>
   <div class="sec-body">
     <p class="lead">전부 시뮬 파트 몫이다. 각 항목에 막혔을 때의 대안을 같이 적는다.</p>
     <div class="tbl-scroll"><table>
       <tr><th style="width:200px">항목</th><th>내용</th><th style="width:260px">막히면</th></tr>
-      <tr><td><b>① Isaac 다중 로봇 네임스페이스</b></td><td>warehouse_sim이 로봇별 네임스페이스(<code>/amr01/odom</code> …)로 발행하도록 확장. 에이전트 ×N 기동</td><td>로봇 1대로 검증 런. 다중 로봇 수치는 DES 단독</td></tr>
+      <tr><td><b>① Isaac 다중 로봇 네임스페이스</b></td><td>warehouse_sim이 로봇별 네임스페이스(<code>/amr01/odom</code> …)로 발행하도록 확장. 에이전트 ×N 기동</td><td>완료(9/6): <code>WSIM_N=3</code>으로 <code>/amr01~03/…</code> 개통, <code>multi_check.py</code> 통과(로봇별 40 Hz · 지정 로봇만 이동). 3대 RTF ≈ 0.66은 경량 구성으로 보완</td></tr>
       <tr><td><b>② 실측 2건</b></td><td>iw.hub 앞축 종방향 위치 · 회전 각속도. FMS 헤딩 모델 상수(뒤 칸 점유 · 회전 틱 수)의 확정 근거. 바퀴 반경 0.08 m · 트랙 0.58 m는 실측됨</td><td>완료(9/6, <code>sil/calibration/turn_probe/</code>): 회전 중심 = 구동축 = 포즈 원점, 앞 0.40 m · 뒤 1.03 m 돌출(뒤 칸 1개), 스윙 반경 1.09 m, 90° 폐루프 1.9 s(1 s 틱 기준 2틱), 1 m 직진 2.2 s</td></tr>
       <tr><td><b>③ sim-runner 데몬</b></td><td><code>sim/control</code>로 start/stop 수신. Isaac·에이전트 ×N 스폰·정리. 런 <a class="term" href="../ref/glossary_industrial.html#artifact">아티팩트</a>(리플레이 · 영상) 업로드</td><td>운영자가 GPU 서버에서 수동 기동. 8단계 중 ⑤ 자동화만 손실</td></tr>
       <tr><td><b>④ AMCL 폐루프 정밀도</b></td><td><code>pose_source:=amcl</code>에서 정지 정밀도 실측. 오돔 노이즈 주입</td><td><code>pose_source:=odom</code> 유지. 자기위치 검증 1건 손실</td></tr>
@@ -334,7 +334,7 @@
     <p class="lead">REV B의 축소선은 "T3 진입 불가"까지 다뤘다. T3가 끝났으므로 축소선은 T4 안쪽으로 옮긴다.</p>
     <div class="tbl-scroll"><table>
       <tr><th style="width:230px">상황</th><th>축소선</th><th style="width:300px">그때도 남는 것</th></tr>
-      <tr><td><b>T4 Isaac 결합 불가</b> (① 네임스페이스 · ③ sim-runner 미완)</td><td>가짜 로봇 E2E까지. 검증 런은 로봇 1대 장면</td><td>견적(DES) + T1~T3 실측 보정 + 창고 주행·AMCL 영상</td></tr>
+      <tr><td><b>T4 Isaac 결합 불가</b> (③ sim-runner 미완)</td><td>가짜 로봇 E2E까지. 검증 런은 로봇 1대 장면</td><td>견적(DES) + T1~T3 실측 보정 + 창고 주행·AMCL 영상</td></tr>
       <tr><td><b>sim-runner만 미완</b></td><td>운영자가 GPU 서버에서 수동 기동</td><td>8단계 중 ⑤ 자동화만 손실. 나머지 흐름 유지</td></tr>
       <tr><td><b>실측 2건 미완</b></td><td>T4 E2E 값을 임시 상수로</td><td>회전 모델은 유지. 상수 정밀도만 손실</td></tr>
       <tr><td><b>AMCL 폐루프 정밀도 미달</b></td><td><code>pose_source:=odom</code></td><td>자기위치 검증 1건 손실</td></tr>

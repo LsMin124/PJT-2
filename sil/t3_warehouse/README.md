@@ -13,7 +13,8 @@
 | `warehouse_scene.usd` | 산출 씬 (재생성물 — untracked) |
 | `view_scene.py` | WebRTC 관전 뷰어 (완성 씬 열람용) |
 | `http_stream.py` | TCP 전용 HTTP MJPEG 관전 경로 (8211) — 캠퍼스 UDP 차단망 대응 |
-| `warehouse_sim.py` | T3 본편 — 씬+iw.hub+물리 라이다, ROS2 개통(/scan /odom /tf /clock, /cmd_vel). iw_hub 콜리전 수술 포함 |
+| `warehouse_sim.py` | T3 본편 — 씬 + iw.hub ×N + 물리 라이다, ROS2 개통(/scan /odom /tf /clock, /cmd_vel). iw_hub 콜리전 수술 로봇별 적용. `WSIM_N=3`이면 `/amr01~03/…` 네임스페이스 |
+| `ros2/multi_check.py` | 다중 로봇 개통 검증 — 로봇별 odom·scan·/clock 발행률, /tf 프레임, 지정 로봇만 이동하는지 확인(JSON + exit code) |
 | `ros2/` | localization — AMCL+map_server+foxglove(8765) 런치·파라미터. 오차 0.1~0.4m 개통 검증 |
 | `out/scene_*.png` | 검수 스크린샷 (탑뷰·조감·통로 시점) |
 | `out/omap_occ.npy` | 씬→점유맵 역생성 결과 (V&V) |
@@ -68,7 +69,34 @@ cd ~/isaacsim && ./python.sh <repo>/sil/t3_warehouse/build_scene.py
   재현율 100.0%, 랙 풋프린트 점유 93.3%(빔 2단 전환에 따른 기대 변화),
   풋프린트 밖 오검출 0셀
 
+## 다중 로봇 (2026-09-06)
+
+`warehouse_sim.py`는 환경변수로 로봇 수를 정한다. 로봇마다 스폰·수술·라이다·ROS2 그래프를 따로 만들고 `/clock`은 1번 로봇만 낸다.
+
+| 환경변수 | 기본 | 뜻 |
+|---|---|---|
+| `WSIM_N` | 1 | 로봇 수. 2 이상이면 네임스페이스 모드 |
+| `WSIM_NS` | auto | N=1에서도 네임스페이스를 강제(1)하거나 해제(0) |
+| `WSIM_SPACING` | 3.0 | 스폰 간격 [m]. 남측 코리도 (36.0, 40.8)부터 +x (x 36~60 구간 장애물 이격 ≥ 3.9 m) |
+| `WSIM_SPAWN` | — | `"x,y;x,y;…"`로 직접 지정(개수 = N) |
+
+네임스페이스 모드의 이름 규칙: 프림 `/World/amr01`, 토픽 `/amr01/{cmd_vel,odom,scan}`, 프레임 `amr01/{odom,base_link,laser}`.
+T4 `agent.launch.py serial:=amr01`의 기본 토픽과 같아서 `flat_topics` 없이 붙는다. 단일 모드(기본)는 예전 그대로 `/World/iw_hub` · `/odom` · `/cmd_vel`이라 `loc.launch.py`·`patrol.py`가 그대로 돈다.
+
+```bash
+cd ~/isaacsim && WSIM_N=3 ./python.sh <repo>/sil/t3_warehouse/warehouse_sim.py     # 3대
+source /opt/ros/humble/setup.bash && python3 <repo>/sil/t3_warehouse/ros2/multi_check.py --n 3 --drive amr02
+```
+
+개통 검증(9/6, 원본 렌더 구성, 창고 씬):
+
+| 구성 | 로봇별 odom·scan | /clock | 이동 검사 | 비고 |
+|---|---|---|---|---|
+| N=1 평면 토픽 | 57 Hz · 720빔 유효 | 57 Hz | 0.83 m 이동 | 회귀 동일 |
+| N=3 네임스페이스 | 40 Hz ×3 · 720빔 유효 | 40 Hz | amr02만 0.58 m, 나머지 0.000 m | 프레임 57→40 fps, RTF ≈ 0.66 |
+
+3대에서 프레임이 40 fps로 떨어진다(물리 라이다 720빔 ×3 + 렌더). 검증 런은 경량 구성(`pages/working/isaac_parallel_measure.html`)으로 돌려 RTF를 되찾거나, 배리어 틱이 시뮬 시각 기준이라는 전제를 FMS 파트와 맞춘다.
+
 ## 남은 것 (T3 본편)
 
-iw.hub + 라이다 투입(warehouse_sim.py), 스테이션 왕복 order 연쇄, 리프트 도킹 1장면,
-사이클 타임 분해 + 도킹 시간 분포 실측(DES 환류).
+스테이션 왕복 order 연쇄, 리프트 도킹 1장면, 사이클 타임 분해 + 도킹 시간 분포 실측(DES 환류). 다중 로봇 AMCL(로봇별 네임스페이스 loc 런치)은 `pose_source:=amcl` 검증과 함께.
