@@ -4,3 +4,4 @@
 *.usd
 __pycache__/
 *.etli
+sil/calibration/*/out/isaac_*.log
