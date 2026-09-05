@@ -291,7 +291,7 @@
     <div class="tbl-scroll"><table>
       <tr><th style="width:200px">항목</th><th>내용</th><th style="width:260px">막히면</th></tr>
       <tr><td><b>① Isaac 다중 로봇 네임스페이스</b></td><td>warehouse_sim이 로봇별 네임스페이스(<code>/amr01/odom</code> …)로 발행하도록 확장. 에이전트 ×N 기동</td><td>로봇 1대로 검증 런. 다중 로봇 수치는 DES 단독</td></tr>
-      <tr><td><b>② 실측 2건</b></td><td>iw.hub 앞축 종방향 위치 · 회전 각속도. FMS 헤딩 모델 상수(뒤 칸 점유 · 회전 틱 수)의 확정 근거. 바퀴 반경 0.08 m · 트랙 0.58 m는 실측됨</td><td>T4 E2E 값(1 m 2.2 s · 90° 2.3 s)을 임시 상수로 FMS 파트에 전달</td></tr>
+      <tr><td><b>② 실측 2건</b></td><td>iw.hub 앞축 종방향 위치 · 회전 각속도. FMS 헤딩 모델 상수(뒤 칸 점유 · 회전 틱 수)의 확정 근거. 바퀴 반경 0.08 m · 트랙 0.58 m는 실측됨</td><td>완료(9/6, <code>sil/calibration/turn_probe/</code>): 회전 중심 = 구동축 = 포즈 원점, 앞 0.40 m · 뒤 1.03 m 돌출(뒤 칸 1개), 스윙 반경 1.09 m, 90° 폐루프 1.9 s(1 s 틱 기준 2틱), 1 m 직진 2.2 s</td></tr>
       <tr><td><b>③ sim-runner 데몬</b></td><td><code>sim/control</code>로 start/stop 수신. Isaac·에이전트 ×N 스폰·정리. 런 <a class="term" href="../ref/glossary_industrial.html#artifact">아티팩트</a>(리플레이 · 영상) 업로드</td><td>운영자가 GPU 서버에서 수동 기동. 8단계 중 ⑤ 자동화만 손실</td></tr>
       <tr><td><b>④ AMCL 폐루프 정밀도</b></td><td><code>pose_source:=amcl</code>에서 정지 정밀도 실측. 오돔 노이즈 주입</td><td><code>pose_source:=odom</code> 유지. 자기위치 검증 1건 손실</td></tr>
     </table></div>
@@ -310,7 +310,7 @@
       <tr><td><b>경유점 오차 ≤ 0.1 m</b></td><td><span class="chip c-green">T4 구현</span></td><td>가짜 로봇 기준 4 mm. Isaac 폐루프 값은 SEC 03 ④</td></tr>
       <tr><td><b>틱 배리어 동기</b></td><td><span class="chip c-amber">ack 구현 · 방식 재확인 중</span></td><td>에이전트는 <code>state.lastNodeId</code> 변화를 즉시 발행. lockstep인지 고정 주기인지, 타임아웃 처리는 FMS 파트 확인 대기(기준선 §9)</td></tr>
       <tr><td><b>후진 1칸 프리미티브</b></td><td><span class="chip c-green">T4 구현</span></td><td>엣지 orientation π, TANGENTIAL. 헤딩 유지</td></tr>
-      <tr><td><b>iw.hub 앞축 위치 · 회전 각속도 실측</b></td><td><span class="chip c-amber">미완</span></td><td>SEC 03 ②. 바퀴 반경 0.08 m · 트랙 0.58 m는 실측됨</td></tr>
+      <tr><td><b>iw.hub 앞축 위치 · 회전 각속도 실측</b></td><td><span class="chip c-green">완료</span></td><td>SEC 03 ②. 9/6 Isaac 실측 — 구동축 = 포즈 원점, 뒤 칸 1개 점유, 90° 1.9 s</td></tr>
     </table></div>
 
     <details class="more"><summary>PIBT 액션 ↔ VDA 5050 ↔ 에이전트 동작 매핑 5건 — 펼쳐 보기</summary>

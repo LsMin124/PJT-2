@@ -1,0 +1,137 @@
+{
+ "label": "run1",
+ "wall_s": 62.5,
+ "sim_s": 64.8,
+ "rtf": 1.036,
+ "odom_hz": 62.2,
+ "steps": {
+  "step_0.3": {
+   "cmd_rad_s": 0.3,
+   "w_ss_rad_s": 0.2898,
+   "ratio": 0.966,
+   "yaw_slope_rad_s": 0.2818,
+   "rise90_s": 0.117,
+   "turned_deg": 92.7,
+   "circle_R_m": 0.002,
+   "center_lon_m": -0.003,
+   "center_lat_m": 0.003,
+   "xy_drift_m": 0.0066,
+   "coast_deg": 2.17,
+   "stop_s": 0.167,
+   "sim_dt_ms": 16.67,
+   "n": 349
+  },
+  "step_0.6": {
+   "cmd_rad_s": 0.6,
+   "w_ss_rad_s": 0.581,
+   "ratio": 0.968,
+   "yaw_slope_rad_s": 0.573,
+   "rise90_s": 0.283,
+   "turned_deg": 206.5,
+   "circle_R_m": 0.0076,
+   "center_lon_m": -0.0038,
+   "center_lat_m": 0.0104,
+   "xy_drift_m": 0.0182,
+   "coast_deg": 6.6,
+   "stop_s": 0.25,
+   "sim_dt_ms": 16.67,
+   "n": 391
+  },
+  "step_0.9": {
+   "cmd_rad_s": 0.9,
+   "w_ss_rad_s": 0.8658,
+   "ratio": 0.962,
+   "yaw_slope_rad_s": 0.8591,
+   "rise90_s": 0.317,
+   "turned_deg": 294.1,
+   "circle_R_m": 0.0076,
+   "center_lon_m": -0.0025,
+   "center_lat_m": 0.0067,
+   "xy_drift_m": 0.0093,
+   "coast_deg": 9.96,
+   "stop_s": 0.267,
+   "sim_dt_ms": 16.67,
+   "n": 374
+  },
+  "step_1.2": {
+   "cmd_rad_s": 1.2,
+   "w_ss_rad_s": 1.1428,
+   "ratio": 0.952,
+   "yaw_slope_rad_s": 1.1364,
+   "rise90_s": 0.4,
+   "turned_deg": 382.8,
+   "circle_R_m": 0.009,
+   "center_lon_m": -0.0094,
+   "center_lat_m": 0.0074,
+   "xy_drift_m": 0.0034,
+   "coast_deg": 14.28,
+   "stop_s": 0.317,
+   "sim_dt_ms": 16.67,
+   "n": 370
+  },
+  "step_1.5": {
+   "cmd_rad_s": 1.5,
+   "w_ss_rad_s": 1.4203,
+   "ratio": 0.947,
+   "yaw_slope_rad_s": 1.414,
+   "rise90_s": 0.483,
+   "turned_deg": 489.7,
+   "circle_R_m": 0.0126,
+   "center_lon_m": -0.023,
+   "center_lat_m": 0.0051,
+   "xy_drift_m": 0.024,
+   "coast_deg": 20.56,
+   "stop_s": 0.367,
+   "sim_dt_ms": 16.67,
+   "n": 383
+  }
+ },
+ "turn90": [
+  {
+   "k": 0,
+   "done": true,
+   "sim_s": 1.917,
+   "settled_sim_s": 2.483,
+   "final_err_deg": -1.56,
+   "drift_m": 0.0131,
+   "w_peak": 1.2
+  },
+  {
+   "k": 1,
+   "done": true,
+   "sim_s": 1.95,
+   "settled_sim_s": 2.517,
+   "final_err_deg": -1.67,
+   "drift_m": 0.0108,
+   "w_peak": 1.2
+  },
+  {
+   "k": 2,
+   "done": true,
+   "sim_s": 1.9,
+   "settled_sim_s": 2.517,
+   "final_err_deg": -1.2,
+   "drift_m": 0.0094,
+   "w_peak": 1.2
+  },
+  {
+   "k": 3,
+   "done": true,
+   "sim_s": 1.9,
+   "settled_sim_s": 2.533,
+   "final_err_deg": -4.87,
+   "drift_m": 0.0136,
+   "w_peak": 1.2
+  }
+ ],
+ "limits": {
+  "v_max": 0.8,
+  "w_max": 1.2,
+  "a_max": 1.0,
+  "alpha_max": 2.5,
+  "v_min": 0.05,
+  "w_min": 0.12,
+  "decel_ratio": 0.5,
+  "stop_lead": 0.01
+ }
+}

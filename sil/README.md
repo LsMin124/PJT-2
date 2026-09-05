@@ -1,22 +1,26 @@
-# sil/ — Isaac Sim · ROS2 구현 트랙
+# sil/ — Isaac Sim · ROS 2 구현 트랙 (SIL, 가상 시운전)
 
-SIL(가상 시운전) 구현 코드가 들어올 자리. 로드맵과 기술 전제:
+정본은 팀 레포 `S15P21A106/2_Simulation/`이고 여기는 작업 사본이다(두 사본은 경로 문자열 `sil/` ↔ `2_Simulation/`만 다름).
+로드맵: `pages/working/sil_roadmap.html` — T1 텔레옵 → T2 매핑·추종 → T3 창고 씬 → T4 에이전트 → 다중 로봇 검증 런.
+실행 환경: 홈 GPU 서버(RTX 5080 16 GB · RAM 64 GB), Isaac Sim 6.0.1 `~/isaacsim` + `/opt/ros/humble`.
 
-- 로드맵: `pages/working/sil_roadmap.html` — T1 Teleop → T2 SLAM 매핑+자율 추종 → T3 창고 반송 → T4 다중 로봇+FMS
-- 아키텍처: `pages/working/runtime_architecture.html` — Humble + Fast DDS + 자체 추종기(Pure Pursuit), VDA 5050/MQTT 경계
-- 실행 환경: 홈서버 Isaac Sim 6.0.1 (~/isaacsim) + /opt/ros/humble — Isaac 동시 1인스턴스 규칙
+| 디렉토리 | 내용 | 상태 |
+|---|---|---|
+| `t1_teleop/` | /cmd_vel 텔레옵 + /clock·/odom 발행, 가감속 실측(최고 0.835 m/s) | 완료 (8/27) |
+| `t2_mapping/` | slam_toolbox 매핑 — GT 대비 오차 평균 3.4 cm · 커버리지 91.6 % | 완료 (8/27) |
+| `t2_follower/` | 자체 추종기(램프·보호 필드) 20엣지 완주 — 이후 T4 그리드 프리미티브로 대체 | 완료·대체 (8/27) |
+| `t3_warehouse_map/` | DXF 도면 → occupancy grid → 랙·스테이션·구역(v6.0.1: A~V 22구역 · 랙 132 · 스테이션 46 · 충전 6). `map/`이 단일 소스, `map2/`는 wallA 변형(보류) | 완료 (8/31) |
+| `t3_warehouse/` | 그리드 → USD 씬 빌더(건물 실측 · 화물 드레싱 · omap V&V) + `warehouse_sim.py`(iw.hub · 물리 라이다 720빔 · ROS 2 개통) + AMCL 런치 · patrol | 완료 (8/31) |
+| `t4_agent/` | ROS 2 에이전트 — VDA 5050 MQTT 브리지 + order executor + 그리드 프리미티브(스팟턴 · 직진 · 후진) + fake robot/FMS. Isaac 없이 배리어 틱 E2E 7틱 통과 | 뼈대 완료 (9/3) |
+| `calibration/turn_probe/` | iw.hub 스팟턴 실측 — 회전 중심 · 차체 돌출 · 각속도 응답 · 90° 회전 시간 → FMS 헤딩 상수 인도 | 완료 (9/6) |
+| `tools/asset_probe/` | Isaac 6.0 로봇 에셋 정적 조사 + 헤드리스 주행 프로브(두 번째 AMR 후보: Nova Carter 등) | 완료 (9/4) |
 
-현재 구성:
-- `sil/t4_agent/` — **T4-A ROS 2 에이전트 뼈대(2026-09-03)**: VDA 5050 MQTT 브리지 + order executor(FMS 틱당 노드 1개 스티칭·`lastNodeId` ack) + 그리드 프리미티브 컨트롤러(스팟턴·직진·후진 1칸, MovePrimitive 액션) + fake robot/fake FMS — Isaac 없이 배리어 틱 E2E 통과(7틱, 정지 오차 4 mm). 상세: `sil/t4_agent/README.md`
-- `sil/t3_warehouse/` — **T3-A 진행(2026-08-27)**: 씬 빌더 — 그리드→USD(벽·컨베이어 박스 + NVIDIA 랙 부품 조립), omap 역생성 V&V
-- `sil/t3_warehouse_map/` — **T3 환경 확정(2026-08-27)**: DXF 공장 도면 → occupancy grid → 랙·스테이션 배치(map_gen v6.3 — 크로스-아일·리저브 선언·플래너 뷰 자가검증)
-- `sil/t3_warehouse_map/map/` — **팀원 개편 맵 v5.7(2026-08-28)**: 세로형 랙 11열·스테이션 46·P2G 하이브리드. v5.6 검수 4건(축선 필터·y38 상부 구조선 제외·팽창역 간섭 스테이션 이동·자가검증 내장) + v5.7 시뮬 파트 결정 반영 — 기둥 최소화(98→12, 랙 흡수 열만), y76.5 선 제거로 예비존 개방, 사무실 2개소 재구축(외곽벽+출입구+회의실, 인력 전용), v5.8 바닥 파렛트 밴드 6개(셀값 6 — 구형 철골 창고의 블록 스태킹, 설계도 전체 판독 반영). 실행: `map/` 안에서 DXF 심링크와 함께 `python warehouse_layout_v5_5_final.py`
-- `sil/t3_warehouse_map/map2/` — **wallA 변형판(보류)**: "y38 벽 실재" 가정 시나리오(팀 확인 대상이었으나 시뮬 파트 결정으로 벽 없음 확정, 기록용 보존). 검수 4건 반영돼 도달 46/46 상태
-- `sil/t2_follower/` — **T2-B 완료(2026-08-27)**: 자체 추종기(램프·사각 보호 필드) — 20엣지 완주, 장애물 정지·재개 검증, 엣지 시간 결정성(±0.2s)·정지 페널티(+7.6s) 실측
-- `sil/t2_mapping/` — **T2-A 완료(2026-08-27)**: SLAM 매핑 런 — GT 방 vs 지도 오차 평균 3.4cm·커버리지 91.6%
-- `sil/t1_teleop/` — **T1 완료(2026-08-27)**: /cmd_vel 텔레옵 + /clock·/odom 발행 + 가감속 실측(DES 환류)
+실측 상수(FMS 인도용, 상세 `calibration/turn_probe/README.md`):
+- 회전 중심 = 구동축 = 포즈(/odom) 원점. 회전 중 원점 이탈 ≤ 1.3 cm.
+- 차체: 축 기준 앞 0.40 m · 뒤 1.03 m · 폭 0.66 m → 1 m 격자에서 자기 칸 + 뒤 칸 1개 점유, 스팟턴 스윙 반경 1.09 m(주변 8칸에 걸침).
+- 각속도: 지령 대비 95~97 %, 90° 폐루프 회전 1.9 s(T4 한계 1.2 rad/s), 1 m 직진 2.2 s(T4 E2E).
+- 운동학: 바퀴 반경 0.08 m · 트랙 0.58 m(에셋 함정은 `t3_warehouse/README.md`).
 
-예정 구성:
-- `sil/t3_warehouse/warehouse_sim.py` — iw.hub+라이다 투입, 스테이션 왕복 order 연쇄, 리프트 도킹
-- (`sil/adapter/` 계획은 `sil/t4_agent/`로 흡수) 다중 로봇 네임스페이스·sim-runner 연동·AMCL 폐루프 정밀도 실측
-- `sil/calibration/` 엣지 통과시간·도킹 분포 실측·환류 스크립트
+동시 실행(9/5 실측, `pages/working/isaac_parallel_measure.html`): 원본 구성은 인스턴스당 RAM 8.1 GB · VRAM 5.3 GB로 2개, 렌더·시각화를 끈 경량 구성은 6개 동시 정상(RTF 1.25). 이전의 "동시 1인스턴스" 규칙은 폐기.
+
+남은 것: `warehouse_sim.py` 다중 로봇 네임스페이스(`/amr01/…`), sim-runner 데몬(`sim/control`) · 에이전트 ×N 기동, AMCL 폐루프 정지 정밀도 · 오돔 노이즈, 엣지 통과 · 도킹 시간 분포 실측(DES 환류).

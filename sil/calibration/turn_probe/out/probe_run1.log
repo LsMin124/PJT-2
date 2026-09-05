@@ -1,0 +1,16 @@
+[probe] step 0.3 rad/s 완료 (yaw +95.1°)
+[probe] step 0.6 rad/s 완료 (yaw -51.3°)
+[probe] step 0.9 rad/s 완료 (yaw -106.3°)
+[probe] step 1.2 rad/s 완료 (yaw -68.1°)
+[probe] step 1.5 rad/s 완료 (yaw +83.4°)
+[probe] wall 62.5s · sim 64.8s · RTF 1.04 · odom 62 Hz
+[probe] cmd  w_ss   ratio rise90  R_m    lon     lat     coast°  stop_s
+[probe] 0.3  0.290  0.966 0.117  0.0020 -0.0030 +0.0030 2.17 0.167
+[probe] 0.6  0.581  0.968 0.283  0.0076 -0.0038 +0.0104 6.6 0.25
+[probe] 0.9  0.866  0.962 0.317  0.0076 -0.0025 +0.0067 9.96 0.267
+[probe] 1.2  1.143  0.952 0.4  0.0090 -0.0094 +0.0074 14.28 0.317
+[probe] 1.5  1.420  0.947 0.483  0.0126 -0.0230 +0.0051 20.56 0.367
+[probe] turn90 #0 sim 1.917s (settled 2.483s) err -1.56° drift 0.0131 m w_peak 1.2 done=True
+[probe] turn90 #1 sim 1.95s (settled 2.517s) err -1.67° drift 0.0108 m w_peak 1.2 done=True
+[probe] turn90 #2 sim 1.9s (settled 2.517s) err -1.2° drift 0.0094 m w_peak 1.2 done=True
+[probe] turn90 #3 sim 1.9s (settled 2.533s) err -4.87° drift 0.0136 m w_peak 1.2 done=True
