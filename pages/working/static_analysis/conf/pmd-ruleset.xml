@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="sa-java"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>S15P21A106 Spring Boot(Lombok) 정적분석 규칙. codestyle/performance 카테고리는 Lombok·루프 내 생성 오탐이 많아 제외.</description>
+  <rule ref="category/java/bestpractices.xml">
+    <exclude name="UnusedPrivateField"/>
+    <exclude name="GuardLogStatement"/>
+    <exclude name="UnitTestAssertionsShouldIncludeMessage"/>
+    <exclude name="UnitTestContainsTooManyAsserts"/>
+    <exclude name="AbstractClassWithoutAbstractMethod"/>
+    <exclude name="LooseCoupling"/>
+  </rule>
+  <rule ref="category/java/errorprone.xml">
+    <exclude name="MissingSerialVersionUID"/>
+    <exclude name="AvoidFieldNameMatchingMethodName"/>
+    <exclude name="AvoidLiteralsInIfCondition"/>
+    <exclude name="TestClassWithoutTestCases"/>
+  </rule>
+  <rule ref="category/java/design.xml/CyclomaticComplexity">
+    <properties><property name="methodReportLevel" value="10"/></properties>
+  </rule>
+  <rule ref="category/java/design.xml/CognitiveComplexity"/>
+  <rule ref="category/java/design.xml/NPathComplexity"/>
+  <rule ref="category/java/design.xml/GodClass"/>
+  <rule ref="category/java/design.xml/SimplifyBooleanReturns"/>
+  <rule ref="category/java/security.xml"/>
+  <rule ref="category/java/multithreading.xml"/>
+</ruleset>

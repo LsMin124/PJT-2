@@ -1,0 +1,13 @@
+{
+  "_note": "디렉토리→파트·사용자명 매핑. 커밋 이력에서 추정한 값이며 팀이 정정하면 이 파일만 수정한다. 먼저 매치되는 항목이 우선(구체적 경로를 위에).",
+  "components": [
+    {"id": "2_Simulation/t4_agent", "label": "└ t4_agent (ROS2 pkg)", "part": "시뮬", "users": ["LsMin124"], "paths": ["2_Simulation/t4_agent/"]},
+    {"id": "2_Simulation", "label": "2_Simulation (Isaac·ROS2)", "part": "시뮬", "users": ["LsMin124"], "paths": ["2_Simulation/"]},
+    {"id": "3_FMS/sim_engine", "label": "3_FMS/sim_engine (PIBT·DES)", "part": "FMS·AI", "users": ["hwarange", "Jaeryeong Shin"], "paths": ["3_FMS/sim_engine/"]},
+    {"id": "3_FMS/ai_theta+contracts", "label": "3_FMS/ai_theta·contracts", "part": "FMS·AI", "users": ["hwarange", "Jaeryeong Shin"], "paths": ["3_FMS/ai_theta/", "3_FMS/contracts/"]},
+    {"id": "3_FMS/infra+etc", "label": "3_FMS/infra·기타", "part": "FMS·AI", "users": ["hwarange", "Jaeryeong Shin"], "paths": ["3_FMS/"]},
+    {"id": "4_Web/BE", "label": "4_Web/SantaFactoryBE (Spring)", "part": "웹", "users": ["choiao0"], "paths": ["4_Web/SantaFactoryBE/"]},
+    {"id": "4_Web/FE", "label": "4_Web/SantaFactoryFE (React)", "part": "웹", "users": ["choiao0"], "paths": ["4_Web/SantaFactoryFE/"]},
+    {"id": "infra", "label": "infra (hooks·CI·Docker·compose)", "part": "공용", "users": [], "paths": [".gitlab/", ".githooks/", "4_Web/", "Jenkinsfile", ".gitlab-ci.yml", "sonar-project.properties", "1_Robot/", "5_Docs/"]}
+  ]
+}

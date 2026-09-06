@@ -1,0 +1,3 @@
+# bandit -c 이 파일. B101(assert 계약), B311(비암호 난수), B404/B603/B607(Isaac/ROS 런처 subprocess)는 팀 코드 특성상 제외.
+skips: [B101, B311, B404, B603, B607]
+exclude_dirs: ['results', 'isaac_export_t3', '.pytest_cache', 'tests', 'test', 'out', 'node_modules', 'build']

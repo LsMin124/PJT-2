@@ -1,0 +1,27 @@
+# S15P21A106 정적분석용 ruff 설정 (레포 밖). 팀이 채택하려면 그대로 pyproject/ruff.toml로 옮기면 됨.
+target-version = "py311"
+line-length = 120
+extend-exclude = [
+  "**/results/**", "**/isaac_export_*/**", "**/out/**", "**/.pytest_cache/**",
+  "5_Docs/**", "**/node_modules/**", "**/build/**", "**/.venv/**",
+]
+
+[lint]
+select = ["E4", "E7", "E9", "F", "B", "PLE", "PLW", "SIM", "UP", "RET", "C4", "PERF", "RUF"]
+ignore = [
+  "E402",   # Isaac 스크립트는 SimulationApp 생성 후 import — 팀 관례
+  "E501",   # 줄 길이는 커스텀 지표(line-len)로만 집계
+  "E731", "E741",
+  "UP009",  # coding 헤더 관례
+  "B905", "B028", "RET505", "SIM108", "PLW2901",
+  "RUF001", "RUF002", "RUF003",  # 한글 주석/문자열 오탐
+  "RUF100",  # 팀이 남긴 noqa 중 우리가 안 켠 규칙용 — 노이즈
+  "RUF005", "RUF007", "RUF046", "C408", "E702",  # 순수 스타일 (첫 실행 36/15/7/4/10건, 결함 아님)
+]
+
+[lint.per-file-ignores]
+"**/test*/**" = ["PLR2004", "B011", "F841"]
+"**/test_*.py" = ["PLR2004", "B011", "F841"]
+"**/2_Simulation/**/*.py" = ["F401", "B018"]      # isaacsim/omni 부수효과 import
+"**/2_Simulation/**/*.launch.py" = ["F"]
+"**/3_FMS/sim_engine/*_demo.py" = ["PLW0603"]

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+  <!-- Lombok/JPA 엔티티의 getter 노출, 직렬화 UID는 팀 코드 특성상 제외 -->
+  <Match><Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2,SE_NO_SERIALVERSIONID"/></Match>
+</FindBugsFilter>

@@ -1,0 +1,19 @@
+// gradle -I 이 파일: 레포 build.gradle 무수정으로 JaCoCo 리포트 + 런타임 classpath 출력 태스크 추가.
+allprojects {
+  afterEvaluate { p ->
+    if (p.plugins.hasPlugin('java')) {
+      p.apply plugin: 'jacoco'
+      p.tasks.withType(Test).configureEach {
+        ignoreFailures = true
+        reports { junitXml.required = true; html.required = false }
+        finalizedBy p.tasks.named('jacocoTestReport')
+      }
+      p.tasks.named('jacocoTestReport') {
+        reports { xml.required = true; html.required = false; csv.required = false }
+      }
+      p.tasks.register('saPrintRuntimeClasspath') {
+        doLast { println 'SA_CP=' + p.sourceSets.main.runtimeClasspath.asPath }
+      }
+    }
+  }
+}

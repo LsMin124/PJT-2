@@ -1,0 +1,28 @@
+{
+  "_note": "문서-코드 주장 레지스트리. find의 정규식이 매치되면 status=warn(needs_agreement). 채점(W)에는 넣지 않고 05 프로젝트 점검에만 표시. 팀이 합의하면 항목을 지우거나 expect를 바꾼다.",
+  "claims": [
+    {"id": "isaac-1-instance", "title": "README '동시 1인스턴스' 주장 vs 2026-09-05 실측(경량 6 동시)", "component": "2_Simulation", "needs_agreement": true,
+     "find": [{"glob": "2_Simulation/**/*.md", "re": "동시\\s*1\\s*(인스턴스|개)|1\\s*인스턴스\\s*(만|까지|가\\s*한계)|인스턴스\\s*1개"},
+              {"glob": "2_Simulation/**/*.py", "re": "동시\\s*1\\s*(인스턴스|개)|1\\s*인스턴스\\s*(만|까지)"}],
+     "msg_found": "'동시 1인스턴스' 문구 {n}곳 — 실측(64GB, lean 6 동시)과 불일치. 결정 필요: 문구 갱신 여부",
+     "msg_absent": "불일치 문구 없음"},
+    {"id": "tick-500ms", "title": "아키텍처 문서 '500ms 틱' vs FMS 문서 '커널 틱 1 s'", "component": "3_FMS/sim_engine", "needs_agreement": true,
+     "find": [{"glob": "5_Docs/**/*.html", "re": "500\\s*ms"}],
+     "counter": [{"glob": "3_FMS/docs/*.md", "re": "틱\\s*=\\s*1\\s*s|1\\s*s\\s*틱|1초\\s*틱"}],
+     "msg_found": "아키텍처 문서 '500ms' {n}곳 / FMS 문서 '1 s 틱' {m}곳. 결정 필요: 틱 주기 단일화",
+     "msg_absent": "틱 주기 표기 불일치 없음"},
+    {"id": "optuna-status", "title": "기획 기준선 'Optuna 후속' vs 3_FMS 워커 optuna 의존", "component": "3_FMS/infra+etc", "needs_agreement": true,
+     "find": [{"glob": "3_FMS/infra/requirements.txt", "re": "^optuna"}],
+     "msg_found": "requirements에 optuna 핀 존재({n}). 기준선 v3는 Optuna를 후속으로 분류. 결정 필요: 기준선 갱신 또는 워커 범위 조정",
+     "msg_absent": "optuna 의존 없음"},
+    {"id": "two-stacks", "title": "기준선 v3 '두 Spring 스택(상시 견적 + 런 스코프)' vs 앱 1개", "component": "4_Web/BE", "needs_agreement": true,
+     "find": [{"glob": "4_Web/**/*.java", "re": "@SpringBootApplication"}], "expect_min": 2,
+     "msg_found": "@SpringBootApplication {n}개 (기준선은 2 스택). 결정 필요: 분리 시점 또는 기준선 수정",
+     "msg_absent": "스택 수 일치"},
+    {"id": "git-convention-doc", "title": "참조되는 Docs/GIT_CONVENTION.md 부재", "component": "infra", "needs_agreement": false,
+     "find": [{"glob": "**/*.md", "re": "Docs/GIT_CONVENTION\\.md"}, {"glob": ".githooks/*.sh", "re": "GIT_CONVENTION"}],
+     "require_exists": "Docs/GIT_CONVENTION.md",
+     "msg_found": "{n}곳에서 참조하지만 파일 없음. 조치: 문서 커밋 또는 참조 제거",
+     "msg_absent": "참조·파일 일치"}
+  ]
+}

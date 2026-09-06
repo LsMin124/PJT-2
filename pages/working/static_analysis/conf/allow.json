@@ -1,0 +1,9 @@
+{
+  "_note": "레포에 # nosec / @SuppressWarnings 를 넣을 수 없으므로 후처리로 억제. (tool, rule, path_re) 3개 모두 매치 시 제외.",
+  "allow": [
+    {"tool": "bandit", "rule": "B104", "path_re": "2_Simulation/t3_warehouse/http_stream\\.py$", "why": "의도된 관전 서버 바인드"},
+    {"tool": "pmd", "rule": "ImmutableField", "path_re": ".*/(entity|dto)/.*", "why": "Lombok·JPA 엔티티"},
+    {"tool": "pmd", "rule": "DataClass", "path_re": ".*/(entity|dto)/.*", "why": "Lombok·JPA 엔티티"},
+    {"tool": "shellcheck", "rule": "SC2034", "path_re": "\\.githooks/commit-convention\\.sh$", "why": "source 되는 라이브러리 변수"}
+  ]
+}
