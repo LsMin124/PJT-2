@@ -1,11 +1,11 @@
 {
  "run": {
-  "id": "2026-09-07_0905_light",
-  "ts": "2026-09-07T09:05:01+0900",
+  "id": "2026-09-07_1005_light",
+  "ts": "2026-09-07T10:05:01+0900",
   "mode": "light",
   "ref": "origin/develop",
-  "sha": "9327431192855b46dbeba08b13addcdad10de4fb",
-  "duration_s": 5.6,
+  "sha": "bdf7b68a4108393cff666d46783b1ebe85e91a39",
+  "duration_s": 6.5,
   "status": "ok",
   "prev_deep": "2026-09-06_1552_deep",
   "red_flags": []
@@ -275,28 +275,40 @@
     "hwarange",
     "Jaeryeong Shin"
    ],
-   "loc": 4305,
+   "loc": 4898,
    "counts": {
     "S3": 0,
-    "S2": 8,
-    "S1": 44,
+    "S2": 10,
+    "S1": 52,
     "S0": 0
    },
    "tools": [
     "check",
     "ruff"
    ],
-   "W": 68,
-   "D": 15.8,
+   "W": 82,
+   "D": 16.7,
    "grade": "C",
    "partial": false,
    "top": [
+    {
+     "tool": "ruff",
+     "rule": "F401",
+     "sev": "S2",
+     "path": "3_FMS/sim_engine/check_lifelong_battery.py",
+     "line": 17,
+     "msg": "`json` imported but unused",
+     "symbol": "",
+     "component": "3_FMS/sim_engine",
+     "part": "FMS·AI",
+     "fp": "1663400a9e99b1de"
+    },
     {
      "tool": "check",
      "rule": "func-80",
      "sev": "S2",
      "path": "3_FMS/sim_engine/fms_kernel.py",
-     "line": 291,
+     "line": 462,
      "msg": "함수 _tick_heading 114줄 (> 80)",
      "symbol": "_tick_heading",
      "component": "3_FMS/sim_engine",
@@ -368,24 +380,12 @@
      "rule": "F841",
      "sev": "S2",
      "path": "3_FMS/sim_engine/sim_v2_tasks.py",
-     "line": 157,
+     "line": 235,
      "msg": "Local variable `robots` is assigned to but never used",
      "symbol": "",
      "component": "3_FMS/sim_engine",
      "part": "FMS·AI",
      "fp": "d6110d668c35e3ac"
-    },
-    {
-     "tool": "check",
-     "rule": "func-80",
-     "sev": "S2",
-     "path": "3_FMS/sim_engine/sim_v2_tasks.py",
-     "line": 237,
-     "msg": "함수 export_isaac 94줄 (> 80)",
-     "symbol": "export_isaac",
-     "component": "3_FMS/sim_engine",
-     "part": "FMS·AI",
-     "fp": "e110a56881e25f19"
     }
    ]
   },
@@ -397,7 +397,7 @@
     "hwarange",
     "Jaeryeong Shin"
    ],
-   "loc": 2019,
+   "loc": 2021,
    "counts": {
     "S3": 0,
     "S2": 2,
@@ -815,25 +815,25 @@
   {
    "name": "develop",
    "slug": "develop",
-   "sha": "9327431192855b46dbeba08b13addcdad10de4fb",
-   "committer_date": 1788739156,
+   "sha": "bdf7b68a4108393cff666d46783b1ebe85e91a39",
+   "committer_date": 1788739669,
    "author": "김형수",
-   "loc": 14681,
+   "loc": 15276,
    "counts": {
     "S3": 0,
-    "S2": 22,
-    "S1": 127,
+    "S2": 24,
+    "S1": 135,
     "S0": 2
    },
-   "W": 193,
+   "W": 207,
    "new_vs_prev": {
     "S3": 0,
-    "S2": 5,
-    "S1": 44,
+    "S2": 2,
+    "S1": 8,
     "S0": 0
    },
-   "fixed": 101,
-   "prev_run": "2026-09-06_1552_deep",
+   "fixed": 0,
+   "prev_run": "2026-09-07_0905_light",
    "tools": [
     {
      "id": "ruff",
@@ -844,8 +844,8 @@
      "metrics": {},
      "counts": {
       "S3": 0,
-      "S2": 12,
-      "S1": 109,
+      "S2": 13,
+      "S1": 117,
       "S0": 0
      }
     },
@@ -869,7 +869,7 @@
      "id": "bandit",
      "status": "ok",
      "rc": 0,
-     "secs": 0.7,
+     "secs": 0.8,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -925,7 +925,7 @@
      "id": "gitleaks",
      "status": "ok",
      "rc": 0,
-     "secs": 0.5,
+     "secs": 0.4,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -997,7 +997,7 @@
      "id": "size",
      "title": "파일 > 800줄 · 함수 > 80줄",
      "status": "warn",
-     "msg": "파일 2 · 함수 5 (50줄 초과 함수 16)",
+     "msg": "파일 2 · 함수 6 (50줄 초과 함수 17)",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [
@@ -1005,10 +1005,10 @@
       "3_FMS/sim_engine/pibt_core.py:0 파일 831줄 (> 800)",
       ".gitlab/scripts/sonar_mr_comment.py:371 함수 main 147줄 (> 80)",
       "2_Simulation/t3_warehouse/roof_structure.py:79 함수 build_roof 122줄 (> 80)",
-      "3_FMS/sim_engine/fms_kernel.py:291 함수 _tick_heading 114줄 (> 80)",
+      "3_FMS/sim_engine/fms_kernel.py:462 함수 _tick_heading 114줄 (> 80)",
       "3_FMS/sim_engine/from_theta_demo.py:54 함수 main 121줄 (> 80)"
      ],
-     "n": 7,
+     "n": 8,
      "sev": "S2"
     },
     {
@@ -1019,11 +1019,11 @@
      "component": "3_FMS/sim_engine",
      "needs_agreement": false,
      "evidence": [
-      "3_FMS/sim_engine/fms_kernel.py:462",
-      "3_FMS/sim_engine/fms_kernel.py:464",
-      "3_FMS/sim_engine/fms_kernel.py:476",
-      "3_FMS/sim_engine/fms_kernel.py:478",
-      "3_FMS/sim_engine/from_theta.py:128",
+      "3_FMS/sim_engine/fms_kernel.py:633",
+      "3_FMS/sim_engine/fms_kernel.py:635",
+      "3_FMS/sim_engine/fms_kernel.py:647",
+      "3_FMS/sim_engine/fms_kernel.py:649",
+      "3_FMS/sim_engine/from_theta.py:133",
       "3_FMS/sim_engine/pibt_core.py:746"
      ],
      "n": 9,
@@ -1134,27 +1134,27 @@
      "id": "line-len",
      "title": "120자 초과 줄 (지표)",
      "status": "ok",
-     "msg": "11줄",
+     "msg": "31줄",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [],
-     "n": 11,
+     "n": 31,
      "sev": "S0"
     }
    ],
-   "duration_s": 2.6,
+   "duration_s": 2.8,
    "allow_dropped": 5,
    "new": {
     "S3": 0,
-    "S2": 5,
-    "S1": 44,
+    "S2": 2,
+    "S1": 8,
     "S0": 0
    },
    "convention": {},
    "ahead": 0,
    "behind": 0,
    "files_changed": 0,
-   "merge_base": "9327431192855b46dbeba08b13addcdad10de4fb"
+   "merge_base": "bdf7b68a4108393cff666d46783b1ebe85e91a39"
   }
  ],
  "tools": [
@@ -1167,8 +1167,8 @@
    "metrics": {},
    "counts": {
     "S3": 0,
-    "S2": 12,
-    "S1": 109,
+    "S2": 13,
+    "S1": 117,
     "S0": 0
    }
   },
@@ -1192,7 +1192,7 @@
    "id": "bandit",
    "status": "ok",
    "rc": 0,
-   "secs": 0.7,
+   "secs": 0.8,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -1248,7 +1248,7 @@
    "id": "gitleaks",
    "status": "ok",
    "rc": 0,
-   "secs": 0.5,
+   "secs": 0.4,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -1320,7 +1320,7 @@
    "id": "size",
    "title": "파일 > 800줄 · 함수 > 80줄",
    "status": "warn",
-   "msg": "파일 2 · 함수 5 (50줄 초과 함수 16)",
+   "msg": "파일 2 · 함수 6 (50줄 초과 함수 17)",
    "component": "infra",
    "needs_agreement": false,
    "evidence": [
@@ -1328,10 +1328,10 @@
     "3_FMS/sim_engine/pibt_core.py:0 파일 831줄 (> 800)",
     ".gitlab/scripts/sonar_mr_comment.py:371 함수 main 147줄 (> 80)",
     "2_Simulation/t3_warehouse/roof_structure.py:79 함수 build_roof 122줄 (> 80)",
-    "3_FMS/sim_engine/fms_kernel.py:291 함수 _tick_heading 114줄 (> 80)",
+    "3_FMS/sim_engine/fms_kernel.py:462 함수 _tick_heading 114줄 (> 80)",
     "3_FMS/sim_engine/from_theta_demo.py:54 함수 main 121줄 (> 80)"
    ],
-   "n": 7,
+   "n": 8,
    "sev": "S2"
   },
   {
@@ -1342,11 +1342,11 @@
    "component": "3_FMS/sim_engine",
    "needs_agreement": false,
    "evidence": [
-    "3_FMS/sim_engine/fms_kernel.py:462",
-    "3_FMS/sim_engine/fms_kernel.py:464",
-    "3_FMS/sim_engine/fms_kernel.py:476",
-    "3_FMS/sim_engine/fms_kernel.py:478",
-    "3_FMS/sim_engine/from_theta.py:128",
+    "3_FMS/sim_engine/fms_kernel.py:633",
+    "3_FMS/sim_engine/fms_kernel.py:635",
+    "3_FMS/sim_engine/fms_kernel.py:647",
+    "3_FMS/sim_engine/fms_kernel.py:649",
+    "3_FMS/sim_engine/from_theta.py:133",
     "3_FMS/sim_engine/pibt_core.py:746"
    ],
    "n": 9,
@@ -1457,20 +1457,20 @@
    "id": "line-len",
    "title": "120자 초과 줄 (지표)",
    "status": "ok",
-   "msg": "11줄",
+   "msg": "31줄",
    "component": "infra",
    "needs_agreement": false,
    "evidence": [],
-   "n": 11,
+   "n": 31,
    "sev": "S0"
   }
  ],
  "tests": {},
  "totals": {
-  "findings": 151,
-  "W": 193,
-  "new": 49,
-  "fixed": 101
+  "findings": 161,
+  "W": 207,
+  "new": 10,
+  "fixed": 0
  },
  "narrative": {
   "status": "skipped"
