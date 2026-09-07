@@ -1,11 +1,11 @@
 {
  "run": {
-  "id": "2026-09-08_0005_light",
-  "ts": "2026-09-08T00:05:01+0900",
+  "id": "2026-09-08_0305_light",
+  "ts": "2026-09-08T03:05:01+0900",
   "mode": "light",
   "ref": "origin/develop",
-  "sha": "3d65415b80630436aef9d70f97d32c1a7503063d",
-  "duration_s": 9.1,
+  "sha": "e1620db5078723326a13b205507d977c06bd961d",
+  "duration_s": 5.8,
   "status": "ok",
   "prev_deep": "2026-09-07_1805_deep",
   "red_flags": []
@@ -797,7 +797,7 @@
    "label": "infra (hooks·CI·Docker·compose)",
    "part": "공용",
    "users": [],
-   "loc": 780,
+   "loc": 839,
    "counts": {
     "S3": 0,
     "S2": 2,
@@ -808,7 +808,7 @@
     "check"
    ],
    "W": 6,
-   "D": 7.7,
+   "D": 7.2,
    "grade": "B",
    "partial": false,
    "top": [
@@ -829,8 +829,8 @@
      "rule": "func-80",
      "sev": "S2",
      "path": ".gitlab/scripts/sonar_mr_comment.py",
-     "line": 371,
-     "msg": "함수 main 147줄 (> 80)",
+     "line": 386,
+     "msg": "함수 main 148줄 (> 80)",
      "symbol": "main",
      "component": "infra",
      "part": "공용",
@@ -843,10 +843,10 @@
   {
    "name": "develop",
    "slug": "develop",
-   "sha": "3d65415b80630436aef9d70f97d32c1a7503063d",
-   "committer_date": 1788793013,
+   "sha": "e1620db5078723326a13b205507d977c06bd961d",
+   "committer_date": 1788800571,
    "author": "신재령",
-   "loc": 18118,
+   "loc": 18177,
    "counts": {
     "S3": 0,
     "S2": 42,
@@ -856,12 +856,12 @@
    "W": 252,
    "new_vs_prev": {
     "S3": 0,
-    "S2": 1,
-    "S1": 5,
+    "S2": 0,
+    "S1": 0,
     "S0": 0
    },
-   "fixed": 98,
-   "prev_run": "2026-09-07_1805_deep",
+   "fixed": 0,
+   "prev_run": "2026-09-08_0005_light",
    "tools": [
     {
      "id": "ruff",
@@ -981,7 +981,7 @@
      "id": "pmd",
      "status": "ok",
      "rc": 4,
-     "secs": 1.2,
+     "secs": 0.9,
      "stderr_tail": "[INFO] Found 10 violations.",
      "metrics": {
       "processing_errors": 0
@@ -1027,12 +1027,12 @@
      "id": "size",
      "title": "파일 > 800줄 · 함수 > 80줄",
      "status": "warn",
-     "msg": "파일 1 · 함수 3 (50줄 초과 함수 10)",
+     "msg": "파일 1 · 함수 3 (50줄 초과 함수 9)",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [
       "2_Simulation/t3_warehouse/build_scene.py:0 파일 930줄 (> 800)",
-      ".gitlab/scripts/sonar_mr_comment.py:371 함수 main 147줄 (> 80)",
+      ".gitlab/scripts/sonar_mr_comment.py:386 함수 main 148줄 (> 80)",
       "2_Simulation/t3_warehouse/roof_structure.py:79 함수 build_roof 122줄 (> 80)",
       "3_FMS/sim_engine/checks/from_theta_demo.py:57 함수 main 121줄 (> 80)"
      ],
@@ -1165,371 +1165,19 @@
      "sev": "S0"
     }
    ],
-   "duration_s": 3.1,
+   "duration_s": 2.8,
    "allow_dropped": 5,
    "new": {
     "S3": 0,
-    "S2": 1,
-    "S1": 5,
+    "S2": 0,
+    "S1": 0,
     "S0": 0
    },
    "convention": {},
    "ahead": 0,
    "behind": 0,
    "files_changed": 0,
-   "merge_base": "3d65415b80630436aef9d70f97d32c1a7503063d"
-  },
-  {
-   "name": "feature/S15P21A106-154-fms-문서정리",
-   "slug": "feature__S15P21A106-154-fms-27697d",
-   "sha": "8a04c4809971073da764303855a68068d4e42480",
-   "committer_date": 1788791726,
-   "author": "hwarange",
-   "loc": 15878,
-   "counts": {
-    "S3": 0,
-    "S2": 61,
-    "S1": 121,
-    "S0": 2
-   },
-   "W": 304,
-   "new_vs_prev": {
-    "S3": 0,
-    "S2": 61,
-    "S1": 121,
-    "S0": 2
-   },
-   "fixed": 0,
-   "prev_run": null,
-   "tools": [
-    {
-     "id": "ruff",
-     "status": "ok",
-     "rc": 0,
-     "secs": 0.0,
-     "stderr_tail": "",
-     "metrics": {},
-     "counts": {
-      "S3": 0,
-      "S2": 32,
-      "S1": 110,
-      "S0": 0
-     }
-    },
-    {
-     "id": "ruff-format",
-     "status": "ok",
-     "rc": 1,
-     "secs": 0.0,
-     "stderr_tail": "",
-     "metrics": {
-      "unformatted": 0
-     },
-     "counts": {
-      "S3": 0,
-      "S2": 0,
-      "S1": 0,
-      "S0": 0
-     }
-    },
-    {
-     "id": "bandit",
-     "status": "ok",
-     "rc": 0,
-     "secs": 0.7,
-     "stderr_tail": "",
-     "metrics": {},
-     "counts": {
-      "S3": 0,
-      "S2": 0,
-      "S1": 0,
-      "S0": 0
-     }
-    },
-    {
-     "id": "yamllint",
-     "status": "ok",
-     "rc": 0,
-     "secs": 0.1,
-     "stderr_tail": "",
-     "metrics": {},
-     "counts": {
-      "S3": 0,
-      "S2": 0,
-      "S1": 1,
-      "S0": 0
-     }
-    },
-    {
-     "id": "shellcheck",
-     "status": "ok",
-     "rc": null,
-     "secs": 0.0,
-     "stderr_tail": "",
-     "metrics": {},
-     "counts": {
-      "S3": 0,
-      "S2": 0,
-      "S1": 1,
-      "S0": 0
-     }
-    },
-    {
-     "id": "hadolint",
-     "status": "ok",
-     "rc": 1,
-     "secs": 0.0,
-     "stderr_tail": "",
-     "metrics": {},
-     "counts": {
-      "S3": 0,
-      "S2": 0,
-      "S1": 1,
-      "S0": 1
-     }
-    },
-    {
-     "id": "gitleaks",
-     "status": "ok",
-     "rc": 0,
-     "secs": 0.4,
-     "stderr_tail": "",
-     "metrics": {},
-     "counts": {
-      "S3": 0,
-      "S2": 0,
-      "S1": 0,
-      "S0": 0
-     }
-    },
-    {
-     "id": "oxlint",
-     "status": "ok",
-     "rc": 0,
-     "secs": 0.1,
-     "stderr_tail": "",
-     "metrics": {},
-     "counts": {
-      "S3": 0,
-      "S2": 0,
-      "S1": 0,
-      "S0": 0
-     }
-    },
-    {
-     "id": "pmd",
-     "status": "ok",
-     "rc": 4,
-     "secs": 1.1,
-     "stderr_tail": "[INFO] Found 4 violations.",
-     "metrics": {
-      "processing_errors": 0
-     },
-     "counts": {
-      "S3": 0,
-      "S2": 0,
-      "S1": 3,
-      "S0": 1
-     }
-    }
-   ],
-   "custom_checks": [
-    {
-     "id": "req-drift",
-     "title": "3_FMS import ⊆ requirements.txt",
-     "status": "ok",
-     "msg": "import 전부 requirements와 일치 (allow: simpy)",
-     "component": "3_FMS/infra+etc",
-     "needs_agreement": false,
-     "evidence": [],
-     "n": 0,
-     "sev": "S3"
-    },
-    {
-     "id": "doc-links",
-     "title": "문서 상대링크·코드 헤더 docs 참조 존재",
-     "status": "warn",
-     "msg": "깨진 참조 25건",
-     "component": "infra",
-     "needs_agreement": false,
-     "evidence": [
-      ".githooks/README.md:5 → ../Docs/GIT_CONVENTION.md",
-      "3_FMS/ai_theta/data/build_input.py:5 → Docs/AI/AI입출력명세서.md",
-      "3_FMS/docs/2026-09-04_θ_실험_로드맵_AB공동.md:4 → 2026-09-04_고부하_무릎_판정.md",
-      "3_FMS/docs/2026-09-04_θ_실험_로드맵_AB공동.md:36 → 2026-09-07_B5_θ적용_FleetSweep_결과.md",
-      "3_FMS/docs/2026-09-04_θ감도_실험.md:4 → 2026-09-01_θ스키마_합의안.md",
-      "3_FMS/docs/2026-09-04_θ감도_실험.md:62 → 2026-09-01_θ스키마_합의안.md"
-     ],
-     "n": 25,
-     "sev": "S2"
-    },
-    {
-     "id": "size",
-     "title": "파일 > 800줄 · 함수 > 80줄",
-     "status": "warn",
-     "msg": "파일 1 · 함수 3 (50줄 초과 함수 10)",
-     "component": "infra",
-     "needs_agreement": false,
-     "evidence": [
-      "2_Simulation/t3_warehouse/build_scene.py:0 파일 930줄 (> 800)",
-      ".gitlab/scripts/sonar_mr_comment.py:371 함수 main 147줄 (> 80)",
-      "2_Simulation/t3_warehouse/roof_structure.py:79 함수 build_roof 122줄 (> 80)",
-      "3_FMS/sim_engine/checks/from_theta_demo.py:57 함수 main 121줄 (> 80)"
-     ],
-     "n": 4,
-     "sev": "S2"
-    },
-    {
-     "id": "print-in-lib",
-     "title": "라이브러리 모듈 내 print()",
-     "status": "warn",
-     "msg": "1건",
-     "component": "3_FMS/sim_engine",
-     "needs_agreement": false,
-     "evidence": [
-      "3_FMS/sim_engine/from_theta.py:133"
-     ],
-     "n": 1,
-     "sev": "S1"
-    },
-    {
-     "id": "spring-config",
-     "title": "Spring main application.yml 운영 안전 설정",
-     "status": "warn",
-     "msg": "4건",
-     "component": "4_Web/BE",
-     "needs_agreement": false,
-     "evidence": [
-      "4_Web/SantaFactoryBE/src/main/resources/application.yml:7 자격증명 환경변수에 기본값 fallback",
-      "4_Web/SantaFactoryBE/src/main/resources/application.yml:10 ddl-auto=update: 운영 스키마 자동 변경",
-      "4_Web/SantaFactoryBE/src/main/resources/application.yml:11 show-sql=true: 운영 로그에 SQL 노출",
-      "4_Web/SantaFactoryBE/src/main/resources/application.yml:19 자격증명 환경변수에 기본값 fallback"
-     ],
-     "n": 4,
-     "sev": "S1"
-    },
-    {
-     "id": "claims.isaac-1-instance",
-     "title": "README '동시 1인스턴스' 주장 vs 2026-09-05 실측(경량 6 동시)",
-     "status": "warn",
-     "msg": "'동시 1인스턴스' 문구 3곳 — 실측(64GB, lean 6 동시)과 불일치. 결정 필요: 문구 갱신 여부",
-     "component": "2_Simulation",
-     "needs_agreement": true,
-     "evidence": [
-      "2_Simulation/t1_teleop/README.md:27",
-      "2_Simulation/t3_warehouse/README.md:27",
-      "2_Simulation/t3_warehouse/view_scene.py:8"
-     ],
-     "n": 3,
-     "sev": "S0"
-    },
-    {
-     "id": "claims.tick-500ms",
-     "title": "아키텍처 문서 '500ms 틱' vs FMS 문서 '커널 틱 1 s'",
-     "status": "warn",
-     "msg": "아키텍처 문서 '500ms' 4곳 / FMS 문서 '1 s 틱' 4곳. 결정 필요: 틱 주기 단일화",
-     "component": "3_FMS/sim_engine",
-     "needs_agreement": true,
-     "evidence": [
-      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:246",
-      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:280",
-      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:441",
-      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:448",
-      "3_FMS/docs/2026-09-04_시스템아키텍처_검토_B트랙관점.md:25",
-      "3_FMS/docs/2026-09-04_시스템아키텍처_검토_B트랙관점.md:95"
-     ],
-     "n": 4,
-     "sev": "S0"
-    },
-    {
-     "id": "claims.optuna-status",
-     "title": "기획 기준선 'Optuna 후속' vs 3_FMS 워커 optuna 의존",
-     "status": "warn",
-     "msg": "requirements에 optuna 핀 존재(1). 기준선 v3는 Optuna를 후속으로 분류. 결정 필요: 기준선 갱신 또는 워커 범위 조정",
-     "component": "3_FMS/infra+etc",
-     "needs_agreement": true,
-     "evidence": [
-      "3_FMS/infra/requirements.txt:9"
-     ],
-     "n": 1,
-     "sev": "S0"
-    },
-    {
-     "id": "claims.two-stacks",
-     "title": "기준선 v3 '두 Spring 스택(상시 견적 + 런 스코프)' vs 앱 1개",
-     "status": "warn",
-     "msg": "@SpringBootApplication 1개 (기준선은 2 스택). 결정 필요: 분리 시점 또는 기준선 수정",
-     "component": "4_Web/BE",
-     "needs_agreement": true,
-     "evidence": [
-      "4_Web/SantaFactoryBE/src/main/java/com/ssafy/santafactory/SantaFactoryApplication.java:6"
-     ],
-     "n": 1,
-     "sev": "S0"
-    },
-    {
-     "id": "claims.git-convention-doc",
-     "title": "참조되는 Docs/GIT_CONVENTION.md 부재",
-     "status": "warn",
-     "msg": "3곳에서 참조하지만 파일 없음. 조치: 문서 커밋 또는 참조 제거",
-     "component": "infra",
-     "needs_agreement": false,
-     "evidence": [
-      ".githooks/README.md:5",
-      ".gitlab/merge_request_templates/Default.md:15",
-      ".githooks/commit-convention.sh:3"
-     ],
-     "n": 3,
-     "sev": "S0"
-    },
-    {
-     "id": "todo",
-     "title": "주석 TODO·FIXME·HACK",
-     "status": "ok",
-     "msg": "0건",
-     "component": "infra",
-     "needs_agreement": false,
-     "evidence": [],
-     "n": 0,
-     "sev": "S0"
-    },
-    {
-     "id": "line-len",
-     "title": "120자 초과 줄 (지표)",
-     "status": "ok",
-     "msg": "61줄",
-     "component": "infra",
-     "needs_agreement": false,
-     "evidence": [],
-     "n": 61,
-     "sev": "S0"
-    }
-   ],
-   "duration_s": 2.8,
-   "allow_dropped": 5,
-   "merge_base": "031a4759a04d1e8eb8ecd5da107be43c516ab85e",
-   "files_changed": 68,
-   "ahead": 2,
-   "behind": 55,
-   "new_vs_develop": {
-    "S3": 0,
-    "S2": 0,
-    "S1": 0,
-    "S0": 0
-   },
-   "new_vs_develop_top": [],
-   "convention": {
-    "branch_ok": true,
-    "commits_ok": 2,
-    "commits_total": 2,
-    "offenders": []
-   },
-   "new": {
-    "S3": 0,
-    "S2": 0,
-    "S1": 0,
-    "S0": 0
-   }
+   "merge_base": "e1620db5078723326a13b205507d977c06bd961d"
   }
  ],
  "tools": [
@@ -1651,7 +1299,7 @@
    "id": "pmd",
    "status": "ok",
    "rc": 4,
-   "secs": 1.2,
+   "secs": 0.9,
    "stderr_tail": "[INFO] Found 10 violations.",
    "metrics": {
     "processing_errors": 0
@@ -1697,12 +1345,12 @@
    "id": "size",
    "title": "파일 > 800줄 · 함수 > 80줄",
    "status": "warn",
-   "msg": "파일 1 · 함수 3 (50줄 초과 함수 10)",
+   "msg": "파일 1 · 함수 3 (50줄 초과 함수 9)",
    "component": "infra",
    "needs_agreement": false,
    "evidence": [
     "2_Simulation/t3_warehouse/build_scene.py:0 파일 930줄 (> 800)",
-    ".gitlab/scripts/sonar_mr_comment.py:371 함수 main 147줄 (> 80)",
+    ".gitlab/scripts/sonar_mr_comment.py:386 함수 main 148줄 (> 80)",
     "2_Simulation/t3_warehouse/roof_structure.py:79 함수 build_roof 122줄 (> 80)",
     "3_FMS/sim_engine/checks/from_theta_demo.py:57 함수 main 121줄 (> 80)"
    ],
@@ -1839,8 +1487,8 @@
  "totals": {
   "findings": 170,
   "W": 252,
-  "new": 6,
-  "fixed": 98
+  "new": 0,
+  "fixed": 0
  },
  "narrative": {
   "status": "skipped"
