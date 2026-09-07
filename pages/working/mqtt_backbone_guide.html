@@ -89,10 +89,10 @@ footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mon
 </head>
 <body>
 <header class="top"><div class="wrap">
-  <span class="doc-no">WORKING · MQTT-BACKBONE · REV A — 2026-09-07 · NEW</span>
+  <span class="doc-no">WORKING · MQTT-BACKBONE · REV B — 2026-09-07 (Rev A 리뷰 반영) · NEW</span>
   <h1>MQTT 백본 구축 가이드 — EMQX 위에 VDA 5050과 Sparkplug B를 함께 올리기</h1>
-  <p class="lede">아키텍처 v3.8의 "03 EMQX 백본"을 처음부터 끝까지 세우는 순서다. 결정을 고정하고, 계약을 쓰고, 로컬 브로커를 띄우고, VDA 5050 면과 Sparkplug B 면을 차례로 붙인 뒤, 리허설과 k3s 배포, 검증 자동화로 끝난다. 각 단계는 목표 · 산출물 · 검증으로 닫힌다. 코드는 골격만 두었고 채우는 것은 따라하는 사람의 몫이다. 팀 레포는 수정하지 않았다.</p>
-  <div class="source">SOURCE · <b>아키텍처 v3.8 §03·⑤ · 2_Simulation/t4_agent · 3_FMS/contracts</b> · 기준 표준: VDA 5050 2.0.0 · Sparkplug B 3.0 · EMQX 5.x OSS · MQTT 3.1.1 · 가이드 문서(구현 없음)</div>
+  <p class="lede">아키텍처 v3.8의 "03 EMQX 백본"을 처음부터 끝까지 세우는 순서다. 결정을 고정하고, 계약을 쓰고, 로컬 브로커를 띄우고, VDA 5050 면과 Sparkplug B 면을 차례로 붙인 뒤, 리허설과 k3s 배포, 검증 자동화로 끝난다. 각 단계는 목표 · 산출물 · 검증으로 닫힌다. 코드는 골격만 두었고 채우는 것은 따라하는 사람의 몫이다. 팀 레포는 수정하지 않았다. Rev B는 Rev A 리뷰 5건(이벤트 레인, Host 위치, 이미지·라이선스, order 재발행, 주문 유실)을 반영했다.</p>
+  <div class="source">SOURCE · <b>아키텍처 v3.8 §03·⑤ · 2_Simulation/t4_agent · 3_FMS/contracts</b> · 기준 표준: VDA 5050 2.0.0 · Sparkplug B 3.0 · EMQX 6.3.0 (digest 고정, BSL 1.1) · MQTT 3.1.1 · 가이드 문서(구현 없음)</div>
 </div></header>
 <nav class="bar" aria-label="문서 내 탐색"><div class="wrap"><a class="nav-home" href="../../index.html">⌂ INDEX</a><a href="#s0">00 전제</a><a href="#s1">01 전체 그림</a><a href="#s2">02 결정</a><a href="#s3">03 계약</a><a href="#s4">04 로컬 EMQX</a><a href="#s5">05 VDA</a><a href="#s6">06 Host</a><a href="#s7">07 Edge</a><a href="#s8">08 정책</a><a href="#s9">09 리허설</a><a href="#s10">10 k3s</a><a href="#s11">11 검증</a><a href="#sA">부록</a><a href="t3_t4_progress.html">T3·T4 진행 ↗</a><a href="isaac_parallel_measure.html">병렬 실측 ↗</a></div></nav>
 <div class="wrap"><div class="layout">
@@ -114,16 +114,24 @@ footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mon
 
 <main>
 
+<div class="box note"><span class="k">Rev B 개정 이력 — 2026-09-07 리뷰 반영 5건</span><ol>
+<li><b>fms/event는 Sparkplug가 아니라 일반 JSON</b> <code>biz/v1/event</code>. NDATA에 실으면 Spring WMS가 protobuf를 풀어야 하고(결정 4와 모순), 이벤트는 RBE 의미론과 맞지 않는다. Sparkplug 범위는 sim-runner 텔레메트리 · 런 제어 · 세션 수명으로 좁힌다.</li>
+<li><b>Primary Host = GPU 런 큐 소비자 상시 Deployment 하나.</b> 수평 확장되는 DES 워커(k8s Job)에 Host를 두면 같은 host_id로 STATE가 충돌하고 Job 종료 때마다 LWT offline이 Edge를 흔든다.</li>
+<li><b>이미지 6.3.0 digest 고정 + 라이선스 한 줄.</b> Docker Hub에 메이저 태그 <code>5</code>는 없고 <code>5.8</code>~<code>5.8.9</code>와 <code>6.x</code>가 있다. 6.x는 BSL 1.1, 5.8 라인은 Apache 2.0.</li>
+<li><b>order 재발행 규칙</b>(계약 4.3)과 그 전제인 <b>T4 order.py 수정</b>(같은 orderUpdateId는 오류 없이 무시).</li>
+<li><b>주문 유실 방지</b>: WMS 수요 생성은 fms-core RUNNING 확인 뒤에만, fms-core 단절이 keepalive를 넘기면 런 실패.</li></ol></div>
+
 <section class="step" id="s0">
 <div class="step-head"><div class="badge">00</div><h2>시작 전에 — 전제와 현재 위치</h2></div>
 <p>두 표준은 한 브로커 위에서 공존하지만 섞이지 않는다. VDA 5050은 <code>uagv/v2/{제조사}/{시리얼}/…</code>에 JSON을 싣고, Sparkplug B는 <code>spBv1.0/{group}/{메시지}/{edge node}/{device}</code>에 protobuf를 싣는다. 이 문서는 그 두 트리를 어디에 어떻게 두는지부터 정한다.</p>
 <div class="tw"><table>
 <tr><th>고정할 것</th><th>값</th><th>근거</th></tr>
-<tr><td>브로커</td><td>EMQX 5.x 오픈소스, 컨테이너 이미지로 배포, 상시 가동</td><td>아키텍처 v3.8 "03 EMQX 백본", sim/control이 런보다 먼저 있어야 함</td></tr>
+<tr><td>브로커</td><td>EMQX 6.3.0, 컨테이너 이미지를 digest로 고정, 상시 가동</td><td>아키텍처 v3.8 "03 EMQX 백본", sim/control이 런보다 먼저 있어야 함. Hub에 메이저 태그 <code>5</code>는 없음(2026-09-07 확인), Apache 2.0이 필요하면 <code>5.8.9</code></td></tr>
+<tr><td>브로커 라이선스</td><td>6.x = Business Source License 1.1 (5.8 라인 = Apache 2.0)</td><td>emqx/emqx 레포 LICENSE 원문. 추가 사용 허가 조항을 계약 0장에 인용해 둔다</td></tr>
 <tr><td>AMR 제어 프로토콜</td><td>VDA 5050 2.0.0</td><td>T4 <code>vda5050/topics.py</code>가 v2 · 2.0.0으로 고정</td></tr>
 <tr><td>인프라·텔레메트리 프로토콜</td><td>Sparkplug B 3.0 (spBv1.0 네임스페이스)</td><td>팀 결정</td></tr>
 <tr><td>MQTT 버전</td><td>3.1.1, clean session</td><td>Sparkplug가 요구하는 세션 규칙, T4 브리지가 이미 MQTTv311</td></tr>
-<tr><td>클라이언트 라이브러리</td><td>Python paho-mqtt 2.x(있음) + Sparkplug 래퍼 1종, Java는 Eclipse Tahu</td><td>T4는 paho, Sparkplug는 protobuf 인코딩이 필요</td></tr>
+<tr><td>클라이언트 라이브러리</td><td>Python paho-mqtt 2.x(있음) + Sparkplug 래퍼 1종. Java(Spring WMS)는 일반 MQTT 클라이언트만 — Sparkplug를 만지지 않는다</td><td>T4는 paho, Sparkplug는 protobuf 인코딩이 필요. WMS가 보고 내는 것은 전부 <code>biz/v1/*</code> JSON</td></tr>
 <tr><td>관측 도구</td><td>MQTTX CLI 또는 mosquitto-clients</td><td>구독·retained·LWT 확인용</td></tr>
 </table></div>
 <h3>레포에 지금 있는 것과 없는 것</h3>
@@ -131,7 +139,8 @@ footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mon
 <tr><th>구성 요소</th><th>상태</th><th>위치 · 메모</th></tr>
 <tr><td>VDA 5050 브리지(에이전트 쪽)</td><td><span class="pill ok">있음</span></td><td><code>2_Simulation/t4_agent/…/nodes/bridge_node.py</code> — connection ONLINE retained QoS1, LWT CONNECTIONBROKEN, order·instantActions 구독 QoS0, state 발행 QoS0, 2초 재발행</td></tr>
 <tr><td>VDA 5050 factsheet</td><td><span class="pill no">없음</span></td><td>topics.py에 이름만 있음. 이기종 프로파일을 FMS에 넘기는 규격 통로라 05단계에서 만든다</td></tr>
-<tr><td>FMS 코어 MQTT 셸</td><td><span class="pill no">없음</span></td><td>커널(<code>fms_kernel.py</code>)만 있음. 500 ms 틱 셸을 07단계에서 만든다</td></tr>
+<tr><td>FMS 코어 MQTT 셸</td><td><span class="pill no">없음</span></td><td>커널(<code>fms_kernel.py</code>)만 있음. 500 ms 틱 셸과 order outbox·재발행을 07단계에서 만든다</td></tr>
+<tr><td>T4 중복 order 처리</td><td><span class="pill no">규격과 다름</span></td><td><code>vda5050/order.py</code>가 같은 orderUpdateId를 오류로 거부한다. 재발행 규칙의 전제이므로 05단계에서 "같으면 무시, 낮으면 거부"로 고친다</td></tr>
 <tr><td>sim-runner 데몬(GPU 서버)</td><td><span class="pill no">없음</span></td><td>sim/control을 받아 <code>warehouse_sim.py</code>(WSIM_N)와 에이전트 ×N을 띄우는 상주 프로세스. 07단계</td></tr>
 <tr><td>EMQX 배포</td><td><span class="pill no">없음</span></td><td>두 compose 파일 어디에도 없음. T4는 로컬 amqtt를 대용으로 씀. 04·10단계</td></tr>
 <tr><td>MQTT 계약 문서</td><td><span class="pill no">없음</span></td><td><code>3_FMS/contracts/SIM_RUN_CONTRACT.md</code>는 프로세스 호출 규약이라 MQTT 페이로드 계약은 03단계에서 새로 쓴다</td></tr>
@@ -142,7 +151,7 @@ footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mon
 
 <section class="step" id="s1">
 <div class="step-head"><div class="badge">01</div><h2>전체 그림 — 두 면, 한 브로커, 경계 하나</h2></div>
-<p>왼쪽은 홈 GPU 서버, 오른쪽은 EC2 k3s다. 브로커는 EC2에만 있고, GPU 서버 쪽 프로세스는 tailscale 아웃바운드로 붙는다. 파란 선이 VDA 5050 면(FMS ↔ AMR 제어), 주황 선이 Sparkplug B 면(런 제어 · 텔레메트리 · 세션 수명)이다.</p>
+<p>왼쪽은 홈 GPU 서버, 오른쪽은 EC2 k3s다. 브로커는 EC2에만 있고, GPU 서버 쪽 프로세스는 tailscale 아웃바운드로 붙는다. 파란 선이 VDA 5050 면(FMS ↔ AMR 제어), 주황 선이 Sparkplug B 면(런 제어 · 텔레메트리 · 세션 수명), 흰 선이 일반 JSON 토픽(<code>biz/v1/order</code>·<code>biz/v1/event</code>)이다.</p>
 <figure>
 <svg viewBox="0 0 960 400" role="img" aria-label="홈 GPU 서버의 sim-runner·warehouse_sim·T4 에이전트와 EC2 k3s의 EMQX·Primary Host·fms-core·시뮬 WMS가 tailscale 경계를 넘어 두 레인(VDA 5050, Sparkplug B)으로 EMQX에 붙는 토폴로지">
 <defs>
@@ -183,7 +192,7 @@ footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mon
   <!-- right boxes -->
   <rect x="800" y="80" width="130" height="48" rx="6" fill="none" stroke="currentColor"/>
   <text x="865" y="99" text-anchor="middle" font-weight="600">Primary Host</text>
-  <text x="865" y="116" text-anchor="middle" font-size="11" fill-opacity=".75">오케스트레이터 (계산엔진 워커)</text>
+  <text x="865" y="116" text-anchor="middle" font-size="11" fill-opacity=".75">GPU 런 큐 소비자 · 상시 1개</text>
   <rect x="800" y="184" width="130" height="48" rx="6" fill="none" stroke="currentColor"/>
   <text x="865" y="203" text-anchor="middle" font-weight="600">fms-core Job</text>
   <text x="865" y="220" text-anchor="middle" font-size="11" fill-opacity=".75">Edge Node + VDA 마스터 · 런 단위</text>
@@ -200,22 +209,22 @@ footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mon
   <text x="400" y="86" text-anchor="middle" font-size="11" class="tx-spb">spBv1.0 · NBIRTH/NDEATH · DBIRTH/DDATA (protobuf) ← NCMD start/stop</text>
   <!-- Host <-> EMQX -->
   <polyline points="800,104 650,104 650,174" fill="none" class="ln-spb" stroke-width="2" marker-start="url(#ah-spb)" marker-end="url(#ah-spb)"/>
-  <text x="725" y="98" text-anchor="middle" font-size="11" class="tx-spb">STATE · NCMD</text>
+  <text x="725" y="98" text-anchor="middle" font-size="11" class="tx-spb">STATE · NCMD · Runner/*</text>
   <!-- fms <-> EMQX two lanes -->
   <line x1="690" y1="196" x2="798" y2="196" class="ln-vda" stroke-width="2" marker-start="url(#ah-vda)" marker-end="url(#ah-vda)"/>
   <text x="744" y="190" text-anchor="middle" font-size="10.5" class="tx-vda">uagv order↔state</text>
-  <line x1="690" y1="222" x2="798" y2="222" class="ln-spb" stroke-width="2" marker-start="url(#ah-spb)" marker-end="url(#ah-spb)"/>
-  <text x="744" y="236" text-anchor="middle" font-size="10.5" class="tx-spb">NDATA fms/event</text>
+  <line x1="690" y1="222" x2="798" y2="222" stroke="currentColor" stroke-width="2" marker-start="url(#ah)" marker-end="url(#ah)"/>
+  <text x="744" y="236" text-anchor="middle" font-size="10.5">biz/v1 order · event</text>
   <!-- WMS -> EMQX -->
-  <polyline points="800,304 630,304 630,242" fill="none" class="ln-tbd" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-tbd)"/>
-  <text x="715" y="298" text-anchor="middle" font-size="11" class="tx-tbd">biz/order — 레인 미결정</text>
+  <polyline points="800,304 630,304 630,242" fill="none" stroke="currentColor" stroke-width="2" marker-start="url(#ah)" marker-end="url(#ah)"/>
+  <text x="715" y="298" text-anchor="middle" font-size="11">biz/v1/order · event (JSON)</text>
   <!-- legend -->
   <line x1="40" y1="382" x2="70" y2="382" class="ln-vda" stroke-width="2"/><text x="78" y="386" font-size="11">VDA 5050 — FMS ↔ AMR 제어면</text>
   <line x1="300" y1="382" x2="330" y2="382" class="ln-spb" stroke-width="2"/><text x="338" y="386" font-size="11">Sparkplug B — 런 제어 · 텔레메트리 · 세션 수명</text>
-  <line x1="640" y1="382" x2="670" y2="382" class="ln-tbd" stroke-width="2" stroke-dasharray="6 4"/><text x="678" y="386" font-size="11">02단계에서 결정</text>
+  <line x1="640" y1="382" x2="670" y2="382" stroke="currentColor" stroke-width="2"/><text x="678" y="386" font-size="11">일반 JSON — biz/v1/order · event</text>
 </g>
 </svg>
-<figcaption>브로커는 EC2에 하나만 두고, GPU 서버 쪽은 sim-runner(Edge Node)와 에이전트(VDA 브리지)가 각각 자기 레인으로 붙는다. Isaac과 에이전트는 런 단위로 뜨고 내려가지만 sim-runner와 EMQX, Host는 상시다.</figcaption>
+<figcaption>브로커는 EC2에 하나만 두고, GPU 서버 쪽은 sim-runner(Edge Node)와 에이전트(VDA 브리지)가 각각 자기 레인으로 붙는다. Isaac과 에이전트, fms-core, 시뮬 WMS는 런 단위로 뜨고 내려가지만 sim-runner와 EMQX, Host는 상시다. Host는 GPU 런 큐의 유일한 소비자이며 DES 워커는 큐에 요청을 넣기만 한다. WMS는 Sparkplug를 모른다.</figcaption>
 </figure>
 
 <h3>레인 배정표</h3>
@@ -226,10 +235,10 @@ footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mon
 <tr><td>접속 상태</td><td><span class="pill vda">VDA 5050</span></td><td>에이전트 → fms-core</td><td class="mono">…/connection</td><td>1 / 예 / CONNECTIONBROKEN</td></tr>
 <tr><td>팩트시트</td><td><span class="pill vda">VDA 5050</span></td><td>에이전트 → fms-core</td><td class="mono">…/factsheet</td><td>1 / 예 / —</td></tr>
 <tr><td>런 제어 (sim/control)</td><td><span class="pill spb">Sparkplug B</span></td><td>Host → sim-runner</td><td class="mono">spBv1.0/{group}/NCMD/sim-runner-gpu01</td><td>0 / 아니오 / —</td></tr>
-<tr><td>런 텔레메트리</td><td><span class="pill spb">Sparkplug B</span></td><td>sim-runner → Host</td><td class="mono">…/NDATA/sim-runner-gpu01 · …/DDATA/sim-runner-gpu01/{serial}</td><td>0 / 아니오 / —</td></tr>
-<tr><td>FMS 이벤트 (fms/event)</td><td><span class="pill spb">Sparkplug B</span></td><td>fms-core → Host·WMS</td><td class="mono">…/NDATA/fms-core</td><td>0 / 아니오 / —</td></tr>
+<tr><td>런 텔레메트리</td><td><span class="pill spb">Sparkplug B</span></td><td>sim-runner · fms-core → Host</td><td class="mono">…/NDATA/sim-runner-gpu01 · …/DDATA/sim-runner-gpu01/{serial} · …/NDATA/fms-core (Fms/Tick 등 값만)</td><td>0 / 아니오 / —</td></tr>
+<tr><td>FMS 이벤트 (fms/event)</td><td><span class="pill">일반 JSON</span></td><td>fms-core → 시뮬 WMS · Host</td><td class="mono">biz/v1/event</td><td>1 / 아니오 / —</td></tr>
 <tr><td>세션 수명</td><td><span class="pill spb">Sparkplug B</span></td><td>각 Edge, Host</td><td class="mono">…/NBIRTH · NDEATH · DBIRTH · DDEATH, spBv1.0/STATE/{host}</td><td>NDEATH는 LWT QoS1 · STATE는 QoS1 retained</td></tr>
-<tr><td>주문 발생 (biz/order)</td><td><span class="pill tbd">02단계 결정</span></td><td>시뮬 WMS → fms-core</td><td class="mono">…/NDATA/sim-wms 또는 biz/v1/order</td><td>0 / 아니오</td></tr>
+<tr><td>주문 발생 (biz/order)</td><td><span class="pill">일반 JSON</span></td><td>시뮬 WMS → fms-core</td><td class="mono">biz/v1/order</td><td>1 / 아니오 / — (유실 방지는 결정 15의 시퀀스 규칙으로)</td></tr>
 </table></div>
 <div class="box warn"><span class="k">문서와 규격의 차이</span><p>아키텍처 그림의 "MQTT · QoS1 · retained"는 VDA 5050 2.0 표와 다르다. 규격은 connection과 factsheet만 retained이고 order·state는 retained가 아니다. state를 retained로 두면 FMS 재접속 때 옛 위치가 재생된다. 코드(T4 브리지)는 이미 규격대로이니 문서를 고치는 쪽이 맞다.</p></div>
 
@@ -237,11 +246,12 @@ footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mon
 <pre class="mermaid">
 sequenceDiagram
   autonumber
-  participant H as Host (오케스트레이터)
+  participant H as Host (GPU 런 큐 소비자)
   participant B as EMQX
   participant R as sim-runner (GPU)
   participant A as T4 에이전트 amr01..N
   participant F as fms-core
+  participant W as 시뮬 WMS
   H->>B: STATE online (retained, LWT = offline)
   R->>B: NBIRTH bdSeq·seq 0·Runner/* (LWT = NDEATH)
   H->>B: NCMD Run Control/Start {run_id, n_robots, models}
@@ -250,12 +260,19 @@ sequenceDiagram
   A->>B: connection ONLINE (retained, LWT = CONNECTIONBROKEN)
   A->>B: factsheet (retained)
   R->>B: DBIRTH amr01..N
+  H->>F: k8s API로 fms-core·WMS 파드 생성
+  F->>B: NBIRTH fms-core (Fms/RunId = run_id)
+  H->>W: fms-core RUNNING 확인 후 수요 생성 시작
+  W->>B: biz/v1/order (QoS1)
+  B->>F: order 수신 → 배차
   F->>B: order (틱마다 노드 1개 released)
   B->>A: order
   A->>B: state (lastNodeId 변화 즉시 + 주기)
   B->>F: state
+  F->>B: order 재발행 (2틱 내 state 미반영 시, 같은 orderUpdateId)
   R->>B: DDATA Robot/* · NDATA Runner/Heartbeat (변화 시)
-  F->>B: NDATA Fms/Event
+  F->>B: biz/v1/event task_assigned · task_done (JSON)
+  B->>W: event → 재고 차감 · SHIPPED
   H->>B: NCMD Run Control/Stop
   B->>R: Stop 전달
   A->>B: connection OFFLINE (retained)
@@ -272,15 +289,18 @@ sequenceDiagram
 <tr><td>1</td><td>Sparkplug group_id</td><td>사이트 고정 / 런 ID</td><td><code>santa</code> 고정. 런 ID는 메트릭 <code>Runner/RunId</code>로</td><td></td></tr>
 <tr><td>2</td><td>edge_node_id</td><td>프로세스 단위 / 호스트 단위</td><td>프로세스 단위: <code>sim-runner-gpu01</code>, <code>fms-core</code>, (<code>sim-wms</code>)</td><td></td></tr>
 <tr><td>3</td><td>device_id</td><td>로봇 시리얼 / 런 접두 시리얼</td><td>VDA serialNumber와 동일: <code>amr01</code>…</td><td></td></tr>
-<tr><td>4</td><td>Primary Host id · 프로세스</td><td>계산엔진 워커(Python) / Spring BE</td><td><code>host-orch</code> = 계산엔진 워커. BE는 AMQP 결과 이벤트로 충분, Java Tahu 의존 회피</td><td></td></tr>
+<tr><td>4</td><td>Primary Host id · 프로세스</td><td>DES 워커 스레드 / GPU 런 큐 소비자 / Spring BE</td><td><code>host-orch</code> = <b>GPU 런 큐 소비자 = 상시 Deployment 1개</b>(런 오케스트레이터: k8s API로 런 파드 생성, NCMD, 워치독). DES 워커(k8s Job, 수평 확장)는 "물리 검증 요청"을 큐에 넣기만 한다. host_id당 Primary Host는 하나여야 하고, Job마다 Host를 두면 STATE 충돌·LWT 오발이 난다</td><td></td></tr>
 <tr><td>5</td><td>VDA manufacturer</td><td>고정 / 기종별</td><td>기종별: iw.hub는 <code>idealworks</code>, 두 번째 기종은 그 제조사. FMS 구독은 <code>uagv/v2/+/+/state</code></td><td></td></tr>
 <tr><td>6</td><td>VDA serialNumber 규칙</td><td>고정 / 런마다 새로</td><td>기종당 고정 풀(<code>amr01</code>…). 같은 시리얼에 다른 기종을 배정하지 않는다(팩트시트 retained 충돌 방지)</td><td></td></tr>
 <tr><td>7</td><td>MQTT clientId · username</td><td>임의 / 규칙</td><td>username = 시리얼 또는 edge_node_id, clientId = username. ACL이 <code>${username}</code>으로 걸린다</td><td></td></tr>
 <tr><td>8</td><td>QoS·retained 정책</td><td>문서(QoS1 retained 전면) / 규격</td><td>규격대로: 01단계 레인표</td><td></td></tr>
 <tr><td>9</td><td>retained 정리 정책</td><td>그대로 둠 / 런 종료 시 삭제</td><td>connection OFFLINE·factsheet는 그대로 둔다(규격). 시리얼 퇴역 시에만 빈 페이로드 retained로 삭제</td><td></td></tr>
-<tr><td>10</td><td>biz/order 레인</td><td>Sparkplug 문자열 메트릭 / 일반 JSON 토픽</td><td>1차는 일반 JSON <code>biz/v1/order</code>(Spring 의존 최소). 평가 요건이 "전면 Sparkplug"면 2차에 <code>NDATA/sim-wms</code>의 Text 메트릭으로 이전</td><td></td></tr>
+<tr><td>10</td><td>biz/order 레인</td><td>Sparkplug 문자열 메트릭 / 일반 JSON 토픽</td><td>일반 JSON <code>biz/v1/order</code> QoS1. WMS(Spring)는 Sparkplug를 만지지 않는다</td><td></td></tr>
 <tr><td>11</td><td>런 ↔ Sparkplug 세션</td><td>런마다 NBIRTH / 상시 NBIRTH + 런마다 DBIRTH</td><td>sim-runner는 상시 NBIRTH, 런 시작 = DBIRTH ×N, 런 종료 = DDEATH ×N</td><td></td></tr>
 <tr><td>12</td><td>하트비트·타임아웃</td><td>—</td><td><code>Runner/Heartbeat</code> 5 s, Host는 3회 결측이면 런 실패 처리 후 Stop 재발행</td><td></td></tr>
+<tr><td>13</td><td>fms/event 레인</td><td>Sparkplug NDATA Text 메트릭 / 일반 JSON</td><td>일반 JSON <code>biz/v1/event</code> QoS1. 메트릭은 "현재 값"이고 이벤트는 "일어난 일"이라 RBE와 맞지 않고, WMS가 protobuf를 풀게 된다. Sparkplug 노드 fms-core는 <code>Fms/Tick</code>·<code>Fms/RobotsOnline</code> 같은 값만 낸다</td><td></td></tr>
+<tr><td>14</td><td>order 재발행 규칙</td><td>없음 / state 관측 기반 재발행</td><td>order 발행 후 2틱(1 s) 안에 state의 orderId·orderUpdateId가 반영되지 않으면 같은 order 재발행, 최대 5회, 그 뒤 로봇 오류 처리. connection ONLINE 복귀 시 outbox의 마지막 order 재발행. 전제: 에이전트가 같은 orderUpdateId를 오류 없이 무시(05단계)</td><td></td></tr>
+<tr><td>15</td><td>주문 유실 방지</td><td>QoS1 + WMS 재시도 / 시퀀스로 못 박기</td><td>시퀀스: Host가 fms-core NBIRTH(<code>Fms/RunId</code> 일치)와 RUNNING을 확인한 뒤에만 WMS 수요 생성을 시작. fms-core 단절이 keepalive를 넘기면 런 실패(주문 유실은 런 무효로 흡수). clean session에서는 QoS1도 끊긴 동안의 메시지를 보관하지 않으므로 재시도 로직 대신 이 규칙을 쓴다</td><td></td></tr>
 </table></div>
 <h3>세션 규칙 요약 (외워 둘 것)</h3>
 <div class="tw"><table>
@@ -290,7 +310,7 @@ sequenceDiagram
 <tr><td>비정상 단절</td><td>브로커가 LWT로 CONNECTIONBROKEN retained 발행</td><td>브로커가 LWT로 NDEATH 발행. Host는 그 노드의 디바이스를 모두 stale 처리</td></tr>
 <tr><td>순번</td><td>headerId 단조 증가(토픽별)</td><td>seq 0~255 순환(노드당), bdSeq는 MQTT 세션마다 +1</td></tr>
 <tr><td>Host 재기동</td><td>해당 없음. FMS는 state에 담긴 orderId·lastNodeId로 복구</td><td>STATE online 타임스탬프가 새로우면 Edge는 NBIRTH·DBIRTH를 다시 낸다</td></tr>
-<tr><td>순번 이상</td><td>headerId 역행은 무시</td><td>seq 갭 감지 시 Host가 <code>Node Control/Rebirth = true</code> NCMD</td></tr>
+<tr><td>순번 이상</td><td>headerId 역행은 무시. 같은 orderId에 같은 orderUpdateId는 <b>오류 없이 무시</b>, 낮으면 orderUpdateError로 거부</td><td>seq 갭 감지 시 Host가 <code>Node Control/Rebirth = true</code> NCMD</td></tr>
 </table></div>
 </section>
 
@@ -299,13 +319,15 @@ sequenceDiagram
 <div class="goal"><div><b>목표</b>페이로드·토픽·메트릭을 문서로 고정하고 버전을 붙인다</div><div><b>산출물</b><code>3_FMS/contracts/MQTT_CONTRACT.md</code> v1.0 + <code>contracts/schemas/</code></div><div><b>검증</b>11단계의 스키마 테스트가 이 문서를 읽는다</div></div>
 <p><code>SIM_RUN_CONTRACT.md</code>가 시뮬 호출 규약을 고정한 것과 같은 자리에 MQTT 규약을 둔다. 문서 골격은 다음과 같다.</p>
 <pre><code># MQTT 계약 — EMQX 백본 (v1.0, 날짜)
-1. 결정 기록            ← 02단계 표 그대로
+0. 브로커: 이미지 태그 + digest, 라이선스(6.x BSL 1.1, 추가 사용 허가 조항 인용), HOCON 키 대조 버전
+1. 결정 기록            ← 02단계 표 그대로 (15칸)
 2. 레인·토픽·QoS 표      ← 01단계 표 그대로
 3. 계정·ACL 표          ← 08단계에서 채움
 4. VDA 5050 2.0.0
    4.1 사용하는 메시지·필수 필드 (order, instantActions, state, connection, factsheet)
    4.2 factsheet 채우기 규칙 (기종 프로파일 → 필드)
-   4.3 orderUpdateId 스티칭 규칙 (T4 README의 표를 옮김)
+   4.3 orderUpdateId 스티칭 규칙 (T4 README의 표를 옮김) + 재발행 규칙 (결정 14) + 중복 처리 규칙
+   4.4 biz/v1/order · biz/v1/event JSON 스키마 (WMS ↔ fms-core, QoS1, 비-retained)
 5. Sparkplug B 3.0
    5.1 아이덴티티 (group / edge / device / host)
    5.2 메트릭 사전
@@ -339,9 +361,9 @@ sequenceDiagram
 <tr><td class="mono">bdSeq · Node Control/Rebirth</td><td>노드</td><td></td><td></td><td></td><td>규격 필수</td></tr>
 <tr><td class="mono">Fms/RunId · Fms/Tick</td><td>노드</td><td>String · Int64</td><td></td><td>예</td><td>500 ms 틱 카운터</td></tr>
 <tr><td class="mono">Fms/RobotsOnline</td><td>노드</td><td>Int32</td><td></td><td>예</td><td>connection ONLINE인 로봇 수</td></tr>
-<tr><td class="mono">Fms/Event</td><td>노드</td><td>Text</td><td>JSON</td><td>이벤트마다</td><td>{type: task_assigned · task_done · order_shipped · stall, …}. 이것이 fms/event</td></tr>
+<tr><td class="mono">Fms/OpenTasks · Fms/DoneTasks</td><td>노드</td><td>Int32</td><td></td><td>예</td><td>카운터(값). 이벤트 자체는 <code>biz/v1/event</code>로 — 메트릭에 싣지 않는다</td></tr>
 </table></div>
-<div class="box note"><span class="k">왜 Text 메트릭에 JSON인가</span><p>Sparkplug 메트릭은 평평한 키·값이다. 이벤트처럼 구조가 있는 것은 Template 타입으로 정의할 수도 있지만, 라이브러리마다 지원이 다르고 스키마를 두 벌 관리하게 된다. 1차는 Text 메트릭에 JSON 문자열을 싣고 JSON 스키마는 4장에서 관리한다.</p></div>
+<div class="box warn"><span class="k">이벤트는 Sparkplug에 싣지 않는다</span><p>Sparkplug 메트릭은 "지금 값"이고 DATA 메시지는 값이 바뀔 때만 내는 RBE 관례를 따른다. 같은 내용의 task_done이 연달아 나오면 라이브러리의 RBE 필터가 삼킬 수 있고, 구독자는 protobuf를 풀어야 한다. 그래서 이벤트(fms/event, biz/order)는 <code>biz/v1/*</code> 일반 JSON으로 두고, Sparkplug에는 값(카운터·상태·자원)만 남긴다. <code>Run Control/Start</code>의 JSON은 예외인데, NCMD는 한 번 쓰는 명령이라 RBE와 무관하고 받는 쪽(sim-runner)이 파이썬이기 때문이다.</p></div>
 
 <h3>5.3 NCMD 명령 표</h3>
 <div class="tw"><table>
@@ -350,6 +372,22 @@ sequenceDiagram
 <tr><td class="mono">Run Control/Stop</td><td>Boolean true</td><td>에이전트 SIGTERM(OFFLINE 발행 유도) → DDEATH ×N → Isaac 종료</td><td><code>Runner/State</code> STOPPING → IDLE</td></tr>
 <tr><td class="mono">Node Control/Rebirth</td><td>Boolean true</td><td>NBIRTH와 살아 있는 DBIRTH 재발행</td><td>—</td></tr>
 </table></div>
+
+<h3>4.3 order 재발행 규칙과 중복 처리</h3>
+<p>order는 QoS0에 clean session이라 재접속 순간에 낸 order는 조용히 사라진다. VDA 5050이 그래도 되는 이유는 마스터가 state로 관측하고 다시 내면 되기 때문이다(orderId·orderUpdateId로 멱등). 계약에 아래 세 줄을 적고 07단계 셸에 넣는다.</p>
+<div class="tw"><table>
+<tr><th>규칙</th><th>내용</th><th>어디에</th></tr>
+<tr><td>재발행</td><td>order 발행 후 2틱(1 s) 안에 그 로봇의 state.orderId·orderUpdateId가 반영되지 않으면 <b>같은 order를 그대로</b> 재발행. 최대 5회, 그 뒤 로봇을 오류 처리하고 배차에서 제외</td><td>fms-core 셸 outbox</td></tr>
+<tr><td>복귀 재발행</td><td>connection이 CONNECTIONBROKEN → ONLINE으로 돌아오면 outbox의 마지막 order를 한 번 재발행. state의 orderId·orderUpdateId가 이미 같으면 생략</td><td>fms-core 셸</td></tr>
+<tr><td>중복 처리</td><td>에이전트는 같은 orderId에 같은 orderUpdateId가 오면 <b>오류 없이 무시</b>, 낮으면 orderUpdateError로 거부. 현재 T4 <code>OrderBook.receive</code>는 "이하이면 예외"라 재발행이 orderError를 만든다 — 05단계에서 고친다</td><td>T4 order.py</td></tr>
+</table></div>
+<h3>4.4 biz/v1 JSON 계약</h3>
+<div class="tw"><table>
+<tr><th class="mono">토픽</th><th>발행 → 구독</th><th>필수 필드</th><th>QoS / retained</th></tr>
+<tr><td class="mono">biz/v1/order</td><td>시뮬 WMS → fms-core</td><td>orderId, runId, createdAt, type(inbound·outbound), lines[{sku, qty, fromStation, toStation}], priority</td><td>1 / 아니오</td></tr>
+<tr><td class="mono">biz/v1/event</td><td>fms-core → 시뮬 WMS · Host</td><td>eventId, runId, at, type(task_assigned · task_done · order_shipped · robot_error · stall), orderId, taskId, robot{manufacturer, serial}</td><td>1 / 아니오</td></tr>
+</table></div>
+<p>WMS는 fms-core가 RUNNING인 것을 Host가 확인한 뒤에만 수요 생성을 시작한다(결정 15). eventId·orderId는 멱등 키이므로 WMS는 같은 이벤트를 두 번 받아도 재고를 두 번 깎지 않는다.</p>
 
 <h3>4.2 factsheet 채우기 규칙</h3>
 <p>앞서 정리한 기종 프로파일 열 개가 그대로 factsheet가 된다. 이기종 운영에서 FMS가 기종별 상수를 얻는 공식 통로다.</p>
@@ -365,7 +403,7 @@ sequenceDiagram
 <tr><td>회전 시 외곽</td><td class="mono">agvGeometry.envelopes2d[]</td><td>turn_probe 스윙 반경 1.09 m 다각형</td></tr>
 <tr><td>프로토콜 한계</td><td class="mono">protocolLimits.maxStringLens · maxArrayLens · timing</td><td>state 주기 2 s, 최소 0.5 s</td></tr>
 </table></div>
-<div class="box do"><span class="k">이 단계의 체크</span><ul class="check"><li>결정 기록 12칸 모두 채움</li><li>메트릭 사전에 규격 필수 3종(bdSeq, Node Control/Rebirth, seq 규칙) 명시</li><li>VDA 공식 JSON 스키마 6종을 <code>contracts/schemas/vda5050/2.0.0/</code>에 복사(출처·커밋 해시 기록)</li><li>Fms/Event와 Run Control/Start의 JSON 스키마를 <code>contracts/schemas/spb/</code>에 작성</li></ul></div>
+<div class="box do"><span class="k">이 단계의 체크</span><ul class="check"><li>결정 기록 12칸 모두 채움</li><li>메트릭 사전에 규격 필수 3종(bdSeq, Node Control/Rebirth, seq 규칙) 명시</li><li>VDA 공식 JSON 스키마 6종을 <code>contracts/schemas/vda5050/2.0.0/</code>에 복사(출처·커밋 해시 기록)</li><li>Run Control/Start의 JSON 스키마를 <code>contracts/schemas/spb/</code>에, biz/v1/order·event 스키마를 <code>contracts/schemas/biz/</code>에 작성</li><li>0장에 이미지 digest와 LICENSE 인용 기록</li></ul></div>
 </section>
 
 <section class="step" id="s4">
@@ -374,7 +412,8 @@ sequenceDiagram
 <pre><code># 3_FMS/infra/emqx/compose.yml
 services:
   emqx:
-    image: emqx/emqx:5.8.4            # 5.x 최신 안정판으로 고정하고 버전은 계약에 적는다
+    image: emqx/emqx:6.3.0@sha256:<digest>   # docker manifest inspect emqx/emqx:6.3.0 로 digest를 뽑아 계약 0장에 적는다
+                                             # Apache 2.0이 필요하면 emqx/emqx:5.8.9 (Hub에 메이저 태그 5는 없음, 5.8 라인은 남아 있음)
     container_name: emqx
     ports:
       - "1883:1883"                   # MQTT
@@ -385,7 +424,7 @@ services:
       - emqx-data:/opt/emqx/data      # retained 메시지·내장 사용자 DB
 volumes:
   emqx-data: {}</code></pre>
-<pre><code># 3_FMS/infra/emqx/emqx.conf  (HOCON — 키 이름은 사용 중인 5.x 문서로 대조)
+<pre><code># 3_FMS/infra/emqx/emqx.conf  (HOCON — 키 이름은 6.3 문서로 대조. 5.x와 거의 같지만 계약에 대조한 문서 버전을 적는다)
 node { name = "emqx@127.0.0.1", cookie = "change-me" }
 listeners.tcp.default { bind = "0.0.0.0:1883" }
 dashboard { listeners.http.bind = 18083, default_password = "change-me" }
@@ -409,11 +448,11 @@ retainer { enable = true }</code></pre>
   ["uagv/v2/+/${username}/order", "uagv/v2/+/${username}/instantActions"]}.
 %% FMS 코어: VDA 마스터 + Sparkplug Edge
 {allow, {username, "fms-core"}, publish,
-  ["uagv/v2/+/+/order", "uagv/v2/+/+/instantActions",
+  ["uagv/v2/+/+/order", "uagv/v2/+/+/instantActions", "biz/v1/event",
    "spBv1.0/santa/NBIRTH/fms-core", "spBv1.0/santa/NDEATH/fms-core", "spBv1.0/santa/NDATA/fms-core"]}.
 {allow, {username, "fms-core"}, subscribe,
   ["uagv/v2/+/+/state", "uagv/v2/+/+/connection", "uagv/v2/+/+/factsheet",
-   "spBv1.0/STATE/+", "spBv1.0/santa/NCMD/fms-core", "biz/v1/#"]}.
+   "spBv1.0/STATE/+", "spBv1.0/santa/NCMD/fms-core", "biz/v1/order"]}.
 %% sim-runner: Sparkplug Edge + state 거울 구독
 {allow, {username, "sim-runner-gpu01"}, publish,
   ["spBv1.0/santa/NBIRTH/sim-runner-gpu01", "spBv1.0/santa/NDEATH/sim-runner-gpu01",
@@ -424,10 +463,10 @@ retainer { enable = true }</code></pre>
    "spBv1.0/STATE/+", "uagv/v2/+/+/state", "uagv/v2/+/+/connection"]}.
 %% Primary Host
 {allow, {username, "host-orch"}, publish, ["spBv1.0/STATE/host-orch", "spBv1.0/santa/NCMD/+", "spBv1.0/santa/DCMD/+/+"]}.
-{allow, {username, "host-orch"}, subscribe, ["spBv1.0/#"]}.
-%% 시뮬 WMS
-{allow, {username, "sim-wms"}, publish,   ["biz/v1/#"]}.
-{allow, {username, "sim-wms"}, subscribe, ["spBv1.0/santa/NDATA/fms-core"]}.
+{allow, {username, "host-orch"}, subscribe, ["spBv1.0/#", "biz/v1/#"]}.
+%% 시뮬 WMS — Sparkplug 토픽은 어느 쪽도 허용하지 않는다
+{allow, {username, "sim-wms"}, publish,   ["biz/v1/order"]}.
+{allow, {username, "sim-wms"}, subscribe, ["biz/v1/event"]}.
 {deny, all}.</code></pre>
 <h3>사용자 등록</h3>
 <p>내장 DB 사용자는 대시보드(Access Control → Authentication → Users)에서 만들거나, API 키를 발급받아 REST로 넣는다. 계정 목록은 계약 문서 3장과 같아야 한다: <code>amr01</code>…, <code>fms-core</code>, <code>sim-runner-gpu01</code>, <code>host-orch</code>, <code>sim-wms</code>.</p>
@@ -483,9 +522,20 @@ def factsheet(self, p: dict) -> dict:
 
 # bridge_node.py on_connect — ONLINE 다음 줄
 client.publish(self.t_facts, json.dumps(self.sb.factsheet(self.profile)), qos=1, retain=True)</code></pre>
+<h3>5-3b T4 중복 order 처리 고치기</h3>
+<p><code>OrderBook.receive</code>는 같은 orderId에 orderUpdateId가 현재 값 <em>이하</em>면 <code>OrderError</code>를 던지고 executor가 orderError로 거부한다. 재발행이 에이전트가 이미 받은 뒤 도착하면(state 관측 지연은 흔하다) 오류가 나고 state.errors에 남는다. 규격은 같으면 무시, 낮으면 거부다.</p>
+<pre><code># amr_agent/vda5050/order.py — receive() 골격 (수정 전: <= 이면 raise)
+if cur is not None and incoming.order_id == cur.order_id:
+    if incoming.order_update_id == cur.order_update_id:
+        return "duplicate"                       # 오류 없이 무시. executor는 state를 다시 내지 않는다
+    if incoming.order_update_id < cur.order_update_id:
+        raise OrderError(...)                    # → orderUpdateError
+    self._stitch(incoming); return "stitched"
+# test/test_order_book.py 에 "같은 update 두 번 → duplicate, 상태 불변" 케이스를 추가한다</code></pre>
 <h3>5-4 FMS 쪽 구독 규칙</h3>
 <ul>
 <li>구독은 <code>uagv/v2/+/+/state</code>, <code>…/connection</code>, <code>…/factsheet</code> 세 와일드카드. 로봇 키는 (manufacturer, serialNumber) 튜플이다.</li>
+<li>로봇별 outbox에 마지막 order를 들고 있다가 계약 4.3의 재발행 규칙(2틱 미반영 → 같은 order, 최대 5회, ONLINE 복귀 시 1회)을 적용한다.</li>
 <li>로봇 등록은 factsheet 수신으로 한다. state가 먼저 와도 factsheet 없이는 배차하지 않는다(이기종 상수 미확보).</li>
 <li>order 발행은 로봇별 토픽에 QoS0. orderUpdateId 스티칭 규칙은 T4 README의 표를 계약 4.3에 옮겨 둔다.</li>
 </ul>
@@ -495,14 +545,15 @@ ros2 launch amr_agent agent.launch.py serial:=amr01 fake_robot:=true mqtt_host:=
 ros2 launch amr_agent agent.launch.py serial:=amr02 fake_robot:=true mqtt_host:=localhost mqtt_username:=amr02 mqtt_password:=…
 python3 -m amr_agent.tools.fake_fms --serial amr01 --plan F,F,L,F,B   # fake_fms에도 host/계정 인자를 추가한다
 mqttx sub -u host-orch -P … -t 'uagv/v2/+/+/connection' -t 'uagv/v2/+/+/factsheet' -v   # retained 2종 × 2대 즉시 수신
-kill -9 &lt;amr02 bridge pid&gt;   # 45 s 안에 amr02 CONNECTIONBROKEN, amr01은 영향 없음</code></pre>
-<div class="box do"><span class="k">이 단계의 체크</span><ul class="check"><li>launch 인자 mqtt_username·mqtt_password 추가, fake_fms에도 동일</li><li>기종 프로파일 YAML 1장(iw.hub), factsheet 발행 확인</li><li>7틱 E2E 통과, 정지 오차 기존과 동일(4 mm급)</li><li>factsheet JSON이 공식 스키마를 통과(11단계 테스트로 남김)</li></ul></div>
+kill -9 &lt;amr02 bridge pid&gt;   # 45 s 안에 amr02 CONNECTIONBROKEN, amr01은 영향 없음
+python3 -m amr_agent.tools.fake_fms --serial amr01 --plan F --repeat-last   # 같은 order를 두 번: 두 번째는 로그에 duplicate, state.errors 비어 있음</code></pre>
+<div class="box do"><span class="k">이 단계의 체크</span><ul class="check"><li>launch 인자 mqtt_username·mqtt_password 추가, fake_fms에도 동일</li><li>기종 프로파일 YAML 1장(iw.hub), factsheet 발행 확인</li><li>7틱 E2E 통과, 정지 오차 기존과 동일(4 mm급)</li><li>order.py 중복 처리 수정 + 테스트, 같은 order 재전송이 orderError를 만들지 않음</li><li>factsheet JSON이 공식 스키마를 통과(11단계 테스트로 남김)</li></ul></div>
 </section>
 
 <section class="step" id="s6">
 <div class="step-head"><div class="badge">06</div><h2>Sparkplug Host — STATE를 내고, 순번을 감시하고, 명령을 보낸다</h2></div>
 <div class="goal"><div><b>목표</b>Primary Host 한 프로세스가 규격 의무(STATE·LWT·rebirth 요청)를 다한다</div><div><b>산출물</b><code>host_orch/spb_host.py</code>, <code>tools/spb_tap.py</code></div><div><b>검증</b>STATE retained 관측, 가짜 Edge에 Rebirth 요청 왕복</div></div>
-<p>Host는 계산엔진 워커 안의 한 스레드다(02단계 결정 4). 라이브러리는 PyPI의 <code>mqtt-spb-wrapper</code>(Eclipse Tahu의 protobuf 정의를 포함) 또는 Tahu 파이썬 클라이언트를 벤더링한다. 아래는 어떤 라이브러리를 쓰든 Host가 해야 하는 일이며, 함수 이름은 라이브러리 문서로 맞춘다.</p>
+<p>Host는 GPU 런 큐의 유일한 소비자이자 런 오케스트레이터인 상시 Deployment다(02단계 결정 4). DES 워커(k8s Job)에는 Host를 두지 않는다 — host_id당 Primary Host는 하나이고, Job이 끝날 때마다 나가는 LWT offline이 Edge 노드를 "Host 부재" 모드로 밀어 넣기 때문이다. 라이브러리는 PyPI의 <code>mqtt-spb-wrapper</code>(Eclipse Tahu의 protobuf 정의를 포함) 또는 Tahu 파이썬 클라이언트를 벤더링한다. 아래는 어떤 라이브러리를 쓰든 Host가 해야 하는 일이며, 함수 이름은 라이브러리 문서로 맞춘다.</p>
 <pre><code># host_orch/spb_host.py — 골격 (의무 목록)
 class SpbHost:
     def __init__(self, group="santa", host_id="host-orch"):
@@ -518,11 +569,15 @@ class SpbHost:
         # 8) DBIRTH/DDEATH: 디바이스 목록 갱신 → 런 상태 머신에 알림
         ...
     def start_run(self, run_id, scenario_pkg, models, ros_domain_id, timeout_s):
-        # 9) NCMD spBv1.0/santa/NCMD/sim-runner-gpu01
-        #    metrics = [ Run Control/Start (Text) = json.dumps({...}) ]   QoS0
+        # 9) GPU 런 큐에서 요청 하나를 꺼낸 뒤(직렬):
+        #    a. k8s API로 fms-core Job·sim-wms 파드 생성 (시나리오 패키지 주입)
+        #    b. NCMD spBv1.0/santa/NCMD/sim-runner-gpu01  Run Control/Start (Text) = json.dumps({...})  QoS0
+        #    c. Runner/State == RUNNING 과 fms-core NBIRTH(Fms/RunId == run_id) 를 모두 확인
+        #    d. 그제야 WMS에 수요 생성 시작을 지시 (REST 또는 biz/v1/control) — 결정 15
         ...
     def watchdog(self):
-        # 10) Runner/Heartbeat 가 15 s 이상 안 오면 런 실패 → Stop 재발행 → k8s Job 정리</code></pre>
+        # 10) Runner/Heartbeat 가 15 s 이상 안 오거나 fms-core NDEATH가 오면 런 실패 → Stop 재발행 → k8s Job 정리
+        # 11) biz/v1/event 를 구독해 런 KPI 집계(JSON) — Sparkplug와 무관</code></pre>
 <h3>관측 도구 spb_tap.py</h3>
 <p>Sparkplug 토픽 전체를 구독해 protobuf를 디코드하고 한 줄씩 찍는 20줄짜리 스크립트다. 이후 모든 단계의 "눈"이 된다.</p>
 <pre><code># tools/spb_tap.py — 골격
@@ -565,28 +620,38 @@ class Runner(SpbEdgeNode):            # 라이브러리의 Edge Node 클래스�
 
 # systemd: ~/.config/systemd/user/sim-runner.service  (Restart=always, ROS 소싱은 ExecStart 래퍼에서)</code></pre>
 <h3>7-2 fms-core — 커널을 감싸는 MQTT 셸</h3>
-<p>아키텍처가 정한 대로 커널은 I/O가 없다. 셸이 state를 인박스에 모으고 500 ms마다 스냅샷을 커널에 넣어 결정을 받아 order로 낸다. 같은 프로세스가 Sparkplug Edge Node <code>fms-core</code>로 <code>Fms/*</code>와 <code>Fms/Event</code>를 낸다.</p>
+<p>아키텍처가 정한 대로 커널은 I/O가 없다. 셸이 state를 인박스에 모으고 500 ms마다 스냅샷을 커널에 넣어 결정을 받아 order로 낸다. 이벤트는 <code>biz/v1/event</code> JSON으로 내고, 같은 프로세스가 Sparkplug Edge Node <code>fms-core</code>로 <code>Fms/*</code> 값만 낸다. outbox와 재발행 규칙(계약 4.3)도 여기 산다.</p>
 <pre><code># 3_FMS/mqtt_shell/shell.py — 골격
 inbox = queue.Queue()
 # VDA: 구독 uagv/v2/+/+/{state,connection,factsheet} → inbox.put((topic, json))
-# SPB: Edge Node fms-core — NBIRTH(Fms/RunId, Fms/Tick, Fms/RobotsOnline, Fms/Event="")
+# BIZ: 구독 biz/v1/order (QoS1) → inbox
+# SPB: Edge Node fms-core — NBIRTH(Fms/RunId, Fms/Tick, Fms/RobotsOnline, Fms/OpenTasks, Fms/DoneTasks)
+outbox = {}                                      # robot → (order, sent_tick, tries)
 while running:
-    snapshot = drain(inbox)                      # 로봇별 최신 state, 접속, 팩트시트(기종 상수)
+    snapshot = drain(inbox)                      # 로봇별 최신 state·접속·팩트시트, 새 주문
     decisions = kernel.step(world, now, snapshot) # 순수 함수
     for robot, order in decisions.orders:        # orderUpdateId 스티칭 규칙 적용
         publish(f"uagv/v2/{robot.mfr}/{robot.serial}/order", order, qos=0)
+        outbox[robot] = (order, tick, 0)
+    for robot, (order, sent, tries) in outbox.items():          # 계약 4.3 재발행
+        if not state_reflects(snapshot, robot, order) and tick - sent >= 2:
+            if tries >= 5: mark_robot_error(robot); continue
+            publish(order_topic(robot), order, qos=0); outbox[robot] = (order, tick, tries + 1)
+        if reconnected(snapshot, robot): publish(order_topic(robot), order, qos=0)
     for ev in decisions.events:
-        node.publish_data({"Fms/Event": json.dumps(ev)})   # NDATA
-    node.publish_data({"Fms/Tick": tick, "Fms/RobotsOnline": online})   # RBE
+        publish("biz/v1/event", json.dumps(ev), qos=1)          # 일반 JSON — WMS·Host가 읽는다
+    node.publish_data({"Fms/Tick": tick, "Fms/RobotsOnline": online,
+                       "Fms/OpenTasks": open_n, "Fms/DoneTasks": done_n})   # 값만, RBE
     sleep_until(next_tick)                       # 500 ms</code></pre>
-<h3>7-3 biz/order</h3>
-<p>02단계 결정 10에 따라 1차는 시뮬 WMS가 <code>biz/v1/order</code>에 JSON을 QoS0로 낸다. 스키마는 계약 4장에 두고, fms-core 셸이 구독해 inbox로 넣는다.</p>
+<h3>7-3 biz/v1/order · biz/v1/event (시뮬 WMS)</h3>
+<p>시뮬 WMS는 <code>biz/v1/order</code>에 JSON을 QoS1로 내고 <code>biz/v1/event</code>를 구독한다. 일반 MQTT 클라이언트(Spring Integration MQTT 또는 paho Java)면 되고 Sparkplug·protobuf는 필요 없다. 수요 생성기는 Host의 시작 신호를 받은 뒤에만 돈다(결정 15). 주문 도착이 fms-core보다 먼저일 수 없으므로 clean session에서도 주문이 유실되지 않고, 런 중간에 fms-core가 끊기면 Host가 런을 실패로 처리한다.</p>
 <h3>검증</h3>
 <pre><code>python3 tools/spb_tap.py --host localhost --user host-orch --pw …            # 관측 창
 python3 sim_runner/runner.py --fake --host localhost --user sim-runner-gpu01   # NBIRTH 관측
 python3 host_orch/spb_host.py … --start '{"run_id":"r1","n_robots":2,"models":[…]}'
-#   tap: NCMD Start → Runner/State STARTING → DBIRTH amr01, amr02 → RUNNING
+#   tap: NCMD Start → Runner/State STARTING → DBIRTH amr01, amr02 → RUNNING, fms-core NBIRTH(Fms/RunId=r1)
 #   mqttx: uagv/v2/+/+/connection ONLINE ×2, factsheet ×2
+#   mqttx -t biz/v1/# : Host 시작 신호 뒤에만 order가 나오고, task_assigned/task_done 이벤트가 따라온다
 python3 host_orch/spb_host.py … --stop
 #   tap: DDEATH ×2 → Runner/State IDLE.  mqttx: connection OFFLINE ×2 (retained)
 # GPU 서버에서 같은 절차를 --fake 없이 반복 (Isaac 기동 ~80 s, ready 타임아웃 180 s 권장)</code></pre>
@@ -598,13 +663,13 @@ python3 host_orch/spb_host.py … --stop
 <div class="tw"><table>
 <tr><th>계정</th><th>발행 허용</th><th>구독 허용</th><th>keepalive</th><th>Will</th></tr>
 <tr><td class="mono">amrNN</td><td>자기 시리얼의 state·connection·factsheet·visualization</td><td>자기 시리얼의 order·instantActions</td><td>30 s</td><td>connection CONNECTIONBROKEN retained QoS1</td></tr>
-<tr><td class="mono">fms-core</td><td>모든 로봇의 order·instantActions, 자기 N* 메시지</td><td>모든 로봇의 state·connection·factsheet, STATE/+, 자기 NCMD, biz/v1/#</td><td>30 s</td><td>NDEATH</td></tr>
+<tr><td class="mono">fms-core</td><td>모든 로봇의 order·instantActions, biz/v1/event, 자기 N* 메시지</td><td>모든 로봇의 state·connection·factsheet, STATE/+, 자기 NCMD, biz/v1/order</td><td>30 s</td><td>NDEATH</td></tr>
 <tr><td class="mono">sim-runner-gpu01</td><td>자기 N*·D* 메시지</td><td>자기 NCMD·DCMD, STATE/+, 모든 로봇의 state·connection</td><td>60 s</td><td>NDEATH</td></tr>
-<tr><td class="mono">host-orch</td><td>STATE/host-orch, 모든 NCMD·DCMD</td><td>spBv1.0/#</td><td>30 s</td><td>STATE offline retained QoS1</td></tr>
-<tr><td class="mono">sim-wms</td><td>biz/v1/#</td><td>NDATA/fms-core</td><td>30 s</td><td>없음</td></tr>
+<tr><td class="mono">host-orch</td><td>STATE/host-orch, 모든 NCMD·DCMD</td><td>spBv1.0/#, biz/v1/#</td><td>30 s</td><td>STATE offline retained QoS1</td></tr>
+<tr><td class="mono">sim-wms</td><td>biz/v1/order</td><td>biz/v1/event</td><td>30 s</td><td>없음</td></tr>
 </table></div>
 <ul>
-<li><b>retained 제한.</b> 규격상 retained는 connection·factsheet·STATE뿐이다. EMQX 5 파일 ACL은 토픽 뒤에 <code>{retain, …}</code>·<code>{qos, …}</code> 조건을 붙일 수 있으니(버전 문서 확인) state·NDATA·DDATA 발행 규칙에는 <code>{retain, false}</code>를 단다.</li>
+<li><b>retained 제한.</b> 규격상 retained는 connection·factsheet·STATE뿐이고 <code>biz/v1/*</code>도 retained가 아니다. EMQX 5 파일 ACL은 토픽 뒤에 <code>{retain, …}</code>·<code>{qos, …}</code> 조건을 붙일 수 있으니(버전 문서 확인) state·NDATA·DDATA 발행 규칙에는 <code>{retain, false}</code>를 단다.</li>
 <li><b>패킷 크기.</b> order JSON은 노드가 많으면 수십 KB, DBIRTH도 메트릭 수에 비례한다. 1 MB면 충분하다.</li>
 <li><b>세션.</b> clean session true(3.1.1). 오프라인 큐잉에 기대지 않는다. 재접속 시 VDA는 state로, Sparkplug는 NBIRTH로 복구한다.</li>
 <li><b>QoS 상한 1.</b> QoS2는 어느 쪽 규격도 쓰지 않는다.</li>
@@ -613,7 +678,7 @@ python3 host_orch/spb_host.py … --stop
 </section>
 
 <section class="step" id="s9">
-<div class="step-head"><div class="badge">09</div><h2>통합 리허설 — 한 바퀴와 장애 네 가지</h2></div>
+<div class="step-head"><div class="badge">09</div><h2>통합 리허설 — 한 바퀴와 장애 다섯 가지</h2></div>
 <div class="goal"><div><b>목표</b>01단계 시퀀스가 실제 GPU 서버 ↔ 로컬 EMQX 사이에서 그대로 재현</div><div><b>산출물</b><code>docs/rehearsal_&lt;날짜&gt;.md</code> (tap 로그 발췌 + 판정표)</div><div><b>검증</b>아래 판정표 전부 통과</div></div>
 <h3>순서</h3>
 <ol>
@@ -621,16 +686,18 @@ python3 host_orch/spb_host.py … --stop
 <li>Host 기동 → STATE online 확인.</li>
 <li>GPU 서버에서 sim-runner 기동(systemd) → NBIRTH 확인. tailscale 경로로 붙는지 <code>Runner/State=IDLE</code>로 확인.</li>
 <li>Host Start(iw.hub 3대, ROS_DOMAIN_ID 10) → Isaac ready → 에이전트 ONLINE·factsheet ×3 → DBIRTH ×3 → RUNNING.</li>
-<li>fms-core 셸 기동(로컬) → factsheet로 3대 등록 → order 발행 → state의 lastNodeId 진행을 tap의 <code>Robot/LastNodeId</code>로 관찰.</li>
+<li>Host가 fms-core 셸을 띄우고(로컬에서는 수동 기동) NBIRTH의 <code>Fms/RunId</code>가 run_id와 같은지 확인한 뒤에야 WMS(또는 대역 스크립트)에 수요 생성을 시작시킨다. 그 전에 <code>biz/v1/order</code>가 나오면 시퀀스 위반이다.</li>
+<li>fms-core가 factsheet로 3대 등록 → order 발행 → state의 lastNodeId 진행을 tap의 <code>Robot/LastNodeId</code>로, task 이벤트를 <code>biz/v1/event</code>로 관찰.</li>
 <li>2분 주행 후 Host Stop → OFFLINE ×3 → DDEATH ×3 → IDLE. Isaac 프로세스 0개 확인.</li>
 </ol>
 <h3>장애 훈련</h3>
 <div class="tw"><table>
 <tr><th>#</th><th>행동</th><th>기대</th><th>복구</th></tr>
-<tr><td>1</td><td>에이전트 하나 <code>kill -9</code></td><td>45 s 안에 그 시리얼만 CONNECTIONBROKEN retained, DDATA <code>Robot/Connection</code> 거울, fms-core가 배차 제외</td><td>에이전트 재기동 → ONLINE + factsheet, state의 orderId·lastNodeId로 fms-core가 이어 감</td></tr>
+<tr><td>1</td><td>에이전트 하나 <code>kill -9</code></td><td>45 s 안에 그 시리얼만 CONNECTIONBROKEN retained, DDATA <code>Robot/Connection</code> 거울, fms-core가 배차 제외</td><td>에이전트 재기동 → ONLINE + factsheet → fms-core가 outbox의 마지막 order를 재발행 → 에이전트는 같은 orderUpdateId면 무시, 새 것이면 이어 감. orderError가 나오면 05단계 수정 누락</td></tr>
 <tr><td>2</td><td>sim-runner <code>kill -9</code></td><td>NDEATH(bdSeq 일치) → Host가 디바이스 3대 stale, 하트비트 결측 3회 → 런 실패</td><td>systemd 재기동 → 잔여 Isaac·에이전트 정리 → bdSeq+1 NBIRTH → Host가 새 런 가능</td></tr>
 <tr><td>3</td><td>Host 재기동</td><td>STATE offline → online(새 타임스탬프) → sim-runner·fms-core가 NBIRTH·DBIRTH 재발행</td><td>없음(자동)</td></tr>
 <tr><td>4</td><td>EMQX 컨테이너 재기동</td><td>클라이언트 전부 재접속, retained(connection·factsheet·STATE)가 볼륨 덕에 유지, Edge는 bdSeq+1 NBIRTH</td><td>없음(자동). retained가 사라졌다면 볼륨 마운트 점검</td></tr>
+<tr><td>5</td><td>fms-core <code>kill -9</code></td><td>NDEATH(bdSeq 일치) → Host가 런 실패 처리 → Stop → 에이전트 OFFLINE·DDEATH. 그 사이 WMS가 낸 주문은 사라져도 된다(런 무효)</td><td>새 런. fms-core를 그 자리에서 되살려 이어 가지 않는다</td></tr>
 </table></div>
 <div class="box note"><span class="k">병렬 실측과의 연결</span><p>Start의 <code>n_robots</code> 상한은 PJT-2의 병렬 실측 보고서(경량 e 구성 6대 정상, 7대 OOM)를 따른다. sim-runner가 <code>Runner/RamMB</code>·<code>Runner/VramMB</code>를 내므로 Host의 watchdog에 상한 초과 경고를 넣어 두면 좋다.</p></div>
 </section>
@@ -651,7 +718,7 @@ spec:
     spec:
       containers:
       - name: emqx
-        image: emqx/emqx:5.8.4                    # 04단계와 같은 태그
+        image: emqx/emqx:6.3.0@sha256:<digest>    # 04단계와 같은 digest
         ports: [ { containerPort: 1883 }, { containerPort: 18083 } ]
         envFrom: [ { secretRef: { name: emqx-secrets } } ]     # EMQX_NODE__COOKIE, 대시보드 비밀번호
         volumeMounts:
@@ -676,7 +743,7 @@ spec:
   - { name: mqtt, port: 1883, targetPort: 1883, nodePort: 31883 }   # GPU 서버용
   type: NodePort</code></pre>
 <ul>
-<li><b>클러스터 안</b> 클라이언트(fms-core Job, sim-wms, host-orch)는 <code>emqx.backbone.svc:1883</code>.</li>
+<li><b>클러스터 안</b> 클라이언트(fms-core Job, sim-wms, host-orch)는 <code>emqx.backbone.svc:1883</code>. host-orch도 같은 네임스페이스의 상시 Deployment(replicas 1)다 — Job이 아니다.</li>
 <li><b>GPU 서버</b>는 EC2의 tailscale IP:31883. NodePort는 모든 인터페이스에 열리므로 방화벽으로 100.64.0.0/10만 허용한다(<code>ufw allow from 100.64.0.0/10 to any port 31883</code>, 그 외 deny). nginx 443 규칙은 건드리지 않는다.</li>
 <li><b>대시보드</b>는 <code>kubectl port-forward svc/emqx 18083:18083</code>으로만 연다.</li>
 <li><b>사용자 DB</b>는 내장 DB라 <code>/opt/emqx/data</code>에 있다. 파드가 바뀌어도 볼륨이 같으면 계정이 남는다. 계정 생성 스크립트(04단계 curl)를 <code>4_Web/k8s/emqx/bootstrap_users.sh</code>로 남겨 재구축에 대비한다.</li>
@@ -692,7 +759,8 @@ spec:
 <tr><th>테스트</th><th>무엇을 고정하나</th><th>방법</th></tr>
 <tr><td class="mono">test_vda_schema.py</td><td>state·connection·factsheet·order가 VDA 2.0.0 공식 스키마를 통과</td><td><code>jsonschema.validate(StateBuilder(...).state(...), schema)</code>. fake_fms의 order 샘플도 검사</td></tr>
 <tr><td class="mono">test_spb_session.py</td><td>NBIRTH에 bdSeq·Node Control/Rebirth·사전 메트릭 전부, NDEATH bdSeq 일치, seq 255→0 순환</td><td>protobuf 인코드 → 디코드 왕복. 브로커 불필요</td></tr>
-<tr><td class="mono">test_spb_payloads.py</td><td>Run Control/Start·Fms/Event JSON이 <code>contracts/schemas/spb/</code> 스키마를 통과</td><td>jsonschema</td></tr>
+<tr><td class="mono">test_spb_payloads.py</td><td>Run Control/Start JSON이 <code>contracts/schemas/spb/</code> 스키마를, biz/v1/order·event가 <code>contracts/schemas/biz/</code> 스키마를 통과</td><td>jsonschema</td></tr>
+<tr><td class="mono">test_order_republish.py</td><td>같은 orderUpdateId는 무시(상태 불변·오류 없음), 낮으면 orderUpdateError, 셸이 2틱 미반영 시 같은 order를 재발행하고 5회 뒤 오류 처리</td><td>OrderBook 단위 테스트 + 셸을 가짜 브로커로 돌리는 틱 테스트</td></tr>
 <tr><td class="mono">test_acl_matrix.py</td><td>08단계 표의 허용·거부 칸</td><td>EMQX 컨테이너(testcontainers 또는 compose) 띄우고 paho로 각 칸 1회. 거부는 disconnect 감지</td></tr>
 <tr><td class="mono">test_run_cycle.py</td><td>01단계 시퀀스 전체</td><td>EMQX 컨테이너 + Host + <code>runner --fake</code> + fms-core 셸. Isaac 없이 2분</td></tr>
 </table></div>
@@ -701,7 +769,7 @@ stage('mqtt-contracts') {
   steps { sh 'docker compose -f 3_FMS/infra/emqx/compose.yml up -d && pytest -q 3_FMS/contracts/tests -k mqtt' }
   post  { always { sh 'docker compose -f 3_FMS/infra/emqx/compose.yml down -v' } }
 }</code></pre>
-<div class="box do"><span class="k">끝났다고 말할 수 있는 조건</span><ul class="check"><li>계약 v1.0에 결정 기록·레인표·ACL표·메트릭 사전·NCMD표가 있고 코드가 그것만 참조한다</li><li>로컬 EMQX와 EC2 EMQX가 같은 emqx.conf·acl.conf를 쓴다</li><li>09단계 한 바퀴와 장애 4종이 EC2 EMQX로 재현됐다</li><li>11단계 다섯 테스트가 CI에서 초록이다</li><li>아키텍처 문서의 "QoS1 · retained" 표기가 레인표와 맞게 고쳐졌다</li></ul></div>
+<div class="box do"><span class="k">끝났다고 말할 수 있는 조건</span><ul class="check"><li>계약 v1.0에 결정 기록·레인표·ACL표·메트릭 사전·NCMD표가 있고 코드가 그것만 참조한다</li><li>로컬 EMQX와 EC2 EMQX가 같은 emqx.conf·acl.conf를 쓴다</li><li>09단계 한 바퀴와 장애 5종이 EC2 EMQX로 재현됐다</li><li>11단계 다섯 테스트가 CI에서 초록이다</li><li>아키텍처 문서의 "QoS1 · retained" 표기가 레인표와 맞게 고쳐졌다</li><li>계약 0장에 이미지 digest와 라이선스 조항이 있고, Host가 Job이 아닌 Deployment로 배포돼 있다</li></ul></div>
 </section>
 
 <section class="step" id="sA">
@@ -711,6 +779,7 @@ stage('mqtt-contracts') {
 mqttx sub -h H -u host-orch -P PW -t 'uagv/v2/+/+/connection' -v             # 접속 상태(retained)
 mqttx pub -h H -u U -P PW -q 1 -r -t 'uagv/v2/M/S/factsheet' -m ''            # retained 삭제(빈 페이로드)
 python3 tools/spb_tap.py --host H --user host-orch --pw PW                    # Sparkplug 디코드 관측
+docker manifest inspect emqx/emqx:6.3.0 | grep -m1 digest                    # 계약에 적을 digest
 kubectl -n backbone port-forward svc/emqx 18083:18083                        # 대시보드
 kubectl -n backbone exec deploy/emqx -- emqx ctl clients list                # 접속 클라이언트
 kubectl -n backbone exec deploy/emqx -- emqx ctl retained list               # (버전에 따라) retained 목록</code></pre>
@@ -730,7 +799,7 @@ kubectl -n backbone exec deploy/emqx -- emqx ctl retained list               # (
 <li>VDA 5050 규격·JSON 스키마: <a href="https://github.com/VDA5050/VDA5050">github.com/VDA5050/VDA5050</a> (2.0.0 태그의 json_schemas)</li>
 <li>Sparkplug B 3.0 규격: <a href="https://sparkplug.eclipse.org/specification/">sparkplug.eclipse.org/specification</a></li>
 <li>Eclipse Tahu(protobuf 정의·Java/Python 클라이언트): <a href="https://github.com/eclipse-tahu/tahu">github.com/eclipse-tahu/tahu</a>, PyPI <code>mqtt-spb-wrapper</code></li>
-<li>EMQX 5 문서(인증·ACL 파일 형식·retainer·k8s): <a href="https://docs.emqx.com/en/emqx/latest/">docs.emqx.com</a></li>
+<li>EMQX 문서(인증·ACL 파일 형식·retainer·k8s): <a href="https://docs.emqx.com/en/emqx/latest/">docs.emqx.com</a> · 라이선스: <a href="https://github.com/emqx/emqx/blob/master/LICENSE">emqx/emqx LICENSE</a> (master = BSL 1.1, v5.8.x = Apache 2.0)</li>
 <li>MQTTX CLI: <a href="https://mqttx.app/cli">mqttx.app/cli</a></li>
 <li>레포 근거: <code>2_Simulation/t4_agent/README.md</code>(틱↔VDA 매핑), <code>3_FMS/contracts/SIM_RUN_CONTRACT.md</code>(계약 문서 형식), 아키텍처 v3.8 §03·⑤</li>
 </ul>
@@ -738,7 +807,7 @@ kubectl -n backbone exec deploy/emqx -- emqx ctl retained list               # (
 
 </main>
 </div></div>
-<footer><div class="wrap">WORKING · MQTT-BACKBONE · REV A — 작성 2026-09-07 · 원천: 아키텍처 v3.8 · VDA 5050 2.0.0 · Sparkplug B 3.0 · <a href="../../index.html">문서 인덱스로</a></div></footer>
+<footer><div class="wrap">WORKING · MQTT-BACKBONE · REV B — 개정 2026-09-07 (Rev A 리뷰 반영) · 원천: 아키텍처 v3.8 · VDA 5050 2.0.0 · Sparkplug B 3.0 · <a href="../../index.html">문서 인덱스로</a></div></footer>
 <script type="module">
 import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
 mermaid.initialize({ startOnLoad: true, theme: "dark", fontFamily: "IBM Plex Sans KR, sans-serif" });
