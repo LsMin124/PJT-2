@@ -86,15 +86,15 @@
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow"><b>RESEARCH 02 / 04</b> · INDUSTRY · 3PL &amp; FULFILLMENT</div>
+      <div class="doc-eyebrow"><b>RESEARCH 02 / 04</b> · 3PL-INDUSTRY · REV — 2026-09-07 · 축약판</div>
       <h1>3PL 업계 구조 — 건당으로 벌고, 건당으로 쓴다
-        <span class="sub">국내·해외 시장 지형 · 건당 요금 구조 · 계약 3모델 · 화주 획득 사이클 — 첫 고객 세그먼트 제안의 근거 자료</span>
+        <span class="sub">건당 요금 구조 · 계약 3모델 · 화주 획득 사이클 — 첫 고객 세그먼트의 근거 자료</span>
       </h1>
     </div>
     <div class="meta">
       DOC. <b>3PL-INDUSTRY</b><br>
-      REV. <b>B</b> · 조사 <b>08-24 · 개정 08-26</b><br>
-      상태 <b>타겟 확정: 계약물류 중견 3PL</b>
+      REV. <b>축약판 2026-09-07</b> · 조사 <b>08-24 · 개정 08-26</b><br>
+      타겟 <b>계약물류 중견 3PL의 반송·피킹 보조</b>
     </div>
   </div>
 </header>
@@ -102,13 +102,12 @@
 <nav><div class="wrap">
   <a class="nav-home" href="../../index.html">⌂ INDEX</a>
   <a href="#t0">00 한눈에</a>
-  <a href="#t1">01 업계 지형</a>
   <a href="#t2">02 요금 구조</a>
   <a href="#t3">03 계약 3모델</a>
   <a href="#t4">04 화주 사이클</a>
   <a href="#t5">05 자동화 접점</a>
   <a href="#t6">06 우리 기획</a>
-  <a class="nav-cross" href="../tech/amr_overview.html">전체 조망 ↗</a>
+  <a class="nav-cross" href="../tech/system_architecture.html">시스템 아키텍처 ↗</a>
 </div></nav>
 
 <main class="wrap">
@@ -117,51 +116,12 @@
   <section id="t0">
     <div class="sec-head"><span class="sec-no">SEC 00 · 한눈에 보기</span><h2>3PL의 돈은 계약이 아니라 "처리 1건"에서 나온다</h2></div>
     <div class="sec-body">
-      <p class="lead">3PL(3자물류)은 남의 회사 물류 — 입고·보관·피킹·포장·출고 — 를 창고째 대신 운영해 주는 업이다. 이 문서의 핵심 발견은 하나다: <b>요금이 처리 건당으로 산정된다</b>. 입고는 팔레트당, 보관은 팔레트·월당, 출고는 주문 1건당. 그래서 3PL의 수익 구조는 "건당 받는 돈 − 건당 처리 원가"로 압축되고, 로봇 도입 판단도 결국 건당 원가 계산 문제가 된다.</p>
+      <p class="lead">3PL(3자물류)은 남의 회사 물류 — 입고·보관·피킹·포장·출고 — 를 창고째 대신 운영해 주는 업이다. <b>요금이 처리 건당으로 산정</b>되므로 수익 구조는 "건당 받는 돈 − 건당 처리 원가"로 압축되고, 로봇 도입 판단도 건당 원가 계산 문제가 된다.</p>
       <div class="kcards">
-        <div class="kcard"><b>누가 있나</b><span>글로벌 1위 Amazon, DSV·DHL·K+N — 국내는 CJ대한통운 + 풀필먼트 스타트업 — SEC 01</span></div>
         <div class="kcard s"><b>돈이 어떻게 도나</b><span>입고·보관·출고·고정비 4버킷, 전부 건당·단위당 — SEC 02·03</span></div>
         <div class="kcard g"><b>우리와 무슨 상관인가</b><span>건당 원가 곡선 = 사이징 엔진의 산출물 그 자체 — SEC 05·06</span></div>
       </div>
-      <div class="plain"><span class="pl-tag">이 문서의 위치</span>이 조사가 뒷받침한 "첫 고객군 = 3PL" 제안(2026-08-24)은 <b>2026-08-26 기획 기준선에서 타겟 시장으로 확정</b>됐다 — 계약물류(팔레트·토트) 중심 중견 3PL. 로봇 쪽 지형은 <a href="robot_landscape.html">물류로봇 지형</a>, 도메인 일반 배경은 <a href="../archive/logistics_domain_research.html">도메인 배경(부록)</a> 참조.</div>
-    </div>
-  </section>
-
-  <!-- ══════════ T1 업계 지형 ══════════ -->
-  <section id="t1">
-    <div class="sec-head"><span class="sec-no">SEC 01 · 업계 지형</span><h2>해외는 메가 3PL이, 국내는 대기업 + 풀필먼트 스타트업이 나눠 갖는다</h2></div>
-    <div class="sec-body">
-      <h3>용어 한 줄 정리</h3>
-      <table>
-        <tr><th style="width:90px">구분</th><th>의미</th><th>예</th></tr>
-        <tr><td><b>1PL</b></td><td>화주가 직접 물류 수행</td><td>자가 창고·자가 차량</td></tr>
-        <tr><td><b>2PL</b></td><td>운송·보관 등 단일 기능만 위탁</td><td>택배사에 배송만 맡김</td></tr>
-        <tr><td><b>3PL</b></td><td>물류 프로세스 전체를 계약 기반으로 위탁 운영</td><td>계약물류(B2B) · 풀필먼트(B2C 이커머스)</td></tr>
-        <tr><td><b>4PL</b></td><td>3PL들을 묶어 공급망 전체를 설계·관제</td><td>주선·컨설팅 성격</td></tr>
-      </table>
-      <p>이 문서에서 다루는 것은 3PL, 그중에서도 창고 운영이 있는 <b>계약물류·풀필먼트</b>다. 운송 주선(포워딩)만 하는 업체는 로봇 수요가 없으므로 제외한다.</p>
-
-      <h3>해외 — 매출 순위 (A&amp;A 2026년 랭킹, 2025년 총물류매출 기준)</h3>
-      <table>
-        <tr><th style="width:60px">순위</th><th>기업</th><th>2025 총물류매출</th><th>비고</th></tr>
-        <tr><td>1</td><td><b>Amazon</b></td><td>$172.2B</td><td>자사+제3자 물류 겸업 — 사실상 별격</td></tr>
-        <tr><td>2</td><td><b>DSV</b></td><td>$37.4B</td><td>DB Schenker 인수 완료로 2위 등극</td></tr>
-        <tr><td>3</td><td><b>DHL SC &amp; GF</b></td><td>$35.5B</td><td>계약물류 세계 최대 — AMR 최대 도입처(SEC 05)</td></tr>
-        <tr><td>4</td><td><b>Kuehne + Nagel</b></td><td>$33.8B</td><td>포워딩 중심 + 계약물류</td></tr>
-        <tr><td>5</td><td><b>CEVA Logistics</b></td><td>$18.3B</td><td>CMA CGM 계열</td></tr>
-        <tr><td>—</td><td><b>GXO</b></td><td>톱10 첫 진입</td><td>계약물류 전업 최대 — 창고 자동화 전면 마케팅</td></tr>
-      </table>
-      <p class="soft">출처: Armstrong &amp; Associates 랭킹 정리 — <a href="https://redstagfulfillment.com/biggest-3pl-companies/">Red Stag 정리</a> · <a href="https://www.freightwaves.com/checkpoint/top-3pl-companies/">FreightWaves</a> · <a href="https://www.supplychain247.com/article/top-50-global-third-party-logistics-providers-ranking">SupplyChain247</a></p>
-
-      <h3>국내 — 대기업 계약물류 + 이커머스 풀필먼트 2층 구조</h3>
-      <table>
-        <tr><th style="width:120px">층</th><th>플레이어</th><th>특징</th></tr>
-        <tr><td><b>대기업 계약물류</b></td><td>CJ대한통운 · 한진 · 롯데글로벌로지스 · LX판토스</td><td>CJ대한통운은 풀필먼트로 3PL 확장 중 — 2024년 말 기준 12개 센터 35만㎡ 규모 (<a href="https://www.econovill.com/news/articleView.html?idxno=567962">이코노믹리뷰</a> · <a href="https://www.cjlogistics.com/ko/business/fulfillment">CJ 공식</a>)</td></tr>
-        <tr><td><b>풀필먼트 스타트업</b></td><td>파스토 · 품고(두핸즈) · 콜로세움 · 아워박스 등</td><td>이커머스 셀러 대상 서비스형 풀필먼트. 파스토는 자체 시스템으로 150억 규모 추가 투자 유치 (<a href="https://www.the-stock.kr/news/articleView.html?idxno=16907">더스탁</a> · <a href="https://coldchainnews.kr/mobile/article.html?no=24651">콜드체인뉴스</a>)</td></tr>
-        <tr><td><b>플랫폼 자체망</b></td><td>쿠팡(로켓그로스) · 네이버(도착보장)</td><td>플랫폼이 셀러에게 풀필먼트를 파는 형태 — 요금표가 공개돼 있어 건당 과금의 국내 공개 사례(SEC 02)</td></tr>
-      </table>
-      <p class="soft">국내 풀필먼트 시장 규모는 2020년 약 1.9조원 → 2022년 약 2.3조원 <b>전망치</b>가 인용된다(<a href="https://www.the-stock.kr/news/articleView.html?idxno=16907">더스탁</a>) — 공표 통계가 아니라 업계 전망이므로 전망치로만 표기한다.</p>
-      <div class="note"><span class="pl-tag">세그먼트 제안과의 연결</span>기획서의 스윗스팟 — "대형은 내재화, 영세는 검토 안 함, 그 사이의 <b>성장 중인 중견 풀필먼트</b>" — 가 이 2층 구조의 두 번째 층이다. 이 층은 화주(셀러) 계약을 늘려갈 때마다 처리 능력 산정 문제를 반복해서 만난다.</div>
+      <p class="soft">타겟: <b>계약물류 중견 3PL의 반송·피킹 보조</b>. 1PL~4PL 구분과 풀필먼트 용어는 <a href="../ref/glossary.html#fulfillment">용어사전</a> 참조. 운송 주선(포워딩)만 하는 업체는 로봇 수요가 없어 제외한다. 로봇 쪽은 <a href="amr_model_selection.html">기준 기종 선정</a>, 도메인 일반 배경은 <a href="../archive/archive.html">아카이브</a>.</p>
     </div>
   </section>
 
@@ -169,16 +129,15 @@
   <section id="t2">
     <div class="sec-head"><span class="sec-no">SEC 02 · 요금 구조</span><h2>4개 버킷 전부가 건당·단위당 — 이것이 이 업의 단위 경제학이다</h2></div>
     <div class="sec-body">
-      <p class="lead">3PL 요금은 월정액이 아니다. 화주는 물동량이 발생한 만큼만 낸다. 해외 벤치마크(2025~2026 요금 가이드 종합)는 다음과 같다.</p>
       <table>
-        <tr><th style="width:110px">버킷</th><th>과금 단위</th><th>해외 벤치마크</th></tr>
+        <tr><th style="width:110px">버킷</th><th>과금 단위</th><th>해외 벤치마크 (2025~2026 요금 가이드 종합, 미국 기준)</th></tr>
         <tr><td><b>① 입고</b></td><td>팔레트·카톤·개당</td><td>팔레트당 $5~15</td></tr>
         <tr><td><b>② 보관</b></td><td>팔레트·㎥·선반칸 × 월</td><td>팔레트·월당 $18~25</td></tr>
         <tr><td><b>③ 출고(피킹·포장)</b></td><td><b>주문 1건당</b> + 추가 품목당</td><td>B2C 주문당 $2~3(설문 평균 $3.20) · B2B 주문당 약 $4.80 · 첫 품목 이후 개당 +$0.40~1.00</td></tr>
         <tr><td><b>④ 고정·부가</b></td><td>월 최소·계정 관리·자재</td><td>월 최소 평균 약 $517 · 셋업비 $250~1,000(업체 절반가량)</td></tr>
       </table>
-      <p>여기에 택배 운임이 얹히면, 표준 이커머스 주문의 풀필먼트 총원가는 대략 <b>주문당 $4~6</b> 수준(월 5천~1.5만 건 물동 기준)으로 인용된다 — 그중 40~50%가 배송, 30~40%가 피킹·포장 인건비·자재다.</p>
-      <p class="soft">출처: <a href="https://www.fulfill.com/3pl-pricing">Fulfill.com — 16개 요금 벤치마크(2026)</a> · <a href="https://redstagfulfillment.com/3pl-pricing-explained/">Red Stag 요금 가이드</a> · <a href="https://warehousingcosts.com/3pl/costs">WarehousingCosts.com</a> — 지역·물동·SKU 구성에 따라 편차가 크며, 벤치마크는 미국 기준.</p>
+      <p>택배 운임을 얹으면 표준 이커머스 주문의 풀필먼트 총원가는 대략 <b>주문당 $4~6</b>(월 5천~1.5만 건 기준) — 그중 40~50%가 배송, 30~40%가 피킹·포장 인건비·자재.</p>
+      <p class="soft">출처: <a href="https://www.fulfill.com/3pl-pricing">Fulfill.com — 16개 요금 벤치마크(2026)</a> · <a href="https://redstagfulfillment.com/3pl-pricing-explained/">Red Stag 요금 가이드</a> · <a href="https://warehousingcosts.com/3pl/costs">WarehousingCosts.com</a> — 지역·물동·SKU 구성에 따라 편차가 크다.</p>
 
       <h3>국내 공개 사례 — 쿠팡 로켓그로스 (플랫폼형 풀필먼트 요금표)</h3>
       <table>
@@ -189,7 +148,6 @@
         <tr><td>판매수수료</td><td>카테고리별 4~10.9% (물류비와 별도)</td></tr>
       </table>
       <p class="soft">출처: <a href="https://marketplace.coupang.com/rocket-growth">쿠팡 로켓그로스 공식</a> · <a href="https://www.percenty.co.kr/blog/rocket-growth-fee-revision-key-details-sellers-need-to-know">2025 요금 개편 정리</a> · <a href="https://www.ajunews.com/view/20241126134304787">아주경제</a> · <a href="https://www.etnews.com/20241118000257">전자신문</a></p>
-      <div class="plain"><span class="pl-tag">이 절의 결론</span>국내외 공통으로 3PL·풀필먼트의 요금은 <b>처리 단위당</b>으로 설계돼 있다. 화주가 내는 돈이 건당이면, 3PL이 버는 돈도 건당이고, 따라서 3PL의 원가 관리도 건당이다. "주문 1건을 처리하는 데 얼마가 드는가"가 이 업의 단위 경제학(unit economics)이다.</div>
     </div>
   </section>
 
@@ -203,8 +161,8 @@
         <tr><td><b>Cost-plus</b><br><span class="chip c-steel">원가 공개</span></td><td>실제 원가 + 약정 마진, 장부 공개(open book). 가장 흔히 쓰이는 모델로 꼽힘</td><td>원가 구조를 화주와 같이 들여다봄 — 원가 산정·개선 근거 자료가 상시 필요</td></tr>
         <tr><td><b>Gainshare</b><br><span class="chip c-green">절감 배분</span></td><td>기준선 대비 효율 개선분을 양측이 배분</td><td>기준선(baseline) 수립에 1년 이상 — 개선 효과를 정량화할 도구가 전제</td></tr>
       </table>
+      <p>세 모델 모두 <b>"이 물량을 처리하는 데 실제로 얼마가 드는가"를 계약 전에 계산하는 능력</b>을 요구한다 — 단가를 정하기 위해, 원가를 입증하기 위해, 개선분을 측정하기 위해.</p>
       <p class="soft">출처: <a href="https://www.beneschlaw.com/resources/handing-over-the-keys-consider-alternate-pricing-models-for-3pl-outsourcing.html">Benesch(물류 전문 로펌)</a> · <a href="https://www.its4logistics.com/blog/navigating-warehouse-pricing-models">ITS Logistics</a> · <a href="https://kencogroup.com/blog/which-pricing-model-is-best-for-your-warehouse/">Kenco</a> · <a href="https://utenant.com.au/resources/navigating-rate-cards-contracts-and-commercial-models-for-3pl-warehousing">uTenant — rate card 해설</a></p>
-      <p>세 모델 모두에서 같은 능력이 요구된다: <b>"이 물량을 처리하는 데 실제로 얼마가 드는가"를 계약 전에 계산하는 능력.</b> Transactional은 단가를 정하기 위해, Cost-plus는 원가를 입증하기 위해, Gainshare는 개선분을 측정하기 위해. 시뮬레이션 기반 사이징이 파고들 자리가 정확히 여기다.</p>
     </div>
   </section>
 
@@ -219,8 +177,8 @@
         <tr><td><b>③ 계약·온보딩</b></td><td>통상 1~3년 계약, 센터 배치·인력 셋업</td><td>레이아웃·동선·교대 설계</td></tr>
         <tr><td><b>④ 운영·갱신</b></td><td>물동 성장·피크 대응, 갱신 협상</td><td>물량이 늘면 사람을 더 쓸까, 로봇을 넣을까</td></tr>
       </table>
-      <p>제조 기업의 로봇 도입이 5~10년에 한 번의 설비 투자라면, 3PL의 사이징 질문은 <b>화주 계약 주기마다</b> 돌아온다. 신규 화주 하나, 신규 센터 하나가 전부 새로운 사이징 문제다. 기획서 §03의 "반복해서 산다" 논리의 실체가 이 사이클이다.</p>
-      <div class="note"><span class="pl-tag">추정 표시</span>①~④ 사이클 구조 자체는 계약 모델·RFP 문헌(SEC 03 출처)으로 뒷받침되지만, "국내 중견 풀필먼트가 이 사이클에서 실제로 시뮬레이션 수준의 산정을 원하는가"는 추정이다 — 검증 인터뷰 ③(중견 3PL 운영 담당)으로 확정한다.</div>
+      <p>제조 기업의 로봇 도입이 5~10년에 한 번의 설비 투자라면, 3PL의 사이징 질문은 <b>화주 계약 주기마다</b> 돌아온다 — 신규 화주 하나, 신규 센터 하나가 전부 새 사이징 문제다.</p>
+      <p class="soft">추정 표시: ①~④ 구조 자체는 SEC 03 출처로 뒷받침되지만, 국내 중견 3PL이 이 사이클에서 실제로 시뮬레이션 수준의 산정을 원하는가는 추정 — 검증 인터뷰 ③(중견 3PL 운영 담당)으로 확정한다.</p>
     </div>
   </section>
 
@@ -228,14 +186,14 @@
   <section id="t5">
     <div class="sec-head"><span class="sec-no">SEC 05 · 자동화와의 관계</span><h2>건당으로 버는 업이라, 로봇도 건당 논리로 산다 — RaaS</h2></div>
     <div class="sec-body">
-      <p class="lead">3PL의 화주 계약은 1~3년인데 로봇 감가상각은 그보다 길다. 그래서 이 업계는 로봇을 사지 않고 빌린다 — <b>RaaS(Robot-as-a-Service)</b>. 수익이 건당이니 비용도 건당·월당으로 맞추는 것이다.</p>
+      <p class="lead">화주 계약은 1~3년인데 로봇 감가상각은 그보다 길다. 그래서 로봇을 사지 않고 빌린다 — <b>RaaS(Robot-as-a-Service)</b>. 수익이 건당이니 비용도 건당·월당으로 맞춘다.</p>
       <table>
         <tr><th>사실</th><th style="width:280px">출처</th></tr>
         <tr><td>세계 최대 계약물류사 DHL Supply Chain이 Locus 피킹 로봇을 500 → 2,000 → <b>5,000대</b>로 확장 계약 (업계 최대 AMR 딜)</td><td><a href="https://www.prnewswire.com/news-releases/dhl-supply-chain-expands-global-partnership-with-locus-robotics-to-deploy-5-000-amrs-across-multiple-sites-301820650.html">PR Newswire 공식 발표(2023)</a></td></tr>
         <tr><td>35개+ DHL 사이트에서 누적 5억 픽 달성</td><td><a href="https://www.dhl.com/global-en/delivered/innovation/dhl-and-locusbots-hit-500-million-picks.html">DHL 공식</a></td></tr>
-        <tr><td>피킹 보조 AMR의 주력 시장이 3PL·이커머스 고처리량 창고</td><td><a href="robot_landscape.html">물류로봇 지형 SEC 02</a> (도메인 매핑)</td></tr>
+        <tr><td>피킹 보조 AMR의 주력 시장이 3PL·이커머스 고처리량 창고</td><td><a href="amr_model_selection.html">기준 기종 선정</a> (도메인 매핑)</td></tr>
       </table>
-      <p>주목할 것은 도입 판단의 형태다. 건당 요금제 아래에서 로봇 도입 질문은 "로봇이 좋은가"가 아니라 <b>"로봇 N대를 넣으면 건당 처리 원가가 얼마로 내려가고, RaaS 월 사용료를 빼고도 남는가"</b>다. 순수하게 정량적인 질문이고, 시뮬레이션이 답할 수 있는 형태의 질문이다.</p>
+      <p>건당 요금제 아래에서 도입 질문은 "로봇이 좋은가"가 아니라 <b>"로봇 N대를 넣으면 건당 처리 원가가 얼마로 내려가고, RaaS 월 사용료를 빼고도 남는가"</b>다 — 시뮬레이션이 답할 수 있는 형태의 정량 질문이다.</p>
     </div>
   </section>
 
@@ -243,31 +201,26 @@
   <section id="t6">
     <div class="sec-head"><span class="sec-no">SEC 06 · 우리 기획과의 접점</span><h2>엔진의 산출 단위를 "건당 원가"로 맞추면 3PL의 언어와 일치한다</h2></div>
     <div class="sec-body">
-      <p class="lead">이 조사의 실무적 결론은 산출물 설계 지침 하나다: 사이징 엔진의 최종 산출을 "대수별 처리량"에서 한 걸음 더 나아가 <b>"대수별 건당 처리 원가 곡선"</b>으로 제시하면, 3PL이 일상적으로 쓰는 단위(주문당 $·건당 원)와 정확히 포개진다.</p>
+      <p class="lead">산출 단위 = <b>대수별 건당 처리 원가 곡선</b>. "대수별 처리량"에서 한 걸음 더 나아가면 3PL이 일상적으로 쓰는 단위(주문당 $·건당 원)와 정확히 포개진다.</p>
       <table>
         <tr><th style="width:190px">3PL의 순간</th><th>엔진이 내놓는 것</th></tr>
         <tr><td>화주 RFP 응찰 (SEC 04-②)</td><td>"이 물동 프로파일은 로봇 N대 + 인력 M명이면 건당 ₩X에 처리" — 응찰 단가의 계산 근거</td></tr>
         <tr><td>로봇 도입·증차 판단 (SEC 05)</td><td>대수별 건당 원가 곡선 + RaaS 비용 상계 — 투자 품의 근거</td></tr>
         <tr><td>Cost-plus 원가 입증 (SEC 03)</td><td>가정 명세가 붙은 원가 분해 — open book 협상 자료</td></tr>
       </table>
-      <div class="plain"><span class="pl-tag">확정 사항 (2026-08-26)</span>타겟 시장 = <b>계약물류 중견 3PL</b> — "엔지니어링 조직 없이 엔지니어링 조직급 제안서를 내게 해주는 툴". 근거 4: 화주 입찰마다 반복 사용(수주 도구 → 구독 과금 성립) · SLA·계약기간(3~5년)이 P10 처리량·회수기간 신뢰구간의 필수 수요를 만듦 · 다현장 캘리브레이션 라이브러리 재사용 · 벤더 중립성의 실수요자. 제외 대상: 대형 3PL(자체 엔지니어링 조직 — 고객이 아니라 경쟁자), 이커머스 풀필먼트 특화(GTP 그리드 수요 — 스코프 밖). 검증 인터뷰 ③(중견 3PL 운영 담당) 질문지는 SEC 04 기반.</div>
-      <div class="kcards">
-        <div class="kcard"><b><a href="amr_model_selection.html" style="color:inherit">기준 기종 선정</a></b><span>이 업계에서 굴릴 물리 시뮬 기준 기종 1종의 선정 근거 (RESEARCH 04)</span></div>
-        <div class="kcard s"><b><a href="amr_model_selection.html" style="color:inherit">기준 기종 선정</a></b><span>타겟 정합(브라운필드·GTP 제외) 논리와 iw.hub 근거</span></div>
-        <div class="kcard g"><b><a href="robot_landscape.html" style="color:inherit">물류로봇 지형</a></b><span>어느 로봇이 이 업계에 들어가 있나 — 도메인 매핑 (RESEARCH 02)</span></div>
-      </div>
+      <p class="soft">타겟 시장은 2026-08-26 기획 기준선에서 <b>계약물류 중견 3PL의 반송·피킹 보조</b>로 확정. 검증 인터뷰 ③(중견 3PL 운영 담당) 질문지는 SEC 04 기반.</p>
     </div>
   </section>
 
 </main>
 
 <div class="wrap flow-nav">
-  <a class="prev" href="robot_landscape.html"><small>← 이전</small>RESEARCH 01 · 물류로봇 지형</a>
+  <a class="prev" href="../archive/topic_journey.html"><small>← 이전</small>ARCHIVE 01 · 주제 확정 여정</a>
   <a class="next" href="amr_model_selection.html"><small>다음 →</small>RESEARCH 03 · 기준 기종 선정</a>
 </div>
 
 <footer>
-  <div class="wrap">RESEARCH 02 · 3PL INDUSTRY · REV A — 조사 2026-08-24 · 해외 벤치마크는 미국 기준 요금 가이드 종합, 국내 수치는 기사·공식 요금표 인용(전망치는 명기) · 출처는 본문 링크 · <a href="../../index.html">문서 인덱스로</a></div>
+  <div class="wrap">RESEARCH 02 · 3PL INDUSTRY · 축약판 2026-09-07 — 조사 2026-08-24 · 개정 2026-08-26 · 해외 벤치마크는 미국 기준 요금 가이드 종합, 국내 수치는 기사·공식 요금표 인용 · 출처는 본문 링크 · <a href="../../index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<title>용어사전 — 로보틱스 · 물류 · 인프라 (Glossary)</title>
+<style>
+  :root{
+    --bg:#14181D;--panel:#1C2229;--panel-edge:#2C343D;--ink:#E8ECF1;--ink-soft:#9AA7B4;
+    --amber:#F08A32;--machine:#3BAF77;--steel:#8FB4D9;--grid:#2A323B;
+    --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important}}
+  body{
+    background:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:32px 32px;
+    color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px;
+  }
+  a{color:var(--steel)}
+  .wrap{max-width:980px;margin:0 auto;padding:0 20px}
+  header{border-bottom:3px solid var(--ink);background:var(--panel)}
+  .titleblock{padding:30px 0 22px}
+  .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:8px}
+  .doc-eyebrow b{color:var(--amber);font-weight:600}
+  h1{font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-.02em}
+  h1 .sub{display:block;font-size:.55em;font-weight:500;color:var(--ink-soft);margin-top:6px}
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav .wrap{display:flex;gap:2px;padding:0 20px}
+  nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
+  nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--amber);outline:none}
+  nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
+  nav a.here{color:#fff;border-bottom-color:var(--amber)}
+  main{padding:36px 0 80px}
+  .toc-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px}
+  .toc-chips a{font-family:var(--mono);font-size:11px;text-decoration:none;color:var(--steel);border:1px solid var(--panel-edge);background:var(--panel);padding:4px 10px}
+  .toc-chips a:hover{border-color:var(--amber);color:var(--amber)}
+  .howto{background:var(--panel);border:1px solid var(--panel-edge);border-left:4px solid var(--steel);padding:12px 16px;margin-bottom:16px;font-size:13.5px;line-height:1.8}
+  section.term{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:26px;padding:22px 26px;scroll-margin-top:56px}
+  .term h2{font-size:19px;font-weight:800;letter-spacing:-.01em}
+  .term h2 .en{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-soft);letter-spacing:.06em;margin-left:10px}
+  p.def{font-size:14px;font-weight:600;border-left:4px solid var(--amber);padding:9px 14px;background:#2A2019;margin:12px 0}
+  .term p{font-size:14px;margin:8px 0}
+  figure{margin:16px 0;border:1px solid var(--panel-edge);background:#1F262E;padding:14px}
+  figure svg{display:block;width:100%;height:auto}
+  figcaption{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);margin-top:8px;letter-spacing:.05em}
+  .ctx{margin-top:12px;padding:10px 14px;background:#20272F;border-left:3px solid var(--machine);font-size:13px}
+  .ctx b{color:var(--machine)}
+  code{font-family:var(--mono);font-size:12px;background:#20272F;padding:1px 5px}
+  footer{border-top:3px solid var(--ink);padding:18px 0 44px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+  @media (max-width:760px){body{font-size:14px} section.term{padding:16px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap titleblock">
+    <div class="doc-eyebrow">REF · <b>용어사전</b> · REV — 2026-09-07 · 통합판</div>
+    <h1>용어사전 — 로보틱스 · 물류 · 인프라
+      <span class="sub">로봇·물류 도메인이 처음인 팀원을 위한 47항목 — 다른 문서 본문에서 하이퍼링크로 연결됨</span>
+    </h1>
+  </div>
+</header>
+
+<nav aria-label="문서 이동">
+  <div class="wrap">
+    <a class="nav-home" href="../../index.html">⌂ INDEX</a>
+    <a href="#g-flow">01 서비스 흐름</a>
+    <a href="#g-fms">02 경로계획·FMS</a>
+    <a href="#g-robot">03 로봇·검증</a>
+    <a href="#g-logi">04 물류·검산</a>
+    <a href="#g-infra">05 인프라</a>
+    <a href="../archive/archive.html">← 이전 · ARCHIVE</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<div class="howto"><b>이 사전 읽는 법</b> — 다른 문서에서 용어를 눌러 넘어왔다면 그 항목만 읽고 뒤로가기로 돌아가면 된다.<br>
+5그룹(서비스 흐름 → 경로계획·FMS → 로봇·검증 → 물류·검산 → 인프라) 순서로 배열했고, 각 항목은 <b>한 줄 정의</b> + <b><span style="color:#3BAF77">이 프로젝트에서</span></b> 두 요소다.<br>
+옛 REF A(로보틱스)·REF B(물류센터)의 항목 앵커는 모두 이 문서 안에 남아 있어 기존 링크가 그대로 동작한다.</div>
+
+<!-- ================= 01 서비스 흐름 ================= -->
+<div class="howto" id="g-flow" style="scroll-margin-top:56px"><b>01 · 서비스 흐름</b> — 접수에서 발송까지의 단위와 부품</div>
+<div class="toc-chips">
+  <a href="#intake-service">요청 접수형 서비스</a><a href="#run">런</a><a href="#trial">trial</a><a href="#scenario-package">시나리오 패키지</a><a href="#sim-wms">시뮬 WMS</a><a href="#wms-lite">WMS 라이트</a><a href="#orchestrator">런 오케스트레이터</a><a href="#gpu-run-queue">GPU 런 큐</a><a href="#dlq">DLQ</a><a href="#artifact">아티팩트</a><a href="#presigned-url">presigned URL</a>
+</div>
+
+<section class="term" id="intake-service">
+  <h2>요청 접수형 서비스<span class="en">Intake Service — 요청을 받아 나중에 결과를 보내는 비동기 서비스</span></h2>
+  <p class="def">고객이 조건을 남기면 요청이 큐에 쌓이고, 운영자가 검토·검수한 뒤 결과를 나중에 발송하는 서비스 형태. 셀프서브 SaaS의 반대다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — v3의 제품 형태 — GPU가 1대라 검증 런을 줄 세워야 하고, 영상·리플레이는 사람이 검수해야 한다. 8단계: ①접수→②운영 검토·시나리오 컴파일→③스윕 잡 소비→④θ 추론·DES→⑤Isaac 검증 런→⑥KPI·아티팩트→⑦리포트→⑧발송. 운영자 개입은 ②·⑦. 상세는 <a href="../tech/system_architecture.html">시스템 아키텍처</a>, 제품은 <a href="../product/landing.html">Santa Factory</a>·<a href="../product/demo.html">데모</a>.</div>
+</section>
+
+<section class="term" id="run">
+  <h2>런<span class="en">Run — Isaac 검증 런 한 번</span></h2>
+  <p class="def">시뮬 WMS·FMS 파드를 띄우고 Isaac Sim에서 로봇을 움직여 KPI와 산출물을 얻는 실행 단위 하나. 런 ID로 식별하고 상태기로 관리한다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 분 단위 미니 시나리오다(Isaac은 실시간이라 하루치 재생은 불가). 상태는 QUEUED → PROVISIONING → LOADING → RUNNING → COLLECTING → DONE/FAILED. 런 ID 기준 멱등이라 재시도해도 두 번 세지 않고, 실패는 <a href="#dlq">DLQ</a>로 간다. 한 <a href="#trial">trial</a>에 검증 런은 0..1개. 상태 전이는 <a href="#orchestrator">런 오케스트레이터</a>, GPU 쪽 실행은 <a href="#sim-runner">sim-runner</a>.</div>
+</section>
+
+<section class="term" id="trial">
+  <h2>trial<span class="en">Trial — 스윕 안의 구성 하나</span></h2>
+  <p class="def">스윕 잡 안에서 "대수 n · 기종 · 시드" 한 조합을 DES로 돌린 단위. 요청 1:N 잡 1:N trial 1:0..1 검증 런 계층의 가운데 칸이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — trial마다 <a href="#theta">θ</a>를 추론하고 FMS 커널이 가상 시간으로 돈다. KPI가 모여 대수–처리량 곡선이 되고, 무릎(포화점)을 정하는 정지 규칙은 계산 엔진 소유다. PostgreSQL 테이블 <code>trial</code>이 이 단위. 상위 trial만 <a href="#gpu-run-queue">GPU 런 큐</a>로 넘어가 <a href="#run">런</a>이 된다. 백엔드↔AI API 스키마(run_id·seed·warehouse·amr·orders→kpi)가 trial 단위 계약.</div>
+</section>
+
+<section class="term" id="scenario-package">
+  <h2>시나리오 패키지<span class="en">Scenario Package — 컴파일된 시뮬 입력 묶음</span></h2>
+  <p class="def">운영자가 요청을 정제해 만든 시뮬 입력 묶음. zones.json · 맵 · 주문 분해 규칙 · 수요 프로파일 · rack_id↔시뮬 좌표 매핑으로 구성된다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 서비스 흐름 ②에서 만들어져 두 소비자가 읽는다 — DES의 <a href="#wms-lite">WMS 라이트</a>와 검증 런의 <a href="#sim-wms">시뮬 WMS</a>. 같은 입력을 쓰므로 두 결과를 비교할 수 있다. 재현성 키는 시나리오 해시 + 시드, 파일은 <a href="#minio">MinIO</a>. zones.json·맵의 출처는 시뮬 파트의 T3 창고 씬(<code>sil/t3_warehouse_map/</code>).</div>
+</section>
+
+<section class="term" id="sim-wms">
+  <h2>시뮬 WMS<span class="en">Simulation WMS — 검증 런용 실제 창고관리 서버</span></h2>
+  <p class="def">Isaac 검증 런 동안 실제로 주문을 만들고 작업을 나눠 주는 Spring Boot 서버. H2 인메모리 DB를 쓰고, 런이 끝나면 함께 사라진다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 검증 런은 <a href="#sil">SIL</a>이라 WMS도 확률 모델이 아닌 진짜 서버로 돈다. 테이블은 run_context·zone·location·station·sku·inventory·order·order_line·task. 작업 이벤트 로그는 H2 밖(JSONL → MinIO), 주문·이벤트는 biz/v1 JSON으로 <a href="#emqx">EMQX</a>에 발행. JPQL만 써서 프로파일만 바꾸면 PostgreSQL로 승격 가능. DES 쪽 짝은 <a href="#wms-lite">WMS 라이트</a>.</div>
+</section>
+
+<section class="term" id="wms-lite">
+  <h2>WMS 라이트<span class="en">WMS Lite — DES 안의 확률 모델 WMS</span></h2>
+  <p class="def">DES(④) 안에서 주문 생성·라인 합침·배차·서비스 타이머만 확률 모델로 흉내 내는 경량 WMS.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — DES는 수백 번 돌리므로 매번 Spring 서버를 띄울 수 없다. 원칙은 "측정 대상은 공유, 환경은 모델링" — FMS <a href="#decision-kernel">결정 커널</a>은 검증 런과 같은 코드, WMS는 모델이다. 같은 <a href="#scenario-package">시나리오 패키지</a>를 읽고 골든 시나리오 패리티 테스트로 <a href="#sim-wms">시뮬 WMS</a>와 맞춘다. 현재 DES의 실체는 틱 시뮬(sim_v2)이며 WMS 라이트도 그 안에 있다.</div>
+</section>
+
+<section class="term" id="orchestrator">
+  <h2>런 오케스트레이터<span class="en">Run Orchestrator — 검증 런의 생애를 관리하는 파드</span></h2>
+  <p class="def">GPU 런 큐를 소비해 시뮬 스택 파드를 띄우고, sim-runner에 start/go/stop을 보내고, 산출물 키를 모아 결과 이벤트를 발행한 뒤 파드를 지우는 단일 파드.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 순서: 큐 소비→시뮬 WMS·FMS 파드 기동→시나리오 주입 대기→sim-runner에 start/go(MQTT <code>sim/control</code>, <a href="#sparkplug">Sparkplug B</a>)→하트비트·시뮬 시각 감시→stop→아티팩트 키 수집→결과 이벤트 발행→파드 삭제. 런 ID 기준 멱등, 실패는 <a href="#dlq">DLQ</a>. 재기동 시 떠 있는 파드와 큐 상태를 맞춘다. EC2 <a href="#k3s">k3s</a> 위 단일 파드.</div>
+</section>
+
+<section class="term" id="gpu-run-queue">
+  <h2>GPU 런 큐<span class="en">GPU Run Queue — 검증 런을 줄 세우는 큐</span></h2>
+  <p class="def">Isaac 검증 런을 GPU 수만큼만 동시에 돌리도록 직렬화하는 RabbitMQ 큐. 소비자 수 = GPU 수다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 큐잉은 2단 — 1단 요청 잡 큐는 CPU 워커 N개가 스윕 잡을, 2단 GPU 런 큐는 검증 런만 받는다. 현재 GPU는 RTX 5080 1대라 소비자도 1개. 큐 깊이가 곧 대기 순번이고 런 평균 시간을 곱하면 ETA — 접수 시 회신하는 순번·예상 소요의 근거다. 실패 처리는 <a href="#dlq">DLQ</a>.</div>
+</section>
+
+<section class="term" id="dlq">
+  <span id="andon" style="scroll-margin-top:56px"></span>
+  <h2>DLQ<span class="en">Dead Letter Queue — 처리 실패 메시지 보관 큐</span></h2>
+  <p class="def">정해진 횟수만큼 재시도해도 실패한 메시지를 따로 모아 두는 큐. 실패를 버리지 않고 사람이 보게 남긴다 — "문제를 숨기지 말고 드러내라"는 Andon의 사상이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 소비자가 nack하거나 TTL이 지나면 dead-letter 교환기로 넘어간다. 요청 잡 큐와 <a href="#gpu-run-queue">GPU 런 큐</a> 둘 다 DLQ를 둔다. 재시도를 넘긴 스윕 잡·파드 기동에 실패한 런이 남고, 운영자가 웹 콘솔에서 재투입하거나 종료한다. 런 ID 멱등과 짝이라 재투입해도 두 번 세지 않는다. 공식 문서: <a href="https://www.rabbitmq.com/docs/dlx" target="_blank" rel="noopener">RabbitMQ DLX</a>.</div>
+</section>
+
+<section class="term" id="artifact">
+  <h2>아티팩트<span class="en">Artifact — 런이 남기는 산출 파일</span></h2>
+  <p class="def">검증 런이 만드는 파일들 — 배속 영상(MP4) · 리플레이(JSON) · 히트맵(PNG) · 로그. MinIO에 저장하고, 메타는 PostgreSQL <code>artifact</code> 테이블에 둔다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 견적서에 들어가는 실물. 영상은 고객이 눈으로 확인하는 용도, 리플레이는 브라우저에서 다시 돌려 보는 용도, 히트맵은 정체 구간을 보는 용도다. 시나리오 파일과 작업 이벤트 로그(JSONL)도 같은 저장소에 둔다. 업로드는 <a href="#sim-runner">sim-runner</a>가 <a href="#presigned-url">presigned URL</a>로 직접 하고, 리포트(⑦)에 임베드된다. 저장소는 <a href="#minio">MinIO</a>.</div>
+</section>
+
+<section class="term" id="presigned-url">
+  <h2>presigned URL<span class="en">Pre-signed URL — 기한부 서명 업로드·다운로드 주소</span></h2>
+  <p class="def">서버가 미리 서명해 준 S3 호환 주소. 가진 쪽은 자격 증명 없이 정해진 시간 동안 특정 키에 PUT/GET 할 수 있다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — GPU 서버의 sim-runner에 MinIO 계정을 심지 않기 위해 쓴다. 견적 BE가 런 ID별 키로 PUT용 URL을 발급 → sim-runner가 파일을 직접 올림 → 결과 이벤트에 키를 실어 보냄. 고객 다운로드도 GET용 URL로 같은 방식. S3 API를 그대로 따르므로 <a href="#minio">MinIO</a>를 S3로 바꿔도 코드가 같다.</div>
+</section>
+
+<!-- ================= 02 경로계획·FMS ================= -->
+<div class="howto" id="g-fms" style="scroll-margin-top:56px"><b>02 · 경로계획 · FMS</b> — 다중 로봇 경로 문제와 그것을 돌리는 커널·셸</div>
+<div class="toc-chips">
+  <a href="#mapf">MAPF</a><a href="#mapf-family">MAPF 계열 비교</a><a href="#pibt">PIBT</a><a href="#theta">θ</a><a href="#heading-model">헤딩 모델</a><a href="#swing-reservation">스윙 예약</a><a href="#barrier-tick">배리어 틱</a><a href="#decision-kernel">결정 커널</a><a href="#execution-shell">실행 셸</a>
+</div>
+
+<section class="term" id="mapf">
+  <h2>MAPF<span class="en">Multi-Agent Path Finding — 다중 로봇 경로 탐색</span></h2>
+  <p class="def">여러 로봇의 경로를 서로 충돌하지 않도록 한꺼번에 찾는 문제. 한 대의 최단 경로(A*)를 넘어 "전체가 함께 빨라지는" 조합을 찾는다. 로봇이 늘면 통로 정체·교차로 대기가 급증한다("로봇을 늘려도 처리량이 안 느는" 원인).</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 견적 엔진의 핵심. 틱 시뮬 안에서 정체·대기가 나타나고, 그 결과가 "몇 대가 적정인가"의 근거다. 기준선 v3(2026-09-03)부터 v1의 이동 계층은 <a href="#pibt">PIBT</a> <a href="#heading-model">헤딩 모델</a>이다. CBS·RHCR·TAPF는 <a href="#mapf-family">MAPF 계열 비교</a>, 이론 배경은 <a href="../tech/amr_mapf_theory.html">경로계획 이론 기반</a>.</div>
+</section>
+
+<section class="term" id="mapf-family">
+  <span id="cbs" style="scroll-margin-top:56px"></span><span id="rhcr" style="scroll-margin-top:56px"></span><span id="tapf" style="scroll-margin-top:56px"></span>
+  <h2>MAPF 계열 비교<span class="en">CBS · RHCR · TAPF</span></h2>
+  <p class="def">CBS는 충돌마다 "그 시각 그 칸 금지" 제약을 걸어 재탐색하는 최적 알고리즘(로봇이 늘면 계산 폭발), RHCR은 앞의 W스텝만 풀고 h스텝마다 재계획하는 연속 운영(lifelong) 프레임, TAPF는 할당과 경로를 한 문제로 묶는 결합 최적화다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — v1은 <a href="#pibt">PIBT</a>다. 매 틱 다음 한 칸만 정하므로 CBS식 전체 탐색도, RHCR식 윈도우 재계획도 없다. CBS는 품질 기준으로만 남는다. 할당(디스패처)과 경로는 분리하되 정체 페널티가 든 경로 비용을 할당 비용에 넣는 절충(TAPF의 발상)이다.</div>
+</section>
+
+<section class="term" id="pibt">
+  <h2>PIBT<span class="en">Priority Inheritance with Backtracking</span></h2>
+  <p class="def">여러 로봇의 "다음 한 칸"을 매 틱 우선순위 순으로 정하는 MAPF 알고리즘. 높은 우선순위 로봇이 가려는 칸의 낮은 로봇이 우선순위를 물려받아 먼저 비키고, 비킬 곳이 없으면 되돌아가 다른 칸을 고른다. 틱당 계산이 가벼워 수백 대에도 맞지만 전역 최적은 아니다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — v1의 이동 계층(FMS 파트, 2026-09-02). 1.0 m 격자 위에서 <a href="#heading-model">헤딩 모델</a>로 확장해 회전을 틱에 반영하고, 거리장은 <a href="#theta">θ</a> 가중 다익스트라다. 원 논문: <a href="https://kei18.github.io/pibt2/" target="_blank" rel="noopener">Okumura et al. (AIJ 2022)</a>.</div>
+</section>
+
+<section class="term" id="theta">
+  <h2>θ<span class="en">Traffic-rule Parameters — 통행 규칙 파라미터 11개</span></h2>
+  <p class="def">창고 구조·짐 흐름·운영 조건에서 AI 모델이 추론하는 통행 규칙 값 11개(연속 8·범주 3). θ는 경로가 아니라 통로별 가중치·통행 규칙이며, <code>from_theta</code>가 통행 비용으로 바꿔 PIBT 거리장에 들어간다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 2-트랙 — A안(AI)이 θ를 예측하고 B안(알고리즘)이 받아 이동 계층을 돈다. 계약은 <code>3_FMS/contracts/guidance_types.py</code>(스키마 v2). <a href="#trial">trial</a>마다 θ를 한 번 추론하고 DES(④)와 Isaac 검증 런(⑤)이 같은 θ를 쓰므로 두 결과를 비교할 수 있다. 미합의 항목은 <a href="../tech/amr_decision_inventory.html">구현 결정 인벤토리</a>에서 추적.</div>
+</section>
+
+<section class="term" id="heading-model">
+  <h2>헤딩 모델<span class="en">Heading Model — 방향을 상태에 넣은 격자 모델</span></h2>
+  <p class="def">로봇 상태를 (칸, 방향)으로 두고 회전도 틱을 쓰는 동작으로 계산하는 격자 모델. 차체가 셀보다 길어 자기 칸과 뒤 칸 2칸을 점유한다. 액션은 대기·전진·좌/우 회전·후진 다섯 가지.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 1.0 m 격자에 1.44 m 차체(iw.hub)를 올리면 회전 중 옆 로봇과 부딪히는 것이 Isaac에서 실측되어 바꾼 모델이다(FMS 파트, 2026-09-02). 회전은 틱을 쓰고 <a href="#swing-reservation">스윙 칸</a>을 예약하며, 그만큼 권장 대수의 포화점이 달라진다. 회전 시간 상수는 Isaac 실측(시뮬 파트, 미완)으로 확정한다.</div>
+</section>
+
+<section class="term" id="swing-reservation">
+  <h2>스윙 예약<span class="en">Swing Reservation — 회전 시 쓸고 지나가는 칸 예약</span></h2>
+  <p class="def">제자리 회전 때 차체가 쓸고 지나가는 옆 칸(스윙 칸)을 그 틱 동안 예약해 다른 로봇의 진입을 막는 규칙.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — <a href="#heading-model">헤딩 모델</a>의 일부. PIBT는 회전 액션을 고를 때 스윙 칸이 비었는지 확인하고 회전 틱 동안 함께 잠근다. 통로 폭 1칸에서는 회전이 막힐 수 있어 교차로·버퍼 칸 배치가 중요하다. 스윙 반경은 iw.hub 앞축 위치 실측 후 확정. 로봇 쪽 동작은 <a href="#spot-turn">스팟턴</a>.</div>
+</section>
+
+<section class="term" id="barrier-tick">
+  <h2>배리어 틱<span class="en">Barrier Tick — 전원 완료 후 다음 틱</span></h2>
+  <p class="def">FMS가 틱 하나의 명령을 모든 로봇에 내리고, 전원의 완료 보고(ack)가 모이면 다음 틱을 계산하는 동기 방식. 가장 늦은 로봇을 기다리므로 Isaac(실시간)에서는 틱이 FMS 가정(1 s)보다 길어진다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 가짜 로봇 E2E 실측은 1 m 전진 2.2 s, 90° 회전 2.3 s(램프 1.0 m/s², 최고 0.8 m/s) — Isaac 런은 실시간의 절반 이하다. T4 에이전트는 <code>state.lastNodeId</code>가 바뀌는 즉시 ack를 낸다. lockstep인지 고정 주기 틱인지는 FMS 파트가 확인 중.</div>
+</section>
+
+<section class="term" id="decision-kernel">
+  <h2>결정 커널<span class="en">Decision Kernel — I/O 없는 순수 FMS 코어</span></h2>
+  <p class="def">시계와 난수를 밖에서 주입받고 파일·소켓·스레드를 전혀 쓰지 않는 FMS 코어. 호출 형태는 <code>step(world, now, events) → decisions</code> 하나이며, 시드만 같으면 결과가 같다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 같은 커널을 DES(④)와 Isaac 검증 런(⑤)이 공유한다 — "측정 대상은 공유, 환경은 모델링" 원칙에서 공유되는 쪽. 안에는 <a href="#pibt">PIBT</a> 이동 계층, 배차, 미션 상태기가 들어가고 ROS에 참여하지 않는 순수 Python이다. 커널을 감싸는 껍데기는 <a href="#execution-shell">실행 셸</a> 2종.</div>
+</section>
+
+<section class="term" id="execution-shell">
+  <h2>실행 셸<span class="en">Execution Shell — 커널을 돌리는 껍데기 2종</span></h2>
+  <p class="def">결정 커널에 시계·사건을 넣고 결과를 밖으로 내보내는 바깥 층. 가상 시계용 하네스와 MQTT 데몬 두 가지가 있다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 하네스(④)는 DES 안에서 커널을 함수처럼 동기 호출한다. MQTT 데몬(⑤)은 <a href="#emqx">EMQX</a>에서 로봇 상태를 받아 events로 넣고 커널의 decisions를 <a href="#vda5050">VDA 5050</a> order로 바꿔 발행한다. 셸이 달라도 커널은 같으므로 DES와 Isaac 결과의 차이는 환경 모델의 차이로 좁혀진다. 로봇 쪽 대응물은 T4 에이전트의 VDA 5050 브리지, 틱 동기는 <a href="#barrier-tick">배리어 틱</a>.</div>
+</section>
+
+<!-- ================= 03 로봇·검증 ================= -->
+<div class="howto" id="g-robot" style="scroll-margin-top:56px"><b>03 · 로봇 · 검증</b> — 로봇 소프트웨어 기초와 Isaac Sim 위의 SIL 검증</div>
+<div class="toc-chips">
+  <a href="#ros2">ROS 2</a><a href="#nav2">Nav2 · AMCL</a><a href="#urdf">URDF</a><a href="#primitive">그리드 프리미티브</a><a href="#spot-turn">스팟턴</a><a href="#stitching">스티칭</a><a href="#isaac">Isaac Sim · USD</a><a href="#rtf">RTF</a><a href="#sil">SIL</a><a href="#sim-runner">sim-runner</a>
+</div>
+
+<section class="term" id="ros2">
+  <span id="ros2control" style="scroll-margin-top:56px"></span><span id="moveit2" style="scroll-margin-top:56px"></span>
+  <h2>ROS 2<span class="en">Robot Operating System 2</span></h2>
+  <p class="def">로봇 소프트웨어의 사실상 표준 프레임워크. OS가 아니라 로봇의 각 기능을 독립 노드로 쪼개고 토픽 발행/구독으로 통신을 표준화한 미들웨어(DDS 기반, QoS 설정 가능). 하드웨어 추상화(ros2_control)·모션 플래닝(MoveIt2)이 그 위의 생태계다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — T4 에이전트(amr-agent)가 ROS 2 Humble 노드 묶음이다 — VDA 5050 브리지, order executor, <a href="#primitive">그리드 프리미티브</a> 컨트롤러, (선택) AMCL 위치 추정. 토픽 이름·메시지 타입이 곧 계약이라는 원칙은 웹의 REST 계약과 같다. 코드는 <code>sil/t4_agent/</code>. 로봇팔(ros2_control·MoveIt2) 실습 기록은 <a href="../archive/archive.html">아카이브</a>.</div>
+</section>
+
+<section class="term" id="nav2">
+  <span id="ekf" style="scroll-margin-top:56px"></span><span id="bt" style="scroll-margin-top:56px"></span>
+  <h2>Nav2 · AMCL(위치 추정만)<span class="en">Navigation 2 — 위치 추정만 사용</span></h2>
+  <p class="def">ROS 2의 표준 자율주행 패키지 묶음. 지도→위치 추정(AMCL, 내부적으로 EKF 등 센서 융합)→전역 경로→지역 제어(행동 트리 구성)→속도 명령의 플러그인 파이프라인이며, 로봇 한 대의 주행을 다룬다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 팀은 <code>nav2_map_server</code> + <code>nav2_amcl</code>로 위치 추정만 쓴다(에이전트 설정 <code>pose_source: odom | amcl</code>). 경로는 FMS(<a href="#pibt">PIBT</a>)가 VDA 5050 노드·엣지로 내리고 구간 주행은 <a href="#primitive">그리드 프리미티브</a>가 하므로 Nav2의 플래너·컨트롤러는 쓰지 않는다. 여러 대의 경로는 <a href="#mapf">MAPF</a>.</div>
+</section>
+
+<section class="term" id="urdf">
+  <h2>URDF<span class="en">Unified Robot Description Format</span></h2>
+  <p class="def">로봇의 뼈대를 기술하는 XML 파일. 어떤 링크가 어떤 조인트로 연결되고 길이·질량·가동 범위가 얼마인지 담는다. 시뮬레이터·플래너가 같은 파일을 공유하므로 URDF가 틀리면 모든 게 틀린다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 검증 기종의 모델이 URDF/USD 형태로 <a href="#isaac">Isaac Sim</a>에 올라간다. iw.hub는 Isaac 내장 에셋, MiR 250은 공개 URDF가 있어 서브 기종으로 선정됐다 — <a href="../research/amr_model_selection.html">기준 기종 선정</a>. UR5e URDF를 직접 뜯어본 실습 기록은 <a href="../archive/archive.html">아카이브</a>.</div>
+</section>
+
+<section class="term" id="primitive">
+  <span id="pid" style="scroll-margin-top:56px"></span>
+  <h2>그리드 프리미티브<span class="en">Grid Primitive — 격자 이동의 기본 동작 단위</span></h2>
+  <p class="def">로봇이 실행할 수 있는 고정 동작 3종(스팟턴·직진 1칸·후진 1칸). VDA 5050 노드·엣지를 이 단위로 분해해 실행한다. 전진은 "헤딩 정렬(스팟턴)→직진→셀 중심 정지"로 풀린다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — T4 에이전트의 컨트롤러 계층. 곡선 추종기(T2의 Pure Pursuit) 대신 격자에 맞는 동작만 남겨 정지·헤딩 오차를 작게 유지한다 — 가짜 로봇 E2E에서 정지 오차 4 mm, 헤딩 1.2°. FMS 파트 요구 4건(스팟턴·오차 0.1 m 이하·배리어 틱·후진)을 이 컨트롤러로 채운다. T2 추종기는 <a href="../working/sil_guide.html">SIL 가이드</a>.</div>
+</section>
+
+<section class="term" id="spot-turn">
+  <span id="omni" style="scroll-margin-top:56px"></span>
+  <h2>스팟턴<span class="en">Spot Turn — 제자리 회전</span></h2>
+  <p class="def">바퀴 두 개를 반대로 돌려 차체 중심을 움직이지 않고 방향만 바꾸는 동작. 차동 구동 로봇의 가장 작은 회전이며, 홀로노믹(옴니휠) 구동과 달리 회전에 시간이 든다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 격자 이동에서는 옆 칸을 크게 침범하는 곡선 회전 대신 스팟턴을 쓴다. 순서는 "셀 중심 정지→제자리 회전→헤딩 정렬 확인→직진". 실측은 90° 회전 2.3 s(가짜 로봇), Isaac 각속도 실측은 미완. PIBT의 "회전 ±90°"가 VDA 5050에서는 "같은 좌표 노드+새 theta"로 내려오고 에이전트가 스팟턴으로 수행한다. <a href="#swing-reservation">스윙 예약</a>과 짝.</div>
+</section>
+
+<section class="term" id="stitching">
+  <h2>스티칭<span class="en">Stitching — VDA 5050 order update로 경로 이어 붙이기</span></h2>
+  <p class="def">같은 orderId에 orderUpdateId를 올려 새 노드를 뒤에 붙이는 VDA 5050 방식. 앞부분(base)은 released로 주행이 확정되고 뒷부분(horizon)은 예고이며, 다음 update는 이전 order의 마지막 노드로 시작해야 한다 — 이 겹치는 노드가 이음매다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — FMS가 틱마다 다음 1칸을 released로 내리면 로봇은 멈추지 않고 계속 달린다. T4 에이전트의 order executor가 담당하며, <a href="#barrier-tick">배리어 틱</a>에서는 ack 후 다음 update가 오므로 1틱 = 1 update. 규격: <a href="https://github.com/VDA5050/VDA5050" target="_blank" rel="noopener">VDA 5050 (GitHub)</a>.</div>
+</section>
+
+<section class="term" id="isaac">
+  <span id="gazebo" style="scroll-margin-top:56px"></span><span id="replicator" style="scroll-margin-top:56px"></span><span id="isaaclab" style="scroll-margin-top:56px"></span>
+  <h2>Isaac Sim · USD<span class="en">NVIDIA Omniverse 물리 시뮬레이터</span></h2>
+  <p class="def">NVIDIA의 고정밀 로봇 시뮬레이터. RTX 레이트레이싱 렌더링과 정밀 물리를 제공하고, 씬은 픽사의 3D 표준 포맷 USD로 기술한다. 가벼운 대안이 Gazebo, 같은 생태계의 합성 데이터 도구가 Replicator, 강화학습 프레임워크가 Isaac Lab.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 검증 런(⑤)의 본체. T3 창고 씬(USD) 위에 amr-agent를 N대 스폰해 DES 결과가 실제 스택에서 성립하는지 확인한다. RTX 5080에서 구동하며 규모 상한은 <a href="#rtf">RTF</a> 실측으로 정한다. 셋 다 v1에서는 쓰지 않는다(비전 AI·물리 RL 없음). 병렬 실행 실측은 <a href="../working/isaac_parallel_measure.html">Isaac 병렬 실측</a>.</div>
+</section>
+
+<section class="term" id="rtf">
+  <h2>RTF<span class="en">Real-Time Factor — 실시간 배율</span></h2>
+  <p class="def">시뮬레이션 속 시간이 현실 시간보다 얼마나 빠르게 또는 느리게 흐르는지의 비율(시뮬 경과 ÷ 실제 경과). 로봇·센서를 많이 넣을수록 떨어지고, 너무 낮으면 실시간을 가정한 상위 시스템(관제·타임아웃)이 오작동한다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — RTX 5080 기준 "RTF ≥ 0.9를 유지하는 최대 AMR 대수"를 실측해 검증 런 규모를 정한다. 수백 조합 스윕은 <a href="#des">DES</a>가, 소수 정밀 검증은 <a href="#isaac">Isaac</a>이 맡는 분업의 근거가 되는 숫자다. <a href="#barrier-tick">배리어 틱</a>은 가장 늦은 로봇을 기다리므로 RTF가 떨어지면 틱 길이도 늘어난다.</div>
+</section>
+
+<section class="term" id="sil">
+  <span id="sim2real" style="scroll-margin-top:56px"></span>
+  <h2>SIL<span class="en">Software-in-the-Loop — 실제 소프트웨어를 루프에 넣은 검증</span></h2>
+  <p class="def">실물 없이 배포될 소프트웨어 스택을 시뮬레이터에 그대로 물려 돌리는 검증 방식. "테스트한 코드가 곧 배포되는 코드"라 sim-to-real 전환 때 소프트웨어를 안 바꾼다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 검증 런(⑤)의 정체성. <a href="#decision-kernel">결정 커널</a>+MQTT 데몬이 <a href="#vda5050">VDA 5050</a> order를 내리면 T4 에이전트(ROS 2)가 <a href="#isaac">Isaac</a> 속 가상 AMR을 실제 스택 그대로 구동한다. VDA 5050 경계 위 코드는 가상↔현실 전환 시 불변 — v1에 실물이 없으므로 정확히는 sim-to-sim(DES↔Isaac 정합성 비교)이다. 안내는 <a href="../working/sil_guide.html">SIL 가이드</a>, 현황은 <a href="../working/t3_t4_progress.html">T3·T4 진행</a>.</div>
+</section>
+
+<section class="term" id="sim-runner">
+  <h2>sim-runner<span class="en">Sim Runner — GPU 서버의 검증 런 실행 데몬</span></h2>
+  <p class="def">GPU 서버에 상주하며 런 오케스트레이터의 start/go/stop 명령을 받아 Isaac Sim과 로봇 에이전트를 띄우고, 끝나면 산출물을 올리는 데몬.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — EC2의 <a href="#orchestrator">오케스트레이터</a>는 GPU 서버에 직접 들어갈 수 없어 <a href="#emqx">EMQX</a>의 <code>sim/control</code>(<a href="#sparkplug">Sparkplug B</a>)로 명령을 보낸다. sim-runner가 Isaac 씬을 열고 amr-agent(ROS 2)를 N대 스폰하며, 런 중 하트비트·시뮬 시각을 보고하고, 종료 후 MP4·리플레이·히트맵을 <a href="#presigned-url">presigned URL</a>로 MinIO에 올려 키를 돌려준다. 홈서버는 tailscale 아웃바운드로 EC2에 붙는다. 시뮬 파트 담당, 미완.</div>
+</section>
+
+<!-- ================= 04 물류·검산 ================= -->
+<div class="howto" id="g-logi" style="scroll-margin-top:56px"><b>04 · 물류 · 검산</b> — 견적 대상인 창고 도메인과 결과를 믿게 만드는 검산·표준</div>
+<div class="toc-chips">
+  <a href="#fulfillment">풀필먼트 프로세스</a><a href="#wms">WMS · WES · WCS</a><a href="#amr">AMR vs AGV</a><a href="#gtp">GTP</a><a href="#des">이산사건 시뮬레이션 · SimPy</a><a href="#littleslaw">Little's Law</a><a href="#vdi3633">VDI 3633</a><a href="#digitaltwin">디지털 트윈</a><a href="#tco">TCO · ROI</a>
+</div>
+
+<section class="term" id="fulfillment">
+  <h2>풀필먼트 프로세스<span class="en">Fulfillment — 입고에서 출고까지</span></h2>
+  <p class="def">주문을 받아 상품이 고객에게 나가기까지 물류센터 안의 전 과정. 입고 → 적치 → 보관 → 피킹 → 검수 → 패킹 → 분류 → 출고. 파생 용어: SKU(재고 관리 최소 단위), 웨이브(주문 묶음 배치 단위), 슬로팅(상품–로케이션 배치 전략).</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 이 흐름 가운데 입고·출고 반송과 피킹 보조 구간이 v1 견적 대상이다(기준선 v3 §4.5). 고객 WMS의 주문 로그(주문시각/주문ID/SKU/수량)에서 뽑은 수요 프로파일이 <a href="#scenario-package">시나리오 패키지</a>의 일부(②)가 된다. 선반이 사람에게 오는 방식은 <a href="#gtp">GTP</a>.</div>
+</section>
+
+<section class="term" id="wms">
+  <span id="isa95" style="scroll-margin-top:56px"></span><span id="mes" style="scroll-margin-top:56px"></span>
+  <h2>WMS · WES · WCS<span class="en">물류센터의 소프트웨어 계층</span></h2>
+  <p class="def">물류센터 소프트웨어의 3층 — WMS는 "무엇이 어디에 얼마나"(재고·주문 장부), WES는 "지금 누가 무엇을"(작업 오케스트레이션), WCS는 "설비를 어떻게"(컨베이어·소터 제어). 제조의 ISA-95 계층·MES 실행 기능에 대응하는 물류 버전이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 고객 WMS는 주문 로그의 출처(입력원)다. 프로젝트 안의 WMS는 둘 — 검증 런용 <a href="#sim-wms">시뮬 WMS</a>(Spring + H2)와 DES용 <a href="#wms-lite">WMS 라이트</a>(확률 모델). 배차(WES 역할)는 FMS <a href="#decision-kernel">결정 커널</a> 안에 있다. 고객 WMS API 직접 연동과 ISA-95/OPC UA 통합은 후속.</div>
+</section>
+
+<section class="term" id="amr">
+  <h2>AMR vs AGV<span class="en">Autonomous Mobile Robot · Automated Guided Vehicle</span></h2>
+  <p class="def">AGV는 바닥의 자기 테이프·QR 등 정해진 선로만 따라가는 운송 로봇(기차), AMR은 지도와 센서로 스스로 경로를 계획하는 운송 로봇(택시). 레이아웃 변경에 유연하고 사람과 공존해 AGV를 대체 중이며, 소프트웨어 비중이 크다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — v1 견적 대상은 반송/피킹 보조 AMR — 인프라 변경 없이 3~15대를 점진 도입하는 세그먼트라 "견적 의사결정"이 실제로 일어난다. 검증 기종은 iw.hub 메인+MiR 250 서브(<a href="../research/amr_model_selection.html">기준 기종 선정</a>). 경로 문제는 <a href="#mapf">MAPF</a>, 관제–로봇 통신은 <a href="#vda5050">VDA 5050</a>.</div>
+</section>
+
+<section class="term" id="gtp">
+  <h2>GTP<span class="en">Goods-to-Person — 물건이 사람에게 오는 방식</span></h2>
+  <p class="def">작업자가 선반으로 걸어가는 대신 로봇이 선반·토트를 작업자 앞까지 가져다주는 창고 자동화 방식(원형은 Amazon Kiva). 전용 선반·스테이션·관제까지 통째로 새로 까는 대규모 공사라 벤더 턴키 거래로 이뤄진다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — v1 범위 밖 카테고리(기준선 v3 §4.5). 시장 매출 1위 세그먼트(약 38%)이지만 턴키 구매 구조 때문에 제3자 중립 견적이 끼어들 틈이 좁다 — "왜 시장 1위를 안 했나"의 답이 이 논리다. GTP가 더 맞는 고객은 검토 단계(②)에서 운영자가 사유와 함께 안내한다.</div>
+</section>
+
+<section class="term" id="des">
+  <h2>이산사건 시뮬레이션 · SimPy<span class="en">Discrete Event Simulation</span></h2>
+  <p class="def">시간을 연속으로 흘리지 않고 "사건에서 다음 사건으로 점프"하며 대기열·처리량·병목을 계산하는 시뮬레이션(SimPy는 그 Python 라이브러리). 물리 시뮬이 "로봇이 어떻게 움직이는가"에 답한다면 DES는 "센터 전체가 얼마나 잘 흘러가는가"에 답한다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 서비스 흐름 ④의 계산 엔진. 기종 × 대수 × 시드 스윕을 <a href="#trial">trial</a> 단위로 수백 번 돌려 대수–처리량 곡선을 만든다. 현재(기준선 v3, 2026-09-03) DES의 실체는 팀의 틱 시뮬(sim_v2)이고 이동 계층은 <a href="#pibt">PIBT</a> 헤딩 모델이며, SimPy 전환은 후속이다. 검산 짝은 <a href="#littleslaw">Little's Law</a>.</div>
+</section>
+
+<section class="term" id="littleslaw">
+  <h2>Little's Law<span class="en">리틀의 법칙 — L = λW</span></h2>
+  <p class="def">안정 상태의 어떤 시스템이든 "안에 머무는 평균 개수(L) = 도착률(λ) × 평균 체류시간(W)". 시간당 100건 도착·평균 0.5시간 체류면 안에는 언제나 평균 50건이 처리 중이어야 한다. 분포·정책과 무관하게 성립하므로 세 숫자가 안 맞으면 모델에 버그가 있는 것이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 시뮬레이션 검증(V&amp;V)의 1차 관문. <a href="#des">DES</a> 결과에서 재공 수량·처리율·리드타임을 뽑아 등식 성립을 확인하는 것이 <a href="#vdi3633">VDI 3633</a> verification 활동의 구체적 실행이다.</div>
+</section>
+
+<section class="term" id="vdi3633">
+  <h2>VDI 3633<span class="en">시뮬레이션 프로젝트의 절차·검증 지침</span></h2>
+  <p class="def">물류·생산 시스템 시뮬레이션의 절차와 검증 방법을 정리한 독일엔지니어협회(VDI) 지침. 모든 가정을 명시하고, 모델을 올바르게 구현했는지(Verification)와 현실을 닮았는지(Validation)를 별도 활동으로 검증하며 문서로 남기라는 것이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — "투명한 견적" 주장의 표준 준거. 보존 법칙 체크와 <a href="#littleslaw">Little's Law</a> 검산이 Verification, MAPF 공개 벤치마크 대조와 DES vs Isaac 검증 런 오차 비교가 Validation이다. 가정 명세서를 리포트 부록으로 공개하는 것이 이 지침의 실천.</div>
+</section>
+
+<section class="term" id="digitaltwin">
+  <span id="closedloop" style="scroll-margin-top:56px"></span>
+  <h2>디지털 트윈<span class="en">Digital Twin</span></h2>
+  <p class="def">실제 설비·센터의 상태를 반영하는 가상 복제본. 단순 3D 모형과의 차이는 데이터 동기화 — 현실의 측정값으로 계속 보정되고, 트윈의 실험 결과가 현실 의사결정에 반영되는 양방향 고리(감지 → 판정 → 조치의 폐루프)가 있어야 트윈이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — <a href="#isaac">Isaac</a> 검증 런(⑤)의 실측 — 회전 시간 상수·구간 주행 시간 — 을 <a href="#des">DES</a>(④) 모델에 되먹이는 보정 루프가 이 구조다. 물리 시뮬과 틱 시뮬이 서로를 보정하는 2계층이 본 프로젝트의 디지털 트윈 해석이며, 산업계의 물리 + DES 하이브리드 구조와 같다.</div>
+</section>
+
+<section class="term" id="tco">
+  <span id="oee" style="scroll-margin-top:56px"></span>
+  <h2>TCO · ROI<span class="en">Total Cost of Ownership · Return on Investment</span></h2>
+  <p class="def">TCO는 구매비에 운영·유지보수·충전 인프라까지 합친 총소유비용, ROI는 투자가 언제 얼마나 돌아오는지의 수익률. TCO 곡선을 겹치면 "목표 처리량의 최소 대수"와 "ROI 최대 대수" 두 최적점이 드러난다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 리포트(⑦)의 핵심 화면. 대수–처리량 곡선에 TCO를 중첩해 ROI 최적점을 표시하고, 곡선을 클릭하면 그 구성의 상세 리포트가 열린다. 둘 다 제시하고 선택은 고객에게 맡긴다 — "선택은 고객이, 근거는 시스템이". 중심 지표는 시간당 처리량·주문 리드타임·로봇 가동률(ISO 22400 준거, OEE는 참고 배경).</div>
+</section>
+
+<!-- ================= 05 인프라 ================= -->
+<div class="howto" id="g-infra" style="scroll-margin-top:56px"><b>05 · 인프라</b> — k3s 위의 2층 구조, 메시징 3종(Sparkplug B·VDA 5050·biz/v1), 저장소</div>
+<div class="toc-chips">
+  <a href="#two-tier-web">웹 인프라 2층</a><a href="#k3s">k3s</a><a href="#emqx">EMQX</a><a href="#mqtt">MQTT</a><a href="#sparkplug">Sparkplug B</a><a href="#vda5050">VDA 5050</a><a href="#minio">MinIO</a><a href="#h2">H2</a>
+</div>
+
+<section class="term" id="two-tier-web">
+  <h2>웹 인프라 2층<span class="en">Two-tier Web Infrastructure — 상시 층과 런 단위 층</span></h2>
+  <p class="def">늘 떠 있는 견적 서비스 층과, 런마다 만들었다 없애는 시뮬 스택 층으로 나눈 구조. 원칙은 "영속은 견적 도메인, 휘발은 시뮬 도메인".</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 상시 층: React 웹 콘솔·nginx(:443 단일 인그레스)·견적 BE(Spring Boot)·PostgreSQL·RabbitMQ·MinIO·EMQX. 런 단위 층: <a href="#sim-wms">시뮬 WMS</a>(Spring+H2)·FMS 코어(Python)·수요 생성기 — 런이 끝나면 파드째 삭제. 런 하나가 죽어도 견적 데이터는 안전하다. 두 층 모두 EC2 t3.xlarge의 <a href="#k3s">k3s</a> 위. 다이어그램 원본은 <a href="../../docs/FMS-WMS_통합_아키텍처.html">FMS-WMS 통합 아키텍처 v3.10</a>.</div>
+</section>
+
+<section class="term" id="k3s">
+  <h2>k3s<span class="en">k3s — 경량 Kubernetes</span></h2>
+  <p class="def">단일 노드에서도 가볍게 도는 Kubernetes 배포판. EC2 t3.xlarge 한 대 위에서 상시 서비스와 런 단위 파드를 모두 돌린다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 기관 EC2는 IAM이 없어 관리형 AWS 서비스를 못 쓰므로 전부 자체 호스팅이다. k3s 위에 견적 서비스 파드, EMQX, RabbitMQ, MinIO, 시뮬 스택 파드, 계산 엔진 Job, <a href="#orchestrator">런 오케스트레이터</a>가 올라간다. 이미지는 GHCR, 인증서는 certbot. 실행 환경 상세는 <a href="../tech/system_architecture.html#runtime">시스템 아키텍처 — 실행 환경</a>. 공식 문서: <a href="https://docs.k3s.io/" target="_blank" rel="noopener">k3s Docs</a>.</div>
+</section>
+
+<section class="term" id="emqx">
+  <h2>EMQX<span class="en">EMQX — MQTT 브로커</span></h2>
+  <p class="def">본 프로젝트의 MQTT 브로커. 런 제어·텔레메트리(Sparkplug B), AMR 제어(VDA 5050), 주문·이벤트(biz/v1 JSON)가 지나가는 상시 채널이다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 메시징은 두 갈래 — RabbitMQ(AMQP)는 잡과 결과 이벤트를, EMQX(MQTT)는 제어와 상태를 맡는다. Kafka는 쓰지 않는다. EMQX는 상시 파드로, 런이 뜨기 전에 제어 채널이 먼저 있어야 한다. FMS 쪽 소비자는 <a href="#execution-shell">실행 셸</a>의 MQTT 데몬. 구축 절차는 <a href="../working/mqtt_backbone_guide.html">MQTT 백본 구축 가이드</a>. 공식 문서: <a href="https://docs.emqx.com/" target="_blank" rel="noopener">EMQX Docs</a>.</div>
+</section>
+
+<section class="term" id="mqtt">
+  <h2>MQTT<span class="en">경량 발행/구독 메시징 프로토콜</span></h2>
+  <p class="def">IoT·제조 현장의 표준 메시징 프로토콜. 모든 참여자가 중앙 브로커에 연결해 토픽 이름으로 발행·구독한다. HTTP가 "요청하면 응답"(1:1)이라면 MQTT는 "일어난 일을 방송"(1:N). 페이로드는 정하지 않으므로 그 위에 Sparkplug B·VDA 5050 같은 표준이 얹힌다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 검증 트랙의 전송 계층(브로커는 <a href="#emqx">EMQX</a>, MQTT 3.1.1). 페이로드는 셋으로 나뉜다 — 런 제어·텔레메트리·세션은 <a href="#sparkplug">Sparkplug B</a>, AMR 제어는 <a href="#vda5050">VDA 5050</a> JSON, 주문·이벤트는 biz/v1 JSON. 상세는 <a href="../working/mqtt_backbone_guide.html">MQTT 백본 구축 가이드</a>.</div>
+</section>
+
+<section class="term" id="sparkplug">
+  <h2>Sparkplug B<span class="en">Sparkplug B 3.0 — MQTT 위의 산업 텔레메트리 규약</span></h2>
+  <p class="def">MQTT 위의 산업 텔레메트리 규약. spBv1.0 네임스페이스, protobuf 페이로드, NBIRTH/NDEATH 세션·STATE로 "어느 노드가 지금 살아 있는가"를 프로토콜 차원에서 답한다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 런 제어(<code>sim/control</code>)·<a href="#sim-runner">sim-runner</a> 텔레메트리·세션 수명에만 쓴다. AMR 제어는 <a href="#vda5050">VDA 5050</a>, 주문·이벤트는 biz/v1 JSON. 상세는 <a href="../working/mqtt_backbone_guide.html">MQTT 백본 구축 가이드</a>.</div>
+</section>
+
+<section class="term" id="vda5050">
+  <span id="smartfactory" style="scroll-margin-top:56px"></span>
+  <h2>VDA 5050<span class="en">AMR 군집 통신 표준</span></h2>
+  <p class="def">중앙 관제와 AMR들이 주고받는 메시지를 표준화한 규격(독일 자동차공업협회). 관제가 경로를 노드·엣지 그래프로 내려주고(order) AMR이 상태를 보고한다(state). 관제는 "어디로", 로봇은 "어떻게"로 책임이 나뉜다. IT(관제)와 OT(로봇)를 잇는 경계 표준.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — <a href="#execution-shell">실행 셸</a>의 MQTT 데몬이 커널의 decisions를 order로 발행하고, T4 에이전트의 브리지가 <a href="#primitive">그리드 프리미티브</a>로 실행한 뒤 state를 보고한다(v2.0, order/state/connection+instantActions). 틱마다 다음 1칸을 released로 내리는 <a href="#stitching">스티칭</a> 방식. 이 경계 위 코드는 가상↔현실 전환 시 불변 — v2 실관제 확장이 아키텍처에 내장된다는 주장의 근거.</div>
+</section>
+
+<section class="term" id="minio">
+  <h2>MinIO<span class="en">MinIO — S3 호환 오브젝트 저장소</span></h2>
+  <p class="def">S3 API를 그대로 쓰는 자체 호스팅 오브젝트 저장소. 아티팩트(MP4·리플레이·히트맵·로그)와 시나리오 파일을 보관한다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 기관 EC2는 IAM을 못 써 관리형 S3 대신 k3s 파드로 올렸다. 클라이언트 코드는 S3 SDK 그대로라 계정 제약이 풀리면 버킷만 S3로 옮기면 된다. 상시 층 소속. 업로드는 <a href="#presigned-url">presigned URL</a>, 내용물은 <a href="#artifact">아티팩트</a>. 공식 문서: <a href="https://min.io/docs/minio/kubernetes/upstream/" target="_blank" rel="noopener">MinIO Docs</a>.</div>
+</section>
+
+<section class="term" id="h2">
+  <h2>H2<span class="en">H2 Database — 자바 인메모리 DB</span></h2>
+  <p class="def">JVM 안에서 도는 경량 관계형 DB. 시뮬 WMS가 런 스코프 데이터를 여기에 두고 런이 끝나면 함께 버린다.</p>
+  <div class="ctx"><b>이 프로젝트에서</b> — 런마다 깨끗한 DB가 필요한데 PostgreSQL을 런마다 만들고 지우는 것보다 인메모리가 간단하다. 조건은 JPQL만 쓰고 네이티브 쿼리 금지, PG 호환 모드 — 그래야 프로파일만 바꿔 PostgreSQL로 승격할 수 있다. 영속이 필요한 이벤트 로그는 H2 밖(JSONL → MinIO). 사용자는 <a href="#sim-wms">시뮬 WMS</a> 하나, 영속 데이터는 PostgreSQL(견적 도메인)에만 둔다. 공식 문서: <a href="https://www.h2database.com/" target="_blank" rel="noopener">H2 Database</a>.</div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">AMR QUOTE SIMULATION · REF — 용어사전 통합판 · 읽기 순서: <a href="../archive/archive.html">← 이전 · ARCHIVE 검토 아카이브</a> · 다음 없음(마지막 문서) · <a href="../../index.html">⌂ 문서 인덱스</a></div>
+</footer>
+
+</body>
+</html>

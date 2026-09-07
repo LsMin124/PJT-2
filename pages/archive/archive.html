@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-<title>검토 아카이브 — 이전 주제 심층 검토 3부 (Archive)</title>
+<title>이전 주제 검토 — 검토 아카이브 통합판 (Archive)</title>
 <style>
   :root{
     --bg:#14181D;
@@ -129,16 +129,15 @@
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow">ARCHIVE 04 / 04 · <b>ARCHIVE</b> · 이전 주제 검토 기록 · 2026-08</div>
-      <h1>검토 아카이브 — 이전 주제 심층 검토 3부
-        <span class="sub">주제 확정 여정(PLAN 02)의 근거로 보존하는 문서. 택배 허브 자동화를 검토하며 쓴 심층 분석 3편의 통합·요약본이며, 대기행렬 이론 등 일부는 현 주제(AMR 견적 시뮬레이션)로 계승됨</span>
+      <div class="doc-eyebrow">ARCHIVE · 이전 주제 검토 · <b>REV — 2026-09-07</b> · 통합판</div>
+      <h1>이전 주제 검토 — 택배 허브 자동화에서 남긴 것
+        <span class="sub">도메인 리서치 · 심층 검토 3부 · ROS 2 랩 노트의 통합판. 주제 확정 여정(<a href="topic_journey.html">ARCHIVE 01</a>)의 근거이며, 현 주제로 계승된 교훈만 남겼다</span>
       </h1>
     </div>
     <div class="meta">
-      STATUS · <b>ARCHIVE (요약 보존)</b><br>
-      PARTS · <b>1부 하차 · 2부 인덕션 · 3부 인식·파지</b><br>
+      STATUS · <b>ARCHIVE (통합판)</b><br>
       원문 주제 · <b>택배 허브 자동화 (기각)</b><br>
-      계승처 · <b>TECH 03 이론 · TECH 04 검증 트랙</b>
+      계승처 · <b><a href="../tech/amr_mapf_theory.html#little">TECH 03 이론</a> · <a href="../tech/amr_decision_inventory.html#df">TECH 04 검증 트랙</a></b>
     </div>
   </div>
 </header>
@@ -147,10 +146,9 @@
   <div class="wrap">
     <a class="nav-home" href="../../index.html">⌂ INDEX</a>
     <a href="#dov">한눈에</a>
-    <a href="#unloading">1부 벌크 하차</a>
-    <a href="#induction">2부 인덕션 병목</a>
-    <a href="#perception">3부 인식·파지</a>
-    <a href="#dref">참고 자료</a>
+    <a href="#hub">01 허브 구조</a>
+    <a href="#queue">02 대기행렬</a>
+    <a href="#ros2">03 ROS 2 교훈</a>
     <a class="nav-cross" href="topic_journey.html">주제 확정 여정 ↗</a>
   </div>
 </nav>
@@ -159,108 +157,87 @@
 
   <!-- ══════════ 한눈에 보기 ══════════ -->
   <section id="dov">
-    <div class="sec-head"><span class="sec-no">한눈에 보기</span><h2>이 아카이브를 읽는 법</h2></div>
+    <div class="sec-head"><span class="sec-no">한눈에 보기</span><h2>세 문서에서 살아남은 것</h2></div>
     <div class="sec-body">
       <div class="plain"><span class="pl-tag">왜 보존하나</span>
-      이 3부는 이전 주제(택배 허브 자동화)를 검토하며 작성한 심층 분석입니다. 최종 주제는 <b>AMR 도입 견적 시뮬레이션</b>으로
-      확정됐지만(<a href="topic_journey.html">주제 확정 여정</a> 참조), 이 분석들이 곧 <b>그 결정의 근거</b>이고
-      일부 이론은 현 주제로 그대로 계승되므로 요약본으로 보존합니다. 현행 주제는 <a href="../tech/amr_overview.html">TECH 01 전체 조망</a>부터 읽으세요.</div>
-
-      <p class="lead">각 부에서 무엇을 얻고, 무엇이 현 주제로 이어지는지 요약합니다. 급하면 이 표와 각 부의 "계승" 박스만 읽어도 됩니다.</p>
+      이전 주제(택배 허브 자동화) 검토 문서가 곧 현 주제 확정의 근거다. 무대는 "소터 앞 인덕션"에서 "창고 통로와 피킹 스테이션"으로 바뀌었지만 수학은 같다.
+      현행 주제는 <a href="../tech/system_architecture.html">시스템 아키텍처</a>부터.</div>
       <div class="tbl-scroll">
       <table>
-        <tr><th style="width:18%">부</th><th style="width:34%">핵심 결론</th><th style="width:48%">현 주제로 계승되는 것</th></tr>
-        <tr><td><b><a href="#unloading">1부 벌크 하차</a></b></td><td>하차 자동화는 인식·파지·물리·시스템 4중 난제 — 상용 로봇도 정형 상자까지만 수렴</td><td>물류 현장의 자동화 난이도 감각. "로봇이 만능이 아니다"라는 견적 서비스의 전제</td></tr>
-        <tr><td><b><a href="#induction">2부 인덕션 병목</a></b></td><td>병목은 빠른 소터가 아니라 사람 손에 묶인 인덕션 — 가동률 90%를 넘으면 대기가 비선형 폭발</td><td><b>계승도 최고</b> — 대기행렬·병목 이론(M/M/c·Little's Law)과 SimPy 모델링 사고방식이 견적 엔진에 그대로 (<a href="../tech/amr_mapf_theory.html#little">TECH 03 · SEC 04</a>)</td></tr>
-        <tr><td><b><a href="#perception">3부 인식·파지</a></b></td><td>미지 물체 인식→파지는 4단계 파이프라인 — 학습 데이터는 합성으로 만들고 실사로 증명</td><td>합성 데이터·sim-to-real 관점이 Isaac 검증 트랙과 맞닿음 (<a href="../tech/amr_decision_inventory.html#df">TECH 04 · SEC F</a>)</td></tr>
+        <tr><th style="width:15%">원문</th><th style="width:35%">핵심 결론</th><th style="width:35%">현 주제로 계승</th><th style="width:15%">출처</th></tr>
+        <tr><td><b>도메인 리서치</b></td><td>허브앤스포크 — 허브의 분류 속도가 전국 택배의 속도. 흐르는 것은 기계가, 집는 것은 사람이 (<a href="#hub">01</a>)</td><td>현장 프로세스 감각 → 인테이크의 수요 프로파일·운영 설문 설계</td><td><a href="https://www.cjlogistics.com/ko/newsroom/news/NR_00000865">CJ 뉴스룸</a> · <a href="https://www.nlic.go.kr/">NLIC</a></td></tr>
+        <tr><td><b>1부 벌크 하차</b></td><td>인식·파지·물리·시스템 4중 난제 — 상용 로봇도 정형 상자까지만 수렴</td><td>"로봇이 만능이 아니다" — 중립 견적 서비스가 필요한 배경</td><td><a href="https://bostondynamics.com/products/stretch/">Stretch</a> · <a href="https://picklerobot.com/">Pickle Robot</a></td></tr>
+        <tr><td><b>2부 인덕션 병목</b></td><td>병목은 빠른 소터가 아니라 사람 손에 묶인 인덕션 — 가동률 90%를 넘으면 대기가 비선형 폭발 (<a href="#queue">02</a>)</td><td><b>계승도 최고</b> — M/M/c·Little's Law와 SimPy 모델링 규율이 견적 엔진에 그대로 (<a href="../tech/amr_mapf_theory.html#little">TECH 03 · SEC 04</a>)</td><td><a href="https://simpy.readthedocs.io/">SimPy</a></td></tr>
+        <tr><td><b>3부 인식·파지</b></td><td>미지 물체 인식→파지는 4단계 파이프라인 — 학습 데이터는 합성으로 만들고 실사로 증명</td><td>합성 데이터·<a class="term" href="../ref/glossary.html#sim2real">sim-to-real</a> 관점이 Isaac 검증 트랙과 같은 문제의식 (<a href="../tech/amr_decision_inventory.html#df">TECH 04 · SEC F</a>)</td><td><a href="https://www.amazon.science/code-and-datasets/amazon-robotic-manipulation-benchmark-armbench">ARMBench</a> · <a href="https://nvlabs.github.io/FoundationPose/">FoundationPose</a></td></tr>
+        <tr><td><b>ROS 2 랩 노트</b></td><td>UR5e mock으로 URDF → MoveIt2 → 인터랙티브 IK. 장애 10건 중 프로세스 위생 4건이 본편에서 재발 (<a href="#ros2">03</a>)</td><td>노드·토픽·컨트롤러·launch 감각 → 검증 트랙(<a class="term" href="../ref/glossary.html#sil">SIL</a>) 배선. MoveIt2·IK는 v1 범위 밖</td><td>~/ros2_ws 실습 (2026-08)</td></tr>
       </table>
       </div>
     </div>
   </section>
 
-  <!-- ══════════ 1부 벌크 하차 ══════════ -->
-  <section id="unloading">
-    <div class="sec-head"><span class="sec-no">1부</span><h2>벌크 하차·이형물 — 왜 하차는 아직 사람이 하는가</h2></div>
+  <!-- ══════════ 01 허브 구조 ══════════ -->
+  <section id="hub">
+    <div class="sec-head"><span class="sec-no">01</span><h2>허브 구조 — 흐르는 것은 기계가, 집는 것은 사람이</h2></div>
     <div class="sec-body">
-      <p class="lead">국내 간선 수송은 적재율을 위해 파렛트 없이 상자를 낱개로 빽빽하게 싣는다(벌크 적재).
-      그래서 하차는 "파렛트를 내리는 문제"가 아니라 <b>"쌓인 더미에서 낱개를 빼내는 문제"</b>가 된다.</p>
-
-      <svg viewBox="0 0 900 330" role="img" aria-label="간선 트럭 짐칸의 벌크 적재 단면과 하차 작업 도해" style="max-width:100%;height:auto;display:block;margin:14px 0">
-        <defs><marker id="arrD1" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
-        <text x="40" y="28" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">간선 트럭 짐칸 (단면)</text>
-        <rect x="40" y="40" width="478" height="240" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
-        <g fill="#222A33" stroke="#8A96A3" stroke-width="1">
-          <rect x="50" y="232" width="84" height="44"/><rect x="138" y="232" width="72" height="44"/><rect x="214" y="232" width="96" height="44"/><rect x="314" y="232" width="78" height="44"/><rect x="396" y="232" width="66" height="44"/><rect x="466" y="232" width="46" height="44"/>
-          <rect x="50" y="184" width="76" height="44"/><rect x="130" y="184" width="90" height="44"/><rect x="224" y="184" width="64" height="44"/><rect x="292" y="184" width="84" height="44"/><rect x="380" y="184" width="72" height="44"/><rect x="456" y="184" width="56" height="44"/>
-          <rect x="50" y="136" width="92" height="44"/><rect x="146" y="136" width="70" height="44"/><rect x="220" y="136" width="60" height="44"/><rect x="284" y="136" width="96" height="44"/><rect x="384" y="136" width="72" height="44"/>
-          <rect x="50" y="88" width="80" height="44"/><rect x="134" y="88" width="64" height="44"/><rect x="202" y="88" width="88" height="44"/><rect x="294" y="88" width="70" height="44"/>
-          <rect x="50" y="52" width="70" height="32"/><rect x="124" y="52" width="88" height="32"/><rect x="216" y="52" width="60" height="32"/>
-        </g>
-        <rect x="452" y="88" width="62" height="40" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
-        <path d="M514 112 C 560 130, 578 200, 558 242" fill="none" stroke="#8FB4D9" stroke-width="1.8" marker-end="url(#arrD1)"/>
-        <rect x="500" y="248" width="360" height="14" fill="#1A222B" stroke="#8FB4D9" stroke-width="1.5"/>
-        <text x="552" y="296" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4">텔레스코픽 컨베이어 — 짐칸 안까지 늘어나 상자를 받아 나른다</text>
-        <text x="545" y="60" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">왜 어려운가</text>
-        <text x="545" y="86" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">① 천장 근처까지 빽빽 — 위에서부터만 접근 가능</text>
-        <text x="545" y="110" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">② 상자끼리 밀착 — 한 개의 경계가 안 보임</text>
-        <text x="545" y="134" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">③ 무게·내용물은 겉에서 알 수 없음</text>
-        <text x="545" y="158" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">④ 아래를 먼저 빼면 더미가 무너짐</text>
-        <g font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">
-          <rect x="545" y="182" width="16" height="13" fill="#2A2019" stroke="#F08A32" stroke-width="2"/><text x="568" y="193">지금 꺼낼 상자 — 위에서부터 낱개로</text>
-          <rect x="545" y="208" width="16" height="13" fill="#222A33" stroke="#8A96A3"/><text x="568" y="219">골판지 상자 (밀착 벌크 적재)</text>
-        </g>
+      <svg viewBox="0 0 900 250" role="img" aria-label="허브앤스포크 구조도" style="max-width:100%;height:auto;display:block;margin:14px 0">
+        <defs><marker id="hsarr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
+        <text x="105" y="26" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1" text-anchor="middle">① 집화·발송</text>
+        <text x="450" y="26" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1" text-anchor="middle">② 허브 — 한곳에서 분류</text>
+        <text x="795" y="26" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" font-weight="700" fill="#E8ECF1" text-anchor="middle">③ 배송 — 다시 흩어보낸다</text>
+        <rect x="20" y="46" width="170" height="44" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="105" y="73" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1" text-anchor="middle">발송 서브터미널</text>
+        <rect x="20" y="110" width="170" height="44" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="105" y="137" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1" text-anchor="middle">발송 서브터미널</text>
+        <rect x="20" y="174" width="170" height="44" fill="#222A33" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <text x="105" y="201" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4" text-anchor="middle">⋯ 전국 수십 곳</text>
+        <rect x="330" y="66" width="240" height="140" fill="#2A2019" stroke="#E8ECF1" stroke-width="2"/>
+        <text x="450" y="98" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="16" font-weight="800" fill="#E8ECF1" text-anchor="middle">메가 허브</text>
+        <text x="450" y="126" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1" text-anchor="middle">전국 물량을 한꺼번에 분류</text>
+        <text x="450" y="150" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4" text-anchor="middle">하차→인덕션→분류→상차</text>
+        <text x="450" y="182" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#F08A32" text-anchor="middle" font-weight="700">하루 100만 개 이상</text>
+        <line x1="192" y1="68" x2="326" y2="100" stroke="#8FB4D9" stroke-width="2" marker-end="url(#hsarr)"/>
+        <line x1="192" y1="132" x2="326" y2="136" stroke="#8FB4D9" stroke-width="2" marker-end="url(#hsarr)"/>
+        <line x1="192" y1="196" x2="326" y2="172" stroke="#8FB4D9" stroke-width="2" marker-end="url(#hsarr)"/>
+        <text x="258" y="112" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">간선차량</text>
+        <rect x="710" y="46" width="170" height="44" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="795" y="73" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1" text-anchor="middle">도착 서브터미널</text>
+        <rect x="710" y="110" width="170" height="44" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="795" y="137" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1" text-anchor="middle">도착 서브터미널</text>
+        <rect x="710" y="174" width="170" height="44" fill="#222A33" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <text x="795" y="201" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#9AA7B4" text-anchor="middle">⋯ 기사별 배송</text>
+        <line x1="574" y1="100" x2="706" y2="68" stroke="#8FB4D9" stroke-width="2" marker-end="url(#hsarr)"/>
+        <line x1="574" y1="136" x2="706" y2="132" stroke="#8FB4D9" stroke-width="2" marker-end="url(#hsarr)"/>
+        <line x1="574" y1="172" x2="706" y2="196" stroke="#8FB4D9" stroke-width="2" marker-end="url(#hsarr)"/>
+        <text x="642" y="112" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="middle">간선차량</text>
       </svg>
-      <p class="soft">그림: 사람이 짐칸 안에 들어가 위에서부터 상자를 꺼내 컨베이어에 올린다. 이것을 로봇으로 바꾸는 것이 하차 자동화다.</p>
+      <p class="soft">그림: 어디서 보내든 대부분 허브를 한 번 거친다.</p>
 
-      <h3>난점 4분해 — "상자를 집어서 옮긴다" 한 문장의 실체</h3>
-      <ul class="rules">
-        <li><b>① 인식</b> — 어디까지가 한 상자인가. 색·질감이 같은 상자의 밀착·가림·역광·미학습 물체 (방법론은 <a href="#perception">3부</a>)</li>
-        <li><b>② 파지</b> — 어떻게 집는가. 무게 미지·표면 상태·흡착 한계. 흡착(진공) 그리퍼가 산업 표준 — 밀착 더미에서 핑거는 넣을 틈이 없다</li>
-        <li><b>③ 물리</b> — 더미는 무너진다. 지지 관계를 고려한 "빼는 순서" 결정과 낙하 대응</li>
-        <li><b>④ 시스템</b> — 한 대의 문제가 아니다. 후속 라인과의 택트 타임 동기화, 짐칸 진입 기구, 예외를 사람에게 넘기는 HITL 흐름</li>
-      </ul>
-
-      <h3>상용 로봇의 수렴 — 그리고 남은 것</h3>
       <div class="tbl-scroll">
       <table>
-        <tr><th style="width:22%">제품</th><th style="width:44%">접근</th><th style="width:34%">한계</th></tr>
-        <tr><td><b><a href="https://bostondynamics.com/products/stretch/">Stretch</a></b> <span class="soft num" style="font-size:11px">Boston Dynamics</span></td><td>자주식 베이스 + 흡착 컵 어레이, 짐칸 진입형. 시간당 최대 800개 수준(제조사 공개), DHL 대규모 도입</td><td>정형 골판지 상자 위주</td></tr>
-        <tr><td><b><a href="https://picklerobot.com/">Pickle Robot</a></b></td><td>산업용 팔 + 머신비전, 트레일러 진입형. 시간당 400~1,500개, 최대 22.6kg</td><td>혼재 화물 비율이 높으면 사람 보조 필요</td></tr>
-        <tr><td><b>국내 국책과제</b> <span class="soft num" style="font-size:11px">STC·성균관대·CJ대한통운</span></td><td>박스·비닐 파우치·마대 혼재 인식·피킹, 감압 그리퍼 개발</td><td>연구개발 단계 — 국내 혼재 특성을 직접 겨냥한 드문 사례</td></tr>
+        <tr><th style="width:18%">구간</th><th style="width:41%">자동 설비</th><th style="width:41%">인력 (자동화 공백)</th></tr>
+        <tr><td>허브 5공정</td><td>③ 스캔·계측(DWS) · ④ 소터(크로스벨트·휠) · 컨베이어 이송·합류/분기</td><td>① 하차(디밴닝) · ② 인덕션 투입(겹침 분리·운송장 정렬) · ⑤ 상차 적재</td></tr>
+        <tr><td>그 밖</td><td>풀필먼트 내부 GTP · AGV/<a class="term" href="../ref/glossary.html#amr">AMR</a> 선반 이송 · <a class="term" href="../ref/glossary.html#wms">WMS</a>·WCS 배분 로직</td><td>이형물(마대·비닐·초대형) · 오분류·미스캔 예외 · 라스트마일</td></tr>
+        <tr><td>왜 남았나</td><td colspan="2">공통점은 <b>비정형</b> — 매번 다른 물체를 인식하고 집어야 하는 로보틱스 문제. 파렛트 하차(정형)는 상용화, 벌크 하차(비정형)는 실증~초기 상용 단계</td></tr>
       </table>
       </div>
-      <ul class="rules">
-        <li><b>수렴한 결론</b> — 모든 상용 제품이 "흡착 + 자주식 진입 + 상자류 우선"에 도달. 정형 상자의 벌크 하차까지는 기술이 수렴했다</li>
-        <li><b>남은 문제</b> — 비닐 파우치(형태가 변하고 반사로 깊이 측정이 깨짐)·마대(흡착 불가)·초대형. 산업 현장은 "이형물까지 집는 로봇" 대신 <b>"이형물을 초기에 걸러내는 분기"</b>를 먼저 택했다</li>
-      </ul>
 
-      <div class="plain"><span class="pl-tag">현 주제로 계승되는 것</span>
-      물류 현장 자동화의 난이도 감각. "로봇을 들이면 다 해결된다"가 왜 성립하지 않는지를 몸으로 아는 것 —
-      벤더 견적을 그대로 믿기 어려운 이유이자, <b>중립 견적 서비스가 필요한 배경</b>이다.</div>
+      <div class="tbl-scroll">
+      <table>
+        <tr><th style="width:18%">기준 사례</th><th style="width:41%">곤지암 메가허브 (CJ대한통운 · 2018 가동)</th><th style="width:41%">출처</th></tr>
+        <tr><td>연면적</td><td class="num">약 30만㎡</td><td rowspan="3"><a href="https://www.cjlogistics.com/ko/newsroom/news/NR_00000865">CJ대한통운 뉴스룸</a> (2026-08 조사 시점)</td></tr>
+        <tr><td>분류 컨베이어</td><td class="num">총길이 43km</td></tr>
+        <tr><td>처리 능력</td><td class="num">하루 175만 개 (평시 100만 개 이상)</td></tr>
+      </table>
+      </div>
     </div>
   </section>
 
-  <!-- ══════════ 2부 인덕션 병목 ══════════ -->
-  <section id="induction">
-    <div class="sec-head"><span class="sec-no">2부</span><h2>인덕션 병목 — 소터는 빠른데 왜 허브가 막히는가</h2></div>
+  <!-- ══════════ 02 대기행렬 ══════════ -->
+  <section id="queue">
+    <div class="sec-head"><span class="sec-no">02</span><h2>대기행렬 — 물량이 10%만 늘었는데 왜 마비되나</h2></div>
     <div class="sec-body">
-      <p class="lead">분류기(소터)는 "한 줄로, 한 개씩, 간격 맞춰" 들어오는 상자만 처리할 수 있다.
-      무더기를 그 상태로 바꾸는 공정이 인덕션인데, 겹침 해소에 사람 손이 필요해 <b>라인당 속도에 상한</b>이 걸린다.
-      허브의 처리량은 직렬 공정 중 가장 느린 단계가 정하므로, 병목은 구조적으로 여기에 온다.</p>
-
-      <div class="chain">
-        <div class="link"><div class="tag">① 하차</div><div class="desc">도크 수 × 하차 속도 — 인력 작업 (<a href="#unloading">1부</a>)</div><div class="cap">인력 비례</div></div>
-        <div class="link bottleneck"><div class="tag">② 인덕션</div><div class="desc">낱개 분리·정렬·투입 — 겹침 해소에 사람 손이 필요해 라인당 속도 상한</div><div class="cap">병목 1순위</div></div>
-        <div class="link"><div class="tag">③ 스캔·계측</div><div class="desc">DWS(크기·무게·바코드 동시 계측) — 컨베이어 속도로 처리</div><div class="cap">기계 용량</div></div>
-        <div class="link"><div class="tag">④ 소터</div><div class="desc">캐리어 속도 × 피치로 정해지는 기계 용량 — 시간당 수만 개 수준</div><div class="cap">기계 용량 (큼)</div></div>
-        <div class="link"><div class="tag">⑤ 슈트·상차</div><div class="desc">슈트 버퍼가 차면 재순환 — 상차 인력이 뒤에서 미는 병목 가능</div><div class="cap">버퍼 + 인력</div></div>
-      </div>
-      <p class="soft">전형적 증상은 "소터가 굶는(starvation)" 형태 — 소터 캐리어가 빈 채로 도는 동안 인덕션 앞에는 무더기가 쌓인다.</p>
-
-      <h3>대기행렬 이론 — 피크가 치명적인 이유</h3>
-      <p>기호는 넷이면 된다: 도착률 <b class="num">λ</b>(시간당 들어오는 상자), 라인 수 <b class="num">c</b>, 라인당 처리율 <b class="num">μ</b>,
-      그리고 가동률 <b class="num">ρ = λ ÷ (c×μ)</b>. 예: 시간당 9,000개 도착 ÷ (5라인 × 2,000개) = <b>ρ 0.9</b>.
-      평균 대기는 대략 <code>1/(1−ρ)</code>에 비례해서, ρ=0.9면 한산할 때의 <b>10배</b>, 0.99면 <b>100배</b>가 된다.</p>
+      <p>도착률 <b class="num">λ</b> · 라인 수 <b class="num">c</b> · 라인당 처리율 <b class="num">μ</b> · 가동률 <b class="num">ρ = λ ÷ (c×μ)</b>.
+      예: 시간당 9,000개 ÷ (5라인 × 2,000개) = <b>ρ 0.9</b>. 평균 대기는 대략 <code>1/(1−ρ)</code>에 비례한다.</p>
 
       <svg viewBox="0 0 900 310" role="img" aria-label="가동률이 1에 가까워질수록 평균 대기가 비선형으로 폭발하는 곡선 차트" style="max-width:100%;height:auto;display:block;margin:14px 0">
         <g stroke="#2A323B" stroke-width="1">
@@ -285,112 +262,51 @@
         <text x="455" y="302" text-anchor="middle" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" fill="#E8ECF1">가동률 ρ = 도착량 ÷ 처리 능력</text>
         <text x="76" y="26" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" fill="#E8ECF1">평균 대기 (한산할 때 대비 배수)</text>
       </svg>
-      <p class="soft">그림: "물량이 10%만 늘었는데 왜 마비되나"의 답. 가동률 90%를 넘으면 대기가 급격히 치솟고 100%에서 이론상 무한대가 된다.</p>
 
-      <ul class="rules">
-        <li><b>비정상 도착</b> — 택배 도착은 간선차 스케줄에 따라 심하게 몰린다. 평균으로는 안전해 보여도 피크 구간에서 ρ&gt;1이 되면 대기열이 무한정 자라고, 버퍼가 차면 하차까지 거꾸로 막힌다(blocking)</li>
-        <li><b>수식의 한계 → 시뮬레이션</b> — M/M/c 수식은 감을 잡는 용도다. 실제는 처리 시간 분포가 다르고 공정이 직렬로 얽혀 있어 <a class="term" href="../ref/glossary_industrial.html#des">DES</a>(이산사건 시뮬레이션)가 필요하다. 원문에는 SimPy 모델 설계(자원·버퍼·재순환)와 실험 4종(병목 위치·증설 비교·피크 민감도·이형물 영향)이 있었다</li>
-      </ul>
-
-      <div class="plain"><span class="pl-tag">현 주제로 계승되는 것 — 시리즈 중 계승도 최고</span>
-      대기행렬·병목 이론(M/M/c·<a class="term" href="../ref/glossary_industrial.html#littleslaw">Little's Law</a>)과
-      "미지 파라미터는 실험 변수로 돌린다"는 SimPy 모델링 규율이 <b>AMR 견적 엔진의 SimPy 계층에 그대로 계승</b>된다
-      (<a href="../tech/amr_mapf_theory.html#little">TECH 03 · SEC 04 집계 이론</a>).
-      무대가 "소터 앞 인덕션"에서 "창고 통로와 피킹 스테이션"으로 바뀔 뿐, 수학은 같다.</div>
-    </div>
-  </section>
-
-  <!-- ══════════ 3부 인식·파지 ══════════ -->
-  <section id="perception">
-    <div class="sec-head"><span class="sec-no">3부</span><h2>비정형 인식·파지 — 로봇은 처음 보는 물체를 어떻게 집는가</h2></div>
-    <div class="sec-body">
-      <p class="lead">물류 장면의 물체는 대부분 "학습 때 본 적 없는" 것들이다. 그래서 인식→파지는
-      아래 4단계 파이프라인으로 분해되고, 대상의 형상을 아느냐에 따라 두 갈래 경로로 갈린다.</p>
-
-      <svg viewBox="0 0 900 270" role="img" aria-label="카메라 입력부터 실행·복구까지 인식·파지 파이프라인 4단계와 두 갈래 경로 도해" style="max-width:100%;height:auto;display:block;margin:14px 0">
-        <defs><marker id="arrD2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
-        <g font-family="IBM Plex Sans KR, Pretendard, sans-serif">
-          <rect x="16" y="100" width="140" height="66" fill="#20272F" stroke="#E8ECF1" stroke-width="1.5"/>
-          <text x="86" y="127" text-anchor="middle" font-size="14" font-weight="700" fill="#E8ECF1">카메라 입력</text>
-          <text x="86" y="148" text-anchor="middle" font-size="12" fill="#9AA7B4">RGB-D (색+깊이)</text>
-          <rect x="200" y="100" width="160" height="66" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
-          <text x="280" y="122" text-anchor="middle" font-size="14" font-weight="700" fill="#E8ECF1">① 개체 분리</text>
-          <text x="280" y="141" text-anchor="middle" font-size="12" fill="#9AA7B4">세그멘테이션</text>
-          <text x="280" y="158" text-anchor="middle" font-size="11.5" font-family="JetBrains Mono, monospace" fill="#8A96A3">SAM · UOIS</text>
-          <rect x="410" y="26" width="190" height="66" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
-          <text x="505" y="48" text-anchor="middle" font-size="14" font-weight="700" fill="#E8ECF1">② 6D 자세 추정</text>
-          <text x="505" y="67" text-anchor="middle" font-size="12" fill="#9AA7B4">경로 ① — 형상을 아는 물체</text>
-          <text x="505" y="84" text-anchor="middle" font-size="11.5" font-family="JetBrains Mono, monospace" fill="#8A96A3">FoundationPose</text>
-          <rect x="410" y="176" width="190" height="66" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
-          <text x="505" y="198" text-anchor="middle" font-size="14" font-weight="700" fill="#E8ECF1">② 파지점 직접 검출</text>
-          <text x="505" y="217" text-anchor="middle" font-size="12" fill="#9AA7B4">경로 ② — 처음 보는 물체·이형물</text>
-          <text x="505" y="234" text-anchor="middle" font-size="11.5" font-family="JetBrains Mono, monospace" fill="#8A96A3">Dex-Net · GraspNet</text>
-          <rect x="654" y="100" width="230" height="66" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
-          <text x="769" y="122" text-anchor="middle" font-size="14" font-weight="700" fill="#E8ECF1">③ 파지 계획 → ④ 실행·복구</text>
-          <text x="769" y="141" text-anchor="middle" font-size="12" fill="#9AA7B4">충돌 없는 경로로 접근, 실패하면 재시도</text>
-          <text x="769" y="158" text-anchor="middle" font-size="11.5" font-family="JetBrains Mono, monospace" fill="#8A96A3">MoveIt2 · 최후엔 HITL</text>
-        </g>
-        <line x1="156" y1="133" x2="194" y2="133" stroke="#8FB4D9" stroke-width="1.8" marker-end="url(#arrD2)"/>
-        <path d="M360 118 C 384 100, 384 78, 404 62" fill="none" stroke="#8FB4D9" stroke-width="1.8" marker-end="url(#arrD2)"/>
-        <path d="M360 148 C 384 166, 384 190, 404 206" fill="none" stroke="#8FB4D9" stroke-width="1.8" marker-end="url(#arrD2)"/>
-        <path d="M600 62 C 628 78, 628 100, 648 118" fill="none" stroke="#8FB4D9" stroke-width="1.8" marker-end="url(#arrD2)"/>
-        <path d="M600 206 C 628 190, 628 166, 648 148" fill="none" stroke="#8FB4D9" stroke-width="1.8" marker-end="url(#arrD2)"/>
-        <text x="384" y="34" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="end">상자처럼 형상을 알면 ↑</text>
-        <text x="384" y="252" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="12" fill="#9AA7B4" text-anchor="end">비닐·마대처럼 모르면 ↓</text>
-      </svg>
-      <p class="soft">그림: 모든 경우는 개체 분리에서 시작하고, 두 경로는 같은 실행 단계로 합류한다.</p>
-
-      <div class="patterns">
-        <div class="pat"><h4>인스턴스 세그멘테이션 <small>공통 관문</small></h4>
-        <p>물체 하나하나의 영역을 픽셀 단위로 분리. 미지 물체용 모델(UOIS·UCN)·파운데이션 모델(SAM)·합성 데이터 미세조정(YOLO-seg)의 세 노선. 평가는 OCID·ARMBench에서, 과분할/미분할 비율을 함께 보고.</p></div>
-        <div class="pat"><h4>6D 자세 추정 <small>경로 ① — 형상을 아는 물체</small></h4>
-        <p>위치 3 + 회전 3 = 숫자 6개로 물체의 놓임새를 추정. 제로샷 계열(FoundationPose)이 실용 유력 노선, 벤치마크는 BOP. 다만 하차 흡착에는 "윗면 중심 + 법선"이면 충분할 때가 많다.</p></div>
-        <div class="pat"><h4>파지 생성 <small>경로 ② 포함</small></h4>
-        <p>"어디를 어느 방향으로 집을지" 후보를 채점. 흡착은 Dex-Net 3.0·SuctionNet, 핑거는 GraspNet 계열. 밀착 더미에서는 흡착이 주력이고, "어느 것부터 뺄지" 순서 결정은 학습 없이도 좋은 연구 지점.</p></div>
-        <div class="pat"><h4>실행·복구 <small>공통 마무리</small></h4>
-        <p>MoveIt2로 충돌 없는 경로 계획 → 파지 검증(진공 압력) → 실패 시 재흡착→다른 파지점→재인식→건너뛰기→HITL 순서의 복구 사다리. 각 단계 시도 상한으로 무한 재시도를 막는다.</p></div>
+      <div class="tbl-scroll">
+      <table>
+        <tr><th style="width:34%">가동률 ρ</th><th>0.7</th><th>0.9</th><th>0.99</th><th>1.0</th></tr>
+        <tr><td>평균 대기 (한산할 때 대비)</td><td class="num">약 3배</td><td class="num"><b>10배</b></td><td class="num">100배</td><td>무한대</td></tr>
+      </table>
       </div>
 
-      <h3>합성 데이터 — 라벨은 공짜, 조건은 무한 제어</h3>
       <ul class="rules">
-        <li><b>원칙</b> — 물리 낙하(physics drop)로 자연스러운 더미 배치를 만들고, 나머지(조명·질감·카메라·방해물)를 도메인 랜덤화로 흔든다. Replicator가 마스크·3D 박스·6D 자세 라벨을 자동 출력</li>
-        <li><b>폐루프</b> — 생성 → 학습 → 실사 평가 → 약한 조건(역광·비닐 반사) 진단 → <b>그 조건만 골라 재생성</b>의 순환. 최종 성적표는 반드시 실사 데이터(ARMBench 등)에서 낸다</li>
-        <li><b>3층위 평가</b> — 합성 내부(개발 루프) / 공개 실사(성적표) / 시뮬레이션 폐루프(시스템 의미) — 각각 "배우고 있나 / 현실에 통하나 / 시스템으로 의미 있나"에 답한다</li>
+        <li><b>비정상 도착</b> — 간선차 스케줄에 따라 몰린다. 평균은 안전해 보여도 피크에서 ρ&gt;1이면 대기열이 무한정 자라고, 버퍼가 차면 하차까지 거꾸로 막힌다(blocking)</li>
+        <li><b>수식의 한계 → 시뮬레이션</b> — M/M/c 수식은 감을 잡는 용도. 처리 시간 분포가 다르고 공정이 직렬로 얽혀 <a class="term" href="../ref/glossary.html#des">DES</a>가 필요하다. 원문은 SimPy 모델(자원·버퍼·재순환)과 실험 4종(병목 위치·증설·피크 민감도·이형물)을 설계했다</li>
       </ul>
 
-      <div class="plain"><span class="pl-tag">현 주제로 계승되는 것</span>
-      새 주제에 로봇팔 파지는 등장하지 않지만, <b>합성 데이터와 sim-to-real
-      (<a class="term" href="../ref/glossary_robotics.html#sim2real">시뮬레이션에서 만든 것이 현실에서 통하는가</a>) 관점</b>은
-      현 주제의 Isaac 검증 트랙(<a href="../tech/amr_decision_inventory.html#df">TECH 04 · SEC F</a>)과 같은 문제의식이다.
-      "시뮬레이션 결과를 어떻게 믿게 만드는가"라는 질문이 두 주제를 관통한다.</div>
+      <div class="plain"><span class="pl-tag">현 주제로 계승 — 시리즈 중 계승도 최고</span>
+      대기행렬·병목 이론(M/M/c·<a class="term" href="../ref/glossary.html#littleslaw">Little's Law</a>)과
+      <b>"미지 파라미터는 실험 변수로 돌린다"</b>는 SimPy 모델링 규율이 AMR 견적 엔진의 DES 계층에 그대로 계승된다
+      (<a href="../tech/amr_mapf_theory.html#little">TECH 03 · SEC 04</a>).</div>
     </div>
   </section>
 
-  <!-- ══════════ 참고 자료 ══════════ -->
-  <section id="dref">
-    <div class="sec-head"><span class="sec-no">REF</span><h2>참고 자료 (3부 통합)</h2></div>
+  <!-- ══════════ 03 ROS 2 교훈 ══════════ -->
+  <section id="ros2">
+    <div class="sec-head"><span class="sec-no">03</span><h2>ROS 2 랩 노트 — 프로세스 위생 교훈 4건</h2></div>
     <div class="sec-body">
-      <ul class="srcs">
-        <li>하차 로봇 — <a href="https://bostondynamics.com/products/stretch/">Boston Dynamics Stretch</a> · <a href="https://picklerobot.com/">Pickle Robot</a> · <a href="https://www.dexterity.ai/">Dexterity</a> · <a href="https://www.klnews.co.kr/news/articleView.html?idxno=121399">국내 국책과제(물류신문)</a></li>
-        <li>설비·통계 — <a href="https://www.cjlogistics.com/ko/newsroom/news/NR_00000865">CJ대한통운 곤지암 메가허브(일 175만 개)</a> · <a href="https://www.nlic.go.kr/">국가물류통합정보센터</a> · <a href="https://www.interroll.com/">Interroll</a> · <a href="https://www.beumer.com/">BEUMER</a></li>
-        <li>시뮬레이션 — <a href="https://simpy.readthedocs.io/">SimPy</a> · <a href="https://developer.nvidia.com/isaac/sim">Isaac Sim</a> · <a href="https://docs.omniverse.nvidia.com/extensions/latest/ext_replicator.html">Replicator</a></li>
-        <li>인식 — <a href="https://github.com/chrisdxie/uois">UOIS</a> · <a href="https://segment-anything.com/">SAM</a> · <a href="https://nvlabs.github.io/FoundationPose/">FoundationPose</a> · <a href="https://bop.felk.cvut.cz/">BOP Benchmark</a></li>
-        <li>파지 — <a href="https://graspnet.net/">GraspNet-1Billion</a> · <a href="https://berkeleyautomation.github.io/dex-net/">Dex-Net</a> · <a href="https://arxiv.org/abs/2103.12311">SuctionNet-1Billion</a></li>
-        <li>실사 평가 — <a href="https://www.amazon.science/code-and-datasets/amazon-robotic-manipulation-benchmark-armbench">ARMBench</a> · <a href="https://www.acin.tuwien.ac.at/en/vision-for-robotics/software-tools/object-clutter-indoor-dataset/">OCID</a></li>
-      </ul>
-      <p class="soft">각 부의 상세 분석(SimPy 모델 코드 골격, 실험 설계 4종, 데이터 랜덤화 체크리스트 등)은 이 요약본에서 생략했다. 필요하면 git 이력의 deep_dive_*.html 원문에서 볼 수 있다.</p>
+      <p class="soft">UR5e mock으로 URDF → MoveIt2 → 인터랙티브 IK를 실습한 기록. 장애 10건 중 본편에서 재발하는 네 건만 남긴다.</p>
+      <div class="plain"><span class="pl-tag">장애 복기 — 증상 → 원인 → 교훈</span>
+        <ul class="rules">
+          <li><b>사건 1 · 환경 오염</b> — 스폰 노드가 lxml ModuleNotFoundError로 사망. conda (base) 파이썬이 ROS 노드의 셔뱅을 가로챔. <b>ROS 터미널과 conda는 격리 — 프롬프트의 (base)부터 확인</b></li>
+          <li><b>사건 5 · 프로세스 수명</b> — pkill 후에도 옛 노드가 살아 /joint_states 발행자 2개, 두 로봇이 섞임(launch 부모만 죽고 자식 생존). <b>종료는 Ctrl+C(SIGINT) — 강제 종료했다면 pgrep으로 잔존 확인</b></li>
+          <li><b>사건 7 · 잔재 청소</b> — 강제 종료 뒤 "A message was lost" · SHM 에러. Fast DDS 공유메모리 파일이 /dev/shm에 잔존. <b>비정상 종료 후 통신이 이상하면 <code>fastdds shm clean</code></b></li>
+          <li><b>사건 10 · Ctrl+Z ≠ 종료</b> — 정지(T 상태) 프로세스가 컨트롤러·구독을 쥔 채 잔존, SIGTERM도 재개 전엔 큐잉만. <b>노드 종료는 Ctrl+C — ps STAT에 T가 보이면 <code>kill -CONT</code> 후 종료 신호</b></li>
+        </ul>
+      </div>
     </div>
   </section>
 
 </main>
 
 <div class="wrap flow-nav">
-  <a class="prev" href="ros2_arm_lab.html"><small>← 이전</small>ARCHIVE 03 · 랩 노트</a>
-  <a class="next" href="../../index.html"><small>다음 →</small>⌂ 문서 인덱스</a>
+  <a class="prev" href="../working/mqtt_backbone_guide.html"><small>← 이전</small>WORKING · MQTT 백본 가이드</a>
+  <a class="next" href="../ref/glossary.html"><small>다음 →</small>REF · 용어사전</a>
 </div>
 
 <footer>
-  <div class="wrap">ARCHIVE 04 · ARCHIVE — 원문 3편(deep_dive_unloading·induction·perception_grasp)의 통합 요약본 · 주제 확정의 근거는 <a href="topic_journey.html">PLAN 02 주제 확정 여정</a> · <a href="../../index.html">문서 인덱스로</a></div>
+  <div class="wrap">ARCHIVE · 이전 주제 검토 · 통합판 — 원문: 도메인 리서치 · 심층 검토 3부 · ROS 2 랩 노트 · <a href="topic_journey.html">ARCHIVE 01 주제 확정 여정</a> · <a href="../../index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>

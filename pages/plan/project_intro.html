@@ -148,9 +148,9 @@
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow">PLAN 01 / 01 · INTRO · <b>REV D</b> · 2026-09</div>
+      <div class="doc-eyebrow">PLAN · 처음 읽는 안내 · <b>REV — 2026-09-07</b> · 축약판</div>
       <h1>처음 읽는 사람을 위한 안내 — 창고 조건을 보내면, 시뮬레이션 근거가 붙은 견적서를 받는다
-        <span class="sub">비전공 팀원·심사위원이 5분에 읽는 첫 문서. 전문용어는 처음 나올 때 풀어 씁니다</span>
+        <span class="sub">비전공 팀원·심사위원이 5분에 읽는 첫 문서. 표와 그림 위주의 축약판</span>
       </h1>
     </div>
     <div class="meta">
@@ -174,7 +174,7 @@
     <a href="#i5">05 두 시뮬레이션</a>
     <a href="#i6">06 팀 구성</a>
     <a href="#i7">07 자주 묻는 질문</a>
-    <a class="nav-cross" href="../tech/amr_overview.html">전체 조망 ↗</a>
+    <a class="nav-cross" href="../tech/system_architecture.html">시스템 아키텍처 ↗</a>
   </div>
 </nav>
 
@@ -184,14 +184,11 @@
 <section id="i0">
   <div class="sec-head"><span class="sec-no">SEC 00 · 한눈에 보기</span><h2>창고 조건을 보내면, 로봇 대수와 기종의 근거가 담긴 견적서를 받는다</h2></div>
   <div class="sec-body">
-    <p class="lead"><b>"3PL(제3자 물류)이 AMR 도입을 결정할 수 있도록, 창고·물류 조건을 받아 시뮬레이션으로 권장 대수·기종, KPI, 검증 영상을 담은 견적서를 만들어 보내는 요청 접수형 서비스."</b> — 기준선 v3 §0의 한 줄 정의</p>
-    <div class="note"><span class="pl-tag">기준선 개정 (2026-09-03)</span>v2(2026-08-26)의 "셀프서브 견적 SaaS"를 v3에서 <b>요청 접수형 비동기 견적 서비스</b>로 바꿨다. 요청은 큐에 쌓이고, 운영자가 검토·검수하며, 결과는 나중에 발송된다. 이유는 SEC 02. 근거: 기준선 v3 §1, 상세 다이어그램 <a href="../../docs/FMS-WMS_통합_아키텍처.html">FMS-WMS 통합 아키텍처 v3.10</a>.</div>
-
-    <h3>이 문서가 답하는 질문</h3>
+    <p class="lead"><b>"<a href="../research/3pl_industry.html">3PL</a>(제3자 물류)이 <a class="term" href="../ref/glossary.html#amr">AMR</a> 도입을 결정할 수 있도록, 창고·물류 조건을 받아 시뮬레이션으로 권장 대수·기종, KPI, 검증 영상을 담은 견적서를 만들어 보내는 <a class="term" href="../ref/glossary.html#intake-service">요청 접수형</a> 서비스."</b> — 기준선 v3 §0</p>
     <ul class="rules">
-      <li>① 이 서비스는 무엇을 주나 — SEC 03</li>
-      <li>② 어떻게 만들어지나 — 아래 그림 · SEC 04</li>
-      <li>③ 왜 시뮬레이션인가 — SEC 01 · SEC 05</li>
+      <li>무엇을 주나 — SEC 03</li>
+      <li>어떻게 만들어지나 — 아래 그림 · SEC 05 · 상세는 <a href="../tech/system_architecture.html">TECH 02 시스템 아키텍처</a></li>
+      <li>왜 시뮬레이션인가 — SEC 01 · SEC 07 Q2</li>
     </ul>
 
     <h3>서비스 흐름 한 장</h3>
@@ -232,23 +229,7 @@
       <text x="541" y="166" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">고객이 기다리는 동안 내부에서 자동으로 도는 구간</text>
       <text x="450" y="192" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">사람이 들어가는 곳은 검토와 검수 두 곳뿐입니다</text>
     </svg>
-    <p class="soft">주황 상자는 운영자가 개입하는 곳, 초록 상자는 고객이 받는 결과물입니다. 사이의 세 칸은 고객이 기다리는 동안 내부에서 돕니다. 8단계로 펼친 그림은 SEC 04.</p>
-
-    <details class="more"><summary>먼저 알아둘 용어 10개 — 펼쳐 보기</summary>
-    <div class="tbl-scroll"><table>
-      <tr><th style="width:170px">용어</th><th>쉬운 설명</th></tr>
-      <tr><td><b><a href="../research/3pl_industry.html">3PL</a></b></td><td>Third-Party Logistics, 제3자 물류. 여러 화주의 창고·배송을 위탁받아 대신 운영하는 회사. 본 서비스의 고객</td></tr>
-      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#amr">AMR</a></b></td><td>Autonomous Mobile Robot, 자율이동로봇. 바닥 선로 없이 스스로 길을 찾아 다니는 운반 로봇</td></tr>
-      <tr><td><b><a href="../research/amr_model_selection.html">기종</a></b></td><td>로봇 제품 모델. 본 프로젝트의 기준 기종은 iw.hub</td></tr>
-      <tr><td><b>FMS</b></td><td>Fleet Management System, 로봇 관제 소프트웨어. 로봇 여러 대에 일을 나눠 주고 길을 정해 준다. 본 프로젝트에서는 시뮬레이션 안의 두뇌</td></tr>
-      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#wms">WMS</a></b></td><td>Warehouse Management System, 창고 관리 소프트웨어. 재고·주문·작업을 관리한다</td></tr>
-      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#des">DES</a></b></td><td>Discrete Event Simulation, 이산사건 시뮬레이션. 사건이 일어나는 순간만 계산해 가상 시간을 빠르게 돌린다. 이 문서의 "빠른 시뮬"</td></tr>
-      <tr><td><b><a class="term" href="../ref/glossary_robotics.html#isaac">Isaac Sim</a></b></td><td>NVIDIA의 물리 엔진 3D 시뮬레이터. 로봇이 미끄러지고 부딪히는 것까지 재현한다. GPU가 필요하다. 이 문서의 "물리 시뮬"</td></tr>
-      <tr><td><b>KPI</b></td><td>Key Performance Indicator, 핵심 성과 지표. 여기서는 시간당 처리량 같은 수치</td></tr>
-      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#intake-service">요청 접수형</a></b></td><td>고객이 요청을 넣고 기다리면, 운영자와 시스템이 처리해 나중에 결과를 보내는 방식. 즉시 응답하는 셀프서브와 반대</td></tr>
-      <tr><td><b><a class="term" href="../ref/glossary_industrial.html#scenario-package">시나리오 패키지</a></b></td><td>요청을 시뮬레이션이 읽을 수 있게 정리한 파일 묶음. 구역(zones.json)·맵·주문 분해 규칙·수요 프로파일</td></tr>
-    </table></div>
-    </details>
+    <p class="soft">주황 = 운영자가 개입하는 곳, 초록 = 고객이 받는 결과물. 사이 세 칸은 고객이 기다리는 동안 내부에서 돈다.</p>
   </div>
 </section>
 
@@ -262,7 +243,7 @@
       <tr><td><b>대수·기종의 근거</b></td><td>창고마다 통로·주문·작업대 조건이 다르다. 몇 대가 맞는지 계산해 본 적이 없다. 로봇을 늘리면 처리량이 늘다가 어느 지점부터 멈추는데, 그 지점을 모른다</td><td>감으로 정하거나 결정을 미룬다</td></tr>
       <tr><td><b>견적을 검증할 방법</b></td><td>로봇 업체 견적은 파는 쪽의 계산이다. 가정과 계산 과정이 보이지 않는다. 다른 업체 견적과 같은 조건으로 비교할 수도 없다</td><td>믿거나, 포기하거나</td></tr>
     </table></div>
-    <p class="soft">3PL 업계 구조와 고객층 근거는 <a href="../research/3pl_industry.html">RESEARCH 02 3PL 업계 구조</a>, 로봇 방식 비교는 <a href="../research/robot_landscape.html">RESEARCH 01 물류로봇 지형</a> 참조.</p>
+    <p class="soft">3PL 업계 구조는 <a href="../research/3pl_industry.html">RESEARCH 02 3PL 업계 구조</a>, 로봇 기종 비교는 <a href="../research/amr_model_selection.html">RESEARCH 03 AMR 기종 선정</a>.</p>
   </div>
 </section>
 
@@ -270,22 +251,12 @@
 <section id="i2">
   <div class="sec-head"><span class="sec-no">SEC 02 · 답</span><h2>요청을 받아 검토하고, 시뮬레이션을 돌려 검수한 뒤 보내는 견적 서비스</h2></div>
   <div class="sec-body">
-    <p class="lead">본 프로젝트의 답은 <b>요청 접수형 견적 서비스</b>다. 고객이 직접 버튼을 눌러 결과를 즉시 받는 셀프서브 방식이 아니다. 접수 · 검토 · 시뮬 · 검수 · 발송의 다섯 단계를 거친다.</p>
-
+    <p class="lead">답은 <b>요청 접수형 견적 서비스</b>다. 고객이 버튼을 눌러 즉시 결과를 받는 셀프서브가 아니다. 즉시 응답을 접은 세 이유는 SEC 07 Q1.</p>
     <div class="kcards">
-      <div class="kcard"><b>접수 · 검토</b><span>고객 요청은 큐에 쌓인다. 운영자가 요청을 검토하고, 시뮬레이션이 읽을 수 있는 시나리오 패키지로 정리한다.</span></div>
-      <div class="kcard s"><b>시뮬레이션</b><span>대수·기종을 바꿔 가며 빠른 시뮬(DES)을 많이 돌린다. 상위 구성만 물리 시뮬(Isaac Sim)로 다시 검증한다.</span></div>
-      <div class="kcard g"><b>검수 · 발송</b><span>결과를 운영자가 검수한 뒤 견적서로 발송한다. 발송으로 요청이 끝난다.</span></div>
+      <div class="kcard"><b>접수 · 검토</b><span>요청은 큐에 쌓인다. 운영자가 검토해 시뮬레이션이 읽는 <a class="term" href="../ref/glossary.html#scenario-package">시나리오 패키지</a>로 정리한다.</span></div>
+      <div class="kcard s"><b>시뮬레이션</b><span>대수·기종을 바꿔 빠른 시뮬(<a class="term" href="../ref/glossary.html#des">DES</a>)을 많이 돌리고, 상위 구성만 물리 시뮬(<a class="term" href="../ref/glossary.html#isaac">Isaac Sim</a>)로 검증한다.</span></div>
+      <div class="kcard g"><b>검수 · 발송</b><span>운영자가 검수한 뒤 견적서로 발송한다. 발송으로 요청이 끝난다.</span></div>
     </div>
-
-    <h3>왜 즉시 응답이 아니라 접수형인가</h3>
-    <div class="tbl-scroll"><table>
-      <tr><th style="width:220px">이유</th><th>내용</th></tr>
-      <tr><td><b>GPU 서버가 1대다</b></td><td>물리 시뮬은 GPU 서버 1대(RTX 5080)에서만 돈다. 요청이 겹치면 줄을 서야 한다. 그래서 접수할 때 큐 순번과 예상 소요를 알려 준다. 확장은 GPU 서버를 더 붙이는 것으로 한다</td></tr>
-      <tr><td><b>물리 검증은 분 단위로 걸린다</b></td><td>Isaac Sim은 실시간으로 돈다. 하루치 운영을 그대로 재생할 수 없어 분 단위 미니 시나리오로 검증한다. 검증 런 하나가 실시간보다 느리다. 화면 앞에서 기다리게 할 수 없다</td></tr>
-      <tr><td><b>운영자 검수가 필요하다</b></td><td>요청에는 빠진 조건이 있고, 결과에는 해석이 필요하다. 검토(②)와 검수(⑦) 두 곳에 사람이 들어간다. 짧게 돌린 시뮬을 즉시 보여 주는 방식은 근거가 약하다</td></tr>
-    </table></div>
-    <p class="soft">v2(2026-08-26)까지는 셀프서브 SaaS였다. v3(2026-09-03)에서 위 세 이유로 접수형으로 바꿨다. 기준선 v3 §1.</p>
   </div>
 </section>
 
@@ -293,11 +264,10 @@
 <section id="i3">
   <div class="sec-head"><span class="sec-no">SEC 03 · 고객 화면</span><h2>넣는 것은 창고와 물류 조건, 받는 것은 근거가 붙은 견적서</h2></div>
   <div class="sec-body">
-    <p class="lead">고객이 보는 화면은 두 개다. <b>요청 화면</b>과 <b>견적서</b>다. 그 사이의 계산은 고객에게 보이지 않는다.</p>
+    <p class="lead">고객이 보는 화면은 <b>요청 화면</b>과 <b>견적서</b> 둘이다. 그 사이의 계산은 고객에게 보이지 않는다.</p>
 
     <div class="plain"><span class="pl-tag">쉽게 말하면</span>
-      로봇 회사에 "몇 대 필요해요?"라고 물으면 파는 쪽의 답이 온다. 본 프로젝트는 고객의 창고를 컴퓨터 안에 지어 놓고 대수를 바꿔 가며 돌려 본다.
-      그리고 <b>"이 대수부터는 더 넣어도 처리량이 안 늘어난다"</b>는 지점을 찾아 준다. 그 계산 과정과 로봇이 실제로 도는 영상을 견적서에 같이 붙인다.</div>
+      고객의 창고를 컴퓨터 안에 지어 놓고 대수를 바꿔 가며 돌려 본다. <b>"이 대수부터는 더 넣어도 처리량이 안 늘어난다"</b>는 지점을 찾고, 그 계산 과정과 로봇이 실제로 도는 영상을 견적서에 같이 붙인다.</div>
 
     <h3>요청 화면에 넣는 것</h3>
     <div class="tbl-scroll"><table>
@@ -334,142 +304,28 @@
       <text x="560" y="108" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">더 넣어도 거의 늘지 않는다 (로봇끼리 길을 막음)</text>
       <text x="475" y="254" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">축에 숫자를 두지 않은 개념도. 실제 값은 창고마다 시뮬레이션이 정한다</text>
     </svg>
-    <p class="soft">파랑 곡선이 시뮬레이션 결과, 주황 점이 권장 대수입니다. 이 꺾이는 지점을 찾는 것이 계산 엔진의 정지 규칙(무릎 판정)입니다.</p>
+    <p class="soft">파랑 곡선이 시뮬레이션 결과, 주황 점이 권장 대수. 이 꺾이는 지점을 찾는 것이 계산 엔진의 정지 규칙(무릎 판정)이다.</p>
   </div>
 </section>
 
-<!-- ══════════ I4 안에서 일어나는 일 ══════════ -->
+<!-- ══════════ I4 내부 8단계 ══════════ -->
 <section id="i4">
   <div class="sec-head"><span class="sec-no">SEC 04 · 내부 8단계</span><h2>접수부터 발송까지 8단계, 사람은 두 곳에만 들어간다</h2></div>
   <div class="sec-body">
-    <p class="lead">고객이 기다리는 동안 안에서는 8단계가 돈다. 운영자는 <b>② 검토</b>와 <b>⑦ 검수</b>에만 개입한다. ①과 ⑧ 사이는 전부 내부 배치다.</p>
-
-    <svg viewBox="0 0 900 290" role="img" aria-label="견적 요청 접수부터 견적서 발송까지 8단계를 두 줄로 배치하고 운영자 개입 단계를 주황으로 표시한 흐름도" style="max-width:100%;height:auto;display:block;margin:14px 0">
-      <defs>
-        <marker id="pi-arr8" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker>
-      </defs>
-      <rect x="16" y="16" width="196" height="80" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
-      <text x="30" y="40" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">① 요청 접수</text>
-      <text x="30" y="60" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">창고·물류 조건 입력</text>
-      <text x="30" y="80" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">고객 → 견적 BE</text>
-      <line x1="214" y1="56" x2="236" y2="56" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pi-arr8)"/>
-      <rect x="240" y="16" width="196" height="80" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
-      <text x="254" y="40" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">② 검토 · 컴파일</text>
-      <text x="254" y="60" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">요청 정제 → 시나리오 패키지</text>
-      <text x="254" y="80" font-family="JetBrains Mono, monospace" font-size="12" fill="#F08A32">운영자</text>
-      <line x1="438" y1="56" x2="460" y2="56" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pi-arr8)"/>
-      <rect x="464" y="16" width="196" height="80" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
-      <text x="478" y="40" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">③ 스윕 잡 큐</text>
-      <text x="478" y="60" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">패키지 + 대수 범위</text>
-      <text x="478" y="80" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">RabbitMQ → 워커</text>
-      <line x1="662" y1="56" x2="684" y2="56" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pi-arr8)"/>
-      <rect x="688" y="16" width="196" height="80" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
-      <text x="702" y="40" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">④ θ 추론 · 빠른 시뮬</text>
-      <text x="702" y="60" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">대수마다 가상 시간 실행</text>
-      <text x="702" y="80" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">계산 엔진 (EC2)</text>
-      <polyline points="786,96 786,126 114,126 114,152" fill="none" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pi-arr8)"/>
-      <rect x="16" y="156" width="196" height="80" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
-      <text x="30" y="180" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">⑤ 물리 검증 런</text>
-      <text x="30" y="200" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">상위 구성만 Isaac Sim</text>
-      <text x="30" y="220" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">GPU 서버 ×1</text>
-      <line x1="214" y1="196" x2="236" y2="196" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pi-arr8)"/>
-      <rect x="240" y="156" width="196" height="80" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
-      <text x="254" y="180" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">⑥ KPI · 아티팩트</text>
-      <text x="254" y="200" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">영상·리플레이·히트맵</text>
-      <text x="254" y="220" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">sim-runner → MinIO</text>
-      <line x1="438" y1="196" x2="460" y2="196" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pi-arr8)"/>
-      <rect x="464" y="156" width="196" height="80" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
-      <text x="478" y="180" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">⑦ 리포트 작성</text>
-      <text x="478" y="200" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">권장 구성·곡선·영상</text>
-      <text x="478" y="220" font-family="JetBrains Mono, monospace" font-size="12" fill="#F08A32">LLM 초안 + 운영자 검수</text>
-      <line x1="662" y1="196" x2="684" y2="196" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pi-arr8)"/>
-      <rect x="688" y="156" width="196" height="80" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
-      <text x="702" y="180" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">⑧ 견적서 발송</text>
-      <text x="702" y="200" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">이메일 · 다운로드</text>
-      <text x="702" y="220" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">견적 BE → 고객</text>
-      <text x="450" y="272" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">주황 = 운영자 개입(② · ⑦) · 초록 = 고객에게 나가는 결과(⑧) · ①과 ⑧ 사이는 전부 내부 배치</text>
-    </svg>
-    <p class="soft">단계 번호는 기준선 v3 §2와 같습니다. 각 단계의 인터페이스·큐·저장소는 <a href="../tech/system_architecture.html">TECH 02 시스템 아키텍처</a>, 원본 다이어그램은 <a href="../../docs/FMS-WMS_통합_아키텍처.html">FMS-WMS 통합 아키텍처 v3.10</a>.</p>
-
-    <div class="tbl-scroll"><table>
-      <tr><th style="width:200px">단계</th><th style="width:230px">누가</th><th>무엇을</th></tr>
-      <tr><td><b>① 견적 요청 접수</b></td><td>고객 → 견적 BE</td><td>창고·물류 조건 입력. 큐 순번·예상 소요 회신</td></tr>
-      <tr><td><b>② 운영 검토·시나리오 컴파일</b></td><td>운영자 (웹 콘솔)</td><td>요청을 정제해 시나리오 패키지로 컴파일</td></tr>
-      <tr><td><b>③ 스윕 잡 소비</b></td><td>잡 큐(RabbitMQ, 메시지 큐) → 계산 엔진 워커</td><td>잡 = 시나리오 패키지 + 스윕 범위(대수 범위). 워커는 여러 개로 늘릴 수 있다</td></tr>
-      <tr><td><b>④ 구성 탐색·θ 추론·DES</b></td><td>계산 엔진 (EC2)</td><td>대수마다 AI 모델이 통행 규칙 파라미터 <a class="term" href="../ref/glossary_robotics.html#theta">θ</a>를 추론 → FMS 커널로 가상 시간 실행 × 시드 반복</td></tr>
-      <tr><td><b>⑤ Isaac 물리 검증 런</b></td><td><a class="term" href="../ref/glossary_industrial.html#orchestrator">런 오케스트레이터</a> → 시뮬 스택 + GPU 서버</td><td>상위 구성만 <a class="term" href="../ref/glossary_industrial.html#gpu-run-queue">GPU 런 큐</a>에 넣는다. 시뮬 WMS·FMS를 기동하고 Isaac·로봇 에이전트를 띄운다</td></tr>
-      <tr><td><b>⑥ KPI 집계·아티팩트</b></td><td><a class="term" href="../ref/glossary_robotics.html#sim-runner">sim-runner</a> → <a class="term" href="../ref/glossary_industrial.html#minio">MinIO</a>(파일 저장소), 워커 → 견적 BE</td><td>배속 영상·리플레이·히트맵을 저장한다. KPI와 파일 위치를 DB에 기록한다</td></tr>
-      <tr><td><b>⑦ 리포트 작성</b></td><td>LLM(대형 언어 모델) 초안 + 운영자 검수</td><td>권장 구성·곡선·영상을 담은 리포트</td></tr>
-      <tr><td><b>⑧ 견적서 발송</b></td><td>견적 BE</td><td>이메일·다운로드. 발송 후 요청 종료</td></tr>
-    </table></div>
-
-    <details class="more"><summary>웹 인프라가 두 층인 이유 — 상세</summary>
-    <p>상시 가동하는 견적 서비스와 런마다 켰다 끄는 시뮬 스택을 분리한다(<a class="term" href="../ref/glossary_industrial.html#two-tier-web">웹 인프라 2층</a>). 원칙은 <b>영속은 견적 도메인, 휘발은 시뮬 도메인</b>이다.</p>
-    <div class="tbl-scroll"><table>
-      <tr><th style="width:170px">층</th><th>구성</th><th style="width:150px">수명</th></tr>
-      <tr><td><b>상시 견적 서비스</b></td><td>웹 콘솔(React) + 견적 BE(Spring), PostgreSQL, RabbitMQ, MinIO</td><td>상시</td></tr>
-      <tr><td><b>런 단위 시뮬 스택</b></td><td><a class="term" href="../ref/glossary_industrial.html#sim-wms">시뮬 WMS</a>(Spring + <a class="term" href="../ref/glossary_industrial.html#h2">H2</a> 인메모리), FMS 코어(Python), 수요 생성기</td><td>런마다 기동·폐기</td></tr>
-      <tr><td><b>공용</b></td><td><a class="term" href="../ref/glossary_industrial.html#emqx">EMQX</a>(MQTT 브로커). 제어 채널이 런보다 먼저 있어야 한다</td><td>상시</td></tr>
-    </table></div>
-    <p>기기는 둘이다. EC2 t3.xlarge(<a class="term" href="../ref/glossary_industrial.html#k3s">k3s</a> 자체 호스팅)에 견적 서비스·시뮬 스택·계산 엔진이 올라가고, GPU 서버 1대(RTX 5080)에 Isaac Sim과 로봇 에이전트가 올라간다. 기준선 v3 §3.1·§3.2.</p>
-    </details>
+    <p class="soft">8단계 각각의 인터페이스·큐·저장소와 웹 인프라 2층(상시 견적 서비스 / 런 단위 시뮬 스택)은 <a href="../tech/system_architecture.html">TECH 02 시스템 아키텍처</a>. 운영자는 ② 검토와 ⑦ 검수에만 개입한다.</p>
   </div>
 </section>
 
-<!-- ══════════ I5 무엇이 진짜 계산인가 ══════════ -->
+<!-- ══════════ I5 두 시뮬레이션 ══════════ -->
 <section id="i5">
   <div class="sec-head"><span class="sec-no">SEC 05 · 두 시뮬레이션</span><h2>빠른 시뮬로 많이 돌리고, 물리 시뮬로 상위 구성만 확인한다</h2></div>
   <div class="sec-body">
-    <p class="lead">계산은 두 종류다. 역할은 다르지만 <b>같은 FMS 결정 커널</b>과 <b>같은 시나리오 패키지</b>를 쓴다.</p>
-
-    <div class="tbl-scroll"><table>
-      <tr><th style="width:150px"></th><th>빠른 시뮬 (DES)</th><th>물리 시뮬 (Isaac Sim)</th></tr>
-      <tr><td><b>단계</b></td><td>④</td><td>⑤</td></tr>
-      <tr><td><b>무엇을</b></td><td>대수·기종 조합마다 가상 시간으로 실행. 시드를 바꿔 반복</td><td>상위 구성만 3D 물리 세계에서 실제 로봇 소프트웨어(ROS 2)로 실행</td></tr>
-      <tr><td><b>시간</b></td><td>가상 시계. 사건이 없는 시간은 건너뛴다</td><td>실시간 이하. 분 단위 미니 시나리오</td></tr>
-      <tr><td><b>창고 소프트웨어(WMS)</b></td><td><a class="term" href="../ref/glossary_industrial.html#wms-lite">WMS 라이트</a>: 주문 생성·배차·서비스 시간을 확률 모델로</td><td>시뮬 WMS: 실제 Spring WMS</td></tr>
-      <tr><td><b>어디서</b></td><td>EC2(k3s Job), CPU</td><td>GPU 서버(RTX 5080) 1대</td></tr>
-      <tr><td><b>결과</b></td><td>대수–처리량 분포 → 권장 대수(무릎)</td><td>KPI 갭 보정 + 검증 영상·리플레이·히트맵</td></tr>
-    </table></div>
-
-    <svg viewBox="0 0 900 320" role="img" aria-label="하나의 시나리오 패키지가 빠른 시뮬과 물리 검증 런 양쪽에 들어가고, 두 시뮬레이션이 같은 FMS 결정 커널을 공유하며, 물리 시뮬 결과가 빠른 시뮬을 보정하는 구조" style="max-width:100%;height:auto;display:block;margin:14px 0">
-      <defs>
-        <marker id="pi-arr5" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker>
-        <marker id="pi-arr5g" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#3BAF77"/></marker>
-      </defs>
-      <rect x="270" y="14" width="360" height="58" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
-      <text x="284" y="38" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">시나리오 패키지 (②에서 컴파일)</text>
-      <text x="284" y="58" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">구역 · 맵 · 주문 분해 규칙 · 수요 프로파일</text>
-      <polyline points="380,72 380,92 206,92 206,118" fill="none" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pi-arr5)"/>
-      <polyline points="520,72 520,92 694,92 694,118" fill="none" stroke="#8FB4D9" stroke-width="2" marker-end="url(#pi-arr5)"/>
-      <rect x="16" y="122" width="380" height="104" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
-      <text x="30" y="146" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">빠른 시뮬 (DES) · ④</text>
-      <text x="30" y="168" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">WMS 라이트: 주문·배차·서비스 시간을 확률 모델로</text>
-      <text x="30" y="188" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">가상 시계 · 대수 스윕 × 시드 반복</text>
-      <text x="30" y="210" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">EC2 k3s Job · CPU 워커</text>
-      <rect x="504" y="122" width="380" height="104" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
-      <text x="518" y="146" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">물리 검증 런 (Isaac Sim) · ⑤</text>
-      <text x="518" y="168" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">시뮬 WMS: 실제 Spring WMS + 로봇 에이전트</text>
-      <text x="518" y="188" font-family="IBM Plex Sans KR, sans-serif" font-size="12.5" fill="#9AA7B4">실시간 · 분 단위 미니 시나리오 · 상위 구성만</text>
-      <text x="518" y="210" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">GPU 서버 (RTX 5080) ×1</text>
-      <line x1="500" y1="174" x2="402" y2="174" stroke="#3BAF77" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#pi-arr5g)"/>
-      <text x="450" y="164" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#3BAF77">갭 보정</text>
-      <text x="450" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#3BAF77">실측 → DES</text>
-      <polyline points="206,226 206,240 330,240 330,256" fill="none" stroke="#F08A32" stroke-width="2"/>
-      <polyline points="694,226 694,240 570,240 570,256" fill="none" stroke="#F08A32" stroke-width="2"/>
-      <rect x="250" y="256" width="400" height="54" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
-      <text x="264" y="280" font-family="IBM Plex Sans KR, sans-serif" font-size="14" font-weight="700" fill="#E8ECF1">FMS 결정 커널 — 같은 코드, 같은 θ</text>
-      <text x="264" y="300" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">step(world, now, events) → decisions</text>
-    </svg>
-    <p class="soft">주황이 두 시뮬레이션이 공유하는 것(시나리오 패키지, FMS 커널)입니다. 초록 점선은 물리 시뮬 결과로 빠른 시뮬을 보정하는 방향입니다.</p>
-
-    <h3>같은 두뇌를 쓴다는 것의 의미</h3>
     <ul class="rules">
-      <li><b>FMS <a class="term" href="../ref/glossary_robotics.html#decision-kernel">결정 커널</a>은 순수 함수다</b> — 시계와 난수를 밖에서 받고 입출력이 없다. 그래서 가상 시계로 부르는 하네스와 틱마다 부르는 MQTT 데몬, 두 <a class="term" href="../ref/glossary_robotics.html#execution-shell">실행 셸</a>에 같은 코드를 꽂을 수 있다</li>
-      <li><b>같은 커널, 같은 θ라서 보정이 성립한다</b> — 물리 시뮬에서 잰 차이(명령 반영 지연, 미끄러짐)를 DES에 되먹인다. 검증 대상 구성은 DES도 같은 시간창으로 다시 돌려 비교한다</li>
-      <li><b>WMS는 공유하지 않는다</b> — 측정 대상(FMS)은 공유하고 환경(WMS)은 모델링한다. 두 WMS는 하나의 시나리오 패키지를 읽는 두 소비자다. 골든 시나리오 패리티 테스트로 둘의 정합성을 지킨다</li>
+      <li><b>같은 두뇌</b> — 빠른 시뮬(DES, ④)과 물리 시뮬(Isaac Sim, ⑤)은 같은 FMS <a class="term" href="../ref/glossary.html#decision-kernel">결정 커널</a>과 같은 <a class="term" href="../ref/glossary.html#theta">θ</a>를 쓴다. 커널은 시계·난수를 밖에서 받는 순수 함수라 두 <a class="term" href="../ref/glossary.html#execution-shell">실행 셸</a>(가상 시계 하네스, MQTT 데몬)에 그대로 꽂힌다</li>
+      <li><b>같은 입력</b> — 두 시뮬의 WMS(<a class="term" href="../ref/glossary.html#wms-lite">WMS 라이트</a> / <a class="term" href="../ref/glossary.html#sim-wms">시뮬 WMS</a>)는 하나의 시나리오 패키지를 읽는 두 소비자다. 골든 시나리오 패리티 테스트로 둘의 정합성을 지킨다</li>
+      <li><b>보정</b> — 물리 시뮬에서 잰 차이(명령 반영 지연, 미끄러짐)를 DES에 되먹인다. 검증 대상 구성은 DES도 같은 시간창으로 다시 돌려 비교한다</li>
     </ul>
-    <p class="soft">FMS의 경로계획 방식은 <a class="term" href="../ref/glossary_robotics.html#pibt">PIBT</a> 헤딩 모델에 AI가 예측한 통행 규칙 θ 11개를 얹은 구조다. 이론은 <a href="../tech/amr_mapf_theory.html">TECH 04 경로계획 이론 기반</a>, 담당은 팀 FMS 파트(팀 레포 <code>3_FMS/docs/</code>). 기준선 v3 §4.</p>
+    <p class="soft">경로계획은 <a class="term" href="../ref/glossary.html#pibt">PIBT</a> 헤딩 모델 + AI가 추론한 통행 규칙 θ 11개. 이론은 <a href="../tech/amr_mapf_theory.html">TECH 04</a>, 커널·실행 셸 구조는 <a href="../tech/system_architecture.html">TECH 02</a>.</p>
   </div>
 </section>
 
@@ -477,15 +333,7 @@
 <section id="i6">
   <div class="sec-head"><span class="sec-no">SEC 06 · 팀 구성</span><h2>세 파트가 인터페이스로 만난다</h2></div>
   <div class="sec-body">
-    <p class="lead">파트 사이의 약속(계약)만 적는다. 내부 구현은 각 파트의 문서에 있다.</p>
-    <div class="tbl-scroll"><table>
-      <tr><th style="width:150px">파트</th><th style="width:110px">맡는 단계</th><th>만드는 것</th><th>넘겨주는 인터페이스</th></tr>
-      <tr><td><b>웹 파트</b><br><span class="soft">팀 레포 <code>4_Web/</code></span></td><td>① ② ③ ⑦ ⑧</td><td>요청 화면·운영 콘솔(React), 견적 BE(Spring), PostgreSQL, 잡 큐(RabbitMQ), MinIO, 견적서 발송</td><td>REST <code>/api/requests</code>, 잡(시나리오 패키지 + 스윕 범위) 발행, 결과 이벤트 수신</td></tr>
-      <tr><td><b>FMS · AI 파트</b><br><span class="soft">팀 레포 <code>3_FMS/</code> · <code>5_Docs/AI/</code></span></td><td>④, ⑦ 초안</td><td>FMS 결정 커널(PIBT), θ 추론 모델, DES(틱 시뮬), 리포트 초안(LLM)</td><td><a class="term" href="../ref/glossary_industrial.html#trial">trial</a> 계약(run_id·seed·warehouse·amr·orders → kpi), θ 스키마 <code>guidance_types.py</code>, 커널 <code>step()</code></td></tr>
-      <tr><td><b>시뮬 파트</b><br><span class="soft"><code>sil/</code></span></td><td>⑤ ⑥</td><td>Isaac 창고 씬, 로봇 에이전트(ROS 2, <a class="term" href="../ref/glossary_industrial.html#vda5050">VDA 5050</a>), sim-runner, 아티팩트(영상·리플레이·히트맵)</td><td>MQTT <code>sim/control</code>, VDA 5050 order/state, MinIO presigned PUT</td></tr>
-      <tr><td><b>공용 인프라</b></td><td>—</td><td>EC2 k3s, EMQX(MQTT 브로커), 런 오케스트레이터, GPU 서버 연결(tailscale)</td><td>k8s API, MQTT</td></tr>
-    </table></div>
-    <p class="soft">시뮬 파트 현황은 T1~T3 완료, T4 에이전트 뼈대 완료(2026-09-03)이며 상세는 <a href="../working/t3_t4_progress.html">WORKING T3 창고 씬 · T4 에이전트 진행</a>. 팀 파트의 결정과 벤치마크는 팀 레포 <code>3_FMS/docs/</code>에 있고 이 사이트에는 싣지 않는다. 확인 대기 항목은 기준선 v3 §9.</p>
+    <p class="soft">웹 · FMS/AI · 시뮬 세 파트가 맡는 단계와 파트 사이 인터페이스(REST, trial 계약, MQTT/VDA 5050)는 <a href="../tech/system_architecture.html">TECH 02 시스템 아키텍처</a>. 시뮬 파트 현황은 <a href="../working/t3_t4_progress.html">WORKING T3·T4 진행</a>.</p>
   </div>
 </section>
 
@@ -493,22 +341,20 @@
 <section id="i7">
   <div class="sec-head"><span class="sec-no">SEC 07 · 자주 묻는 질문</span><h2>발표와 검토에서 반복해서 나온 질문 세 가지</h2></div>
   <div class="sec-body">
-    <p class="lead">답은 전부 기준선 v3에 있는 결정에서 나온다. 펼쳐서 읽는다.</p>
-
     <details class="more"><summary>Q1. 왜 SaaS가 아닌가 — 펼쳐 보기</summary>
     <ul class="rules">
       <li>셀프서브 SaaS는 고객이 직접 넣고 즉시 받는 방식이다. v2(2026-08-26)까지의 계획이었다</li>
-      <li>기각 이유는 셋이다. GPU 서버가 1대라 물리 검증이 줄을 선다. 짧게 돌린 시뮬을 즉시 보여 주는 방식은 근거가 약하다. 요청 정제와 결과 해석에 운영자가 필요하다</li>
+      <li>기각 이유는 셋이다. GPU 서버가 1대(RTX 5080)라 물리 검증이 <a class="term" href="../ref/glossary.html#gpu-run-queue">GPU 런 큐</a>에서 줄을 선다. 물리 검증은 분 단위 미니 시나리오라 화면 앞에서 기다리게 할 수 없다. 요청 정제(②)와 결과 해석(⑦)에 운영자가 필요하다</li>
       <li>그래서 요청 접수형이다. 접수할 때 큐 순번과 예상 소요를 알려 주고, 결과는 나중에 보낸다</li>
-      <li>확장은 GPU 서버를 추가해 GPU 런 큐 소비자를 늘리는 것으로 한다. 지금의 1대는 그 그림의 N=1이다</li>
+      <li>확장은 GPU 서버를 추가해 GPU 런 큐 소비자를 늘리는 것으로 한다. 지금의 1대는 N=1이다</li>
     </ul>
     </details>
 
     <details class="more"><summary>Q2. 숫자를 어떻게 믿나 — 펼쳐 보기</summary>
     <ul class="rules">
       <li><b>반복</b> — 같은 조건을 시드를 바꿔 여러 번 돌려 분포로 본다. 한 번 돌린 값을 쓰지 않는다</li>
-      <li><b>물리 검증</b> — 상위 구성은 물리 시뮬에서 실제 로봇 소프트웨어로 다시 돌린다. 차이는 DES를 같은 시간창으로 재실행해 비교하고 보정한다</li>
-      <li><b>증거물</b> — 검증 영상·리플레이·히트맵(<a class="term" href="../ref/glossary_industrial.html#artifact">아티팩트</a>)이 견적서에 붙는다. 로봇이 도는 장면을 고객이 직접 본다</li>
+      <li><b>물리 검증</b> — 상위 구성은 물리 시뮬에서 실제 로봇 소프트웨어(ROS 2)로 다시 돌린다. 차이는 DES를 같은 시간창으로 재실행해 비교하고 보정한다</li>
+      <li><b>증거물</b> — 검증 영상·리플레이·히트맵(<a class="term" href="../ref/glossary.html#artifact">아티팩트</a>)이 견적서에 붙는다</li>
       <li><b>재현성</b> — 시나리오 해시 + 시드가 키다. 같은 입력이면 같은 결과가 나온다</li>
       <li><b>검수</b> — 운영자가 최종 검수한다. 자동 생성 리포트를 그대로 보내지 않는다</li>
     </ul>
@@ -524,28 +370,14 @@
   </div>
 </section>
 
-<!-- ══════════ NEXT ══════════ -->
-<section id="inext">
-  <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
-  <div class="sec-body">
-    <ul class="rules">
-      <li><a href="../tech/amr_overview.html"><b>TECH 01 전체 조망</b></a> — 시스템 전체 지도와 팀 역할, 일정. 메인 트랙의 다음 문서</li>
-      <li><a href="../tech/system_architecture.html"><b>TECH 02 시스템 아키텍처</b></a> — 8단계 각각의 인터페이스·큐·저장소·기기 배치. 이 문서의 SEC 04를 상세로 펼친 것</li>
-      <li><a href="../research/industry_followup.html"><b>RESEARCH 04 업계 현황과 다음 단계</b></a> — 3PL·로봇 업계의 현재와 이 서비스가 서는 자리</li>
-    </ul>
-    <p class="soft">읽다가 모르는 용어가 나오면 각 문서 도입부의 "먼저 알아둘 용어" 표를 먼저 보고, 더 깊은 설명은 용어사전(<a href="../ref/glossary_robotics.html">REF A 로보틱스</a> · <a href="../ref/glossary_industrial.html">REF B 산업</a>)으로 이동한다.</p>
-  </div>
-</section>
-
 </main>
 
 <div class="wrap flow-nav">
-  <a class="prev" href="../../index.html"><small>← 이전</small>⌂ 문서 인덱스</a>
-  <a class="next" href="../research/robot_landscape.html"><small>다음 →</small>RESEARCH 01 · 물류로봇 지형</a>
+  <a class="next" href="../archive/topic_journey.html"><small>다음 →</small>PLAN · 주제 확정 기록</a>
 </div>
 
 <footer>
-  <div class="wrap">PLAN 01 · INTRO — 원천: AMR_기획_기준선_v3.md (2026-09-03) · REV D: 요청 접수형 서비스(기준선 v3)에 맞춘 전면 재작성 · <a href="../../index.html">문서 인덱스로</a></div>
+  <div class="wrap">PLAN · 처음 읽는 안내 · REV — 2026-09-07 · 축약판 — 원천: AMR_기획_기준선_v3.md (2026-09-03) · <a href="../../index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>

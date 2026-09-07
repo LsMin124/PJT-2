@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<title>SIL 학습 가이드 — T1 텔레옵 · T2 매핑·추종 (SIL Guide)</title>
+<style>
+  :root{
+    --bg:#14181D; --panel:#1C2229; --panel-edge:#2C343D; --ink:#E8ECF1; --ink-soft:#9AA7B4;
+    --amber:#F08A32; --machine:#3BAF77; --steel:#8FB4D9; --slate:#8A96A3; --grid:#2A323B;
+    --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important;animation:none!important}}
+  body{
+    background:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:32px 32px;
+    color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px;
+  }
+  a{color:var(--steel)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+  header{border-bottom:3px solid var(--ink);background:var(--panel)}
+  .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
+  .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
+  .doc-eyebrow b{color:var(--amber);font-weight:600}
+  h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
+  h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
+  .meta b{color:var(--ink);font-weight:600}
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav .wrap{display:flex;gap:2px;padding:0 20px}
+  nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent;transition:color .15s,border-color .15s}
+  nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--amber);outline:none}
+  nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
+  nav a.nav-cross{margin-left:auto;color:var(--amber);font-weight:700}
+  main{padding:44px 0 80px}
+  section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
+  .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
+  h2{font-size:clamp(19px,2.2vw,27px);font-weight:800;line-height:1.3;letter-spacing:-.025em}
+  .sec-body{padding:16px 26px 26px}
+  h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+  h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
+  p{margin-bottom:10px}
+  .sec-body p{max-width:76ch}
+  .lead{font-size:15.5px}
+  .soft{color:var(--ink-soft)}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
+  .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
+  .note{margin:14px 0 8px;padding:12px 16px;background:#2A2019;border-left:4px solid var(--amber);font-size:14px;line-height:1.8}
+  .note .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--amber);font-weight:700;margin-bottom:4px}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F}
+  td{padding:12px 14px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.7}
+  tr:last-child td{border-bottom:none}
+  table tr:nth-child(even) td{background:#1E252D}
+  .tbl-scroll{overflow-x:auto}
+  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px;white-space:nowrap}
+  .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)} .c-slate{color:var(--slate)}
+  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
+  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
+  .kcard b{display:block;font-size:15px;margin-bottom:4px}
+  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
+  .viz{background:#0E1318;border:1px solid var(--panel-edge);padding:12px 14px;margin:14px 0;overflow-x:auto}
+  .viz svg{display:block;min-width:780px;width:100%;height:auto}
+  code{font-family:var(--mono);font-size:12.5px;background:#0E1318;border:1px solid var(--panel-edge);padding:1px 6px;white-space:nowrap}
+  pre{font-family:var(--mono);font-size:12.5px;line-height:1.7;background:#0E1318;border:1px solid var(--panel-edge);padding:14px 16px;margin:12px 0;overflow-x:auto;color:#C7D1DB}
+  pre b{color:var(--amber);font-weight:600}
+  footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+  @media (max-width:820px){ .titleblock{grid-template-columns:1fr} .meta{border-left:none;padding-left:0;text-align:left} }
+  :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap titleblock">
+    <div>
+      <div class="doc-eyebrow"><b>WORKING · SIL 학습 가이드</b> · REV — 2026-09-07 · 축약판</div>
+      <h1>SIL 학습 가이드 — T1 텔레옵 · T2 매핑·추종
+        <span class="sub">키 입력이 바퀴가 되고, 스캔이 지도가 되기까지 · 선수 개념 9 → 아키텍처 → 코드 → 실습 → 실측 → 삽질 12</span>
+      </h1>
+    </div>
+    <div class="meta">
+      DOC. <b>SIL-GUIDE</b><br>
+      REV. <b>축약판</b> · <b>2026-09-07</b> · 원본 REV A 2026-08-27<br>
+      SOURCE · <b>sil/t1_teleop · sil/t2_mapping · sil/t2_follower</b> · 정정 <b>t3_warehouse</b>
+    </div>
+  </div>
+</header>
+
+<nav aria-label="문서 내 탐색"><div class="wrap">
+  <a class="nav-home" href="../../index.html">⌂ INDEX</a>
+  <a href="#g0">00 얻는 것</a>
+  <a href="#g1">01 선수 개념 9</a>
+  <a href="#g2">02 아키텍처</a>
+  <a href="#g3">03 코드</a>
+  <a href="#g4">04 실습</a>
+  <a href="#g5">05 실측</a>
+  <a href="#g6">06 삽질 12</a>
+  <a class="nav-cross" href="t3_t4_progress.html">← T3·T4 진행</a>
+  <a href="isaac_parallel_measure.html">Isaac 병렬 실측 →</a>
+</div></nav>
+
+<main class="wrap">
+
+  <!-- ══════════ G0 ══════════ -->
+  <section id="g0">
+    <div class="sec-head"><span class="sec-no">SEC 00 · 얻는 것</span><h2>T1은 브리지 개통 공사, T2는 커미셔닝 재현 — 남은 것은 파이프라인과 숫자다</h2></div>
+    <div class="sec-body">
+      <p class="lead">키보드 → DDS → Isaac 브리지 → 차동구동 물리 → /odom(T1), 그 위에 라이다·TF·slam_toolbox로 지도 한 장(T2). T3·T4는 이 파이프라인과 실측치 위에 선다.</p>
+      <table>
+        <tr><th style="width:44px">#</th><th>학습 목표</th><th style="width:130px">관련 절</th></tr>
+        <tr><td>1</td><td>ROS2 토픽 그래프에서 Isaac이 "한 참여자"임을 설명한다</td><td>SEC 01·02</td></tr>
+        <tr><td>2</td><td>Twist(v, ω) → 좌·우 바퀴 속도를 실측 상수로 손계산한다</td><td>SEC 01·05</td></tr>
+        <tr><td>3</td><td>TF 트리의 각 변환을 누가 발행하는지 말한다</td><td>SEC 01·02</td></tr>
+        <tr><td>4</td><td>시뮬 기동 → 토픽 검증 → 키보드 조종 → 매핑 런을 직접 돌린다</td><td>SEC 04</td></tr>
+        <tr><td>5</td><td>가감속 실측 → "명령 램프", 엣지 결정성 → "DES 엣지 모델"의 연결을 설명한다</td><td>SEC 05</td></tr>
+      </table>
+      <p class="soft">코드: <code>sil/t1_teleop/</code> · <code>sil/t2_mapping/</code> · <code>sil/t2_follower/</code> · 용어는 <a href="../ref/glossary.html">용어사전</a></p>
+    </div>
+  </section>
+
+  <!-- ══════════ G1 ══════════ -->
+  <section id="g1">
+    <div class="sec-head"><span class="sec-no">SEC 01 · 선수 개념 9</span><h2>이 아홉 개만 알면 두 태스크의 코드가 전부 읽힌다</h2></div>
+    <div class="sec-body">
+      <table>
+        <tr><th style="width:190px">개념</th><th>핵심</th><th style="width:220px">쓰인 곳</th></tr>
+        <tr><td><b>① <a href="../ref/glossary.html#ros2">노드·토픽·DDS</a></b></td><td>중앙 서버 없이 프로세스들이 DDS로 서로를 자동 발견하고 토픽에 발행/구독. 같은 호스트는 공유메모리</td><td>teleop 노드와 Isaac은 /cmd_vel로만 대화</td></tr>
+        <tr><td><b>② 시뮬 시간 · <a href="../ref/glossary.html#rtf">RTF</a></b></td><td>Isaac이 /clock을 발행, 노드는 use_sim_time. RTF가 몇 배든 <b>시뮬 시간 기준 측정은 왜곡되지 않는다</b></td><td>가감속·엣지 실측이 RTF 무관한 이유</td></tr>
+        <tr><td><b>③ 차동구동 기구학</b></td><td>ω<sub>L</sub>=(v−ω·b/2)/r, ω<sub>R</sub>=(v+ω·b/2)/r. iw.hub 실측 <b>r=0.08 m, b=0.58 m</b> — v=0.6, ω=0이면 양쪽 7.5 rad/s. T1 원문의 0.115/0.413은 오류(SEC 05)</td><td>DifferentialController.forward()</td></tr>
+        <tr><td><b>④ OmniGraph</b></td><td><a href="../ref/glossary.html#isaac">Isaac</a> 내부 노드 배선. 틱 노드가 실행 신호를 흘리고 ROS 구독·발행 노드가 순서대로 계산. 파이썬으로 조립</td><td>ROS2 I/O 전체</td></tr>
+        <tr><td><b>⑤ 쿼터니언 컨벤션</b></td><td>Isaac API는 (w,x,y,z), ROS는 (x,y,z,w). <b>변환 없이 넘기면 회전이 뒤틀린다</b></td><td>odom orientation 재배열 1줄</td></tr>
+        <tr><td><b>⑥ 2D 라이다·LaserScan</b></td><td>각도별 거리 배열. <b>range_min</b> 1.0 m(블라인드)·range_max 25 m. 스캔 평면(~0.7 m)보다 낮은 물체는 안 보인다</td><td>정지 임계 1.2 m가 블라인드 위여야 하는 이유 · 삽질 ⑩·⑫</td></tr>
+        <tr><td><b>⑦ TF 트리</b></td><td>odom→base_link는 시뮬이, base_link→lidar_link는 고정, <b>map→odom은 SLAM이 발행</b> — 오도메트리 누적 오차의 보정 변환</td><td>mapping_sim.py TF 노드 2개 + slam_toolbox</td></tr>
+        <tr><td><b>⑧ SLAM·점유 격자</b></td><td>스캔 매칭으로 지도를 만들며 자기 위치를 추정. 산출물은 5 cm 점유 격자. slam_toolbox online_async가 Humble 표준</td><td>매핑 런 전부 · 지도는 경로망 설계 근거</td></tr>
+        <tr><td><b>⑨ 보호 필드</b></td><td>진행 경로 위에 물체가 들면 정지, 벗어나면 재개. 원뿔이 아니라 <b>로봇 폭 기반 사각 대역</b>이어야 통로 옆 물체에 오탐하지 않는다</td><td>삽질 ⑧</td></tr>
+      </table>
+      <div class="plain"><span class="pl-tag">함정 지식 1 — rclpy는 Isaac 밖에서만</span>Isaac 내장 파이썬 3.12 vs Humble rclpy 3.10 바이너리 — <b>Isaac 안에서 rclpy를 import할 수 없다</b>. ROS 통신은 C++ 브리지(OmniGraph)가, rclpy 코드는 시스템 파이썬이 맡는다. 기동 로그의 "Could not import rclpy" 경고가 무해한 이유.</div>
+      <div class="plain"><span class="pl-tag">함정 지식 2 — 스캔은 순간 사진이 아니다</span>회전 라이다 한 바퀴는 <b>1/10초 노출</b>이다. π/4 rad/s 회전 중엔 스캔 시작과 끝의 방향이 4.5° 달라 그대로 지도 오차가 된다. 회전을 π/8로 낮춘 것만으로 18 → 3.4 cm(SEC 05).</div>
+    </div>
+  </section>
+
+  <!-- ══════════ G2 ══════════ -->
+  <section id="g2">
+    <div class="sec-head"><span class="sec-no">SEC 02 · 아키텍처</span><h2>같은 Isaac 프로세스, 갈아 끼우는 상대 — 텔레옵 노드 · slam_toolbox</h2></div>
+    <div class="sec-body">
+      <h3>T1 — 프로세스 두 개, 토픽 세 개</h3>
+      <div class="viz"><svg viewBox="0 0 920 400" role="img" aria-label="T1 텔레옵 데이터 흐름 — teleop 노드와 Isaac 프로세스가 DDS로 대화">
+        <defs><marker id="ga" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8FB4D9"/></marker>
+        <marker id="gg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3BAF77"/></marker></defs>
+        <rect x="30" y="40" width="210" height="110" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+        <text x="135" y="68" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">teleop_twist_keyboard</text>
+        <text x="135" y="90" text-anchor="middle" fill="#9AA7B4" font-size="10.5">시스템 파이썬 (rclpy)</text>
+        <text x="135" y="108" text-anchor="middle" fill="#9AA7B4" font-size="10.5">키 입력 → Twist 발행</text>
+        <text x="135" y="126" text-anchor="middle" fill="#9AA7B4" font-size="10.5">키 누를 때만 발행 · k=정지</text>
+        <rect x="30" y="250" width="210" height="92" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+        <text x="135" y="278" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">measure_accel.py</text>
+        <text x="135" y="300" text-anchor="middle" fill="#9AA7B4" font-size="10.5">시스템 파이썬 (rclpy)</text>
+        <text x="135" y="318" text-anchor="middle" fill="#9AA7B4" font-size="10.5">/odom 기록 → CSV·요약</text>
+        <rect x="430" y="30" width="460" height="330" fill="#171D24" stroke="#F08A32" stroke-width="1.5"/>
+        <text x="446" y="58" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">Isaac Sim 프로세스 (teleop_sim.py)</text>
+        <rect x="450" y="76" width="190" height="120" fill="#20272F" stroke="#2C343D"/>
+        <text x="545" y="100" text-anchor="middle" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="11.5" font-weight="700">OmniGraph (ROS I/O)</text>
+        <text x="545" y="122" text-anchor="middle" fill="#9AA7B4" font-size="10.5">SubscribeTwist</text>
+        <text x="545" y="140" text-anchor="middle" fill="#9AA7B4" font-size="10.5">PublishClock</text>
+        <text x="545" y="158" text-anchor="middle" fill="#9AA7B4" font-size="10.5">PublishOdometry</text>
+        <text x="545" y="180" text-anchor="middle" fill="#5A6672" font-size="10">C++ 브리지 — rclpy 불필요</text>
+        <rect x="672" y="76" width="200" height="120" fill="#20272F" stroke="#2C343D"/>
+        <text x="772" y="100" text-anchor="middle" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="11.5" font-weight="700">파이썬 메인 루프</text>
+        <text x="772" y="122" text-anchor="middle" fill="#9AA7B4" font-size="10.5">Twist 읽기 → 클램프</text>
+        <text x="772" y="140" text-anchor="middle" fill="#9AA7B4" font-size="10.5">DifferentialController</text>
+        <text x="772" y="158" text-anchor="middle" fill="#9AA7B4" font-size="10.5">apply_wheel_actions</text>
+        <text x="772" y="180" text-anchor="middle" fill="#9AA7B4" font-size="10.5">pose 읽기 → odom 채우기</text>
+        <line x1="640" y1="120" x2="672" y2="120" stroke="#3BAF77" stroke-width="1.5" marker-end="url(#gg)"/>
+        <line x1="672" y1="176" x2="640" y2="176" stroke="#3BAF77" stroke-width="1.5" marker-end="url(#gg)"/>
+        <rect x="450" y="228" width="422" height="110" fill="#20272F" stroke="#2C343D"/>
+        <text x="661" y="254" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="11.5" font-weight="700">PhysX 물리 + 렌더 + WebRTC 스트리밍</text>
+        <text x="661" y="278" text-anchor="middle" fill="#9AA7B4" font-size="10.5">iw.hub 차동구동 (바퀴 조인트 속도 드라이브) · Grid 씬</text>
+        <text x="661" y="298" text-anchor="middle" fill="#9AA7B4" font-size="10.5">추적 카메라(지수 평활 lerp) — 로봇을 부드럽게 추종</text>
+        <text x="661" y="318" text-anchor="middle" fill="#9AA7B4" font-size="10.5">클라이언트 → 서버 IP 접속으로 관전</text>
+        <text x="330" y="88" text-anchor="middle" fill="#8FB4D9" font-size="11" font-family="'JetBrains Mono',monospace">/cmd_vel (Twist)</text>
+        <line x1="240" y1="98" x2="430" y2="110" stroke="#8FB4D9" stroke-width="2" marker-end="url(#ga)"/>
+        <text x="330" y="238" text-anchor="middle" fill="#8FB4D9" font-size="11" font-family="'JetBrains Mono',monospace">/odom · /clock</text>
+        <line x1="430" y1="250" x2="240" y2="278" stroke="#8FB4D9" stroke-width="2" marker-end="url(#ga)"/>
+        <text x="330" y="380" text-anchor="middle" fill="#5A6672" font-size="10.5">모든 화살표 = DDS (같은 호스트 = 공유메모리)</text>
+      </svg></div>
+      <h3>왜 하이브리드인가 — ROS I/O는 OmniGraph, 구동은 파이썬</h3>
+      <table>
+        <tr><th style="width:230px">선택</th><th>이유</th></tr>
+        <tr><td>ROS 통신 = OmniGraph 노드</td><td>rclpy 불가(함정 지식 1) → C++ 브리지 노드가 유일한 정식 경로. 구독 노드는 "마지막 수신값"을 출력 핀에 유지</td></tr>
+        <tr><td>구동 = 파이썬 직접 호출</td><td>WheeledRobot + DifferentialController는 08-24 창고 데모에서 실증된 경로 — 새 위험(그래프 배선 오류)을 통신부에만 한정</td></tr>
+        <tr><td>odom = 파이썬이 채워 노드가 발행</td><td>6.0에는 오도메트리 계산 노드가 없어, 매 프레임 pose·속도를 읽어 발행 노드 입력 핀에 써 넣는다</td></tr>
+      </table>
+      <h3>T2 — 같은 시뮬에 라이다·TF를 얹고 상대만 바꾼다</h3>
+      <div class="viz"><svg viewBox="0 0 920 430" role="img" aria-label="T2 데이터 흐름 — Isaac 시뮬과 slam_toolbox(스테이지 A) 또는 follower(스테이지 B)가 DDS로 대화">
+        <defs><marker id="ga2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8FB4D9"/></marker>
+        <marker id="gg2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3BAF77"/></marker></defs>
+        <rect x="30" y="40" width="220" height="118" fill="#1C2229" stroke="#8FB4D9" stroke-width="1.5"/>
+        <text x="140" y="66" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">slam_toolbox</text>
+        <text x="140" y="86" text-anchor="middle" fill="#8FB4D9" font-size="10.5" font-family="'JetBrains Mono',monospace">스테이지 A에서만</text>
+        <text x="140" y="106" text-anchor="middle" fill="#9AA7B4" font-size="10.5">/scan+/tf 구독 → 스캔 매칭</text>
+        <text x="140" y="124" text-anchor="middle" fill="#9AA7B4" font-size="10.5">지도 + map→odom 보정 발행</text>
+        <text x="140" y="142" text-anchor="middle" fill="#9AA7B4" font-size="10.5">지도 저장은 nav2_map_server</text>
+        <rect x="30" y="250" width="220" height="118" fill="#1C2229" stroke="#3BAF77" stroke-width="1.5"/>
+        <text x="140" y="276" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="12.5" font-weight="700">follower.py</text>
+        <text x="140" y="296" text-anchor="middle" fill="#3BAF77" font-size="10.5" font-family="'JetBrains Mono',monospace">스테이지 B에서만 · rclpy</text>
+        <text x="140" y="316" text-anchor="middle" fill="#9AA7B4" font-size="10.5">/odom·/scan 구독 → 제어 20Hz</text>
+        <text x="140" y="334" text-anchor="middle" fill="#9AA7B4" font-size="10.5">/cmd_vel 발행 · 엣지 CSV 기록</text>
+        <text x="140" y="352" text-anchor="middle" fill="#9AA7B4" font-size="10.5">지도 불필요 — odom 좌표로 순회</text>
+        <rect x="430" y="30" width="460" height="360" fill="#171D24" stroke="#F08A32" stroke-width="1.5"/>
+        <text x="446" y="58" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700">Isaac Sim 프로세스 (mapping_sim.py — 양 스테이지 공용)</text>
+        <rect x="450" y="76" width="200" height="140" fill="#20272F" stroke="#2C343D"/>
+        <text x="550" y="100" text-anchor="middle" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="11.5" font-weight="700">OmniGraph + 라이다 라이터</text>
+        <text x="550" y="122" text-anchor="middle" fill="#9AA7B4" font-size="10.5">PublishLaserScan (RTX 라이다)</text>
+        <text x="550" y="140" text-anchor="middle" fill="#9AA7B4" font-size="10.5">TF ×2 (odom→base, base→lidar)</text>
+        <text x="550" y="158" text-anchor="middle" fill="#9AA7B4" font-size="10.5">PublishOdometry · PublishClock</text>
+        <text x="550" y="176" text-anchor="middle" fill="#9AA7B4" font-size="10.5">SubscribeTwist ×2</text>
+        <text x="550" y="198" text-anchor="middle" fill="#5A6672" font-size="10">(/cmd_vel · /obstacle_cmd)</text>
+        <rect x="672" y="76" width="200" height="140" fill="#20272F" stroke="#2C343D"/>
+        <text x="772" y="100" text-anchor="middle" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="11.5" font-weight="700">파이썬 메인 루프</text>
+        <text x="772" y="122" text-anchor="middle" fill="#9AA7B4" font-size="10.5">--laps: 사각 패트롤 (A)</text>
+        <text x="772" y="140" text-anchor="middle" fill="#9AA7B4" font-size="10.5">--manual: Twist 추종 (B)</text>
+        <text x="772" y="158" text-anchor="middle" fill="#9AA7B4" font-size="10.5">장애물 텔레포트 명령 처리</text>
+        <text x="772" y="176" text-anchor="middle" fill="#9AA7B4" font-size="10.5">odom·TF 핀 채우기</text>
+        <rect x="450" y="240" width="422" height="130" fill="#20272F" stroke="#2C343D"/>
+        <text x="661" y="266" text-anchor="middle" fill="#E8ECF1" font-family="'JetBrains Mono',monospace" font-size="11.5" font-weight="700">씬 — GT 방(ROOM v2) + iw.hub + 장애물 큐브</text>
+        <text x="661" y="290" text-anchor="middle" fill="#9AA7B4" font-size="10.5">벽 4 · 박스 3 (GT 좌표를 아는 방 — 지도 오차 정량 비교용)</text>
+        <text x="661" y="308" text-anchor="middle" fill="#9AA7B4" font-size="10.5">2D RTX 라이다 — 체시스 링크 하위 · 높이 0.60m · 10Hz</text>
+        <text x="661" y="326" text-anchor="middle" fill="#9AA7B4" font-size="10.5">장애물 큐브(높이 1.4m) — /obstacle_cmd로 순간이동 투척·제거</text>
+        <text x="661" y="348" text-anchor="middle" fill="#5A6672" font-size="10">PhysX 물리 + WebRTC 스트리밍</text>
+        <text x="330" y="80" text-anchor="middle" fill="#8FB4D9" font-size="11" font-family="'JetBrains Mono',monospace">/scan · /tf · /clock</text>
+        <line x1="430" y1="92" x2="250" y2="100" stroke="#8FB4D9" stroke-width="2" marker-end="url(#ga2)"/>
+        <text x="330" y="240" text-anchor="middle" fill="#8FB4D9" font-size="11" font-family="'JetBrains Mono',monospace">/odom · /scan</text>
+        <line x1="430" y1="252" x2="250" y2="278" stroke="#8FB4D9" stroke-width="2" marker-end="url(#ga2)"/>
+        <text x="330" y="326" text-anchor="middle" fill="#3BAF77" font-size="11" font-family="'JetBrains Mono',monospace">/cmd_vel</text>
+        <line x1="250" y1="336" x2="430" y2="344" stroke="#3BAF77" stroke-width="2" marker-end="url(#gg2)"/>
+        <text x="330" y="410" text-anchor="middle" fill="#5A6672" font-size="10.5">모든 화살표 = DDS · 스테이지 B의 추종은 지도 없이 /odom 좌표계에서 이뤄진다</text>
+      </svg></div>
+      <p class="soft">지도를 만든 이유: 커미셔닝 절차 재현(설치 시 SLAM 1회) · 경로망 설계 근거 · GT 대비 오차 정량화. 추종은 지도 없이 /odom 좌표로(시뮬 odom은 물리 pose 직독, 드리프트 없음). 재라우팅은 중앙 몫, 로봇은 정지·보고만(<a href="../ref/glossary.html#nav2">Nav2</a> 배제의 핵심).</p>
+    </div>
+  </section>
+
+  <!-- ══════════ G3 ══════════ -->
+  <section id="g3">
+    <div class="sec-head"><span class="sec-no">SEC 03 · 코드</span><h2>메인 루프 다섯 줄 — 제어 사슬의 전부</h2></div>
+    <div class="sec-body">
+      <pre>lin = og.Controller.get(twist_lin)            # ① 구독 노드의 마지막 Twist
+v, w = clip(lin[0]), clip(ang[2])             # ② 안전 클램프 (1.2 m/s · 1.5 rad/s)
+robot.apply_wheel_actions(controller.forward([v, w]))  # ③ 기구학 → 바퀴 속도
+p, q = robot.get_world_poses()                # ④ 물리 결과 pose 읽기
+og.Controller.set(odom_ori, <b>[q1,q2,q3,q0]</b>)   # ⑤ wxyz → xyzw 재배열 후 발행 핀에</pre>
+      <p><code>simulation_app.update()</code> 한 번 = 물리 1스텝 + 그래프 1틱, 직후 위 다섯 줄. 그래프 배선은 <b>실행 신호</b>·<b>컨텍스트</b> 두 종류뿐, 데이터 값은 파이썬이 매 프레임 핀에 직접 쓴다. mapping_sim.py는 여기에 체시스 링크 하위 RTX 라이다(0.60 m · 10 Hz)와 TF 노드 2개를 얹은 것.</p>
+      <div class="note"><span class="pl-tag">follower.py는 T4 프리미티브로 대체됨</span>T2 스테이지 B의 자체 추종기(Pure Pursuit + 명령 램프 + 사각 안전 필드)와 그 실습은 T4 에이전트의 <a href="../ref/glossary.html#primitive">프리미티브</a>(<a href="../ref/glossary.html#spot-turn">스팟턴</a>·직진·후진)로 대체됐다(현황: <a href="t3_t4_progress.html">T3·T4 진행</a>). 살아남은 규칙 둘: <b>통로 최소 폭 ≈ 1.5 m</b>(T3 맵 판정에 사용 중), <b>정지 중 제자리 회전 허용</b>(산업 관행 · 데드락 방지).</div>
+    </div>
+  </section>
+
+  <!-- ══════════ G4 ══════════ -->
+  <section id="g4">
+    <div class="sec-head"><span class="sec-no">SEC 04 · 실습</span><h2>핸즈온 — 기동·조종 30분 + 매핑 30분</h2></div>
+    <div class="sec-body">
+      <h3>A. T1 — 기동부터 조종까지</h3>
+      <table>
+        <tr><th style="width:44px">단계</th><th>명령</th><th>기대 결과</th></tr>
+        <tr><td>0</td><td><code>pgrep -f teleop_sim.py</code></td><td>빈 출력 — 이중 기동 금지(삽질 ①)</td></tr>
+        <tr><td>1</td><td><code>source /opt/ros/humble/setup.bash</code> 후 <code>cd ~/isaacsim && ./python.sh &lt;repo&gt;/sil/t1_teleop/teleop_sim.py</code></td><td>~80초 후 <code>[t1_teleop] ready</code></td></tr>
+        <tr><td>2</td><td>새 셸: <code>ros2 topic list</code> · <code>ros2 topic hz /odom</code></td><td>/cmd_vel /clock /odom · 100~200 Hz(RTF 따라 변동)</td></tr>
+        <tr><td>3</td><td><code>ros2 topic pub -1 /cmd_vel geometry_msgs/msg/Twist '{linear: {x: 0.5}}'</code></td><td>전진(1발이어도 마지막 명령 유지)</td></tr>
+        <tr><td>4</td><td><code>ros2 run teleop_twist_keyboard teleop_twist_keyboard</code></td><td>i/j/l/, 조종 · k 정지</td></tr>
+        <tr><td>5</td><td><code>ros2 topic echo /odom --once</code></td><td>값이 움직임과 일치</td></tr>
+      </table>
+      <h3>B. T2 — 매핑 런, 지도 한 장</h3>
+      <table>
+        <tr><th style="width:44px">단계</th><th>명령</th><th>기대 결과</th></tr>
+        <tr><td>0</td><td><code>pgrep -f mapping_sim.py</code></td><td>빈 출력</td></tr>
+        <tr><td>1</td><td><code>./python.sh &lt;repo&gt;/sil/t2_mapping/mapping_sim.py --laps 3</code></td><td>ready 후 사각 패트롤 자동 시작</td></tr>
+        <tr><td>2</td><td>새 셸: <code>ros2 launch slam_toolbox online_async_launch.py use_sim_time:=true slam_params_file:=&lt;repo&gt;/sil/t2_mapping/slam_params.yaml</code></td><td>스캔 매칭 로그</td></tr>
+        <tr><td>3</td><td><code>ros2 topic hz /scan</code> · <code>ros2 run tf2_ros tf2_echo map base_link</code></td><td>~10 Hz · map→base 변환(트리 완성 증거)</td></tr>
+        <tr><td>4</td><td>"patrol done" 후 <code>ros2 run nav2_map_server map_saver_cli -f out/map --ros-args -p use_sim_time:=true</code></td><td>map.pgm + map.yaml (5 cm)</td></tr>
+        <tr><td>5</td><td>map.pgm을 GT 방(12×9 m · 박스 3)과 비교</td><td>벽 직선·박스 3개 — 기울었다면 회전 스미어(SEC 05)</td></tr>
+      </table>
+      <h3>도전 과제 2</h3>
+      <table>
+        <tr><th style="width:44px">#</th><th>과제</th><th style="width:280px">확인 포인트</th></tr>
+        <tr><td>1</td><td>measure_accel.py로 스텝 응답 CSV를 뽑아 SEC 05 표와 비교</td><td>실측 재현 — 같은 값이 나와야 정상</td></tr>
+        <tr><td>2</td><td>패트롤 회전을 π/4로 되돌려 매핑</td><td>회전 스미어 재현(18 cm급)</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══════════ G5 ══════════ -->
+  <section id="g5">
+    <div class="sec-head"><span class="sec-no">SEC 05 · 실측</span><h2>스텝 응답은 즉답형, 매핑 3런은 수렴, 추종 20엣지는 결정적</h2></div>
+    <div class="sec-body">
+      <h3>T1 — 브리지 검증과 가감속 스텝 응답 (2026-08-27)</h3>
+      <p class="soft">브리지 검증: /clock 185 Hz · /odom 200 Hz(벽시계 기준, RTF 따라 변동) · 0.8 m/s 명령 → 5.37 m 주행, 횡편차 9 mm · +z 각속 → 좌회전(CCW), 쿼터니언 재배열 검증 · 제로 Twist 1발로 정지.</p>
+      <table>
+        <tr><th style="width:150px">항목</th><th style="width:190px">실측</th><th>해석</th></tr>
+        <tr><td>최고 속도</td><td><b>0.835 m/s</b> (1.2 명령에도)</td><td><b>에셋 한계가 아니다</b> — 잘못된 반경 0.115로 계산한 바퀴 지령을 실제 반경 0.08로 굴린 결과(1.2 × 0.08/0.115 = 0.835). 실측 상수는 <b>반경 0.08 m · 트랙 0.58 m</b>(에셋 바퀴 메시·구동륜 오프셋 실측, t3_warehouse)</td></tr>
+        <tr><td>가속 0→95%</td><td>0.13초 (~6.0 m/s²)</td><td rowspan="2">물리 응답이 <b>즉답형</b> — 조인트 드라이브가 목표 속도로 즉시 점프. 실제 iw.hub의 완만한 가감속(≤1 m/s² 급)은 물리가 아니라 <b>명령 램프</b>(컨트롤러 가속 제한)로 모델링한다</td></tr>
+        <tr><td>감속 →0</td><td>0.12초 (~5.7 m/s²)</td></tr>
+      </table>
+      <div class="plain"><span class="pl-tag"><a href="../ref/glossary.html#des" style="color:inherit">DES</a>와의 연결 1</span>DES의 가감속 파라미터는 "물리에서 재는 값"이 아니라 "우리가 설정하는 램프 값"이다. T2 추종기부터 가속 램프가 필수 사양이 된 이유 — 시뮬 실측이 DES 모델 구조를 정한 첫 사례.</div>
+      <h3>T2 — 매핑 3런, 오차는 어디서 오나</h3>
+      <table>
+        <tr><th style="width:60px">런</th><th>조건</th><th style="width:150px">평균 오차</th><th style="width:100px">커버리지</th><th>교훈</th></tr>
+        <tr><td>2</td><td>구석 시작 · π/4 회전 · 2바퀴</td><td>1.5 cm</td><td>41%</td><td>정밀하나 시야 부족</td></tr>
+        <tr><td>3</td><td>중앙 시작 · π/4 회전 · 3바퀴</td><td>18.1 cm</td><td>81%</td><td>지도 ~2° 회전 바이어스 — 회전 스미어</td></tr>
+        <tr><td><b>4</b></td><td><b>중앙 시작 · π/8 회전 · 3바퀴</b></td><td><b>3.4 cm (95% 7.5 cm)</b></td><td><b>91.6%</b></td><td>전 점유셀 10 cm 이내</td></tr>
+      </table>
+      <p>스캔 자체는 정지 상태 GT 레이캐스트 대비 잔차 <b>0.2 cm</b> — 오차의 원천은 센서가 아니라 <b>운동(회전 스미어)과 매칭</b>. 운전 방법(저속 회전)만으로 오차가 1/5.</p>
+      <h3>T2 — 추종 기준선 4바퀴 20엣지</h3>
+      <table>
+        <tr><th style="width:100px">엣지</th><th style="width:80px">길이</th><th style="width:100px">평균</th><th style="width:110px">표준편차</th><th>해석</th></tr>
+        <tr><td>n1→n2</td><td>3.6 m</td><td>12.77 s</td><td>1.31</td><td>초기 정렬각 변동 — 유일한 분산원</td></tr>
+        <tr><td>n2→n3</td><td>9.0 m</td><td>29.23 s</td><td><b>0.17</b></td><td rowspan="4">순항 엣지는 사실상 <b>결정적</b>(±0.2 s 미만)</td></tr>
+        <tr><td>n3→n4</td><td>7.1 m</td><td>23.74 s</td><td><b>0.06</b></td></tr>
+        <tr><td>n4→n5</td><td>9.0 m</td><td>28.60 s</td><td><b>0.03</b></td></tr>
+        <tr><td>n5→n1</td><td>3.5 m</td><td>14.30 s</td><td><b>0.01</b></td></tr>
+      </table>
+      <p class="soft">DoD: 5엣지 × 4바퀴 = 20엣지 완주, 막힘 0 · 장애물 투척 직후 전방 1.18 m 정지 → 제거 후 전방 6.83 m에서 재개 → 완주, 정지 페널티 <b>+7.6 s</b>.</p>
+      <div class="plain"><span class="pl-tag">DES와의 연결 2</span>엣지 통과시간은 결정적이고 분산의 원천은 정지 이벤트뿐 — DES 엣지 모델을 <b>"결정적 기본 시간 + 정지 이벤트 페널티 분포"</b>로 구성해도 된다는 근거. 기본 시간은 추종 파라미터(순항 0.6 · 램프 0.5)의 함수, 확률성은 정지 빈도·지속에만. 견적 엔진의 엣지 모델 구조가 실측으로 확정된 순간.</div>
+    </div>
+  </section>
+
+  <!-- ══════════ G6 ══════════ -->
+  <section id="g6">
+    <div class="sec-head"><span class="sec-no">SEC 06 · 삽질 사전 12</span><h2>우리가 밟은 것들 — 증상·원인·해법</h2></div>
+    <div class="sec-body">
+      <div class="tbl-scroll"><table>
+        <tr><th style="width:44px">#</th><th style="width:230px">증상</th><th>원인</th><th style="width:260px">해법·교훈</th></tr>
+        <tr><td>①</td><td>스트리밍 접속 불가, <code>NVST_R_BUSY</code> 연발</td><td>시뮬 <b>이중 기동</b> — 두 StreamSDK가 포트 49100 경합. 발단은 <code>pgrep -x kit</code>이 python.sh 실행(프로세스명 python3)을 못 잡은 오판</td><td>기동 전 <code>pgrep -f &lt;스크립트&gt;</code>. NVST_R_BUSY = 이중 기동 신호</td></tr>
+        <tr><td>②</td><td>WebRTC는 붙는데 그리드만 보임</td><td><b>로봇이 카메라 프레임 밖</b> — 측정 주행으로 15 m 이탈, 고정 카메라는 원점만 응시</td><td>추적 카메라(지수 평활). "안 보인다 ≠ 안 그려진다" — /odom으로 위치부터 확인</td></tr>
+        <tr><td>③</td><td>가감속 측정치 시간축 섞임</td><td>이중 기동 상태에서 두 시뮬의 /odom이 한 토픽에 섞임 — 클록 2개 교차</td><td>측정 전 인스턴스 개수 확인. CSV 시간축 단조성 검사</td></tr>
+        <tr><td>④</td><td>기동 로그에 rclpy import 경고</td><td>Isaac 파이썬 3.12 vs Humble rclpy 3.10</td><td>무해 — 브리지는 C++(함정 지식 1)</td></tr>
+        <tr><td>⑤</td><td>클라이언트 미접속인데 StreamSdk Fatal 로그</td><td>세션 대기 중 상태 전이 소음</td><td>무해 — 앱은 정상 지속</td></tr>
+        <tr><td>⑥</td><td>지도 전체가 회전·오프셋(평균 269 cm)</td><td>라이다를 articulation <b>루트 Xform</b>에 부착 — 물리는 링크만 움직여 센서가 스폰 위치에 고정. GT 레이캐스트 잔차 0.2 cm로 확정</td><td>센서는 <b>움직이는 링크(체시스 강체)</b> 하위에. 체시스는 바퀴 조인트의 Body 관계로 탐색</td></tr>
+        <tr><td>⑦</td><td>지도가 ~2° 기울고 벽이 번짐(18 cm)</td><td>π/4 rad/s 회전 중 스캔당 4.5° 스미어 — 10 Hz 라이다는 순간 스캔이 아니다</td><td>매핑 주행은 저속 회전(π/8) — 오차 1/5. 실기도 매핑 속도는 별도 관리</td></tr>
+        <tr><td>⑧</td><td>통로 옆 박스마다 오탐 정지</td><td>보호 필드를 원뿔(각도 섹터)로 구현 — 측면 0.3~0.5 m 물체가 각도 안에 든다</td><td>필드는 <b>로봇 폭 기반 사각 대역</b>(|측면| &lt; 0.45 m)</td></tr>
+        <tr><td>⑨</td><td>특정 회랑에서 항상 정지, 우회 노드로도 실패</td><td>box_c–남벽 통로 물리 폭 1.1 m — 로봇 0.66 + 필드 여유 + 블라인드 마진이 안 나옴</td><td><b>통로 최소 폭 ≈ 1.5 m</b> 규칙 확정, 씬을 ROOM v2로. T3 맵 판정에 사용 중</td></tr>
+        <tr><td>⑩</td><td>장애물을 밀며 66초 스톨</td><td>0.6 m 큐브가 라이다 평면(~0.7 m) 아래 — 빔이 위로 지나감</td><td><b>장애물은 라이다 평면보다 높아야 보인다</b> — 테스트 큐브 1.4 m. 저상 장애물은 2D 라이다의 사각</td></tr>
+        <tr><td>⑪</td><td>정면 장애물 앞 영구 정지</td><td>정지 상태가 회전까지 차단 — 목표가 옆에 있어도 못 돌림</td><td>정지 중 <b>제자리 회전 허용</b>(산업 관행). 막힘 20 s+는 경고만 — 재라우팅은 중앙 몫</td></tr>
+        <tr><td>⑫</td><td>코너 노드 앞에서 벽에 막혀 도착 실패</td><td>노드가 벽 0.6 m 거리 — 정지 필드(1.2 m)가 항상 걸림</td><td>코너 노드는 진행방향 벽에서 ≥1.4 m + 근접·회전 중 <b>필드 축소(1.05)</b> — 하한은 라이다 블라인드 위</td></tr>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- ══════════ NEXT ══════════ -->
+  <section id="next">
+    <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
+    <div class="sec-body">
+      <div class="kcards">
+        <div class="kcard s"><b><a href="t3_t4_progress.html" style="color:inherit">← T3 창고 씬 · T4 에이전트 진행</a></b><span>이전 — 이 실측이 쓰인 곳</span></div>
+        <div class="kcard"><b><a href="isaac_parallel_measure.html" style="color:inherit">Isaac 병렬 실행 실측 →</a></b><span>다음 — 창고 씬 동시 실행 대수</span></div>
+        <div class="kcard g"><b><a href="../tech/system_architecture.html#runtime" style="color:inherit">시스템 아키텍처 · 런타임</a></b><span>프로세스 모델·통신 경계</span></div>
+        <div class="kcard g"><b><a href="../research/amr_model_selection.html" style="color:inherit">기준 기종 선정</a></b><span>왜 iw.hub인가</span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">WORKING · SIL-GUIDE · 축약판 — 2026-09-07 · 원본 T1·T2 GUIDE REV A (2026-08-27) · 전 수치는 프로젝트 장비(RTX 5080 · Isaac Sim 6.0.1 · ROS2 Humble · slam_toolbox) 실측 · 코드: sil/t1_teleop/ · sil/t2_mapping/ · sil/t2_follower/ · <a href="../../index.html">문서 인덱스로</a></div>
+</footer>
+
+</body>
+</html>

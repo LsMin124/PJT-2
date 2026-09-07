@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-<title>기준 기종 선정 (AMR Model Selection)</title>
+<title>기종 카탈로그와 기준 기종 — iw.hub (Robot Catalog)</title>
 <style>
   :root{
     --bg:#14181D; --panel:#1C2229; --panel-edge:#2C343D; --ink:#E8ECF1; --ink-soft:#9AA7B4;
@@ -86,133 +86,248 @@
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow"><b>RESEARCH 03 / 04</b> · SELECTION · REFERENCE AMR</div>
-      <h1>기준 기종 선정 — 물리 시뮬레이션은 iw.hub 1종으로 고정한다
-        <span class="sub">카탈로그 5종 중 물리 검증 기준 기종의 선정 매트릭스와 근거 · 나머지 4종은 파라미터 프로파일로 유지</span>
+      <div class="doc-eyebrow"><b>RESEARCH</b> · 기종 카탈로그 · REV — 2026-09-07 · 축약판</div>
+      <h1>기종 카탈로그와 기준 기종 — iw.hub
+        <span class="sub">도메인→카테고리 매핑 · 국내 지형 · 공개 시뮬 자산 · 카탈로그 5종 파라미터 시트 · 물리 검증 기준 기종 iw.hub 1종의 선정 논리와 파급 범위</span>
       </h1>
     </div>
     <div class="meta">
-      DOC. <b>AMR-SELECTION</b><br>
-      REV. <b>B</b> · 결정 <b>08-24 · 개정 08-26</b><br>
-      상태 <b>기준 기종 확정: iw.hub</b>
+      DOC. <b>ROBOT-CATALOG</b><br>
+      원천 <b>물류로봇 지형(08-20) + 기준 기종 선정(08-24 · 08-26)</b><br>
+      상태 <b>기준 기종 확정 iw.hub · 2차 후보 MiR 250</b>
     </div>
   </div>
 </header>
 
 <nav><div class="wrap">
   <a class="nav-home" href="../../index.html">⌂ INDEX</a>
-  <a href="#m0">00 결론</a>
-  <a href="#m1">01 왜 1종인가</a>
-  <a href="#m2">02 비교 매트릭스</a>
-  <a href="#m3">03 선정 근거</a>
-  <a href="#m4">04 반론 처리</a>
-  <a href="#m5">05 파급 범위</a>
-  <a class="nav-cross" href="robot_landscape.html">파라미터 시트 ↗</a>
+  <a href="#c0">00 결론</a>
+  <a href="#c1">01 도메인 매핑</a>
+  <a href="#c2">02 국내 지형</a>
+  <a href="#c3">03 카탈로그</a>
+  <a href="#c4">04 선정 논리</a>
+  <a href="#c5">05 반론</a>
+  <a href="#c6">06 파라미터 시트</a>
+  <a href="#c7">07 파급 범위</a>
+  <a class="nav-cross" href="../working/t3_t4_progress.html">T3·T4 진행 ↗</a>
 </div></nav>
 
 <main class="wrap">
 
-  <!-- ══════════ M0 결론 ══════════ -->
-  <section id="m0">
-    <div class="sec-head"><span class="sec-no">SEC 00 · 결론</span><h2>물리 시뮬 기준 기종 = idealworks iw.hub — 이미 우리 손에서 굴러간 유일한 로봇</h2></div>
+  <!-- ══════════ C0 결론 ══════════ -->
+  <section id="c0">
+    <div class="sec-head"><span class="sec-no">SEC 00 · 결론</span><h2>카탈로그는 5종, 물리 검증은 iw.hub 1종</h2></div>
     <div class="sec-body">
-      <p class="lead">Isaac Sim 물리 검증(SIL) 트랙에서 굴릴 기준 기종을 <b>iw.hub 1종으로 고정</b>한다. 카탈로그 5종(<a href="robot_landscape.html">물류로봇 지형</a> SEC 05)은 견적 비교용 <b>파라미터 프로파일</b>로 전부 유지한다 — 바뀌는 것은 "물리 엔진 안에 실물 모델로 들어가는 로봇이 몇 종인가"뿐이다.</p>
+      <p class="lead">타겟은 <a href="3pl_industry.html">계약물류 중견 3PL</a>의 <b>반송·피킹 보조</b>다. 견적 카탈로그는 5종을 파라미터 프로파일로 유지하고, <a href="../ref/glossary.html#isaac">Isaac</a> 물리 검증(<a href="../ref/glossary.html#sil">SIL</a>)은 <b>iw.hub 1종</b>으로 고정한다.</p>
       <div class="kcards">
-        <div class="kcard"><b>선정</b><span>iw.hub — NVIDIA 공식 USD, 실구동 검증 완료(2026-08-24)</span></div>
-        <div class="kcard s"><b>유지</b><span>MiR 250·OTTO 100·Locus·나르고 — 파라미터 프로파일로 카탈로그 존속</span></div>
-        <div class="kcard g"><b>의미</b><span>SIL 보정 루프를 1종에 집중 → 오차 모델의 깊이 확보</span></div>
+        <div class="kcard"><b>기준 기종</b><span>iw.hub — NVIDIA 공식 USD, 실구동 검증 완료(2026-08-24)</span></div>
+        <div class="kcard s"><b>2차 후보</b><span>MiR 250 — 공개 URDF. 승격 조건: iw.hub 보정 루프 완료</span></div>
+        <div class="kcard g"><b>파라미터 기반</b><span>OTTO 100 · Locus Origin · 트위니 나르고 오더피킹 — 카탈로그 존속</span></div>
       </div>
-    </div>
-  </section>
-
-  <!-- ══════════ M1 왜 1종인가 ══════════ -->
-  <section id="m1">
-    <div class="sec-head"><span class="sec-no">SEC 01 · 왜 1종으로 고정하나</span><h2>검증의 깊이는 기종 수와 반비례한다</h2></div>
-    <div class="sec-body">
       <table>
-        <tr><th style="width:190px">근거</th><th>내용</th></tr>
-        <tr><td><b>SIL 공수는 기종에 비례</b></td><td>물리 검증은 기종마다 모델 임포트·조인트 튜닝·센서 배치·보정 실험을 반복해야 한다. 8주 일정에서 다기종 SIL은 전부가 얕아지는 길이다</td></tr>
-        <tr><td><b>보정 루프의 집중</b></td><td>DES(통계 시뮬) ↔ Isaac(물리 시뮬) 오차 모델은 데이터가 쌓여야 좁아진다 — 1종에 집중해야 오차 모델이 주장 가능한 수준이 된다</td></tr>
-        <tr><td><b>2계층 구조가 허용</b></td><td>견적 스윕은 DES가 담당하고 물리 검증은 대표 구성만 돈다(아키텍처 원칙). 물리 기준 기종이 1종이어도 견적 카탈로그는 파라미터로 N종 유지 가능</td></tr>
-        <tr><td><b>선례</b></td><td>벤더 데모·학술 벤치마크 모두 기준 플랫폼 1종을 고정하고 파라미터로 일반화하는 방식이 표준적이다</td></tr>
+        <tr><th style="width:170px">항목</th><th>내용</th></tr>
+        <tr><td><b>카탈로그 5종</b></td><td>반송 3(iw.hub · MiR 250 · OTTO 100) + 피킹 보조 2(Locus Origin · 트위니 나르고 오더피킹) — 2026-08-20 팀 확정. 교차 기종 등처리량 곡선("A 5대 = B 7대") 데모는 반송 3종으로 구성</td></tr>
+        <tr><td><b>물리 기준 기종</b></td><td>iw.hub 1종 — 2026-08-24 결정, 08-26 개정. 바뀌는 것은 "물리 엔진 안에 실물 모델로 들어가는 로봇이 몇 종인가"뿐이고, 견적 스윕은 <a href="../ref/glossary.html#des">DES</a>가 5종 파라미터로 그대로 돈다</td></tr>
+        <tr><td><b>시장 순위 두 줄</b></td><td>상위 1~3위(Geek+ · Hikrobot · Quicktron)는 전부 <a href="../ref/glossary.html#gtp">GTP</a> 턴키 벤더 — Geek+ <a href="../ref/glossary.html#amr">AMR</a> 점유율 7년 연속 1위, 주문 풀필먼트 23%(<a href="https://www.geekplus.com/resources/news/global-warehouse-automation-surges-as-geekplus-extends-no.1-amr-leadership-for-seven-consecutive-years">Interact Analysis 2025 인용</a>). 벤더가 직접 설계·견적하므로 후보군 밖. Amazon Robotics 누적 100만 대(<a href="https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model">Amazon 2025</a>)는 자사 전용이라 견적 시장 밖</td></tr>
       </table>
-      <div class="plain"><span class="pl-tag">한 줄 원칙</span>물리는 좁고 깊게, 견적은 넓고 얕게 — 물리 1종의 보정된 오차 모델을 파라미터 프로파일 위에 이식한다.</div>
     </div>
   </section>
 
-  <!-- ══════════ M2 비교 매트릭스 ══════════ -->
-  <section id="m2">
-    <div class="sec-head"><span class="sec-no">SEC 02 · 비교 매트릭스</span><h2>카탈로그 5종을 같은 기준으로 놓으면 후보는 둘로 줄고, 하나가 남는다</h2></div>
+  <!-- ══════════ C1 도메인 매핑 ══════════ -->
+  <section id="c1">
+    <div class="sec-head"><span class="sec-no">SEC 01 · 도메인 매핑</span><h2>도메인이 카테고리를 고르고, 카테고리가 기종을 고른다</h2></div>
+    <div class="sec-body">
+      <p class="lead">카테고리 게이트 룰 테이블의 원천이다 — 반송 단위와 도메인이 정해지면 카테고리가 정해지고, 배제 카테고리는 리더 벤더를 실명으로 안내한다.</p>
+
+      <svg viewBox="0 0 900 330" role="img" aria-label="물류로봇 6개 카테고리와 각 카테고리의 리더 기업, v1 타겟은 반송과 피킹 보조" style="max-width:100%;height:auto;display:block;margin:14px 0">
+        <text x="20" y="24" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#9AA7B4">카테고리 지도 — 상자 안은 세그먼트 리더</text>
+        <rect x="20" y="40" width="275" height="115" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="36" y="66" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#8FB4D9">GTP 선반운송 · 매출 1위</text>
+        <text x="36" y="90" font-family="IBM Plex Sans KR, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">Geek+ · Hikrobot · Quicktron</text>
+        <text x="36" y="112" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">이커머스 풀필먼트 · 턴키 거래</text>
+        <text x="36" y="134" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">벤더 직접 설계·견적 → v2</text>
+        <rect x="312" y="40" width="275" height="115" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="328" y="66" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#8FB4D9">ACR 토트 단위</text>
+        <text x="328" y="90" font-family="IBM Plex Sans KR, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">HAI Robotics · Geek+ RS</text>
+        <text x="328" y="112" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">고밀도 SKU · 의류/리테일</text>
+        <text x="328" y="134" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">공개 모델 없음 → 게이트 안내</text>
+        <rect x="604" y="40" width="275" height="115" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="620" y="66" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#8FB4D9">무인 지게차 · 팔레트</text>
+        <text x="620" y="90" font-family="IBM Plex Sans KR, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">VisionNav · Balyo · 도요타</text>
+        <text x="620" y="112" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">팔레트 입출고 · 중량물</text>
+        <text x="620" y="134" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">v1.5 팔레트 모델과 연결</text>
+        <rect x="20" y="175" width="275" height="115" fill="#2A2019" stroke="#F08A32" stroke-width="2.5"/>
+        <text x="36" y="201" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#F08A32">반송 AMR · V1 타겟</text>
+        <text x="36" y="225" font-family="IBM Plex Sans KR, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">MiR · Omron · OTTO · iw.hub</text>
+        <text x="36" y="247" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">제조·창고 공정 간 이동</text>
+        <text x="36" y="269" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">벤더 파편화 → 교차 비교 수요</text>
+        <rect x="312" y="175" width="275" height="115" fill="#2A2019" stroke="#F08A32" stroke-width="2.5"/>
+        <text x="328" y="201" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#F08A32">피킹 보조 · V1 타겟</text>
+        <text x="328" y="225" font-family="IBM Plex Sans KR, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">Locus · 트위니 나르고</text>
+        <text x="328" y="247" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">3PL · 기존 센터 점진 도입</text>
+        <text x="328" y="269" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">"집는 것은 사람, 나르는 것은 로봇"</text>
+        <rect x="604" y="175" width="275" height="115" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+        <text x="620" y="201" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#8FB4D9">소팅 로봇</text>
+        <text x="620" y="225" font-family="IBM Plex Sans KR, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">Libiao · Geek+ S</text>
+        <text x="620" y="247" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">허브 분류 · 택배</text>
+        <text x="620" y="269" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">별도 공정 모델 필요 → 범위 외</text>
+        <text x="20" y="318" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#9AA7B4">주황 테두리 = 본 프로젝트 v1 정밀 견적 대상. 나머지는 카테고리 게이트가 판단만 하고 정밀 견적은 하지 않는다.</text>
+      </svg>
+
+      <div class="tbl-scroll"><table>
+        <tr><th>도메인</th><th style="width:130px">카테고리</th><th>대표 기종</th><th style="width:190px">게이트 신호 (반송 단위)</th></tr>
+        <tr><td>이커머스 풀필먼트 — 다품종 소량 B2C</td><td>GTP 선반운송</td><td>Geek+ P시리즈 · Quicktron · Hikrobot 잠입식</td><td>선반째 이동 · 전면 재설계 수용</td></tr>
+        <tr><td>고밀도 SKU 창고 — 의류·리테일</td><td>ACR</td><td>HAIPICK A42 · Geek+ RoboShuttle</td><td>토트 단위 · 고층 랙</td></tr>
+        <tr><td><b>3PL·기존 센터 점진 도입</b></td><td><b>피킹 보조</b></td><td>Locus · 트위니 나르고 오더피킹</td><td>카트/토트 동행 · 인프라 무변경</td></tr>
+        <tr><td><b>제조·창고 공정 간 이동</b></td><td><b>반송</b></td><td>MiR 250/600 · Omron LD · OTTO 100 · KUKA KMP · iw.hub</td><td>토트~대차 · 인프라 무변경</td></tr>
+        <tr><td>팔레트 입출고 — 중량물</td><td>무인 지게차</td><td>VisionNav · Balyo · 도요타/린데 계열</td><td>팔레트 · 포크 필요</td></tr>
+        <tr><td>택배 허브 분류</td><td>소팅</td><td>Libiao t-Sort · Geek+ S시리즈</td><td>소형 단품 · 별도 공정 모델</td></tr>
+      </table></div>
+      <p class="soft">굵은 두 행이 v1 정밀 견적 대상. 나머지는 게이트가 "권장/배제 + 사유"만 판정하고 벤더 직행을 안내한다 — 판단은 넓게, 정밀 견적은 좁게. 이 매핑의 게이트 룰 테이블 편입은 대기 상태.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ C2 국내 지형 ══════════ -->
+  <section id="c2">
+    <div class="sec-head"><span class="sec-no">SEC 02 · 국내 지형</span><h2>국내는 통계가 없고, 도입 사례가 지도다</h2></div>
     <div class="sec-body">
       <div class="tbl-scroll"><table>
-        <tr><th style="width:130px">기준</th><th>iw.hub</th><th>MiR 250</th><th>OTTO 100</th><th>Locus Origin</th><th>나르고 오더피킹</th></tr>
-        <tr><td><b>공식 Isaac USD</b></td><td><span class="chip c-green">있음</span> NVIDIA 에셋 서버 공식 배포</td><td><span class="chip c-slate">없음</span></td><td><span class="chip c-slate">없음</span></td><td><span class="chip c-slate">없음</span></td><td><span class="chip c-slate">없음</span></td></tr>
-        <tr><td><b>공개 URDF</b></td><td>USD로 충분</td><td><span class="chip c-steel">커뮤니티</span> DFKI mir_robot</td><td><span class="chip c-steel">근연</span> Clearpath Boxer</td><td>없음</td><td>없음</td></tr>
-        <tr><td><b>물리 구동 검증 (이 프로젝트)</b></td><td><span class="chip c-green">완료 08-24</span> 조인트 구조 확인 + 창고 씬 주행</td><td>미실시</td><td>미실시</td><td>불가</td><td>불가</td></tr>
-        <tr><td><b>상용 계보</b></td><td>BMW 그룹 산하 idealworks — 자동차 물류 실전 기종</td><td>글로벌 반송 AMR 대표</td><td>북미 제조 물류</td><td>3PL 피킹 보조 대표</td><td>국내 오더피킹</td></tr>
-        <tr><td><b>사양 공개도</b></td><td>공식 사양 공개</td><td>공식 사양 공개</td><td>공식 데이터시트</td><td>유통사 사양 수준</td><td>제조사 페이지</td></tr>
-        <tr><td><b>부가 기구</b></td><td><span class="chip c-green">리프트 조인트</span> + 센서 변형(iw_hub_sensors)</td><td>탑모듈 별도</td><td>탑모듈 별도</td><td>토트 거치 고정</td><td>카트 동행</td></tr>
+        <tr><th style="width:150px">업체</th><th>기종/제품</th><th>대표 사례</th></tr>
+        <tr><td><b>트위니</b></td><td>나르고(반송) · 따르고(추종) · 나르고 오더피킹(피킹 보조)</td><td><a href="https://meatinsight.co.kr/bbs/board.php?bo_table=w3_1&amp;wr_id=121">컬리 평택 물류센터 투입</a> — 국내 피킹 보조 대표 사례</td></tr>
+        <tr><td><b>LG전자</b></td><td>클로이 캐리봇</td><td>CJ대한통운 곤지암 메가허브 공급</td></tr>
+        <tr><td><b>마로로봇테크</b></td><td>M3-300/500/1000</td><td>QR 기반 정밀 주행(오차 ±5mm 수준)</td></tr>
+        <tr><td><b>로보티즈</b></td><td>AI 워커(휴머노이드)</td><td>CJ대한통운·통합물류협회 실증</td></tr>
+        <tr><td><b>현대무벡스 · 시스콘</b></td><td>AGV 계열</td><td>제조·물류 현장 공급</td></tr>
+        <tr><td><b>쿠팡</b></td><td>자체 운영(AGV/AMR 혼합)</td><td>자동화 센터 확대 — 아마존형 내재화 경로</td></tr>
+        <tr><td class="soft">출처</td><td colspan="2" class="soft"><a href="https://www.klnews.co.kr/news/articleView.html?idxno=308210">물류신문</a> · <a href="https://www.hellot.net/news/article.html?no=69119">헬로티</a> — 국내 점유율 공표 통계는 사실상 없음</td></tr>
       </table></div>
-      <p class="soft">사양 수치(속도·가반하중·크기)와 출처 링크는 <a href="robot_landscape.html#l6">파라미터 시트(RESEARCH 02 SEC 06)</a>에 이미 정리돼 있어 여기 중복하지 않는다. 공개 모델 가용성 근거는 같은 문서 SEC 04.</p>
-      <p>실질 후보는 시뮬 자산이 존재하는 <b>iw.hub vs MiR 250</b> 2파전이고, 격차는 자산의 "격"에서 갈린다 — 한쪽은 제조사·NVIDIA가 배포하는 공식 물리 모델, 한쪽은 커뮤니티가 유지하는 ROS용 URDF의 변환 임포트다.</p>
+      <p class="soft">카탈로그의 "국내 기종 포함" 요건은 트위니 나르고 오더피킹으로 충족 — v1 타겟 카테고리(피킹 보조)에 속하고 컬리 사례로 공개 자료가 있다.</p>
     </div>
   </section>
 
-  <!-- ══════════ M3 선정 근거 ══════════ -->
-  <section id="m3">
-    <div class="sec-head"><span class="sec-no">SEC 03 · 선정 근거</span><h2>iw.hub 선정 논리 — 상위 4단과 실행 근거</h2></div>
+  <!-- ══════════ C3 카탈로그 매트릭스 ══════════ -->
+  <section id="c3">
+    <div class="sec-head"><span class="sec-no">SEC 03 · 카탈로그 매트릭스</span><h2>공개 모델이 있는 로봇만 물리 검증까지 간다</h2></div>
     <div class="sec-body">
-      <p class="lead">2026-08-26 기준선에서 선정 논리를 자산 가용성 중심에서 <b>문제 정합 중심의 4단 논리</b>로 격상했다. 아래 실행 근거 ①~⑤는 그 하위 증거로 유지된다.</p>
-      <table>
-        <tr><th style="width:210px">상위 논리</th><th>내용</th></tr>
-        <tr><td><b>1. 문제 범위 정합</b></td><td>본 서비스의 대상은 기존 레이아웃 유지 하의 팔레트·토트 운송(브라운필드) — 타겟(계약물류 중견 3PL)과 일치. 시장 1위 Geek+의 GTP 그리드는 레이아웃을 재설계하는 그린필드 문제라 <b>후보군에 애초에 없다</b></td></tr>
-        <tr><td><b>2. 제어 아키텍처 정합</b></td><td>확정 뼈대가 VDA 5050 중앙 하달인데, idealworks(BMW 스핀오프)는 VDA 5050 진영의 핵심이고 iw.hub은 사실상 레퍼런스 구현체다. 비공개 수직통합 생태계는 디스패치 로직을 추측으로 재구성해야 해 그 순간 V&amp;V가 무너진다</td></tr>
-        <tr><td><b>3. 벤더 중립 일반화</b></td><td>차량 파라미터를 VDA 5050 factsheet 포맷(사양 원문에 planning·dimensioning·simulation 용도 명시)으로 받으면, 결과가 "iw.hub의 예측"이 아니라 <b>VDA 5050 호환 AMR 일반의 예측</b>으로 일반화된다 — MiR 등 파라미터 교체 적용</td></tr>
-        <tr><td><b>4. 자산 출처 타당성</b></td><td>Isaac 에셋이 BMW–NVIDIA 디지털 트윈 협업(iFactory/Omniverse) 유래의 제조사 연계 공식 자산 — 모델 데이터 타당성을 출처로 보증</td></tr>
-      </table>
-      <h3>실행 근거 ①~⑤</h3>
-      <table>
-        <tr><th style="width:230px">근거</th><th>내용</th></tr>
-        <tr><td><b>① 공식 물리 모델의 유일성</b></td><td>카탈로그 5종 중 제조사(idealworks)·NVIDIA 협업으로 <b>Isaac 공식 USD가 배포되는 유일한 기종</b>. 임포트 변환·튜닝 리스크가 0에서 시작한다 (에셋 경로: <span style="font-family:var(--mono);font-size:12px">Isaac/Robots/Idealworks/iwhub/</span>)</td></tr>
-        <tr><td><b>② 실구동 검증 완료</b></td><td>2026-08-24 이 프로젝트 장비(RTX 5080)에서 확인: USD 조인트 구조 = 차동 구동륜 2(left/right_wheel_joint) + 패시브 캐스터 4 + <b>리프트 프리즘 조인트 1</b>. full_warehouse 씬에서 차동구동 주행 데모 구동 성공 — 후보 중 유일하게 "이미 우리 손에서 굴러간" 기종</td></tr>
-        <tr><td><b>③ 검증 씬과의 결합</b></td><td>NVIDIA 창고 환경(full_warehouse, 전 메시 콜라이더 확인)과 같은 생태계 자산이라 씬·로봇·센서(iw_hub_sensors의 라이다 변형)가 맞물려 배포된다 — SIL 파이프라인 전체를 공식 자산으로 구성 가능</td></tr>
-        <tr><td><b>④ 실전 계보</b></td><td>BMW 그룹 물류에서 실운영되는 상용 기종(idealworks는 BMW 사내 벤처 출신) — "장난감 플랫폼이 아니라 실물 기종을 검증했다"는 발표 서사가 성립</td></tr>
-        <tr><td><b>⑤ 3PL 시나리오 정합</b></td><td>토트·대차 반송 + 리프트 기구가 v1 미션 2종(팔레트 반송 + <b>토트 랙 피킹 투어</b>)을 모두 실물로 커버 — 리프트로 토트 랙을 싣고 피킹 존을 순회하는 투어 미션이 이 기종의 본래 사용법(대차 상차)과 일치 (2026-08-26 확정)</td></tr>
-      </table>
-      <p class="soft">사양·출처: <a href="https://idealworks.com/en/iw-hub-e/">idealworks 공식</a> · <a href="https://qviro.com/product/idealworks/iw-hub/specifications">사양 정리</a> · 파라미터 수치는 <a href="robot_landscape.html#l6">파라미터 시트</a>.</p>
+      <p class="lead">DES 스윕은 스펙시트 파라미터로 충분하지만, Isaac 물리 검증은 <a href="../ref/glossary.html#urdf">URDF</a>/USD 모델이 있어야 한다. 공개 모델은 반송 카테고리에 몰려 있고 GTP·ACR·피킹 보조 상용 기종은 전부 비공개다.</p>
+      <div class="tbl-scroll"><table>
+        <tr><th style="width:170px">기종</th><th style="width:90px">카테고리</th><th style="width:110px">형식</th><th>출처</th><th style="width:130px">판정 (08-26)</th></tr>
+        <tr><td><b>iw.hub</b> <span class="soft">(idealworks)</span></td><td>반송</td><td>USD (센서 포함)</td><td>Isaac Sim 내장 자산 — <a href="https://docs.isaacsim.omniverse.nvidia.com/4.5.0/assets/usd_assets_robots.html">Robot Assets 문서</a>. 1,000kg · 2.2m/s, 센서 버전(iw_hub_sensors.usd) 제공. 에셋 경로 <span style="font-family:var(--mono);font-size:12px">Isaac/Robots/Idealworks/iwhub/</span></td><td><span class="chip c-green">기준 기종</span></td></tr>
+        <tr><td><b>MiR 100/250</b></td><td>반송</td><td>URDF + Gazebo</td><td><a href="https://github.com/DFKI-NI/mir_robot">DFKI-NI/mir_robot</a> — 커뮤니티(DFKI), ROS1/ROS2 브랜치, mir_type:=mir_250 지원</td><td><span class="chip c-amber">2차 후보</span></td></tr>
+        <tr><td><b>Clearpath Boxer</b></td><td>반송</td><td>URDF + STL</td><td><a href="https://github.com/boxer-cpr/boxer">boxer-cpr/boxer</a> — <b>OTTO 100 기반 연구 플랫폼</b>. OTTO 파라미터의 물리 대역으로 활용 가능</td><td><span class="chip c-steel">확장 후보</span></td></tr>
+        <tr><td><b>Robotnik RB-THERON</b></td><td>반송</td><td>URDF + ROS2 시뮬</td><td><a href="https://github.com/RobotnikAutomation/robotnik_description">RobotnikAutomation</a> — 제조사 공식 공개, Gazebo 월드 포함</td><td><span class="chip c-steel">확장 후보</span></td></tr>
+        <tr><td><b>Nova Carter</b> <span class="soft">(NVIDIA)</span></td><td>레퍼런스</td><td>USD + ROS2</td><td>Isaac Sim 내장 — <a href="https://docs.isaacsim.omniverse.nvidia.com/5.1.0/assets/nova_carter_landing_page.html">Nova Carter 문서</a>, Nav2 연동 튜토리얼 완비</td><td><span class="chip c-steel">참고용</span></td></tr>
+        <tr><td><b>Fetch Freight</b></td><td>피킹 보조 베이스</td><td>URDF</td><td><a href="https://github.com/fetchrobotics/fetch_ros">fetchrobotics/fetch_ros</a> — 공개이나 단종 기종(Zebra 인수)</td><td><span class="chip c-steel">참고용</span></td></tr>
+        <tr><td><b>KUKA KMP/KMR</b></td><td>반송</td><td>커뮤니티 일부</td><td>모바일 베이스 공식 공개 없음. 로봇팔 중심 공개만(<a href="https://github.com/kroshu/kuka_robot_descriptions">kroshu</a>)</td><td><span class="chip c-slate">파라미터만</span></td></tr>
+        <tr><td><b>Geek+ · Hikrobot · Quicktron · HAI · Locus · Omron · 트위니</b></td><td>혼합</td><td>—</td><td>공개 모델 없음. 제조사 공식 스펙시트로 파라미터만 소싱</td><td><span class="chip c-slate">파라미터만</span></td></tr>
+      </table></div>
+      <div class="tbl-scroll"><table>
+        <tr><th style="width:230px">환경·보조 자산</th><th>내용</th></tr>
+        <tr><td>Isaac Sim 창고 씬 + 지게차</td><td>full_warehouse 씬(전 메시 콜라이더 확인)과 리프트가 동작하는 범용 지게차 USD 내장 — 맵→USD 자동 생성의 배경 참조</td></tr>
+        <tr><td><a href="https://github.com/aws-robotics/aws-robomaker-small-warehouse-world">AWS RoboMaker Small Warehouse World</a></td><td>Gazebo용 공개 창고 월드(ROS1/ROS2) — Isaac 밖 경량 테스트 대안</td></tr>
+        <tr><td><a href="https://github.com/Daniella1/urdf_files_dataset">urdf_files_dataset</a></td><td>공개 URDF 집대성 저장소 — 추가 기종 탐색 시 1차 검색처</td></tr>
+      </table></div>
+      <p class="soft">6종 확장 시 후보: Omron LD(OTTO 100의 대체 후보로 유지) · RB-THERON(공식 URDF).</p>
     </div>
   </section>
 
-  <!-- ══════════ M4 반론 처리 ══════════ -->
-  <section id="m4">
-    <div class="sec-head"><span class="sec-no">SEC 04 · 반론 처리</span><h2>"3PL 대표는 Locus 아닌가"에 대한 답</h2></div>
+  <!-- ══════════ C4 선정 논리 ══════════ -->
+  <section id="c4">
+    <div class="sec-head"><span class="sec-no">SEC 04 · 선정 논리</span><h2>물리는 좁고 깊게, 견적은 넓고 얕게</h2></div>
+    <div class="sec-body">
+      <h3>왜 1종으로 고정하나</h3>
+      <table>
+        <tr><th style="width:190px">근거</th><th>내용</th></tr>
+        <tr><td><b>SIL 공수는 기종에 비례</b></td><td>기종마다 모델 임포트·조인트 튜닝·센서 배치·보정 실험을 반복한다. 8주 일정에서 다기종 SIL은 전부가 얕아지는 길이다</td></tr>
+        <tr><td><b>보정 루프의 집중</b></td><td>DES ↔ Isaac 오차 모델은 데이터가 쌓여야 좁아진다 — 1종에 집중해야 오차 모델이 주장 가능한 수준이 된다. 보정된 오차 모델을 파라미터 프로파일 위에 이식한다</td></tr>
+        <tr><td><b>2계층 구조가 허용</b></td><td>견적 스윕은 DES가, 물리 검증은 상위 구성만 돈다(<a href="../tech/system_architecture.html#a1">시스템 아키텍처 §01</a>). 벤더 데모·학술 벤치마크도 기준 플랫폼 1종을 고정하고 파라미터로 일반화하는 것이 표준</td></tr>
+      </table>
+
+      <h3>왜 iw.hub인가 — 상위 4단 논리 (2026-08-26)</h3>
+      <table>
+        <tr><th style="width:190px">논리</th><th>내용</th></tr>
+        <tr><td><b>1. 문제 범위 정합</b></td><td>본 서비스의 대상은 기존 레이아웃 유지 하의 팔레트·토트 운송(브라운필드) — 타겟과 일치. Geek+의 GTP 그리드는 레이아웃을 재설계하는 그린필드 문제라 <b>후보군에 애초에 없다</b></td></tr>
+        <tr><td><b>2. 제어 아키텍처 정합</b></td><td>확정 뼈대가 <a href="../ref/glossary.html#vda5050">VDA 5050</a> 중앙 하달인데, idealworks(BMW 스핀오프)는 VDA 5050 진영의 핵심이고 iw.hub은 사실상 레퍼런스 구현체다. 비공개 수직통합 생태계는 디스패치 로직을 추측으로 재구성해야 해 V&amp;V가 무너진다</td></tr>
+        <tr><td><b>3. 벤더 중립 일반화</b></td><td>차량 파라미터를 VDA 5050 factsheet 포맷(사양 원문에 planning·dimensioning·simulation 용도 명시)으로 받으면 결과가 "iw.hub의 예측"이 아니라 <b>VDA 5050 호환 AMR 일반의 예측</b>이 된다 — MiR 등은 파라미터 교체로 적용</td></tr>
+        <tr><td><b>4. 자산 출처 타당성</b></td><td>Isaac 에셋이 BMW–NVIDIA <a href="../ref/glossary.html#digitaltwin">디지털 트윈</a> 협업(iFactory/Omniverse) 유래의 제조사 연계 공식 자산 — 모델 데이터 타당성을 출처로 보증</td></tr>
+      </table>
+
+      <h3>실행 근거</h3>
+      <table>
+        <tr><th style="width:190px">근거</th><th>내용</th></tr>
+        <tr><td><b>공식 물리 모델의 유일성 + 실구동</b></td><td>카탈로그 5종 중 제조사·NVIDIA 협업 <b>Isaac 공식 USD가 배포되는 유일한 기종</b>. 2026-08-24 프로젝트 장비(RTX 5080)에서 확인: 차동 구동륜 2(left/right_wheel_joint) + 패시브 캐스터 4 + <b>리프트 프리즘 조인트 1</b>, full_warehouse 씬 차동구동 주행 성공 — "이미 우리 손에서 굴러간" 유일한 후보. 단 에셋 콜리전은 그대로 쓸 수 없다(SEC 07)</td></tr>
+        <tr><td><b>검증 씬과의 결합</b></td><td>창고 씬·로봇·센서(iw_hub_sensors 라이다 변형)가 같은 생태계 자산으로 맞물려 배포된다 — SIL 파이프라인 전체를 공식 자산으로 구성</td></tr>
+        <tr><td><b>미션 정합 + 실전 계보</b></td><td>리프트 기구가 v1 미션 2종(팔레트 반송 + 토트 랙 피킹 투어)을 실물로 커버 — 대차 상차가 본래 사용법. BMW 그룹 물류 실운영 기종이라 "장난감 플랫폼이 아니라 실물 기종을 검증했다"는 서사가 성립</td></tr>
+      </table>
+      <p class="soft">사양·출처: <a href="https://idealworks.com/en/iw-hub-e/">idealworks 공식</a> · <a href="https://qviro.com/product/idealworks/iw-hub/specifications">사양 정리</a> · 수치는 SEC 06.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ C5 반론 ══════════ -->
+  <section id="c5">
+    <div class="sec-head"><span class="sec-no">SEC 05 · 반론 3건</span><h2>"3PL 대표는 Locus 아닌가"에 대한 답</h2></div>
     <div class="sec-body">
       <table>
         <tr><th style="width:250px">반론</th><th>답</th></tr>
-        <tr><td><b>3PL 피킹 대표는 Locus인데 왜 iw.hub인가</b></td><td>Locus는 시뮬 모델이 비공개라 물리 기준 기종이 <b>될 수 없다</b>(선택의 문제가 아니라 가용성의 문제). Locus는 파라미터 프로파일로 카탈로그에 남고, 3PL 서사(RaaS·DHL 5,000대)는 <a href="3pl_industry.html">업계 조사</a>가 담당한다. 물리 기준 기종의 역할은 "우리 시뮬 물리가 현실과 얼마나 다른가"의 오차 측정이지, 특정 상용 기종의 재현이 아니다</td></tr>
-        <tr><td><b>MiR 250이 더 대중적인데</b></td><td>맞다 — 그래서 카탈로그 프로파일로 유지한다. 그러나 물리 기준 기종 기준으로는 커뮤니티 URDF의 Isaac 변환·튜닝 공수와 리스크를 안는 선택이고, 공식 USD가 있는 후보를 두고 그 리스크를 살 이유가 없다. MiR URDF는 여력이 남을 때의 2차 검증 기종 후보로 남긴다(승격 조건: iw.hub 보정 루프 완료)</td></tr>
-        <tr><td><b>iw.hub은 반송형이라 피킹 보조 서사와 어긋난다</b></td><td><span class="chip c-green">해소 08-26</span> 어긋나지 않는다 — <b>동일 기종이 피킹 보조를 물리적으로 수행</b>한다. 다중 토트 랙을 리프트로 싣고 피킹 존을 순회하면(스톱마다 작업자가 담는 투어 미션) Locus식 운영이 iw.hub 하드웨어로 구현된다. v1 미션 모델 = 팔레트 반송 + 토트 랙 피킹 투어 2종. 투어 처리량은 사람–로봇 랑데부 대기가 지배라 DES가 전담하고, SIL은 리프트 도킹 장면만 물리로 담당한다</td></tr>
+        <tr><td><b>3PL 피킹 대표는 Locus인데 왜 iw.hub인가</b></td><td>Locus는 시뮬 모델이 비공개라 물리 기준 기종이 <b>될 수 없다</b> — 선택이 아니라 가용성의 문제. Locus는 파라미터 프로파일로 남고 3PL 서사(RaaS · DHL 5,000대)는 <a href="3pl_industry.html">3PL 업계 구조</a>가 담당한다. 기준 기종의 역할은 "우리 시뮬 물리가 현실과 얼마나 다른가"의 오차 측정이지 특정 상용 기종의 재현이 아니다</td></tr>
+        <tr><td><b>MiR 250이 더 대중적인데</b></td><td>맞다 — 그래서 카탈로그 프로파일로 유지한다. 그러나 물리 기준 기종으로는 커뮤니티 URDF의 Isaac 변환·튜닝 공수와 리스크를 안는 선택이고, 공식 USD가 있는 후보를 두고 그 리스크를 살 이유가 없다. 2차 검증 기종 후보로 남긴다(승격 조건: iw.hub 보정 루프 완료)</td></tr>
+        <tr><td><b>iw.hub은 반송형이라 피킹 보조 서사와 어긋난다</b></td><td><span class="chip c-green">해소 08-26</span> <b>동일 기종이 피킹 보조를 물리적으로 수행</b>한다. 다중 토트 랙을 리프트로 싣고 피킹 존을 순회하면(스톱마다 작업자가 담는 투어 미션) Locus식 운영이 iw.hub 하드웨어로 구현된다. 투어 처리량은 사람–로봇 랑데부 대기가 지배라 DES가 전담하고, SIL은 리프트 도킹 장면만 물리로 담당한다</td></tr>
       </table>
-      <div class="note"><span class="pl-tag">이 결정의 성격</span>기획 재정의(팀 결정 대기)와 달리, 기준 기종 고정은 <b>기술 트랙 내부 결정</b>이다 — 어느 기획안에서도 물리 검증 기종은 필요하고, iw.hub 선정은 양쪽 모두와 호환된다. 단, 결정 인벤토리 F4(검증 기종)의 현행화가 필요하다(SEC 05).</div>
+      <p class="soft">기준 기종 고정은 기술 트랙 내부 결정이다 — 어느 기획안에서도 물리 검증 기종은 필요하고, iw.hub 선정은 양쪽 모두와 호환된다.</p>
     </div>
   </section>
 
-  <!-- ══════════ M5 파급 범위 ══════════ -->
-  <section id="m5">
-    <div class="sec-head"><span class="sec-no">SEC 05 · 파급 범위</span><h2>이 결정이 건드리는 것과 건드리지 않는 것</h2></div>
+  <!-- ══════════ C6 파라미터 시트 ══════════ -->
+  <section id="c6">
+    <div class="sec-head"><span class="sec-no">SEC 06 · 파라미터 시트</span><h2>공식 사양은 출처와 함께, 빈칸은 추정임을 밝히고 채운다</h2></div>
+    <div class="sec-body">
+      <p class="lead">카탈로그 5종의 DES 입력 파라미터. 제조사 공개 값과 스펙시트에 없어 추정·역산한 값을 분리한다 — 추정값은 가정 명세서에 실리고 보정 루프의 갱신 대상이다.</p>
+      <h3>공식 사양 — 제조사 공개 값</h3>
+      <div class="tbl-scroll"><table>
+        <tr><th style="width:118px">항목</th><th>iw.hub</th><th>MiR 250</th><th>OTTO 100</th><th>Locus Origin</th><th>나르고 오더피킹</th></tr>
+        <tr><td>역할</td><td><span class="chip c-green">풀스택 검증</span> 기준 기종</td><td><span class="chip c-amber">2차 후보</span> 파라미터 + 공개 URDF</td><td><span class="chip c-steel">파라미터 기반</span></td><td><span class="chip c-steel">파라미터 기반</span></td><td><span class="chip c-steel">파라미터 기반</span></td></tr>
+        <tr><td>카테고리</td><td>반송</td><td>반송</td><td>반송</td><td>피킹 보조</td><td>피킹 보조</td></tr>
+        <tr><td>크기 L×W×H (mm)</td><td>1,440×641×220</td><td>800×580×300</td><td>740×550×308</td><td>558×558×1,468</td><td>700×550×1,500</td></tr>
+        <tr><td>자중</td><td>175 kg</td><td>—</td><td>107 kg</td><td>45 kg</td><td>—</td></tr>
+        <tr><td>최대 적재</td><td>1,000 kg</td><td>250 kg</td><td>150 kg</td><td>36 kg</td><td>100 kg</td></tr>
+        <tr><td>최대 속도</td><td>2.2 m/s</td><td>2.0 m/s</td><td>2.0 m/s</td><td>약 2.2 m/s*</td><td>1.5 m/s</td></tr>
+        <tr><td>배터리·런타임</td><td>8h (1교대)</td><td>47.7V 34.2Ah Li-NMC · 만적 13h</td><td>26.4V 35Ah · 약 6h</td><td>12h</td><td>8h 이상</td></tr>
+        <tr><td>충전</td><td>미공개</td><td>0→80% 1h · 충전비 1:16</td><td>10→90% 18분 급속</td><td>미공개 (RaaS 운영)</td><td>미공개</td></tr>
+        <tr><td>비고</td><td>Isaac 내장 USD · 리프트 프리즘 조인트</td><td>공개 URDF(커뮤니티)</td><td>Boxer URDF 대역 · 도킹 ±1cm/±1°</td><td>RaaS — 구매가 대신 월 구독</td><td>WiFi/LTE · 국내 18개 센터 운영</td></tr>
+        <tr><td>출처</td><td><a href="https://qviro.com/product/idealworks/iw-hub/specifications">사양</a> · <a href="https://idealworks.com/en/iw-hub-e/">제조사</a></td><td><a href="https://mobile-industrial-robots.com/products/robots/mir250/specifications">공식 사양</a></td><td><a href="https://ottomotors.com/resources/downloads/100-data-sheet/">공식 데이터시트</a></td><td><a href="https://www.barcodesinc.com/solutions/locus-origin/">유통사 사양</a></td><td><a href="https://twinny.ai/orderpicking">제조사</a> · <a href="https://www.k-robot.co.kr/k-robot/view.php?idx=172815&amp;page=1">로봇산업협회</a></td></tr>
+      </table></div>
+      <p class="soft">* Locus Origin 속도는 자료 간 표기가 갈린다 — 일부 유통사의 "5 m/s"는 5 mph(≈2.2 m/s)의 오기로 추정, 도입 검토 시 재확인. "—"와 "미공개"는 지어내지 않고 빈칸으로 둔 값.</p>
+
+      <h3>추정·역산 파라미터 — 스펙시트에 없는 필드</h3>
+      <div class="tbl-scroll"><table>
+        <tr><th style="width:160px">파라미터</th><th style="width:220px">초기값</th><th>근거</th></tr>
+        <tr><td>가속/감속</td><td>0.5 m/s² (보수)</td><td>전 기종 스펙시트 미공개 — ISO 3691-4 안전 거동을 감안한 보수 추정. 낙관 편향 방지</td></tr>
+        <tr><td>회전 시간 (180°)</td><td>3~4 s</td><td>차동구동 제자리 회전 관례 추정. iw.hub은 2026-09-06 실측으로 대체 — 90° 폐루프 1.9 s, 각속도 지령 대비 95~97%, 스윙 반경 1.09 m(<a href="../working/t3_t4_progress.html">T3·T4 진행</a>). 회전 시간 상수는 결정 인벤토리 D8</td></tr>
+        <tr><td>픽/드롭 시간</td><td>로그정규, 중앙값 ≈15 s</td><td>도킹·이적재 포함 현장 관례. 피커 작업 시간 모델은 결정 인벤토리 B12(후속)</td></tr>
+        <tr><td>배터리 소모율</td><td>용량 ÷ 런타임 역산</td><td>선형 방전 모델 — 예: MiR 250은 만적 13h 기준. 배터리 모델은 B12(후속)</td></tr>
+        <tr><td>충전율</td><td>충전 데이터 역산</td><td>상수 충전율 — MiR 1:16, OTTO 18분(10→90%)에서 역산. 미공개 기종은 충전 1h : 주행 8h 보수 가정</td></tr>
+        <tr><td>유효속도 계수</td><td>0.7 × 최대 속도</td><td>가감속·혼잡 반영 초기 계수. 에뮬레이션 실측으로 캘리브레이션</td></tr>
+      </table></div>
+      <div class="note"><span class="pl-tag">가격 필드</span>구매가·유지비는 카탈로그 고정값이 아니다 — 벤더 협상가라 공개 자료가 없고, 견적 요청 시 사용자 입력(purchase_price · maintenance_cost)으로 받는다. Locus는 RaaS라 월 구독료로 입력한다. 처리량·가동률 결과는 가격과 무관하게 성립하고, 가격은 비용 곡선 단계에서만 곱해진다. 견적 단가 근거로서의 카탈로그 범위는 결정 인벤토리 A8(합의 대기).</div>
+    </div>
+  </section>
+
+  <!-- ══════════ C7 파급 범위 ══════════ -->
+  <section id="c7">
+    <div class="sec-head"><span class="sec-no">SEC 07 · 파급 범위</span><h2>이 결정이 건드리는 것과 건드리지 않는 것</h2></div>
     <div class="sec-body">
       <table>
         <tr><th style="width:210px">영역</th><th>영향</th></tr>
         <tr><td>DES 스윕·견적 카탈로그</td><td><b>변화 없음</b> — 5종 파라미터 프로파일 그대로</td></tr>
-        <tr><td>Isaac SIL 트랙</td><td>iw.hub 단일 파이프라인으로 확정 — 주행 데모 스크립트(WheeledRobot + 차동 컨트롤러) 가동 확인 상태에서 출발</td></tr>
-        <tr><td>결정 인벤토리 F4</td><td>"검증 기종 iw.hub·MiR 250(풀스택 2종)" → "<b>기준 기종 iw.hub 1종 + MiR 2차 후보</b>"로 현행화 필요</td></tr>
-        <tr><td>개괄 §6 카탈로그 표</td><td>iw.hub 행에 "물리 기준 기종" 표기 1칸 추가 수준</td></tr>
+        <tr><td>Isaac SIL 트랙</td><td>iw.hub 단일 파이프라인. 에셋은 그대로 쓸 수 없다 — 섀시·리프트·캐스터 콜리전 스케일이 ×100으로 깨져 있어 warehouse_sim.py가 런타임에 끄고 재구성하며, 실측 운동학은 바퀴 반경 0.08 m · 트랙 0.58 m(<a href="../working/t3_t4_progress.html">T3·T4 진행</a>)</td></tr>
+        <tr><td>FMS 헤딩 모델 상수</td><td>차체 1.44 m가 격자 1.0 m보다 길어 자기 칸 + 뒤 칸 2칸 점유(결정 D4). 앞축 위치·회전 각속도 실측 완료(09-06): 앞 0.40 m · 뒤 1.03 m 돌출, 90° 회전 1.9 s</td></tr>
+        <tr><td>결정 인벤토리 검증 기종 항목</td><td>08-20 "iw.hub 메인 + MiR 250 서브 + Nova Carter 스모크(풀스택 2종)" → 08-26 "<b>기준 기종 iw.hub 1종 + MiR 2차 후보</b>"로 현행화. 현 인벤토리(v3)에는 검증 기종 항목이 별도로 없어 등재 대상</td></tr>
         <tr><td>데모·발표</td><td>"실물 상용 기종이 물리 창고에서 굴러간다"를 오프닝 장면으로 쓸 수 있음</td></tr>
       </table>
       <div class="kcards">
-        <div class="kcard"><b><a href="robot_landscape.html" style="color:inherit">물류로봇 지형</a></b><span>카탈로그 5종·파라미터 시트·공개 모델 가용성 (RESEARCH 02)</span></div>
-        <div class="kcard s"><b><a href="../tech/amr_tech_plan.html" style="color:inherit">기술 실행 계획</a></b><span>SIL 검증 트랙에서 기준 기종이 쓰이는 자리 (TECH 02)</span></div>
-        <div class="kcard g"><b><a href="../tech/amr_decision_inventory.html" style="color:inherit">결정 인벤토리</a></b><span>F4 검증 기종 결정의 현행화 대상 (TECH 04)</span></div>
+        <div class="kcard"><b><a href="../tech/amr_decision_inventory.html" style="color:inherit">결정 인벤토리</a></b><span>D4 점유 모델 · D8 회전 상수 · B12 배터리·피커 모델 · A8 카탈로그 범위</span></div>
+        <div class="kcard s"><b><a href="../working/t3_t4_progress.html" style="color:inherit">T3·T4 진행</a></b><span>iw.hub 에셋 주의 · 회전 실측(turn_probe) · 다중 로봇</span></div>
+        <div class="kcard g"><b><a href="../tech/system_architecture.html" style="color:inherit">시스템 아키텍처</a></b><span>DES 스윕과 Isaac 검증 런의 2계층, 기종 카탈로그가 놓이는 자리</span></div>
       </div>
     </div>
   </section>
@@ -220,12 +335,12 @@
 </main>
 
 <div class="wrap flow-nav">
-  <a class="prev" href="3pl_industry.html"><small>← 이전</small>RESEARCH 02 · 3PL 업계 구조</a>
-  <a class="next" href="../tech/amr_overview.html"><small>다음 →</small>TECH 01 · 전체 조망</a>
+  <a class="prev" href="3pl_industry.html"><small>← 이전</small>RESEARCH · 3PL 업계 구조</a>
+  <a class="next" href="industry_followup.html"><small>다음 →</small>RESEARCH · 업계 현황과 다음 단계</a>
 </div>
 
 <footer>
-  <div class="wrap">RESEARCH 03 · AMR SELECTION · REV B — 결정 08-24 · 개정 08-26 (B: 4단 상위 논리 병합·타겟 정합) · 실구동 검증은 프로젝트 장비(RTX 5080 · Isaac Sim 6.0.1) 실측 · 사양 출처는 파라미터 시트 참조 · <a href="../../index.html">문서 인덱스로</a></div>
+  <div class="wrap">RESEARCH · 기종 카탈로그 · REV — 2026-09-07 · 축약판 · 원천: 물류로봇 지형(REV B · 08-20) + 기준 기종 선정(REV B · 08-24·26) · 실구동·회전 실측은 프로젝트 장비(RTX 5080) · 사양 출처는 표 안 링크 · <a href="../../index.html">문서 인덱스로</a></div>
 </footer>
 
 </body>
