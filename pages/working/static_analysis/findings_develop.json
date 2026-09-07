@@ -1671,6 +1671,18 @@
   "tool": "check",
   "rule": "doc-link",
   "sev": "S2",
+  "path": "3_FMS/docs/2026-09-07_남은과업_지라이슈_리팩토링계획.md",
+  "line": 198,
+  "msg": "깨진 문서 참조: ...",
+  "symbol": "",
+  "component": "3_FMS/infra+etc",
+  "part": "FMS·AI",
+  "fp": "ee71e86ee858abb2"
+ },
+ {
+  "tool": "check",
+  "rule": "doc-link",
+  "sev": "S2",
   "path": "3_FMS/sim_engine/pibt_core.py",
   "line": 18,
   "msg": "깨진 문서 참조: Docs/AI/AI입출력명세서.md",

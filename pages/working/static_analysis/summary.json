@@ -1,11 +1,11 @@
 {
  "run": {
-  "id": "2026-09-07_1205_light",
-  "ts": "2026-09-07T12:05:01+0900",
+  "id": "2026-09-07_1305_light",
+  "ts": "2026-09-07T13:05:01+0900",
   "mode": "light",
   "ref": "origin/develop",
-  "sha": "68cc51bdbaf24df66f29d702918430878d28d7a4",
-  "duration_s": 6.0,
+  "sha": "3f5538f33a27a7b9a67371088efe85f777250ec1",
+  "duration_s": 5.8,
   "status": "ok",
   "prev_deep": "2026-09-06_1552_deep",
   "red_flags": []
@@ -522,19 +522,32 @@
    "loc": 706,
    "counts": {
     "S3": 0,
-    "S2": 1,
+    "S2": 2,
     "S1": 7,
     "S0": 0
    },
    "tools": [
+    "check",
     "ruff",
     "yamllint"
    ],
-   "W": 10,
-   "D": 14.2,
-   "grade": "B",
+   "W": 13,
+   "D": 18.4,
+   "grade": "C",
    "partial": false,
    "top": [
+    {
+     "tool": "check",
+     "rule": "doc-link",
+     "sev": "S2",
+     "path": "3_FMS/docs/2026-09-07_남은과업_지라이슈_리팩토링계획.md",
+     "line": 198,
+     "msg": "깨진 문서 참조: ...",
+     "symbol": "",
+     "component": "3_FMS/infra+etc",
+     "part": "FMS·AI",
+     "fp": "ee71e86ee858abb2"
+    },
     {
      "tool": "ruff",
      "rule": "F401",
@@ -618,18 +631,6 @@
      "component": "3_FMS/infra+etc",
      "part": "FMS·AI",
      "fp": "e82ac093e47c913a"
-    },
-    {
-     "tool": "ruff",
-     "rule": "SIM115",
-     "sev": "S1",
-     "path": "3_FMS/map/check_map_set.py",
-     "line": 50,
-     "msg": "Use a context manager for opening files",
-     "symbol": "",
-     "component": "3_FMS/infra+etc",
-     "part": "FMS·AI",
-     "fp": "2caa0da8356aae7d"
     }
    ]
   },
@@ -815,25 +816,25 @@
   {
    "name": "develop",
    "slug": "develop",
-   "sha": "68cc51bdbaf24df66f29d702918430878d28d7a4",
-   "committer_date": 1788746851,
-   "author": "박화랑",
+   "sha": "3f5538f33a27a7b9a67371088efe85f777250ec1",
+   "committer_date": 1788752425,
+   "author": "신재령",
    "loc": 15280,
    "counts": {
     "S3": 0,
-    "S2": 24,
+    "S2": 25,
     "S1": 135,
     "S0": 2
    },
-   "W": 207,
+   "W": 210,
    "new_vs_prev": {
     "S3": 0,
-    "S2": 0,
+    "S2": 1,
     "S1": 0,
     "S0": 0
    },
    "fixed": 0,
-   "prev_run": "2026-09-07_1005_light",
+   "prev_run": "2026-09-07_1205_light",
    "tools": [
     {
      "id": "ruff",
@@ -869,7 +870,7 @@
      "id": "bandit",
      "status": "ok",
      "rc": 0,
-     "secs": 0.8,
+     "secs": 0.7,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -925,7 +926,7 @@
      "id": "gitleaks",
      "status": "ok",
      "rc": 0,
-     "secs": 0.5,
+     "secs": 0.4,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -953,7 +954,7 @@
      "id": "pmd",
      "status": "ok",
      "rc": 4,
-     "secs": 0.9,
+     "secs": 1.0,
      "stderr_tail": "[INFO] Found 4 violations.",
      "metrics": {
       "processing_errors": 0
@@ -982,15 +983,16 @@
      "id": "doc-links",
      "title": "문서 상대링크·코드 헤더 docs 참조 존재",
      "status": "warn",
-     "msg": "깨진 참조 3건",
+     "msg": "깨진 참조 4건",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [
       ".githooks/README.md:5 → ../Docs/GIT_CONVENTION.md",
       "3_FMS/ai_theta/data/build_input.py:5 → Docs/AI/AI입출력명세서.md",
+      "3_FMS/docs/2026-09-07_남은과업_지라이슈_리팩토링계획.md:198 → ...",
       "3_FMS/sim_engine/pibt_core.py:18 → Docs/AI/AI입출력명세서.md"
      ],
-     "n": 3,
+     "n": 4,
      "sev": "S2"
     },
     {
@@ -1142,11 +1144,11 @@
      "sev": "S0"
     }
    ],
-   "duration_s": 2.9,
+   "duration_s": 2.8,
    "allow_dropped": 5,
    "new": {
     "S3": 0,
-    "S2": 0,
+    "S2": 1,
     "S1": 0,
     "S0": 0
    },
@@ -1154,7 +1156,7 @@
    "ahead": 0,
    "behind": 0,
    "files_changed": 0,
-   "merge_base": "68cc51bdbaf24df66f29d702918430878d28d7a4"
+   "merge_base": "3f5538f33a27a7b9a67371088efe85f777250ec1"
   }
  ],
  "tools": [
@@ -1192,7 +1194,7 @@
    "id": "bandit",
    "status": "ok",
    "rc": 0,
-   "secs": 0.8,
+   "secs": 0.7,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -1248,7 +1250,7 @@
    "id": "gitleaks",
    "status": "ok",
    "rc": 0,
-   "secs": 0.5,
+   "secs": 0.4,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -1276,7 +1278,7 @@
    "id": "pmd",
    "status": "ok",
    "rc": 4,
-   "secs": 0.9,
+   "secs": 1.0,
    "stderr_tail": "[INFO] Found 4 violations.",
    "metrics": {
     "processing_errors": 0
@@ -1305,15 +1307,16 @@
    "id": "doc-links",
    "title": "문서 상대링크·코드 헤더 docs 참조 존재",
    "status": "warn",
-   "msg": "깨진 참조 3건",
+   "msg": "깨진 참조 4건",
    "component": "infra",
    "needs_agreement": false,
    "evidence": [
     ".githooks/README.md:5 → ../Docs/GIT_CONVENTION.md",
     "3_FMS/ai_theta/data/build_input.py:5 → Docs/AI/AI입출력명세서.md",
+    "3_FMS/docs/2026-09-07_남은과업_지라이슈_리팩토링계획.md:198 → ...",
     "3_FMS/sim_engine/pibt_core.py:18 → Docs/AI/AI입출력명세서.md"
    ],
-   "n": 3,
+   "n": 4,
    "sev": "S2"
   },
   {
@@ -1467,9 +1470,9 @@
  ],
  "tests": {},
  "totals": {
-  "findings": 161,
-  "W": 207,
-  "new": 0,
+  "findings": 162,
+  "W": 210,
+  "new": 1,
   "fixed": 0
  },
  "narrative": {
