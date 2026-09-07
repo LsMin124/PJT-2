@@ -1,0 +1,13 @@
+[tool.pytest.ini_options]
+testpaths = ["tests", "t4_agent/src/amr_agent/test"]
+pythonpath = [".", "t4_agent/src/amr_agent"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+extend-exclude = ["t4_agent/install", "t4_agent/build", "t4_agent/log", "**/out"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E402"]  # Isaac 스크립트는 SimulationApp 뒤에 import 해야 함

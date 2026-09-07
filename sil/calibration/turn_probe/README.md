@@ -1,5 +1,7 @@
 # calibration/turn_probe — iw.hub 스팟턴 실측 (FMS 헤딩 모델 상수)
 
+> 2026-09-07 리팩토링: `spin_probe.py` 는 셔임 → `sil_ros/nodes/spin_probe.py`, `wsim_wrap.py` 는 `apps/warehouse_sim.py` 에 훅을 건다.
+
 FMS 파트가 기다리는 두 상수(기준선 v3 §5.2·§9)를 Isaac 물리로 잰다.
 
 | 상수 | 뜻 | 얻는 방법 |

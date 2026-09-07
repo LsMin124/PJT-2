@@ -4,18 +4,18 @@
 랙 배치 좌표를 그대로 Isaac USD 씬으로 세운다. DES와 SIL이 단일 소스를 공유하는
 구조의 물리 실체.
 
-## 파일
+## 파일 (2026-09-07 리팩토링 — 구현은 `../apps/`·`../sil_isaac/`·`../scene_builder/`·`../sil_ros/`, 이 폴더의 .py 는 옛 경로 셔임)
 
 | 파일 | 역할 |
 |---|---|
-| `build_scene.py` | 씬 빌더 — 그리드→벽·작업대 박스, rack_units→NVIDIA 랙 부품 조립(세로형), omap V&V, 스크린샷 |
-| `roof_structure.py` | 박공지붕·상부 철골·H형강 기둥 모듈 (DXF 치수선 실측 기하) |
+| `build_scene.py` | 씬 빌더 엔트리 셔임 → `../apps/build_scene.py` (`scene_builder/` 패키지: config·prims·materials·building·roof·racks·stations·offices·vnv·shots·build) |
+| `roof_structure.py` | 셔임 → `scene_builder/roof.py` |
 | `warehouse_scene.usd` | 산출 씬 (재생성물 — untracked) |
-| `view_scene.py` | WebRTC 관전 뷰어 (완성 씬 열람용) |
-| `http_stream.py` | TCP 전용 HTTP MJPEG 관전 경로 (8211) — 캠퍼스 UDP 차단망 대응 |
-| `warehouse_sim.py` | T3 본편 — 씬 + iw.hub ×N + 물리 라이다, ROS2 개통(/scan /odom /tf /clock, /cmd_vel). iw_hub 콜리전 수술 로봇별 적용. `WSIM_N=3`이면 `/amr01~03/…` 네임스페이스 |
+| `view_scene.py` | 셔임 → `../apps/view_scene.py` |
+| `http_stream.py` | 셔임 → `sil_isaac/viewer/http_stream.py` |
+| `warehouse_sim.py` | **T3 본편** 셔임 → `../apps/warehouse_sim.py` (`sil_isaac/`: app·robot·sensors·ros2·viewer·scene·runtime) |
 | `ros2/multi_check.py` | 다중 로봇 개통 검증 — 로봇별 odom·scan·/clock 발행률, /tf 프레임, 지정 로봇만 이동하는지 확인(JSON + exit code) |
-| `ros2/` | localization — AMCL+map_server+foxglove(8765) 런치·파라미터. 오차 0.1~0.4m 개통 검증 |
+| `ros2/` | AMCL 런치·파라미터는 그대로. `patrol.py`·`multi_check.py` 는 셔임 → `sil_ros/nodes/` |
 | `out/scene_*.png` | 검수 스크린샷 (탑뷰·조감·통로 시점) |
 | `out/omap_occ.npy` | 씬→점유맵 역생성 결과 (V&V) |
 

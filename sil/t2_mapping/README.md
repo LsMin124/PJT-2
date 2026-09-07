@@ -1,5 +1,7 @@
 # T2 스테이지 A — SLAM 매핑 런 (커미셔닝 재현)
 
+> 2026-09-07 리팩토링: 구현은 `../apps/mapping_sim.py` + `../sil_isaac/`(GT 방은 `scene/gt_room.py`, RTX 라이다는 `sensors/rtx_lidar.py`). 이 폴더의 `mapping_sim.py` 는 옛 경로 셔임.
+
 실제 AMR 설치 절차(현장 SLAM 1회 → 지도 고정)의 재현. GT 좌표를 아는 방(벽 4·박스 3)을 직접 만들어
 SLAM 지도와의 오차를 정량 비교했다 — V&V 자료.
 
