@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>MQTT 백본 구축 가이드 — EMQX 위에 VDA 5050과 Sparkplug B (MQTT Backbone Guide)</title>
+<style>
+:root{
+  --bg:#14181D; --panel:#1C2229; --edge:#2C343D; --ink:#E8ECF1; --soft:#9AA7B4; --mute:#8A96A3;
+  --amber:#F08A32; --green:#3BAF77; --steel:#8FB4D9; --code-bg:#0F1317; --code-ink:#E8ECF1;
+  --row:#171C22; --warn-bg:#2A2117; --note-bg:#172029; --do-bg:#15241D; --badge:#F08A32; --badge-ink:#14181D;
+  --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,Consolas,monospace;--sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,"Noto Sans KR","Malgun Gothic",sans-serif;
+  --grid:#2A323B; color-scheme:dark}
+
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:40px 40px;color:var(--ink);font-family:"IBM Plex Sans KR",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.65;font-variant-numeric:tabular-nums}
+a{color:var(--steel)}
+code,pre,.mono{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+code{font-size:.88em;background:var(--row);border:1px solid var(--edge);border-radius:4px;padding:.05em .35em}
+pre{background:var(--code-bg);color:var(--code-ink);border-radius:8px;padding:14px 16px;overflow-x:auto;font-size:12.5px;line-height:1.55;margin:12px 0}
+pre code{background:none;border:0;padding:0;font-size:inherit;color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:40px;padding:32px 0 80px}
+@media (max-width:980px){.layout{grid-template-columns:1fr}.toc{position:static}}
+.toc{position:sticky;top:20px;align-self:start;font-size:13px}
+.toc h4{margin:0 0 10px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.toc ol{list-style:none;padding:0;margin:0;border-left:2px solid var(--edge)}
+.toc li a{display:block;padding:5px 12px;color:var(--soft);text-decoration:none;border-left:2px solid transparent;margin-left:-2px}
+.toc li a:hover{color:var(--ink);border-left-color:var(--amber)}
+.toc li .n{font-family:"JetBrains Mono",monospace;color:var(--mute);margin-right:6px;font-size:11px}
+main{max-width:880px;min-width:0}
+main > p, main > ul, main > ol{max-width:72ch}
+section.step{margin:0 0 44px;padding:0 0 32px;border-bottom:1px solid var(--edge)}
+section.step:last-of-type{border-bottom:0}
+.step-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:8px}
+.badge{flex:0 0 auto;width:38px;height:38px;border-radius:8px;background:var(--badge);color:var(--badge-ink);font-family:"JetBrains Mono",monospace;font-weight:600;font-size:14px;display:flex;align-items:center;justify-content:center;margin-top:3px}
+h2{font-size:22px;margin:0;line-height:1.3;text-wrap:balance}
+h3{font-size:16px;margin:26px 0 8px}
+.goal{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 18px}
+@media (max-width:700px){.goal{grid-template-columns:1fr}}
+.goal div{background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:10px 12px;font-size:13.5px}
+.goal b{display:block;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:4px;font-weight:500}
+.box{border:1px solid var(--edge);border-radius:8px;padding:12px 16px;margin:14px 0;background:var(--panel)}
+.box.note{background:var(--note-bg)} .box.warn{background:var(--warn-bg)} .box.do{background:var(--do-bg)}
+.box .k{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:4px}
+.box.note .k{color:var(--steel)} .box.warn .k{color:var(--amber)} .box.do .k{color:var(--green)}
+.box p{margin:4px 0}
+.box ul,.box ol{margin:6px 0 2px;padding-left:20px}
+.tw{overflow-x:auto;margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:var(--panel)}
+th,td{border:1px solid var(--edge);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:var(--row);font-weight:600;font-size:12.5px;white-space:nowrap}
+td.mono,th.mono{font-family:"JetBrains Mono",monospace;font-size:12.5px}
+tr.sub td{background:var(--row);font-weight:600}
+.pill{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:11px;padding:1px 8px;border-radius:999px;border:1px solid var(--edge);white-space:nowrap}
+.pill.vda{color:var(--steel);border-color:var(--steel)} .pill.spb{color:var(--amber);border-color:var(--amber)} .pill.tbd{color:var(--mute);border-style:dashed}
+.pill.ok{color:var(--green);border-color:var(--green)} .pill.no{color:var(--amber);border-color:var(--amber)}
+figure{margin:18px 0;background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:14px}
+figure svg{max-width:100%;height:auto;display:block;color:var(--ink)}
+figcaption{font-size:13px;color:var(--soft);margin-top:10px}
+.ln-vda{stroke:var(--steel)} .ln-spb{stroke:var(--amber)} .ln-tbd{stroke:var(--mute)}
+.tx-vda{fill:var(--steel)} .tx-spb{fill:var(--amber)} .tx-tbd{fill:var(--mute)}
+.mermaid{background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:10px;overflow-x:auto}
+ul.check{list-style:none;padding-left:0}
+ul.check li{padding-left:26px;position:relative;margin:4px 0}
+ul.check li::before{content:"☐";position:absolute;left:4px;color:var(--mute)}
+footer{border-top:1px solid var(--edge);color:var(--mute);font-family:"JetBrains Mono",monospace;font-size:11.5px;padding:18px 0 40px}
+kbd{font-family:"JetBrains Mono",monospace;font-size:.85em;border:1px solid var(--edge);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--row)}
+
+header.top{border-bottom:3px solid var(--ink);padding:34px 0 18px;background:linear-gradient(180deg,rgba(20,24,29,.6),var(--bg))}
+.doc-no{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--amber);display:block;margin-bottom:8px}
+h1{font-size:clamp(1.6rem,1.2rem+1.6vw,2.3rem);font-weight:800;line-height:1.2;margin:0 0 10px;text-wrap:balance}
+.lede{font-size:1.02rem;color:var(--soft);max-width:76ch;margin:0}
+.source{font-family:var(--mono);font-size:11px;color:var(--soft);margin-top:12px} .source b{color:var(--ink)}
+nav.bar{position:sticky;top:0;z-index:5;background:#0F1317;border-bottom:1px solid var(--edge);overflow-x:auto} nav.bar .wrap{display:flex;gap:2px;white-space:nowrap}
+nav.bar a{color:var(--soft);text-decoration:none;font-family:var(--mono);font-size:11.5px;padding:10px 12px;border-bottom:2px solid transparent}
+nav.bar a:hover,nav.bar a:focus-visible{color:#fff;border-bottom-color:var(--green);outline:none}
+nav.bar a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
+.toc{display:none}
+.layout{grid-template-columns:1fr}
+main{max-width:900px}
+footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--soft)} footer a{color:var(--steel)}
+.mermaid{background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:10px;overflow-x:auto;color:var(--ink)}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <span class="doc-no">WORKING · MQTT-BACKBONE · REV A — 2026-09-07 · NEW</span>
+  <h1>MQTT 백본 구축 가이드 — EMQX 위에 VDA 5050과 Sparkplug B를 함께 올리기</h1>
+  <p class="lede">아키텍처 v3.8의 "03 EMQX 백본"을 처음부터 끝까지 세우는 순서다. 결정을 고정하고, 계약을 쓰고, 로컬 브로커를 띄우고, VDA 5050 면과 Sparkplug B 면을 차례로 붙인 뒤, 리허설과 k3s 배포, 검증 자동화로 끝난다. 각 단계는 목표 · 산출물 · 검증으로 닫힌다. 코드는 골격만 두었고 채우는 것은 따라하는 사람의 몫이다. 팀 레포는 수정하지 않았다.</p>
+  <div class="source">SOURCE · <b>아키텍처 v3.8 §03·⑤ · 2_Simulation/t4_agent · 3_FMS/contracts</b> · 기준 표준: VDA 5050 2.0.0 · Sparkplug B 3.0 · EMQX 5.x OSS · MQTT 3.1.1 · 가이드 문서(구현 없음)</div>
+</div></header>
+<nav class="bar" aria-label="문서 내 탐색"><div class="wrap"><a class="nav-home" href="../../index.html">⌂ INDEX</a><a href="#s0">00 전제</a><a href="#s1">01 전체 그림</a><a href="#s2">02 결정</a><a href="#s3">03 계약</a><a href="#s4">04 로컬 EMQX</a><a href="#s5">05 VDA</a><a href="#s6">06 Host</a><a href="#s7">07 Edge</a><a href="#s8">08 정책</a><a href="#s9">09 리허설</a><a href="#s10">10 k3s</a><a href="#s11">11 검증</a><a href="#sA">부록</a><a href="t3_t4_progress.html">T3·T4 진행 ↗</a><a href="isaac_parallel_measure.html">병렬 실측 ↗</a></div></nav>
+<div class="wrap"><div class="layout">
+<nav class="toc"><h4>순서</h4><ol>
+  <li><a href="#s0"><span class="n">00</span>시작 전에</a></li>
+  <li><a href="#s1"><span class="n">01</span>전체 그림</a></li>
+  <li><a href="#s2"><span class="n">02</span>결정 고정</a></li>
+  <li><a href="#s3"><span class="n">03</span>계약 문서</a></li>
+  <li><a href="#s4"><span class="n">04</span>로컬 EMQX</a></li>
+  <li><a href="#s5"><span class="n">05</span>VDA 5050 면</a></li>
+  <li><a href="#s6"><span class="n">06</span>Sparkplug Host</a></li>
+  <li><a href="#s7"><span class="n">07</span>Edge Node 둘</a></li>
+  <li><a href="#s8"><span class="n">08</span>브로커 정책</a></li>
+  <li><a href="#s9"><span class="n">09</span>통합 리허설</a></li>
+  <li><a href="#s10"><span class="n">10</span>k3s 배포</a></li>
+  <li><a href="#s11"><span class="n">11</span>검증 자동화</a></li>
+  <li><a href="#sA"><span class="n">A</span>부록</a></li>
+</ol></nav>
+
+<main>
+
+<section class="step" id="s0">
+<div class="step-head"><div class="badge">00</div><h2>시작 전에 — 전제와 현재 위치</h2></div>
+<p>두 표준은 한 브로커 위에서 공존하지만 섞이지 않는다. VDA 5050은 <code>uagv/v2/{제조사}/{시리얼}/…</code>에 JSON을 싣고, Sparkplug B는 <code>spBv1.0/{group}/{메시지}/{edge node}/{device}</code>에 protobuf를 싣는다. 이 문서는 그 두 트리를 어디에 어떻게 두는지부터 정한다.</p>
+<div class="tw"><table>
+<tr><th>고정할 것</th><th>값</th><th>근거</th></tr>
+<tr><td>브로커</td><td>EMQX 5.x 오픈소스, 컨테이너 이미지로 배포, 상시 가동</td><td>아키텍처 v3.8 "03 EMQX 백본", sim/control이 런보다 먼저 있어야 함</td></tr>
+<tr><td>AMR 제어 프로토콜</td><td>VDA 5050 2.0.0</td><td>T4 <code>vda5050/topics.py</code>가 v2 · 2.0.0으로 고정</td></tr>
+<tr><td>인프라·텔레메트리 프로토콜</td><td>Sparkplug B 3.0 (spBv1.0 네임스페이스)</td><td>팀 결정</td></tr>
+<tr><td>MQTT 버전</td><td>3.1.1, clean session</td><td>Sparkplug가 요구하는 세션 규칙, T4 브리지가 이미 MQTTv311</td></tr>
+<tr><td>클라이언트 라이브러리</td><td>Python paho-mqtt 2.x(있음) + Sparkplug 래퍼 1종, Java는 Eclipse Tahu</td><td>T4는 paho, Sparkplug는 protobuf 인코딩이 필요</td></tr>
+<tr><td>관측 도구</td><td>MQTTX CLI 또는 mosquitto-clients</td><td>구독·retained·LWT 확인용</td></tr>
+</table></div>
+<h3>레포에 지금 있는 것과 없는 것</h3>
+<div class="tw"><table>
+<tr><th>구성 요소</th><th>상태</th><th>위치 · 메모</th></tr>
+<tr><td>VDA 5050 브리지(에이전트 쪽)</td><td><span class="pill ok">있음</span></td><td><code>2_Simulation/t4_agent/…/nodes/bridge_node.py</code> — connection ONLINE retained QoS1, LWT CONNECTIONBROKEN, order·instantActions 구독 QoS0, state 발행 QoS0, 2초 재발행</td></tr>
+<tr><td>VDA 5050 factsheet</td><td><span class="pill no">없음</span></td><td>topics.py에 이름만 있음. 이기종 프로파일을 FMS에 넘기는 규격 통로라 05단계에서 만든다</td></tr>
+<tr><td>FMS 코어 MQTT 셸</td><td><span class="pill no">없음</span></td><td>커널(<code>fms_kernel.py</code>)만 있음. 500 ms 틱 셸을 07단계에서 만든다</td></tr>
+<tr><td>sim-runner 데몬(GPU 서버)</td><td><span class="pill no">없음</span></td><td>sim/control을 받아 <code>warehouse_sim.py</code>(WSIM_N)와 에이전트 ×N을 띄우는 상주 프로세스. 07단계</td></tr>
+<tr><td>EMQX 배포</td><td><span class="pill no">없음</span></td><td>두 compose 파일 어디에도 없음. T4는 로컬 amqtt를 대용으로 씀. 04·10단계</td></tr>
+<tr><td>MQTT 계약 문서</td><td><span class="pill no">없음</span></td><td><code>3_FMS/contracts/SIM_RUN_CONTRACT.md</code>는 프로세스 호출 규약이라 MQTT 페이로드 계약은 03단계에서 새로 쓴다</td></tr>
+<tr><td>Sparkplug B 구현</td><td><span class="pill no">없음</span></td><td>Host·Edge Node 전부 06·07단계</td></tr>
+</table></div>
+<div class="box note"><span class="k">작업 위치 제안</span><p>계약은 <code>3_FMS/contracts/MQTT_CONTRACT.md</code>, 브로커 설정은 <code>3_FMS/infra/emqx/</code>, sim-runner는 <code>2_Simulation/sim_runner/</code>, FMS 셸은 <code>3_FMS/mqtt_shell/</code>, k3s 매니페스트는 <code>4_Web/k8s/emqx/</code>. 팀 컨벤션(브랜치 <code>feature/S15P21A106-&lt;이슈&gt;-…</code>, 지라 키 커밋 접미)은 그대로 따른다.</p></div>
+</section>
+
+<section class="step" id="s1">
+<div class="step-head"><div class="badge">01</div><h2>전체 그림 — 두 면, 한 브로커, 경계 하나</h2></div>
+<p>왼쪽은 홈 GPU 서버, 오른쪽은 EC2 k3s다. 브로커는 EC2에만 있고, GPU 서버 쪽 프로세스는 tailscale 아웃바운드로 붙는다. 파란 선이 VDA 5050 면(FMS ↔ AMR 제어), 주황 선이 Sparkplug B 면(런 제어 · 텔레메트리 · 세션 수명)이다.</p>
+<figure>
+<svg viewBox="0 0 960 400" role="img" aria-label="홈 GPU 서버의 sim-runner·warehouse_sim·T4 에이전트와 EC2 k3s의 EMQX·Primary Host·fms-core·시뮬 WMS가 tailscale 경계를 넘어 두 레인(VDA 5050, Sparkplug B)으로 EMQX에 붙는 토폴로지">
+<defs>
+  <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+  <marker id="ah-vda" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="tx-vda"/></marker>
+  <marker id="ah-spb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="tx-spb"/></marker>
+  <marker id="ah-tbd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="tx-tbd"/></marker>
+</defs>
+<g font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="currentColor">
+  <!-- zones -->
+  <rect x="20" y="40" width="380" height="300" rx="10" fill="none" stroke="currentColor" stroke-opacity=".35"/>
+  <text x="34" y="62" font-size="12.5" font-weight="600">홈 GPU 서버 (RTX 5080 · 64 GB)</text>
+  <rect x="460" y="40" width="490" height="300" rx="10" fill="none" stroke="currentColor" stroke-opacity=".35"/>
+  <text x="474" y="62" font-size="12.5" font-weight="600">EC2 t3.xlarge · k3s (nginx :443만 외부 노출)</text>
+  <line x1="430" y1="40" x2="430" y2="340" stroke="currentColor" stroke-dasharray="5 5" stroke-opacity=".6"/>
+  <text x="430" y="360" text-anchor="middle" font-size="11" fill-opacity=".8">tailscale · 홈→EC2 아웃바운드만</text>
+  <!-- left boxes -->
+  <rect x="50" y="80" width="150" height="48" rx="6" fill="none" stroke="currentColor"/>
+  <text x="125" y="99" text-anchor="middle" font-weight="600">sim-runner 데몬</text>
+  <text x="125" y="116" text-anchor="middle" font-size="11" fill-opacity=".75">Sparkplug Edge Node · 상주</text>
+  <rect x="50" y="210" width="150" height="48" rx="6" fill="none" stroke="currentColor"/>
+  <text x="125" y="229" text-anchor="middle" font-weight="600">warehouse_sim.py</text>
+  <text x="125" y="246" text-anchor="middle" font-size="11" fill-opacity=".75">Isaac · WSIM_N 로봇 · 런 단위</text>
+  <rect x="230" y="210" width="130" height="48" rx="6" fill="none" stroke="currentColor"/>
+  <text x="295" y="229" text-anchor="middle" font-weight="600">T4 에이전트 ×N</text>
+  <text x="295" y="246" text-anchor="middle" font-size="11" fill-opacity=".75">VDA 5050 브리지 · 런 단위</text>
+  <!-- runner -> sim, runner -> agents -->
+  <line x1="125" y1="128" x2="125" y2="208" stroke="currentColor" marker-end="url(#ah)"/>
+  <text x="132" y="172" font-size="11">기동 · 감시 · 종료</text>
+  <polyline points="200,116 295,116 295,208" fill="none" stroke="currentColor" marker-end="url(#ah)"/>
+  <text x="215" y="110" font-size="11">기동 (serial · MQTT 계정)</text>
+  <line x1="200" y1="240" x2="228" y2="240" stroke="currentColor" marker-start="url(#ah)" marker-end="url(#ah)"/>
+  <text x="214" y="272" text-anchor="middle" font-size="11">ROS 2 (DDS)</text>
+  <!-- broker -->
+  <rect x="570" y="176" width="120" height="64" rx="8" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  <text x="630" y="204" text-anchor="middle" font-size="14" font-weight="700">EMQX</text>
+  <text x="630" y="222" text-anchor="middle" font-size="11" fill-opacity=".75">상시 · 1883 (tailnet 내부)</text>
+  <!-- right boxes -->
+  <rect x="800" y="80" width="130" height="48" rx="6" fill="none" stroke="currentColor"/>
+  <text x="865" y="99" text-anchor="middle" font-weight="600">Primary Host</text>
+  <text x="865" y="116" text-anchor="middle" font-size="11" fill-opacity=".75">오케스트레이터 (계산엔진 워커)</text>
+  <rect x="800" y="184" width="130" height="48" rx="6" fill="none" stroke="currentColor"/>
+  <text x="865" y="203" text-anchor="middle" font-weight="600">fms-core Job</text>
+  <text x="865" y="220" text-anchor="middle" font-size="11" fill-opacity=".75">Edge Node + VDA 마스터 · 런 단위</text>
+  <rect x="800" y="280" width="130" height="48" rx="6" fill="none" stroke="currentColor"/>
+  <text x="865" y="299" text-anchor="middle" font-weight="600">시뮬 WMS</text>
+  <text x="865" y="316" text-anchor="middle" font-size="11" fill-opacity=".75">Spring · H2 · 런 단위</text>
+  <!-- VDA lane: agents <-> EMQX -->
+  <line x1="360" y1="228" x2="568" y2="228" class="ln-vda" stroke-width="2" marker-start="url(#ah-vda)" marker-end="url(#ah-vda)"/>
+  <text x="464" y="212" text-anchor="middle" font-size="11" class="tx-vda">uagv/v2/{mfr}/{serial} · JSON</text>
+  <text x="464" y="246" text-anchor="middle" font-size="10.5" class="tx-vda">state · connection · factsheet →</text>
+  <text x="464" y="260" text-anchor="middle" font-size="10.5" class="tx-vda">← order · instantActions</text>
+  <!-- SPB lane: runner <-> EMQX -->
+  <polyline points="200,92 600,92 600,174" fill="none" class="ln-spb" stroke-width="2" marker-start="url(#ah-spb)" marker-end="url(#ah-spb)"/>
+  <text x="400" y="86" text-anchor="middle" font-size="11" class="tx-spb">spBv1.0 · NBIRTH/NDEATH · DBIRTH/DDATA (protobuf) ← NCMD start/stop</text>
+  <!-- Host <-> EMQX -->
+  <polyline points="800,104 650,104 650,174" fill="none" class="ln-spb" stroke-width="2" marker-start="url(#ah-spb)" marker-end="url(#ah-spb)"/>
+  <text x="725" y="98" text-anchor="middle" font-size="11" class="tx-spb">STATE · NCMD</text>
+  <!-- fms <-> EMQX two lanes -->
+  <line x1="690" y1="196" x2="798" y2="196" class="ln-vda" stroke-width="2" marker-start="url(#ah-vda)" marker-end="url(#ah-vda)"/>
+  <text x="744" y="190" text-anchor="middle" font-size="10.5" class="tx-vda">uagv order↔state</text>
+  <line x1="690" y1="222" x2="798" y2="222" class="ln-spb" stroke-width="2" marker-start="url(#ah-spb)" marker-end="url(#ah-spb)"/>
+  <text x="744" y="236" text-anchor="middle" font-size="10.5" class="tx-spb">NDATA fms/event</text>
+  <!-- WMS -> EMQX -->
+  <polyline points="800,304 630,304 630,242" fill="none" class="ln-tbd" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-tbd)"/>
+  <text x="715" y="298" text-anchor="middle" font-size="11" class="tx-tbd">biz/order — 레인 미결정</text>
+  <!-- legend -->
+  <line x1="40" y1="382" x2="70" y2="382" class="ln-vda" stroke-width="2"/><text x="78" y="386" font-size="11">VDA 5050 — FMS ↔ AMR 제어면</text>
+  <line x1="300" y1="382" x2="330" y2="382" class="ln-spb" stroke-width="2"/><text x="338" y="386" font-size="11">Sparkplug B — 런 제어 · 텔레메트리 · 세션 수명</text>
+  <line x1="640" y1="382" x2="670" y2="382" class="ln-tbd" stroke-width="2" stroke-dasharray="6 4"/><text x="678" y="386" font-size="11">02단계에서 결정</text>
+</g>
+</svg>
+<figcaption>브로커는 EC2에 하나만 두고, GPU 서버 쪽은 sim-runner(Edge Node)와 에이전트(VDA 브리지)가 각각 자기 레인으로 붙는다. Isaac과 에이전트는 런 단위로 뜨고 내려가지만 sim-runner와 EMQX, Host는 상시다.</figcaption>
+</figure>
+
+<h3>레인 배정표</h3>
+<div class="tw"><table>
+<tr><th>레인</th><th>표준</th><th>발행 → 구독</th><th class="mono">토픽</th><th>QoS / retained / LWT</th></tr>
+<tr><td>주문·즉시동작</td><td><span class="pill vda">VDA 5050</span></td><td>fms-core → 에이전트</td><td class="mono">uagv/v2/{mfr}/{serial}/order · instantActions</td><td>0 / 아니오 / —</td></tr>
+<tr><td>상태·시각화</td><td><span class="pill vda">VDA 5050</span></td><td>에이전트 → fms-core</td><td class="mono">…/state · visualization</td><td>0 / 아니오 / —</td></tr>
+<tr><td>접속 상태</td><td><span class="pill vda">VDA 5050</span></td><td>에이전트 → fms-core</td><td class="mono">…/connection</td><td>1 / 예 / CONNECTIONBROKEN</td></tr>
+<tr><td>팩트시트</td><td><span class="pill vda">VDA 5050</span></td><td>에이전트 → fms-core</td><td class="mono">…/factsheet</td><td>1 / 예 / —</td></tr>
+<tr><td>런 제어 (sim/control)</td><td><span class="pill spb">Sparkplug B</span></td><td>Host → sim-runner</td><td class="mono">spBv1.0/{group}/NCMD/sim-runner-gpu01</td><td>0 / 아니오 / —</td></tr>
+<tr><td>런 텔레메트리</td><td><span class="pill spb">Sparkplug B</span></td><td>sim-runner → Host</td><td class="mono">…/NDATA/sim-runner-gpu01 · …/DDATA/sim-runner-gpu01/{serial}</td><td>0 / 아니오 / —</td></tr>
+<tr><td>FMS 이벤트 (fms/event)</td><td><span class="pill spb">Sparkplug B</span></td><td>fms-core → Host·WMS</td><td class="mono">…/NDATA/fms-core</td><td>0 / 아니오 / —</td></tr>
+<tr><td>세션 수명</td><td><span class="pill spb">Sparkplug B</span></td><td>각 Edge, Host</td><td class="mono">…/NBIRTH · NDEATH · DBIRTH · DDEATH, spBv1.0/STATE/{host}</td><td>NDEATH는 LWT QoS1 · STATE는 QoS1 retained</td></tr>
+<tr><td>주문 발생 (biz/order)</td><td><span class="pill tbd">02단계 결정</span></td><td>시뮬 WMS → fms-core</td><td class="mono">…/NDATA/sim-wms 또는 biz/v1/order</td><td>0 / 아니오</td></tr>
+</table></div>
+<div class="box warn"><span class="k">문서와 규격의 차이</span><p>아키텍처 그림의 "MQTT · QoS1 · retained"는 VDA 5050 2.0 표와 다르다. 규격은 connection과 factsheet만 retained이고 order·state는 retained가 아니다. state를 retained로 두면 FMS 재접속 때 옛 위치가 재생된다. 코드(T4 브리지)는 이미 규격대로이니 문서를 고치는 쪽이 맞다.</p></div>
+
+<h3>런 한 번의 메시지 순서</h3>
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant H as Host (오케스트레이터)
+  participant B as EMQX
+  participant R as sim-runner (GPU)
+  participant A as T4 에이전트 amr01..N
+  participant F as fms-core
+  H->>B: STATE online (retained, LWT = offline)
+  R->>B: NBIRTH bdSeq·seq 0·Runner/* (LWT = NDEATH)
+  H->>B: NCMD Run Control/Start {run_id, n_robots, models}
+  B->>R: NCMD 전달
+  R->>R: warehouse_sim (WSIM_N) + 에이전트 ×N 기동, ready 대기
+  A->>B: connection ONLINE (retained, LWT = CONNECTIONBROKEN)
+  A->>B: factsheet (retained)
+  R->>B: DBIRTH amr01..N
+  F->>B: order (틱마다 노드 1개 released)
+  B->>A: order
+  A->>B: state (lastNodeId 변화 즉시 + 주기)
+  B->>F: state
+  R->>B: DDATA Robot/* · NDATA Runner/Heartbeat (변화 시)
+  F->>B: NDATA Fms/Event
+  H->>B: NCMD Run Control/Stop
+  B->>R: Stop 전달
+  A->>B: connection OFFLINE (retained)
+  R->>B: DDEATH amr01..N
+</pre>
+</section>
+
+<section class="step" id="s2">
+<div class="step-head"><div class="badge">02</div><h2>결정 고정 — 이름 여섯 개와 규칙 네 개</h2></div>
+<div class="goal"><div><b>목표</b>토픽·계정·ACL·스키마가 전부 파생되는 상위 결정을 표 하나로 고정</div><div><b>산출물</b><code>MQTT_CONTRACT.md</code> §1 "결정 기록" 표</div><div><b>검증</b>빈칸 없음, 팀 리뷰 1회</div></div>
+<p>아래 표의 "권장"은 이 레포 상황에 맞춘 기본값이다. 바꿔도 되지만 빈칸으로 다음 단계로 넘어가면 안 된다. 뒤 단계의 모든 예시는 권장값을 쓴다.</p>
+<div class="tw"><table>
+<tr><th>#</th><th>항목</th><th>선택지</th><th>권장</th><th>내 결정</th></tr>
+<tr><td>1</td><td>Sparkplug group_id</td><td>사이트 고정 / 런 ID</td><td><code>santa</code> 고정. 런 ID는 메트릭 <code>Runner/RunId</code>로</td><td></td></tr>
+<tr><td>2</td><td>edge_node_id</td><td>프로세스 단위 / 호스트 단위</td><td>프로세스 단위: <code>sim-runner-gpu01</code>, <code>fms-core</code>, (<code>sim-wms</code>)</td><td></td></tr>
+<tr><td>3</td><td>device_id</td><td>로봇 시리얼 / 런 접두 시리얼</td><td>VDA serialNumber와 동일: <code>amr01</code>…</td><td></td></tr>
+<tr><td>4</td><td>Primary Host id · 프로세스</td><td>계산엔진 워커(Python) / Spring BE</td><td><code>host-orch</code> = 계산엔진 워커. BE는 AMQP 결과 이벤트로 충분, Java Tahu 의존 회피</td><td></td></tr>
+<tr><td>5</td><td>VDA manufacturer</td><td>고정 / 기종별</td><td>기종별: iw.hub는 <code>idealworks</code>, 두 번째 기종은 그 제조사. FMS 구독은 <code>uagv/v2/+/+/state</code></td><td></td></tr>
+<tr><td>6</td><td>VDA serialNumber 규칙</td><td>고정 / 런마다 새로</td><td>기종당 고정 풀(<code>amr01</code>…). 같은 시리얼에 다른 기종을 배정하지 않는다(팩트시트 retained 충돌 방지)</td><td></td></tr>
+<tr><td>7</td><td>MQTT clientId · username</td><td>임의 / 규칙</td><td>username = 시리얼 또는 edge_node_id, clientId = username. ACL이 <code>${username}</code>으로 걸린다</td><td></td></tr>
+<tr><td>8</td><td>QoS·retained 정책</td><td>문서(QoS1 retained 전면) / 규격</td><td>규격대로: 01단계 레인표</td><td></td></tr>
+<tr><td>9</td><td>retained 정리 정책</td><td>그대로 둠 / 런 종료 시 삭제</td><td>connection OFFLINE·factsheet는 그대로 둔다(규격). 시리얼 퇴역 시에만 빈 페이로드 retained로 삭제</td><td></td></tr>
+<tr><td>10</td><td>biz/order 레인</td><td>Sparkplug 문자열 메트릭 / 일반 JSON 토픽</td><td>1차는 일반 JSON <code>biz/v1/order</code>(Spring 의존 최소). 평가 요건이 "전면 Sparkplug"면 2차에 <code>NDATA/sim-wms</code>의 Text 메트릭으로 이전</td><td></td></tr>
+<tr><td>11</td><td>런 ↔ Sparkplug 세션</td><td>런마다 NBIRTH / 상시 NBIRTH + 런마다 DBIRTH</td><td>sim-runner는 상시 NBIRTH, 런 시작 = DBIRTH ×N, 런 종료 = DDEATH ×N</td><td></td></tr>
+<tr><td>12</td><td>하트비트·타임아웃</td><td>—</td><td><code>Runner/Heartbeat</code> 5 s, Host는 3회 결측이면 런 실패 처리 후 Stop 재발행</td><td></td></tr>
+</table></div>
+<h3>세션 규칙 요약 (외워 둘 것)</h3>
+<div class="tw"><table>
+<tr><th></th><th>VDA 5050</th><th>Sparkplug B</th></tr>
+<tr><td>접속 시</td><td>connection ONLINE retained QoS1 발행, 이어서 factsheet retained QoS1</td><td>Will에 NDEATH(bdSeq) 등록 후 접속, NBIRTH(bdSeq, seq=0, 전 메트릭 초기값, <code>Node Control/Rebirth</code>) 발행</td></tr>
+<tr><td>정상 종료</td><td>connection OFFLINE retained 발행 후 disconnect</td><td>DDEATH(디바이스), NDEATH 발행 후 disconnect</td></tr>
+<tr><td>비정상 단절</td><td>브로커가 LWT로 CONNECTIONBROKEN retained 발행</td><td>브로커가 LWT로 NDEATH 발행. Host는 그 노드의 디바이스를 모두 stale 처리</td></tr>
+<tr><td>순번</td><td>headerId 단조 증가(토픽별)</td><td>seq 0~255 순환(노드당), bdSeq는 MQTT 세션마다 +1</td></tr>
+<tr><td>Host 재기동</td><td>해당 없음. FMS는 state에 담긴 orderId·lastNodeId로 복구</td><td>STATE online 타임스탬프가 새로우면 Edge는 NBIRTH·DBIRTH를 다시 낸다</td></tr>
+<tr><td>순번 이상</td><td>headerId 역행은 무시</td><td>seq 갭 감지 시 Host가 <code>Node Control/Rebirth = true</code> NCMD</td></tr>
+</table></div>
+</section>
+
+<section class="step" id="s3">
+<div class="step-head"><div class="badge">03</div><h2>계약 문서 — 코드보다 먼저 고정하는 것</h2></div>
+<div class="goal"><div><b>목표</b>페이로드·토픽·메트릭을 문서로 고정하고 버전을 붙인다</div><div><b>산출물</b><code>3_FMS/contracts/MQTT_CONTRACT.md</code> v1.0 + <code>contracts/schemas/</code></div><div><b>검증</b>11단계의 스키마 테스트가 이 문서를 읽는다</div></div>
+<p><code>SIM_RUN_CONTRACT.md</code>가 시뮬 호출 규약을 고정한 것과 같은 자리에 MQTT 규약을 둔다. 문서 골격은 다음과 같다.</p>
+<pre><code># MQTT 계약 — EMQX 백본 (v1.0, 날짜)
+1. 결정 기록            ← 02단계 표 그대로
+2. 레인·토픽·QoS 표      ← 01단계 표 그대로
+3. 계정·ACL 표          ← 08단계에서 채움
+4. VDA 5050 2.0.0
+   4.1 사용하는 메시지·필수 필드 (order, instantActions, state, connection, factsheet)
+   4.2 factsheet 채우기 규칙 (기종 프로파일 → 필드)
+   4.3 orderUpdateId 스티칭 규칙 (T4 README의 표를 옮김)
+5. Sparkplug B 3.0
+   5.1 아이덴티티 (group / edge / device / host)
+   5.2 메트릭 사전
+   5.3 NCMD 명령 표
+   5.4 세션 규칙 (02단계 요약)
+6. 변경 절차: 이 문서를 먼저 고치고 버전을 올린 뒤 호출자 전원 공지</code></pre>
+
+<h3>5.2 메트릭 사전 — 초기값 표</h3>
+<p>NBIRTH·DBIRTH에는 그 노드가 앞으로 낼 <em>모든</em> 메트릭이 초기값과 함께 들어가야 한다. 나중에 메트릭을 추가하면 Rebirth가 필요하다. 그래서 사전을 먼저 쓴다.</p>
+<div class="tw"><table>
+<tr><th>메트릭 이름</th><th>소속</th><th>타입</th><th>단위</th><th>변화 시만(RBE)</th><th>뜻</th></tr>
+<tr class="sub"><td colspan="6">Edge Node <code>sim-runner-gpu01</code> (NBIRTH / NDATA)</td></tr>
+<tr><td class="mono">bdSeq</td><td>노드</td><td>Int64</td><td></td><td>—</td><td>규격 필수. 세션마다 +1, NDEATH와 일치</td></tr>
+<tr><td class="mono">Node Control/Rebirth</td><td>노드</td><td>Boolean</td><td></td><td>—</td><td>규격 필수. Host가 true로 쓰면 NBIRTH 재발행</td></tr>
+<tr><td class="mono">Runner/State</td><td>노드</td><td>String</td><td></td><td>예</td><td>IDLE · STARTING · RUNNING · STOPPING · ERROR</td></tr>
+<tr><td class="mono">Runner/RunId</td><td>노드</td><td>String</td><td></td><td>예</td><td>현재 런 ID, 없으면 빈 문자열</td></tr>
+<tr><td class="mono">Runner/Heartbeat</td><td>노드</td><td>Int64</td><td>ms</td><td>아니오(5 s 주기)</td><td>Host 타임아웃 근거</td></tr>
+<tr><td class="mono">Runner/RTF</td><td>노드</td><td>Double</td><td></td><td>예</td><td>/clock 대 벽시계 비율</td></tr>
+<tr><td class="mono">Runner/IsaacInstances</td><td>노드</td><td>Int32</td><td></td><td>예</td><td>살아 있는 Isaac 프로세스 수</td></tr>
+<tr><td class="mono">Runner/RamMB · Runner/VramMB</td><td>노드</td><td>Int32</td><td>MB</td><td>예(±256)</td><td>병렬 실측 보고서의 상한과 대조</td></tr>
+<tr><td class="mono">Run Control/Start</td><td>노드</td><td>Text</td><td>JSON</td><td>—</td><td>NCMD용. NBIRTH에 빈 문자열로 선언</td></tr>
+<tr><td class="mono">Run Control/Stop</td><td>노드</td><td>Boolean</td><td></td><td>—</td><td>NCMD용. NBIRTH에 false로 선언</td></tr>
+<tr class="sub"><td colspan="6">Device <code>amr01</code>… (DBIRTH / DDATA) — 에이전트 state의 거울</td></tr>
+<tr><td class="mono">Robot/Model</td><td>디바이스</td><td>String</td><td></td><td>—</td><td>factsheet seriesName과 동일</td></tr>
+<tr><td class="mono">Robot/Connection</td><td>디바이스</td><td>String</td><td></td><td>예</td><td>ONLINE · OFFLINE · CONNECTIONBROKEN 거울</td></tr>
+<tr><td class="mono">Robot/PoseX · PoseY · Yaw</td><td>디바이스</td><td>Double</td><td>m · rad</td><td>예(0.05 m · 0.05 rad)</td><td>agvPosition 거울</td></tr>
+<tr><td class="mono">Robot/Battery</td><td>디바이스</td><td>Double</td><td>%</td><td>예(1 %)</td><td>batteryState.batteryCharge</td></tr>
+<tr><td class="mono">Robot/LastNodeId</td><td>디바이스</td><td>String</td><td></td><td>예</td><td>틱 ack 관측용</td></tr>
+<tr><td class="mono">Robot/AmclErr</td><td>디바이스</td><td>Double</td><td>m</td><td>예</td><td>있으면. 없으면 NaN 대신 메트릭 자체를 빼라</td></tr>
+<tr class="sub"><td colspan="6">Edge Node <code>fms-core</code> (NBIRTH / NDATA)</td></tr>
+<tr><td class="mono">bdSeq · Node Control/Rebirth</td><td>노드</td><td></td><td></td><td></td><td>규격 필수</td></tr>
+<tr><td class="mono">Fms/RunId · Fms/Tick</td><td>노드</td><td>String · Int64</td><td></td><td>예</td><td>500 ms 틱 카운터</td></tr>
+<tr><td class="mono">Fms/RobotsOnline</td><td>노드</td><td>Int32</td><td></td><td>예</td><td>connection ONLINE인 로봇 수</td></tr>
+<tr><td class="mono">Fms/Event</td><td>노드</td><td>Text</td><td>JSON</td><td>이벤트마다</td><td>{type: task_assigned · task_done · order_shipped · stall, …}. 이것이 fms/event</td></tr>
+</table></div>
+<div class="box note"><span class="k">왜 Text 메트릭에 JSON인가</span><p>Sparkplug 메트릭은 평평한 키·값이다. 이벤트처럼 구조가 있는 것은 Template 타입으로 정의할 수도 있지만, 라이브러리마다 지원이 다르고 스키마를 두 벌 관리하게 된다. 1차는 Text 메트릭에 JSON 문자열을 싣고 JSON 스키마는 4장에서 관리한다.</p></div>
+
+<h3>5.3 NCMD 명령 표</h3>
+<div class="tw"><table>
+<tr><th class="mono">메트릭</th><th>값</th><th>sim-runner 동작</th><th>응답</th></tr>
+<tr><td class="mono">Run Control/Start</td><td>Text JSON: <code>{"run_id","scenario_pkg","n_robots","models":[{"serial","manufacturer","model"}],"ros_domain_id","timeout_s"}</code></td><td>Isaac + 에이전트 기동, ready 대기, DBIRTH ×N</td><td><code>Runner/State</code> STARTING → RUNNING, 실패 시 ERROR + <code>Runner/RunId</code> 비움</td></tr>
+<tr><td class="mono">Run Control/Stop</td><td>Boolean true</td><td>에이전트 SIGTERM(OFFLINE 발행 유도) → DDEATH ×N → Isaac 종료</td><td><code>Runner/State</code> STOPPING → IDLE</td></tr>
+<tr><td class="mono">Node Control/Rebirth</td><td>Boolean true</td><td>NBIRTH와 살아 있는 DBIRTH 재발행</td><td>—</td></tr>
+</table></div>
+
+<h3>4.2 factsheet 채우기 규칙</h3>
+<p>앞서 정리한 기종 프로파일 열 개가 그대로 factsheet가 된다. 이기종 운영에서 FMS가 기종별 상수를 얻는 공식 통로다.</p>
+<div class="tw"><table>
+<tr><th>프로파일 값</th><th class="mono">factsheet 필드</th><th>iw.hub 예</th></tr>
+<tr><td>기종 이름</td><td class="mono">typeSpecification.seriesName</td><td>iw.hub</td></tr>
+<tr><td>구동 방식</td><td class="mono">typeSpecification.agvKinematic</td><td>DIFF (전방향이면 OMNI)</td></tr>
+<tr><td>용도 등급</td><td class="mono">typeSpecification.agvClass</td><td>CARRIER</td></tr>
+<tr><td>적재 한계</td><td class="mono">typeSpecification.maxLoadMass</td><td>카탈로그</td></tr>
+<tr><td>최고·최저 속도, 가감속</td><td class="mono">physicalParameters.speedMax · speedMin · accelerationMax · decelerationMax</td><td>1.2 · 0.05 · 1.0 · 1.0 (agent.yaml과 같은 출처)</td></tr>
+<tr><td>길이 · 폭 · 높이</td><td class="mono">physicalParameters.length · width · heightMin · heightMax</td><td>1.43 · 0.66 · 0.41</td></tr>
+<tr><td>바퀴 반경 · 트랙 · 축 위치</td><td class="mono">agvGeometry.wheelDefinitions[]</td><td>r 0.08, y ±0.29, DRIVE ×2 + CASTER ×2</td></tr>
+<tr><td>회전 시 외곽</td><td class="mono">agvGeometry.envelopes2d[]</td><td>turn_probe 스윙 반경 1.09 m 다각형</td></tr>
+<tr><td>프로토콜 한계</td><td class="mono">protocolLimits.maxStringLens · maxArrayLens · timing</td><td>state 주기 2 s, 최소 0.5 s</td></tr>
+</table></div>
+<div class="box do"><span class="k">이 단계의 체크</span><ul class="check"><li>결정 기록 12칸 모두 채움</li><li>메트릭 사전에 규격 필수 3종(bdSeq, Node Control/Rebirth, seq 규칙) 명시</li><li>VDA 공식 JSON 스키마 6종을 <code>contracts/schemas/vda5050/2.0.0/</code>에 복사(출처·커밋 해시 기록)</li><li>Fms/Event와 Run Control/Start의 JSON 스키마를 <code>contracts/schemas/spb/</code>에 작성</li></ul></div>
+</section>
+
+<section class="step" id="s4">
+<div class="step-head"><div class="badge">04</div><h2>로컬 EMQX — 이미지 하나, 설정 파일 둘</h2></div>
+<div class="goal"><div><b>목표</b>인증·ACL·retained가 켜진 EMQX를 노트북에서 띄운다</div><div><b>산출물</b><code>3_FMS/infra/emqx/{compose.yml, emqx.conf, acl.conf}</code></div><div><b>검증</b>익명 접속 거부, 타인 토픽 발행 거부, retained·LWT 관측</div></div>
+<pre><code># 3_FMS/infra/emqx/compose.yml
+services:
+  emqx:
+    image: emqx/emqx:5.8.4            # 5.x 최신 안정판으로 고정하고 버전은 계약에 적는다
+    container_name: emqx
+    ports:
+      - "1883:1883"                   # MQTT
+      - "18083:18083"                 # 대시보드 — 로컬 전용, 배포 시 노출 금지
+    volumes:
+      - ./emqx.conf:/opt/emqx/etc/emqx.conf:ro
+      - ./acl.conf:/opt/emqx/etc/acl.conf:ro
+      - emqx-data:/opt/emqx/data      # retained 메시지·내장 사용자 DB
+volumes:
+  emqx-data: {}</code></pre>
+<pre><code># 3_FMS/infra/emqx/emqx.conf  (HOCON — 키 이름은 사용 중인 5.x 문서로 대조)
+node { name = "emqx@127.0.0.1", cookie = "change-me" }
+listeners.tcp.default { bind = "0.0.0.0:1883" }
+dashboard { listeners.http.bind = 18083, default_password = "change-me" }
+authentication = [
+  { mechanism = password_based, backend = built_in_database, user_id_type = username }
+]
+authorization {
+  no_match = deny                    # 규칙에 없으면 거부
+  deny_action = disconnect
+  sources = [ { type = file, enable = true, path = "etc/acl.conf" } ]
+}
+mqtt { max_packet_size = "1MB", max_qos_allowed = 1, retain_available = true }
+retainer { enable = true }</code></pre>
+<p>ACL은 02단계의 이름 규칙(username = 시리얼 또는 edge_node_id)에 기대어 쓴다. <code>${username}</code> 자리표시자 덕에 에이전트 규칙은 한 줄로 끝난다.</p>
+<pre><code>%% 3_FMS/infra/emqx/acl.conf  — 위에서 아래로 첫 일치, 마지막은 전부 거부
+%% 에이전트: 자기 시리얼 아래만
+{allow, {username, {re, "^amr[0-9]+$"}}, publish,
+  ["uagv/v2/+/${username}/state", "uagv/v2/+/${username}/connection",
+   "uagv/v2/+/${username}/factsheet", "uagv/v2/+/${username}/visualization"]}.
+{allow, {username, {re, "^amr[0-9]+$"}}, subscribe,
+  ["uagv/v2/+/${username}/order", "uagv/v2/+/${username}/instantActions"]}.
+%% FMS 코어: VDA 마스터 + Sparkplug Edge
+{allow, {username, "fms-core"}, publish,
+  ["uagv/v2/+/+/order", "uagv/v2/+/+/instantActions",
+   "spBv1.0/santa/NBIRTH/fms-core", "spBv1.0/santa/NDEATH/fms-core", "spBv1.0/santa/NDATA/fms-core"]}.
+{allow, {username, "fms-core"}, subscribe,
+  ["uagv/v2/+/+/state", "uagv/v2/+/+/connection", "uagv/v2/+/+/factsheet",
+   "spBv1.0/STATE/+", "spBv1.0/santa/NCMD/fms-core", "biz/v1/#"]}.
+%% sim-runner: Sparkplug Edge + state 거울 구독
+{allow, {username, "sim-runner-gpu01"}, publish,
+  ["spBv1.0/santa/NBIRTH/sim-runner-gpu01", "spBv1.0/santa/NDEATH/sim-runner-gpu01",
+   "spBv1.0/santa/NDATA/sim-runner-gpu01",  "spBv1.0/santa/DBIRTH/sim-runner-gpu01/+",
+   "spBv1.0/santa/DDEATH/sim-runner-gpu01/+", "spBv1.0/santa/DDATA/sim-runner-gpu01/+"]}.
+{allow, {username, "sim-runner-gpu01"}, subscribe,
+  ["spBv1.0/santa/NCMD/sim-runner-gpu01", "spBv1.0/santa/DCMD/sim-runner-gpu01/+",
+   "spBv1.0/STATE/+", "uagv/v2/+/+/state", "uagv/v2/+/+/connection"]}.
+%% Primary Host
+{allow, {username, "host-orch"}, publish, ["spBv1.0/STATE/host-orch", "spBv1.0/santa/NCMD/+", "spBv1.0/santa/DCMD/+/+"]}.
+{allow, {username, "host-orch"}, subscribe, ["spBv1.0/#"]}.
+%% 시뮬 WMS
+{allow, {username, "sim-wms"}, publish,   ["biz/v1/#"]}.
+{allow, {username, "sim-wms"}, subscribe, ["spBv1.0/santa/NDATA/fms-core"]}.
+{deny, all}.</code></pre>
+<h3>사용자 등록</h3>
+<p>내장 DB 사용자는 대시보드(Access Control → Authentication → Users)에서 만들거나, API 키를 발급받아 REST로 넣는다. 계정 목록은 계약 문서 3장과 같아야 한다: <code>amr01</code>…, <code>fms-core</code>, <code>sim-runner-gpu01</code>, <code>host-orch</code>, <code>sim-wms</code>.</p>
+<pre><code>curl -u "$API_KEY:$API_SECRET" -H 'Content-Type: application/json' \
+  -X POST http://localhost:18083/api/v5/authentication/password_based:built_in_database/users \
+  -d '{"user_id":"amr01","password":"<비밀번호>"}'</code></pre>
+<h3>검증</h3>
+<pre><code>npm i -g mqttx-cli              # 또는 apt install mosquitto-clients
+# 1) 익명 접속 → 거부되어야 한다
+mqttx sub -h localhost -t '#'
+# 2) 관측 창 하나를 열어 둔다 (host-orch는 전부 구독 가능)
+mqttx sub -h localhost -u host-orch -P '…' -t 'uagv/v2/+/+/#' -t 'spBv1.0/#' -v
+# 3) retained: amr01이 connection을 올리고, 새 구독자가 바로 받는지
+mqttx pub -h localhost -u amr01 -P '…' -q 1 -r -t 'uagv/v2/idealworks/amr01/connection' \
+  -m '{"headerId":1,"timestamp":"2026-09-07T00:00:00Z","version":"2.0.0","manufacturer":"idealworks","serialNumber":"amr01","connectionState":"ONLINE"}'
+mqttx sub -h localhost -u host-orch -P '…' -t 'uagv/v2/+/+/connection' -v   # 즉시 ONLINE 수신
+# 4) ACL: amr01이 amr02 토픽에 쓰면 끊겨야 한다 (deny_action = disconnect)
+mqttx pub -h localhost -u amr01 -P '…' -t 'uagv/v2/idealworks/amr02/state' -m '{}'
+# 5) LWT: will을 걸고 접속한 뒤 프로세스를 kill -9 → keepalive×1.5 안에 will 수신
+mqttx sub -h localhost -u amr01 -P '…' -t 'uagv/v2/idealworks/amr01/order' \
+  --will-topic 'uagv/v2/idealworks/amr01/connection' --will-message '{"connectionState":"CONNECTIONBROKEN"}' --will-qos 1 --will-retain</code></pre>
+<div class="box warn"><span class="k">Sparkplug 토픽은 눈으로 못 읽는다</span><p>protobuf라 mqttx 창에는 바이트가 찍힌다. 06단계에서 만드는 디코드 스크립트(<code>tools/spb_tap.py</code>)를 관측 창으로 쓴다. 04단계에서는 VDA 토픽만 확인해도 된다.</p></div>
+</section>
+
+<section class="step" id="s5">
+<div class="step-head"><div class="badge">05</div><h2>VDA 5050 면 — T4 브리지를 EMQX에 붙이고 factsheet를 채운다</h2></div>
+<div class="goal"><div><b>목표</b>에이전트 ×N이 EMQX에 계정으로 붙고, factsheet까지 규격대로 낸다</div><div><b>산출물</b>launch 인자 추가, <code>StateBuilder.factsheet()</code>, 기종 프로파일 파일</div><div><b>검증</b>fake_fms → EMQX → 에이전트 7틱 E2E, retained 2종 관측</div></div>
+<h3>5-1 접속 인자</h3>
+<p>브리지 노드에는 <code>mqtt_username</code>·<code>mqtt_password</code> 파라미터가 이미 있지만 <code>agent.launch.py</code>는 그 인자를 노출하지 않는다. 런치에 두 인자를 추가하고 브리지 노드의 <code>common</code> 파라미터로 넘긴다. 비밀번호는 환경변수로 받는다.</p>
+<pre><code>source /opt/ros/humble/setup.bash && source 2_Simulation/t4_agent/install/setup.bash
+MQTT_PW=… ros2 launch amr_agent agent.launch.py serial:=amr01 manufacturer:=idealworks \
+  mqtt_host:=&lt;EMQX&gt; mqtt_port:=1883 mqtt_username:=amr01 mqtt_password:=$MQTT_PW \
+  pose_source:=odom use_sim_time:=true        # Isaac WSIM_N 모드면 flat_topics 불필요</code></pre>
+<h3>5-2 QoS·retained 점검</h3>
+<p>브리지 코드는 이미 규격과 같다(connection QoS1 retained + LWT, order·instantActions QoS0, state QoS0 비-retained). 고칠 것은 코드가 아니라 아키텍처 문서의 "QoS1 · retained" 표기다. 확인만 하고 넘어간다.</p>
+<h3>5-3 factsheet 만들기</h3>
+<p>기종 프로파일을 YAML 한 장(<code>config/models/iw_hub.yaml</code>)으로 두고, <code>StateBuilder</code>에 <code>factsheet(profile)</code>를 추가한 뒤 브리지의 on_connect에서 ONLINE 직후 retained QoS1로 낸다. 필드 대응은 03단계 표를 따른다.</p>
+<pre><code># amr_agent/vda5050/state.py — 골격
+def factsheet(self, p: dict) -> dict:
+    return {**self._header_block(),
+        "typeSpecification": {"seriesName": p["model"], "agvKinematic": p["kinematic"],   # DIFF | OMNI
+                              "agvClass": "CARRIER", "maxLoadMass": p["max_load_kg"],
+                              "localizationTypes": ["NATURAL"], "navigationTypes": ["AUTONOMOUS"]},
+        "physicalParameters": {"speedMin": p["v_min"], "speedMax": p["v_max"],
+                               "accelerationMax": p["a_max"], "decelerationMax": p["a_max"],
+                               "heightMin": p["height"], "heightMax": p["height"],
+                               "width": p["width"], "length": p["length"]},
+        "protocolLimits": {"maxStringLens": {}, "maxArrayLens": {},
+                           "timing": {"minOrderInterval": 0.5, "minStateInterval": 0.5, "defaultStateInterval": 2.0}},
+        "protocolFeatures": {"optionalParameters": [], "agvActions": []},
+        "agvGeometry": {"wheelDefinitions": p["wheels"], "envelopes2d": p["envelopes"]},
+        "loadSpecification": {"loadPositions": [], "loadSets": []}}
+
+# bridge_node.py on_connect — ONLINE 다음 줄
+client.publish(self.t_facts, json.dumps(self.sb.factsheet(self.profile)), qos=1, retain=True)</code></pre>
+<h3>5-4 FMS 쪽 구독 규칙</h3>
+<ul>
+<li>구독은 <code>uagv/v2/+/+/state</code>, <code>…/connection</code>, <code>…/factsheet</code> 세 와일드카드. 로봇 키는 (manufacturer, serialNumber) 튜플이다.</li>
+<li>로봇 등록은 factsheet 수신으로 한다. state가 먼저 와도 factsheet 없이는 배차하지 않는다(이기종 상수 미확보).</li>
+<li>order 발행은 로봇별 토픽에 QoS0. orderUpdateId 스티칭 규칙은 T4 README의 표를 계약 4.3에 옮겨 둔다.</li>
+</ul>
+<h3>검증</h3>
+<pre><code># Isaac 없이: fake_robot으로 에이전트 2대, fake_fms가 EMQX를 통해 틱을 푼다
+ros2 launch amr_agent agent.launch.py serial:=amr01 fake_robot:=true mqtt_host:=localhost mqtt_username:=amr01 mqtt_password:=…
+ros2 launch amr_agent agent.launch.py serial:=amr02 fake_robot:=true mqtt_host:=localhost mqtt_username:=amr02 mqtt_password:=…
+python3 -m amr_agent.tools.fake_fms --serial amr01 --plan F,F,L,F,B   # fake_fms에도 host/계정 인자를 추가한다
+mqttx sub -u host-orch -P … -t 'uagv/v2/+/+/connection' -t 'uagv/v2/+/+/factsheet' -v   # retained 2종 × 2대 즉시 수신
+kill -9 &lt;amr02 bridge pid&gt;   # 45 s 안에 amr02 CONNECTIONBROKEN, amr01은 영향 없음</code></pre>
+<div class="box do"><span class="k">이 단계의 체크</span><ul class="check"><li>launch 인자 mqtt_username·mqtt_password 추가, fake_fms에도 동일</li><li>기종 프로파일 YAML 1장(iw.hub), factsheet 발행 확인</li><li>7틱 E2E 통과, 정지 오차 기존과 동일(4 mm급)</li><li>factsheet JSON이 공식 스키마를 통과(11단계 테스트로 남김)</li></ul></div>
+</section>
+
+<section class="step" id="s6">
+<div class="step-head"><div class="badge">06</div><h2>Sparkplug Host — STATE를 내고, 순번을 감시하고, 명령을 보낸다</h2></div>
+<div class="goal"><div><b>목표</b>Primary Host 한 프로세스가 규격 의무(STATE·LWT·rebirth 요청)를 다한다</div><div><b>산출물</b><code>host_orch/spb_host.py</code>, <code>tools/spb_tap.py</code></div><div><b>검증</b>STATE retained 관측, 가짜 Edge에 Rebirth 요청 왕복</div></div>
+<p>Host는 계산엔진 워커 안의 한 스레드다(02단계 결정 4). 라이브러리는 PyPI의 <code>mqtt-spb-wrapper</code>(Eclipse Tahu의 protobuf 정의를 포함) 또는 Tahu 파이썬 클라이언트를 벤더링한다. 아래는 어떤 라이브러리를 쓰든 Host가 해야 하는 일이며, 함수 이름은 라이브러리 문서로 맞춘다.</p>
+<pre><code># host_orch/spb_host.py — 골격 (의무 목록)
+class SpbHost:
+    def __init__(self, group="santa", host_id="host-orch"):
+        # 1) Will: spBv1.0/STATE/host-orch  {"online": false, "timestamp": T}  QoS1 retained
+        # 2) 접속 후 즉시 {"online": true, "timestamp": T} 를 같은 토픽에 QoS1 retained
+        # 3) 구독: spBv1.0/santa/#
+        ...
+    def on_message(self, topic, payload_bytes):
+        # 4) 토픽 분해 → (msg_type, edge, device). protobuf 디코드.
+        # 5) NBIRTH: 노드 등록, bdSeq 저장, seq=0 확인, 메트릭 사전과 대조(누락 시 경고)
+        # 6) NDEATH: bdSeq가 마지막 NBIRTH와 같으면 노드 offline + 그 노드의 디바이스 전부 stale
+        # 7) NDATA/DDATA: seq가 (prev+1) mod 256 이 아니면 → Node Control/Rebirth=true NCMD
+        # 8) DBIRTH/DDEATH: 디바이스 목록 갱신 → 런 상태 머신에 알림
+        ...
+    def start_run(self, run_id, scenario_pkg, models, ros_domain_id, timeout_s):
+        # 9) NCMD spBv1.0/santa/NCMD/sim-runner-gpu01
+        #    metrics = [ Run Control/Start (Text) = json.dumps({...}) ]   QoS0
+        ...
+    def watchdog(self):
+        # 10) Runner/Heartbeat 가 15 s 이상 안 오면 런 실패 → Stop 재발행 → k8s Job 정리</code></pre>
+<h3>관측 도구 spb_tap.py</h3>
+<p>Sparkplug 토픽 전체를 구독해 protobuf를 디코드하고 한 줄씩 찍는 20줄짜리 스크립트다. 이후 모든 단계의 "눈"이 된다.</p>
+<pre><code># tools/spb_tap.py — 골격
+# 구독 spBv1.0/#  →  payload를 sparkplug_b_pb2.Payload().ParseFromString()  →
+# print(topic, payload.seq, [(m.name, value(m)) for m in payload.metrics])
+# STATE 토픽만 JSON이므로 분기</code></pre>
+<h3>검증</h3>
+<pre><code>python3 host_orch/spb_host.py --host localhost --user host-orch --pw …   # STATE online 발행
+mqttx sub -u host-orch -P … -t 'spBv1.0/STATE/#' -v          # {"online":true,…} retained 즉시 수신
+kill -9 &lt;host pid&gt;                                          # 45 s 안에 {"online":false,…}
+python3 tools/spb_fake_edge.py --seq-gap                     # 가짜 Edge가 seq를 건너뛰면 Host가 Rebirth NCMD를 내는지 tap으로 확인</code></pre>
+</section>
+
+<section class="step" id="s7">
+<div class="step-head"><div class="badge">07</div><h2>Edge Node 둘 — sim-runner(GPU 서버)와 fms-core(EC2 Job)</h2></div>
+<div class="goal"><div><b>목표</b>런 제어와 텔레메트리, FMS 이벤트가 Sparkplug로 흐른다</div><div><b>산출물</b><code>2_Simulation/sim_runner/runner.py</code> + systemd 유닛, <code>3_FMS/mqtt_shell/</code></div><div><b>검증</b>Start → Isaac·에이전트 기동 → DBIRTH → Stop → DDEATH 한 바퀴</div></div>
+<h3>7-1 sim-runner — GPU 서버의 상주 Edge Node</h3>
+<div class="tw"><table>
+<tr><th>의무</th><th>구현 메모</th></tr>
+<tr><td>세션</td><td>Will = NDEATH(bdSeq), 접속 후 NBIRTH(03단계 사전의 노드 메트릭 전부 + 초기값). 재접속마다 bdSeq +1</td></tr>
+<tr><td>Start 처리</td><td>JSON 파싱 → 이전 런 잔여 프로세스 정리(<code>pgrep -f warehouse_sim.py</code>) → <code>WSIM_N=n ROS_DOMAIN_ID=d ~/isaacsim/python.sh warehouse_sim.py</code> 기동 → 로그에서 <code>[wsim] ready</code> 대기(타임아웃) → 에이전트 ×N 기동(serial·manufacturer·MQTT 계정 주입) → 로봇마다 DBIRTH → <code>Runner/State=RUNNING</code></td></tr>
+<tr><td>텔레메트리</td><td>ROS를 직접 읽지 말고 <code>uagv/v2/+/+/state</code>를 구독해 DDATA로 거울(변화 시만). RTF·RAM·VRAM은 5 s 주기 샘플. <code>Runner/Heartbeat</code> 5 s</td></tr>
+<tr><td>Stop 처리</td><td>에이전트에 SIGTERM(브리지가 OFFLINE retained를 낸다) → 2 s 대기 → DDEATH ×N → Isaac SIGTERM → 잔여 kill → <code>Runner/State=IDLE</code>, <code>Runner/RunId=""</code></td></tr>
+<tr><td>자체 타임아웃</td><td>Start의 <code>timeout_s</code>가 지나거나 Host STATE가 offline으로 15 s 이상이면 스스로 Stop 절차</td></tr>
+<tr><td>Rebirth</td><td>NCMD <code>Node Control/Rebirth</code> 또는 STATE online 타임스탬프 갱신 → NBIRTH + 살아 있는 DBIRTH 재발행</td></tr>
+<tr><td>가짜 모드</td><td><code>--fake</code>이면 Isaac 대신 T4 <code>fake_robot:=true</code>로 기동. 09단계 리허설과 11단계 CI가 GPU 없이 돈다</td></tr>
+</table></div>
+<pre><code># 2_Simulation/sim_runner/runner.py — 골격
+class Runner(SpbEdgeNode):            # 라이브러리의 Edge Node 클래스를 감싼다
+    metrics = {"Runner/State": "IDLE", "Runner/RunId": "", "Runner/Heartbeat": 0,
+               "Runner/RTF": 0.0, "Runner/IsaacInstances": 0, "Runner/RamMB": 0, "Runner/VramMB": 0,
+               "Run Control/Start": "", "Run Control/Stop": False}     # NBIRTH에 전부 들어간다
+    def on_ncmd(self, name, value):
+        if name == "Run Control/Start": self.start(json.loads(value))
+        if name == "Run Control/Stop" and value: self.stop()
+        if name == "Node Control/Rebirth" and value: self.rebirth()
+    def start(self, cmd): ...     # 위 표의 순서대로. 실패는 State=ERROR + 이유를 Runner/LastError(String)에
+    def stop(self): ...
+    def loop(self): ...           # heartbeat · 샘플 · state 거울 → DDATA (RBE)
+
+# systemd: ~/.config/systemd/user/sim-runner.service  (Restart=always, ROS 소싱은 ExecStart 래퍼에서)</code></pre>
+<h3>7-2 fms-core — 커널을 감싸는 MQTT 셸</h3>
+<p>아키텍처가 정한 대로 커널은 I/O가 없다. 셸이 state를 인박스에 모으고 500 ms마다 스냅샷을 커널에 넣어 결정을 받아 order로 낸다. 같은 프로세스가 Sparkplug Edge Node <code>fms-core</code>로 <code>Fms/*</code>와 <code>Fms/Event</code>를 낸다.</p>
+<pre><code># 3_FMS/mqtt_shell/shell.py — 골격
+inbox = queue.Queue()
+# VDA: 구독 uagv/v2/+/+/{state,connection,factsheet} → inbox.put((topic, json))
+# SPB: Edge Node fms-core — NBIRTH(Fms/RunId, Fms/Tick, Fms/RobotsOnline, Fms/Event="")
+while running:
+    snapshot = drain(inbox)                      # 로봇별 최신 state, 접속, 팩트시트(기종 상수)
+    decisions = kernel.step(world, now, snapshot) # 순수 함수
+    for robot, order in decisions.orders:        # orderUpdateId 스티칭 규칙 적용
+        publish(f"uagv/v2/{robot.mfr}/{robot.serial}/order", order, qos=0)
+    for ev in decisions.events:
+        node.publish_data({"Fms/Event": json.dumps(ev)})   # NDATA
+    node.publish_data({"Fms/Tick": tick, "Fms/RobotsOnline": online})   # RBE
+    sleep_until(next_tick)                       # 500 ms</code></pre>
+<h3>7-3 biz/order</h3>
+<p>02단계 결정 10에 따라 1차는 시뮬 WMS가 <code>biz/v1/order</code>에 JSON을 QoS0로 낸다. 스키마는 계약 4장에 두고, fms-core 셸이 구독해 inbox로 넣는다.</p>
+<h3>검증</h3>
+<pre><code>python3 tools/spb_tap.py --host localhost --user host-orch --pw …            # 관측 창
+python3 sim_runner/runner.py --fake --host localhost --user sim-runner-gpu01   # NBIRTH 관측
+python3 host_orch/spb_host.py … --start '{"run_id":"r1","n_robots":2,"models":[…]}'
+#   tap: NCMD Start → Runner/State STARTING → DBIRTH amr01, amr02 → RUNNING
+#   mqttx: uagv/v2/+/+/connection ONLINE ×2, factsheet ×2
+python3 host_orch/spb_host.py … --stop
+#   tap: DDEATH ×2 → Runner/State IDLE.  mqttx: connection OFFLINE ×2 (retained)
+# GPU 서버에서 같은 절차를 --fake 없이 반복 (Isaac 기동 ~80 s, ready 타임아웃 180 s 권장)</code></pre>
+</section>
+
+<section class="step" id="s8">
+<div class="step-head"><div class="badge">08</div><h2>브로커 정책 — 표를 완성해 EMQX에 옮긴다</h2></div>
+<div class="goal"><div><b>목표</b>계정·ACL·한계값이 계약 3장과 acl.conf에서 일치</div><div><b>산출물</b>계약 §3 표, 최종 acl.conf, 대시보드 스크린샷</div><div><b>검증</b>표의 "거부" 칸마다 실제로 끊기는지 1회씩</div></div>
+<div class="tw"><table>
+<tr><th>계정</th><th>발행 허용</th><th>구독 허용</th><th>keepalive</th><th>Will</th></tr>
+<tr><td class="mono">amrNN</td><td>자기 시리얼의 state·connection·factsheet·visualization</td><td>자기 시리얼의 order·instantActions</td><td>30 s</td><td>connection CONNECTIONBROKEN retained QoS1</td></tr>
+<tr><td class="mono">fms-core</td><td>모든 로봇의 order·instantActions, 자기 N* 메시지</td><td>모든 로봇의 state·connection·factsheet, STATE/+, 자기 NCMD, biz/v1/#</td><td>30 s</td><td>NDEATH</td></tr>
+<tr><td class="mono">sim-runner-gpu01</td><td>자기 N*·D* 메시지</td><td>자기 NCMD·DCMD, STATE/+, 모든 로봇의 state·connection</td><td>60 s</td><td>NDEATH</td></tr>
+<tr><td class="mono">host-orch</td><td>STATE/host-orch, 모든 NCMD·DCMD</td><td>spBv1.0/#</td><td>30 s</td><td>STATE offline retained QoS1</td></tr>
+<tr><td class="mono">sim-wms</td><td>biz/v1/#</td><td>NDATA/fms-core</td><td>30 s</td><td>없음</td></tr>
+</table></div>
+<ul>
+<li><b>retained 제한.</b> 규격상 retained는 connection·factsheet·STATE뿐이다. EMQX 5 파일 ACL은 토픽 뒤에 <code>{retain, …}</code>·<code>{qos, …}</code> 조건을 붙일 수 있으니(버전 문서 확인) state·NDATA·DDATA 발행 규칙에는 <code>{retain, false}</code>를 단다.</li>
+<li><b>패킷 크기.</b> order JSON은 노드가 많으면 수십 KB, DBIRTH도 메트릭 수에 비례한다. 1 MB면 충분하다.</li>
+<li><b>세션.</b> clean session true(3.1.1). 오프라인 큐잉에 기대지 않는다. 재접속 시 VDA는 state로, Sparkplug는 NBIRTH로 복구한다.</li>
+<li><b>QoS 상한 1.</b> QoS2는 어느 쪽 규격도 쓰지 않는다.</li>
+<li><b>대시보드.</b> 로컬·port-forward 전용. 기본 비밀번호는 첫 접속에서 바꾼다.</li>
+</ul>
+</section>
+
+<section class="step" id="s9">
+<div class="step-head"><div class="badge">09</div><h2>통합 리허설 — 한 바퀴와 장애 네 가지</h2></div>
+<div class="goal"><div><b>목표</b>01단계 시퀀스가 실제 GPU 서버 ↔ 로컬 EMQX 사이에서 그대로 재현</div><div><b>산출물</b><code>docs/rehearsal_&lt;날짜&gt;.md</code> (tap 로그 발췌 + 판정표)</div><div><b>검증</b>아래 판정표 전부 통과</div></div>
+<h3>순서</h3>
+<ol>
+<li>로컬 EMQX 기동(04). tap과 mqttx 관측 창 2개.</li>
+<li>Host 기동 → STATE online 확인.</li>
+<li>GPU 서버에서 sim-runner 기동(systemd) → NBIRTH 확인. tailscale 경로로 붙는지 <code>Runner/State=IDLE</code>로 확인.</li>
+<li>Host Start(iw.hub 3대, ROS_DOMAIN_ID 10) → Isaac ready → 에이전트 ONLINE·factsheet ×3 → DBIRTH ×3 → RUNNING.</li>
+<li>fms-core 셸 기동(로컬) → factsheet로 3대 등록 → order 발행 → state의 lastNodeId 진행을 tap의 <code>Robot/LastNodeId</code>로 관찰.</li>
+<li>2분 주행 후 Host Stop → OFFLINE ×3 → DDEATH ×3 → IDLE. Isaac 프로세스 0개 확인.</li>
+</ol>
+<h3>장애 훈련</h3>
+<div class="tw"><table>
+<tr><th>#</th><th>행동</th><th>기대</th><th>복구</th></tr>
+<tr><td>1</td><td>에이전트 하나 <code>kill -9</code></td><td>45 s 안에 그 시리얼만 CONNECTIONBROKEN retained, DDATA <code>Robot/Connection</code> 거울, fms-core가 배차 제외</td><td>에이전트 재기동 → ONLINE + factsheet, state의 orderId·lastNodeId로 fms-core가 이어 감</td></tr>
+<tr><td>2</td><td>sim-runner <code>kill -9</code></td><td>NDEATH(bdSeq 일치) → Host가 디바이스 3대 stale, 하트비트 결측 3회 → 런 실패</td><td>systemd 재기동 → 잔여 Isaac·에이전트 정리 → bdSeq+1 NBIRTH → Host가 새 런 가능</td></tr>
+<tr><td>3</td><td>Host 재기동</td><td>STATE offline → online(새 타임스탬프) → sim-runner·fms-core가 NBIRTH·DBIRTH 재발행</td><td>없음(자동)</td></tr>
+<tr><td>4</td><td>EMQX 컨테이너 재기동</td><td>클라이언트 전부 재접속, retained(connection·factsheet·STATE)가 볼륨 덕에 유지, Edge는 bdSeq+1 NBIRTH</td><td>없음(자동). retained가 사라졌다면 볼륨 마운트 점검</td></tr>
+</table></div>
+<div class="box note"><span class="k">병렬 실측과의 연결</span><p>Start의 <code>n_robots</code> 상한은 PJT-2의 병렬 실측 보고서(경량 e 구성 6대 정상, 7대 OOM)를 따른다. sim-runner가 <code>Runner/RamMB</code>·<code>Runner/VramMB</code>를 내므로 Host의 watchdog에 상한 초과 경고를 넣어 두면 좋다.</p></div>
+</section>
+
+<section class="step" id="s10">
+<div class="step-head"><div class="badge">10</div><h2>k3s 배포 — 상시 파드 하나, 볼륨 하나, 포트는 tailnet만</h2></div>
+<div class="goal"><div><b>목표</b>EC2 k3s에 EMQX가 상시로 뜨고 GPU 서버가 tailscale로 붙는다</div><div><b>산출물</b><code>4_Web/k8s/emqx/{ns, secret, configmap, deployment, service, pvc}.yaml</code></div><div><b>검증</b>파드 재시작 후 retained 유지, 09단계 리허설을 EC2 EMQX로 재현</div></div>
+<pre><code># deployment.yaml — 요지 (Helm chart emqx/emqx 를 써도 값은 같다)
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: emqx, namespace: backbone }
+spec:
+  replicas: 1
+  strategy: { type: Recreate }                    # 단일 노드, 볼륨 하나
+  selector: { matchLabels: { app: emqx } }
+  template:
+    metadata: { labels: { app: emqx } }
+    spec:
+      containers:
+      - name: emqx
+        image: emqx/emqx:5.8.4                    # 04단계와 같은 태그
+        ports: [ { containerPort: 1883 }, { containerPort: 18083 } ]
+        envFrom: [ { secretRef: { name: emqx-secrets } } ]     # EMQX_NODE__COOKIE, 대시보드 비밀번호
+        volumeMounts:
+        - { name: conf, mountPath: /opt/emqx/etc/emqx.conf, subPath: emqx.conf }
+        - { name: conf, mountPath: /opt/emqx/etc/acl.conf,  subPath: acl.conf }
+        - { name: data, mountPath: /opt/emqx/data }
+        resources:
+          requests: { cpu: 300m, memory: 512Mi }
+          limits:   { cpu: "1",  memory: 1Gi }    # 4 vCPU 노드에서 상시 서비스 몫을 지킨다
+        readinessProbe: { httpGet: { path: /status, port: 18083 }, periodSeconds: 10 }
+        livenessProbe:  { httpGet: { path: /status, port: 18083 }, periodSeconds: 30 }
+      volumes:
+      - { name: conf, configMap: { name: emqx-conf } }
+      - { name: data, persistentVolumeClaim: { claimName: emqx-data } }   # local-path 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata: { name: emqx, namespace: backbone }
+spec:
+  selector: { app: emqx }
+  ports:
+  - { name: mqtt, port: 1883, targetPort: 1883, nodePort: 31883 }   # GPU 서버용
+  type: NodePort</code></pre>
+<ul>
+<li><b>클러스터 안</b> 클라이언트(fms-core Job, sim-wms, host-orch)는 <code>emqx.backbone.svc:1883</code>.</li>
+<li><b>GPU 서버</b>는 EC2의 tailscale IP:31883. NodePort는 모든 인터페이스에 열리므로 방화벽으로 100.64.0.0/10만 허용한다(<code>ufw allow from 100.64.0.0/10 to any port 31883</code>, 그 외 deny). nginx 443 규칙은 건드리지 않는다.</li>
+<li><b>대시보드</b>는 <code>kubectl port-forward svc/emqx 18083:18083</code>으로만 연다.</li>
+<li><b>사용자 DB</b>는 내장 DB라 <code>/opt/emqx/data</code>에 있다. 파드가 바뀌어도 볼륨이 같으면 계정이 남는다. 계정 생성 스크립트(04단계 curl)를 <code>4_Web/k8s/emqx/bootstrap_users.sh</code>로 남겨 재구축에 대비한다.</li>
+<li><b>retained 영속</b>은 같은 볼륨에 있다. 09단계 장애 4를 EC2에서 반복해 확인한다.</li>
+</ul>
+<div class="box warn"><span class="k">compose와의 관계</span><p>EC2의 현재 compose 배포는 임시이고 k3s 전환이 예정돼 있다(팀 확인 사항). 그 전까지 EMQX를 4_Web compose에 임시로 넣더라도 설정 파일 두 개는 k3s ConfigMap과 같은 내용을 써서 옮길 때 값이 바뀌지 않게 한다.</p></div>
+</section>
+
+<section class="step" id="s11">
+<div class="step-head"><div class="badge">11</div><h2>검증 자동화 — 계약이 코드보다 오래 살게</h2></div>
+<div class="goal"><div><b>목표</b>페이로드와 세션 규칙이 테스트로 고정되고 CI에서 돈다</div><div><b>산출물</b><code>3_FMS/contracts/tests/test_mqtt_*.py</code>, Jenkinsfile 스테이지</div><div><b>검증</b>로컬 pytest 통과 → CI 통과</div></div>
+<div class="tw"><table>
+<tr><th>테스트</th><th>무엇을 고정하나</th><th>방법</th></tr>
+<tr><td class="mono">test_vda_schema.py</td><td>state·connection·factsheet·order가 VDA 2.0.0 공식 스키마를 통과</td><td><code>jsonschema.validate(StateBuilder(...).state(...), schema)</code>. fake_fms의 order 샘플도 검사</td></tr>
+<tr><td class="mono">test_spb_session.py</td><td>NBIRTH에 bdSeq·Node Control/Rebirth·사전 메트릭 전부, NDEATH bdSeq 일치, seq 255→0 순환</td><td>protobuf 인코드 → 디코드 왕복. 브로커 불필요</td></tr>
+<tr><td class="mono">test_spb_payloads.py</td><td>Run Control/Start·Fms/Event JSON이 <code>contracts/schemas/spb/</code> 스키마를 통과</td><td>jsonschema</td></tr>
+<tr><td class="mono">test_acl_matrix.py</td><td>08단계 표의 허용·거부 칸</td><td>EMQX 컨테이너(testcontainers 또는 compose) 띄우고 paho로 각 칸 1회. 거부는 disconnect 감지</td></tr>
+<tr><td class="mono">test_run_cycle.py</td><td>01단계 시퀀스 전체</td><td>EMQX 컨테이너 + Host + <code>runner --fake</code> + fms-core 셸. Isaac 없이 2분</td></tr>
+</table></div>
+<pre><code># Jenkinsfile — 스테이지 요지
+stage('mqtt-contracts') {
+  steps { sh 'docker compose -f 3_FMS/infra/emqx/compose.yml up -d && pytest -q 3_FMS/contracts/tests -k mqtt' }
+  post  { always { sh 'docker compose -f 3_FMS/infra/emqx/compose.yml down -v' } }
+}</code></pre>
+<div class="box do"><span class="k">끝났다고 말할 수 있는 조건</span><ul class="check"><li>계약 v1.0에 결정 기록·레인표·ACL표·메트릭 사전·NCMD표가 있고 코드가 그것만 참조한다</li><li>로컬 EMQX와 EC2 EMQX가 같은 emqx.conf·acl.conf를 쓴다</li><li>09단계 한 바퀴와 장애 4종이 EC2 EMQX로 재현됐다</li><li>11단계 다섯 테스트가 CI에서 초록이다</li><li>아키텍처 문서의 "QoS1 · retained" 표기가 레인표와 맞게 고쳐졌다</li></ul></div>
+</section>
+
+<section class="step" id="sA">
+<div class="step-head"><div class="badge">A</div><h2>부록 — 명령 모음, 용어, 출처</h2></div>
+<h3>자주 쓰는 명령</h3>
+<pre><code>mqttx sub -h H -u host-orch -P PW -t 'uagv/v2/+/+/#' -v                      # VDA 전체
+mqttx sub -h H -u host-orch -P PW -t 'uagv/v2/+/+/connection' -v             # 접속 상태(retained)
+mqttx pub -h H -u U -P PW -q 1 -r -t 'uagv/v2/M/S/factsheet' -m ''            # retained 삭제(빈 페이로드)
+python3 tools/spb_tap.py --host H --user host-orch --pw PW                    # Sparkplug 디코드 관측
+kubectl -n backbone port-forward svc/emqx 18083:18083                        # 대시보드
+kubectl -n backbone exec deploy/emqx -- emqx ctl clients list                # 접속 클라이언트
+kubectl -n backbone exec deploy/emqx -- emqx ctl retained list               # (버전에 따라) retained 목록</code></pre>
+<h3>용어</h3>
+<div class="tw"><table>
+<tr><th>용어</th><th>뜻</th></tr>
+<tr><td>Primary Host</td><td>Sparkplug에서 STATE를 내고 Edge Node를 감독하는 단일 응용. 여기서는 계산엔진 워커</td></tr>
+<tr><td>Edge Node / Device</td><td>Sparkplug의 발행 주체(프로세스)와 그 아래 논리 장치(로봇)</td></tr>
+<tr><td>bdSeq / seq</td><td>세션 번호(NBIRTH·NDEATH 대조) / 메시지 순번(0~255)</td></tr>
+<tr><td>RBE</td><td>Report By Exception. 값이 바뀔 때만 발행</td></tr>
+<tr><td>LWT</td><td>Last Will and Testament. 비정상 단절 시 브로커가 대신 내는 메시지</td></tr>
+<tr><td>factsheet</td><td>VDA 5050의 로봇 사양 메시지. 기종 상수의 공식 통로</td></tr>
+<tr><td>orderUpdateId 스티칭</td><td>기존 order의 마지막 base 노드에서 시작해 노드를 이어 붙이는 VDA 규칙. T4 README 표 참조</td></tr>
+</table></div>
+<h3>출처</h3>
+<ul>
+<li>VDA 5050 규격·JSON 스키마: <a href="https://github.com/VDA5050/VDA5050">github.com/VDA5050/VDA5050</a> (2.0.0 태그의 json_schemas)</li>
+<li>Sparkplug B 3.0 규격: <a href="https://sparkplug.eclipse.org/specification/">sparkplug.eclipse.org/specification</a></li>
+<li>Eclipse Tahu(protobuf 정의·Java/Python 클라이언트): <a href="https://github.com/eclipse-tahu/tahu">github.com/eclipse-tahu/tahu</a>, PyPI <code>mqtt-spb-wrapper</code></li>
+<li>EMQX 5 문서(인증·ACL 파일 형식·retainer·k8s): <a href="https://docs.emqx.com/en/emqx/latest/">docs.emqx.com</a></li>
+<li>MQTTX CLI: <a href="https://mqttx.app/cli">mqttx.app/cli</a></li>
+<li>레포 근거: <code>2_Simulation/t4_agent/README.md</code>(틱↔VDA 매핑), <code>3_FMS/contracts/SIM_RUN_CONTRACT.md</code>(계약 문서 형식), 아키텍처 v3.8 §03·⑤</li>
+</ul>
+</section>
+
+</main>
+</div></div>
+<footer><div class="wrap">WORKING · MQTT-BACKBONE · REV A — 작성 2026-09-07 · 원천: 아키텍처 v3.8 · VDA 5050 2.0.0 · Sparkplug B 3.0 · <a href="../../index.html">문서 인덱스로</a></div></footer>
+<script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+mermaid.initialize({ startOnLoad: true, theme: "dark", fontFamily: "IBM Plex Sans KR, sans-serif" });
+</script>
+</body>
+</html>

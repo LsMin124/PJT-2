@@ -158,7 +158,7 @@
   </a>
   <div class="journey">
     <div class="register-label">READING MAP · 무엇을 어떤 순서로 읽나</div>
-    <svg viewBox="0 0 900 682" role="img" aria-label="문서 읽기 지도 — 기획 1부, 조사 4부, 기술 5부, 제품 체험 2, 부록 4부, 작업 문서 8, 용어사전 2. 읽는 순서는 기획, 조사, 기술 순이며 화살표가 그 순서를 가리킨다">
+    <svg viewBox="0 0 900 682" role="img" aria-label="문서 읽기 지도 — 기획 1부, 조사 4부, 기술 5부, 제품 체험 2, 부록 4부, 작업 문서 9, 용어사전 2. 읽는 순서는 기획, 조사, 기술 순이며 화살표가 그 순서를 가리킨다">
     <defs><marker id="jm-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#8FB4D9"/></marker></defs>
 
     <!-- TRACK 1 · PLAN 1부 -->
@@ -219,6 +219,8 @@
     <a href="pages/working/isaac_parallel_measure.html"><rect x="180" y="532" width="104" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="188" y="553" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#3BAF77">MEASURE</text><text x="188" y="572" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">Isaac 병렬</text></a>
     <line x1="286" y1="558" x2="295" y2="558" stroke="#8FB4D9" stroke-width="2" marker-end="url(#jm-arr)"/>
     <a href="pages/working/static_analysis.html"><rect x="300" y="532" width="104" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="308" y="553" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#3BAF77">ANALYSIS</text><text x="396" y="553" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#3BAF77">LIVE</text><text x="308" y="572" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">정적 분석</text></a>
+    <line x1="406" y1="558" x2="415" y2="558" stroke="#8FB4D9" stroke-width="2" marker-end="url(#jm-arr)"/>
+    <a href="pages/working/mqtt_backbone_guide.html"><rect x="420" y="532" width="104" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="428" y="553" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#3BAF77">MQTT</text><text x="516" y="553" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#3BAF77">NEW</text><text x="428" y="572" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">백본 가이드</text></a>
 
     <!-- TRACK 7 · REF 2 -->
     <text x="20" y="642" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">TRACK 7</text><text x="20" y="662" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">용어 — 낯설 때</text>
@@ -547,6 +549,12 @@
       <h2>Isaac 창고 씬 병렬 실행 실측</h2>
       <p>RAM 64GB·RTX 5080 서버에서 창고 씬 인스턴스 하나가 무엇을 얼마나 쓰는지, 무엇을 끄면 VRAM이 줄어드는지, 그래서 몇 개를 동시에 돌릴 수 있는지 — 원본 2개, 경량 6개, 7개는 OOM.</p>
       <span class="terms">PSS·VRAM·RTF · RTX off · 물리 전용 스테이지 · 뷰포트 off · N=2·4·6·7 · 시각화 품질</span>
+    </a>
+    <a class="ref r-a" href="pages/working/mqtt_backbone_guide.html">
+      <span class="doc-no">WORKING · MQTT BACKBONE · 2026-09-07 · NEW</span>
+      <h2>MQTT 백본 구축 가이드 — EMQX · VDA 5050 · Sparkplug B</h2>
+      <p>브로커를 세우기 전에 무엇을 먼저 정해야 하는지부터 계약 문서, 로컬 EMQX, VDA 5050 면과 Sparkplug B 면, 리허설, k3s 배포, 검증 자동화까지 12단계. 코드는 골격만 두고 따라하며 채우는 클론코딩 가이드.</p>
+      <span class="terms">레인 배정 · factsheet · NBIRTH/NDEATH · STATE · ACL · retained/LWT · sim-runner · k3s</span>
     </a>
     <a class="ref r-a" href="pages/working/static_analysis.html">
       <span class="doc-no">WORKING · STATIC ANALYSIS · 자동 갱신 · LIVE</span>
