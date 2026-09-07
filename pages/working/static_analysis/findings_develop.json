@@ -997,6 +997,18 @@
  },
  {
   "tool": "ruff",
+  "rule": "PLW1510",
+  "sev": "S1",
+  "path": "3_FMS/sim_engine/_sweep_common.py",
+  "line": 42,
+  "msg": "`subprocess.run` without explicit `check` argument",
+  "symbol": "",
+  "component": "3_FMS/sim_engine",
+  "part": "FMS·AI",
+  "fp": "054f59b496ce1799"
+ },
+ {
+  "tool": "ruff",
   "rule": "F401",
   "sev": "S2",
   "path": "3_FMS/sim_engine/check_lifelong_battery.py",
@@ -1162,6 +1174,18 @@
   "component": "3_FMS/sim_engine",
   "part": "FMS·AI",
   "fp": "5954ca1afad6b435"
+ },
+ {
+  "tool": "ruff",
+  "rule": "F401",
+  "sev": "S2",
+  "path": "3_FMS/sim_engine/fleet_sweep_theta.py",
+  "line": 17,
+  "msg": "`numpy` imported but unused",
+  "symbol": "",
+  "component": "3_FMS/sim_engine",
+  "part": "FMS·AI",
+  "fp": "26114df81ce5286a"
  },
  {
   "tool": "ruff",

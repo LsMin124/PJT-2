@@ -1,11 +1,11 @@
 {
  "run": {
-  "id": "2026-09-07_1405_light",
-  "ts": "2026-09-07T14:05:01+0900",
+  "id": "2026-09-07_1605_light",
+  "ts": "2026-09-07T16:05:01+0900",
   "mode": "light",
   "ref": "origin/develop",
-  "sha": "96c1138016988e9f5b6030fcd8d6f76b67f6828c",
-  "duration_s": 6.0,
+  "sha": "0a16a49e4c045991f535844dfd1eae0edee8b8f5",
+  "duration_s": 5.7,
   "status": "ok",
   "prev_deep": "2026-09-06_1552_deep",
   "red_flags": []
@@ -275,19 +275,19 @@
     "hwarange",
     "Jaeryeong Shin"
    ],
-   "loc": 4898,
+   "loc": 5195,
    "counts": {
     "S3": 0,
-    "S2": 10,
-    "S1": 52,
+    "S2": 11,
+    "S1": 53,
     "S0": 0
    },
    "tools": [
     "check",
     "ruff"
    ],
-   "W": 82,
-   "D": 16.7,
+   "W": 86,
+   "D": 16.6,
    "grade": "C",
    "partial": false,
    "top": [
@@ -302,6 +302,18 @@
      "component": "3_FMS/sim_engine",
      "part": "FMS·AI",
      "fp": "1663400a9e99b1de"
+    },
+    {
+     "tool": "ruff",
+     "rule": "F401",
+     "sev": "S2",
+     "path": "3_FMS/sim_engine/fleet_sweep_theta.py",
+     "line": 17,
+     "msg": "`numpy` imported but unused",
+     "symbol": "",
+     "component": "3_FMS/sim_engine",
+     "part": "FMS·AI",
+     "fp": "26114df81ce5286a"
     },
     {
      "tool": "check",
@@ -374,18 +386,6 @@
      "component": "3_FMS/sim_engine",
      "part": "FMS·AI",
      "fp": "0d1e2fe3fd5dd0ff"
-    },
-    {
-     "tool": "ruff",
-     "rule": "F841",
-     "sev": "S2",
-     "path": "3_FMS/sim_engine/sim_v2_tasks.py",
-     "line": 235,
-     "msg": "Local variable `robots` is assigned to but never used",
-     "symbol": "",
-     "component": "3_FMS/sim_engine",
-     "part": "FMS·AI",
-     "fp": "d6110d668c35e3ac"
     }
    ]
   },
@@ -816,25 +816,25 @@
   {
    "name": "develop",
    "slug": "develop",
-   "sha": "96c1138016988e9f5b6030fcd8d6f76b67f6828c",
-   "committer_date": 1788756666,
-   "author": "최아영",
-   "loc": 16060,
+   "sha": "0a16a49e4c045991f535844dfd1eae0edee8b8f5",
+   "committer_date": 1788763690,
+   "author": "신재령",
+   "loc": 16357,
    "counts": {
     "S3": 0,
-    "S2": 25,
-    "S1": 135,
+    "S2": 26,
+    "S1": 136,
     "S0": 2
    },
-   "W": 210,
+   "W": 214,
    "new_vs_prev": {
     "S3": 0,
-    "S2": 0,
-    "S1": 0,
+    "S2": 1,
+    "S1": 1,
     "S0": 0
    },
    "fixed": 0,
-   "prev_run": "2026-09-07_1305_light",
+   "prev_run": "2026-09-07_1405_light",
    "tools": [
     {
      "id": "ruff",
@@ -845,8 +845,8 @@
      "metrics": {},
      "counts": {
       "S3": 0,
-      "S2": 13,
-      "S1": 117,
+      "S2": 14,
+      "S1": 118,
       "S0": 0
      }
     },
@@ -870,7 +870,7 @@
      "id": "bandit",
      "status": "ok",
      "rc": 0,
-     "secs": 0.9,
+     "secs": 0.7,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -926,7 +926,7 @@
      "id": "gitleaks",
      "status": "ok",
      "rc": 0,
-     "secs": 0.5,
+     "secs": 0.4,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -1136,27 +1136,27 @@
      "id": "line-len",
      "title": "120자 초과 줄 (지표)",
      "status": "ok",
-     "msg": "59줄",
+     "msg": "64줄",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [],
-     "n": 59,
+     "n": 64,
      "sev": "S0"
     }
    ],
-   "duration_s": 2.9,
+   "duration_s": 2.6,
    "allow_dropped": 5,
    "new": {
     "S3": 0,
-    "S2": 0,
-    "S1": 0,
+    "S2": 1,
+    "S1": 1,
     "S0": 0
    },
    "convention": {},
    "ahead": 0,
    "behind": 0,
    "files_changed": 0,
-   "merge_base": "96c1138016988e9f5b6030fcd8d6f76b67f6828c"
+   "merge_base": "0a16a49e4c045991f535844dfd1eae0edee8b8f5"
   }
  ],
  "tools": [
@@ -1169,8 +1169,8 @@
    "metrics": {},
    "counts": {
     "S3": 0,
-    "S2": 13,
-    "S1": 117,
+    "S2": 14,
+    "S1": 118,
     "S0": 0
    }
   },
@@ -1194,7 +1194,7 @@
    "id": "bandit",
    "status": "ok",
    "rc": 0,
-   "secs": 0.9,
+   "secs": 0.7,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -1250,7 +1250,7 @@
    "id": "gitleaks",
    "status": "ok",
    "rc": 0,
-   "secs": 0.5,
+   "secs": 0.4,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -1460,19 +1460,19 @@
    "id": "line-len",
    "title": "120자 초과 줄 (지표)",
    "status": "ok",
-   "msg": "59줄",
+   "msg": "64줄",
    "component": "infra",
    "needs_agreement": false,
    "evidence": [],
-   "n": 59,
+   "n": 64,
    "sev": "S0"
   }
  ],
  "tests": {},
  "totals": {
-  "findings": 162,
-  "W": 210,
-  "new": 0,
+  "findings": 164,
+  "W": 214,
+  "new": 2,
   "fixed": 0
  },
  "narrative": {
