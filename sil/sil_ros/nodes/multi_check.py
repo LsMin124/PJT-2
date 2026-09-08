@@ -83,7 +83,7 @@ class Check(Node):
             self.create_subscription(Odometry, pre + "odom", lambda m, n=n: self._odom(n, m), QOS_SENSOR)
             self.create_subscription(LaserScan, pre + "scan", lambda m, n=n: self._scan(n, m), QOS_SENSOR)
             self.pubs[n] = self.create_publisher(Twist, pre + "cmd_vel", QOS_CMD)
-        self.create_subscription(Clock, "/clock", self._clock, QOS_SENSOR)
+        self.create_subscription(Clock, "/clock", self._on_clock, QOS_SENSOR)
         self.create_subscription(TFMessage, "/tf", self._tf, QOS_TF)
 
     def _odom(self, n, m):
@@ -94,7 +94,7 @@ class Check(Node):
         self.n_scan[n] += 1
         self.finite[n] = sum(1 for r in m.ranges if math.isfinite(r) and m.range_min <= r <= m.range_max)
 
-    def _clock(self, _m):
+    def _on_clock(self, _m):   # 이름 주의: rclpy Node 가 self._clock(ROSClock) 을 인스턴스 속성으로 쓰므로 _clock 은 가려진다
         self.n_clock += 1
 
     def _tf(self, m):

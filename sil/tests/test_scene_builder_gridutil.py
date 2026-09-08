@@ -119,11 +119,13 @@ def test_omap_to_occ_reshapes_and_mirrors_x():
 
 # ── config 경로·파생 상수 (원본 위치 기준 상대경로 유지) ──
 def test_config_paths_keep_original_layout():
+    # 트랙 루트(sil/ 또는 2_Simulation/) 이름과 무관하게, 원본 build_scene.py 가 있던 t3_warehouse/ 기준 경로가 유지되는지
     norm = os.path.normpath
-    assert norm(config.HERE).endswith(os.path.join("sil", "t3_warehouse"))
-    assert norm(config.MAP_DIR).endswith(os.path.join("sil", "t3_warehouse_map", "map"))
-    assert norm(config.OUT_DIR).endswith(os.path.join("sil", "t3_warehouse", "out"))
-    assert norm(config.USD_PATH).endswith(os.path.join("sil", "t3_warehouse", "warehouse_scene.usd"))
+    root = os.path.dirname(os.path.dirname(os.path.abspath(config.__file__)))
+    assert norm(config.HERE) == norm(os.path.join(root, "t3_warehouse"))
+    assert norm(config.MAP_DIR) == norm(os.path.join(root, "t3_warehouse_map", "map"))
+    assert norm(config.OUT_DIR) == norm(os.path.join(root, "t3_warehouse", "out"))
+    assert norm(config.USD_PATH) == norm(os.path.join(root, "t3_warehouse", "warehouse_scene.usd"))
 
 
 def test_config_derived_constants():

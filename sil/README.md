@@ -1,7 +1,7 @@
 # sil/ — Isaac Sim · ROS 2 구현 트랙 (SIL, 가상 시운전)
 
-정본은 팀 레포 `S15P21A106/2_Simulation/`이고 여기는 작업 사본이다. 2026-09-07 리팩토링(모듈 분할)은 이 사본에서 먼저 하고,
-확인 뒤 팀 레포로 옮긴다. 실행 환경: 홈 GPU 서버(RTX 5080 16 GB · RAM 64 GB), Isaac Sim 6.0.1 `~/isaacsim` + `/opt/ros/humble`.
+정본은 팀 레포 `S15P21A106/2_Simulation/`이고 여기는 작업 사본이다. 2026-09-07 리팩토링(모듈 분할)은 이 사본에서 먼저 했고,
+2026-09-08 팀 레포(feature/S15P21A106-171)로 이식했다 — 이후 변경은 팀 레포에 먼저 넣는다. 실행 환경: 홈 GPU 서버(RTX 5080 16 GB · RAM 64 GB), Isaac Sim 6.0.1 `~/isaacsim` + `/opt/ros/humble`.
 
 ## 구조 (2026-09-07 리팩토링)
 
