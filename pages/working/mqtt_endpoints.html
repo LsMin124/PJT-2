@@ -317,7 +317,7 @@
     <div class="tbl-scroll"><table>
       <thead><tr><th>클라이언트</th><th>브로커 주소</th><th>비고</th></tr></thead>
       <tbody>
-        <tr><td>GPU 서버 (에이전트 · sim-runner)</td><td class="m">EMQX · &lt;EC2 tailscale IP&gt;:31883</td><td>홈 → EC2 아웃바운드만. 공인 IP 로는 보안 그룹이 막는다. AMQP는 터널을 건너지 않는다</td></tr>
+        <tr><td>GPU 서버 (에이전트 · sim-runner)</td><td class="m">EMQX · 100.100.149.68:1883 (compose, 지금) → :31883 (k3s 이후)</td><td>tailscale 직결 3 ms. 공인 IP 로는 보안 그룹(443·80)이 막는다 — 확인 09-08. AMQP는 터널을 건너지 않는다</td></tr>
         <tr><td>k3s 안 (host-orch · fms-core · WMS)</td><td class="m">EMQX · emqx.backbone.svc:1883</td><td>같은 네임스페이스 backbone</td></tr>
         <tr><td>BE · DES 워커 · host-orch</td><td class="m">RabbitMQ · rabbitmq:5672 (4_Web compose a106-rabbitmq)</td><td>k3s 이전 시 backbone 네임스페이스로. 계정별 큐 권한: BE 양쪽, 워커 sim.*, host-orch sim.verify.*</td></tr>
         <tr><td>로컬 개발 · CI</td><td class="m">EMQX localhost:1883 · RabbitMQ localhost:5672</td><td><code>3_FMS/infra/emqx/compose.yml</code> · <code>4_Web/docker-compose.yml</code>. 대시보드 127.0.0.1:18083 · 15672</td></tr>
@@ -350,7 +350,7 @@ curl -u "$RABBITMQ_USER:$RABBITMQ_PASSWORD" http://localhost:15672/api/queues/%2
     <div class="tbl-scroll"><table>
       <thead><tr><th>단계</th><th>내용</th><th>위치</th><th>상태</th></tr></thead>
       <tbody>
-        <tr><td>EMQX 02 · 03 · 04</td><td>결정표 · 계약 v1.0-draft · 로컬 EMQX(compose, emqx.conf, acl.conf, 계정 부트스트랩) · ACL 행렬 테스트 50항목</td><td class="m">3_FMS/infra/emqx · 3_FMS/contracts</td><td><span class="chip c-green">완료 09-08</span> EMQX 6.3.0 실브로커 통과</td></tr>
+        <tr><td>EMQX 02 · 03 · 04</td><td>결정표 · 계약 v1.0-draft · EMQX(compose, emqx.conf, acl.conf, 계정 부트스트랩) · ACL 행렬 테스트 50항목 · <b>EC2 배포(~/emqx, tailnet)</b></td><td class="m">3_FMS/infra/emqx · 3_FMS/contracts</td><td><span class="chip c-green">완료 09-08</span> 로컬·EC2 브로커 모두 50 통과, 집 에이전트 ↔ EC2 브로커 5틱 PASS</td></tr>
         <tr><td>큐 계약</td><td><code>sim.verify.request/result</code> 본문 · 상태값 VERIFYING · consumer-timeout 또는 즉시 ack · 검증 런 길이</td><td class="m">5_Docs/Web/시뮬엔진연동API명세서 §1-6 (초안)</td><td><span class="chip c-amber">다음</span> 웹 팀 합의 필요</td></tr>
         <tr><td>DES 소비자</td><td><code>sim.request</code> 소비 → <code>sim_v2_tasks.py</code> → <code>[SUMMARY]</code> → <code>sim.result</code> → ack. prefetch 1</td><td class="m">3_FMS/infra/worker</td><td><span class="chip c-slate">예정</span> FMS 팀 · 초안 가능</td></tr>
         <tr><td>EMQX 05</td><td>에이전트: launch 계정 인자 · factsheet(기종 프로파일) · 같은 orderUpdateId 무시 · fake_fms 계정 인자</td><td class="m">2_Simulation/t4_agent</td><td><span class="chip c-amber">다음</span></td></tr>

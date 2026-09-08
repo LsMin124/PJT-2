@@ -95,7 +95,7 @@
     <div class="meta">
       DOC. <b>MQTT-ROADMAP</b><br>
       REV. <b>A</b> · <b>2026-09-08</b><br>
-      진행 <b>3 / 7 완료 · 다음 = sim-runner</b><br>
+      진행 <b>3 / 7 완료 · EC2 브로커 가동 · 다음 = sim-runner</b><br>
       SOURCE · <b>백본 가이드 Rev D · MQ 접속 지점 Rev B · MQTT_CONTRACT v1.0-draft · 브랜치 147 커밋 6개</b>
     </div>
   </div>
@@ -126,6 +126,7 @@
       <div class="kcard g"><b>이어서 개발할 분</b><span>02 지금까지(파일 위치·검증 방법) → 03 앞으로(다음 조각의 책임 표)</span></div>
       <div class="kcard"><b>결정할 게 있는 분</b><span>04 정해야 할 것 — 미정 4건과 각각의 선택지·추천</span></div>
     </div>
+    <div class="plain"><span class="pl-tag">2026-09-08 저녁 갱신</span>EC2가 tailnet에 합류했고 EMQX가 EC2에서 돌고 있습니다. 집 GPU 서버의 에이전트가 터널로 EC2 브로커에 붙어 factsheet·5틱·유언까지 확인됐습니다 — "집 로봇 ↔ EC2 브로커" 배관은 닫혔습니다. 배포에서 배운 것(users.csv 권한 644, 실행 순서)은 §2-1과 브로커 README에 있습니다.</div>
     <div class="plain"><span class="pl-tag">전제</span>주행 알고리즘은 DES(이산사건 시뮬레이션)가 끝나야 정해지고, 그걸 바탕으로 FMS가 완성돼야 Isaac 검증도 완결됩니다. 그래서 지금은 <b>알고리즘과 무관한 배관과 인프라만</b> 끝까지 연결해 두는 것이 목표입니다. 실제 배차 내용(order 가 무엇을 시킬지)은 나중에 끼워 넣습니다.</div>
     <h3>진행률</h3>
     <div class="bar"><span class="d" style="width:43%"></span><span class="n" style="width:14%"></span><span class="p" style="width:29%"></span><span class="o" style="width:14%"></span></div>
@@ -182,6 +183,7 @@
         <tr><td>09-08</td><td>MQTT 계약 v1.0-draft · ACL 행렬 테스트</td><td class="m">3_FMS/contracts/</td><td>50 passed</td></tr>
         <tr><td>09-08</td><td>T4 에이전트: 계정 인자 · factsheet · 중복 order 규칙 · fake_fms 계정</td><td class="m">2_Simulation/t4_agent/</td><td>가짜 로봇 2대 + 가짜 FMS 5틱 PASS · LWT 확인</td></tr>
         <tr><td>09-08</td><td>MQ 접속 지점 문서 Rev B (잡 큐 A안 · sim.verify.* 큐)</td><td><a href="mqtt_endpoints.html">mqtt_endpoints</a></td><td>—</td></tr>
+        <tr><td>09-08</td><td>EC2 tailnet 합류 + EMQX 배포(compose, <code>~/emqx/</code>). 집 GPU 서버의 에이전트가 EC2 브로커에 접속</td><td class="m">EC2 · tailnet 100.100.149.68</td><td>직결 3 ms · ACL 50 통과 · 5틱 PASS · LWT 1.1 s. 공인 1883 차단 확인</td></tr>
       </tbody>
     </table></div>
 
@@ -196,6 +198,7 @@
         <tr><td>LWT (유언)</td><td>클라이언트가 죽으면 브로커가 대신 내는 메시지. 에이전트는 connection = CONNECTIONBROKEN, Sparkplug Edge는 NDEATH, Host는 STATE offline</td><td>각 클라이언트 접속 시 등록</td></tr>
       </tbody>
     </table></div>
+    <div class="qa"><b>EC2 배포에서 걸린 것 (2026-09-08)</b><code>sudo bash bootstrap_users.sh</code>로 만든 users.csv가 root 600이라 컨테이너의 emqx 사용자(uid 1000)가 읽지 못해 계정 0개로 떴고, 익명은 물론 모든 계정이 "Not authorized"였습니다. 644로 바꾸고 <code>down -v</code> 후 재기동하면 됩니다. 이후 스크립트는 644로 쓰고 compose는 users.csv를 <code>configs:</code>로 참조해 파일이 없으면 즉시 실패합니다(커밋 ab9af3b). 수동 복사 때 실행 권한과 숨김 파일도 빠지기 쉽습니다.</div>
     <div class="qa"><b>6.3에서 걸린 것 세 가지 (README에도 있음)</b>① 이미지 기본 conf를 마운트로 덮으면 <code>node.data_dir</code>를 직접 적어야 합니다. ② ACL의 retain 조건은 토픽이 아니라 동작에 붙습니다: <code>{allow, who, {publish, [{retain,false}]}, [토픽]}</code>. ③ 6.3부터 security_profile 기본이 hardened라 기본 acl.conf의 legacy 허용 규칙이 사라졌습니다. 우리는 어차피 마지막 줄이 <code>{deny, all}</code>입니다.</div>
     <p class="soft">라이선스: 6.x는 BSL 1.1이지만 동봉된 Community License로 단일 노드 내부 사용은 무료입니다(세션 1,000만, 2029-03까지). 클러스터(2노드 이상)만 별도입니다.</p>
 
