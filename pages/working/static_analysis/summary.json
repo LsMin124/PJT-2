@@ -1,14 +1,19 @@
 {
  "run": {
-  "id": "2026-09-08_0305_light",
-  "ts": "2026-09-08T03:05:01+0900",
+  "id": "2026-09-08_0905_light",
+  "ts": "2026-09-08T09:05:01+0900",
   "mode": "light",
   "ref": "origin/develop",
-  "sha": "e1620db5078723326a13b205507d977c06bd961d",
-  "duration_s": 5.8,
+  "sha": "bb2d7b278a9103c750bf7b7dd99d82e27b4716a2",
+  "duration_s": 5.7,
   "status": "ok",
   "prev_deep": "2026-09-07_1805_deep",
-  "red_flags": []
+  "red_flags": [
+   {
+    "code": "COMP_UP",
+    "msg": "3_FMS/infra+etc W 16→79 (D 22.7→111.9)"
+   }
+  ]
  },
  "tool_versions": {
   "ruff": "0.16.6",
@@ -400,7 +405,7 @@
    "loc": 2025,
    "counts": {
     "S3": 0,
-    "S2": 3,
+    "S2": 2,
     "S1": 10,
     "S0": 0
    },
@@ -408,23 +413,11 @@
     "check",
     "ruff"
    ],
-   "W": 19,
-   "D": 9.4,
+   "W": 16,
+   "D": 7.9,
    "grade": "B",
    "partial": false,
    "top": [
-    {
-     "tool": "check",
-     "rule": "doc-link",
-     "sev": "S2",
-     "path": "3_FMS/ai_theta/README.md",
-     "line": 28,
-     "msg": "깨진 문서 참조: ../sim_engine/from_theta_demo.py",
-     "symbol": "",
-     "component": "3_FMS/ai_theta+contracts",
-     "part": "FMS·AI",
-     "fp": "4328c930ad8495ee"
-    },
     {
      "tool": "check",
      "rule": "doc-link",
@@ -508,6 +501,18 @@
      "component": "3_FMS/ai_theta+contracts",
      "part": "FMS·AI",
      "fp": "80fdd86bc321a86a"
+    },
+    {
+     "tool": "ruff",
+     "rule": "UP045",
+     "sev": "S1",
+     "path": "3_FMS/ai_theta/theta_fixtures.py",
+     "line": 64,
+     "msg": "Use `X | None` for type annotations",
+     "symbol": "",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "434c373d8fc8befd"
     }
    ]
   },
@@ -522,7 +527,7 @@
    "loc": 706,
    "counts": {
     "S3": 0,
-    "S2": 3,
+    "S2": 24,
     "S1": 7,
     "S0": 0
    },
@@ -531,106 +536,106 @@
     "ruff",
     "yamllint"
    ],
-   "W": 16,
-   "D": 22.7,
-   "grade": "C",
+   "W": 79,
+   "D": 111.9,
+   "grade": "D",
    "partial": false,
    "top": [
     {
      "tool": "check",
      "rule": "doc-link",
      "sev": "S2",
-     "path": "3_FMS/docs/2026-08-31_PIBT_코어_MVP.md",
-     "line": 49,
-     "msg": "깨진 문서 참조: ../sim_engine/results/pibt_viewer.html",
+     "path": "3_FMS/docs/2026-09-04_θ_실험_로드맵_AB공동.md",
+     "line": 4,
+     "msg": "깨진 문서 참조: 2026-09-04_고부하_무릎_판정.md",
      "symbol": "",
      "component": "3_FMS/infra+etc",
      "part": "FMS·AI",
-     "fp": "dec24354bf87c58f"
+     "fp": "d59d653a00391b1d"
     },
     {
      "tool": "check",
      "rule": "doc-link",
      "sev": "S2",
-     "path": "3_FMS/docs/2026-09-07_남은과업_지라이슈_리팩토링계획.md",
-     "line": 201,
-     "msg": "깨진 문서 참조: ...",
-     "symbol": "",
-     "component": "3_FMS/infra+etc",
-     "part": "FMS·AI",
-     "fp": "ee71e86ee858abb2"
-    },
-    {
-     "tool": "ruff",
-     "rule": "F401",
-     "sev": "S2",
-     "path": "3_FMS/map/check_map_set.py",
-     "line": 20,
-     "msg": "`map_loader.CELL_M` imported but unused",
-     "symbol": "",
-     "component": "3_FMS/infra+etc",
-     "part": "FMS·AI",
-     "fp": "4ac5261e2b500ff6"
-    },
-    {
-     "tool": "yamllint",
-     "rule": "line-length",
-     "sev": "S1",
-     "path": "3_FMS/infra/docker-compose.yml",
+     "path": "3_FMS/docs/2026-09-04_θ_실험_로드맵_AB공동.md",
      "line": 36,
-     "msg": "line too long (147 > 140 characters)",
+     "msg": "깨진 문서 참조: 2026-09-07_B5_θ적용_FleetSweep_결과.md",
      "symbol": "",
      "component": "3_FMS/infra+etc",
      "part": "FMS·AI",
-     "fp": "97af19a1fea1cbc0"
+     "fp": "9c026e5a00d9a475"
     },
     {
-     "tool": "ruff",
-     "rule": "PLW1510",
-     "sev": "S1",
-     "path": "3_FMS/infra/worker/objective.py",
-     "line": 65,
-     "msg": "`subprocess.run` without explicit `check` argument",
+     "tool": "check",
+     "rule": "doc-link",
+     "sev": "S2",
+     "path": "3_FMS/docs/2026-09-04_θ감도_실험.md",
+     "line": 4,
+     "msg": "깨진 문서 참조: 2026-09-01_θ스키마_합의안.md",
      "symbol": "",
      "component": "3_FMS/infra+etc",
      "part": "FMS·AI",
-     "fp": "5338610f7dcea120"
+     "fp": "5d680d25585ff139"
     },
     {
-     "tool": "ruff",
-     "rule": "SIM115",
-     "sev": "S1",
-     "path": "3_FMS/map/build_fms_map.py",
-     "line": 44,
-     "msg": "Use a context manager for opening files",
+     "tool": "check",
+     "rule": "doc-link",
+     "sev": "S2",
+     "path": "3_FMS/docs/2026-09-04_θ감도_실험.md",
+     "line": 62,
+     "msg": "깨진 문서 참조: 2026-09-01_θ스키마_합의안.md",
      "symbol": "",
      "component": "3_FMS/infra+etc",
      "part": "FMS·AI",
-     "fp": "f8d06213bb631c84"
+     "fp": "cc4559eb3d4cce12"
     },
     {
-     "tool": "ruff",
-     "rule": "SIM115",
-     "sev": "S1",
-     "path": "3_FMS/map/build_fms_map.py",
-     "line": 45,
-     "msg": "Use a context manager for opening files",
+     "tool": "check",
+     "rule": "doc-link",
+     "sev": "S2",
+     "path": "3_FMS/docs/2026-09-04_θ탐색_대수별_결과.md",
+     "line": 72,
+     "msg": "깨진 문서 참조: 2026-09-04_고부하_무릎_판정.md",
      "symbol": "",
      "component": "3_FMS/infra+etc",
      "part": "FMS·AI",
-     "fp": "c939a4169270515e"
+     "fp": "af3567fc3aea465e"
     },
     {
-     "tool": "ruff",
-     "rule": "F541",
-     "sev": "S1",
-     "path": "3_FMS/map/build_fms_map.py",
-     "line": 58,
-     "msg": "f-string without any placeholders",
+     "tool": "check",
+     "rule": "doc-link",
+     "sev": "S2",
+     "path": "3_FMS/docs/2026-09-04_θ탐색_대수별_결과.md",
+     "line": 139,
+     "msg": "깨진 문서 참조: 2026-09-06_평가시드_후보_기준선.md",
      "symbol": "",
      "component": "3_FMS/infra+etc",
      "part": "FMS·AI",
-     "fp": "fa51cb9bb5838f67"
+     "fp": "f2dadd9ded9bc7ea"
+    },
+    {
+     "tool": "check",
+     "rule": "doc-link",
+     "sev": "S2",
+     "path": "3_FMS/docs/2026-09-04_θ탐색_예산_측정.md",
+     "line": 4,
+     "msg": "깨진 문서 참조: 2026-09-04_고부하_무릎_판정.md",
+     "symbol": "",
+     "component": "3_FMS/infra+etc",
+     "part": "FMS·AI",
+     "fp": "395a88f611764f37"
+    },
+    {
+     "tool": "check",
+     "rule": "doc-link",
+     "sev": "S2",
+     "path": "3_FMS/docs/2026-09-04_θ탐색_예산_측정.md",
+     "line": 25,
+     "msg": "깨진 문서 참조: 2026-09-04_고부하_무릎_판정.md",
+     "symbol": "",
+     "component": "3_FMS/infra+etc",
+     "part": "FMS·AI",
+     "fp": "2964594bd3813b0a"
     }
    ]
   },
@@ -843,25 +848,25 @@
   {
    "name": "develop",
    "slug": "develop",
-   "sha": "e1620db5078723326a13b205507d977c06bd961d",
-   "committer_date": 1788800571,
-   "author": "신재령",
+   "sha": "bb2d7b278a9103c750bf7b7dd99d82e27b4716a2",
+   "committer_date": 1788824303,
+   "author": "박화랑",
    "loc": 18177,
    "counts": {
     "S3": 0,
-    "S2": 42,
+    "S2": 62,
     "S1": 126,
     "S0": 2
    },
-   "W": 252,
+   "W": 312,
    "new_vs_prev": {
     "S3": 0,
-    "S2": 0,
+    "S2": 23,
     "S1": 0,
     "S0": 0
    },
-   "fixed": 0,
-   "prev_run": "2026-09-08_0005_light",
+   "fixed": 3,
+   "prev_run": "2026-09-08_0305_light",
    "tools": [
     {
      "id": "ruff",
@@ -897,7 +902,7 @@
      "id": "bandit",
      "status": "ok",
      "rc": 0,
-     "secs": 0.8,
+     "secs": 0.7,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -1010,17 +1015,18 @@
      "id": "doc-links",
      "title": "문서 상대링크·코드 헤더 docs 참조 존재",
      "status": "warn",
-     "msg": "깨진 참조 5건",
+     "msg": "깨진 참조 25건",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [
       ".githooks/README.md:5 → ../Docs/GIT_CONVENTION.md",
-      "3_FMS/ai_theta/README.md:28 → ../sim_engine/from_theta_demo.py",
       "3_FMS/ai_theta/data/build_input.py:5 → Docs/AI/AI입출력명세서.md",
-      "3_FMS/docs/2026-08-31_PIBT_코어_MVP.md:49 → ../sim_engine/results/pibt_viewer.html",
-      "3_FMS/docs/2026-09-07_남은과업_지라이슈_리팩토링계획.md:201 → ..."
+      "3_FMS/docs/2026-09-04_θ_실험_로드맵_AB공동.md:4 → 2026-09-04_고부하_무릎_판정.md",
+      "3_FMS/docs/2026-09-04_θ_실험_로드맵_AB공동.md:36 → 2026-09-07_B5_θ적용_FleetSweep_결과.md",
+      "3_FMS/docs/2026-09-04_θ감도_실험.md:4 → 2026-09-01_θ스키마_합의안.md",
+      "3_FMS/docs/2026-09-04_θ감도_실험.md:62 → 2026-09-01_θ스키마_합의안.md"
      ],
-     "n": 5,
+     "n": 25,
      "sev": "S2"
     },
     {
@@ -1087,7 +1093,7 @@
      "id": "claims.tick-500ms",
      "title": "아키텍처 문서 '500ms 틱' vs FMS 문서 '커널 틱 1 s'",
      "status": "warn",
-     "msg": "아키텍처 문서 '500ms' 4곳 / FMS 문서 '1 s 틱' 2곳. 결정 필요: 틱 주기 단일화",
+     "msg": "아키텍처 문서 '500ms' 4곳 / FMS 문서 '1 s 틱' 4곳. 결정 필요: 틱 주기 단일화",
      "component": "3_FMS/sim_engine",
      "needs_agreement": true,
      "evidence": [
@@ -1165,11 +1171,11 @@
      "sev": "S0"
     }
    ],
-   "duration_s": 2.8,
+   "duration_s": 2.7,
    "allow_dropped": 5,
    "new": {
     "S3": 0,
-    "S2": 0,
+    "S2": 23,
     "S1": 0,
     "S0": 0
    },
@@ -1177,7 +1183,7 @@
    "ahead": 0,
    "behind": 0,
    "files_changed": 0,
-   "merge_base": "e1620db5078723326a13b205507d977c06bd961d"
+   "merge_base": "bb2d7b278a9103c750bf7b7dd99d82e27b4716a2"
   }
  ],
  "tools": [
@@ -1215,7 +1221,7 @@
    "id": "bandit",
    "status": "ok",
    "rc": 0,
-   "secs": 0.8,
+   "secs": 0.7,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -1328,17 +1334,18 @@
    "id": "doc-links",
    "title": "문서 상대링크·코드 헤더 docs 참조 존재",
    "status": "warn",
-   "msg": "깨진 참조 5건",
+   "msg": "깨진 참조 25건",
    "component": "infra",
    "needs_agreement": false,
    "evidence": [
     ".githooks/README.md:5 → ../Docs/GIT_CONVENTION.md",
-    "3_FMS/ai_theta/README.md:28 → ../sim_engine/from_theta_demo.py",
     "3_FMS/ai_theta/data/build_input.py:5 → Docs/AI/AI입출력명세서.md",
-    "3_FMS/docs/2026-08-31_PIBT_코어_MVP.md:49 → ../sim_engine/results/pibt_viewer.html",
-    "3_FMS/docs/2026-09-07_남은과업_지라이슈_리팩토링계획.md:201 → ..."
+    "3_FMS/docs/2026-09-04_θ_실험_로드맵_AB공동.md:4 → 2026-09-04_고부하_무릎_판정.md",
+    "3_FMS/docs/2026-09-04_θ_실험_로드맵_AB공동.md:36 → 2026-09-07_B5_θ적용_FleetSweep_결과.md",
+    "3_FMS/docs/2026-09-04_θ감도_실험.md:4 → 2026-09-01_θ스키마_합의안.md",
+    "3_FMS/docs/2026-09-04_θ감도_실험.md:62 → 2026-09-01_θ스키마_합의안.md"
    ],
-   "n": 5,
+   "n": 25,
    "sev": "S2"
   },
   {
@@ -1405,7 +1412,7 @@
    "id": "claims.tick-500ms",
    "title": "아키텍처 문서 '500ms 틱' vs FMS 문서 '커널 틱 1 s'",
    "status": "warn",
-   "msg": "아키텍처 문서 '500ms' 4곳 / FMS 문서 '1 s 틱' 2곳. 결정 필요: 틱 주기 단일화",
+   "msg": "아키텍처 문서 '500ms' 4곳 / FMS 문서 '1 s 틱' 4곳. 결정 필요: 틱 주기 단일화",
    "component": "3_FMS/sim_engine",
    "needs_agreement": true,
    "evidence": [
@@ -1485,10 +1492,10 @@
  ],
  "tests": {},
  "totals": {
-  "findings": 170,
-  "W": 252,
-  "new": 0,
-  "fixed": 0
+  "findings": 190,
+  "W": 312,
+  "new": 23,
+  "fixed": 3
  },
  "narrative": {
   "status": "skipped"
