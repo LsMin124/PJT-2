@@ -196,7 +196,7 @@
     <line x1="526" y1="408" x2="535" y2="408" stroke="#8FB4D9" stroke-width="2" marker-end="url(#jm-arr)"/>
     <a href="pages/working/mqtt_backbone_guide.html"><rect x="540" y="382" width="104" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="552" y="403" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#3BAF77">MQTT</text><text x="552" y="422" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">백본 가이드</text></a>
     <line x1="646" y1="408" x2="655" y2="408" stroke="#8FB4D9" stroke-width="2" marker-end="url(#jm-arr)"/>
-    <a href="pages/working/mqtt_endpoints.html"><rect x="660" y="382" width="104" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="672" y="403" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#3BAF77">ENDPOINTS</text><text x="672" y="422" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">접속 지점</text></a>
+    <a href="pages/working/mqtt_endpoints.html"><rect x="660" y="382" width="104" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="672" y="403" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#3BAF77">ENDPOINTS</text><text x="672" y="422" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">MQ 접속 지점</text></a>
     <line x1="766" y1="408" x2="775" y2="408" stroke="#8FB4D9" stroke-width="2" marker-end="url(#jm-arr)"/>
     <a href="pages/working/static_analysis.html"><rect x="780" y="382" width="104" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="792" y="403" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#3BAF77">ANALYSIS</text> <text x="876" y="403" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#3BAF77">LIVE</text><text x="792" y="422" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">정적 분석</text></a>
     <!-- TRACK 6 -->
@@ -205,6 +205,7 @@
     <a href="pages/ref/glossary.html"><rect x="326" y="472" width="130" height="52" fill="#20272F" stroke="#8A96A3" stroke-width="1.5"/><text x="338" y="493" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#9AA7B4">GLOSSARY</text><text x="338" y="512" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">용어사전</text></a>
     </svg>
     <p class="journey-cap">읽는 순서는 <b>기획 2부 → 조사 3부 → 기술 3부</b>입니다. 각 문서 맨 아래의 "이전 ← → 다음" 내비가 이 순서를 안내합니다. 제품이 궁금하면 트랙 4의 브라우저 체험판을 먼저 열어도 됩니다. 트랙 5는 구현 진행·측정·가이드, 트랙 6은 아카이브와 용어사전입니다. 2026-09-07 통합 개편으로 27 → 15부.</p>
+
 
 
   </div>
@@ -320,10 +321,10 @@
       <span class="terms">EMQX · VDA 5050 · SPARKPLUG B</span>
     </a>
     <a class="ref r-a" href="pages/working/mqtt_endpoints.html">
-      <span class="doc-no">WORKING · MQTT ENDPOINTS · REV A</span>
-      <h2>MQTT 접속 지점 — 누가 어떤 계정으로 붙나</h2>
-      <p>EMQX 하나에 붙는 여섯 주체의 계정·위치·수명·토픽, 붙지 않는 것과 경계(RabbitMQ·DDS·REST), 경로, 현재 상태와 순서.</p>
-      <span class="terms">6 CLIENTS · 5 ACCOUNTS · ACL 50 PASS</span>
+      <span class="doc-no">WORKING · MQ ENDPOINTS · REV B</span>
+      <h2>MQ 접속 지점 — 두 브로커에 누가 어떤 계정으로 붙나</h2>
+      <p>RabbitMQ 잡 큐(DES 병렬 · Isaac 직렬)와 EMQX 런 버스. 견적 1건의 흐름, 큐·자원 관리, EMQX 주체 6, 붙지 않는 것, 경로, 현재.</p>
+      <span class="terms">RABBITMQ · EMQX · A안 · ACL 50 PASS</span>
     </a>
     <a class="ref r-a" href="pages/working/static_analysis.html">
       <span class="doc-no">WORKING · STATIC ANALYSIS · 자동 갱신 · LIVE</span>
