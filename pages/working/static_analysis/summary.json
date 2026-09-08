@@ -1,21 +1,17 @@
 {
  "run": {
-  "id": "2026-09-08_1605_light",
-  "ts": "2026-09-08T16:05:01+0900",
+  "id": "2026-09-08_1705_light",
+  "ts": "2026-09-08T17:05:01+0900",
   "mode": "light",
   "ref": "origin/develop",
-  "sha": "3802eed835971a1db32c08c6ef7d241442a04b69",
-  "duration_s": 12.4,
+  "sha": "a31453d319eb992210624ed462235b8f4edf748a",
+  "duration_s": 12.5,
   "status": "ok",
   "prev_deep": "2026-09-07_1805_deep",
   "red_flags": [
    {
-    "code": "NEW_S3",
-    "msg": "develop 신규 S3 1건"
-   },
-   {
     "code": "COMP_UP",
-    "msg": "3_FMS/infra+etc W 16→105 (D 22.7→57.1)"
+    "msg": "3_FMS/infra+etc W 16→103 (D 22.7→50.2)"
    },
    {
     "code": "REQ_DRIFT",
@@ -290,10 +286,10 @@
     "hwarange",
     "Jaeryeong Shin"
    ],
-   "loc": 4707,
+   "loc": 4897,
    "counts": {
     "S3": 0,
-    "S2": 24,
+    "S2": 23,
     "S1": 37,
     "S0": 0
    },
@@ -301,8 +297,8 @@
     "check",
     "ruff"
    ],
-   "W": 109,
-   "D": 23.2,
+   "W": 106,
+   "D": 21.6,
    "grade": "C",
    "partial": false,
    "top": [
@@ -534,11 +530,11 @@
     "hwarange",
     "Jaeryeong Shin"
    ],
-   "loc": 1840,
+   "loc": 2052,
    "counts": {
     "S3": 0,
-    "S2": 31,
-    "S1": 12,
+    "S2": 29,
+    "S1": 16,
     "S0": 0
    },
    "tools": [
@@ -547,8 +543,8 @@
     "shellcheck",
     "yamllint"
    ],
-   "W": 105,
-   "D": 57.1,
+   "W": 103,
+   "D": 50.2,
    "grade": "D",
    "partial": false,
    "top": [
@@ -859,25 +855,25 @@
   {
    "name": "develop",
    "slug": "develop",
-   "sha": "3802eed835971a1db32c08c6ef7d241442a04b69",
-   "committer_date": 1788849962,
-   "author": "김형수",
-   "loc": 23107,
+   "sha": "a31453d319eb992210624ed462235b8f4edf748a",
+   "committer_date": 1788853055,
+   "author": "이승민",
+   "loc": 23509,
    "counts": {
     "S3": 1,
-    "S2": 87,
-    "S1": 201,
+    "S2": 84,
+    "S1": 205,
     "S0": 2
    },
-   "W": 472,
+   "W": 467,
    "new_vs_prev": {
-    "S3": 1,
-    "S2": 21,
-    "S1": 5,
+    "S3": 0,
+    "S2": 0,
+    "S1": 4,
     "S0": 0
    },
-   "fixed": 1,
-   "prev_run": "2026-09-08_1505_light",
+   "fixed": 3,
+   "prev_run": "2026-09-08_1605_light",
    "tools": [
     {
      "id": "ruff",
@@ -888,8 +884,8 @@
      "metrics": {},
      "counts": {
       "S3": 0,
-      "S2": 34,
-      "S1": 183,
+      "S2": 33,
+      "S1": 187,
       "S0": 0
      }
     },
@@ -927,7 +923,7 @@
      "id": "yamllint",
      "status": "ok",
      "rc": 1,
-     "secs": 0.2,
+     "secs": 0.1,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -969,7 +965,7 @@
      "id": "gitleaks",
      "status": "ok",
      "rc": 0,
-     "secs": 0.5,
+     "secs": 0.4,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -997,7 +993,7 @@
      "id": "pmd",
      "status": "ok",
      "rc": 4,
-     "secs": 1.1,
+     "secs": 0.9,
      "stderr_tail": "[INFO] Found 12 violations.",
      "metrics": {
       "processing_errors": 0
@@ -1028,7 +1024,7 @@
      "id": "doc-links",
      "title": "문서 상대링크·코드 헤더 docs 참조 존재",
      "status": "warn",
-     "msg": "깨진 참조 29건",
+     "msg": "깨진 참조 27건",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [
@@ -1039,14 +1035,14 @@
       "3_FMS/docs/2026-09-04_θ감도_실험.md:4 → 2026-09-01_θ스키마_합의안.md",
       "3_FMS/docs/2026-09-04_θ감도_실험.md:62 → 2026-09-01_θ스키마_합의안.md"
      ],
-     "n": 29,
+     "n": 27,
      "sev": "S2"
     },
     {
      "id": "size",
      "title": "파일 > 800줄 · 함수 > 80줄",
      "status": "warn",
-     "msg": "파일 0 · 함수 5 (50줄 초과 함수 16)",
+     "msg": "파일 0 · 함수 5 (50줄 초과 함수 17)",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [
@@ -1175,35 +1171,35 @@
      "id": "line-len",
      "title": "120자 초과 줄 (지표)",
      "status": "ok",
-     "msg": "94줄",
+     "msg": "100줄",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [],
-     "n": 94,
+     "n": 100,
      "sev": "S0"
     }
    ],
-   "duration_s": 3.1,
+   "duration_s": 2.7,
    "allow_dropped": 4,
    "new": {
-    "S3": 1,
-    "S2": 21,
-    "S1": 5,
+    "S3": 0,
+    "S2": 0,
+    "S1": 4,
     "S0": 0
    },
    "convention": {},
    "ahead": 0,
    "behind": 0,
    "files_changed": 0,
-   "merge_base": "3802eed835971a1db32c08c6ef7d241442a04b69"
+   "merge_base": "a31453d319eb992210624ed462235b8f4edf748a"
   },
   {
-   "name": "feature/S15P21A106-156-fms-시뮬주문연결",
-   "slug": "feature__S15P21A106-156-fms-b19276",
-   "sha": "b53e1f4bae1e9f42a3e0c74c473680405524c3f4",
-   "committer_date": 1788850401,
-   "author": "hwarange",
-   "loc": 23467,
+   "name": "feature/S15P21A106-175-estimate-chart",
+   "slug": "feature__S15P21A106-175-estimate-chart-b83514",
+   "sha": "9d7340aa83b49d806df8f56b14da589b3a903d17",
+   "committer_date": 1788853598,
+   "author": "Jaeryeong Shin",
+   "loc": 23935,
    "counts": {
     "S3": 1,
     "S2": 84,
@@ -1238,7 +1234,7 @@
      "id": "ruff-format",
      "status": "ok",
      "rc": 1,
-     "secs": 0.0,
+     "secs": 0.1,
      "stderr_tail": "",
      "metrics": {
       "unformatted": 0
@@ -1310,7 +1306,7 @@
      "id": "gitleaks",
      "status": "ok",
      "rc": 0,
-     "secs": 0.4,
+     "secs": 0.5,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -1516,76 +1512,27 @@
      "id": "line-len",
      "title": "120자 초과 줄 (지표)",
      "status": "ok",
-     "msg": "100줄",
+     "msg": "80줄",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [],
-     "n": 100,
+     "n": 80,
      "sev": "S0"
     }
    ],
-   "duration_s": 3.0,
+   "duration_s": 3.1,
    "allow_dropped": 4,
-   "merge_base": "3802eed835971a1db32c08c6ef7d241442a04b69",
-   "files_changed": 23,
-   "ahead": 4,
+   "merge_base": "a31453d319eb992210624ed462235b8f4edf748a",
+   "files_changed": 7,
+   "ahead": 2,
    "behind": 0,
    "new_vs_develop": {
     "S3": 0,
     "S2": 0,
-    "S1": 4,
+    "S1": 0,
     "S0": 0
    },
-   "new_vs_develop_top": [
-    {
-     "tool": "ruff",
-     "rule": "SIM115",
-     "sev": "S1",
-     "path": "3_FMS/map/build_rack_map.py",
-     "line": 51,
-     "msg": "Use a context manager for opening files",
-     "symbol": "",
-     "component": "3_FMS/infra+etc",
-     "part": "FMS·AI",
-     "fp": "0b22ece6204a2141"
-    },
-    {
-     "tool": "ruff",
-     "rule": "SIM115",
-     "sev": "S1",
-     "path": "3_FMS/map/build_rack_map.py",
-     "line": 52,
-     "msg": "Use a context manager for opening files",
-     "symbol": "",
-     "component": "3_FMS/infra+etc",
-     "part": "FMS·AI",
-     "fp": "2aff2f2d67a5dc37"
-    },
-    {
-     "tool": "ruff",
-     "rule": "SIM115",
-     "sev": "S1",
-     "path": "3_FMS/order_gen/slice_orders.py",
-     "line": 44,
-     "msg": "Use a context manager for opening files",
-     "symbol": "",
-     "component": "3_FMS/infra+etc",
-     "part": "FMS·AI",
-     "fp": "2ac4dc40f53f5be3"
-    },
-    {
-     "tool": "ruff",
-     "rule": "SIM115",
-     "sev": "S1",
-     "path": "3_FMS/order_gen/slice_orders.py",
-     "line": 51,
-     "msg": "Use a context manager for opening files",
-     "symbol": "",
-     "component": "3_FMS/infra+etc",
-     "part": "FMS·AI",
-     "fp": "8a050969fa60b5f1"
-    }
-   ],
+   "new_vs_develop_top": [],
    "convention": {
     "branch_ok": true,
     "commits_ok": 2,
@@ -1595,28 +1542,28 @@
    "new": {
     "S3": 0,
     "S2": 0,
-    "S1": 4,
+    "S1": 0,
     "S0": 0
    }
   },
   {
-   "name": "feature/S15P21A106-171-isaac-sim-실측용-테스트코드-리팩터링",
-   "slug": "feature__S15P21A106-171-isaac-sim-81631d",
-   "sha": "68baed972984a268e28f55e0bb48faa7c30407d6",
-   "committer_date": 1788827599,
+   "name": "feature/S15P21A106-147-ec-2-내-mqtt-브로커-구현",
+   "slug": "feature__S15P21A106-147-ec-2---mqtt-9942da",
+   "sha": "4c83adc5cd804f9af05d89f697a661a2bb7b2363",
+   "committer_date": 1788847542,
    "author": "LsMin124",
-   "loc": 20430,
+   "loc": 18776,
    "counts": {
-    "S3": 0,
-    "S2": 63,
-    "S1": 195,
+    "S3": 1,
+    "S2": 78,
+    "S1": 128,
     "S0": 2
    },
-   "W": 384,
+   "W": 372,
    "new_vs_prev": {
-    "S3": 0,
-    "S2": 63,
-    "S1": 195,
+    "S3": 1,
+    "S2": 78,
+    "S1": 128,
     "S0": 2
    },
    "fixed": 0,
@@ -1631,8 +1578,8 @@
      "metrics": {},
      "counts": {
       "S3": 0,
-      "S2": 33,
-      "S1": 179,
+      "S2": 32,
+      "S1": 111,
       "S0": 0
      }
     },
@@ -1640,7 +1587,7 @@
      "id": "ruff-format",
      "status": "ok",
      "rc": 1,
-     "secs": 0.1,
+     "secs": 0.0,
      "stderr_tail": "",
      "metrics": {
       "unformatted": 0
@@ -1661,7 +1608,7 @@
      "metrics": {},
      "counts": {
       "S3": 0,
-      "S2": 1,
+      "S2": 0,
       "S1": 0,
       "S0": 0
      }
@@ -1669,13 +1616,13 @@
     {
      "id": "yamllint",
      "status": "ok",
-     "rc": 0,
+     "rc": 1,
      "secs": 0.1,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
       "S3": 0,
-      "S2": 0,
+      "S2": 16,
       "S1": 1,
       "S0": 0
      }
@@ -1690,7 +1637,7 @@
      "counts": {
       "S3": 0,
       "S2": 0,
-      "S1": 1,
+      "S1": 2,
       "S0": 0
      }
     },
@@ -1757,12 +1704,14 @@
     {
      "id": "req-drift",
      "title": "3_FMS import ⊆ requirements.txt",
-     "status": "ok",
-     "msg": "import 전부 requirements와 일치 (allow: simpy)",
+     "status": "fail",
+     "msg": "requirements 누락 1개: pytest (allow: simpy)",
      "component": "3_FMS/infra+etc",
      "needs_agreement": false,
-     "evidence": [],
-     "n": 0,
+     "evidence": [
+      "3_FMS/contracts/tests/test_acl_matrix.py: import pytest"
+     ],
+     "n": 1,
      "sev": "S3"
     },
     {
@@ -1787,15 +1736,16 @@
      "id": "size",
      "title": "파일 > 800줄 · 함수 > 80줄",
      "status": "warn",
-     "msg": "파일 0 · 함수 3 (50줄 초과 함수 12)",
+     "msg": "파일 1 · 함수 3 (50줄 초과 함수 9)",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [
+      "2_Simulation/t3_warehouse/build_scene.py:0 파일 930줄 (> 800)",
       ".gitlab/scripts/sonar_mr_comment.py:386 함수 main 148줄 (> 80)",
-      "2_Simulation/scene_builder/roof.py:61 함수 build_roof 122줄 (> 80)",
+      "2_Simulation/t3_warehouse/roof_structure.py:79 함수 build_roof 122줄 (> 80)",
       "3_FMS/sim_engine/checks/from_theta_demo.py:57 함수 main 121줄 (> 80)"
      ],
-     "n": 3,
+     "n": 4,
      "sev": "S2"
     },
     {
@@ -1831,14 +1781,15 @@
      "id": "claims.isaac-1-instance",
      "title": "README '동시 1인스턴스' 주장 vs 2026-09-05 실측(경량 6 동시)",
      "status": "warn",
-     "msg": "'동시 1인스턴스' 문구 2곳 — 실측(64GB, lean 6 동시)과 불일치. 결정 필요: 문구 갱신 여부",
+     "msg": "'동시 1인스턴스' 문구 3곳 — 실측(64GB, lean 6 동시)과 불일치. 결정 필요: 문구 갱신 여부",
      "component": "2_Simulation",
      "needs_agreement": true,
      "evidence": [
-      "2_Simulation/t1_teleop/README.md:29",
-      "2_Simulation/t3_warehouse/README.md:27"
+      "2_Simulation/t1_teleop/README.md:27",
+      "2_Simulation/t3_warehouse/README.md:27",
+      "2_Simulation/t3_warehouse/view_scene.py:8"
      ],
-     "n": 2,
+     "n": 3,
      "sev": "S0"
     },
     {
@@ -1915,17 +1866,17 @@
      "id": "line-len",
      "title": "120자 초과 줄 (지표)",
      "status": "ok",
-     "msg": "83줄",
+     "msg": "71줄",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [],
-     "n": 83,
+     "n": 71,
      "sev": "S0"
     }
    ],
    "duration_s": 2.6,
-   "allow_dropped": 4,
-   "merge_base": "68baed972984a268e28f55e0bb48faa7c30407d6",
+   "allow_dropped": 5,
+   "merge_base": "4c83adc5cd804f9af05d89f697a661a2bb7b2363",
    "files_changed": 0,
    "ahead": 0,
    "behind": 37,
@@ -1960,8 +1911,8 @@
    "metrics": {},
    "counts": {
     "S3": 0,
-    "S2": 34,
-    "S1": 183,
+    "S2": 33,
+    "S1": 187,
     "S0": 0
    }
   },
@@ -1999,7 +1950,7 @@
    "id": "yamllint",
    "status": "ok",
    "rc": 1,
-   "secs": 0.2,
+   "secs": 0.1,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -2041,7 +1992,7 @@
    "id": "gitleaks",
    "status": "ok",
    "rc": 0,
-   "secs": 0.5,
+   "secs": 0.4,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -2069,7 +2020,7 @@
    "id": "pmd",
    "status": "ok",
    "rc": 4,
-   "secs": 1.1,
+   "secs": 0.9,
    "stderr_tail": "[INFO] Found 12 violations.",
    "metrics": {
     "processing_errors": 0
@@ -2100,7 +2051,7 @@
    "id": "doc-links",
    "title": "문서 상대링크·코드 헤더 docs 참조 존재",
    "status": "warn",
-   "msg": "깨진 참조 29건",
+   "msg": "깨진 참조 27건",
    "component": "infra",
    "needs_agreement": false,
    "evidence": [
@@ -2111,14 +2062,14 @@
     "3_FMS/docs/2026-09-04_θ감도_실험.md:4 → 2026-09-01_θ스키마_합의안.md",
     "3_FMS/docs/2026-09-04_θ감도_실험.md:62 → 2026-09-01_θ스키마_합의안.md"
    ],
-   "n": 29,
+   "n": 27,
    "sev": "S2"
   },
   {
    "id": "size",
    "title": "파일 > 800줄 · 함수 > 80줄",
    "status": "warn",
-   "msg": "파일 0 · 함수 5 (50줄 초과 함수 16)",
+   "msg": "파일 0 · 함수 5 (50줄 초과 함수 17)",
    "component": "infra",
    "needs_agreement": false,
    "evidence": [
@@ -2247,20 +2198,20 @@
    "id": "line-len",
    "title": "120자 초과 줄 (지표)",
    "status": "ok",
-   "msg": "94줄",
+   "msg": "100줄",
    "component": "infra",
    "needs_agreement": false,
    "evidence": [],
-   "n": 94,
+   "n": 100,
    "sev": "S0"
   }
  ],
  "tests": {},
  "totals": {
-  "findings": 291,
-  "W": 472,
-  "new": 27,
-  "fixed": 1
+  "findings": 292,
+  "W": 467,
+  "new": 4,
+  "fixed": 3
  },
  "narrative": {
   "status": "skipped"
