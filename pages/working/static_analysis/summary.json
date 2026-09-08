@@ -1,21 +1,25 @@
 {
  "run": {
-  "id": "2026-09-08_1005_light",
-  "ts": "2026-09-08T10:05:01+0900",
+  "id": "2026-09-08_1205_light",
+  "ts": "2026-09-08T12:05:01+0900",
   "mode": "light",
   "ref": "origin/develop",
-  "sha": "bfc180feca4e9430958f892b104d5a355de38906",
-  "duration_s": 9.1,
+  "sha": "1a0c25c0aba87a6ebf2f7d8357353f6df076f01a",
+  "duration_s": 6.2,
   "status": "ok",
   "prev_deep": "2026-09-07_1805_deep",
   "red_flags": [
    {
-    "code": "COMP_UP",
-    "msg": "3_FMS/infra+etc W 16→79 (D 22.7→111.9)"
+    "code": "NEW_S3",
+    "msg": "develop 신규 S3 1건"
    },
    {
-    "code": "BRANCH_S2",
-    "msg": "feature/S15P21A106-171-isaac-sim-실측용-테스트코드-리팩터링 변경 파일에 S2+ 6건 추가"
+    "code": "COMP_UP",
+    "msg": "3_FMS/infra+etc W 16→99 (D 22.7→100.2)"
+   },
+   {
+    "code": "REQ_DRIFT",
+    "msg": "requirements 누락 1개: pytest (allow: simpy)"
    }
   ]
  },
@@ -161,82 +165,95 @@
    "users": [
     "LsMin124"
    ],
-   "loc": 3646,
+   "loc": 5899,
    "counts": {
     "S3": 0,
-    "S2": 5,
-    "S1": 23,
+    "S2": 6,
+    "S1": 92,
     "S0": 0
    },
    "tools": [
+    "bandit",
     "check",
     "ruff",
     "shellcheck"
    ],
-   "W": 38,
-   "D": 10.4,
-   "grade": "B",
+   "W": 110,
+   "D": 18.6,
+   "grade": "C",
    "partial": false,
    "top": [
-    {
-     "tool": "check",
-     "rule": "file-800",
-     "sev": "S2",
-     "path": "2_Simulation/t3_warehouse/build_scene.py",
-     "line": 0,
-     "msg": "파일 930줄 (> 800)",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "c8451d482475246b"
-    },
     {
      "tool": "ruff",
      "rule": "B023",
      "sev": "S2",
-     "path": "2_Simulation/t3_warehouse/roof_structure.py",
-     "line": 150,
+     "path": "2_Simulation/scene_builder/roof.py",
+     "line": 132,
      "msg": "Function definition does not bind loop variable `x`",
      "symbol": "",
      "component": "2_Simulation",
      "part": "시뮬",
-     "fp": "ab438a33c4cfdf99"
+     "fp": "5bc2a3da52407aad"
     },
     {
      "tool": "ruff",
      "rule": "B023",
      "sev": "S2",
-     "path": "2_Simulation/t3_warehouse/roof_structure.py",
-     "line": 150,
+     "path": "2_Simulation/scene_builder/roof.py",
+     "line": 132,
      "msg": "Function definition does not bind loop variable `y_e`",
      "symbol": "",
      "component": "2_Simulation",
      "part": "시뮬",
-     "fp": "e39e47a327f8164a"
+     "fp": "d13f27d9c8cb20b6"
     },
     {
      "tool": "ruff",
      "rule": "B023",
      "sev": "S2",
-     "path": "2_Simulation/t3_warehouse/roof_structure.py",
-     "line": 150,
+     "path": "2_Simulation/scene_builder/roof.py",
+     "line": 132,
      "msg": "Function definition does not bind loop variable `s`",
      "symbol": "",
      "component": "2_Simulation",
      "part": "시뮬",
-     "fp": "5bd4c546ff9d2e36"
+     "fp": "dd01baa489f2e9aa"
     },
     {
      "tool": "check",
      "rule": "func-80",
      "sev": "S2",
-     "path": "2_Simulation/t3_warehouse/roof_structure.py",
-     "line": 79,
+     "path": "2_Simulation/scene_builder/roof.py",
+     "line": 61,
      "msg": "함수 build_roof 122줄 (> 80)",
      "symbol": "build_roof",
      "component": "2_Simulation",
      "part": "시뮬",
-     "fp": "37eebfa054f7938a"
+     "fp": "f4f083ddc6c4c8eb"
+    },
+    {
+     "tool": "ruff",
+     "rule": "RET504",
+     "sev": "S2",
+     "path": "2_Simulation/scene_builder/stations.py",
+     "line": 98,
+     "msg": "Unnecessary assignment to `stations` before `return` statement",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "a43d29465c7c1e92"
+    },
+    {
+     "tool": "bandit",
+     "rule": "B104",
+     "sev": "S2",
+     "path": "2_Simulation/sil_isaac/viewer/http_stream.py",
+     "line": 114,
+     "msg": "Possible binding to all interfaces.",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "d90774158b6eefcc"
     },
     {
      "tool": "shellcheck",
@@ -252,27 +269,15 @@
     },
     {
      "tool": "ruff",
-     "rule": "B007",
+     "rule": "SIM115",
      "sev": "S1",
-     "path": "2_Simulation/calibration/turn_probe/spin_probe.py",
-     "line": 195,
-     "msg": "Loop control variable `k` not used within loop body",
+     "path": "2_Simulation/isaac_replay.py",
+     "line": 47,
+     "msg": "Use a context manager for opening files",
      "symbol": "",
      "component": "2_Simulation",
      "part": "시뮬",
-     "fp": "e4be775fc6ab683c"
-    },
-    {
-     "tool": "ruff",
-     "rule": "PERF102",
-     "sev": "S1",
-     "path": "2_Simulation/calibration/turn_probe/spin_probe.py",
-     "line": 195,
-     "msg": "When using only the values of a dict use the `values()` method",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "e5e611b09598565a"
+     "fp": "1813a43ab42d524a"
     }
    ]
   },
@@ -284,7 +289,7 @@
     "hwarange",
     "Jaeryeong Shin"
    ],
-   "loc": 4705,
+   "loc": 4707,
    "counts": {
     "S3": 0,
     "S2": 24,
@@ -528,11 +533,11 @@
     "hwarange",
     "Jaeryeong Shin"
    ],
-   "loc": 706,
+   "loc": 988,
    "counts": {
-    "S3": 0,
-    "S2": 24,
-    "S1": 7,
+    "S3": 1,
+    "S2": 27,
+    "S1": 8,
     "S0": 0
    },
    "tools": [
@@ -540,11 +545,23 @@
     "ruff",
     "yamllint"
    ],
-   "W": 79,
-   "D": 111.9,
+   "W": 99,
+   "D": 100.2,
    "grade": "D",
    "partial": false,
    "top": [
+    {
+     "tool": "check",
+     "rule": "req-drift",
+     "sev": "S3",
+     "path": "3_FMS/infra/worker/test_estimate_worker.py",
+     "line": 0,
+     "msg": "'pytest' 가 3_FMS/infra/requirements.txt 에 없음",
+     "symbol": "",
+     "component": "3_FMS/infra+etc",
+     "part": "FMS·AI",
+     "fp": "4ccb5889c2e7a7b0"
+    },
     {
      "tool": "check",
      "rule": "doc-link",
@@ -628,18 +645,6 @@
      "component": "3_FMS/infra+etc",
      "part": "FMS·AI",
      "fp": "395a88f611764f37"
-    },
-    {
-     "tool": "check",
-     "rule": "doc-link",
-     "sev": "S2",
-     "path": "3_FMS/docs/2026-09-04_θ탐색_예산_측정.md",
-     "line": 25,
-     "msg": "깨진 문서 참조: 2026-09-04_고부하_무릎_판정.md",
-     "symbol": "",
-     "component": "3_FMS/infra+etc",
-     "part": "FMS·AI",
-     "fp": "2964594bd3813b0a"
     }
    ]
   },
@@ -650,7 +655,7 @@
    "users": [
     "choiao0"
    ],
-   "loc": 3693,
+   "loc": 3737,
    "counts": {
     "S3": 0,
     "S2": 1,
@@ -663,7 +668,7 @@
     "pmd"
    ],
    "W": 15,
-   "D": 4.1,
+   "D": 4.0,
    "grade": "A",
    "partial": false,
    "top": [
@@ -708,7 +713,7 @@
      "rule": "UseConcurrentHashMap",
      "sev": "S1",
      "path": "4_Web/SantaFactoryBE/src/main/java/com/ssafy/santafactory/global/exception/GlobalExceptionHandler.java",
-     "line": 35,
+     "line": 38,
      "msg": "If you run in Java5 or newer and have concurrent access, you should use the ConcurrentHashMap implementation",
      "symbol": "",
      "component": "4_Web/BE",
@@ -852,25 +857,25 @@
   {
    "name": "develop",
    "slug": "develop",
-   "sha": "bfc180feca4e9430958f892b104d5a355de38906",
-   "committer_date": 1788827982,
-   "author": "최아영",
-   "loc": 18177,
+   "sha": "1a0c25c0aba87a6ebf2f7d8357353f6df076f01a",
+   "committer_date": 1788834287,
+   "author": "신재령",
+   "loc": 20758,
    "counts": {
-    "S3": 0,
-    "S2": 62,
-    "S1": 126,
+    "S3": 1,
+    "S2": 66,
+    "S1": 196,
     "S0": 2
    },
-   "W": 312,
+   "W": 404,
    "new_vs_prev": {
-    "S3": 0,
-    "S2": 0,
-    "S1": 0,
+    "S3": 1,
+    "S2": 9,
+    "S1": 82,
     "S0": 0
    },
-   "fixed": 0,
-   "prev_run": "2026-09-08_0905_light",
+   "fixed": 17,
+   "prev_run": "2026-09-08_1005_light",
    "tools": [
     {
      "id": "ruff",
@@ -881,8 +886,8 @@
      "metrics": {},
      "counts": {
       "S3": 0,
-      "S2": 32,
-      "S1": 110,
+      "S2": 34,
+      "S1": 180,
       "S0": 0
      }
     },
@@ -891,346 +896,6 @@
      "status": "ok",
      "rc": 1,
      "secs": 0.1,
-     "stderr_tail": "",
-     "metrics": {
-      "unformatted": 0
-     },
-     "counts": {
-      "S3": 0,
-      "S2": 0,
-      "S1": 0,
-      "S0": 0
-     }
-    },
-    {
-     "id": "bandit",
-     "status": "ok",
-     "rc": 0,
-     "secs": 0.8,
-     "stderr_tail": "",
-     "metrics": {},
-     "counts": {
-      "S3": 0,
-      "S2": 0,
-      "S1": 0,
-      "S0": 0
-     }
-    },
-    {
-     "id": "yamllint",
-     "status": "ok",
-     "rc": 0,
-     "secs": 0.1,
-     "stderr_tail": "",
-     "metrics": {},
-     "counts": {
-      "S3": 0,
-      "S2": 0,
-      "S1": 1,
-      "S0": 0
-     }
-    },
-    {
-     "id": "shellcheck",
-     "status": "ok",
-     "rc": null,
-     "secs": 0.0,
-     "stderr_tail": "",
-     "metrics": {},
-     "counts": {
-      "S3": 0,
-      "S2": 0,
-      "S1": 1,
-      "S0": 0
-     }
-    },
-    {
-     "id": "hadolint",
-     "status": "ok",
-     "rc": 1,
-     "secs": 0.0,
-     "stderr_tail": "",
-     "metrics": {},
-     "counts": {
-      "S3": 0,
-      "S2": 0,
-      "S1": 1,
-      "S0": 1
-     }
-    },
-    {
-     "id": "gitleaks",
-     "status": "ok",
-     "rc": 0,
-     "secs": 0.5,
-     "stderr_tail": "",
-     "metrics": {},
-     "counts": {
-      "S3": 0,
-      "S2": 0,
-      "S1": 0,
-      "S0": 0
-     }
-    },
-    {
-     "id": "oxlint",
-     "status": "ok",
-     "rc": 0,
-     "secs": 0.1,
-     "stderr_tail": "",
-     "metrics": {},
-     "counts": {
-      "S3": 0,
-      "S2": 0,
-      "S1": 0,
-      "S0": 0
-     }
-    },
-    {
-     "id": "pmd",
-     "status": "ok",
-     "rc": 4,
-     "secs": 0.9,
-     "stderr_tail": "[INFO] Found 10 violations.",
-     "metrics": {
-      "processing_errors": 0
-     },
-     "counts": {
-      "S3": 0,
-      "S2": 1,
-      "S1": 8,
-      "S0": 1
-     }
-    }
-   ],
-   "custom_checks": [
-    {
-     "id": "req-drift",
-     "title": "3_FMS import ⊆ requirements.txt",
-     "status": "ok",
-     "msg": "import 전부 requirements와 일치 (allow: simpy)",
-     "component": "3_FMS/infra+etc",
-     "needs_agreement": false,
-     "evidence": [],
-     "n": 0,
-     "sev": "S3"
-    },
-    {
-     "id": "doc-links",
-     "title": "문서 상대링크·코드 헤더 docs 참조 존재",
-     "status": "warn",
-     "msg": "깨진 참조 25건",
-     "component": "infra",
-     "needs_agreement": false,
-     "evidence": [
-      ".githooks/README.md:5 → ../Docs/GIT_CONVENTION.md",
-      "3_FMS/ai_theta/data/build_input.py:5 → Docs/AI/AI입출력명세서.md",
-      "3_FMS/docs/2026-09-04_θ_실험_로드맵_AB공동.md:4 → 2026-09-04_고부하_무릎_판정.md",
-      "3_FMS/docs/2026-09-04_θ_실험_로드맵_AB공동.md:36 → 2026-09-07_B5_θ적용_FleetSweep_결과.md",
-      "3_FMS/docs/2026-09-04_θ감도_실험.md:4 → 2026-09-01_θ스키마_합의안.md",
-      "3_FMS/docs/2026-09-04_θ감도_실험.md:62 → 2026-09-01_θ스키마_합의안.md"
-     ],
-     "n": 25,
-     "sev": "S2"
-    },
-    {
-     "id": "size",
-     "title": "파일 > 800줄 · 함수 > 80줄",
-     "status": "warn",
-     "msg": "파일 1 · 함수 3 (50줄 초과 함수 9)",
-     "component": "infra",
-     "needs_agreement": false,
-     "evidence": [
-      "2_Simulation/t3_warehouse/build_scene.py:0 파일 930줄 (> 800)",
-      ".gitlab/scripts/sonar_mr_comment.py:386 함수 main 148줄 (> 80)",
-      "2_Simulation/t3_warehouse/roof_structure.py:79 함수 build_roof 122줄 (> 80)",
-      "3_FMS/sim_engine/checks/from_theta_demo.py:57 함수 main 121줄 (> 80)"
-     ],
-     "n": 4,
-     "sev": "S2"
-    },
-    {
-     "id": "print-in-lib",
-     "title": "라이브러리 모듈 내 print()",
-     "status": "warn",
-     "msg": "1건",
-     "component": "3_FMS/sim_engine",
-     "needs_agreement": false,
-     "evidence": [
-      "3_FMS/sim_engine/from_theta.py:133"
-     ],
-     "n": 1,
-     "sev": "S1"
-    },
-    {
-     "id": "spring-config",
-     "title": "Spring main application.yml 운영 안전 설정",
-     "status": "warn",
-     "msg": "4건",
-     "component": "4_Web/BE",
-     "needs_agreement": false,
-     "evidence": [
-      "4_Web/SantaFactoryBE/src/main/resources/application.yml:7 자격증명 환경변수에 기본값 fallback",
-      "4_Web/SantaFactoryBE/src/main/resources/application.yml:10 ddl-auto=update: 운영 스키마 자동 변경",
-      "4_Web/SantaFactoryBE/src/main/resources/application.yml:11 show-sql=true: 운영 로그에 SQL 노출",
-      "4_Web/SantaFactoryBE/src/main/resources/application.yml:19 자격증명 환경변수에 기본값 fallback"
-     ],
-     "n": 4,
-     "sev": "S1"
-    },
-    {
-     "id": "claims.isaac-1-instance",
-     "title": "README '동시 1인스턴스' 주장 vs 2026-09-05 실측(경량 6 동시)",
-     "status": "warn",
-     "msg": "'동시 1인스턴스' 문구 3곳 — 실측(64GB, lean 6 동시)과 불일치. 결정 필요: 문구 갱신 여부",
-     "component": "2_Simulation",
-     "needs_agreement": true,
-     "evidence": [
-      "2_Simulation/t1_teleop/README.md:27",
-      "2_Simulation/t3_warehouse/README.md:27",
-      "2_Simulation/t3_warehouse/view_scene.py:8"
-     ],
-     "n": 3,
-     "sev": "S0"
-    },
-    {
-     "id": "claims.tick-500ms",
-     "title": "아키텍처 문서 '500ms 틱' vs FMS 문서 '커널 틱 1 s'",
-     "status": "warn",
-     "msg": "아키텍처 문서 '500ms' 4곳 / FMS 문서 '1 s 틱' 4곳. 결정 필요: 틱 주기 단일화",
-     "component": "3_FMS/sim_engine",
-     "needs_agreement": true,
-     "evidence": [
-      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:246",
-      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:280",
-      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:441",
-      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:448",
-      "3_FMS/docs/2026-09-04_시스템아키텍처_검토_B트랙관점.md:25",
-      "3_FMS/docs/2026-09-04_시스템아키텍처_검토_B트랙관점.md:95"
-     ],
-     "n": 4,
-     "sev": "S0"
-    },
-    {
-     "id": "claims.optuna-status",
-     "title": "기획 기준선 'Optuna 후속' vs 3_FMS 워커 optuna 의존",
-     "status": "warn",
-     "msg": "requirements에 optuna 핀 존재(1). 기준선 v3는 Optuna를 후속으로 분류. 결정 필요: 기준선 갱신 또는 워커 범위 조정",
-     "component": "3_FMS/infra+etc",
-     "needs_agreement": true,
-     "evidence": [
-      "3_FMS/infra/requirements.txt:9"
-     ],
-     "n": 1,
-     "sev": "S0"
-    },
-    {
-     "id": "claims.two-stacks",
-     "title": "기준선 v3 '두 Spring 스택(상시 견적 + 런 스코프)' vs 앱 1개",
-     "status": "warn",
-     "msg": "@SpringBootApplication 1개 (기준선은 2 스택). 결정 필요: 분리 시점 또는 기준선 수정",
-     "component": "4_Web/BE",
-     "needs_agreement": true,
-     "evidence": [
-      "4_Web/SantaFactoryBE/src/main/java/com/ssafy/santafactory/SantaFactoryApplication.java:9"
-     ],
-     "n": 1,
-     "sev": "S0"
-    },
-    {
-     "id": "claims.git-convention-doc",
-     "title": "참조되는 Docs/GIT_CONVENTION.md 부재",
-     "status": "warn",
-     "msg": "3곳에서 참조하지만 파일 없음. 조치: 문서 커밋 또는 참조 제거",
-     "component": "infra",
-     "needs_agreement": false,
-     "evidence": [
-      ".githooks/README.md:5",
-      ".gitlab/merge_request_templates/Default.md:15",
-      ".githooks/commit-convention.sh:3"
-     ],
-     "n": 3,
-     "sev": "S0"
-    },
-    {
-     "id": "todo",
-     "title": "주석 TODO·FIXME·HACK",
-     "status": "ok",
-     "msg": "0건",
-     "component": "infra",
-     "needs_agreement": false,
-     "evidence": [],
-     "n": 0,
-     "sev": "S0"
-    },
-    {
-     "id": "line-len",
-     "title": "120자 초과 줄 (지표)",
-     "status": "ok",
-     "msg": "66줄",
-     "component": "infra",
-     "needs_agreement": false,
-     "evidence": [],
-     "n": 66,
-     "sev": "S0"
-    }
-   ],
-   "duration_s": 2.9,
-   "allow_dropped": 5,
-   "new": {
-    "S3": 0,
-    "S2": 0,
-    "S1": 0,
-    "S0": 0
-   },
-   "convention": {},
-   "ahead": 0,
-   "behind": 0,
-   "files_changed": 0,
-   "merge_base": "bfc180feca4e9430958f892b104d5a355de38906"
-  },
-  {
-   "name": "feature/S15P21A106-171-isaac-sim-실측용-테스트코드-리팩터링",
-   "slug": "feature__S15P21A106-171-isaac-sim-81631d",
-   "sha": "68baed972984a268e28f55e0bb48faa7c30407d6",
-   "committer_date": 1788827599,
-   "author": "LsMin124",
-   "loc": 20430,
-   "counts": {
-    "S3": 0,
-    "S2": 63,
-    "S1": 195,
-    "S0": 2
-   },
-   "W": 384,
-   "new_vs_prev": {
-    "S3": 0,
-    "S2": 63,
-    "S1": 195,
-    "S0": 2
-   },
-   "fixed": 0,
-   "prev_run": null,
-   "tools": [
-    {
-     "id": "ruff",
-     "status": "ok",
-     "rc": 0,
-     "secs": 0.0,
-     "stderr_tail": "",
-     "metrics": {},
-     "counts": {
-      "S3": 0,
-      "S2": 33,
-      "S1": 179,
-      "S0": 0
-     }
-    },
-    {
-     "id": "ruff-format",
-     "status": "ok",
-     "rc": 1,
-     "secs": 0.0,
      "stderr_tail": "",
      "metrics": {
       "unformatted": 0
@@ -1330,7 +995,7 @@
      "id": "pmd",
      "status": "ok",
      "rc": 4,
-     "secs": 1.2,
+     "secs": 1.1,
      "stderr_tail": "[INFO] Found 10 violations.",
      "metrics": {
       "processing_errors": 0
@@ -1347,19 +1012,21 @@
     {
      "id": "req-drift",
      "title": "3_FMS import ⊆ requirements.txt",
-     "status": "ok",
-     "msg": "import 전부 requirements와 일치 (allow: simpy)",
+     "status": "fail",
+     "msg": "requirements 누락 1개: pytest (allow: simpy)",
      "component": "3_FMS/infra+etc",
      "needs_agreement": false,
-     "evidence": [],
-     "n": 0,
+     "evidence": [
+      "3_FMS/infra/worker/test_estimate_worker.py: import pytest"
+     ],
+     "n": 1,
      "sev": "S3"
     },
     {
      "id": "doc-links",
      "title": "문서 상대링크·코드 헤더 docs 참조 존재",
      "status": "warn",
-     "msg": "깨진 참조 25건",
+     "msg": "깨진 참조 27건",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [
@@ -1370,7 +1037,7 @@
       "3_FMS/docs/2026-09-04_θ감도_실험.md:4 → 2026-09-01_θ스키마_합의안.md",
       "3_FMS/docs/2026-09-04_θ감도_실험.md:62 → 2026-09-01_θ스키마_합의안.md"
      ],
-     "n": 25,
+     "n": 27,
      "sev": "S2"
     },
     {
@@ -1505,280 +1172,27 @@
      "id": "line-len",
      "title": "120자 초과 줄 (지표)",
      "status": "ok",
-     "msg": "83줄",
+     "msg": "84줄",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [],
-     "n": 83,
+     "n": 84,
      "sev": "S0"
     }
    ],
    "duration_s": 2.9,
    "allow_dropped": 4,
-   "merge_base": "bb2d7b278a9103c750bf7b7dd99d82e27b4716a2",
-   "files_changed": 88,
-   "ahead": 1,
-   "behind": 2,
-   "new_vs_develop": {
-    "S3": 0,
-    "S2": 6,
-    "S1": 81,
-    "S0": 0
-   },
-   "new_vs_develop_top": [
-    {
-     "tool": "ruff",
-     "rule": "B023",
-     "sev": "S2",
-     "path": "2_Simulation/scene_builder/roof.py",
-     "line": 132,
-     "msg": "Function definition does not bind loop variable `x`",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "5bc2a3da52407aad"
-    },
-    {
-     "tool": "ruff",
-     "rule": "B023",
-     "sev": "S2",
-     "path": "2_Simulation/scene_builder/roof.py",
-     "line": 132,
-     "msg": "Function definition does not bind loop variable `y_e`",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "d13f27d9c8cb20b6"
-    },
-    {
-     "tool": "ruff",
-     "rule": "B023",
-     "sev": "S2",
-     "path": "2_Simulation/scene_builder/roof.py",
-     "line": 132,
-     "msg": "Function definition does not bind loop variable `s`",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "dd01baa489f2e9aa"
-    },
-    {
-     "tool": "ruff",
-     "rule": "RET504",
-     "sev": "S2",
-     "path": "2_Simulation/scene_builder/stations.py",
-     "line": 98,
-     "msg": "Unnecessary assignment to `stations` before `return` statement",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "a43d29465c7c1e92"
-    },
-    {
-     "tool": "bandit",
-     "rule": "B104",
-     "sev": "S2",
-     "path": "2_Simulation/sil_isaac/viewer/http_stream.py",
-     "line": 114,
-     "msg": "Possible binding to all interfaces.",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "d90774158b6eefcc"
-    },
-    {
-     "tool": "check",
-     "rule": "func-80",
-     "sev": "S2",
-     "path": "2_Simulation/scene_builder/roof.py",
-     "line": 61,
-     "msg": "함수 build_roof 122줄 (> 80)",
-     "symbol": "build_roof",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "f4f083ddc6c4c8eb"
-    },
-    {
-     "tool": "ruff",
-     "rule": "SIM102",
-     "sev": "S1",
-     "path": "2_Simulation/scene_builder/build.py",
-     "line": 90,
-     "msg": "Use a single `if` statement instead of nested `if` statements",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "5989327cdd70f200"
-    },
-    {
-     "tool": "ruff",
-     "rule": "B007",
-     "sev": "S1",
-     "path": "2_Simulation/scene_builder/roof.py",
-     "line": 94,
-     "msg": "Loop control variable `sgn` not used within loop body",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "937c1daecf11b686"
-    },
-    {
-     "tool": "ruff",
-     "rule": "UP035",
-     "sev": "S1",
-     "path": "2_Simulation/sil_isaac/app.py",
-     "line": 11,
-     "msg": "Import from `collections.abc` instead: `Sequence`",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "60f6840f947f11e6"
-    },
-    {
-     "tool": "ruff",
-     "rule": "UP045",
-     "sev": "S1",
-     "path": "2_Simulation/sil_isaac/app.py",
-     "line": 36,
-     "msg": "Use `X | None` for type annotations",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "8102c828c230eb78"
-    },
-    {
-     "tool": "ruff",
-     "rule": "UP045",
-     "sev": "S1",
-     "path": "2_Simulation/sil_isaac/app.py",
-     "line": 41,
-     "msg": "Use `X | None` for type annotations",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "bd7801dc215f630b"
-    },
-    {
-     "tool": "ruff",
-     "rule": "UP045",
-     "sev": "S1",
-     "path": "2_Simulation/sil_isaac/app.py",
-     "line": 60,
-     "msg": "Use `X | None` for type annotations",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "eec7a0975b18dc39"
-    },
-    {
-     "tool": "ruff",
-     "rule": "UP045",
-     "sev": "S1",
-     "path": "2_Simulation/sil_isaac/app.py",
-     "line": 119,
-     "msg": "Use `X | None` for type annotations",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "3124b25c73d12ba9"
-    },
-    {
-     "tool": "ruff",
-     "rule": "UP045",
-     "sev": "S1",
-     "path": "2_Simulation/sil_isaac/robot/kinematics.py",
-     "line": 55,
-     "msg": "Use `X | None` for type annotations",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "3d4a893f5f27b5a1"
-    },
-    {
-     "tool": "ruff",
-     "rule": "UP035",
-     "sev": "S1",
-     "path": "2_Simulation/sil_isaac/robot/profile.py",
-     "line": 9,
-     "msg": "Import from `collections.abc` instead: `Sequence`",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "5a79dcc3acfb6677"
-    },
-    {
-     "tool": "ruff",
-     "rule": "UP035",
-     "sev": "S1",
-     "path": "2_Simulation/sil_isaac/robot/profile.py",
-     "line": 9,
-     "msg": "`typing.Tuple` is deprecated, use `tuple` instead",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "349792790aec7434"
-    },
-    {
-     "tool": "ruff",
-     "rule": "UP006",
-     "sev": "S1",
-     "path": "2_Simulation/sil_isaac/robot/profile.py",
-     "line": 17,
-     "msg": "Use `tuple` instead of `Tuple` for type annotation",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "863d79821895d58d"
-    },
-    {
-     "tool": "ruff",
-     "rule": "UP006",
-     "sev": "S1",
-     "path": "2_Simulation/sil_isaac/robot/profile.py",
-     "line": 18,
-     "msg": "Use `tuple` instead of `Tuple` for type annotation",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "0214917960467f03"
-    },
-    {
-     "tool": "ruff",
-     "rule": "UP006",
-     "sev": "S1",
-     "path": "2_Simulation/sil_isaac/robot/profile.py",
-     "line": 24,
-     "msg": "Use `tuple` instead of `Tuple` for type annotation",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "863d79821895d58d"
-    },
-    {
-     "tool": "ruff",
-     "rule": "UP006",
-     "sev": "S1",
-     "path": "2_Simulation/sil_isaac/robot/profile.py",
-     "line": 32,
-     "msg": "Use `tuple` instead of `Tuple` for type annotation",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "1993198a358c13dc"
-    }
-   ],
-   "convention": {
-    "branch_ok": true,
-    "commits_ok": 1,
-    "commits_total": 1,
-    "offenders": []
-   },
    "new": {
-    "S3": 0,
-    "S2": 6,
-    "S1": 81,
+    "S3": 1,
+    "S2": 9,
+    "S1": 82,
     "S0": 0
-   }
+   },
+   "convention": {},
+   "ahead": 0,
+   "behind": 0,
+   "files_changed": 0,
+   "merge_base": "1a0c25c0aba87a6ebf2f7d8357353f6df076f01a"
   }
  ],
  "tools": [
@@ -1791,8 +1205,8 @@
    "metrics": {},
    "counts": {
     "S3": 0,
-    "S2": 32,
-    "S1": 110,
+    "S2": 34,
+    "S1": 180,
     "S0": 0
    }
   },
@@ -1816,12 +1230,12 @@
    "id": "bandit",
    "status": "ok",
    "rc": 0,
-   "secs": 0.8,
+   "secs": 0.7,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
     "S3": 0,
-    "S2": 0,
+    "S2": 1,
     "S1": 0,
     "S0": 0
    }
@@ -1872,7 +1286,7 @@
    "id": "gitleaks",
    "status": "ok",
    "rc": 0,
-   "secs": 0.5,
+   "secs": 0.4,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -1900,7 +1314,7 @@
    "id": "pmd",
    "status": "ok",
    "rc": 4,
-   "secs": 0.9,
+   "secs": 1.1,
    "stderr_tail": "[INFO] Found 10 violations.",
    "metrics": {
     "processing_errors": 0
@@ -1917,19 +1331,21 @@
   {
    "id": "req-drift",
    "title": "3_FMS import ⊆ requirements.txt",
-   "status": "ok",
-   "msg": "import 전부 requirements와 일치 (allow: simpy)",
+   "status": "fail",
+   "msg": "requirements 누락 1개: pytest (allow: simpy)",
    "component": "3_FMS/infra+etc",
    "needs_agreement": false,
-   "evidence": [],
-   "n": 0,
+   "evidence": [
+    "3_FMS/infra/worker/test_estimate_worker.py: import pytest"
+   ],
+   "n": 1,
    "sev": "S3"
   },
   {
    "id": "doc-links",
    "title": "문서 상대링크·코드 헤더 docs 참조 존재",
    "status": "warn",
-   "msg": "깨진 참조 25건",
+   "msg": "깨진 참조 27건",
    "component": "infra",
    "needs_agreement": false,
    "evidence": [
@@ -1940,23 +1356,22 @@
     "3_FMS/docs/2026-09-04_θ감도_실험.md:4 → 2026-09-01_θ스키마_합의안.md",
     "3_FMS/docs/2026-09-04_θ감도_실험.md:62 → 2026-09-01_θ스키마_합의안.md"
    ],
-   "n": 25,
+   "n": 27,
    "sev": "S2"
   },
   {
    "id": "size",
    "title": "파일 > 800줄 · 함수 > 80줄",
    "status": "warn",
-   "msg": "파일 1 · 함수 3 (50줄 초과 함수 9)",
+   "msg": "파일 0 · 함수 3 (50줄 초과 함수 12)",
    "component": "infra",
    "needs_agreement": false,
    "evidence": [
-    "2_Simulation/t3_warehouse/build_scene.py:0 파일 930줄 (> 800)",
     ".gitlab/scripts/sonar_mr_comment.py:386 함수 main 148줄 (> 80)",
-    "2_Simulation/t3_warehouse/roof_structure.py:79 함수 build_roof 122줄 (> 80)",
+    "2_Simulation/scene_builder/roof.py:61 함수 build_roof 122줄 (> 80)",
     "3_FMS/sim_engine/checks/from_theta_demo.py:57 함수 main 121줄 (> 80)"
    ],
-   "n": 4,
+   "n": 3,
    "sev": "S2"
   },
   {
@@ -1992,15 +1407,14 @@
    "id": "claims.isaac-1-instance",
    "title": "README '동시 1인스턴스' 주장 vs 2026-09-05 실측(경량 6 동시)",
    "status": "warn",
-   "msg": "'동시 1인스턴스' 문구 3곳 — 실측(64GB, lean 6 동시)과 불일치. 결정 필요: 문구 갱신 여부",
+   "msg": "'동시 1인스턴스' 문구 2곳 — 실측(64GB, lean 6 동시)과 불일치. 결정 필요: 문구 갱신 여부",
    "component": "2_Simulation",
    "needs_agreement": true,
    "evidence": [
-    "2_Simulation/t1_teleop/README.md:27",
-    "2_Simulation/t3_warehouse/README.md:27",
-    "2_Simulation/t3_warehouse/view_scene.py:8"
+    "2_Simulation/t1_teleop/README.md:29",
+    "2_Simulation/t3_warehouse/README.md:27"
    ],
-   "n": 3,
+   "n": 2,
    "sev": "S0"
   },
   {
@@ -2077,20 +1491,20 @@
    "id": "line-len",
    "title": "120자 초과 줄 (지표)",
    "status": "ok",
-   "msg": "66줄",
+   "msg": "84줄",
    "component": "infra",
    "needs_agreement": false,
    "evidence": [],
-   "n": 66,
+   "n": 84,
    "sev": "S0"
   }
  ],
  "tests": {},
  "totals": {
-  "findings": 190,
-  "W": 312,
-  "new": 0,
-  "fixed": 0
+  "findings": 265,
+  "W": 404,
+  "new": 92,
+  "fixed": 17
  },
  "narrative": {
   "status": "skipped"
