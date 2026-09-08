@@ -2583,6 +2583,18 @@
   "tool": "yamllint",
   "rule": "line-length",
   "sev": "S1",
+  "path": "3_FMS/infra/compose.estimate.yml",
+  "line": 35,
+  "msg": "line too long (155 > 140 characters)",
+  "symbol": "",
+  "component": "3_FMS/infra+etc",
+  "part": "FMS·AI",
+  "fp": "a142122b367d637c"
+ },
+ {
+  "tool": "yamllint",
+  "rule": "line-length",
+  "sev": "S1",
   "path": "3_FMS/infra/docker-compose.yml",
   "line": 36,
   "msg": "line too long (147 > 140 characters)",
