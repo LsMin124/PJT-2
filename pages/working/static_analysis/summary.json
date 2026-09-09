@@ -1,18 +1,14 @@
 {
  "run": {
-  "id": "2026-09-09_1105_light",
-  "ts": "2026-09-09T11:05:01+0900",
+  "id": "2026-09-09_1305_light",
+  "ts": "2026-09-09T13:05:01+0900",
   "mode": "light",
   "ref": "origin/develop",
-  "sha": "2830bf3417136d769c16fd38473d3348525d8069",
+  "sha": "bfda3450aa1c253b4776f44716addf5ebe0887d2",
   "duration_s": 5.9,
   "status": "ok",
   "prev_deep": "2026-09-08_1805_deep",
   "red_flags": [
-   {
-    "code": "NEW_S3",
-    "msg": "develop 신규 S3 1건"
-   },
    {
     "code": "REQ_DRIFT",
     "msg": "requirements 누락 2개: google, pytest (allow: simpy)"
@@ -855,9 +851,9 @@
   {
    "name": "develop",
    "slug": "develop",
-   "sha": "2830bf3417136d769c16fd38473d3348525d8069",
-   "committer_date": 1788918305,
-   "author": "신재령",
+   "sha": "bfda3450aa1c253b4776f44716addf5ebe0887d2",
+   "committer_date": 1788925548,
+   "author": "최아영",
    "loc": 28286,
    "counts": {
     "S3": 2,
@@ -867,13 +863,13 @@
    },
    "W": 580,
    "new_vs_prev": {
-    "S3": 1,
-    "S2": 1,
-    "S1": 47,
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
     "S0": 0
    },
    "fixed": 0,
-   "prev_run": "2026-09-09_1005_light",
+   "prev_run": "2026-09-09_1105_light",
    "tools": [
     {
      "id": "ruff",
@@ -965,7 +961,7 @@
      "id": "gitleaks",
      "status": "ok",
      "rc": 0,
-     "secs": 0.4,
+     "secs": 0.5,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -1180,19 +1176,19 @@
      "sev": "S0"
     }
    ],
-   "duration_s": 2.9,
+   "duration_s": 3.0,
    "allow_dropped": 4,
    "new": {
-    "S3": 1,
-    "S2": 1,
-    "S1": 47,
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
     "S0": 0
    },
    "convention": {},
    "ahead": 0,
    "behind": 0,
    "files_changed": 0,
-   "merge_base": "2830bf3417136d769c16fd38473d3348525d8069"
+   "merge_base": "bfda3450aa1c253b4776f44716addf5ebe0887d2"
   }
  ],
  "tools": [
@@ -1286,7 +1282,7 @@
    "id": "gitleaks",
    "status": "ok",
    "rc": 0,
-   "secs": 0.4,
+   "secs": 0.5,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -1505,7 +1501,7 @@
  "totals": {
   "findings": 394,
   "W": 580,
-  "new": 49,
+  "new": 0,
   "fixed": 0
  },
  "narrative": {
