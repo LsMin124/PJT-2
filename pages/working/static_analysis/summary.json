@@ -1,17 +1,21 @@
 {
  "run": {
-  "id": "2026-09-09_1005_light",
-  "ts": "2026-09-09T10:05:01+0900",
+  "id": "2026-09-09_1105_light",
+  "ts": "2026-09-09T11:05:01+0900",
   "mode": "light",
   "ref": "origin/develop",
-  "sha": "7b1652d6f45bea6043896275c1e510005809ec93",
-  "duration_s": 6.1,
+  "sha": "2830bf3417136d769c16fd38473d3348525d8069",
+  "duration_s": 5.9,
   "status": "ok",
   "prev_deep": "2026-09-08_1805_deep",
   "red_flags": [
    {
+    "code": "NEW_S3",
+    "msg": "develop 신규 S3 1건"
+   },
+   {
     "code": "REQ_DRIFT",
-    "msg": "requirements 누락 1개: pytest (allow: simpy)"
+    "msg": "requirements 누락 2개: google, pytest (allow: simpy)"
    }
   ]
  },
@@ -526,11 +530,11 @@
     "hwarange",
     "Jaeryeong Shin"
    ],
-   "loc": 2052,
+   "loc": 4029,
    "counts": {
-    "S3": 0,
-    "S2": 29,
-    "S1": 16,
+    "S3": 1,
+    "S2": 30,
+    "S1": 63,
     "S0": 0
    },
    "tools": [
@@ -539,11 +543,23 @@
     "shellcheck",
     "yamllint"
    ],
-   "W": 103,
-   "D": 50.2,
+   "W": 163,
+   "D": 40.5,
    "grade": "D",
    "partial": false,
    "top": [
+    {
+     "tool": "check",
+     "rule": "req-drift",
+     "sev": "S3",
+     "path": "3_FMS/host_orch/sparkplug_b_pb2.py",
+     "line": 0,
+     "msg": "'google' 가 3_FMS/infra/requirements.txt 에 없음",
+     "symbol": "",
+     "component": "3_FMS/infra+etc",
+     "part": "FMS·AI",
+     "fp": "20805c4edfa35360"
+    },
     {
      "tool": "check",
      "rule": "doc-link",
@@ -627,18 +643,6 @@
      "component": "3_FMS/infra+etc",
      "part": "FMS·AI",
      "fp": "395a88f611764f37"
-    },
-    {
-     "tool": "check",
-     "rule": "doc-link",
-     "sev": "S2",
-     "path": "3_FMS/docs/2026-09-04_θ탐색_예산_측정.md",
-     "line": 25,
-     "msg": "깨진 문서 참조: 2026-09-04_고부하_무릎_판정.md",
-     "symbol": "",
-     "component": "3_FMS/infra+etc",
-     "part": "FMS·AI",
-     "fp": "2964594bd3813b0a"
     }
    ]
   },
@@ -851,25 +855,25 @@
   {
    "name": "develop",
    "slug": "develop",
-   "sha": "7b1652d6f45bea6043896275c1e510005809ec93",
-   "committer_date": 1788913479,
+   "sha": "2830bf3417136d769c16fd38473d3348525d8069",
+   "committer_date": 1788918305,
    "author": "신재령",
-   "loc": 26309,
+   "loc": 28286,
    "counts": {
-    "S3": 1,
-    "S2": 84,
-    "S1": 258,
+    "S3": 2,
+    "S2": 85,
+    "S1": 305,
     "S0": 2
    },
-   "W": 520,
+   "W": 580,
    "new_vs_prev": {
-    "S3": 0,
-    "S2": 0,
-    "S1": 53,
+    "S3": 1,
+    "S2": 1,
+    "S1": 47,
     "S0": 0
    },
-   "fixed": 128,
-   "prev_run": "2026-09-08_1805_deep",
+   "fixed": 0,
+   "prev_run": "2026-09-09_1005_light",
    "tools": [
     {
      "id": "ruff",
@@ -880,8 +884,8 @@
      "metrics": {},
      "counts": {
       "S3": 0,
-      "S2": 33,
-      "S1": 240,
+      "S2": 34,
+      "S1": 287,
       "S0": 0
      }
     },
@@ -989,7 +993,7 @@
      "id": "pmd",
      "status": "ok",
      "rc": 4,
-     "secs": 1.1,
+     "secs": 0.9,
      "stderr_tail": "[INFO] Found 12 violations.",
      "metrics": {
       "processing_errors": 0
@@ -1007,13 +1011,14 @@
      "id": "req-drift",
      "title": "3_FMS import ⊆ requirements.txt",
      "status": "fail",
-     "msg": "requirements 누락 1개: pytest (allow: simpy)",
+     "msg": "requirements 누락 2개: google, pytest (allow: simpy)",
      "component": "3_FMS/infra+etc",
      "needs_agreement": false,
      "evidence": [
+      "3_FMS/host_orch/sparkplug_b_pb2.py: import google",
       "3_FMS/contracts/tests/test_acl_matrix.py: import pytest"
      ],
-     "n": 1,
+     "n": 2,
      "sev": "S3"
     },
     {
@@ -1167,27 +1172,27 @@
      "id": "line-len",
      "title": "120자 초과 줄 (지표)",
      "status": "ok",
-     "msg": "99줄",
+     "msg": "115줄",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [],
-     "n": 99,
+     "n": 115,
      "sev": "S0"
     }
    ],
-   "duration_s": 3.1,
+   "duration_s": 2.9,
    "allow_dropped": 4,
    "new": {
-    "S3": 0,
-    "S2": 0,
-    "S1": 53,
+    "S3": 1,
+    "S2": 1,
+    "S1": 47,
     "S0": 0
    },
    "convention": {},
    "ahead": 0,
    "behind": 0,
    "files_changed": 0,
-   "merge_base": "7b1652d6f45bea6043896275c1e510005809ec93"
+   "merge_base": "2830bf3417136d769c16fd38473d3348525d8069"
   }
  ],
  "tools": [
@@ -1200,8 +1205,8 @@
    "metrics": {},
    "counts": {
     "S3": 0,
-    "S2": 33,
-    "S1": 240,
+    "S2": 34,
+    "S1": 287,
     "S0": 0
    }
   },
@@ -1309,7 +1314,7 @@
    "id": "pmd",
    "status": "ok",
    "rc": 4,
-   "secs": 1.1,
+   "secs": 0.9,
    "stderr_tail": "[INFO] Found 12 violations.",
    "metrics": {
     "processing_errors": 0
@@ -1327,13 +1332,14 @@
    "id": "req-drift",
    "title": "3_FMS import ⊆ requirements.txt",
    "status": "fail",
-   "msg": "requirements 누락 1개: pytest (allow: simpy)",
+   "msg": "requirements 누락 2개: google, pytest (allow: simpy)",
    "component": "3_FMS/infra+etc",
    "needs_agreement": false,
    "evidence": [
+    "3_FMS/host_orch/sparkplug_b_pb2.py: import google",
     "3_FMS/contracts/tests/test_acl_matrix.py: import pytest"
    ],
-   "n": 1,
+   "n": 2,
    "sev": "S3"
   },
   {
@@ -1487,20 +1493,20 @@
    "id": "line-len",
    "title": "120자 초과 줄 (지표)",
    "status": "ok",
-   "msg": "99줄",
+   "msg": "115줄",
    "component": "infra",
    "needs_agreement": false,
    "evidence": [],
-   "n": 99,
+   "n": 115,
    "sev": "S0"
   }
  ],
  "tests": {},
  "totals": {
-  "findings": 345,
-  "W": 520,
-  "new": 53,
-  "fixed": 128
+  "findings": 394,
+  "W": 580,
+  "new": 49,
+  "fixed": 0
  },
  "narrative": {
   "status": "skipped"
