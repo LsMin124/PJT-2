@@ -1,11 +1,11 @@
 {
  "run": {
-  "id": "2026-09-10_1405_light",
-  "ts": "2026-09-10T14:05:01+0900",
+  "id": "2026-09-10_1505_light",
+  "ts": "2026-09-10T15:05:01+0900",
   "mode": "light",
   "ref": "origin/develop",
-  "sha": "cc3fa6230680eb6462f227559ee77dd96593a958",
-  "duration_s": 7.2,
+  "sha": "1c3353e5f608174d548962156c7634b188cfc2e8",
+  "duration_s": 7.4,
   "status": "ok",
   "prev_deep": "2026-09-09_1805_deep",
   "red_flags": [
@@ -649,20 +649,20 @@
    "users": [
     "choiao0"
    ],
-   "loc": 5059,
+   "loc": 5210,
    "counts": {
     "S3": 0,
     "S2": 2,
-    "S1": 15,
-    "S0": 2
+    "S1": 18,
+    "S0": 3
    },
    "tools": [
     "check",
     "hadolint",
     "pmd"
    ],
-   "W": 21,
-   "D": 4.2,
+   "W": 24,
+   "D": 4.6,
    "grade": "A",
    "partial": false,
    "top": [
@@ -695,7 +695,19 @@
      "rule": "PreserveStackTrace",
      "sev": "S1",
      "path": "4_Web/SantaFactoryBE/src/main/java/com/ssafy/santafactory/client/SimulationClient.java",
-     "line": 26,
+     "line": 27,
+     "msg": "Thrown exception does not preserve the stack trace of exception 'e' on all code paths",
+     "symbol": "",
+     "component": "4_Web/BE",
+     "part": "웹",
+     "fp": "b89c916b1d615ecc"
+    },
+    {
+     "tool": "pmd",
+     "rule": "PreserveStackTrace",
+     "sev": "S1",
+     "path": "4_Web/SantaFactoryBE/src/main/java/com/ssafy/santafactory/client/SimulationClient.java",
+     "line": 36,
      "msg": "Thrown exception does not preserve the stack trace of exception 'e' on all code paths",
      "symbol": "",
      "component": "4_Web/BE",
@@ -743,24 +755,12 @@
      "rule": "GodClass",
      "sev": "S1",
      "path": "4_Web/SantaFactoryBE/src/main/java/com/ssafy/santafactory/service/estimate/EstimateService.java",
-     "line": 49,
-     "msg": "Possible God Class (WMC=59, ATFD=62, TCC=16.996%)",
+     "line": 50,
+     "msg": "Possible God Class (WMC=62, ATFD=64, TCC=19.565%)",
      "symbol": "",
      "component": "4_Web/BE",
      "part": "웹",
      "fp": "64fd88c8f4096159"
-    },
-    {
-     "tool": "check",
-     "rule": "spring-config",
-     "sev": "S1",
-     "path": "4_Web/SantaFactoryBE/src/main/resources/application.yml",
-     "line": 7,
-     "msg": "자격증명 환경변수에 기본값 fallback",
-     "symbol": "",
-     "component": "4_Web/BE",
-     "part": "웹",
-     "fp": "c4fb1ec52e80997d"
     }
    ]
   },
@@ -771,7 +771,7 @@
    "users": [
     "choiao0"
    ],
-   "loc": 1341,
+   "loc": 1380,
    "counts": {
     "S3": 0,
     "S2": 0,
@@ -851,25 +851,25 @@
   {
    "name": "develop",
    "slug": "develop",
-   "sha": "cc3fa6230680eb6462f227559ee77dd96593a958",
-   "committer_date": 1789015786,
-   "author": "이승민",
-   "loc": 46018,
+   "sha": "1c3353e5f608174d548962156c7634b188cfc2e8",
+   "committer_date": 1789017435,
+   "author": "신재령",
+   "loc": 46208,
    "counts": {
     "S3": 2,
     "S2": 115,
-    "S1": 501,
-    "S0": 2
+    "S1": 504,
+    "S0": 3
    },
-   "W": 866,
+   "W": 869,
    "new_vs_prev": {
     "S3": 0,
     "S2": 0,
-    "S1": 4,
-    "S0": 0
+    "S1": 2,
+    "S0": 1
    },
    "fixed": 0,
-   "prev_run": "2026-09-10_1205_light",
+   "prev_run": "2026-09-10_1405_light",
    "tools": [
     {
      "id": "ruff",
@@ -990,15 +990,15 @@
      "status": "ok",
      "rc": 4,
      "secs": 1.2,
-     "stderr_tail": "[INFO] Found 15 violations.",
+     "stderr_tail": "[INFO] Found 19 violations.",
      "metrics": {
       "processing_errors": 0
      },
      "counts": {
       "S3": 0,
       "S2": 2,
-      "S1": 12,
-      "S0": 1
+      "S1": 15,
+      "S0": 2
      }
     }
    ],
@@ -1169,11 +1169,11 @@
      "id": "line-len",
      "title": "120자 초과 줄 (지표)",
      "status": "ok",
-     "msg": "185줄",
+     "msg": "186줄",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [],
-     "n": 185,
+     "n": 186,
      "sev": "S0"
     }
    ],
@@ -1182,14 +1182,14 @@
    "new": {
     "S3": 0,
     "S2": 0,
-    "S1": 4,
-    "S0": 0
+    "S1": 2,
+    "S0": 1
    },
    "convention": {},
    "ahead": 0,
    "behind": 0,
    "files_changed": 0,
-   "merge_base": "cc3fa6230680eb6462f227559ee77dd96593a958"
+   "merge_base": "1c3353e5f608174d548962156c7634b188cfc2e8"
   }
  ],
  "tools": [
@@ -1312,15 +1312,15 @@
    "status": "ok",
    "rc": 4,
    "secs": 1.2,
-   "stderr_tail": "[INFO] Found 15 violations.",
+   "stderr_tail": "[INFO] Found 19 violations.",
    "metrics": {
     "processing_errors": 0
    },
    "counts": {
     "S3": 0,
     "S2": 2,
-    "S1": 12,
-    "S0": 1
+    "S1": 15,
+    "S0": 2
    }
   }
  ],
@@ -1491,19 +1491,19 @@
    "id": "line-len",
    "title": "120자 초과 줄 (지표)",
    "status": "ok",
-   "msg": "185줄",
+   "msg": "186줄",
    "component": "infra",
    "needs_agreement": false,
    "evidence": [],
-   "n": 185,
+   "n": 186,
    "sev": "S0"
   }
  ],
  "tests": {},
  "totals": {
-  "findings": 620,
-  "W": 866,
-  "new": 4,
+  "findings": 624,
+  "W": 869,
+  "new": 3,
   "fixed": 0
  },
  "narrative": {
