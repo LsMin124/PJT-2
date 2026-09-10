@@ -1,14 +1,22 @@
 {
  "run": {
-  "id": "2026-09-10_1505_light",
-  "ts": "2026-09-10T15:05:01+0900",
-  "mode": "light",
+  "id": "2026-09-10_1805_deep",
+  "ts": "2026-09-10T18:05:02+0900",
+  "mode": "deep",
   "ref": "origin/develop",
   "sha": "1c3353e5f608174d548962156c7634b188cfc2e8",
-  "duration_s": 7.4,
-  "status": "ok",
+  "duration_s": 70.4,
+  "status": "partial",
   "prev_deep": "2026-09-09_1805_deep",
   "red_flags": [
+   {
+    "code": "NEW_S3",
+    "msg": "develop 신규 S3 5건"
+   },
+   {
+    "code": "TEST_FAIL",
+    "msg": "gradle 실패 5건"
+   },
    {
     "code": "REQ_DRIFT",
     "msg": "requirements 누락 2개: google, pytest (allow: simpy)"
@@ -41,17 +49,18 @@
    "counts": {
     "S3": 0,
     "S2": 20,
-    "S1": 37,
+    "S1": 42,
     "S0": 0
    },
    "tools": [
+    "radon",
     "ruff",
     "yamllint"
    ],
-   "W": 97,
-   "D": 51.8,
+   "W": 102,
+   "D": 54.5,
    "grade": "D",
-   "partial": false,
+   "partial": true,
    "top": [
     {
      "tool": "ruff",
@@ -161,20 +170,22 @@
    "loc": 20094,
    "counts": {
     "S3": 0,
-    "S2": 34,
-    "S1": 272,
-    "S0": 0
+    "S2": 49,
+    "S1": 319,
+    "S0": 1
    },
    "tools": [
     "bandit",
     "check",
+    "radon",
     "ruff",
-    "shellcheck"
+    "shellcheck",
+    "vulture"
    ],
-   "W": 374,
-   "D": 18.6,
+   "W": 466,
+   "D": 23.2,
    "grade": "C",
-   "partial": false,
+   "partial": true,
    "top": [
     {
      "tool": "ruff",
@@ -211,6 +222,18 @@
      "component": "2_Simulation",
      "part": "시뮬",
      "fp": "dd01baa489f2e9aa"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-D",
+     "sev": "S2",
+     "path": "2_Simulation/scene_builder/roof.py",
+     "line": 61,
+     "msg": "순환 복잡도 23 (D) function build_roof",
+     "symbol": "build_roof",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "6054491c557bd59d"
     },
     {
      "tool": "check",
@@ -259,18 +282,6 @@
      "component": "2_Simulation",
      "part": "시뮬",
      "fp": "560b1a5468d7ffff"
-    },
-    {
-     "tool": "check",
-     "rule": "func-80",
-     "sev": "S2",
-     "path": "2_Simulation/t3_amr/amr/make_path/generate_scenario.py",
-     "line": 40,
-     "msg": "함수 main 84줄 (> 80)",
-     "symbol": "main",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "25b6543d86225f4f"
     }
    ]
   },
@@ -285,18 +296,19 @@
    "loc": 5580,
    "counts": {
     "S3": 0,
-    "S2": 24,
-    "S1": 34,
+    "S2": 28,
+    "S1": 52,
     "S0": 0
    },
    "tools": [
     "check",
+    "radon",
     "ruff"
    ],
-   "W": 106,
-   "D": 19.0,
+   "W": 136,
+   "D": 24.4,
    "grade": "C",
-   "partial": false,
+   "partial": true,
    "top": [
     {
      "tool": "ruff",
@@ -309,6 +321,18 @@
      "component": "3_FMS/sim_engine",
      "part": "FMS·AI",
      "fp": "20be493bd9d60d4a"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-D",
+     "sev": "S2",
+     "path": "3_FMS/sim_engine/checks/from_theta_demo.py",
+     "line": 57,
+     "msg": "순환 복잡도 28 (D) function main",
+     "symbol": "main",
+     "component": "3_FMS/sim_engine",
+     "part": "FMS·AI",
+     "fp": "d8d242aacc27f271"
     },
     {
      "tool": "check",
@@ -347,6 +371,18 @@
      "fp": "4924b111718c3c39"
     },
     {
+     "tool": "radon",
+     "rule": "CC-D",
+     "sev": "S2",
+     "path": "3_FMS/sim_engine/from_theta.py",
+     "line": 97,
+     "msg": "순환 복잡도 22 (D) function extract_topology",
+     "symbol": "extract_topology",
+     "component": "3_FMS/sim_engine",
+     "part": "FMS·AI",
+     "fp": "9d325970435f550e"
+    },
+    {
      "tool": "check",
      "rule": "func-80",
      "sev": "S2",
@@ -369,30 +405,6 @@
      "component": "3_FMS/sim_engine",
      "part": "FMS·AI",
      "fp": "86154bc71aab022b"
-    },
-    {
-     "tool": "ruff",
-     "rule": "F841",
-     "sev": "S2",
-     "path": "3_FMS/sim_engine/kernel/metrics.py",
-     "line": 19,
-     "msg": "Local variable `rids` is assigned to but never used",
-     "symbol": "",
-     "component": "3_FMS/sim_engine",
-     "part": "FMS·AI",
-     "fp": "995fcbdbdb276eba"
-    },
-    {
-     "tool": "ruff",
-     "rule": "RET503",
-     "sev": "S2",
-     "path": "3_FMS/sim_engine/pibt/heading.py",
-     "line": 205,
-     "msg": "Missing explicit `return` at the end of function able to return non-`None` value",
-     "symbol": "",
-     "component": "3_FMS/sim_engine",
-     "part": "FMS·AI",
-     "fp": "b6547f10b32d2795"
     }
    ]
   },
@@ -407,18 +419,19 @@
    "loc": 2725,
    "counts": {
     "S3": 1,
-    "S2": 2,
-    "S1": 14,
+    "S2": 3,
+    "S1": 16,
     "S0": 0
    },
    "tools": [
     "check",
+    "radon",
     "ruff"
    ],
-   "W": 30,
-   "D": 11.0,
+   "W": 35,
+   "D": 12.8,
    "grade": "B",
-   "partial": false,
+   "partial": true,
    "top": [
     {
      "tool": "check",
@@ -455,6 +468,18 @@
      "component": "3_FMS/ai_theta+contracts",
      "part": "FMS·AI",
      "fp": "151872f41895af06"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-D",
+     "sev": "S2",
+     "path": "3_FMS/ai_theta/experiments/eval_fleet.py",
+     "line": 64,
+     "msg": "순환 복잡도 22 (D) function main",
+     "symbol": "main",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "c5f8f64232291644"
     },
     {
      "tool": "ruff",
@@ -503,18 +528,6 @@
      "component": "3_FMS/ai_theta+contracts",
      "part": "FMS·AI",
      "fp": "ca0ce1c7526dc53e"
-    },
-    {
-     "tool": "ruff",
-     "rule": "RUF059",
-     "sev": "S1",
-     "path": "3_FMS/ai_theta/tests/test_synth_warehouse.py",
-     "line": 191,
-     "msg": "Unpacked variable `blocked` is never used",
-     "symbol": "",
-     "component": "3_FMS/ai_theta+contracts",
-     "part": "FMS·AI",
-     "fp": "85b4c04ccc9d9d2e"
     }
    ]
   },
@@ -529,20 +542,22 @@
    "loc": 8460,
    "counts": {
     "S3": 1,
-    "S2": 31,
-    "S1": 128,
-    "S0": 0
+    "S2": 38,
+    "S1": 152,
+    "S0": 4
    },
    "tools": [
     "check",
+    "radon",
     "ruff",
     "shellcheck",
+    "vulture",
     "yamllint"
    ],
-   "W": 231,
-   "D": 27.3,
+   "W": 276,
+   "D": 32.6,
    "grade": "C",
-   "partial": false,
+   "partial": true,
    "top": [
     {
      "tool": "check",
@@ -651,21 +666,82 @@
    ],
    "loc": 5210,
    "counts": {
-    "S3": 0,
+    "S3": 5,
     "S2": 2,
     "S1": 18,
     "S0": 3
    },
    "tools": [
     "check",
+    "gradle",
     "hadolint",
     "pmd"
    ],
-   "W": 24,
-   "D": 4.6,
-   "grade": "A",
-   "partial": false,
+   "W": 74,
+   "D": 14.2,
+   "grade": "B",
+   "partial": true,
    "top": [
+    {
+     "tool": "gradle",
+     "rule": "test-failed",
+     "sev": "S3",
+     "path": "4_Web/SantaFactoryBE/src/test/java/com/ssafy/santafactory/SantaFactoryApplicationTests.java",
+     "line": 0,
+     "msg": "SantaFactoryApplicationTests::contextLoads() java.lang.ExceptionInInitializerError",
+     "symbol": "contextLoads()",
+     "component": "4_Web/BE",
+     "part": "웹",
+     "fp": "0a6bad6e7e471472"
+    },
+    {
+     "tool": "gradle",
+     "rule": "test-failed",
+     "sev": "S3",
+     "path": "4_Web/SantaFactoryBE/src/test/java/com/ssafy/santafactory/service/estimate/EstimateFlowIT.java",
+     "line": 0,
+     "msg": "EstimateFlowIT::a_stuck_run_is_recovered_by_the_timeout_sweep() java.lang.NoClassDefFoundError: Could not initialize class com.ssafy.santafactory.support.PostgresSupport",
+     "symbol": "a_stuck_run_is_recovered_by_the_timeout_sweep()",
+     "component": "4_Web/BE",
+     "part": "웹",
+     "fp": "6e7a40b3a4947eee"
+    },
+    {
+     "tool": "gradle",
+     "rule": "test-failed",
+     "sev": "S3",
+     "path": "4_Web/SantaFactoryBE/src/test/java/com/ssafy/santafactory/service/estimate/EstimateFlowIT.java",
+     "line": 0,
+     "msg": "EstimateFlowIT::one_failed_run_does_not_stop_the_rest() java.lang.NoClassDefFoundError: Could not initialize class com.ssafy.santafactory.service.estimate.EstimateFlowIT",
+     "symbol": "one_failed_run_does_not_stop_the_rest()",
+     "component": "4_Web/BE",
+     "part": "웹",
+     "fp": "9e2fb9056195b69c"
+    },
+    {
+     "tool": "gradle",
+     "rule": "test-failed",
+     "sev": "S3",
+     "path": "4_Web/SantaFactoryBE/src/test/java/com/ssafy/santafactory/service/estimate/EstimateFlowIT.java",
+     "line": 0,
+     "msg": "EstimateFlowIT::runs_the_whole_sweep_and_lands_on_a_recommendation() java.lang.NoClassDefFoundError: Could not initialize class com.ssafy.santafactory.service.estimate.EstimateFlowIT",
+     "symbol": "runs_the_whole_sweep_and_lands_on_a_recommendation()",
+     "component": "4_Web/BE",
+     "part": "웹",
+     "fp": "614f6d11f0987f76"
+    },
+    {
+     "tool": "gradle",
+     "rule": "test-failed",
+     "sev": "S3",
+     "path": "4_Web/SantaFactoryBE/src/test/java/com/ssafy/santafactory/service/estimate/EstimateFlowIT.java",
+     "line": 0,
+     "msg": "EstimateFlowIT::a_redelivered_result_does_not_overwrite_the_first_one() java.lang.NoClassDefFoundError: Could not initialize class com.ssafy.santafactory.service.estimate.EstimateFlowIT",
+     "symbol": "a_redelivered_result_does_not_overwrite_the_first_one()",
+     "component": "4_Web/BE",
+     "part": "웹",
+     "fp": "a78b7119c2797c9e"
+    },
     {
      "tool": "pmd",
      "rule": "ImplicitFunctionalInterface",
@@ -701,66 +777,6 @@
      "component": "4_Web/BE",
      "part": "웹",
      "fp": "b89c916b1d615ecc"
-    },
-    {
-     "tool": "pmd",
-     "rule": "PreserveStackTrace",
-     "sev": "S1",
-     "path": "4_Web/SantaFactoryBE/src/main/java/com/ssafy/santafactory/client/SimulationClient.java",
-     "line": 36,
-     "msg": "Thrown exception does not preserve the stack trace of exception 'e' on all code paths",
-     "symbol": "",
-     "component": "4_Web/BE",
-     "part": "웹",
-     "fp": "b89c916b1d615ecc"
-    },
-    {
-     "tool": "pmd",
-     "rule": "NullAssignment",
-     "sev": "S1",
-     "path": "4_Web/SantaFactoryBE/src/main/java/com/ssafy/santafactory/entity/simulation/SimScenario.java",
-     "line": 111,
-     "msg": "Assigning an Object to null is a code smell. Consider refactoring.",
-     "symbol": "",
-     "component": "4_Web/BE",
-     "part": "웹",
-     "fp": "1262df8088751790"
-    },
-    {
-     "tool": "pmd",
-     "rule": "UseConcurrentHashMap",
-     "sev": "S1",
-     "path": "4_Web/SantaFactoryBE/src/main/java/com/ssafy/santafactory/global/exception/GlobalExceptionHandler.java",
-     "line": 49,
-     "msg": "If you run in Java5 or newer and have concurrent access, you should use the ConcurrentHashMap implementation",
-     "symbol": "",
-     "component": "4_Web/BE",
-     "part": "웹",
-     "fp": "4b5cc595d529f621"
-    },
-    {
-     "tool": "pmd",
-     "rule": "MissingStaticMethodInNonInstantiatableClass",
-     "sev": "S1",
-     "path": "4_Web/SantaFactoryBE/src/main/java/com/ssafy/santafactory/service/estimate/EstimateEvents.java",
-     "line": 15,
-     "msg": "Class cannot be instantiated and does not provide any static methods or fields",
-     "symbol": "",
-     "component": "4_Web/BE",
-     "part": "웹",
-     "fp": "eb2fa3f47aaf0955"
-    },
-    {
-     "tool": "pmd",
-     "rule": "GodClass",
-     "sev": "S1",
-     "path": "4_Web/SantaFactoryBE/src/main/java/com/ssafy/santafactory/service/estimate/EstimateService.java",
-     "line": 50,
-     "msg": "Possible God Class (WMC=62, ATFD=64, TCC=19.565%)",
-     "symbol": "",
-     "component": "4_Web/BE",
-     "part": "웹",
-     "fp": "64fd88c8f4096159"
     }
    ]
   },
@@ -784,7 +800,7 @@
    "W": 1,
    "D": 0.7,
    "grade": "A",
-   "partial": false,
+   "partial": true,
    "top": [
     {
      "tool": "hadolint",
@@ -809,16 +825,17 @@
    "counts": {
     "S3": 0,
     "S2": 2,
-    "S1": 0,
+    "S1": 2,
     "S0": 0
    },
    "tools": [
-    "check"
+    "check",
+    "radon"
    ],
-   "W": 6,
-   "D": 6.8,
+   "W": 8,
+   "D": 9.0,
    "grade": "B",
-   "partial": false,
+   "partial": true,
    "top": [
     {
      "tool": "check",
@@ -843,6 +860,30 @@
      "component": "infra",
      "part": "공용",
      "fp": "2b2113e98f91154f"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-C",
+     "sev": "S1",
+     "path": ".gitlab/scripts/sonar_mr_comment.py",
+     "line": 387,
+     "msg": "순환 복잡도 15 (C) function main",
+     "symbol": "main",
+     "component": "infra",
+     "part": "공용",
+     "fp": "963b4834d2fcbfc7"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-C",
+     "sev": "S1",
+     "path": ".gitlab/scripts/sonar_mr_comment.py",
+     "line": 187,
+     "msg": "순환 복잡도 12 (C) function select_mr_issues",
+     "symbol": "select_mr_issues",
+     "component": "infra",
+     "part": "공용",
+     "fp": "817fd3de33fedd75"
     }
    ]
   }
@@ -856,20 +897,20 @@
    "author": "신재령",
    "loc": 46208,
    "counts": {
-    "S3": 2,
-    "S2": 115,
-    "S1": 504,
-    "S0": 3
+    "S3": 7,
+    "S2": 142,
+    "S1": 602,
+    "S0": 8
    },
-   "W": 869,
+   "W": 1098,
    "new_vs_prev": {
-    "S3": 0,
-    "S2": 0,
-    "S1": 2,
-    "S0": 1
+    "S3": 5,
+    "S2": 27,
+    "S1": 98,
+    "S0": 5
    },
    "fixed": 0,
-   "prev_run": "2026-09-10_1405_light",
+   "prev_run": "2026-09-10_1505_light",
    "tools": [
     {
      "id": "ruff",
@@ -905,7 +946,7 @@
      "id": "bandit",
      "status": "ok",
      "rc": 0,
-     "secs": 1.5,
+     "secs": 1.7,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -961,7 +1002,7 @@
      "id": "gitleaks",
      "status": "ok",
      "rc": 0,
-     "secs": 0.5,
+     "secs": 0.6,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -989,7 +1030,7 @@
      "id": "pmd",
      "status": "ok",
      "rc": 4,
-     "secs": 1.2,
+     "secs": 0.9,
      "stderr_tail": "[INFO] Found 19 violations.",
      "metrics": {
       "processing_errors": 0
@@ -999,6 +1040,158 @@
       "S2": 2,
       "S1": 15,
       "S0": 2
+     }
+    },
+    {
+     "id": "mypy",
+     "status": "error",
+     "rc": 2,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "radon",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.4,
+     "stderr_tail": "",
+     "metrics": {
+      "ranks": {
+       "C": 98,
+       "D": 20,
+       "E": 4,
+       "F": 3
+      }
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 27,
+      "S1": 98,
+      "S0": 0
+     }
+    },
+    {
+     "id": "vulture",
+     "status": "ok",
+     "rc": 3,
+     "secs": 0.5,
+     "stderr_tail": "",
+     "metrics": {
+      "candidates": 5
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 5
+     }
+    },
+    {
+     "id": "cpd-python",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.6,
+     "stderr_tail": "",
+     "metrics": {
+      "duplications": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "cpd-java",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.6,
+     "stderr_tail": "",
+     "metrics": {
+      "duplications": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "pytest",
+     "status": "ok",
+     "rc": 0,
+     "secs": 2.4,
+     "stderr_tail": "",
+     "metrics": {
+      "run": 139,
+      "passed": 89,
+      "failed": 0,
+      "skipped": 50,
+      "cov_pct": 30.8,
+      "venv": "ok"
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "gradle",
+     "status": "ok",
+     "rc": 0,
+     "secs": 7.8,
+     "stderr_tail": "OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended\n\n80 tests completed, 5 failed, 1 skipped",
+     "metrics": {
+      "run": 80,
+      "passed": 74,
+      "failed": 5,
+      "skipped": 1,
+      "cov_pct": 75.9
+     },
+     "counts": {
+      "S3": 5,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "spotbugs",
+     "status": "ok",
+     "rc": 0,
+     "secs": 2.1,
+     "stderr_tail": "The following classes needed for analysis were missing:\n  lombok.Generated",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "gitleaks-git",
+     "status": "ok",
+     "rc": 0,
+     "secs": 1.2,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
      }
     }
    ],
@@ -1177,19 +1370,1027 @@
      "sev": "S0"
     }
    ],
-   "duration_s": 4.3,
+   "duration_s": 22.6,
    "allow_dropped": 4,
    "new": {
-    "S3": 0,
-    "S2": 0,
-    "S1": 2,
-    "S0": 1
+    "S3": 5,
+    "S2": 27,
+    "S1": 98,
+    "S0": 5
    },
    "convention": {},
    "ahead": 0,
    "behind": 0,
    "files_changed": 0,
    "merge_base": "1c3353e5f608174d548962156c7634b188cfc2e8"
+  },
+  {
+   "name": "feature/S15P21A106-147-ec-2-내-mqtt-브로커-구현",
+   "slug": "feature__S15P21A106-147-ec-2---mqtt-9942da",
+   "sha": "4c83adc5cd804f9af05d89f697a661a2bb7b2363",
+   "committer_date": 1788847542,
+   "author": "LsMin124",
+   "loc": 18776,
+   "counts": {
+    "S3": 6,
+    "S2": 112,
+    "S1": 207,
+    "S0": 3
+   },
+   "W": 603,
+   "new_vs_prev": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
+   },
+   "fixed": 0,
+   "prev_run": "2026-09-09_1805_deep",
+   "tools": [
+    {
+     "id": "ruff",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.0,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 32,
+      "S1": 111,
+      "S0": 0
+     }
+    },
+    {
+     "id": "ruff-format",
+     "status": "ok",
+     "rc": 1,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {
+      "unformatted": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "bandit",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.7,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "yamllint",
+     "status": "ok",
+     "rc": 1,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 16,
+      "S1": 1,
+      "S0": 0
+     }
+    },
+    {
+     "id": "shellcheck",
+     "status": "ok",
+     "rc": null,
+     "secs": 0.0,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 2,
+      "S0": 0
+     }
+    },
+    {
+     "id": "hadolint",
+     "status": "ok",
+     "rc": 1,
+     "secs": 0.0,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 1,
+      "S0": 1
+     }
+    },
+    {
+     "id": "gitleaks",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.4,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "oxlint",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "pmd",
+     "status": "ok",
+     "rc": 4,
+     "secs": 0.9,
+     "stderr_tail": "[INFO] Found 10 violations.",
+     "metrics": {
+      "processing_errors": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 1,
+      "S1": 8,
+      "S0": 1
+     }
+    },
+    {
+     "id": "mypy",
+     "status": "ok",
+     "rc": 1,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 29,
+      "S1": 50,
+      "S0": 0
+     }
+    },
+    {
+     "id": "radon",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.2,
+     "stderr_tail": "",
+     "metrics": {
+      "ranks": {
+       "C": 29,
+       "D": 4,
+       "E": 1,
+       "F": 0
+      }
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 5,
+      "S1": 29,
+      "S0": 0
+     }
+    },
+    {
+     "id": "vulture",
+     "status": "ok",
+     "rc": 3,
+     "secs": 0.2,
+     "stderr_tail": "",
+     "metrics": {
+      "candidates": 1
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 1
+     }
+    },
+    {
+     "id": "cpd-python",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.5,
+     "stderr_tail": "",
+     "metrics": {
+      "duplications": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "cpd-java",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.5,
+     "stderr_tail": "",
+     "metrics": {
+      "duplications": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "pytest",
+     "status": "ok",
+     "rc": 0,
+     "secs": 1.0,
+     "stderr_tail": "",
+     "metrics": {
+      "run": 105,
+      "passed": 55,
+      "failed": 0,
+      "skipped": 50,
+      "cov_pct": 55.2,
+      "venv": "ok"
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "gradle",
+     "status": "ok",
+     "rc": 0,
+     "secs": 2.9,
+     "stderr_tail": "",
+     "metrics": {
+      "run": 53,
+      "passed": 47,
+      "failed": 5,
+      "skipped": 1,
+      "cov_pct": 67.9
+     },
+     "counts": {
+      "S3": 5,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "spotbugs",
+     "status": "ok",
+     "rc": 0,
+     "secs": 1.9,
+     "stderr_tail": "The following classes needed for analysis were missing:\n  lombok.Generated",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "gitleaks-git",
+     "status": "ok",
+     "rc": 0,
+     "secs": 1.2,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    }
+   ],
+   "custom_checks": [
+    {
+     "id": "req-drift",
+     "title": "3_FMS import ⊆ requirements.txt",
+     "status": "fail",
+     "msg": "requirements 누락 1개: pytest (allow: simpy)",
+     "component": "3_FMS/infra+etc",
+     "needs_agreement": false,
+     "evidence": [
+      "3_FMS/contracts/tests/test_acl_matrix.py: import pytest"
+     ],
+     "n": 1,
+     "sev": "S3"
+    },
+    {
+     "id": "doc-links",
+     "title": "문서 상대링크·코드 헤더 docs 참조 존재",
+     "status": "warn",
+     "msg": "깨진 참조 25건",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [
+      ".githooks/README.md:5 → ../Docs/GIT_CONVENTION.md",
+      "3_FMS/ai_theta/data/build_input.py:5 → Docs/AI/AI입출력명세서.md",
+      "3_FMS/docs/2026-09-04_θ_실험_로드맵_AB공동.md:4 → 2026-09-04_고부하_무릎_판정.md",
+      "3_FMS/docs/2026-09-04_θ_실험_로드맵_AB공동.md:36 → 2026-09-07_B5_θ적용_FleetSweep_결과.md",
+      "3_FMS/docs/2026-09-04_θ감도_실험.md:4 → 2026-09-01_θ스키마_합의안.md",
+      "3_FMS/docs/2026-09-04_θ감도_실험.md:62 → 2026-09-01_θ스키마_합의안.md"
+     ],
+     "n": 25,
+     "sev": "S2"
+    },
+    {
+     "id": "size",
+     "title": "파일 > 800줄 · 함수 > 80줄",
+     "status": "warn",
+     "msg": "파일 1 · 함수 3 (50줄 초과 함수 9)",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [
+      "2_Simulation/t3_warehouse/build_scene.py:0 파일 930줄 (> 800)",
+      ".gitlab/scripts/sonar_mr_comment.py:386 함수 main 148줄 (> 80)",
+      "2_Simulation/t3_warehouse/roof_structure.py:79 함수 build_roof 122줄 (> 80)",
+      "3_FMS/sim_engine/checks/from_theta_demo.py:57 함수 main 121줄 (> 80)"
+     ],
+     "n": 4,
+     "sev": "S2"
+    },
+    {
+     "id": "print-in-lib",
+     "title": "라이브러리 모듈 내 print()",
+     "status": "warn",
+     "msg": "1건",
+     "component": "3_FMS/sim_engine",
+     "needs_agreement": false,
+     "evidence": [
+      "3_FMS/sim_engine/from_theta.py:133"
+     ],
+     "n": 1,
+     "sev": "S1"
+    },
+    {
+     "id": "spring-config",
+     "title": "Spring main application.yml 운영 안전 설정",
+     "status": "warn",
+     "msg": "4건",
+     "component": "4_Web/BE",
+     "needs_agreement": false,
+     "evidence": [
+      "4_Web/SantaFactoryBE/src/main/resources/application.yml:7 자격증명 환경변수에 기본값 fallback",
+      "4_Web/SantaFactoryBE/src/main/resources/application.yml:10 ddl-auto=update: 운영 스키마 자동 변경",
+      "4_Web/SantaFactoryBE/src/main/resources/application.yml:11 show-sql=true: 운영 로그에 SQL 노출",
+      "4_Web/SantaFactoryBE/src/main/resources/application.yml:19 자격증명 환경변수에 기본값 fallback"
+     ],
+     "n": 4,
+     "sev": "S1"
+    },
+    {
+     "id": "claims.isaac-1-instance",
+     "title": "README '동시 1인스턴스' 주장 vs 2026-09-05 실측(경량 6 동시)",
+     "status": "warn",
+     "msg": "'동시 1인스턴스' 문구 3곳 — 실측(64GB, lean 6 동시)과 불일치. 결정 필요: 문구 갱신 여부",
+     "component": "2_Simulation",
+     "needs_agreement": true,
+     "evidence": [
+      "2_Simulation/t1_teleop/README.md:27",
+      "2_Simulation/t3_warehouse/README.md:27",
+      "2_Simulation/t3_warehouse/view_scene.py:8"
+     ],
+     "n": 3,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.tick-500ms",
+     "title": "아키텍처 문서 '500ms 틱' vs FMS 문서 '커널 틱 1 s'",
+     "status": "warn",
+     "msg": "아키텍처 문서 '500ms' 4곳 / FMS 문서 '1 s 틱' 4곳. 결정 필요: 틱 주기 단일화",
+     "component": "3_FMS/sim_engine",
+     "needs_agreement": true,
+     "evidence": [
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:246",
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:280",
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:441",
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:448",
+      "3_FMS/docs/2026-09-04_시스템아키텍처_검토_B트랙관점.md:25",
+      "3_FMS/docs/2026-09-04_시스템아키텍처_검토_B트랙관점.md:95"
+     ],
+     "n": 4,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.optuna-status",
+     "title": "기획 기준선 'Optuna 후속' vs 3_FMS 워커 optuna 의존",
+     "status": "warn",
+     "msg": "requirements에 optuna 핀 존재(1). 기준선 v3는 Optuna를 후속으로 분류. 결정 필요: 기준선 갱신 또는 워커 범위 조정",
+     "component": "3_FMS/infra+etc",
+     "needs_agreement": true,
+     "evidence": [
+      "3_FMS/infra/requirements.txt:9"
+     ],
+     "n": 1,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.two-stacks",
+     "title": "기준선 v3 '두 Spring 스택(상시 견적 + 런 스코프)' vs 앱 1개",
+     "status": "warn",
+     "msg": "@SpringBootApplication 1개 (기준선은 2 스택). 결정 필요: 분리 시점 또는 기준선 수정",
+     "component": "4_Web/BE",
+     "needs_agreement": true,
+     "evidence": [
+      "4_Web/SantaFactoryBE/src/main/java/com/ssafy/santafactory/SantaFactoryApplication.java:9"
+     ],
+     "n": 1,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.git-convention-doc",
+     "title": "참조되는 Docs/GIT_CONVENTION.md 부재",
+     "status": "warn",
+     "msg": "3곳에서 참조하지만 파일 없음. 조치: 문서 커밋 또는 참조 제거",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [
+      ".githooks/README.md:5",
+      ".gitlab/merge_request_templates/Default.md:15",
+      ".githooks/commit-convention.sh:3"
+     ],
+     "n": 3,
+     "sev": "S0"
+    },
+    {
+     "id": "todo",
+     "title": "주석 TODO·FIXME·HACK",
+     "status": "ok",
+     "msg": "0건",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [],
+     "n": 0,
+     "sev": "S0"
+    },
+    {
+     "id": "line-len",
+     "title": "120자 초과 줄 (지표)",
+     "status": "ok",
+     "msg": "71줄",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [],
+     "n": 71,
+     "sev": "S0"
+    }
+   ],
+   "duration_s": 13.6,
+   "allow_dropped": 5,
+   "merge_base": "4c83adc5cd804f9af05d89f697a661a2bb7b2363",
+   "files_changed": 0,
+   "ahead": 0,
+   "behind": 143,
+   "new_vs_develop": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
+   },
+   "new_vs_develop_top": [],
+   "convention": {
+    "branch_ok": true,
+    "commits_ok": 0,
+    "commits_total": 0,
+    "offenders": []
+   },
+   "new": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
+   }
+  },
+  {
+   "name": "feature/S15P21A106-171-isaac-sim-실측용-테스트코드-리팩터링",
+   "slug": "feature__S15P21A106-171-isaac-sim-81631d",
+   "sha": "68baed972984a268e28f55e0bb48faa7c30407d6",
+   "committer_date": 1788827599,
+   "author": "LsMin124",
+   "loc": 20430,
+   "counts": {
+    "S3": 5,
+    "S2": 92,
+    "S1": 265,
+    "S0": 3
+   },
+   "W": 591,
+   "new_vs_prev": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
+   },
+   "fixed": 0,
+   "prev_run": "2026-09-09_1805_deep",
+   "tools": [
+    {
+     "id": "ruff",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.0,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 33,
+      "S1": 179,
+      "S0": 0
+     }
+    },
+    {
+     "id": "ruff-format",
+     "status": "ok",
+     "rc": 1,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {
+      "unformatted": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "bandit",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.7,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 1,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "yamllint",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 1,
+      "S0": 0
+     }
+    },
+    {
+     "id": "shellcheck",
+     "status": "ok",
+     "rc": null,
+     "secs": 0.0,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 1,
+      "S0": 0
+     }
+    },
+    {
+     "id": "hadolint",
+     "status": "ok",
+     "rc": 1,
+     "secs": 0.0,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 1,
+      "S0": 1
+     }
+    },
+    {
+     "id": "gitleaks",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.4,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "oxlint",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "pmd",
+     "status": "ok",
+     "rc": 4,
+     "secs": 1.0,
+     "stderr_tail": "[INFO] Found 10 violations.",
+     "metrics": {
+      "processing_errors": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 1,
+      "S1": 8,
+      "S0": 1
+     }
+    },
+    {
+     "id": "mypy",
+     "status": "ok",
+     "rc": 1,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 26,
+      "S1": 42,
+      "S0": 0
+     }
+    },
+    {
+     "id": "radon",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.2,
+     "stderr_tail": "",
+     "metrics": {
+      "ranks": {
+       "C": 28,
+       "D": 3,
+       "E": 0,
+       "F": 0
+      }
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 3,
+      "S1": 28,
+      "S0": 0
+     }
+    },
+    {
+     "id": "vulture",
+     "status": "ok",
+     "rc": 3,
+     "secs": 0.2,
+     "stderr_tail": "",
+     "metrics": {
+      "candidates": 1
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 1
+     }
+    },
+    {
+     "id": "cpd-python",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.5,
+     "stderr_tail": "",
+     "metrics": {
+      "duplications": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "cpd-java",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.5,
+     "stderr_tail": "",
+     "metrics": {
+      "duplications": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "pytest",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.9,
+     "stderr_tail": "",
+     "metrics": {
+      "run": 55,
+      "passed": 55,
+      "failed": 0,
+      "skipped": 0,
+      "cov_pct": 57.5,
+      "venv": "ok"
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "gradle",
+     "status": "ok",
+     "rc": 0,
+     "secs": 2.8,
+     "stderr_tail": "",
+     "metrics": {
+      "run": 53,
+      "passed": 47,
+      "failed": 5,
+      "skipped": 1,
+      "cov_pct": 67.9
+     },
+     "counts": {
+      "S3": 5,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "spotbugs",
+     "status": "ok",
+     "rc": 0,
+     "secs": 2.0,
+     "stderr_tail": "The following classes needed for analysis were missing:\n  lombok.Generated",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "gitleaks-git",
+     "status": "ok",
+     "rc": 0,
+     "secs": 1.2,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    }
+   ],
+   "custom_checks": [
+    {
+     "id": "req-drift",
+     "title": "3_FMS import ⊆ requirements.txt",
+     "status": "ok",
+     "msg": "import 전부 requirements와 일치 (allow: simpy)",
+     "component": "3_FMS/infra+etc",
+     "needs_agreement": false,
+     "evidence": [],
+     "n": 0,
+     "sev": "S3"
+    },
+    {
+     "id": "doc-links",
+     "title": "문서 상대링크·코드 헤더 docs 참조 존재",
+     "status": "warn",
+     "msg": "깨진 참조 25건",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [
+      ".githooks/README.md:5 → ../Docs/GIT_CONVENTION.md",
+      "3_FMS/ai_theta/data/build_input.py:5 → Docs/AI/AI입출력명세서.md",
+      "3_FMS/docs/2026-09-04_θ_실험_로드맵_AB공동.md:4 → 2026-09-04_고부하_무릎_판정.md",
+      "3_FMS/docs/2026-09-04_θ_실험_로드맵_AB공동.md:36 → 2026-09-07_B5_θ적용_FleetSweep_결과.md",
+      "3_FMS/docs/2026-09-04_θ감도_실험.md:4 → 2026-09-01_θ스키마_합의안.md",
+      "3_FMS/docs/2026-09-04_θ감도_실험.md:62 → 2026-09-01_θ스키마_합의안.md"
+     ],
+     "n": 25,
+     "sev": "S2"
+    },
+    {
+     "id": "size",
+     "title": "파일 > 800줄 · 함수 > 80줄",
+     "status": "warn",
+     "msg": "파일 0 · 함수 3 (50줄 초과 함수 12)",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [
+      ".gitlab/scripts/sonar_mr_comment.py:386 함수 main 148줄 (> 80)",
+      "2_Simulation/scene_builder/roof.py:61 함수 build_roof 122줄 (> 80)",
+      "3_FMS/sim_engine/checks/from_theta_demo.py:57 함수 main 121줄 (> 80)"
+     ],
+     "n": 3,
+     "sev": "S2"
+    },
+    {
+     "id": "print-in-lib",
+     "title": "라이브러리 모듈 내 print()",
+     "status": "warn",
+     "msg": "1건",
+     "component": "3_FMS/sim_engine",
+     "needs_agreement": false,
+     "evidence": [
+      "3_FMS/sim_engine/from_theta.py:133"
+     ],
+     "n": 1,
+     "sev": "S1"
+    },
+    {
+     "id": "spring-config",
+     "title": "Spring main application.yml 운영 안전 설정",
+     "status": "warn",
+     "msg": "4건",
+     "component": "4_Web/BE",
+     "needs_agreement": false,
+     "evidence": [
+      "4_Web/SantaFactoryBE/src/main/resources/application.yml:7 자격증명 환경변수에 기본값 fallback",
+      "4_Web/SantaFactoryBE/src/main/resources/application.yml:10 ddl-auto=update: 운영 스키마 자동 변경",
+      "4_Web/SantaFactoryBE/src/main/resources/application.yml:11 show-sql=true: 운영 로그에 SQL 노출",
+      "4_Web/SantaFactoryBE/src/main/resources/application.yml:19 자격증명 환경변수에 기본값 fallback"
+     ],
+     "n": 4,
+     "sev": "S1"
+    },
+    {
+     "id": "claims.isaac-1-instance",
+     "title": "README '동시 1인스턴스' 주장 vs 2026-09-05 실측(경량 6 동시)",
+     "status": "warn",
+     "msg": "'동시 1인스턴스' 문구 2곳 — 실측(64GB, lean 6 동시)과 불일치. 결정 필요: 문구 갱신 여부",
+     "component": "2_Simulation",
+     "needs_agreement": true,
+     "evidence": [
+      "2_Simulation/t1_teleop/README.md:29",
+      "2_Simulation/t3_warehouse/README.md:27"
+     ],
+     "n": 2,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.tick-500ms",
+     "title": "아키텍처 문서 '500ms 틱' vs FMS 문서 '커널 틱 1 s'",
+     "status": "warn",
+     "msg": "아키텍처 문서 '500ms' 4곳 / FMS 문서 '1 s 틱' 4곳. 결정 필요: 틱 주기 단일화",
+     "component": "3_FMS/sim_engine",
+     "needs_agreement": true,
+     "evidence": [
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:246",
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:280",
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:441",
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:448",
+      "3_FMS/docs/2026-09-04_시스템아키텍처_검토_B트랙관점.md:25",
+      "3_FMS/docs/2026-09-04_시스템아키텍처_검토_B트랙관점.md:95"
+     ],
+     "n": 4,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.optuna-status",
+     "title": "기획 기준선 'Optuna 후속' vs 3_FMS 워커 optuna 의존",
+     "status": "warn",
+     "msg": "requirements에 optuna 핀 존재(1). 기준선 v3는 Optuna를 후속으로 분류. 결정 필요: 기준선 갱신 또는 워커 범위 조정",
+     "component": "3_FMS/infra+etc",
+     "needs_agreement": true,
+     "evidence": [
+      "3_FMS/infra/requirements.txt:9"
+     ],
+     "n": 1,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.two-stacks",
+     "title": "기준선 v3 '두 Spring 스택(상시 견적 + 런 스코프)' vs 앱 1개",
+     "status": "warn",
+     "msg": "@SpringBootApplication 1개 (기준선은 2 스택). 결정 필요: 분리 시점 또는 기준선 수정",
+     "component": "4_Web/BE",
+     "needs_agreement": true,
+     "evidence": [
+      "4_Web/SantaFactoryBE/src/main/java/com/ssafy/santafactory/SantaFactoryApplication.java:9"
+     ],
+     "n": 1,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.git-convention-doc",
+     "title": "참조되는 Docs/GIT_CONVENTION.md 부재",
+     "status": "warn",
+     "msg": "3곳에서 참조하지만 파일 없음. 조치: 문서 커밋 또는 참조 제거",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [
+      ".githooks/README.md:5",
+      ".gitlab/merge_request_templates/Default.md:15",
+      ".githooks/commit-convention.sh:3"
+     ],
+     "n": 3,
+     "sev": "S0"
+    },
+    {
+     "id": "todo",
+     "title": "주석 TODO·FIXME·HACK",
+     "status": "ok",
+     "msg": "0건",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [],
+     "n": 0,
+     "sev": "S0"
+    },
+    {
+     "id": "line-len",
+     "title": "120자 초과 줄 (지표)",
+     "status": "ok",
+     "msg": "83줄",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [],
+     "n": 83,
+     "sev": "S0"
+    }
+   ],
+   "duration_s": 13.7,
+   "allow_dropped": 4,
+   "merge_base": "68baed972984a268e28f55e0bb48faa7c30407d6",
+   "files_changed": 0,
+   "ahead": 0,
+   "behind": 150,
+   "new_vs_develop": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
+   },
+   "new_vs_develop_top": [],
+   "convention": {
+    "branch_ok": true,
+    "commits_ok": 0,
+    "commits_total": 0,
+    "offenders": []
+   },
+   "new": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
+   }
   }
  ],
  "tools": [
@@ -1227,7 +2428,7 @@
    "id": "bandit",
    "status": "ok",
    "rc": 0,
-   "secs": 1.5,
+   "secs": 1.7,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -1283,7 +2484,7 @@
    "id": "gitleaks",
    "status": "ok",
    "rc": 0,
-   "secs": 0.5,
+   "secs": 0.6,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -1311,7 +2512,7 @@
    "id": "pmd",
    "status": "ok",
    "rc": 4,
-   "secs": 1.2,
+   "secs": 0.9,
    "stderr_tail": "[INFO] Found 19 violations.",
    "metrics": {
     "processing_errors": 0
@@ -1321,6 +2522,158 @@
     "S2": 2,
     "S1": 15,
     "S0": 2
+   }
+  },
+  {
+   "id": "mypy",
+   "status": "error",
+   "rc": 2,
+   "secs": 0.1,
+   "stderr_tail": "",
+   "metrics": {},
+   "counts": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
+   }
+  },
+  {
+   "id": "radon",
+   "status": "ok",
+   "rc": 0,
+   "secs": 0.4,
+   "stderr_tail": "",
+   "metrics": {
+    "ranks": {
+     "C": 98,
+     "D": 20,
+     "E": 4,
+     "F": 3
+    }
+   },
+   "counts": {
+    "S3": 0,
+    "S2": 27,
+    "S1": 98,
+    "S0": 0
+   }
+  },
+  {
+   "id": "vulture",
+   "status": "ok",
+   "rc": 3,
+   "secs": 0.5,
+   "stderr_tail": "",
+   "metrics": {
+    "candidates": 5
+   },
+   "counts": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 5
+   }
+  },
+  {
+   "id": "cpd-python",
+   "status": "ok",
+   "rc": 0,
+   "secs": 0.6,
+   "stderr_tail": "",
+   "metrics": {
+    "duplications": 0
+   },
+   "counts": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
+   }
+  },
+  {
+   "id": "cpd-java",
+   "status": "ok",
+   "rc": 0,
+   "secs": 0.6,
+   "stderr_tail": "",
+   "metrics": {
+    "duplications": 0
+   },
+   "counts": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
+   }
+  },
+  {
+   "id": "pytest",
+   "status": "ok",
+   "rc": 0,
+   "secs": 2.4,
+   "stderr_tail": "",
+   "metrics": {
+    "run": 139,
+    "passed": 89,
+    "failed": 0,
+    "skipped": 50,
+    "cov_pct": 30.8,
+    "venv": "ok"
+   },
+   "counts": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
+   }
+  },
+  {
+   "id": "gradle",
+   "status": "ok",
+   "rc": 0,
+   "secs": 7.8,
+   "stderr_tail": "OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended\n\n80 tests completed, 5 failed, 1 skipped",
+   "metrics": {
+    "run": 80,
+    "passed": 74,
+    "failed": 5,
+    "skipped": 1,
+    "cov_pct": 75.9
+   },
+   "counts": {
+    "S3": 5,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
+   }
+  },
+  {
+   "id": "spotbugs",
+   "status": "ok",
+   "rc": 0,
+   "secs": 2.1,
+   "stderr_tail": "The following classes needed for analysis were missing:\n  lombok.Generated",
+   "metrics": {},
+   "counts": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
+   }
+  },
+  {
+   "id": "gitleaks-git",
+   "status": "ok",
+   "rc": 0,
+   "secs": 1.2,
+   "stderr_tail": "",
+   "metrics": {},
+   "counts": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
    }
   }
  ],
@@ -1499,14 +2852,62 @@
    "sev": "S0"
   }
  ],
- "tests": {},
+ "tests": {
+  "pytest": {
+   "run": 139,
+   "passed": 89,
+   "failed": 0,
+   "skipped": 50,
+   "cov_pct": 30.8,
+   "venv": "ok",
+   "status": "ok"
+  },
+  "gradle": {
+   "run": 80,
+   "passed": 74,
+   "failed": 5,
+   "skipped": 1,
+   "cov_pct": 75.9,
+   "status": "ok"
+  }
+ },
  "totals": {
-  "findings": 624,
-  "W": 869,
-  "new": 3,
+  "findings": 759,
+  "W": 1098,
+  "new": 135,
   "fixed": 0
  },
  "narrative": {
-  "status": "skipped"
+  "status": "ok",
+  "cost_usd": 0.1387914,
+  "turns": 3,
+  "text": {
+   "verdict": "develop에 red flag 3건(신규S3 5, gradle 실패 5, requirements 누락 2). 전일 대비 W 증가(S3+5/S2+27/S1+98/S0+5).",
+   "parts": [
+    {
+     "part": "시뮬",
+     "line": "2_Simulation/scene_builder/roof.py:132 B023 루프변수 미바인딩 / roof.py:61 순환복잡도23(D)"
+    },
+    {
+     "part": "FMS·AI",
+     "line": "3_FMS/contracts/tests/test_acl_matrix.py:0 req-drift(pytest 누락) / fms_kernel.py:4 F403 wildcard import"
+    },
+    {
+     "part": "웹",
+     "line": "4_Web/SantaFactoryBE test-failed 5건(gradle) / EstimateRepository.java:8 ImplicitFunctionalInterface"
+    },
+    {
+     "part": "공용",
+     "line": ".githooks/README.md:5 깨진 문서 참조 / sonar_mr_comment.py:387 func-80(148줄)"
+    }
+   ],
+   "branches": "develop 신규 S3 5건(gradle 테스트 실패), req-drift(google, pytest) 신규 지적.",
+   "agreement": [
+    "결정 필요: README '동시 1인스턴스' 문구와 실측(6동시) 불일치 갱신 여부",
+    "결정 필요: 아키텍처 문서 '500ms 틱' vs FMS 문서 '1s 틱' 단일화",
+    "결정 필요: Optuna 기준선(후속 분류) vs 실제 requirements 핀 존재 반영 여부"
+   ],
+   "tool_issues": "mypy status=error(rc=2, develop 브랜치)"
+  }
  }
 }
