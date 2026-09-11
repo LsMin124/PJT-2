@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<title>통신 구조 — 컨테이너 아홉이 주고받는 모든 메시지 (Comm Architecture)</title>
+<style>
+  :root{
+    --bg:#14181D; --panel:#1C2229; --panel-edge:#2C343D; --ink:#E8ECF1; --ink-soft:#9AA7B4;
+    --amber:#F08A32; --machine:#3BAF77; --steel:#8FB4D9; --slate:#8A96A3; --grid:#2A323B; --rust:#D0563C;
+    --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px;color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px}
+  a{color:var(--steel)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+  header{border-bottom:3px solid var(--ink);background:var(--panel)}
+  .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
+  .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
+  .doc-eyebrow b{color:var(--amber);font-weight:600}
+  h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
+  h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
+  .meta b{color:var(--ink);font-weight:600}
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav .wrap{display:flex;gap:2px;padding:0 20px}
+  nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent}
+  nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--amber);outline:none}
+  nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
+  nav a.nav-cross{margin-left:auto;color:var(--amber);font-weight:700}
+  main{padding:44px 0 80px}
+  section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0;flex-wrap:wrap}
+  .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
+  h2{font-size:clamp(19px,2.2vw,27px);font-weight:800;letter-spacing:-.025em;line-height:1.3}
+  .sec-body{padding:16px 26px 26px}
+  h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+  h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
+  h4{font-size:13px;font-weight:700;margin:16px 0 6px;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase}
+  p{margin-bottom:10px} .sec-body p{max-width:78ch} .lead{font-size:15.5px} .soft{color:var(--ink-soft)}
+  ul,ol{margin:8px 0 12px 20px} li{margin-bottom:5px;max-width:76ch}
+  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
+  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)} .kcard.r{border-top-color:var(--rust)}
+  .kcard b{display:block;font-size:15px;margin-bottom:4px}
+  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
+  .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
+  .plain.warn{background:#2A2019;border-left-color:var(--amber)} .plain.warn .pl-tag{color:var(--amber)}
+  .plain.bad{background:#2A1A17;border-left-color:var(--rust)} .plain.bad .pl-tag{color:var(--rust)}
+  code{font-family:var(--mono);font-size:.92em;background:#232B34;padding:1px 5px;border:1px solid var(--grid)}
+  pre{font-family:var(--mono);font-size:12px;line-height:1.7;background:#20272F;border:1px solid var(--panel-edge);border-left:4px solid var(--steel);padding:12px 16px;overflow-x:auto;margin:12px 0}
+  pre code{background:none;border:none;padding:0}
+  pre.amqp{border-left-color:var(--amber)} pre.mqtt{border-left-color:var(--machine)} pre.seq{border-left-color:var(--slate)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F;white-space:nowrap}
+  td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.65}
+  tr:last-child td{border-bottom:none} table tr:nth-child(even) td{background:#1E252D}
+  td.m{font-family:var(--mono);font-size:12px;white-space:nowrap}
+  td.mw{font-family:var(--mono);font-size:12px}
+  .tbl-scroll{overflow-x:auto}
+  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px;white-space:nowrap}
+  .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)} .c-slate{color:var(--slate)} .c-rust{color:var(--rust)}
+  .viz{background:#0E1318;border:1px solid var(--panel-edge);padding:12px 14px;margin:14px 0;overflow-x:auto}
+  .viz svg{display:block;min-width:860px;width:100%;height:auto}
+  .flow-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px auto 40px}
+  .flow-nav a{background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
+  .flow-nav a:hover{border-color:var(--amber)} .flow-nav .prev{grid-column:1} .flow-nav .next{grid-column:2;text-align:right}
+  .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
+  footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+  :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+  @media (max-width:820px){.titleblock{grid-template-columns:1fr}.meta{border-left:none;padding-left:0;text-align:left}body{font-size:14px}.sec-head,.sec-body{padding-left:16px;padding-right:16px}}
+  @media(max-width:640px){.flow-nav{grid-template-columns:1fr}.flow-nav .prev,.flow-nav .next{grid-column:auto;text-align:left}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap titleblock">
+    <div>
+      <div class="doc-eyebrow"><b>TECH · 통신 구조</b> · REV A — 2026-09-11</div>
+      <h1>통신 구조 — 컨테이너 아홉이 주고받는 모든 메시지
+        <span class="sub">프로세스는 전부 독립 컨테이너다. 공유 메모리도 함수 호출도 없고 오직 메시지로만 말한다. HTTP · SSE · AMQP · Sparkplug B · VDA 5050 의 정확한 요청·응답 형식과, 그 메시지들이 견적 한 건에서 어떤 순서로 오가는가.</span>
+      </h1>
+    </div>
+    <div class="meta">
+      DOC. <b>COMM-ARCH</b><br>
+      REV. <b>A</b> · <b>2026-09-11</b><br>
+      기준 <b>develop @ cc3fa62</b><br>
+      계약 <b>SIM_RUN v3.1 · SIM_VERIFY v0.3 · MQTT v1.2</b>
+    </div>
+  </div>
+</header>
+
+<nav aria-label="문서 내 탐색">
+  <div class="wrap">
+    <a class="nav-home" href="../../index.html">⌂ INDEX</a>
+    <a href="#s0">00 한눈에</a>
+    <a href="#s1">01 프로세스 카탈로그</a>
+    <a href="#s2">02 HTTP</a>
+    <a href="#s3">03 SSE</a>
+    <a href="#s4">04 AMQP</a>
+    <a href="#s5">05 Sparkplug B</a>
+    <a href="#s6">06 VDA 5050</a>
+    <a href="#s7">07 ACL</a>
+    <a href="#s8">08 전 구간 시퀀스</a>
+    <a href="#s9">09 끊긴 곳</a>
+    <a class="nav-cross" href="../working/mqtt_endpoints.html">MQ 접속 지점 ↗</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="s0">
+  <div class="sec-head"><span class="sec-no">SEC 00 · 한눈에</span><h2>컨테이너 아홉, 프로토콜 다섯, 브로커 둘. 경계를 넘는 방법은 메시지뿐이다</h2></div>
+  <div class="sec-body">
+    <p class="lead">이 시스템에는 <b>함수 호출로 이어진 구간이 하나도 없다.</b> 웹과 시뮬레이터가 같은 서버에 있어도 서로를 직접 부르지 않는다. 모든 경계는 <b>큐 아니면 토픽</b>이고, 그래서 각 조각을 따로 재시작·재배포·수평 확장할 수 있다. 대신 "이 메시지가 누구한테서 왔고 무슨 형식인가"를 모르면 어디도 읽을 수 없다. 이 문서가 그 표다.</p>
+
+    <div class="kcards">
+      <div class="kcard s"><b>HTTP · REST</b><span>브라우저 → 백엔드. 요청 5종. 전부 JSON <code>snake_case</code>, 응답은 <code>{isSuccess, code, message, result}</code> 봉투</span></div>
+      <div class="kcard s"><b>SSE</b><span>백엔드 → 브라우저 단방향 푸시. 견적 3종 + 검증 2종. 같은 URL 을 <code>Accept</code> 로 가른다</span></div>
+      <div class="kcard"><b>AMQP · RabbitMQ</b><span>웹 ↔ FMS 잡 큐 4개. durable · <code>prefetch 1</code> · 발행 후 ack. 유실되면 안 되는 것</span></div>
+      <div class="kcard g"><b>MQTT · Sparkplug B</b><span>런 제어·텔레메트리. protobuf. 생사(NBIRTH/NDEATH) · 델타(NDATA) · 명령(NCMD)</span></div>
+      <div class="kcard g"><b>MQTT · VDA 5050</b><span>로봇 제어 표준. JSON. <code>order</code> 내려가고 <code>state</code> 올라온다</span></div>
+    </div>
+
+    <div class="viz"><svg viewBox="0 0 900 486" role="img" aria-label="브라우저, EC2, GPU 박스 세 구역에 컨테이너 아홉 개가 배치되고, RabbitMQ와 EMQX 두 브로커를 통해 메시지가 오간다. host-orch만 두 브로커 모두에 붙는다">
+      <defs>
+        <marker id="ca-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8FB4D9"/></marker>
+        <marker id="ca-arr-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3BAF77"/></marker>
+        <marker id="ca-arr-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F08A32"/></marker>
+      </defs>
+
+      <!-- 브라우저 -->
+      <rect x="12" y="26" width="196" height="120" fill="#171C22" stroke="#2C343D" stroke-dasharray="4 3"/>
+      <text x="22" y="46" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="10.5" letter-spacing="1">브라우저</text>
+      <rect x="26" y="58" width="168" height="70" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="38" y="80" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="10.5" font-weight="700">React 19 + Vite</text>
+      <text x="38" y="100" fill="#E8ECF1" font-size="12.5">01 창고 · 02 대수</text>
+      <text x="38" y="118" fill="#E8ECF1" font-size="12.5">03 런 · 04 검증 · 05 견적</text>
+
+      <!-- EC2 -->
+      <rect x="238" y="16" width="392" height="398" fill="#171C22" stroke="#2C343D" stroke-dasharray="4 3"/>
+      <text x="248" y="36" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="10.5" letter-spacing="1">EC2 · j15a106.p.ssafy.io</text>
+
+      <rect x="252" y="48" width="170" height="46" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="262" y="66" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="10.5" font-weight="700">nginx :443</text>
+      <text x="262" y="84" fill="#9AA7B4" font-size="11.5">유일한 공개 진입</text>
+
+      <rect x="252" y="106" width="170" height="46" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="262" y="124" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="10.5" font-weight="700">a106-backend :8080</text>
+      <text x="262" y="142" fill="#9AA7B4" font-size="11.5">Spring Boot · SSE 발신</text>
+
+      <rect x="252" y="164" width="170" height="42" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="262" y="182" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="10.5" font-weight="700">a106-db</text>
+      <text x="262" y="199" fill="#9AA7B4" font-size="11.5">PostgreSQL 16</text>
+
+      <!-- RabbitMQ -->
+      <rect x="444" y="48" width="172" height="60" fill="#2A2019" stroke="#F08A32" stroke-width="2"/>
+      <text x="456" y="68" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700">RabbitMQ :5672</text>
+      <text x="456" y="86" fill="#E8ECF1" font-size="11.5">sim.request / result</text>
+      <text x="456" y="102" fill="#E8ECF1" font-size="11.5">sim.verify.request / result</text>
+
+      <rect x="444" y="120" width="172" height="44" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="456" y="138" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="10.5" font-weight="700">견적 워커 × 2</text>
+      <text x="456" y="156" fill="#9AA7B4" font-size="11.5">DES 서브프로세스</text>
+
+      <rect x="252" y="222" width="170" height="46" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="262" y="240" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="10.5" font-weight="700">host-orch</text>
+      <text x="262" y="258" fill="#9AA7B4" font-size="11.5">두 브로커의 유일한 다리</text>
+
+      <rect x="252" y="280" width="170" height="46" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="262" y="298" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="10.5" font-weight="700">fms-core</text>
+      <text x="262" y="316" fill="#9AA7B4" font-size="11.5">DES 커널 + VDA 마스터</text>
+
+      <!-- EMQX -->
+      <rect x="444" y="222" width="172" height="60" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
+      <text x="456" y="242" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700">EMQX :1883</text>
+      <text x="456" y="260" fill="#E8ECF1" font-size="11.5">spBv1.0/… · uagv/v2/…</text>
+      <text x="456" y="276" fill="#E8ECF1" font-size="11.5">biz/v1/event</text>
+
+      <rect x="444" y="296" width="172" height="44" fill="#2A1A17" stroke="#D0563C" stroke-width="1.5"/>
+      <text x="456" y="314" fill="#D0563C" font-family="'JetBrains Mono',monospace" font-size="10.5" font-weight="700">a106-minio :9002</text>
+      <text x="456" y="332" fill="#9AA7B4" font-size="11.5">영상 — 올리는 쪽 없음</text>
+
+      <!-- GPU -->
+      <rect x="682" y="120" width="204" height="230" fill="#171C22" stroke="#2C343D" stroke-dasharray="4 3"/>
+      <text x="692" y="140" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="10.5" letter-spacing="1">GPU 박스 · RTX 5080</text>
+
+      <rect x="696" y="154" width="176" height="46" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="706" y="172" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="10.5" font-weight="700">sim-runner-gpu01</text>
+      <text x="706" y="190" fill="#9AA7B4" font-size="11.5">Sparkplug Edge 데몬</text>
+
+      <rect x="696" y="212" width="176" height="46" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="706" y="230" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="10.5" font-weight="700">Isaac Sim</text>
+      <text x="706" y="248" fill="#9AA7B4" font-size="11.5">물리 · ROS 2 그래프</text>
+
+      <rect x="696" y="270" width="176" height="46" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="706" y="288" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="10.5" font-weight="700">t4_agent × N</text>
+      <text x="706" y="306" fill="#9AA7B4" font-size="11.5">VDA 5050 → /cmd_vel</text>
+
+      <!-- 연결선 -->
+      <line x1="208" y1="92" x2="246" y2="72" stroke="#8FB4D9" stroke-width="2" marker-end="url(#ca-arr)"/>
+      <text x="140" y="164" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="10">HTTPS · SSE</text>
+      <line x1="422" y1="128" x2="440" y2="88" stroke="#F08A32" stroke-width="2" marker-end="url(#ca-arr-a)"/>
+      <line x1="440" y1="96" x2="424" y2="132" stroke="#F08A32" stroke-width="2" marker-end="url(#ca-arr-a)"/>
+      <line x1="530" y1="108" x2="530" y2="118" stroke="#F08A32" stroke-width="2" marker-end="url(#ca-arr-a)"/>
+      <line x1="422" y1="240" x2="440" y2="90" stroke="#F08A32" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <line x1="422" y1="248" x2="440" y2="248" stroke="#3BAF77" stroke-width="2" marker-end="url(#ca-arr-g)"/>
+      <line x1="422" y1="302" x2="440" y2="262" stroke="#3BAF77" stroke-width="2" marker-end="url(#ca-arr-g)"/>
+      <line x1="616" y1="252" x2="694" y2="180" stroke="#3BAF77" stroke-width="2" marker-end="url(#ca-arr-g)"/>
+      <line x1="616" y1="262" x2="694" y2="292" stroke="#3BAF77" stroke-width="2" marker-end="url(#ca-arr-g)"/>
+      <text x="620" y="205" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="10">MQTT</text>
+      <text x="620" y="219" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="10">tailnet</text>
+      <line x1="16" y1="428" x2="884" y2="428" stroke="#2C343D" stroke-width="1"/>
+      <text x="16" y="450" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="10.5" font-weight="700">host-orch 만 양쪽에 붙는다 — 이 프로세스가 죽으면 물리 검증이 통째로 멈춘다</text>
+      <text x="16" y="470" fill="#9AA7B4" font-size="11.5">백엔드는 EMQX 를 모르고, GPU 박스는 RabbitMQ 를 모른다. 두 세계의 어휘(run_id · KPI 14키)만 host-orch 가 번역해 옮긴다.</text>
+      <text x="640" y="450" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="10">주황 = AMQP · 초록 = MQTT · 파랑 = HTTP</text>
+    </svg></div>
+
+    <div class="plain"><span class="pl-tag">왜 이렇게 나눴나</span>RabbitMQ 로 가는 메시지는 <b>잃어버리면 사용자가 결과를 못 받는 것</b>이라 durable 큐 + ack 로 보장한다. EMQX 로 가는 메시지는 <b>초당 수십 건 쏟아지는 상태 보고</b>라 하나쯤 놓쳐도 0.5초 뒤 또 온다 — QoS 0 로 가볍게 간다. 성격이 반대라 브로커를 합칠 수 없다.</div>
+  </div>
+</section>
+
+<section id="s1">
+  <div class="sec-head"><span class="sec-no">SEC 01 · 프로세스 카탈로그</span><h2>누가 무엇을 듣고 무엇을 말하는가</h2></div>
+  <div class="sec-body">
+    <p>각 행이 컨테이너 하나다. <b>IN</b> 은 이 프로세스가 구독·소비하는 것, <b>OUT</b> 은 발행하는 것이다. 한 프로세스의 OUT 은 반드시 다른 프로세스의 IN 이다 — 그렇지 않은 줄이 있으면 그게 끊긴 곳이다.</p>
+
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>프로세스</th><th>위치</th><th>IN — 듣는 것</th><th>OUT — 말하는 것</th><th>배포</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>프론트</b><br><span class="soft">React 19 + Vite</span></td>
+          <td class="m">브라우저</td>
+          <td class="mw">HTTP 응답<br>SSE <code>snapshot·run·estimate.done</code><br>SSE <code>verify.*</code></td>
+          <td class="mw">HTTP <code>POST /warehouses</code><br><code>POST /estimates</code><br><code>POST /estimates/{id}/verify</code><br><code>GET /robots</code></td>
+          <td><span class="chip c-green">Jenkins</span></td>
+        </tr>
+        <tr>
+          <td><b>backend</b><br><span class="soft">Spring Boot 3.3.5</span></td>
+          <td class="m">EC2 :8080</td>
+          <td class="mw">HTTP 요청<br>AMQP <code>sim.result</code><br>AMQP <code>sim.verify.result</code></td>
+          <td class="mw">HTTP 응답 · SSE<br>AMQP <code>sim.request</code><br>AMQP <code>sim.verify.request</code><br>JDBC → PostgreSQL</td>
+          <td><span class="chip c-green">Jenkins</span></td>
+        </tr>
+        <tr>
+          <td><b>견적 워커</b> × 2<br><span class="soft">Python · pika</span></td>
+          <td class="m">EC2</td>
+          <td class="mw">AMQP <code>sim.request</code><br><span class="soft">prefetch 1 · 라운드로빈</span></td>
+          <td class="mw">AMQP <code>sim.result</code><br>subprocess → <code>sim_v2_tasks.py</code></td>
+          <td><span class="chip c-green">Jenkins</span></td>
+        </tr>
+        <tr>
+          <td><b>host-orch</b><br><span class="soft">Python · pika + paho</span></td>
+          <td class="m">EC2</td>
+          <td class="mw">AMQP <code>sim.verify.request</code><br>MQTT <code>spBv1.0/santa/#</code><br>MQTT <code>biz/v1/#</code></td>
+          <td class="mw">AMQP <code>sim.verify.result</code><br>MQTT <code>…/NCMD/sim-runner-gpu01</code><br>MQTT <code>…/NCMD/fms-core</code><br>MQTT <code>spBv1.0/STATE/host-orch</code></td>
+          <td><span class="chip c-amber">수동</span></td>
+        </tr>
+        <tr>
+          <td><b>fms-core</b><br><span class="soft">Python · DES 커널</span></td>
+          <td class="m">EC2</td>
+          <td class="mw">MQTT <code>…/NCMD/fms-core</code><br>MQTT <code>spBv1.0/STATE/+</code><br>MQTT <code>uagv/v2/+/+/state</code><br>MQTT <code>uagv/v2/+/+/connection</code></td>
+          <td class="mw">MQTT <code>uagv/v2/+/+/order</code><br>MQTT <code>…/instantActions</code><br>MQTT <code>spBv1.0/santa/N*/fms-core</code><br>MQTT <code>biz/v1/event</code></td>
+          <td><span class="chip c-amber">수동</span></td>
+        </tr>
+        <tr>
+          <td><b>sim-runner-gpu01</b><br><span class="soft">Python · paho</span></td>
+          <td class="m">GPU 박스</td>
+          <td class="mw">MQTT <code>…/NCMD/sim-runner-gpu01</code><br>MQTT <code>spBv1.0/STATE/+</code><br>MQTT <code>uagv/v2/+/+/state</code><br>MQTT <code>uagv/v2/+/+/connection</code></td>
+          <td class="mw">MQTT <code>spBv1.0/santa/{N,D}*/…</code><br>프로세스 기동 → Isaac · 에이전트</td>
+          <td><span class="chip c-slate">systemd</span></td>
+        </tr>
+        <tr>
+          <td><b>t4_agent</b> × N<br><span class="soft">ROS 2 Humble</span></td>
+          <td class="m">GPU 박스</td>
+          <td class="mw">MQTT <code>uagv/v2/+/{serial}/order</code><br>MQTT <code>…/instantActions</code><br>ROS <code>odom</code> · <code>amcl_pose</code></td>
+          <td class="mw">MQTT <code>uagv/v2/+/{serial}/state</code><br>MQTT <code>…/connection</code> <span class="soft">retained</span><br>MQTT <code>…/factsheet</code> <span class="soft">retained</span><br>ROS <code>/cmd_vel</code></td>
+          <td><span class="chip c-slate">런 단위</span></td>
+        </tr>
+        <tr>
+          <td><b>Isaac Sim</b><br><span class="soft">Omniverse Kit</span></td>
+          <td class="m">GPU 박스</td>
+          <td class="mw">ROS <code>/{ns}/cmd_vel</code></td>
+          <td class="mw">ROS <code>/{ns}/odom</code> · <code>/{ns}/scan</code><br>ROS <code>/clock</code> <span class="soft">(첫 로봇만)</span> · TF</td>
+          <td><span class="chip c-slate">런 단위</span></td>
+        </tr>
+        <tr>
+          <td><b>MinIO</b><br><span class="soft">S3 API</span></td>
+          <td class="m">EC2 :9002</td>
+          <td class="mw"><span class="c-rust">— 아무도 올리지 않음</span></td>
+          <td class="mw"><span class="c-rust">— 아무도 읽지 않음</span></td>
+          <td><span class="chip c-green">Jenkins</span></td>
+        </tr>
+      </tbody>
+    </table></div>
+
+    <div class="plain warn"><span class="pl-tag">읽는 법</span><b>host-orch 의 IN 에 <code>biz/v1/#</code> 가 있고 fms-core 의 OUT 에 <code>biz/v1/event</code> 가 있다</b> — 이 한 쌍이 KPI 가 웹으로 돌아오는 유일한 경로다. 반대로 <b>MinIO 행은 IN·OUT 이 둘 다 비어 있다</b> — 컨테이너는 떠 있지만 파이프라인에 연결돼 있지 않다.</div>
+  </div>
+</section>
+
+<section id="s2">
+  <div class="sec-head"><span class="sec-no">SEC 02 · HTTP</span><h2>브라우저 ↔ 백엔드 — 요청 5종의 전문</h2></div>
+  <div class="sec-body">
+    <p>진입은 호스트 nginx :443 하나뿐이다. 프론트 컨테이너의 nginx 는 <code>/</code> 와 <code>/assets/</code> 만 서빙하고 <b><code>/api</code> 프록시가 없다</b> — API 라우팅은 전적으로 호스트 nginx 몫이다. 개발 환경에서는 Vite 프록시가 <code>/api → localhost:8080</code> 으로 대신한다.</p>
+
+    <h3>공통 규약</h3>
+    <ul>
+      <li>요청·응답 모두 <b><code>snake_case</code></b>. 프론트는 수동 매핑, 백엔드는 <code>@JsonNaming(SnakeCaseStrategy)</code>.</li>
+      <li>응답은 항상 봉투에 담긴다: <code>{ isSuccess, code, message, result }</code>. <code>result</code> 가 null 이면 키 자체가 생략된다.</li>
+      <li>에러도 같은 봉투다. <code>ResponseEntity</code> 가 아니라 <code>HttpServletResponse</code> 에 직접 쓴다 — SSE 라우트에서 컨텐트 협상 실패를 피하기 위함.</li>
+    </ul>
+
+    <h3>엔드포인트 전체</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>메서드</th><th>경로</th><th>요청</th><th>응답</th><th>코드</th></tr></thead>
+      <tbody>
+        <tr><td class="m">POST</td><td class="m">/api/warehouses</td><td>창고 조건 9키</td><td><code>warehouse_id</code> 외 15키</td><td class="m">201</td></tr>
+        <tr><td class="m">GET</td><td class="m">/api/warehouses/{id}</td><td>—</td><td>동일</td><td class="m">200</td></tr>
+        <tr><td class="m">GET</td><td class="m">/api/robots</td><td>—</td><td><code>[{model, speed, capacity, battery, price, cost}]</code></td><td class="m">200</td></tr>
+        <tr><td class="m">POST</td><td class="m">/api/estimates</td><td>4키</td><td><code>estimate_id · max_amr_count · run_ids[]</code></td><td class="m">202</td></tr>
+        <tr><td class="m">GET</td><td class="m">/api/estimates</td><td>Pageable <span class="soft">size 20</span></td><td>견적 목록 페이지</td><td class="m">200</td></tr>
+        <tr><td class="m">GET</td><td class="m">/api/estimates/{id}</td><td><code>Accept: application/json</code></td><td>견적 상세 + runs[]</td><td class="m">200</td></tr>
+        <tr><td class="m">GET</td><td class="m">/api/estimates/{id}</td><td><code>Accept: text/event-stream</code></td><td><b>SSE 스트림</b> → SEC 03</td><td class="m">200</td></tr>
+        <tr><td class="m">GET</td><td class="m">/api/estimates/{id}/verify</td><td>SSE</td><td><b>검증 SSE 스트림</b></td><td class="m">200</td></tr>
+        <tr><td class="m">POST</td><td class="m">/api/estimates/{id}/verify</td><td><b>바디 없음</b></td><td><code>result</code> 없음</td><td class="m">202</td></tr>
+        <tr><td class="m">DELETE</td><td class="m">/api/estimates/{id}</td><td>—</td><td>—</td><td class="m">204</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="plain warn"><span class="pl-tag">같은 URL 이 둘로 갈린다</span><code>GET /api/estimates/{id}</code> 는 <b>경로가 하나인데 핸들러가 둘</b>이다. <code>produces</code> 속성으로 갈리므로, 브라우저의 <code>EventSource</code> 가 자동으로 붙이는 <code>Accept: text/event-stream</code> 이 SSE 핸들러로 라우팅한다. <code>Accept</code> 가 없거나 <code>*/*</code> 면 Spring 이 이름순으로 <code>application/json</code> 을 먼저 고른다.</div>
+
+    <h3>① POST /api/warehouses</h3>
+<pre><code>POST /api/warehouses
+Content-Type: application/json
+Accept: application/json
+
+{
+  "worker_count": 4,
+  "inbound_start": "01:00",  "inbound_end": "09:00",
+  "outbound_start": "13:00", "outbound_end": "18:00",
+  "inbound_avg": 480,  "outbound_avg": 500,
+  "target_throughput": 95,
+  "budget_limit": 300000000
+}</code></pre>
+
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>키</th><th>타입</th><th>검증</th><th>안 보내면</th></tr></thead>
+      <tbody>
+        <tr><td class="m">worker_count</td><td class="m">Integer</td><td class="m">@NotNull @Positive</td><td>400</td></tr>
+        <tr><td class="m">inbound_start</td><td class="m">LocalTime</td><td class="m">@NotNull</td><td>400</td></tr>
+        <tr><td class="m">inbound_end</td><td class="m">LocalTime</td><td>—</td><td>null 허용</td></tr>
+        <tr><td class="m">outbound_start</td><td class="m">LocalTime</td><td class="m">@NotNull</td><td>400</td></tr>
+        <tr><td class="m">outbound_end</td><td class="m">LocalTime</td><td>—</td><td>null 허용</td></tr>
+        <tr><td class="m">inbound_avg</td><td class="m">Long</td><td class="m">@NotNull @PositiveOrZero</td><td>400</td></tr>
+        <tr><td class="m">outbound_avg</td><td class="m">Long</td><td class="m">@NotNull @PositiveOrZero</td><td>400</td></tr>
+        <tr><td class="m">budget_limit</td><td class="m">Long</td><td class="m">@NotNull @PositiveOrZero</td><td>400</td></tr>
+        <tr><td class="m">target_throughput</td><td class="m">Double</td><td class="m">@Positive</td><td>기본 95.0</td></tr>
+        <tr><td class="m">name</td><td class="m">String</td><td>—</td><td>기본 <code>"품고"</code></td></tr>
+        <tr><td class="m">width / length</td><td class="m">Double</td><td class="m">@Positive</td><td>기본 110.0 / 90.0</td></tr>
+        <tr><td class="m">outbound_rate</td><td class="m">Double</td><td class="m">@PositiveOrZero</td><td>기본 0.0</td></tr>
+        <tr><td class="m">target_utilization</td><td class="m">Double</td><td class="m">@PositiveOrZero</td><td>기본 80.0</td></tr>
+      </tbody>
+    </table></div>
+    <p class="soft">프론트는 위 13키 중 <b>8키만</b> 보낸다. 나머지 5키는 백엔드 기본값이 채운다. 저장 시 <code>area = width × length</code> 를 계산하고, <code>LocalTime</code> 은 컬럼이 <code>TIMESTAMP</code> 라서 <b>2026-01-01 에 앵커</b>해 저장한다(날짜는 의미 없음).</p>
+
+    <h3>② POST /api/estimates</h3>
+<pre><code>POST /api/estimates                       → 202 ACCEPTED
+
+요청  {"warehouse_id": 12, "amr_model": "iw.hub", "fleet_min": 3, "fleet_max": 15}
+
+응답  {"isSuccess": true, "code": "COMMON200", "message": "성공",
+       "result": {"estimate_id": 77, "max_amr_count": 15,
+                  "run_ids": ["est_77_n3", "est_77_n4", ..., "est_77_n15"]}}</code></pre>
+    <p>클래스 레벨 <code>@AssertTrue</code> 로 <code>fleet_min ≤ fleet_max</code> 를 검사한다. 목표 처리율·가동률·예산은 <b>보내지 않는다</b> — 이미 창고 행에 있으므로 백엔드가 거기서 읽는다.</p>
+
+    <h3>에러 코드 전체</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>code</th><th>HTTP</th><th>언제</th></tr></thead>
+      <tbody>
+        <tr><td class="m">COMMON400</td><td class="m">400</td><td>검증 실패. <code>result</code> 에 <b>필드별 메시지 맵</b>이 들어간다</td></tr>
+        <tr><td class="m">COMMON404</td><td class="m">404</td><td>없는 경로·리소스</td></tr>
+        <tr><td class="m">COMMON405</td><td class="m">405</td><td>허용되지 않은 메서드</td></tr>
+        <tr><td class="m">COMMON500</td><td class="m">500</td><td>그 외 전부</td></tr>
+        <tr><td class="m">EST404_1</td><td class="m">404</td><td>없는 <code>warehouse_id</code></td></tr>
+        <tr><td class="m">EST404_2</td><td class="m">404</td><td>없는 <code>estimate_id</code></td></tr>
+        <tr><td class="m">EST409_1</td><td class="m">409</td><td>권장 대수가 없는 견적에 물리 검증 요청</td></tr>
+        <tr><td class="m"><b>SIM503</b></td><td class="m"><b>503</b></td><td><b>RabbitMQ 연결 실패</b> → 트랜잭션 롤백, 견적도 run 도 안 남는다</td></tr>
+      </tbody>
+    </table></div>
+    <p class="soft">프론트는 봉투의 <code>message</code> 를 그대로 화면에 띄운다. 즉 사용자가 보는 문구는 백엔드의 한국어 메시지다 — 예: "시뮬레이션 요청 큐에 연결할 수 없습니다."</p>
+  </div>
+</section>
+
+<section id="s3">
+  <div class="sec-head"><span class="sec-no">SEC 03 · SSE</span><h2>백엔드 → 브라우저 단방향 푸시</h2></div>
+  <div class="sec-body">
+    <p>폴링이 없다. 진행 상황은 전부 SSE 로 밀어 준다. 이벤트 발행은 <code>@TransactionalEventListener(AFTER_COMMIT)</code> 에 걸려 있다 — <b>DB 커밋 후에만</b> 쏘므로, 브라우저가 알림을 받고 다시 조회했을 때 데이터가 없는 일이 생기지 않는다.</p>
+
+    <h3>견적 스트림 — <code>GET /api/estimates/{id}</code></h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>event</th><th>언제</th><th>data</th></tr></thead>
+      <tbody>
+        <tr><td class="m">snapshot</td><td>구독 즉시 1회</td><td class="mw">견적 전체 + <code>runs[]</code></td></tr>
+        <tr><td class="m">run</td><td>run 하나 끝날 때마다 <b>N회</b></td><td class="mw"><code>{run_id, amr_count, status, throughput, utilization, outbound, total_cost, error}</code></td></tr>
+        <tr><td class="m">estimate.done</td><td>전부 끝난 뒤 1회</td><td class="mw"><code>{estimate_id, status, recommended_count, knee_count, reason_code}</code></td></tr>
+      </tbody>
+    </table></div>
+
+<pre><code>event: snapshot
+data: {"estimate_id":77,"status":"RUNNING","amr_model":"iw.hub",
+       "target_throughput":95.0,"target_utilization":80.0,"budget_limit":300000000,
+       "recommended_count":null,"knee_count":null,"reason_code":null,
+       "created_at":"2026-09-11T01:04:22","completed_at":null,"elapsed_seconds":3,
+       "runs":[{"run_id":"est_77_n3","amr_count":3,"status":"QUEUED",
+                "throughput":null,"utilization":null,"outbound":null,
+                "total_cost":46500000,"error":null}, ...]}
+
+event: run
+data: {"run_id":"est_77_n3","amr_count":3,"status":"DONE",
+       "throughput":104.0,"utilization":0.63,"outbound":104,
+       "total_cost":46500000,"error":null}
+
+event: estimate.done
+data: {"estimate_id":77,"status":"DONE","recommended_count":9,
+       "knee_count":7,"reason_code":null}
+
+: ping                      ← 15초마다 주석 하트비트</code></pre>
+
+    <h3>검증 스트림 — <code>GET /api/estimates/{id}/verify</code></h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>event</th><th>언제</th><th>data</th></tr></thead>
+      <tbody>
+        <tr><td class="m">snapshot</td><td>영상이 아직 없을 때 구독</td><td class="mw"><code>{estimate_id, status:"PENDING", video_url:null, error:null}</code></td></tr>
+        <tr><td class="m">verify.done</td><td>결과 도착 또는 이미 완료된 견적 구독</td><td class="mw"><code>{estimate_id, status:"done", video_url:"…", error:null}</code></td></tr>
+      </tbody>
+    </table></div>
+    <p class="soft"><code>"PENDING"</code> 은 백엔드가 로컬로 만드는 값이고 <code>"done"</code> 은 워커가 보낸 값을 그대로 전달한 것이라, 대소문자가 섞여 있다. 프론트는 <code>status === 'done' &amp;&amp; videoUrl</code> 일 때만 04 섹션을 렌더한다.</p>
+
+    <h3>연결 관리</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>항목</th><th>값</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td>에미터 타임아웃</td><td class="m">35 분</td><td>run 타임아웃 30분보다 길게</td></tr>
+        <tr><td>하트비트</td><td class="m">15 초</td><td>주석(<code>: ping</code>) — 프록시가 유휴 연결을 끊지 않게</td></tr>
+        <tr><td>버퍼링 방지</td><td class="m">X-Accel-Buffering: no</td><td>nginx 가 SSE 를 모아 두지 않게</td></tr>
+        <tr><td>구독 등록 조건</td><td class="m">status == RUNNING</td><td>이미 끝난 견적은 snapshot + done 만 보내고 즉시 닫는다</td></tr>
+        <tr><td>프론트 재시도</td><td class="m">3초 후 1회</td><td>그 이상은 시도하지 않는다</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section id="s4">
+  <div class="sec-head"><span class="sec-no">SEC 04 · AMQP</span><h2>RabbitMQ 큐 4개 — 웹과 FMS 의 유일한 접점</h2></div>
+  <div class="sec-body">
+    <p>큐 선언은 <b>백엔드만</b> 한다(4개 모두 <code>durable</code>). 워커와 host-orch 는 선언하지 않고 소비만 한다 — 브로커가 먼저 떠 있고 백엔드가 큐를 만들어 둔다는 전제다.</p>
+
+    <h3>발행 방식</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>항목</th><th>값</th></tr></thead>
+      <tbody>
+        <tr><td>exchange</td><td class="m">""</td></tr>
+        <tr><td>routing key</td><td class="m">큐 이름 그대로</td></tr>
+        <tr><td>라우팅</td><td>기본 익스체인지의 direct 규칙 → 동명 큐로 직배달. <b>바인딩 선언이 없다</b></td></tr>
+        <tr><td>직렬화</td><td class="m">Jackson2JsonMessageConverter (snake_case, null 포함)</td></tr>
+        <tr><td>속성</td><td class="m">content_type=application/json · delivery_mode=2 (persistent)</td></tr>
+        <tr><td>소비</td><td class="m">prefetch_count=1 · 결과 발행 후 basic_ack</td></tr>
+        <tr><td>DLQ / nack</td><td class="c-rust">없음 — 실패도 <code>status:"failed"</code> 메시지로 정상 발행하고 ack</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>큐 ① <code>sim.request</code> — 백엔드 → 견적 워커</h3>
+    <p>대수 하나짜리 DES 실행 요청. 견적 1건에 <b>대수 개수만큼</b> 발행된다(기본 범위 3~15 → 13건). 워커 컨테이너 2개가 <code>prefetch 1</code> 로 나눠 먹는다.</p>
+<pre class="amqp"><code>{
+  "run_id": "est_77_n3",                    ← est_{견적id}_n{대수}. 전 시스템의 유일 식별자
+  "seed": 101,                              ← 고정. 재현성
+  "horizon_s": 21600,                       ← 6h
+  "shifts": "in,in,out,out,out,out",        ← 지평선 6등분, 앞 2칸 입고 뒤 4칸 출고
+  "inbound_gap_s": 60.0,                    ← 입고창 28800s ÷ 480건
+  "outbound_gap_s": 36.0,                   ← 출고창 18000s ÷ 500건
+  "warehouse": {
+    "worker_count": 4,
+    "inbound_start": "01:00",  "inbound_end": "09:00",
+    "outbound_start": "13:00", "outbound_end": "18:00",
+    "inbound_avg": 480, "outbound_avg": 500
+  },
+  "amr": {
+    "count": 3,                             ← 13번 발행되며 3→15 로 바뀌는 유일한 값
+    "speed_empty": null, "speed_loaded": null, "consumption": null,
+    "battery": null, "charge_time": null, "charge_threshold": null,
+    "capacity": null
+  },
+  "inbound": [],                            ← 항상 빈 배열
+  "outbound": []                            ← 비어 있으면 워커가 주문을 직접 생성
+}</code></pre>
+
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>키</th><th>워커가 읽나</th><th>필수</th><th>없으면</th></tr></thead>
+      <tbody>
+        <tr><td class="m">run_id</td><td><span class="chip c-green">읽음</span></td><td>✔</td><td><code>ValueError</code> → failed</td></tr>
+        <tr><td class="m">amr.count</td><td><span class="chip c-green">읽음</span></td><td>✔</td><td>1~28 벗어나면 failed</td></tr>
+        <tr><td class="m">horizon_s</td><td><span class="chip c-green">읽음</span></td><td>✔</td><td>failed</td></tr>
+        <tr><td class="m">shifts · seed</td><td><span class="chip c-green">읽음</span></td><td>—</td><td>seed 기본 42</td></tr>
+        <tr><td class="m">inbound_gap_s · outbound_gap_s</td><td><span class="chip c-green">읽음</span></td><td>—</td><td>시뮬 기본값 50</td></tr>
+        <tr><td class="m">outbound[]</td><td><span class="chip c-green">읽음</span></td><td>—</td><td>워커가 주문 자체 생성</td></tr>
+        <tr><td class="m">amr.capacity · tote_units</td><td><span class="chip c-green">읽음</span></td><td>—</td><td>1 / 8</td></tr>
+        <tr><td class="m">warehouse.outbound_avg·start·end</td><td><span class="chip c-green">읽음</span></td><td>—</td><td>500 / 07:00 / 없음</td></tr>
+        <tr><td class="m">amr.speed_* · inbound[]</td><td><span class="chip c-slate">무시</span></td><td>—</td><td>로그만 남김</td></tr>
+        <tr><td class="m">warehouse.worker_count · inbound_avg · inbound_start/end</td><td><span class="chip c-slate">안 봄</span></td><td>—</td><td>—</td></tr>
+        <tr><td class="m">amr.battery · consumption · charge_*</td><td><span class="chip c-slate">안 봄</span></td><td>—</td><td>배터리 모델 OFF</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>큐 ② <code>sim.result</code> — 견적 워커 → 백엔드</h3>
+<pre class="amqp"><code>성공
+{
+  "run_id": "est_77_n3",
+  "status": "done",
+  "error": null,
+  "kpi": {
+    "orders_total": 116,            "orders_completed": 104,
+    "inbound_total": 33,            "inbound_completed": 30,
+    "makespan_s": 3600,
+    "lead_time_mean_s": 190.0,      "lead_time_p90_s": 290.0,
+    "queue_time_mean_s": 9.1,
+    "throughput_orders_per_h": 104.0,
+    "throughput_tasks_per_h": 202.0,
+    "amr_utilization": 0.63,
+    "conflict_wait_ratio": 0.1,
+    "distance_total_m": 41200,
+    "charge_downtime_s": 0
+  }
+}
+
+실패
+{"run_id": "est_77_n3", "status": "failed",
+ "error": "amr.count 는 1~28 정수: 29",       ← 2000자 컷
+ "kpi": null}</code></pre>
+    <p class="soft"><code>run_id</code> 는 요청 값을 <b>그대로 에코</b>한다. 시뮬에 넘길 때만 파일명 안전화를 거치지만, 결과에는 원본이 들어간다. 백엔드는 <code>simscenarios.run_id</code> 의 UNIQUE 제약으로 중복 결과를 막는다.</p>
+
+    <h3>큐 ③ <code>sim.verify.request</code> — 백엔드 → host-orch</h3>
+<pre class="amqp"><code>{
+  "run_id": "verify_77",           ← 견적당 고정 = 멱등 키
+  "n_robots": 5,                   ← 권장 대수
+  "window_s": 600,                 ← 검증 창 10분
+  "source_run_id": "est_77_n5",    ← 비교 대상 견적 run (추적용)
+  "estimate_id": 77,
+  "seed": 101
+}</code></pre>
+
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>필드</th><th>필수</th><th>검증</th><th>기본</th></tr></thead>
+      <tbody>
+        <tr><td class="m">run_id</td><td>✔</td><td class="m">^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$</td><td>—</td></tr>
+        <tr><td class="m">n_robots</td><td>✔</td><td class="m">1..64</td><td>—</td></tr>
+        <tr><td class="m">window_s</td><td>—</td><td class="m">&gt; 0</td><td class="m">600.0</td></tr>
+        <tr><td class="m">timeout_s</td><td>—</td><td class="m">&gt; 0</td><td class="m">window_s + 300</td></tr>
+        <tr><td class="m">ros_domain_id</td><td>—</td><td class="m">0..232</td><td class="m">0</td></tr>
+        <tr><td class="m">models[]</td><td>—</td><td>비었거나 정확히 <code>n_robots</code> 개</td><td class="m">[]</td></tr>
+        <tr><td class="m">scenario</td><td>—</td><td>dict, 정규형 ≤ 512 KB → sha256</td><td class="m">null</td></tr>
+        <tr><td class="m">source_run_id · estimate_id</td><td>—</td><td>검증 없음 — 결과에 그대로 실린다</td><td class="m">null</td></tr>
+        <tr><td class="m">seed · priority</td><td>—</td><td class="c-rust">파싱만 하고 쓰지 않는다</td><td class="m">null · 0</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="plain bad"><span class="pl-tag">현재 백엔드는 6키만 보낸다</span>계약이 정의한 <code>scenario</code>(주문 목록 · 적재 조건 · 창 오프셋)가 통째로 빠진다. 그러면 fms-core 가 <code>orders=[]</code> 를 "명시 주문이 비어 있음"으로 해석해 <b>주문 0건짜리 검증 런</b>이 된다. 로봇은 뜨지만 시킬 일이 없다. → SEC 09-③</div>
+
+    <h3>큐 ④ <code>sim.verify.result</code> — host-orch → 백엔드</h3>
+<pre class="amqp"><code>{
+  "run_id": "verify_77",
+  "status": "done",                        ← "done" | "failed"
+  "error": null,
+  "verify": {
+    "runner": "sim-runner-gpu01",
+    "n_robots": 5, "robots_online": 5,     ← DBIRTH 로 관측한 최대 동시 로봇
+    "window_s": 600, "elapsed_s": 600.4,
+    "started_at": "2026-09-11T01:20:11.482Z",
+    "ended_at":   "2026-09-11T01:30:11.902Z",
+    "rtf_mean": 1.02,                      ← Real-Time Factor 표본 평균
+    "ram_mb_max": 5120, "vram_mb_max": 9800,
+    "isaac_instances": 1,
+    "scenario_sha256": null,
+    "scenario_ack": false,                 ← 러너가 같은 sha 를 받았다고 보고했나
+    "reason": "window elapsed",
+    "fms": {
+      "node": "fms-core",
+      "ticks": 118,                        ★ 그 창에서 실제로 돈 커널 틱 수
+      "status": "done", "error": null,
+      "planner": "kernel",
+      "counters": {"open_tasks":3,"done_tasks":11,
+                   "orders_done":9,"orders_total":12},
+      "warnings": null                     ★ null 아니면 견적과 다른 조건으로 돌았다
+    }
+  },
+  "kpi": { … sim.result 와 같은 14키 … },
+  "artifacts": null,                       ← 하드코딩. 영상 미구현
+  "source_run_id": "est_77_n5",
+  "estimate_id": 77
+}</code></pre>
+
+    <h4>verify.reason — 창이 닫힌 이유</h4>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>reason</th><th>최종</th><th>뜻</th></tr></thead>
+      <tbody>
+        <tr><td class="m">window elapsed</td><td><span class="chip c-green">done</span></td><td>정상 — 창을 다 채웠다</td></tr>
+        <tr><td class="m">start timeout</td><td><span class="chip c-rust">failed</span></td><td>180초 안에 러너가 우리 run 을 안 잡음</td></tr>
+        <tr><td class="m">runner NDEATH</td><td><span class="chip c-rust">failed</span></td><td>GPU 쪽 Edge 가 죽음</td></tr>
+        <tr><td class="m">runner ended the run</td><td><span class="chip c-rust">failed</span></td><td>러너가 스스로 IDLE/ERROR 로 감</td></tr>
+        <tr><td class="m">run ended before RUNNING</td><td><span class="chip c-rust">failed</span></td><td>RUNNING 도달 전 종료</td></tr>
+        <tr><td class="m">heartbeat lost</td><td><span class="chip c-rust">failed</span></td><td>15초 무소식</td></tr>
+        <tr><td class="m">fms-core ended the run</td><td><span class="chip c-rust">failed</span></td><td>fms-core 쪽 실패</td></tr>
+        <tr><td class="m">fms-core rejected Start</td><td><span class="chip c-rust">failed</span></td><td>Start JSON 이 잘못됨</td></tr>
+        <tr><td class="m">stop timeout / fms stop timeout</td><td><span class="chip c-rust">failed</span></td><td>정리가 60초 안에 안 끝남</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="plain warn"><span class="pl-tag">가장 중요한 숫자는 verify.fms.ticks 다</span>벽시계 600초 창이 DES 로는 <b>118초어치</b>였다는 뜻이다. 실 로봇은 한 칸에 2.2~2.8초가 걸려 DES 의 1초/칸보다 느리다. 즉 <b>견적 처리량은 그만큼 낙관적</b>이고, 이 비율이 두 트랙을 잇는 환산 계수가 된다.</div>
+  </div>
+</section>
+
+<section id="s5">
+  <div class="sec-head"><span class="sec-no">SEC 05 · Sparkplug B</span><h2>런 제어와 텔레메트리 — 누가 살아 있고 지금 무슨 상태인가</h2></div>
+  <div class="sec-body">
+    <p class="lead">Sparkplug B 는 MQTT 위에 얹는 산업용 상태 관리 규약이다. 페이로드는 <b>protobuf</b> 이고, 핵심은 세 가지다 — <b>생사 선언</b>(NBIRTH/NDEATH), <b>변화분만 보내기</b>(NDATA), <b>명령</b>(NCMD). 값마다 이름 대신 짧은 <b>별칭(alias)</b> 번호를 써서 대역폭을 아낀다.</p>
+
+    <h3>토픽 규칙</h3>
+<pre class="mqtt"><code>spBv1.0/{group_id}/{message_type}/{edge_node_id}[/{device_id}]
+
+group_id      = santa                            (고정)
+edge_node_id  = sim-runner-gpu01 | fms-core
+device_id     = amr01 … amrNN                    (로봇, sim-runner 아래에만)
+message_type  = NBIRTH NDATA NDEATH NCMD         (노드)
+                DBIRTH DDATA DDEATH DCMD         (디바이스)
+                STATE                            (Primary Host 전용, 예외 형식)</code></pre>
+
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>토픽</th><th>방향</th><th>QoS</th><th>retained</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td class="m">spBv1.0/santa/NCMD/sim-runner-gpu01</td><td>host → GPU</td><td class="m">0</td><td class="m">no</td><td>Start / Stop / Rebirth</td></tr>
+        <tr><td class="m">spBv1.0/santa/NCMD/fms-core</td><td>host → fms</td><td class="m">0</td><td class="m">no</td><td>동일</td></tr>
+        <tr><td class="m">spBv1.0/santa/NBIRTH/{node}</td><td>node → host</td><td class="m">0</td><td class="m">no</td><td>접속 선언 + 전 메트릭 초깃값</td></tr>
+        <tr><td class="m">spBv1.0/santa/NDATA/{node}</td><td>node → host</td><td class="m">0</td><td class="m">no</td><td><b>변한 메트릭만</b></td></tr>
+        <tr><td class="m">spBv1.0/santa/NDEATH/{node}</td><td>브로커 → host</td><td class="m"><b>1</b></td><td class="m">no</td><td><b>LWT</b> — 연결이 끊기면 브로커가 대신 발행</td></tr>
+        <tr><td class="m">spBv1.0/santa/DBIRTH/{node}/{serial}</td><td>node → host</td><td class="m">0</td><td class="m">no</td><td>로봇 하나가 준비됨</td></tr>
+        <tr><td class="m">spBv1.0/santa/DDATA/{node}/{serial}</td><td>node → host</td><td class="m">0</td><td class="m">no</td><td>로봇 위치·배터리 델타</td></tr>
+        <tr><td class="m">spBv1.0/STATE/host-orch</td><td>host → 전원</td><td class="m"><b>1</b></td><td class="m"><b>yes</b></td><td><code>{"online":bool,"timestamp":ms}</code></td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>메트릭 사전 — sim-runner-gpu01 (노드)</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>alias</th><th>이름</th><th>타입</th><th>초깃값</th><th>쓰임</th></tr></thead>
+      <tbody>
+        <tr><td class="m">0</td><td class="m">bdSeq</td><td class="m">Int64</td><td class="m">0</td><td>세션 번호. NDEATH 진위 판정</td></tr>
+        <tr><td class="m">1</td><td class="m">Node Control/Rebirth</td><td class="m">Boolean</td><td class="m">false</td><td>host 가 전 메트릭 재전송 요구</td></tr>
+        <tr><td class="m">2</td><td class="m">Runner/State</td><td class="m">String</td><td class="m">IDLE</td><td><b>IDLE·STARTING·RUNNING·STOPPING·ERROR</b></td></tr>
+        <tr><td class="m">3</td><td class="m">Runner/RunId</td><td class="m">String</td><td class="m">""</td><td>지금 도는 런 이름</td></tr>
+        <tr><td class="m">4</td><td class="m">Runner/Heartbeat</td><td class="m">Int64 ms</td><td class="m">0</td><td>5초마다 갱신</td></tr>
+        <tr><td class="m">5</td><td class="m">Runner/RTF</td><td class="m">Double</td><td class="m">0.0</td><td>Real-Time Factor. 0.01 이상 변할 때만 보고</td></tr>
+        <tr><td class="m">6</td><td class="m">Runner/IsaacInstances</td><td class="m">Int32</td><td class="m">0</td><td>인스턴스 수</td></tr>
+        <tr><td class="m">7 · 8</td><td class="m">Runner/RamMB · VramMB</td><td class="m">Int32</td><td class="m">0</td><td>VRAM 은 nvidia-smi 5초 캐시</td></tr>
+        <tr><td class="m">9</td><td class="m">Runner/LastError</td><td class="m">String</td><td class="m">""</td><td>실패 사유</td></tr>
+        <tr><td class="m">10</td><td class="m"><b>Run Control/Start</b></td><td class="m"><b>Text</b></td><td class="m">""</td><td><b>JSON 문자열</b> — 아래</td></tr>
+        <tr><td class="m">11</td><td class="m">Run Control/Stop</td><td class="m">Boolean</td><td class="m">false</td><td>true 면 정지</td></tr>
+        <tr><td class="m">12</td><td class="m">Runner/ScenarioSha</td><td class="m">String</td><td class="m">""</td><td>받은 시나리오의 sha256</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>메트릭 사전 — fms-core (노드)</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>alias</th><th>이름</th><th>타입</th><th>쓰임</th></tr></thead>
+      <tbody>
+        <tr><td class="m">0 · 1</td><td class="m">bdSeq · Node Control/Rebirth</td><td class="m">Int64 · Boolean</td><td>동일</td></tr>
+        <tr><td class="m">2</td><td class="m">Fms/State</td><td class="m">String</td><td><b>IDLE·STARTING·RUNNING·ERROR</b> — <b>STOPPING 이 없다</b></td></tr>
+        <tr><td class="m">3 · 4 · 5</td><td class="m">Fms/RunId · LastError · ScenarioSha</td><td class="m">String</td><td>동일</td></tr>
+        <tr><td class="m">6</td><td class="m">Fms/Tick</td><td class="m">Int64</td><td>현재 커널 틱. 결과의 <code>ticks</code> 폴백</td></tr>
+        <tr><td class="m">7</td><td class="m">Fms/RobotsOnline</td><td class="m">Int32</td><td>연결된 로봇 수</td></tr>
+        <tr><td class="m">8·9·10</td><td class="m">Fms/OpenTasks · DoneTasks · OrdersDone</td><td class="m">Int32</td><td>진행 카운터</td></tr>
+        <tr><td class="m">11</td><td class="m">Fms/Heartbeat</td><td class="m">Int64 ms</td><td>5초</td></tr>
+        <tr><td class="m">12</td><td class="m">Fms/Planner</td><td class="m">String</td><td class="m">"kernel"</td></tr>
+        <tr><td class="m">13 · 14</td><td class="m">Run Control/Start · Stop</td><td class="m">Text · Boolean</td><td><b>sim-runner 와 같은 JSON 을 받는다</b></td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>메트릭 사전 — 로봇 (디바이스, alias = 100 + index×16 + k)</h3>
+    <p class="soft"><code>Robot/Model</code>(String) · <code>Robot/Connection</code>(String) · <code>Robot/LastNodeId</code>(String) · <code>Robot/PoseX</code> · <code>PoseY</code> · <code>Yaw</code> · <code>Battery</code> · <code>AmclErr</code>(Double). 위치는 VDA <code>state</code> 를 거울처럼 옮긴 것이고, 델타 임계는 0.05 m / 0.05 rad / 1 % 다.</p>
+
+    <h3><code>Run Control/Start</code> 페이로드 — 양쪽에 같은 것이 간다</h3>
+<pre class="mqtt"><code>{
+  "run_id": "verify_77",
+  "scenario_pkg": "wallA_v6",
+  "n_robots": 5,
+  "models": [{"serial":"amr01","manufacturer":"idealworks","model":"iw_hub"}, …],
+  "ros_domain_id": 0,
+  "timeout_s": 900.0,
+  "scenario": { … },                ← 있을 때만
+  "scenario_sha256": "…64hex…"      ← 정규형(키정렬·공백없음) sha256
+}</code></pre>
+    <p><b>같은 JSON 이 sim-runner 와 fms-core 양쪽으로 간다.</b> sim-runner 는 <code>n_robots</code>·<code>models</code>·<code>scenario.spawn</code> 을 보고 프로세스를 띄우고, fms-core 는 <code>scenario.orders</code> 를 보고 시뮬을 구성한다. 정규형 함수는 세 곳(host-orch · sim-runner · fms-core)에 동일하게 복제돼 있어 sha 가 일치해야 한다.</p>
+
+    <h3>핸드셰이크 — "둘 다 RUNNING" 이 될 때까지</h3>
+<pre class="seq"><code>host-orch                    sim-runner-gpu01              fms-core
+    │                               │                          │
+    ├─ STATE online (retained) ────▶│◀─────────────────────────┤   접속하면 births() 재발행
+    │                               │                          │
+    ├─ NCMD Start ─────────────────▶│                          │   15초마다 재전송
+    │                               ├ Isaac 기동                │
+    │                               ├ 에이전트 ×N 기동          │
+    │                               │  ← connection ONLINE ×N   │
+    │                               │  ← state.agvPosition ×N   │
+    │                               ├ DBIRTH ×N                 │
+    │◀── NDATA Runner/State=RUNNING ┤                          │
+    │                               │                          │
+    ├─ NCMD Start ──────────────────┼─────────────────────────▶│   러너 RUNNING 확인 후
+    │                               │                          ├ 전원 ONLINE+포즈 대기
+    │                               │                          ├ DES 플래너 생성
+    │                               │           order id0,id1 ─┼─▶ 로봇 정렬
+    │                               │                          ├ 전원 n1 도착
+    │◀───────────── NDATA Fms/State=RUNNING ───────────────────┤
+    │                                                          │
+    ★ 둘 다 RUNNING 인 tick = started_at ── 검증 창 600초 시작 ──
+    │                                                          │
+    │                        (틱 루프 — SEC 06)                 │
+    │                                                          │
+    ├─ NCMD Stop ──────────────────▶│                          │
+    ├─ NCMD Stop ───────────────────┼─────────────────────────▶│
+    │                               ├ DDEATH ×N                ├ cancelOrder ×N
+    │                               ├ 종료 사다리               ├ KPI 계산
+    │                               │                          ├ biz/v1/event {kpi_summary}
+    │◀── Runner/State=IDLE ─────────┤◀── Fms/State=IDLE ───────┤
+    │
+    └─ AMQP sim.verify.result 발행 → basic_ack</code></pre>
+
+    <h3>생사 판정의 세부</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>장치</th><th>동작</th><th>왜</th></tr></thead>
+      <tbody>
+        <tr><td><b>LWT</b></td><td>Edge 는 접속 직전에 <code>NDEATH(bdSeq)</code> 를 유언으로 걸어 둔다. 소켓이 끊기면 브로커가 대신 발행한다</td><td>프로세스가 죽으면 스스로 알릴 수 없으므로</td></tr>
+        <tr><td><b>bdSeq</b></td><td>접속할 때마다 1씩 올린다. host 는 <b>마지막 NBIRTH 와 번호가 같을 때만</b> 진짜 죽음으로 인정</td><td>늦게 도착한 옛 유언에 속지 않으려고</td></tr>
+        <tr><td><b>seq 갭</b></td><td>메시지 seq 가 <code>(직전+1) % 256</code> 이 아니면 <code>Rebirth</code> NCMD 를 보낸다 (노드당 5초에 1회 제한)</td><td>중간에 놓친 델타가 있으면 전체를 다시 받아야 한다</td></tr>
+        <tr><td><b>STATE retained</b></td><td>host 의 online/offline 을 retained 로 남긴다. Edge 는 나중에 붙어도 즉시 읽는다. <code>timestamp</code> 가 오르면 births 재발행</td><td>host 가 재시작했음을 Edge 가 알아채야</td></tr>
+        <tr><td><b>Edge 쪽 감시</b></td><td>host STATE offline 이 15초 지속되면 Edge 가 <b>스스로</b> 런을 실패 처리</td><td>오케스트레이터 없이 계속 도는 좀비 런 방지</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>타임아웃</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>이름</th><th>값</th><th>무엇을 기다리나</th></tr></thead>
+      <tbody>
+        <tr><td class="m">start-timeout-s</td><td class="m">180</td><td>러너가 우리 <code>run_id</code> 를 잡을 때까지</td></tr>
+        <tr><td class="m">start_resend_s</td><td class="m">15</td><td>Start NCMD 재전송 주기 (CLI 없음)</td></tr>
+        <tr><td class="m">ready-timeout-s</td><td class="m">420 <span class="soft">(fake 120)</span></td><td>Isaac + 전 로봇 포즈</td></tr>
+        <tr><td class="m">stop-timeout-s</td><td class="m">60</td><td>정리. 초과 시 Stop 1회 재전송, 또 초과면 실패</td></tr>
+        <tr><td class="m">heartbeat × misses</td><td class="m">5 × 3 = 15</td><td>무소식 판정</td></tr>
+        <tr><td class="m">REBIRTH_MIN_INTERVAL_S</td><td class="m">5</td><td>Rebirth 폭주 방지</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section id="s6">
+  <div class="sec-head"><span class="sec-no">SEC 06 · VDA 5050</span><h2>로봇 제어 — order 가 내려가고 state 가 올라온다</h2></div>
+  <div class="sec-body">
+    <p class="lead">VDA 5050 은 독일 자동차공업협회의 AMR 통신 표준이다. 벤더가 달라도 같은 형식으로 명령할 수 있게 만든 것으로, 이 프로젝트는 2.0.0 을 쓴다. 페이로드는 <b>JSON</b> 이다.</p>
+
+    <h3>토픽</h3>
+<pre class="mqtt"><code>uagv/v2/{manufacturer}/{serialNumber}/{채널}
+
+manufacturer = idealworks
+serialNumber = amr01 … amrNN           ← MQTT 사용자명과 같다 (ACL 이 이걸로 가른다)
+
+채널:
+  order           FMS → 로봇   이동 명령            QoS 0
+  instantActions  FMS → 로봇   즉시 동작(cancelOrder) QoS 0
+  state           로봇 → 전원   현재 상태            QoS 0
+  connection      로봇 → 전원   ONLINE/OFFLINE/BROKEN QoS 1 retained
+  factsheet       로봇 → 전원   로봇 사양            QoS 1 retained</code></pre>
+    <p class="soft"><code>connection</code> 과 <code>factsheet</code> 만 retained 다. 늦게 접속한 관측자도 즉시 "누가 살아 있고 어떤 로봇인지"를 알 수 있어야 하기 때문이다. 나머지 토픽의 retained 발행은 ACL 이 거부한다.</p>
+
+    <h3>order 전문</h3>
+<pre class="mqtt"><code>토픽: uagv/v2/idealworks/amr01/order
+
+{
+  "headerId": 12,
+  "timestamp": "2026-09-11T01:24:03.117Z",
+  "version": "2.0.0",
+  "manufacturer": "idealworks",
+  "serialNumber": "amr01",
+  "orderId": "verify_77-amr01",          ← f"{run_id}-{serial}", 런 내내 고정
+  "orderUpdateId": 7,                    ← 틱마다 1씩 증가
+  "nodes": [
+    {"nodeId": "n6", "sequenceId": 12, "released": true,
+     "nodePosition": {"x": 41.5, "y": 38.5, "theta": 1.5708, "mapId": "",
+                      "allowedDeviationXY": 0.1, "allowedDeviationTheta": 0.087},
+     "actions": []},
+    {"nodeId": "n7", "sequenceId": 14, "released": true,
+     "nodePosition": { … }, "actions": []}
+  ],
+  "edges": [
+    {"edgeId": "e6", "sequenceId": 13, "released": true,
+     "startNodeId": "n6", "endNodeId": "n7",
+     "orientationType": "TANGENTIAL", "length": 1.0, "actions": []
+     /* 후진이면 여기에 "orientation": 3.14159 */}
+  ]
+}</code></pre>
+
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>규칙</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>시퀀스 번호</td><td>노드는 짝수 <code>2k</code>, 엣지는 홀수 <code>2k+1</code></td></tr>
+        <tr><td>스티칭</td><td>업데이트는 <b>마지막 base 노드에서 시작</b>해야 한다. 새 order 의 첫 노드는 현재 위치에서 0.5 m 안이어야 한다</td></tr>
+        <tr><td>중복</td><td>같은 <code>orderId</code> + 같은 <code>orderUpdateId</code> → 오류 없이 무시하고 <code>state</code> 만 재발행</td></tr>
+        <tr><td>역행</td><td>낮은 <code>orderUpdateId</code> → <code>orderUpdateError</code></td></tr>
+        <tr><td>허용 오차</td><td><code>allowedDeviationXY / Theta</code> 가 정지 허용치 상한. 에이전트는 자체 기본값 0.05 m / 0.03 rad 와 비교해 <b>더 작은 쪽</b>을 쓴다</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>state 전문 (요약) — 틱 ack 의 본체</h3>
+<pre class="mqtt"><code>토픽: uagv/v2/idealworks/amr01/state    · 2 Hz + 변화 즉시
+
+{
+  "headerId": 431, "timestamp": "…Z", "version": "2.0.0",
+  "manufacturer": "idealworks", "serialNumber": "amr01",
+  "orderId": "verify_77-amr01",
+  "orderUpdateId": 7,
+  "lastNodeId": "n7",              ★ FMS 는 이 값 하나로 틱 완료를 판정한다
+  "lastNodeSequenceId": 14,
+  "agvPosition": {"x": 42.5, "y": 38.5, "theta": 1.5708,
+                  "positionInitialized": true, "mapId": ""},
+  "driving": false,
+  "nodeStates": [], "edgeStates": [], "actionStates": [],
+  "batteryState": {…}, "errors": [], "safetyState": {…}
+}</code></pre>
+
+    <h3>틱 배리어 — 이 시스템의 심장</h3>
+    <p>fms-core 는 견적과 <b>완전히 같은 DES 커널</b>을 쓰고, 실 로봇을 그 상태에 맞춘다. 커널이 진실이고 셸이 따라가는 구조다. 그래야 견적 KPI 와 검증 KPI 의 차이가 전부 "물리 때문"임이 보장된다.</p>
+
+<pre class="seq"><code>if (서비스 처리됨) and (fleet.pending() 비었음) and (now - tick_started >= tick_s):
+    cmds = planner.step(t)                       # DES 커널 한 스텝
+    for cmd in cmds:
+        link.next_order(x, y, yaw, reverse)      # order 발행, pending = k+1
+    t += 1
+    drain_events() → biz/v1/event</code></pre>
+
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>상황</th><th>동작</th></tr></thead>
+      <tbody>
+        <tr><td>order 발행</td><td><code>pending = k+1</code>, <code>sent_at = now</code>, <code>states_since_send = 0</code></td></tr>
+        <tr><td>state 의 <code>lastNodeId == "n{pending}"</code></td><td><code>settle()</code> → pending 해제</td></tr>
+        <tr><td>state 2건 지나도 미반영</td><td><b>같은 orderUpdateId 재발행</b> (유실 대비). <code>sent_at</code> 은 되돌리지 않는다</td></tr>
+        <tr><td>state 10건 지나도 미반영</td><td>런 실패 — 로봇이 명령을 무시하고 있다</td></tr>
+        <tr><td><code>ack_timeout_s</code> 30초 초과</td><td>런 실패 — 재발행해도 이 타이머는 리셋되지 않는다</td></tr>
+        <tr><td>WAIT(제자리) 로봇</td><td>Command 자체가 생략 → pending 이 안 생겨 기다리지 않는다</td></tr>
+      </tbody>
+    </table></div>
+    <p class="soft"><code>--tick-s 1.0</code> 은 <b>틱의 최소 벽시계 길이</b>다(상한이 아니다). 로봇 도착이 늦으면 틱이 그만큼 늘어난다. 그래서 벽시계 600초 창이 DES 118틱밖에 안 되는 것이다.</p>
+
+    <h3>order 가 <code>/cmd_vel</code> 이 되기까지 — ROS 2 안쪽</h3>
+<pre class="seq"><code>EMQX ──▶ bridge_node ──▶ executor_node ──▶ primitive_node ──▶ /cmd_vel ──▶ Isaac
+        (MQTT↔ROS)      (order 분해)      (액션 서버 20Hz)    (Twist)
+   ◀──────────────────── state ◀──── node_reached() ◀──── odom ◀───────────┘
+
+노드는 전부 namespace = serial 로 뜬다:  /amr01/order  /amr01/state  /amr01/cmd_vel …
+액션:  move_primitive (MovePrimitive.action)
+  Goal     {kind: TURN|DRIVE, x, y, theta, reverse, tolerance_xy, tolerance_theta,
+            max_speed, timeout_s}
+  Result   {success, message, final_error_xy, final_error_theta, elapsed_s}
+  Feedback {distance_remaining, heading_error, speed}</code></pre>
+
+    <h4>order 분해 규칙</h4>
+<pre class="seq"><code>tol_xy = min(node.allowedDeviationXY or 0.05, 0.05)
+tol_th = min(node.allowedDeviationTheta or 0.03, 0.03)
+
+if 목표까지 거리 > 0.05 m:                      # 이동이 있는 노드
+    path_dir = atan2(gy-y, gx-x)
+    reverse  = edge.orientation 의 |wrap| > π/2  and  TANGENTIAL
+    face     = reverse ? wrap(path_dir + π) : path_dir
+    if |wrap(face - 현재 yaw)| > 0.12 rad:  goals += TURN(theta=face)
+    goals += DRIVE(x=gx, y=gy, theta=face, reverse=reverse)
+
+if node.theta 가 있고 |wrap(node.theta - 주행후 헤딩)| > tol_th:
+    goals += TURN(theta=node.theta)</code></pre>
+
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>FMS 액션</th><th>VDA 표현</th><th>프리미티브</th><th><code>/cmd_vel</code></th></tr></thead>
+      <tbody>
+        <tr><td>전진 1칸</td><td>1 m 앞 노드, edge 에 <code>orientation</code> 없음</td><td>(헤딩 어긋나면 TURN) → DRIVE</td><td class="m">linear.x &gt; 0 + 크로스트랙 보정</td></tr>
+        <tr><td><b>후진 1칸</b></td><td>edge <code>orientation = π</code>, <code>TANGENTIAL</code></td><td>DRIVE(reverse), 보통 TURN 없음</td><td class="m">linear.x &lt; 0, 헤딩 유지</td></tr>
+        <tr><td>90° 회전</td><td>같은 좌표 노드 + 새 <code>theta</code>, <code>length = 0</code></td><td>TURN 1건</td><td class="m">linear.x = 0, angular.z 램프</td></tr>
+        <tr><td>대기</td><td>새 order 없음</td><td>없음</td><td class="m">Twist() = 정지</td></tr>
+        <tr><td>틱 ack</td><td>—</td><td><code>node_reached()</code></td><td class="m">state.lastNodeId 즉시 발행</td></tr>
+      </tbody>
+    </table></div>
+    <p class="soft">기본 파라미터: <code>v_max 0.8 m/s</code> · <code>w_max 1.2 rad/s</code> · <code>a_max 1.0</code> · <code>alpha_max 2.5</code> · <code>tol_xy 0.05</code> · <code>tol_theta 0.03</code> · <code>turn_threshold 0.12</code> · <code>zero_edge_eps 0.05</code> · <code>first_node_tol 0.5</code>.</p>
+
+    <div class="plain"><span class="pl-tag">후진이 왜 필요한가</span>iw.hub 는 구동축이 앞에 있고 차체가 뒤로 <b>1.03 m</b> 매달려 있다(Isaac 실측). 좁은 통로에서 제자리 회전으로 빠져나오는 것보다 후진이 빠르고 안전하다. DES 커널도 같은 모델(<code>REAR_CELLS = 1</code>)로 계획하므로, 두 트랙의 경로가 일치한다.</div>
+
+    <h3><code>biz/v1/event</code> — FMS 의 업무 이벤트</h3>
+<pre class="mqtt"><code>토픽: biz/v1/event    QoS 1
+
+틱 중:  {"type": "task_assigned" | "task_done" | "order_shipped" | "stall", …}
+
+런 종료 시 1건:
+{
+  "eventId": "verify_77-118", "runId": "verify_77", "at": "…Z",
+  "type": "kpi_summary",
+  "tick": 118, "status": "done", "error": null,
+  "kpi": { … 14키 … },
+  "ticks": 118, "elapsed_s": 600.4,
+  "counters": {"open_tasks":3,"done_tasks":11,"orders_done":9,"orders_total":12},
+  "planner": "kernel",
+  "warnings": null
+}</code></pre>
+    <p>host-orch 가 <code>biz/v1/#</code> 를 QoS 1 로 구독해 이 한 건을 받아, <code>sim.verify.result</code> 의 <code>kpi</code> 와 <code>verify.fms</code> 에 그대로 싣는다. <b>KPI 가 웹으로 돌아오는 유일한 경로다.</b></p>
+  </div>
+</section>
+
+<section id="s7">
+  <div class="sec-head"><span class="sec-no">SEC 07 · ACL</span><h2>계정별 권한 행렬 — 누가 어디에 쓸 수 있나</h2></div>
+  <div class="sec-body">
+    <p>EMQX 는 <b>사용자명 = 주체 이름</b> 규칙으로 ACL 을 건다. 로봇의 MQTT 사용자명은 자기 시리얼(<code>amr01</code>)이고, ACL 이 <code>${username}</code> 치환으로 자기 토픽만 열어 준다. 남의 토픽에 쓰면 <code>deny_action = disconnect</code> 라 <b>브로커가 연결을 끊어버린다</b>.</p>
+
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>계정</th><th>역할</th><th>발행 허용</th><th>구독 허용</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="m">amr01…amrNN</td><td>로봇 에이전트</td>
+          <td class="mw"><code>uagv/v2/+/${username}/connection</code> <span class="chip c-green">retained OK</span><br><code>…/factsheet</code> <span class="chip c-green">retained OK</span><br><code>…/state</code> · <code>…/visualization</code> <span class="chip c-slate">retained 금지</span></td>
+          <td class="mw"><code>uagv/v2/+/${username}/order</code><br><code>…/instantActions</code></td>
+        </tr>
+        <tr>
+          <td class="m">fms-core</td><td>VDA 마스터 + Edge</td>
+          <td class="mw"><code>uagv/v2/+/+/order</code><br><code>uagv/v2/+/+/instantActions</code><br><code>biz/v1/event</code><br><code>spBv1.0/santa/{NBIRTH,NDEATH,NDATA}/fms-core</code></td>
+          <td class="mw"><code>uagv/v2/+/+/{state,connection,factsheet}</code><br><code>spBv1.0/STATE/+</code><br><code>spBv1.0/santa/NCMD/fms-core</code><br><code>biz/v1/order</code></td>
+        </tr>
+        <tr>
+          <td class="m">sim-runner-gpu01</td><td>Edge + 상태 거울</td>
+          <td class="mw"><code>spBv1.0/santa/{NBIRTH,NDEATH,NDATA}/sim-runner-gpu01</code><br><code>spBv1.0/santa/{DBIRTH,DDEATH,DDATA}/sim-runner-gpu01/+</code></td>
+          <td class="mw"><code>spBv1.0/santa/NCMD/sim-runner-gpu01</code><br><code>spBv1.0/santa/DCMD/sim-runner-gpu01/+</code><br><code>spBv1.0/STATE/+</code><br><code>uagv/v2/+/+/{state,connection}</code></td>
+        </tr>
+        <tr>
+          <td class="m">host-orch</td><td>Primary Host</td>
+          <td class="mw"><code>spBv1.0/STATE/host-orch</code> <span class="chip c-green">retained OK</span><br><code>spBv1.0/santa/NCMD/+</code><br><code>spBv1.0/santa/DCMD/+/+</code></td>
+          <td class="mw"><code>spBv1.0/#</code><br><code>biz/v1/#</code><br><code>uagv/v2/+/+/#</code></td>
+        </tr>
+        <tr>
+          <td class="m">sim-wms</td><td>업무 주문 발행 <span class="chip c-slate">예정</span></td>
+          <td class="mw"><code>biz/v1/order</code></td>
+          <td class="mw"><code>biz/v1/event</code></td>
+        </tr>
+      </tbody>
+    </table></div>
+
+    <h3>공통 규칙</h3>
+    <ul>
+      <li><b>retained 는 세 곳에만</b> — <code>connection</code> · <code>factsheet</code> · <code>spBv1.0/STATE/+</code>. 그 외 토픽의 retained 발행은 어느 규칙에도 안 걸려 마지막 <code>{deny, all}</code> 로 떨어진다.</li>
+      <li>ACL 문법에서 retain 조건은 <b>동작에 붙는다</b>: <code>{publish, [{retain, false}]}</code>.</li>
+      <li>규칙은 <b>위에서 아래로 첫 일치</b>, 마지막은 전부 거부.</li>
+      <li><code>deny_action = disconnect</code> 는 <b>구독 위반에도</b> 적용된다.</li>
+      <li>익명 접속 거부. 계정은 <code>bootstrap_users.sh</code> 로 주입하고, <code>users.csv</code> 는 컨테이너가 읽도록 644 여야 한다.</li>
+    </ul>
+
+    <div class="plain bad"><span class="pl-tag">2026-09-10 실측 — 지금 이 행렬이 깨져 있다</span>ACL 행렬 테스트 50건 중 <b>publish 28건이 allow·deny 가리지 않고 전부 실패</b>하고 subscribe 는 전부 통과했다. 브로커는 도달 가능(ping 4.2 ms)하고 인증도 통과한다. 패턴상 <b>배포된 브로커가 모든 publish 를 거부하고 있고 <code>deny_action</code> 도 <code>disconnect</code> 가 아니다</b>. 레포의 <code>acl.conf</code>·<code>emqx.conf</code> 는 정상이므로 배포 과정의 문제로 보인다. → SEC 09-①</div>
+  </div>
+</section>
+
+<section id="s8">
+  <div class="sec-head"><span class="sec-no">SEC 08 · 전 구간 시퀀스</span><h2>견적 한 건이 남기는 메시지 전부</h2></div>
+  <div class="sec-body">
+    <p>기본 조건(대수 3~15, 권장 5대)에서 발생하는 메시지를 시간 순으로 센 것이다. 프로토콜이 바뀌는 지점마다 표시했다.</p>
+
+<pre class="seq"><code>브라우저          backend        RabbitMQ      워커×2      host-orch    EMQX    GPU
+   │                 │               │            │             │         │       │
+   │ ① POST /warehouses              │            │             │         │       │
+   ├────HTTP────────▶│               │            │             │         │       │
+   │◀───201──────────┤ INSERT warehouses                        │         │       │
+   │                 │               │            │             │         │       │
+   │ ② POST /estimates               │            │             │         │       │
+   ├────HTTP────────▶│               │            │             │         │       │
+   │                 ├ INSERT estimates + simscenarios ×13      │         │       │
+   │                 ├──AMQP sim.request ×13──▶│  │             │         │       │
+   │◀───202──────────┤               │            │             │         │       │
+   │                 │               │            │             │         │       │
+   │ ③ EventSource(/api/estimates/77)│            │             │         │       │
+   ├────SSE 구독────▶│               │            │             │         │       │
+   │◀──event:snapshot┤               │            │             │         │       │
+   │                 │               │            │             │         │       │
+   │                 │               │◀─소비 1건─┤ (prefetch 1) │         │       │
+   │                 │               │            ├ 주문 500건 생성       │       │
+   │                 │               │            ├ subprocess DES        │       │
+   │                 │               │◀─sim.result┤             │         │       │
+   │                 │◀──AMQP────────┤            │             │         │       │
+   │                 ├ UPDATE simscenarios        │             │         │       │
+   │◀──event:run─────┤               │            │             │         │       │
+   │        ⋮  (13회 반복, 워커 2개가 나눠 처리)   │             │         │       │
+   │                 ├ 13개 완료 → EstimateEvaluator             │        │       │
+   │◀─event:estimate.done            │            │             │         │       │
+   │                 │               │            │             │         │       │
+═══ 여기까지 1단계 견적. 여기서 끝낼 수도 있다. ═══════════════════════════════
+   │                 │               │            │             │         │       │
+   │ ④ POST /estimates/77/verify     │            │             │         │       │
+   ├────HTTP────────▶│               │            │             │         │       │
+   │                 ├──AMQP sim.verify.request──▶│             │         │       │
+   │◀───202──────────┤               │            ├────소비────▶│         │       │
+   │                 │               │            │             │         │       │
+   │ ⑤ EventSource(/api/estimates/77/verify)      │             │         │       │
+   ├────SSE 구독────▶│               │            │             │         │       │
+   │◀──event:snapshot(PENDING)       │            │             │         │       │
+   │                 │               │            │             │         │       │
+   │                 │               │            │  ├─NCMD Start──▶│────▶│ Isaac 기동
+   │                 │               │            │  │             │      │ 에이전트×5
+   │                 │               │            │  │◀─connection ONLINE×5, state×5
+   │                 │               │            │  │◀─DBIRTH×5 · Runner/State=RUNNING
+   │                 │               │            │  ├─NCMD Start──▶│ fms-core
+   │                 │               │            │  │◀─Fms/State=RUNNING
+   │                 │               │            │  ★ 검증 창 600초 시작
+   │                 │               │            │  │             │      │
+   │                 │               │            │  │   fms-core ─order─▶│────▶ /cmd_vel
+   │                 │               │            │  │   fms-core ◀─state─┤◀──── odom
+   │                 │               │            │  │      × 118 틱 (틱 배리어)
+   │                 │               │            │  │             │      │
+   │                 │               │            │  ├─NCMD Stop──▶│────▶│ 종료 사다리
+   │                 │               │            │  │◀─biz/v1/event {kpi_summary}
+   │                 │               │◀─sim.verify.result─┤       │      │
+   │                 │◀──AMQP────────┤            │             │         │       │
+   │                 ├ UPDATE estimates.verify_video_url         │        │       │
+   │◀─event:verify.done              │            │             │         │       │
+   │  (영상 URL 이 null 이면 04 섹션은 렌더되지 않는다)</code></pre>
+
+    <h3>메시지 수 집계</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>구간</th><th>프로토콜</th><th>건수</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td>브라우저 → 백엔드</td><td class="m">HTTP</td><td class="m">4</td><td>warehouses · estimates · verify · (robots)</td></tr>
+        <tr><td>백엔드 → 브라우저</td><td class="m">SSE</td><td class="m">17+</td><td>snapshot 2 · run 13 · estimate.done 1 · verify.done 1 + 하트비트</td></tr>
+        <tr><td>백엔드 → 워커</td><td class="m">AMQP</td><td class="m">13</td><td><code>sim.request</code></td></tr>
+        <tr><td>워커 → 백엔드</td><td class="m">AMQP</td><td class="m">13</td><td><code>sim.result</code></td></tr>
+        <tr><td>백엔드 ↔ host-orch</td><td class="m">AMQP</td><td class="m">2</td><td><code>sim.verify.request/result</code></td></tr>
+        <tr><td>host-orch → Edge</td><td class="m">Sparkplug</td><td class="m">4+</td><td>Start ×2 · Stop ×2 (+15초 재전송)</td></tr>
+        <tr><td>Edge → host-orch</td><td class="m">Sparkplug</td><td class="m">수백</td><td>NBIRTH·DBIRTH×5·NDATA 하트비트 5초·DDATA 델타</td></tr>
+        <tr><td>fms-core → 로봇</td><td class="m">VDA order</td><td class="m">~590</td><td>118틱 × 최대 5대 (WAIT 제외)</td></tr>
+        <tr><td>로봇 → 전원</td><td class="m">VDA state</td><td class="m">~6,000</td><td>5대 × 2 Hz × 600초</td></tr>
+        <tr><td>fms-core → host-orch</td><td class="m">biz/v1/event</td><td class="m">수십 + 1</td><td>업무 이벤트 + <code>kpi_summary</code> 1건</td></tr>
+      </tbody>
+    </table></div>
+    <p class="soft">즉 <b>AMQP 는 견적 1건당 28건</b>으로 끝나지만 <b>MQTT 는 검증 1회에 수천 건</b>이 오간다. 브로커를 나눈 이유가 이 숫자에 있다.</p>
+  </div>
+</section>
+
+<section id="s9">
+  <div class="sec-head"><span class="sec-no">SEC 09 · 끊긴 곳</span><h2>지금 메시지가 흐르지 않는 여섯 지점</h2></div>
+  <div class="sec-body">
+    <p class="lead">1단계(견적)는 끝까지 흐른다. 2단계(물리 검증)는 아래 때문에 완주하지 못한다. 전부 <b>통신 계약의 구멍</b>이다 — 로직 버그가 아니라, 한쪽이 보내지 않거나 받는 쪽이 없는 문제다.</p>
+
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>#</th><th>구간</th><th>증상</th><th>근거</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="chip c-rust">1</span></td>
+          <td class="m">전원 → EMQX</td>
+          <td><b>모든 publish 가 거부된다.</b> ACL 테스트 pub 28건 전부 실패, sub 전부 통과. 사실이면 SEC 05·06 구간 자체가 돌지 않는다</td>
+          <td class="m">2026-09-10 실측</td>
+        </tr>
+        <tr>
+          <td><span class="chip c-rust">2</span></td>
+          <td class="m">GPU → MinIO</td>
+          <td><b>영상을 올리는 쪽이 없다.</b> <code>artifacts</code> 가 null 하드코딩. 녹화·업로드 코드가 GPU·host-orch 어디에도 없다. 받는 쪽(BE→FE)만 완성돼 04 섹션이 영원히 안 보인다</td>
+          <td class="m">orchestrator.py:391</td>
+        </tr>
+        <tr>
+          <td><span class="chip c-rust">3</span></td>
+          <td class="m">BE → host-orch</td>
+          <td><b><code>scenario</code> 를 안 보낸다.</b> 6키만 실어서 fms-core 가 <code>orders=[]</code> 로 받는다 → 주문 0건짜리 검증 런</td>
+          <td class="m">VerifyRequest.java:15-22</td>
+        </tr>
+        <tr>
+          <td><span class="chip c-amber">4</span></td>
+          <td class="m">host-orch → fms-core</td>
+          <td>최상위 <code>seed(101)</code> 가 Start JSON 에 실리지 않아 fms-core 가 기본값 <b>42</b> 로 돈다 — 견적과 다른 주문 열</td>
+          <td class="m">orchestrator.py:113</td>
+        </tr>
+        <tr>
+          <td><span class="chip c-amber">5</span></td>
+          <td class="m">host-orch → BE</td>
+          <td>요청 파싱 실패 결과에 <code>estimate_id</code> 키가 <b>아예 없다</b>. 백엔드가 null 로 보고 조용히 폐기 → 사용자는 실패를 모른다</td>
+          <td class="m">orchestrator.py:411-412</td>
+        </tr>
+        <tr>
+          <td><span class="chip c-amber">6</span></td>
+          <td class="m">scenario 내부</td>
+          <td><code>window_start_s</code> 실사용 0. 주문 밀도가 앞쏠려(첫 10분 2건, 10~20분 124건) 창을 앞에서 자르면 검증이 무의미한데, 3번 때문에 이 장치가 놀고 있다</td>
+          <td class="m">scenario.py:128-137</td>
+        </tr>
+      </tbody>
+    </table></div>
+
+    <div class="plain warn"><span class="pl-tag">순서</span><b>①이 먼저다</b> — EMQX 가 막혀 있으면 나머지를 고쳐도 확인할 수 없다. 그 다음 <b>②와 ③이 짝</b>이다. 영상 생산자와 시나리오 전달, 이 둘만 채우면 물리 검증이 화면까지 이어진다.</div>
+
+    <h3>계약 문서 버전</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>문서</th><th>버전</th><th>정의하는 것</th><th>상태</th></tr></thead>
+      <tbody>
+        <tr><td class="m">SIM_RUN_CONTRACT.md</td><td class="m">v3.1</td><td>DES CLI 인자·종료코드</td><td><span class="chip c-green">최신</span></td></tr>
+        <tr><td class="m">SIM_VERIFY_CONTRACT.md</td><td class="m">v0.3-draft</td><td><code>sim.verify.*</code> 스키마</td><td><span class="chip c-green">최신</span></td></tr>
+        <tr><td class="m">MQTT_CONTRACT.md</td><td class="m">v1.2</td><td>토픽·ACL·Sparkplug 메트릭</td><td><span class="chip c-amber">헤더가 v1.0 표기 — stale</span></td></tr>
+        <tr><td class="m">guidance_types.py</td><td class="m">θ 스키마 v2</td><td>θ 11필드와 범위</td><td><span class="chip c-green">최신</span></td></tr>
+        <tr><td class="m">contracts/README.md</td><td class="m">—</td><td>계약 색인</td><td><span class="chip c-amber">v2.5 라고 적힘 — stale</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+</main>
+
+<div class="wrap flow-nav">
+  <a class="prev" href="amr_mapf_theory.html"><small>← 이전</small>TECH · 경로계획 이론 — PIBT</a>
+  <a class="next" href="../working/mqtt_endpoints.html"><small>다음 →</small>WORKING · MQ 접속 지점</a>
+</div>
+
+<footer>
+  <div class="wrap">TECH · COMM-ARCH · REV A — 2026-09-11 · 기준 팀 레포 <code>develop @ cc3fa62</code> · 원천: 3_FMS/contracts/{SIM_RUN v3.1, SIM_VERIFY v0.3, MQTT v1.2} · 3_FMS/{fms_core, host_orch, infra/emqx} · 2_Simulation/{sim_runner, t4_agent} · 4_Web/{SantaFactoryBE, SantaFactoryFE} · 마크다운 원본 <code>docs/AMR_전체흐름_버튼에서_로봇까지.md</code> · <a href="../../index.html">문서 인덱스로</a></div>
+</footer>
+
+</body>
+</html>

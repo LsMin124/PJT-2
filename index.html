@@ -181,6 +181,8 @@
     <a href="pages/tech/amr_decision_inventory.html"><rect x="326" y="202" width="130" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="338" y="223" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F08A32">TECH 02</text><text x="338" y="242" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">계획·결정</text></a>
     <line x1="458" y1="228" x2="467" y2="228" stroke="#8FB4D9" stroke-width="2" marker-end="url(#jm-arr)"/>
     <a href="pages/tech/amr_mapf_theory.html"><rect x="472" y="202" width="130" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="484" y="223" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F08A32">TECH 03</text><text x="484" y="242" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">경로계획 이론</text></a>
+    <line x1="604" y1="228" x2="613" y2="228" stroke="#8FB4D9" stroke-width="2" marker-end="url(#jm-arr)"/>
+    <a href="pages/tech/comm_architecture.html"><rect x="618" y="202" width="130" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="630" y="223" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F08A32">TECH 04</text><text x="630" y="242" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">통신 구조</text></a>
     <!-- TRACK 4 -->
     <text x="20" y="312" font-family="JetBrains Mono, monospace" font-size="12" fill="#9AA7B4">TRACK 4</text><text x="20" y="332" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13.5" font-weight="700" fill="#E8ECF1">제품 — 직접 체험</text>
     <a href="pages/product/landing.html"><rect x="180" y="292" width="130" height="52" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/><text x="192" y="313" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#F08A32">LANDING</text><text x="192" y="332" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">랜딩</text></a>
@@ -209,6 +211,7 @@
     <a href="pages/ref/glossary.html"><rect x="326" y="472" width="130" height="52" fill="#20272F" stroke="#8A96A3" stroke-width="1.5"/><text x="338" y="493" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#9AA7B4">GLOSSARY</text><text x="338" y="512" font-family="IBM Plex Sans KR, Pretendard, sans-serif" font-size="13" fill="#E8ECF1">용어사전</text></a>
     </svg>
     <p class="journey-cap">읽는 순서는 <b>기획 2부 → 조사 3부 → 기술 3부</b>입니다. 각 문서 맨 아래의 "이전 ← → 다음" 내비가 이 순서를 안내합니다. 제품이 궁금하면 트랙 4의 브라우저 체험판을 먼저 열어도 됩니다. 트랙 5는 구현 진행·측정·가이드, 트랙 6은 아카이브와 용어사전입니다. 2026-09-07 통합 개편으로 27 → 15부.</p>
+
 
 
 
@@ -263,25 +266,32 @@
   <div class="register-label" style="margin-top:34px">Tech · 기술 3부 — 어떻게 만드나</div>
   <div class="docs">
     <a class="doc d-arch" href="pages/tech/system_architecture.html">
-      <div class="doc-top"><span class="doc-no">TECH 01 / 03 · ARCHITECTURE · 허브</span><span class="aud">FOR 만드는 사람</span></div>
+      <div class="doc-top"><span class="doc-no">TECH 01 / 04 · ARCHITECTURE · 허브</span><span class="aud">FOR 만드는 사람</span></div>
       <h2>시스템 아키텍처<span class="en">ARCHITECTURE</span></h2>
       <p>8단계 · 2층 · 기기 배치 · 계약 13행 · 데이터 · 오케스트레이터 시퀀스 · 운영·리소스. 기술 문서의 허브.</p>
       <div class="toc"><span><b>01</b>요청은 큐에 쌓이고, 런은 기동했다 사라</span><span><b>02</b>접수와 발송 사이는 전부 내부 배치다</span><span><b>03</b>영속은 견적 도메인, 휘발은 시뮬 도메인</span><span><b>04</b>EC2 한 대와 GPU 서버 한 대, 관</span><span><b>05</b>스윕 루프는 계산 엔진이, 런 직렬화는 </span><span><b>06</b>프로토콜 4개, 각자 한 가지 일만 한다</span><span><b>07</b>PG는 견적, H2는 런, MinIO는 </span><span><b>08</b>런 하나는 상태 6개를 지나고, 어느 쪽</span></div>
       <div class="doc-foot"><span class="chips"><span class="chip">HUB</span><span class="chip">CONTRACTS</span><span class="chip">RUNTIME</span></span><span class="open">열람</span></div>
     </a>
     <a class="doc d-arch" href="pages/tech/amr_decision_inventory.html">
-      <div class="doc-top"><span class="doc-no">TECH 02 / 03 · PLAN &amp; DECISIONS · 통합판</span><span class="aud">FOR 세 파트</span></div>
+      <div class="doc-top"><span class="doc-no">TECH 02 / 04 · PLAN &amp; DECISIONS · 통합판</span><span class="aud">FOR 세 파트</span></div>
       <h2>실행 계획과 결정<span class="en">PLAN &amp; DECISIONS</span></h2>
       <p>계약 4개 · 로드맵 · 리스크·후퇴선 · 결정 인벤토리(확인 중·후속 전문, 확정은 접기) · 미결 7건.</p>
       <div class="toc"><span><b>01</b>계약 4개 위에서 세 파트가 병렬로 달린</span><span><b>02</b>계약이 동결돼야 세 파트가 따로 만든다</span><span><b>03</b>요청은 큐에 쌓이고, 사람은 두 번 개입</span><span><b>04</b>시나리오 패키지 하나가 두 WMS의 입력</span><span><b>05</b>지금의 DES는 틱 시뮬이고, 탐색은 대</span><span><b>06</b>FMS는 커널 하나, 셸 둘이다</span><span><b>07</b>큐는 2단, 런은 상태 머신으로 돈다</span><span><b>08</b>영속은 견적 도메인, 휘발은 시뮬 도메인</span></div>
       <div class="doc-foot"><span class="chips"><span class="chip">4 CONTRACTS</span><span class="chip">7 OPEN</span></span><span class="open">열람</span></div>
     </a>
     <a class="doc d-arch" href="pages/tech/amr_mapf_theory.html">
-      <div class="doc-top"><span class="doc-no">TECH 03 / 03 · THEORY · 축약판</span><span class="aud">FOR 알고리즘</span></div>
+      <div class="doc-top"><span class="doc-no">TECH 03 / 04 · THEORY · 축약판</span><span class="aud">FOR 알고리즘</span></div>
       <h2>경로계획 이론 기반 — PIBT<span class="en">THEORY</span></h2>
       <p>규칙 6개 · 한 틱 의사코드 · θ · 라이브니스 · 문헌 비교. 곡선의 무릎을 만드는 경합의 이론층.</p>
       <div class="toc"><span><b>01</b>경합은 매 틱, 한 칸씩 푼다</span><span><b>02</b>곡선이 눕는 이유는 경합이다</span><span><b>03</b>전체 경로 대신, 매 틱 다음 한 칸을 </span><span><b>04</b>차체가 셀보다 길어서, 방향이 상태가 된</span><span><b>05</b>θ는 길의 값을 바꾼다, 알고리즘은 그대</span><span><b>06</b>충돌보다 무서운 것은 멈춤이다</span><span><b>07</b>PIBT를 고른 자리를 문헌으로 확인한다</span><span><b>08</b>다음으로 읽기</span></div>
       <div class="doc-foot"><span class="chips"><span class="chip">PIBT</span><span class="chip">θ</span><span class="chip">LIVENESS</span></span><span class="open">열람</span></div>
+    </a>
+    <a class="doc d-arch" href="pages/tech/comm_architecture.html">
+      <div class="doc-top"><span class="doc-no">TECH 04 / 04 · COMM ARCHITECTURE · 통합판</span><span class="aud">FOR 연동하는 사람</span></div>
+      <h2>통신 구조 — 컨테이너 아홉이 주고받는 모든 메시지<span class="en">COMM ARCHITECTURE</span></h2>
+      <p>프로세스 카탈로그 IN·OUT · HTTP 5 · SSE 5 · AMQP 큐 4 전문 · Sparkplug 메트릭 사전 · VDA 5050 order·state · ACL 행렬 · 전 구간 시퀀스 · 끊긴 6곳.</p>
+      <div class="toc"><span><b>01</b>컨테이너 아홉, 프로토콜 다섯, 브로커 </span><span><b>02</b>누가 무엇을 듣고 무엇을 말하는가</span><span><b>03</b>브라우저 ↔ 백엔드 — 요청 5종의 전문</span><span><b>04</b>백엔드 → 브라우저 단방향 푸시</span><span><b>05</b>RabbitMQ 큐 4개 — 웹과 FMS</span><span><b>06</b>런 제어와 텔레메트리 — 누가 살아 있고</span><span><b>07</b>로봇 제어 — order 가 내려가고 s</span><span><b>08</b>계정별 권한 행렬 — 누가 어디에 쓸 수</span></div>
+      <div class="doc-foot"><span class="chips"><span class="chip">HTTP</span><span class="chip">AMQP</span><span class="chip">SPARKPLUG B</span><span class="chip">VDA 5050</span></span><span class="open">열람</span></div>
     </a>
   </div>
 
