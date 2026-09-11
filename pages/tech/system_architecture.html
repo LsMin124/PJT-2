@@ -148,13 +148,14 @@
 <header>
   <div class="wrap titleblock">
     <div>
-      <div class="doc-eyebrow">TECH · 시스템 아키텍처 · <b>REV</b> — 2026-09-07 · 축약판</div>
-      <h1>시스템 아키텍처 — 상시 견적 서비스 위에 런 단위 시뮬 스택을 얹는다
-        <span class="sub">8단계 파이프라인 · 웹 인프라 2층 · 기기 2대 · 큐 2단 · 메시징 계약 · 데이터 3곳 · 런 오케스트레이터 · 운영·리소스. 아키텍처 서술의 단일 소스</span>
+      <div class="doc-eyebrow"><b>TECH · 목표 아키텍처</b> · v3.10 (2026-09-03) · <b style="color:#D0563C">계획 문서</b></div>
+      <h1>목표 아키텍처 — 상시 견적 서비스 위에 런 단위 시뮬 스택을 얹는다
+        <span class="sub"><b>이 문서는 2026-09-03 에 그린 목표 구조다.</b> 8단계 파이프라인 · 웹 인프라 2층 · 기기 2대 · 큐 2단 · 메시징 계약 · 데이터 3곳 · 런 오케스트레이터. 지금 실제로 도는 것은 <a href="current_architecture.html">TECH 01 현재 아키텍처</a>이고, 둘의 차이는 이 문서 <a href="#adiff">SEC 09</a>에 정리했다</span>
       </h1>
     </div>
     <div class="meta">
-      TRACK · <b>TECH</b><br>
+      TRACK · <b>TECH 02</b><br>
+      성격 · <b>목표 · 계획</b><br>
       BASE · <b>기준선 v3 §1 · §2 · §3 · §7 · §8</b><br>
       DIAGRAM · <b>FMS-WMS 통합 아키텍처 v3.10</b><br>
       SOURCE · <b>AMR_기획_기준선_v3.md (2026-09-03)</b>
@@ -175,7 +176,8 @@
     <a href="#a6">06 데이터</a>
     <a href="#a7">07 오케스트레이터</a>
     <a href="#runtime">08 운영·리소스</a>
-    <a class="nav-cross" href="amr_decision_inventory.html">결정 인벤토리 ↗</a>
+    <a href="#adiff" style="color:#F08A32;font-weight:700">09 현재와의 차이</a>
+    <a class="nav-cross" href="current_architecture.html">현재 아키텍처 ↗</a>
   </div>
 </nav>
 
@@ -739,12 +741,80 @@ curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta
   </div>
 </section>
 
+
+<!-- ══════════ SEC 09 — 현재와의 차이 (2026-09-11 추가) ══════════ -->
+<section id="adiff" style="border-top-color:#F08A32">
+  <div class="sec-head"><span class="sec-no">SEC 09 · 현재와의 차이</span><h2>8일 뒤, 지어진 것은 이 그림과 다르다</h2></div>
+  <div class="sec-body">
+    <p class="lead">위 문서는 <b>2026-09-03 (v3.10)</b> 기준이다. 그 뒤 8일이 이 프로젝트에서 가장 많이 움직인 구간이었고, 구현이 계획을 앞질러 <b>다른 경로로 갔다</b>. 아래는 <code>develop @ cc3fa62</code> (2026-09-11) 의 코드를 읽어 대조한 결과다. 계획이 틀렸다는 뜻이 아니라, <b>이 문서를 현재 구조의 근거로 쓰면 안 된다</b>는 뜻이다.</p>
+
+    <div class="kcards">
+      <div class="kcard g"><b>계획대로 간 것</b><span>2층 분리 · 기기 2대 · 브로커 2개 역할 분담 · 커널 공유 · VDA 5050 틱 배리어 · ROS 2 토픽</span></div>
+      <div class="kcard"><b>이름·경로만 다른 것</b><span>REST 경로 · MQTT 제어 토픽 · 상태 전달 수단</span></div>
+      <div class="kcard r"><b>아직 없는 것</b><span>AI 모델 · 시뮬 WMS · 운영자 콘솔 · LLM 리포트 · 이메일 · k3s · DLQ · 영상 업로드</span></div>
+    </div>
+
+    <h3>8단계 대조</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>단계</th><th>이 문서 (v3.10)</th><th>현재 코드</th><th></th></tr></thead>
+      <tbody>
+        <tr><td class="m">①</td><td><code>REST /api/requests</code> + 큐 순번·예상 소요 회신</td><td><code>POST /warehouses</code> → <code>POST /estimates</code> 순차 2건, 202. 순번·소요 <b>회신 없음</b></td><td><span class="chip c-amber">경로 상이</span></td></tr>
+        <tr><td class="m">②</td><td>운영자 검토 · 시나리오 패키지 컴파일</td><td>콘솔·인증·권한 전부 없음</td><td><span class="chip c-rust">코드 0</span></td></tr>
+        <tr><td class="m">③</td><td>AMQP 우선순위 큐 · DLQ · 재시도</td><td>durable 큐만. <code>priority</code> 는 파싱만 하고 무시, DLQ·nack 없음. 워커 수평확장은 됨(replicas 2)</td><td><span class="chip c-amber">부분</span></td></tr>
+        <tr><td class="m">④</td><td><b>trial 마다 AI 모델이 θ 11개 추론</b></td><td>AI 모델 0. 고정 θ 파일 하나를 13런이 공유. 현재 "AI"는 Optuna TPE 탐색</td><td><span class="chip c-rust">코드 0</span></td></tr>
+        <tr><td class="m">④</td><td>EC2 <b>k3s Job</b></td><td>k3s 미설치. docker compose (한시적, 이전 계획됨)</td><td><span class="chip c-rust">상이</span></td></tr>
+        <tr><td class="m">⑤</td><td><b>k8s API</b> 로 시뮬 WMS·FMS 파드 기동</td><td>k8s 없음. Sparkplug <code>NCMD</code> 로 상시 데몬에 Start. <b>시뮬 WMS 코드 0</b></td><td><span class="chip c-rust">상이</span></td></tr>
+        <tr><td class="m">⑤</td><td>MQTT <code>sim/control</code></td><td><code>spBv1.0/santa/NCMD/{node}</code> (Sparkplug B)</td><td><span class="chip c-amber">토픽 상이</span></td></tr>
+        <tr><td class="m">⑥</td><td>sim-runner → MinIO <b>presigned PUT</b>, MP4·리플레이·히트맵</td><td><code>artifacts</code> null 하드코딩. 녹화·업로드 코드 없음. 받는 쪽만 완성</td><td><span class="chip c-rust">생산자 0</span></td></tr>
+        <tr><td class="m">⑦</td><td>LLM 초안 + 운영자 검수</td><td>—</td><td><span class="chip c-rust">코드 0</span></td></tr>
+        <tr><td class="m">⑧</td><td>이메일 발송 · 다운로드</td><td>—</td><td><span class="chip c-rust">코드 0</span></td></tr>
+      </tbody>
+    </table></div>
+    <p class="soft">8단계 중 문서대로 도는 것은 <b>③ 하나</b>다(그것도 우선순위·DLQ 없이).</p>
+
+    <h3>계약 대조 (SEC 05)</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>이 문서</th><th>현재</th></tr></thead>
+      <tbody>
+        <tr><td class="m">REST /api/requests</td><td class="m">/api/estimates</td></tr>
+        <tr><td>AMQP GPU 런 큐: <b>계산 엔진</b> → 오케스트레이터</td><td><b>백엔드</b>가 직접 <code>sim.verify.request</code> 발행</td></tr>
+        <tr><td class="m">MQTT sim/control</td><td class="m">spBv1.0/santa/NCMD/…</td></tr>
+        <tr><td class="m">biz/order · fms/event</td><td class="m">biz/v1/order · biz/v1/event · <code>biz/v1/order</code> 소비자 0</td></tr>
+        <tr><td>k8s API 로 파드 생성·삭제</td><td>없음</td></tr>
+        <tr><td>S3 presigned PUT</td><td>없음</td></tr>
+        <tr><td>PG 견적 / <b>H2 런</b> / MinIO 파일</td><td>PG 14테이블(4개만 사용) / H2 없음 / MinIO 비어 있음</td></tr>
+        <tr><td>DDS <code>/cmd_vel</code>·<code>/odom</code>·<code>/scan</code> + AMCL</td><td><span class="chip c-green">일치</span> — 단 기본은 <code>pose_source:=odom</code>, AMCL 폐루프는 미실측</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="plain bad"><span class="pl-tag">이 문장은 지금 사실이 아니다</span>SEC 05 의 <i>"DES와 검증 런은 같은 θ와 같은 시나리오 패키지를 쓴다"</i> — 검증 런은 백엔드가 <code>scenario</code> 를 보내지 않아 <b>주문 0건 · 시드 42</b>로 돈다. θ 도 fms-core 이미지에 2026-09-10 에야 들어갔다. 같은 <b>커널</b>을 쓰는 것은 맞지만 같은 <b>입력</b>을 받지는 못하고 있다.</div>
+
+    <h3>이 문서에 단어조차 없는 것들</h3>
+    <p>지금 시스템의 뼈대인데 v3.10 시점에는 존재하지 않았다.</p>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>무엇</th><th>역할</th><th>생긴 때</th></tr></thead>
+      <tbody>
+        <tr><td class="m">Sparkplug B</td><td>런 제어·생사 관리의 전부 (NBIRTH/NDEATH/NCMD/메트릭 사전)</td><td class="m">09-07~09</td></tr>
+        <tr><td class="m">host-orch</td><td>두 브로커를 잇는 유일한 프로세스</td><td class="m">09-09</td></tr>
+        <tr><td class="m">fms-core</td><td>DES 커널 + VDA 5050 마스터</td><td class="m">09-10</td></tr>
+        <tr><td class="m">sim.verify.*</td><td>검증 런 큐 계약</td><td class="m">09-09</td></tr>
+        <tr><td class="m">SSE</td><td>진행 상황 전달 수단 — 이 문서엔 전달 수단 자체가 없다</td><td class="m">09-08</td></tr>
+        <tr><td class="m">토트 · capacity · tote_units</td><td>적재 모델 (계약 v2.6 비호환 변경)</td><td class="m">09-09</td></tr>
+        <tr><td class="m">차선 · 양보</td><td>통행 규칙, 계약 v3 기본 ON</td><td class="m">09-09</td></tr>
+        <tr><td class="m">estimate_worker · sim.request</td><td>견적 실행의 실체</td><td class="m">09-05~</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="plain"><span class="pl-tag">그래서 이 문서를 어떻게 쓰나</span><b>목표를 설명할 때</b> 쓴다 — 어디로 가려 했고 왜 그렇게 정했는지. <b>현재 구조를 설명할 때</b>는 <a href="current_architecture.html">TECH 01 현재 아키텍처</a>를, <b>메시지 형식이 필요할 때</b>는 <a href="comm_architecture.html">TECH 05 통신 구조</a>를 본다. 두 문서를 나란히 두면 "무엇을 계획했고 지금 어디까지 왔는가"가 오히려 명확해진다.</div>
+  </div>
+</section>
+
 <!-- ══════════ NEXT — 다음으로 읽기 ══════════ -->
 <section id="anext">
   <div class="sec-head"><span class="sec-no">NEXT</span><h2>다음으로 읽기</h2></div>
   <div class="sec-body">
     <ul class="rules">
-      <li><a href="amr_decision_inventory.html"><b>TECH 05 구현 결정 인벤토리</b></a> — 이 페이지의 결정이 어떤 항목으로 등록되어 있는지 전수 목록. 확인 대기 항목은 <a href="amr_decision_inventory.html#dj">J6</a></li>
+      <li><a href="amr_decision_inventory.html"><b>TECH 03 구현 결정 인벤토리</b></a> — 이 페이지의 결정이 어떤 항목으로 등록되어 있는지 전수 목록. 확인 대기 항목은 <a href="amr_decision_inventory.html#dj">J6</a></li>
       <li><a href="amr_mapf_theory.html"><b>TECH 04 경로계획 이론 기반</b></a> — PIBT 커널이 ④와 ⑤의 어디에 놓이는지의 이론 배경</li>
       <li><a href="../working/t3_t4_progress.html"><b>WORKING · T3 창고 씬 · T4 에이전트 진행</b></a> — GPU 서버 쪽 프로세스의 실제 구현 상태와 실측</li>
     </ul>
@@ -755,8 +825,8 @@ curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta
 
 <!-- ══════════ flow-nav — 읽기 순서 ══════════ -->
 <div class="wrap flow-nav">
-  <a class="prev" href="../research/industry_followup.html"><small>← 이전</small>RESEARCH 04 · 업계 현황과 다음 단계</a>
-  <a class="next" href="amr_decision_inventory.html"><small>다음 →</small>TECH 05 · 구현 결정 인벤토리</a>
+  <a class="prev" href="current_architecture.html"><small>← 이전</small>TECH 01 · 현재 아키텍처</a>
+  <a class="next" href="amr_decision_inventory.html"><small>다음 →</small>TECH 03 · 구현 결정 인벤토리</a>
 </div>
 
 <footer>
