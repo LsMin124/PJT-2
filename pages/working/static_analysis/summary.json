@@ -1,17 +1,17 @@
 {
  "run": {
-  "id": "2026-09-11_1105_light",
-  "ts": "2026-09-11T11:05:01+0900",
+  "id": "2026-09-11_1305_light",
+  "ts": "2026-09-11T13:05:01+0900",
   "mode": "light",
   "ref": "origin/develop",
-  "sha": "55decf1e1d75730d0e007fc00313fa869209280d",
-  "duration_s": 11.4,
+  "sha": "20f5b5ea3b933bb5de35dbbec21caaa2007fabe2",
+  "duration_s": 10.9,
   "status": "ok",
   "prev_deep": "2026-09-10_1805_deep",
   "red_flags": [
    {
     "code": "BRANCH_S2",
-    "msg": "feature/S15P21A106-141-isaac-sim-amr-스택-이관 변경 파일에 S2+ 3건 추가"
+    "msg": "feature/S15P21A106-141-isaac-sim-amr-스택-이관 변경 파일에 S2+ 14건 추가"
    },
    {
     "code": "REQ_DRIFT",
@@ -530,10 +530,10 @@
     "hwarange",
     "Jaeryeong Shin"
    ],
-   "loc": 8460,
+   "loc": 8514,
    "counts": {
     "S3": 1,
-    "S2": 31,
+    "S2": 32,
     "S1": 128,
     "S0": 0
    },
@@ -543,8 +543,8 @@
     "shellcheck",
     "yamllint"
    ],
-   "W": 231,
-   "D": 27.3,
+   "W": 234,
+   "D": 27.5,
    "grade": "C",
    "partial": false,
    "top": [
@@ -855,25 +855,25 @@
   {
    "name": "develop",
    "slug": "develop",
-   "sha": "55decf1e1d75730d0e007fc00313fa869209280d",
-   "committer_date": 1789092158,
-   "author": "최아영",
-   "loc": 46210,
+   "sha": "20f5b5ea3b933bb5de35dbbec21caaa2007fabe2",
+   "committer_date": 1789097678,
+   "author": "신재령",
+   "loc": 46264,
    "counts": {
     "S3": 2,
-    "S2": 115,
+    "S2": 116,
     "S1": 504,
     "S0": 3
    },
-   "W": 869,
+   "W": 872,
    "new_vs_prev": {
     "S3": 0,
-    "S2": 0,
+    "S2": 1,
     "S1": 0,
     "S0": 0
    },
-   "fixed": 135,
-   "prev_run": "2026-09-10_1805_deep",
+   "fixed": 0,
+   "prev_run": "2026-09-11_1105_light",
    "tools": [
     {
      "id": "ruff",
@@ -909,7 +909,7 @@
      "id": "bandit",
      "status": "ok",
      "rc": 0,
-     "secs": 1.8,
+     "secs": 1.5,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -965,7 +965,7 @@
      "id": "gitleaks",
      "status": "ok",
      "rc": 0,
-     "secs": 0.6,
+     "secs": 0.5,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -1043,7 +1043,7 @@
      "id": "size",
      "title": "파일 > 800줄 · 함수 > 80줄",
      "status": "warn",
-     "msg": "파일 3 · 함수 13 (50줄 초과 함수 53)",
+     "msg": "파일 3 · 함수 14 (50줄 초과 함수 53)",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [
@@ -1054,7 +1054,7 @@
       "2_Simulation/scene_builder/roof.py:61 함수 build_roof 122줄 (> 80)",
       "2_Simulation/t3_amr/amr/make_path/generate_scenario.py:40 함수 main 84줄 (> 80)"
      ],
-     "n": 16,
+     "n": 17,
      "sev": "S2"
     },
     {
@@ -1181,11 +1181,11 @@
      "sev": "S0"
     }
    ],
-   "duration_s": 4.5,
+   "duration_s": 4.0,
    "allow_dropped": 4,
    "new": {
     "S3": 0,
-    "S2": 0,
+    "S2": 1,
     "S1": 0,
     "S0": 0
    },
@@ -1193,30 +1193,30 @@
    "ahead": 0,
    "behind": 0,
    "files_changed": 0,
-   "merge_base": "55decf1e1d75730d0e007fc00313fa869209280d"
+   "merge_base": "20f5b5ea3b933bb5de35dbbec21caaa2007fabe2"
   },
   {
    "name": "feature/S15P21A106-141-isaac-sim-amr-스택-이관",
    "slug": "feature__S15P21A106-141-isaac-sim-amr-922664",
-   "sha": "c50381fde5c697c730e4e2dfb57542189c829c9f",
-   "committer_date": 1789089058,
+   "sha": "c5bbb42e0f05df76971899aaca3ce51f376f4745",
+   "committer_date": 1789099378,
    "author": "kimHySoo",
-   "loc": 40475,
+   "loc": 43613,
    "counts": {
-    "S3": 5,
-    "S2": 113,
-    "S1": 437,
+    "S3": 2,
+    "S2": 122,
+    "S1": 466,
     "S0": 2
    },
-   "W": 826,
+   "W": 852,
    "new_vs_prev": {
-    "S3": 5,
-    "S2": 113,
-    "S1": 437,
-    "S0": 2
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
    },
    "fixed": 0,
-   "prev_run": null,
+   "prev_run": "2026-09-11_1205_light",
    "tools": [
     {
      "id": "ruff",
@@ -1226,9 +1226,9 @@
      "stderr_tail": "",
      "metrics": {},
      "counts": {
-      "S3": 3,
+      "S3": 0,
       "S2": 45,
-      "S1": 412,
+      "S1": 441,
       "S0": 0
      }
     },
@@ -1252,12 +1252,12 @@
      "id": "bandit",
      "status": "ok",
      "rc": 0,
-     "secs": 1.3,
+     "secs": 1.4,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
       "S3": 0,
-      "S2": 5,
+      "S2": 8,
       "S1": 0,
       "S0": 0
      }
@@ -1308,7 +1308,7 @@
      "id": "gitleaks",
      "status": "ok",
      "rc": 0,
-     "secs": 0.4,
+     "secs": 0.5,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -1386,18 +1386,18 @@
      "id": "size",
      "title": "파일 > 800줄 · 함수 > 80줄",
      "status": "warn",
-     "msg": "파일 3 · 함수 12 (50줄 초과 함수 50)",
+     "msg": "파일 5 · 함수 16 (50줄 초과 함수 54)",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [
       "2_Simulation/t3_amr/path/_pibt_core_vendor.py:0 파일 840줄 (> 800)",
-      "2_Simulation/t3_amr/path/isaac_drive.py:0 파일 1645줄 (> 800)",
-      "2_Simulation/t3_amr/runners/live_pibt.py:0 파일 910줄 (> 800)",
-      ".gitlab/scripts/sonar_mr_comment.py:387 함수 main 148줄 (> 80)",
-      "2_Simulation/scene_builder/roof.py:61 함수 build_roof 122줄 (> 80)",
-      "2_Simulation/t3_amr/amr/make_path/generate_scenario.py:40 함수 main 84줄 (> 80)"
+      "2_Simulation/t3_amr/path/isaac_drive.py:0 파일 1715줄 (> 800)",
+      "2_Simulation/t3_amr/runners/live_pibt.py:0 파일 1041줄 (> 800)",
+      "2_Simulation/t3_amr/tools/path_view.py:0 파일 1116줄 (> 800)",
+      "2_Simulation/t3_amr/warehouse/scene/build_scene.py:0 파일 1048줄 (> 800)",
+      ".gitlab/scripts/sonar_mr_comment.py:387 함수 main 148줄 (> 80)"
      ],
-     "n": 15,
+     "n": 21,
      "sev": "S2"
     },
     {
@@ -1432,14 +1432,16 @@
      "id": "claims.isaac-1-instance",
      "title": "README '동시 1인스턴스' 주장 vs 2026-09-05 실측(경량 6 동시)",
      "status": "warn",
-     "msg": "'동시 1인스턴스' 문구 2곳 — 실측(64GB, lean 6 동시)과 불일치. 결정 필요: 문구 갱신 여부",
+     "msg": "'동시 1인스턴스' 문구 4곳 — 실측(64GB, lean 6 동시)과 불일치. 결정 필요: 문구 갱신 여부",
      "component": "2_Simulation",
      "needs_agreement": true,
      "evidence": [
       "2_Simulation/t1_teleop/README.md:29",
-      "2_Simulation/t3_warehouse/README.md:27"
+      "2_Simulation/t3_amr/warehouse/scene/README.md:26",
+      "2_Simulation/t3_warehouse/README.md:27",
+      "2_Simulation/t3_amr/warehouse/scene/view_scene.py:8"
      ],
-     "n": 2,
+     "n": 4,
      "sev": "S0"
     },
     {
@@ -1516,86 +1518,278 @@
      "id": "line-len",
      "title": "120자 초과 줄 (지표)",
      "status": "ok",
-     "msg": "122줄",
+     "msg": "121줄",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [],
-     "n": 122,
+     "n": 121,
      "sev": "S0"
     }
    ],
-   "duration_s": 3.6,
+   "duration_s": 3.8,
    "allow_dropped": 4,
    "merge_base": "0c6ac47bd8a621073ce18e0bcb4d3ea31d5951fa",
-   "files_changed": 5,
-   "ahead": 1,
-   "behind": 60,
+   "files_changed": 76,
+   "ahead": 6,
+   "behind": 63,
    "new_vs_develop": {
-    "S3": 3,
-    "S2": 0,
-    "S1": 1,
+    "S3": 0,
+    "S2": 14,
+    "S1": 30,
     "S0": 0
    },
    "new_vs_develop_top": [
     {
      "tool": "ruff",
-     "rule": "F821",
-     "sev": "S3",
-     "path": "2_Simulation/t3_amr/path/battery.py",
-     "line": 351,
-     "msg": "Undefined name `TO_HOME`",
+     "rule": "F841",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/path/isaac_drive.py",
+     "line": 707,
+     "msg": "Local variable `NM` is assigned to but never used",
      "symbol": "",
      "component": "2_Simulation",
      "part": "시뮬",
-     "fp": "93c1fb38acf7ff6d"
+     "fp": "8cc308d1f97cf1f0"
     },
     {
      "tool": "ruff",
-     "rule": "F821",
-     "sev": "S3",
-     "path": "2_Simulation/t3_amr/path/battery.py",
+     "rule": "PLW0108",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/runners/live_pibt.py",
+     "line": 544,
+     "msg": "Lambda may be unnecessary; consider inlining inner function",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "732c982f429a1aca"
+    },
+    {
+     "tool": "ruff",
+     "rule": "B023",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/warehouse/scene/roof_structure.py",
+     "line": 150,
+     "msg": "Function definition does not bind loop variable `x`",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "7e213cd42be6960b"
+    },
+    {
+     "tool": "ruff",
+     "rule": "B023",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/warehouse/scene/roof_structure.py",
+     "line": 150,
+     "msg": "Function definition does not bind loop variable `y_e`",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "dda94546fa1bf237"
+    },
+    {
+     "tool": "ruff",
+     "rule": "B023",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/warehouse/scene/roof_structure.py",
+     "line": 150,
+     "msg": "Function definition does not bind loop variable `s`",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "3e8f6277a746a415"
+    },
+    {
+     "tool": "bandit",
+     "rule": "B310",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/v2/server/fetch_iwhub.py",
+     "line": 14,
+     "msg": "Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "b9963aa7b7d3e605"
+    },
+    {
+     "tool": "bandit",
+     "rule": "B314",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/v2/server/fetch_iwhub.py",
+     "line": 14,
+     "msg": "Using xml.etree.ElementTree.fromstring to parse untrusted XML data is known to be vulnerable to XML attacks. Replace xml.etree.ElementTree.fromstring with its defusedxml equivalent function or make sure defusedxml.defuse_stdlib() is called",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "dc38e8bbf634e7cd"
+    },
+    {
+     "tool": "bandit",
+     "rule": "B310",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/v2/server/fetch_iwhub.py",
+     "line": 27,
+     "msg": "Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "7ca6477409b47605"
+    },
+    {
+     "tool": "check",
+     "rule": "file-800",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/tools/path_view.py",
+     "line": 0,
+     "msg": "파일 1116줄 (> 800)",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "5f828ae2586a60b6"
+    },
+    {
+     "tool": "check",
+     "rule": "file-800",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/warehouse/scene/build_scene.py",
+     "line": 0,
+     "msg": "파일 1048줄 (> 800)",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "d4ccad648fb2aefe"
+    },
+    {
+     "tool": "check",
+     "rule": "func-80",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/tools/measure_seq.py",
+     "line": 55,
+     "msg": "함수 main 107줄 (> 80)",
+     "symbol": "main",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "65ad5bf0de655d43"
+    },
+    {
+     "tool": "check",
+     "rule": "func-80",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/tools/measure_turns.py",
+     "line": 91,
+     "msg": "함수 main 108줄 (> 80)",
+     "symbol": "main",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "877b2bf729e4b52f"
+    },
+    {
+     "tool": "check",
+     "rule": "func-80",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/tools/path_view.py",
      "line": 363,
-     "msg": "Undefined name `TO_HOME`",
-     "symbol": "",
+     "msg": "함수 main 183줄 (> 80)",
+     "symbol": "main",
      "component": "2_Simulation",
      "part": "시뮬",
-     "fp": "118463c1e1cde2a8"
+     "fp": "b3a541a604b4758d"
+    },
+    {
+     "tool": "check",
+     "rule": "func-80",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/warehouse/scene/roof_structure.py",
+     "line": 79,
+     "msg": "함수 build_roof 122줄 (> 80)",
+     "symbol": "build_roof",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "99530b63fcd7a2b6"
     },
     {
      "tool": "ruff",
-     "rule": "F821",
-     "sev": "S3",
-     "path": "2_Simulation/t3_amr/path/battery.py",
-     "line": 371,
-     "msg": "Undefined name `TO_HOME`",
+     "rule": "F541",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/path/pibt_scene.py",
+     "line": 395,
+     "msg": "f-string without any placeholders",
      "symbol": "",
      "component": "2_Simulation",
      "part": "시뮬",
-     "fp": "4f06cfe06e358ba2"
+     "fp": "1f4fddcc4ef68dd6"
+    },
+    {
+     "tool": "ruff",
+     "rule": "F541",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/path/pibt_scene.py",
+     "line": 396,
+     "msg": "f-string without any placeholders",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "9f0b84f1d50d89a1"
     },
     {
      "tool": "ruff",
      "rule": "PERF401",
      "sev": "S1",
      "path": "2_Simulation/t3_amr/path/pibt_scene.py",
-     "line": 478,
+     "line": 561,
      "msg": "Use `list.extend` to create a transformed list",
      "symbol": "",
      "component": "2_Simulation",
      "part": "시뮬",
      "fp": "0f8d17e6b0732915"
+    },
+    {
+     "tool": "ruff",
+     "rule": "UP031",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/runners/live_pibt.py",
+     "line": 555,
+     "msg": "Use format specifiers instead of percent format",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "1db3ca2faf55b906"
+    },
+    {
+     "tool": "ruff",
+     "rule": "F541",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/runners/live_pibt.py",
+     "line": 629,
+     "msg": "f-string without any placeholders",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "8a31f86d9d6a4794"
+    },
+    {
+     "tool": "ruff",
+     "rule": "F541",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/runners/live_pibt.py",
+     "line": 630,
+     "msg": "f-string without any placeholders",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "d29c25db05cfb269"
     }
    ],
    "convention": {
     "branch_ok": true,
-    "commits_ok": 1,
-    "commits_total": 1,
+    "commits_ok": 6,
+    "commits_total": 6,
     "offenders": []
    },
    "new": {
-    "S3": 3,
-    "S2": 0,
-    "S1": 1,
+    "S3": 0,
+    "S2": 14,
+    "S1": 30,
     "S0": 0
    }
   }
@@ -1635,7 +1829,7 @@
    "id": "bandit",
    "status": "ok",
    "rc": 0,
-   "secs": 1.8,
+   "secs": 1.5,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -1691,7 +1885,7 @@
    "id": "gitleaks",
    "status": "ok",
    "rc": 0,
-   "secs": 0.6,
+   "secs": 0.5,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -1769,7 +1963,7 @@
    "id": "size",
    "title": "파일 > 800줄 · 함수 > 80줄",
    "status": "warn",
-   "msg": "파일 3 · 함수 13 (50줄 초과 함수 53)",
+   "msg": "파일 3 · 함수 14 (50줄 초과 함수 53)",
    "component": "infra",
    "needs_agreement": false,
    "evidence": [
@@ -1780,7 +1974,7 @@
     "2_Simulation/scene_builder/roof.py:61 함수 build_roof 122줄 (> 80)",
     "2_Simulation/t3_amr/amr/make_path/generate_scenario.py:40 함수 main 84줄 (> 80)"
    ],
-   "n": 16,
+   "n": 17,
    "sev": "S2"
   },
   {
@@ -1909,10 +2103,10 @@
  ],
  "tests": {},
  "totals": {
-  "findings": 624,
-  "W": 869,
-  "new": 0,
-  "fixed": 135
+  "findings": 625,
+  "W": 872,
+  "new": 1,
+  "fixed": 0
  },
  "narrative": {
   "status": "skipped"

@@ -7395,6 +7395,18 @@
   "tool": "check",
   "rule": "func-80",
   "sev": "S2",
+  "path": "3_FMS/infra/worker/run_study.py",
+  "line": 204,
+  "msg": "함수 parse_args 82줄 (> 80)",
+  "symbol": "parse_args",
+  "component": "3_FMS/infra+etc",
+  "part": "FMS·AI",
+  "fp": "f96be232698615fc"
+ },
+ {
+  "tool": "check",
+  "rule": "func-80",
+  "sev": "S2",
   "path": "3_FMS/order_gen/extract_profile.py",
   "line": 45,
   "msg": "함수 extract_profile 137줄 (> 80)",
