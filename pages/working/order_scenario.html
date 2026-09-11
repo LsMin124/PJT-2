@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<title>주문 시나리오 — 견적과 검증이 같은 주문을 쓰게 (Order Scenario)</title>
+<style>
+  :root{
+    --bg:#14181D; --panel:#1C2229; --panel-edge:#2C343D; --ink:#E8ECF1; --ink-soft:#9AA7B4;
+    --amber:#F08A32; --machine:#3BAF77; --steel:#8FB4D9; --slate:#8A96A3; --grid:#2A323B;
+    --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px;color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px}
+  a{color:var(--steel)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+  header{border-bottom:3px solid var(--ink);background:var(--panel)}
+  .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
+  .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
+  .doc-eyebrow b{color:var(--amber);font-weight:600}
+  h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
+  h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
+  .meta b{color:var(--ink);font-weight:600}
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav .wrap{display:flex;gap:2px;padding:0 20px}
+  nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent}
+  nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--amber);outline:none}
+  nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
+  nav a.nav-cross{margin-left:auto;color:var(--amber);font-weight:700}
+  main{padding:44px 0 80px}
+  section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0}
+  .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
+  h2{font-size:clamp(19px,2.2vw,27px);font-weight:800;letter-spacing:-.025em;line-height:1.3}
+  .sec-body{padding:16px 26px 26px}
+  h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+  h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
+  p{margin-bottom:10px} .sec-body p{max-width:76ch} .lead{font-size:15.5px} .soft{color:var(--ink-soft)}
+  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
+  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)}
+  .kcard b{display:block;font-size:15px;margin-bottom:4px}
+  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
+  .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
+  .plain.warn{background:#2A2019;border-left-color:var(--amber)} .plain.warn .pl-tag{color:var(--amber)}
+  code{font-family:var(--mono);font-size:.92em;background:#232B34;padding:1px 5px;border:1px solid var(--grid)}
+  pre{font-family:var(--mono);font-size:12px;line-height:1.7;background:#20272F;border:1px solid var(--panel-edge);border-left:4px solid var(--steel);padding:12px 16px;overflow-x:auto;margin:12px 0}
+  pre code{background:none;border:none;padding:0}
+  pre .c{color:var(--ink-soft)} pre .k{color:var(--amber);font-weight:600} pre .w{color:var(--steel);font-weight:600}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F;white-space:nowrap}
+  td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.65}
+  tr:last-child td{border-bottom:none} table tr:nth-child(even) td{background:#1E252D}
+  td.m{font-family:var(--mono);font-size:12px;white-space:nowrap}
+  .tbl-scroll{overflow-x:auto}
+  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px;white-space:nowrap}
+  .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)} .c-slate{color:var(--slate)}
+  .viz{background:#0E1318;border:1px solid var(--panel-edge);padding:12px 14px;margin:14px 0;overflow-x:auto}
+  .viz svg{display:block;min-width:780px;width:100%;height:auto}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0}
+  .flow-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px auto 40px}
+  .flow-nav a{background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
+  .flow-nav a:hover{border-color:var(--amber)} .flow-nav .prev{grid-column:1} .flow-nav .next{grid-column:2;text-align:right}
+  .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
+  footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+  :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+  @media (max-width:820px){.titleblock{grid-template-columns:1fr}.meta{border-left:none;padding-left:0;text-align:left}body{font-size:14px}.sec-head,.sec-body{padding-left:16px;padding-right:16px}.two{grid-template-columns:1fr}}
+  @media(max-width:640px){.flow-nav{grid-template-columns:1fr}.flow-nav .prev,.flow-nav .next{grid-column:auto;text-align:left}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap titleblock">
+    <div>
+      <div class="doc-eyebrow"><b>WORKING · 주문 시나리오</b> · REV A — 2026-09-11</div>
+      <h1>주문 시나리오 — 견적과 검증이 같은 주문을 쓰게
+        <span class="sub">견적 워커가 만든 주문 500건을 PG에 견적 단위로 고정하고, DES 스윕과 Isaac 검증 요청 양쪽에 그대로 싣는다. 같은 주문임은 orders_sha256 하나로 증명한다. 웹팀 인계 내용과 근거.</span>
+      </h1>
+    </div>
+    <div class="meta">
+      DOC. <b>ORDER-SCENARIO</b><br>
+      REV. <b>A</b> · <b>2026-09-11</b><br>
+      상태 <b>웹팀 인계 · 워커 미착수</b><br>
+      SOURCE · <b>아키텍처 통합 문서 ②·⑤ · SIM_VERIFY_CONTRACT v0.3 §2·§6④ · 견적_워커.md -158 · EstimateService.java</b>
+    </div>
+  </div>
+</header>
+
+<nav aria-label="문서 내 탐색">
+  <div class="wrap">
+    <a class="nav-home" href="../../index.html">⌂ INDEX</a>
+    <a href="#s0">00 한눈에</a>
+    <a href="#s1">01 흐름</a>
+    <a href="#s2">02 메시지 순서</a>
+    <a href="#s3">03 계약</a>
+    <a href="#s4">04 DB</a>
+    <a href="#s5">05 역할·순서</a>
+    <a href="#s6">06 근거·위치</a>
+    <a class="nav-cross" href="mqtt_endpoints.html">접속 지점 ↗</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="s0">
+  <div class="sec-head"><span class="sec-no">SEC 00 · 한눈에</span><h2>주문은 워커 안에서 태어나 90초 뒤 사라진다 — 검증에 실을 주문이 없다</h2></div>
+  <div class="sec-body">
+    <p class="lead">견적 워커는 BE가 <code>outbound: []</code>로 보내면 창고 정보(<code>outbound_avg</code>·출고 시간대·<code>seed</code>)로 주문을 자체 생성해 DES를 돌리고, 런이 끝나면 임시 파일을 지운다. <code>sim.result</code>에는 KPI 14개만 남는다. 검증 버튼이 보내는 <code>sim.verify.request</code>에는 <code>scenario</code>가 없어 fms-core가 재생할 주문이 빈 리스트다 — 로봇은 뜨는데 할 일이 0건, KPI 전부 0.</p>
+    <div class="kcards">
+      <div class="kcard"><b>DB 주문 테이블 0 행</b><span><code>orders</code>·<code>outbounds</code>·<code>inbounds</code> — BE에 리포지토리 없음, 시드 SQL에 INSERT 없음</span></div>
+      <div class="kcard s"><b>견적 1건 = 500 건 · 823 라인</b><span>62 KB · 창고 7 · seed 101 · horizon 6 h · 출고창 13:00~18:00</span></div>
+      <div class="kcard g"><b>재현 sha 7b4fd2308937…</b><span>같은 입력 두 번 → 같은 sha. 마스터는 BE 시드 SQL에서 추출, 재추출해도 동일(products 132 · racks 132)</span></div>
+      <div class="kcard"><b>조건 하나 바뀌면 323 건</b><span><code>outbound_avg</code> 500 → 800 · sha 전혀 다름. 견적 당시 조건이 DB 어디에도 고정돼 있지 않다</span></div>
+    </div>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>것</th><th>아키텍처 문서에서의 역할</th><th>지금</th></tr></thead>
+      <tbody>
+        <tr><td><b>시나리오 패키지</b></td><td>② 검토·컴파일 → <b>견적 PG 저장</b>. DES 워커는 잡 페이로드로, 검증 런은 주입으로 <b>같은 것</b>을 받는다 — 공유 매개</td><td><span class="chip c-amber">없음</span> 컴파일 단계도 저장도 없음</td></tr>
+        <tr><td><b>H2 인메모리</b></td><td>시뮬 WMS(Spring)의 런 스코프 주문·재고 상태. 런과 함께 소멸 — 격리 장치</td><td><span class="chip c-slate">없음</span> 시뮬 WMS 자체가 미구현. 공유 매개가 아니라 지금 논의 대상이 아니다</td></tr>
+      </tbody>
+    </table></div>
+    <div class="plain"><span class="pl-tag">결정</span>견적 생성 시 주문을 <b>한 번</b> 만들어 PG에 <b>견적 단위</b>로 통째(JSONB) 저장 → DES 스윕 <code>outbound[]</code>와 검증 <code>scenario.orders</code> 양쪽에 그대로 싣는다. 견적당 1벌(스윕 28런 공유) · 통째 JSONB(쪼개면 순서 하나로 sha 깨짐) · 조건 스냅샷 동봉 · 기존 <code>orders</code>/<code>outbounds</code>는 쓰지 않는다.</div>
+  </div>
+</section>
+
+<section id="s1">
+  <div class="sec-head"><span class="sec-no">SEC 01 · 흐름</span><h2>지금 → 바꾼 뒤. 워커는 이미 <code>outbound[]</code>를 받을 준비가 돼 있다</h2></div>
+  <div class="sec-body">
+    <div class="viz"><svg viewBox="0 0 900 310" role="img" aria-label="위 줄은 지금: BE가 빈 outbound를 보내고 워커가 주문을 자체 생성 후 삭제, PG에는 KPI만, 검증 요청에 scenario가 없어 GPU 주문 0. 아래 줄은 바꾼 뒤: BE가 compile 요청, 워커가 orders와 sha 반환, PG estimate_scenarios 저장, 스윕 요청 outbound에 저장본, 검증 요청 scenario.orders에 저장본과 sha, GPU가 sha 대조 후 500건 재생">
+      <defs><marker id="os-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8FB4D9"/></marker></defs>
+      <!-- 지금 -->
+      <text x="20" y="72" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700">지금</text>
+      <rect x="60" y="40" width="70" height="54" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="70" y="62" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700">BE</text>
+      <text x="70" y="80" fill="#E8ECF1" font-size="12">견적 생성</text>
+      <line x1="132" y1="67" x2="226" y2="67" stroke="#8FB4D9" stroke-width="2" marker-end="url(#os-arr)"/>
+      <text x="180" y="58" text-anchor="middle" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="10">sim.request ×N</text>
+      <text x="180" y="84" text-anchor="middle" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="10">outbound: []</text>
+      <rect x="230" y="40" width="140" height="54" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="240" y="62" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700">견적 워커</text>
+      <text x="240" y="80" fill="#E8ECF1" font-size="12">생성 → DES → 삭제</text>
+      <line x1="372" y1="67" x2="466" y2="67" stroke="#8FB4D9" stroke-width="2" marker-end="url(#os-arr)"/>
+      <text x="420" y="58" text-anchor="middle" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="10">sim.result</text>
+      <text x="420" y="84" text-anchor="middle" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="10">KPI 14개만</text>
+      <rect x="470" y="40" width="140" height="54" fill="#222A33" stroke="#F08A32" stroke-width="1.5"/>
+      <text x="480" y="62" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700">PG</text>
+      <text x="480" y="80" fill="#E8ECF1" font-size="12">simscenarios · KPI만</text>
+      <line x1="612" y1="67" x2="696" y2="67" stroke="#8FB4D9" stroke-width="2" marker-end="url(#os-arr)"/>
+      <text x="655" y="58" text-anchor="middle" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="10">verify.request</text>
+      <text x="655" y="84" text-anchor="middle" fill="#F08A32" font-family="'JetBrains Mono',monospace" font-size="10">scenario 없음</text>
+      <rect x="700" y="40" width="80" height="54" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="710" y="62" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700">host-orch</text>
+      <text x="710" y="80" fill="#E8ECF1" font-size="12">Start 전달</text>
+      <line x1="782" y1="67" x2="796" y2="67" stroke="#8FB4D9" stroke-width="2" marker-end="url(#os-arr)"/>
+      <rect x="800" y="40" width="95" height="54" fill="#171C22" stroke="#8A96A3" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="810" y="62" fill="#8A96A3" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700">GPU</text>
+      <text x="810" y="80" fill="#8A96A3" font-size="11">주문 0 · KPI 0</text>
+      <!-- 구분선 -->
+      <line x1="20" y1="132" x2="895" y2="132" stroke="#2C343D" stroke-dasharray="3 4"/>
+      <!-- 바꾼 뒤 -->
+      <text x="20" y="212" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700">바꾼 뒤</text>
+      <rect x="60" y="180" width="70" height="54" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="70" y="202" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700">BE</text>
+      <text x="70" y="220" fill="#E8ECF1" font-size="12">견적 생성</text>
+      <line x1="132" y1="207" x2="226" y2="207" stroke="#8FB4D9" stroke-width="2" marker-end="url(#os-arr)"/>
+      <text x="180" y="198" text-anchor="middle" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="10">sim.request ×1</text>
+      <text x="180" y="224" text-anchor="middle" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="10">mode: compile</text>
+      <rect x="230" y="180" width="140" height="54" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="240" y="202" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700">견적 워커</text>
+      <text x="240" y="220" fill="#E8ECF1" font-size="12">주문 생성만 (&lt; 1 s)</text>
+      <line x1="372" y1="207" x2="466" y2="207" stroke="#8FB4D9" stroke-width="2" marker-end="url(#os-arr)"/>
+      <text x="420" y="198" text-anchor="middle" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="10">sim.result</text>
+      <text x="420" y="224" text-anchor="middle" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="10">orders + sha</text>
+      <rect x="470" y="180" width="140" height="54" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
+      <text x="480" y="202" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700">PG</text>
+      <text x="480" y="220" fill="#E8ECF1" font-size="11">estimate_scenarios</text>
+      <line x1="612" y1="207" x2="696" y2="207" stroke="#8FB4D9" stroke-width="2" marker-end="url(#os-arr)"/>
+      <text x="655" y="198" text-anchor="middle" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="10">verify.request</text>
+      <text x="655" y="224" text-anchor="middle" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="10">scenario + sha</text>
+      <rect x="700" y="180" width="80" height="54" fill="#222A33" stroke="#E8ECF1" stroke-width="1.5"/>
+      <text x="710" y="202" fill="#8FB4D9" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700">host-orch</text>
+      <text x="710" y="220" fill="#E8ECF1" font-size="12">Start 전달</text>
+      <line x1="782" y1="207" x2="796" y2="207" stroke="#8FB4D9" stroke-width="2" marker-end="url(#os-arr)"/>
+      <rect x="800" y="180" width="95" height="54" fill="#17251E" stroke="#3BAF77" stroke-width="2"/>
+      <text x="810" y="202" fill="#3BAF77" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700">GPU</text>
+      <text x="810" y="220" fill="#E8ECF1" font-size="11">sha 대조 · 500건</text>
+      <!-- 스윕 되돌림 -->
+      <path d="M540,234 L540,266 L300,266 L300,238" fill="none" stroke="#8FB4D9" stroke-width="2" marker-end="url(#os-arr)"/>
+      <text x="420" y="290" text-anchor="middle" fill="#9AA7B4" font-family="'JetBrains Mono',monospace" font-size="10">sim.request ×N — outbound: 저장본 그대로 → 결과에 orders_sha256 에코</text>
+    </svg></div>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>확인한 것</th><th>위치</th><th>뜻</th></tr></thead>
+      <tbody>
+        <tr><td><code>_orders_file()</code>은 요청 <code>outbound[]</code>를 <b>먼저</b> 쓰고, 없을 때만 자체 생성</td><td class="m">3_FMS/infra/worker/estimate_worker.py</td><td>BE가 <code>outbound[]</code>만 채우면 DES 경로는 <b>워커 변경 0</b></td></tr>
+        <tr><td>host-orch가 <code>scenario</code>를 정규형 sha와 함께 Start에 싣고, sim-runner·fms-core가 재계산해 다르면 거절</td><td class="m">host_orch/orchestrator.py · sim_runner/procs.py · fms_core/scenario.py</td><td>GPU 쪽 전달 경로는 <b>이미 구현</b>. 남은 건 <code>orders_sha256</code> 대조 하나</td></tr>
+        <tr><td>fms-core는 <code>scenario.orders</code>만 재생 — <code>biz/order</code> WMS 경로는 없음</td><td class="m">fms_core/kernel_planner.py:90</td><td>문서의 시뮬 WMS → biz/order 체인은 scenario 재생으로 단락돼 있다</td></tr>
+        <tr><td>BE는 <code>List.of(), List.of()</code>로 발행. 검증 요청은 6필드(run_id·n_robots·window_s·source_run_id·estimate_id·seed)</td><td class="m">EstimateService.java:156 · :234</td><td>양쪽 다 비어 있다 — 채우는 건 BE 몫</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section id="s2">
+  <div class="sec-head"><span class="sec-no">SEC 02 · 메시지 순서</span><h2>여섯 단계 — 워커 변경은 전부 하위 호환이라 먼저 배포해도 된다</h2></div>
+  <div class="sec-body">
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>#</th><th>주체</th><th>메시지</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td class="m">1</td><td><span class="chip c-steel">BE</span></td><td class="m">sim.request · mode: "compile"</td><td>견적을 만들면 <b>1건</b> 발행. run_id <code>est_{id}_compile</code>. 나머지 필드는 오늘의 스윕 요청과 같다</td></tr>
+        <tr><td class="m">2</td><td><span class="chip c-green">워커</span></td><td class="m">sim.result</td><td>주문을 생성하고 시뮬은 돌리지 않는다. <code>orders</code>(생성기 산출물 그대로) + <code>orders_sha256</code>, <code>kpi: null</code></td></tr>
+        <tr><td class="m">3</td><td><span class="chip c-steel">BE</span></td><td class="m">sim.request × N</td><td><code>estimate_scenarios</code>에 저장 → 스윕 발행. 각 요청의 <code>outbound</code>에 저장본 <code>orders.outbound</code> 배열을 <b>그대로</b></td></tr>
+        <tr><td class="m">4</td><td><span class="chip c-green">워커</span></td><td class="m">sim.result × N</td><td>받은 <code>outbound[]</code>로 DES(-156 경로). 결과에 <code>orders_sha256</code> 에코 → BE는 저장본과 다르면 그 run 실패 처리</td></tr>
+        <tr><td class="m">5</td><td><span class="chip c-steel">BE</span></td><td class="m">sim.verify.request</td><td>검증 버튼: <code>scenario</code>에 저장본 <code>orders</code> · <code>orders_sha256</code> · <code>window_start_s</code> · <code>amr</code></td></tr>
+        <tr><td class="m">6</td><td><span class="chip c-green">GPU</span></td><td class="m">NCMD Start → sim.verify.result</td><td>host-orch가 scenario를 Start에 실어 sim-runner·fms-core로(구현됨). fms-core가 <code>orders_sha256</code> 재계산, 다르면 거절, 같으면 재생. 결과 메시지는 오늘과 같다</td></tr>
+      </tbody>
+    </table></div>
+    <div class="plain warn"><span class="pl-tag">BE가 놓치기 쉬운 것</span><code>sim.result</code> 리스너는 지금 <code>findByRunId</code> 실패 시 "모르는 run 무시"로 끝난다. compile 결과는 <code>orders</code> 유무로 <b>run 조회 전에</b> 저장 경로로 분기해야 한다.</div>
+  </div>
+</section>
+
+<section id="s3">
+  <div class="sec-head"><span class="sec-no">SEC 03 · 계약</span><h2>바뀌는 메시지 셋과 sha 정의</h2></div>
+  <div class="sec-body">
+    <h3>compile 요청 — <code>sim.request</code></h3>
+<pre><code>{
+  "run_id": "est_6_compile",
+  <span class="k">"mode": "compile"</span>,                          <span class="c">// 신규. 없으면 오늘과 같은 DES 실행</span>
+  "seed": 101,
+  "horizon_s": 21600, "shifts": "in,in,out,out,out,out",
+  "inbound_gap_s": 37.5, "outbound_gap_s": 36.0,
+  "warehouse": {"worker_count": 4,
+                "inbound_start": "13:00", "inbound_end": "18:00",
+                "outbound_start": "13:00", "outbound_end": "18:00",
+                "inbound_avg": 480, "outbound_avg": 500},
+  "amr": {"count": 0}, "inbound": [], "outbound": []
+}</code></pre>
+    <h3>compile 결과 — <code>sim.result</code></h3>
+<pre><code>{
+  "run_id": "est_6_compile", "status": "done", "error": null, "kpi": null,
+  <span class="k">"orders"</span>: {
+    "meta": {"seed": 101, "orders": 500, "lines": 823, "units": 4082,
+             "window_start_s": 46800, "window_end_s": 68400, "horizon_s": 21600,
+             "profile": "order_rules", "release": "wave", …},
+    "outbound": [
+      {"order_id": 1, "store_id": 2,  "ordered_at_s": 0,
+       "lines": [{"product_id": 7,   "rack_id": "B1", "qty": 3}]},
+      {"order_id": 2, "store_id": 19, "ordered_at_s": 6,
+       "lines": [{"product_id": 112, "rack_id": "S4", "qty": 2}]},
+      <span class="c">… 500 건 (store_id · product_id 는 DB 실제 키, rack_id 는 rack.field)</span>
+    ]
+  },
+  <span class="k">"orders_sha256"</span>: "7b4fd2308937…"
+}</code></pre>
+    <h3>스윕 요청·결과 — 바뀌는 필드만</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>메시지</th><th>필드</th><th>값</th></tr></thead>
+      <tbody>
+        <tr><td class="m">sim.request × N</td><td class="m">outbound</td><td>저장본 <code>orders.outbound</code> 배열 그대로 (62 KB). 지금은 <code>[]</code></td></tr>
+        <tr><td class="m">sim.result × N</td><td class="m">orders_sha256</td><td>워커가 실제로 돌린 주문의 sha. 신규, 항상 실림. 저장본과 다르면 그 run 실패 처리</td></tr>
+      </tbody>
+    </table></div>
+    <h3>검증 요청 — <code>sim.verify.request</code></h3>
+<pre><code>{
+  "run_id": "verify_6", "n_robots": 5, "window_s": 600,
+  "source_run_id": "est_6_n5", "estimate_id": 6, "seed": 101,
+  <span class="k">"scenario"</span>: {
+    "seed": 101,
+    "orders": <span class="w">〈저장본 orders 그대로 — meta + outbound〉</span>,
+    "orders_sha256": "7b4fd2308937…",
+    "window_start_s": 5400,               <span class="c">// 출고 시작 +90 분부터 600 s 재생 → 40 건 (계약 §6 ①, 제안값)</span>
+    "amr": {"capacity": …, "tote_units": …}   <span class="c">// DES 요청에 보낸 것과 같은 값. 안 보냈으면 생략 (양쪽 기본값 동일)</span>
+  }
+}</code></pre>
+    <div class="plain"><span class="pl-tag">orders_sha256 정의</span><code>sha256( json.dumps(outbound, sort_keys=True, separators=(",",":"), ensure_ascii=False).encode("utf-8") )</code> — 키 정렬 · 공백 없음 · UTF-8, <code>outbound</code> <b>배열</b>에 대해서만(meta 제외). host-orch · fms-core · sim-runner가 이미 같은 <code>canonical_json</code>을 쓴다. <b>BE는 계산하지 않는다</b> — 받은 문자열을 저장하고 그대로 전달만. 저장본을 다시 실을 때 값(숫자·문자열)을 바꾸지 않으면 된다. JSONB가 키 순서를 바꾸는 건 정규형이 다시 정렬하므로 무관.</div>
+  </div>
+</section>
+
+<section id="s4">
+  <div class="sec-head"><span class="sec-no">SEC 04 · DB</span><h2>새 테이블 하나, 통째 JSONB — 기존 <code>orders</code>/<code>outbounds</code>는 자리가 아니다</h2></div>
+  <div class="sec-body">
+<pre><code><span class="c">-- V3__estimate_scenarios.sql</span>
+CREATE TABLE estimate_scenarios (
+    scenario_id     BIGINT GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    estimate_id     BIGINT NOT NULL UNIQUE,      <span class="c">-- 견적당 1벌. 스윕 런 전부가 공유</span>
+    seed            BIGINT NOT NULL,
+    outbound_avg    INTEGER NOT NULL,            <span class="c">-- 이하 4개 = 견적 당시 조건 스냅샷</span>
+    outbound_start  TIME NOT NULL,
+    outbound_end    TIME NOT NULL,
+    horizon_s       BIGINT NOT NULL,
+    orders          JSONB NOT NULL,              <span class="c">-- compile 결과의 orders 객체 그대로 (meta + outbound, 62 KB)</span>
+    orders_sha256   CHAR(64) NOT NULL,
+    created_at      TIMESTAMP NOT NULL DEFAULT now()
+);</code></pre>
+    <div class="two">
+      <div class="tbl-scroll"><table>
+        <thead><tr><th>기존 테이블이 안 되는 이유</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td><code>outbounds.task_id NOT NULL</code></td><td>출고 라인을 넣으려면 로봇 태스크가 먼저 있어야 한다. 주문은 태스크보다 먼저 존재한다</td></tr>
+          <tr><td>견적 구분 컬럼 없음</td><td><code>orders</code>에 <code>estimate_id</code>가 없다. 견적 3개면 주문 1500건이 섞인다</td></tr>
+          <tr><td>시각 표현</td><td>생성기는 <code>ordered_at_s</code>(초 오프셋), 테이블은 <code>order_at TIMESTAMP</code></td></tr>
+          <tr><td>의미</td><td>실제로 처리한 출고 기록(운영)과 앞으로 돌려볼 시뮬 입력을 섞으면 구분이 안 된다</td></tr>
+        </tbody>
+      </table></div>
+      <div class="tbl-scroll"><table>
+        <thead><tr><th>새 테이블 규칙</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td>단위</td><td>run이 아니라 <b>estimate</b>. 스윕 28런이 같은 주문을 써야 대수 비교가 성립</td></tr>
+          <tr><td>형태</td><td>통째 JSONB. 쪼개면 정렬 순서 하나로 sha가 깨지고 개별 조회할 일이 없다. 62 KB, TOAST 압축</td></tr>
+          <tr><td>스냅샷</td><td><code>warehouses</code> 행은 바뀔 수 있다. 500→800이면 323건·다른 sha</td></tr>
+          <tr><td>싣는 법</td><td>스윕엔 <code>orders->'outbound'</code>, 검증엔 <code>orders</code> 전체. <code>meta</code>는 안에 있어 별도 컬럼 없음. FK는 V1 관행대로 생략</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<section id="s5">
+  <div class="sec-head"><span class="sec-no">SEC 05 · 역할 · 순서</span><h2>워커 먼저, BE 다음, fms-core 대조와 재배포로 닫는다</h2></div>
+  <div class="sec-body">
+    <div class="two">
+      <div class="tbl-scroll"><table>
+        <thead><tr><th>시뮬 · FMS (우리)</th><th>상태</th></tr></thead>
+        <tbody>
+          <tr><td>워커 <code>mode: "compile"</code> — 생성만, <code>orders</code>+<code>orders_sha256</code> 반환</td><td><span class="chip c-slate">미착수</span></td></tr>
+          <tr><td>모든 <code>sim.result</code>에 <code>orders_sha256</code> 에코</td><td><span class="chip c-slate">미착수</span></td></tr>
+          <tr><td>fms-core: <code>scenario.orders_sha256</code> 재계산 대조, 다르면 Start 거절</td><td><span class="chip c-slate">미착수</span></td></tr>
+          <tr><td>계약: 견적 워커 명세 + <code>SIM_VERIFY_CONTRACT</code> v0.4 (§6 ④ 해소)</td><td><span class="chip c-slate">미착수</span></td></tr>
+          <tr><td>선행(별건): EC2 fms-core·host-orch를 develop(185)로 재배포, GPU 박스 sim-runner 상주</td><td><span class="chip c-amber">최우선</span></td></tr>
+        </tbody>
+      </table></div>
+      <div class="tbl-scroll"><table>
+        <thead><tr><th>웹팀 (BE)</th><th>상태</th></tr></thead>
+        <tbody>
+          <tr><td>Flyway V3 <code>estimate_scenarios</code></td><td><span class="chip c-steel">인계</span></td></tr>
+          <tr><td>견적 생성: compile 발행 → 결과 저장 → 스윕 발행(<code>outbound[]</code> 채움). 상태값 추가 없이 RUNNING 안에서</td><td><span class="chip c-steel">인계</span></td></tr>
+          <tr><td><code>sim.result</code> 리스너: <code>orders</code> 있으면 run 조회 전에 분기; 스윕 결과 sha ≠ 저장본이면 run 실패</td><td><span class="chip c-steel">인계</span></td></tr>
+          <tr><td>검증 요청에 <code>scenario</code> — <code>orders</code>·<code>orders_sha256</code>·<code>window_start_s</code>·<code>amr</code></td><td><span class="chip c-steel">인계</span></td></tr>
+          <tr><td>compile 실패(<code>status: failed</code>)면 스윕 발행 없이 기존 실패 처리</td><td><span class="chip c-steel">인계</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>순서</th><th>내용</th><th>확인</th></tr></thead>
+      <tbody>
+        <tr><td class="m">1</td><td>워커 compile 모드 + sha 에코 — 하위 호환이라 먼저 배포</td><td><code>--once</code>로 compile 요청 1건 → orders 500건·sha 출력</td></tr>
+        <tr><td class="m">2</td><td>BE V3 + 저장·발행·검증 요청</td><td>견적 생성 → <code>estimate_scenarios</code> 1행(500건, sha)</td></tr>
+        <tr><td class="m">3</td><td>fms-core sha 대조 + EC2 재배포</td><td>스윕 결과 28건의 sha 전부 저장본과 일치</td></tr>
+        <tr><td class="m">4</td><td>E2E</td><td>버튼 → <code>sim.verify.result</code>의 <code>verify.fms</code>에 주문 수 ≥ 1, KPI ≠ 0</td></tr>
+      </tbody>
+    </table></div>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>같이 정할 값</th><th>제안</th><th>근거</th></tr></thead>
+      <tbody>
+        <tr><td class="m">window_start_s · window_s</td><td>5400 · 600</td><td>seed 101 · 창고 7 기준 40건. 첫 10분은 주문이 거의 없어 창을 뒤로 밀어야 한다(계약 §6 ①)</td></tr>
+        <tr><td class="m">검증 run_id</td><td>BE 변경 없음</td><td>지금 <code>verify_{id}</code> 고정이라 한 번 실패하면 host-orch가 재실행하지 않는다(<code>recent</code> 캐시). host-orch 쪽에서 "실패한 run_id는 재실행 허용"으로 푼다(우리)</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section id="s6">
+  <div class="sec-head"><span class="sec-no">SEC 06 · 근거 · 위치</span><h2>실측한 곳과 읽을 것</h2></div>
+  <div class="sec-body">
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>것</th><th>위치</th><th>본 것</th></tr></thead>
+      <tbody>
+        <tr><td>주문 생성·삭제</td><td class="m">3_FMS/infra/worker/estimate_worker.py</td><td><code>_generate_orders</code> · <code>_orders_file</code>(outbound[] 우선) · <code>handle()</code> finally <code>os.remove</code></td></tr>
+        <tr><td>생성기·마스터</td><td class="m">3_FMS/order_gen/</td><td><code>generate_orders.py</code> · <code>slice_orders.py</code> · master는 <code>extract_master.py</code>가 BE Flyway 시드 SQL에서 추출(재추출 동일) · 프로파일은 Mendeley 풋웨어 창고 주문 데이터셋(CC BY 4.0)</td></tr>
+        <tr><td>BE 발행부</td><td class="m">4_Web/SantaFactoryBE/…/service/estimate/EstimateService.java</td><td><code>baseRequest()</code> :156 <code>List.of(), List.of()</code> · <code>requestVerification()</code> :234 · <code>applyResult()</code> :243 · <code>FIXED_SEED = 101</code> :56</td></tr>
+        <tr><td>BE 스키마</td><td class="m">…/resources/db/migration/V1__init_schema.sql · seed/R__seed_demo.sql</td><td><code>orders</code>·<code>outbounds</code>(<code>task_id NOT NULL</code>)·<code>inbounds</code> 정의만 있고 시드 INSERT 없음. 리포지토리 없음</td></tr>
+        <tr><td>EC2 DB 실측</td><td class="m">a106-db (postgres 16)</td><td>orders 0 · outbounds 0 · inbounds 0 · products 132 · rack 132 · warehouses 7 · estimates 6 · simscenarios 76</td></tr>
+        <tr><td>검증 계약</td><td class="m">3_FMS/contracts/SIM_VERIFY_CONTRACT.md v0.3</td><td>§2 <code>scenario</code> 블록(orders·spawn·window_start_s·amr) · §6 ④ 주문 스크립트 전달 ⓐ/ⓑ 미결 → 이 문서로 ⓐ 확정</td></tr>
+        <tr><td>GPU 쪽 수신</td><td class="m">3_FMS/fms_core/scenario.py · 2_Simulation/sim_runner/procs.py</td><td><code>canonical_json</code> 동일 규칙 · <code>scenario_orders()</code> · <code>scenario_sha256</code> 불일치 시 거절</td></tr>
+        <tr><td>아키텍처</td><td class="m">5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html</td><td>견적 파이프라인 ② 검토·컴파일 → PG · ⑤ "DES와 동일한 시나리오 패키지를 주입" · 설계 원칙(H2는 시뮬 WMS 런 스코프 격리)</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+</main>
+
+<div class="wrap flow-nav">
+  <a class="prev" href="mqtt_roadmap.html"><small>← 이전</small>WORKING · MQTT 백본 구현 로드맵</a>
+  <a class="next" href="static_analysis.html"><small>다음 →</small>WORKING · 정적 분석 (LIVE)</a>
+</div>
+
+<footer>
+  <div class="wrap">WORKING · ORDER-SCENARIO · REV A — 2026-09-11 · 원천: 아키텍처 통합 문서 ②·⑤ · 3_FMS/contracts/SIM_VERIFY_CONTRACT.md v0.3 · 3_FMS/docs/견적_워커.md · EstimateService.java · EC2 a106-db 실측 · <a href="../../index.html">문서 인덱스로</a></div>
+</footer>
+
+</body>
+</html>
