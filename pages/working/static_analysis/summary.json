@@ -1,11 +1,11 @@
 {
  "run": {
-  "id": "2026-09-11_1305_light",
-  "ts": "2026-09-11T13:05:01+0900",
+  "id": "2026-09-11_1505_light",
+  "ts": "2026-09-11T15:05:02+0900",
   "mode": "light",
   "ref": "origin/develop",
-  "sha": "20f5b5ea3b933bb5de35dbbec21caaa2007fabe2",
-  "duration_s": 10.9,
+  "sha": "2609b4ea0c1e0a813785c0df096eaec31c7e1df2",
+  "duration_s": 11.0,
   "status": "ok",
   "prev_deep": "2026-09-10_1805_deep",
   "red_flags": [
@@ -286,7 +286,7 @@
     "hwarange",
     "Jaeryeong Shin"
    ],
-   "loc": 5580,
+   "loc": 5690,
    "counts": {
     "S3": 0,
     "S2": 24,
@@ -298,7 +298,7 @@
     "ruff"
    ],
    "W": 106,
-   "D": 19.0,
+   "D": 18.6,
    "grade": "C",
    "partial": false,
    "top": [
@@ -391,7 +391,7 @@
      "rule": "RET503",
      "sev": "S2",
      "path": "3_FMS/sim_engine/pibt/heading.py",
-     "line": 205,
+     "line": 265,
      "msg": "Missing explicit `return` at the end of function able to return non-`None` value",
      "symbol": "",
      "component": "3_FMS/sim_engine",
@@ -408,7 +408,7 @@
     "hwarange",
     "Jaeryeong Shin"
    ],
-   "loc": 2725,
+   "loc": 2875,
    "counts": {
     "S3": 1,
     "S2": 2,
@@ -420,7 +420,7 @@
     "ruff"
    ],
    "W": 30,
-   "D": 11.0,
+   "D": 10.4,
    "grade": "B",
    "partial": false,
    "top": [
@@ -855,10 +855,10 @@
   {
    "name": "develop",
    "slug": "develop",
-   "sha": "20f5b5ea3b933bb5de35dbbec21caaa2007fabe2",
-   "committer_date": 1789097678,
+   "sha": "2609b4ea0c1e0a813785c0df096eaec31c7e1df2",
+   "committer_date": 1789105987,
    "author": "신재령",
-   "loc": 46264,
+   "loc": 46524,
    "counts": {
     "S3": 2,
     "S2": 116,
@@ -868,12 +868,12 @@
    "W": 872,
    "new_vs_prev": {
     "S3": 0,
-    "S2": 1,
+    "S2": 0,
     "S1": 0,
     "S0": 0
    },
    "fixed": 0,
-   "prev_run": "2026-09-11_1105_light",
+   "prev_run": "2026-09-11_1305_light",
    "tools": [
     {
      "id": "ruff",
@@ -1181,11 +1181,11 @@
      "sev": "S0"
     }
    ],
-   "duration_s": 4.0,
+   "duration_s": 4.1,
    "allow_dropped": 4,
    "new": {
     "S3": 0,
-    "S2": 1,
+    "S2": 0,
     "S1": 0,
     "S0": 0
    },
@@ -1193,30 +1193,30 @@
    "ahead": 0,
    "behind": 0,
    "files_changed": 0,
-   "merge_base": "20f5b5ea3b933bb5de35dbbec21caaa2007fabe2"
+   "merge_base": "2609b4ea0c1e0a813785c0df096eaec31c7e1df2"
   },
   {
    "name": "feature/S15P21A106-141-isaac-sim-amr-스택-이관",
    "slug": "feature__S15P21A106-141-isaac-sim-amr-922664",
-   "sha": "c5bbb42e0f05df76971899aaca3ce51f376f4745",
-   "committer_date": 1789099378,
-   "author": "kimHySoo",
-   "loc": 43613,
+   "sha": "327a387087a7288dca24dc224bc64dd2af135693",
+   "committer_date": 1789106052,
+   "author": "김형수",
+   "loc": 43920,
    "counts": {
     "S3": 2,
-    "S2": 122,
-    "S1": 466,
+    "S2": 121,
+    "S1": 468,
     "S0": 2
    },
-   "W": 852,
+   "W": 851,
    "new_vs_prev": {
     "S3": 0,
     "S2": 0,
     "S1": 0,
     "S0": 0
    },
-   "fixed": 0,
-   "prev_run": "2026-09-11_1205_light",
+   "fixed": 1,
+   "prev_run": "2026-09-11_1405_light",
    "tools": [
     {
      "id": "ruff",
@@ -1228,7 +1228,7 @@
      "counts": {
       "S3": 0,
       "S2": 45,
-      "S1": 441,
+      "S1": 443,
       "S0": 0
      }
     },
@@ -1336,7 +1336,7 @@
      "id": "pmd",
      "status": "ok",
      "rc": 4,
-     "secs": 0.9,
+     "secs": 1.0,
      "stderr_tail": "[INFO] Found 12 violations.",
      "metrics": {
       "processing_errors": 0
@@ -1368,18 +1368,18 @@
      "id": "doc-links",
      "title": "문서 상대링크·코드 헤더 docs 참조 존재",
      "status": "warn",
-     "msg": "깨진 참조 30건",
+     "msg": "깨진 참조 29건",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [
       ".githooks/README.md:5 → ../Docs/GIT_CONVENTION.md",
-      "2_Simulation/t3_amr/README.md:113 → todo/2026-09-08_asset_이동.md",
       "2_Simulation/t3_amr/path/_pibt_core_vendor.py:27 → Docs/AI/AI입출력명세서.md",
       "2_Simulation/t3_amr/path/_pibt_core_vendor.py:33 → docs/2026-09-02_Isaac회전충돌_격자유지_PIBT확장_결정.md",
       "3_FMS/ai_theta/data/build_input.py:5 → Docs/AI/AI입출력명세서.md",
-      "3_FMS/docs/2026-09-04_θ_실험_로드맵_AB공동.md:4 → 2026-09-04_고부하_무릎_판정.md"
+      "3_FMS/docs/2026-09-04_θ_실험_로드맵_AB공동.md:4 → 2026-09-04_고부하_무릎_판정.md",
+      "3_FMS/docs/2026-09-04_θ_실험_로드맵_AB공동.md:36 → 2026-09-07_B5_θ적용_FleetSweep_결과.md"
      ],
-     "n": 30,
+     "n": 29,
      "sev": "S2"
     },
     {
@@ -1391,8 +1391,8 @@
      "needs_agreement": false,
      "evidence": [
       "2_Simulation/t3_amr/path/_pibt_core_vendor.py:0 파일 840줄 (> 800)",
-      "2_Simulation/t3_amr/path/isaac_drive.py:0 파일 1715줄 (> 800)",
-      "2_Simulation/t3_amr/runners/live_pibt.py:0 파일 1041줄 (> 800)",
+      "2_Simulation/t3_amr/path/isaac_drive.py:0 파일 1717줄 (> 800)",
+      "2_Simulation/t3_amr/runners/live_pibt.py:0 파일 1060줄 (> 800)",
       "2_Simulation/t3_amr/tools/path_view.py:0 파일 1116줄 (> 800)",
       "2_Simulation/t3_amr/warehouse/scene/build_scene.py:0 파일 1048줄 (> 800)",
       ".gitlab/scripts/sonar_mr_comment.py:387 함수 main 148줄 (> 80)"
@@ -1529,13 +1529,13 @@
    "duration_s": 3.8,
    "allow_dropped": 4,
    "merge_base": "0c6ac47bd8a621073ce18e0bcb4d3ea31d5951fa",
-   "files_changed": 76,
-   "ahead": 6,
-   "behind": 63,
+   "files_changed": 79,
+   "ahead": 12,
+   "behind": 67,
    "new_vs_develop": {
     "S3": 0,
     "S2": 14,
-    "S1": 30,
+    "S1": 32,
     "S0": 0
    },
    "new_vs_develop_top": [
@@ -1556,7 +1556,7 @@
      "rule": "PLW0108",
      "sev": "S2",
      "path": "2_Simulation/t3_amr/runners/live_pibt.py",
-     "line": 544,
+     "line": 553,
      "msg": "Lambda may be unnecessary; consider inlining inner function",
      "symbol": "",
      "component": "2_Simulation",
@@ -1604,7 +1604,7 @@
      "rule": "B310",
      "sev": "S2",
      "path": "2_Simulation/t3_amr/v2/server/fetch_iwhub.py",
-     "line": 14,
+     "line": 39,
      "msg": "Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.",
      "symbol": "",
      "component": "2_Simulation",
@@ -1616,7 +1616,7 @@
      "rule": "B314",
      "sev": "S2",
      "path": "2_Simulation/t3_amr/v2/server/fetch_iwhub.py",
-     "line": 14,
+     "line": 39,
      "msg": "Using xml.etree.ElementTree.fromstring to parse untrusted XML data is known to be vulnerable to XML attacks. Replace xml.etree.ElementTree.fromstring with its defusedxml equivalent function or make sure defusedxml.defuse_stdlib() is called",
      "symbol": "",
      "component": "2_Simulation",
@@ -1628,7 +1628,7 @@
      "rule": "B310",
      "sev": "S2",
      "path": "2_Simulation/t3_amr/v2/server/fetch_iwhub.py",
-     "line": 27,
+     "line": 52,
      "msg": "Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.",
      "symbol": "",
      "component": "2_Simulation",
@@ -1709,6 +1709,30 @@
     },
     {
      "tool": "ruff",
+     "rule": "SIM115",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/patch_fetch_dest.py",
+     "line": 86,
+     "msg": "Use a context manager for opening files",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "6b395036e365695c"
+    },
+    {
+     "tool": "ruff",
+     "rule": "SIM115",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/patch_fetch_dest.py",
+     "line": 101,
+     "msg": "Use a context manager for opening files",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "2d0af43548d861b8"
+    },
+    {
+     "tool": "ruff",
      "rule": "F541",
      "sev": "S1",
      "path": "2_Simulation/t3_amr/path/pibt_scene.py",
@@ -1748,48 +1772,26 @@
      "rule": "UP031",
      "sev": "S1",
      "path": "2_Simulation/t3_amr/runners/live_pibt.py",
-     "line": 555,
+     "line": 564,
      "msg": "Use format specifiers instead of percent format",
      "symbol": "",
      "component": "2_Simulation",
      "part": "시뮬",
      "fp": "1db3ca2faf55b906"
-    },
-    {
-     "tool": "ruff",
-     "rule": "F541",
-     "sev": "S1",
-     "path": "2_Simulation/t3_amr/runners/live_pibt.py",
-     "line": 629,
-     "msg": "f-string without any placeholders",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "8a31f86d9d6a4794"
-    },
-    {
-     "tool": "ruff",
-     "rule": "F541",
-     "sev": "S1",
-     "path": "2_Simulation/t3_amr/runners/live_pibt.py",
-     "line": 630,
-     "msg": "f-string without any placeholders",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "d29c25db05cfb269"
     }
    ],
    "convention": {
     "branch_ok": true,
-    "commits_ok": 6,
-    "commits_total": 6,
-    "offenders": []
+    "commits_ok": 10,
+    "commits_total": 11,
+    "offenders": [
+     "fix:구버전 최신화"
+    ]
    },
    "new": {
     "S3": 0,
     "S2": 14,
-    "S1": 30,
+    "S1": 32,
     "S0": 0
    }
   }
@@ -2105,7 +2107,7 @@
  "totals": {
   "findings": 625,
   "W": 872,
-  "new": 1,
+  "new": 0,
   "fixed": 0
  },
  "narrative": {
