@@ -5,3 +5,6 @@
 __pycache__/
 *.etli
 sil/calibration/*/out/isaac_*.log
+
+# 성능 스파이크 실험 트리 — PyPy·venv·소스 복사본 13벌 (879MB). 결과는 pages/working/perf_spike.html
+perf_spike/

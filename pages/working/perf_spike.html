@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<title>성능 스파이크 — DES 커널 2.47배 (Perf Spike)</title>
+<style>
+  :root{
+    --bg:#14181D; --panel:#1C2229; --panel-edge:#2C343D; --ink:#E8ECF1; --ink-soft:#9AA7B4;
+    --amber:#F08A32; --machine:#3BAF77; --steel:#8FB4D9; --slate:#8A96A3; --grid:#2A323B; --rust:#D0563C;
+    --mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --sans:"IBM Plex Sans KR","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px;color:var(--ink);font-family:var(--sans);line-height:1.75;font-size:15px}
+  a{color:var(--steel)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+  header{border-bottom:3px solid var(--ink);background:var(--panel)}
+  .titleblock{display:grid;grid-template-columns:1fr auto;gap:24px;padding:34px 0 26px;align-items:end}
+  .doc-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:10px}
+  .doc-eyebrow b{color:var(--amber);font-weight:600}
+  h1{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.25}
+  h1 .sub{display:block;font-size:.5em;font-weight:500;color:var(--ink-soft);letter-spacing:0;margin-top:8px}
+  .meta{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-align:right;line-height:2;border-left:1px solid var(--panel-edge);padding-left:24px}
+  .meta b{color:var(--ink);font-weight:600}
+  nav{position:sticky;top:0;z-index:50;background:#0E1318;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav .wrap{display:flex;gap:2px;padding:0 20px}
+  nav a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:#B8C2CC;text-decoration:none;padding:11px 13px;border-bottom:3px solid transparent}
+  nav a:hover,nav a:focus-visible{color:#fff;border-bottom-color:var(--amber);outline:none}
+  nav a.nav-home{color:#fff;font-weight:700;border-right:1px solid #3A4654;margin-right:8px;padding-right:15px}
+  nav a.nav-cross{margin-left:auto;color:var(--amber);font-weight:700}
+  main{padding:44px 0 80px}
+  section{background:var(--panel);border:1px solid var(--panel-edge);border-top:3px solid var(--ink);margin-bottom:36px;scroll-margin-top:56px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;padding:20px 26px 0;flex-wrap:wrap}
+  .sec-no{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;letter-spacing:.1em}
+  h2{font-size:clamp(19px,2.2vw,27px);font-weight:800;letter-spacing:-.025em;line-height:1.3}
+  .sec-body{padding:16px 26px 26px}
+  h3{font-size:14px;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+  h3::before{content:"";width:8px;height:8px;background:var(--amber);flex:none}
+  h4{font-size:13px;font-weight:700;margin:16px 0 6px;color:var(--ink-soft);font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase}
+  p{margin-bottom:10px} .sec-body p{max-width:78ch} .lead{font-size:15.5px} .soft{color:var(--ink-soft)}
+  ul,ol{margin:8px 0 12px 20px} li{margin-bottom:5px;max-width:76ch}
+  .kcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+  .kcard{border:1px solid var(--panel-edge);border-top:3px solid var(--amber);background:#20272F;padding:14px 16px}
+  .kcard.g{border-top-color:var(--machine)} .kcard.s{border-top-color:var(--steel)} .kcard.r{border-top-color:var(--rust)}
+  .kcard b{display:block;font-size:15px;margin-bottom:4px}
+  .kcard span{font-size:12.5px;color:var(--ink-soft);line-height:1.6;display:block}
+  .plain{margin:14px 0 8px;padding:12px 16px;background:#17251E;border-left:4px solid var(--machine);font-size:14px;line-height:1.8}
+  .plain .pl-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--machine);font-weight:700;margin-bottom:4px}
+  .plain.warn{background:#2A2019;border-left-color:var(--amber)} .plain.warn .pl-tag{color:var(--amber)}
+  .plain.bad{background:#2A1A17;border-left-color:var(--rust)} .plain.bad .pl-tag{color:var(--rust)}
+  code{font-family:var(--mono);font-size:.92em;background:#232B34;padding:1px 5px;border:1px solid var(--grid)}
+  pre{font-family:var(--mono);font-size:12px;line-height:1.7;background:#20272F;border:1px solid var(--panel-edge);border-left:4px solid var(--steel);padding:12px 16px;overflow-x:auto;margin:12px 0}
+  pre code{background:none;border:none;padding:0}
+  pre.amqp{border-left-color:var(--amber)} pre.mqtt{border-left-color:var(--machine)} pre.seq{border-left-color:var(--slate)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--ink);background:#20272F;white-space:nowrap}
+  td{padding:10px 12px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.65}
+  tr:last-child td{border-bottom:none} table tr:nth-child(even) td{background:#1E252D}
+  td.m{font-family:var(--mono);font-size:12px;white-space:nowrap}
+  td.mw{font-family:var(--mono);font-size:12px}
+  .tbl-scroll{overflow-x:auto}
+  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor;margin:0 2px;white-space:nowrap}
+  .c-amber{color:var(--amber)} .c-green{color:var(--machine)} .c-steel{color:var(--steel)} .c-slate{color:var(--slate)} .c-rust{color:var(--rust)}
+  .viz{background:#0E1318;border:1px solid var(--panel-edge);padding:12px 14px;margin:14px 0;overflow-x:auto}
+  .viz svg{display:block;min-width:860px;width:100%;height:auto}
+  .flow-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px auto 40px}
+  .flow-nav a{background:var(--panel);border:1px solid var(--panel-edge);padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--ink);text-decoration:none}
+  .flow-nav a:hover{border-color:var(--amber)} .flow-nav .prev{grid-column:1} .flow-nav .next{grid-column:2;text-align:right}
+  .flow-nav small{display:block;color:var(--ink-soft);font-size:10px;letter-spacing:.08em;margin-bottom:4px}
+  footer{border-top:3px solid var(--ink);padding:20px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+  :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+  @media (max-width:820px){.titleblock{grid-template-columns:1fr}.meta{border-left:none;padding-left:0;text-align:left}body{font-size:14px}.sec-head,.sec-body{padding-left:16px;padding-right:16px}}
+  @media(max-width:640px){.flow-nav{grid-template-columns:1fr}.flow-nav .prev,.flow-nav .next{grid-column:auto;text-align:left}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap titleblock">
+    <div>
+      <div class="doc-eyebrow"><b>WORKING · 성능 스파이크</b> · REV A — 2026-09-11</div>
+      <h1>DES 커널 2.47배 — 결과를 한 비트도 바꾸지 않고
+        <span class="sub">견적 28런이 407초 걸린다. 병렬화 말고 런 자체를 줄일 방법을 찾는 실험 12단계. PyPy는 기각(3배 느림), Cython 이식은 채택(2.47배), 커널 자료 모델 교체는 기각(이득 0). 전 단계에서 <code>[SUMMARY]</code> 37키가 비트 동일하다.</span>
+      </h1>
+    </div>
+    <div class="meta">
+      DOC. <b>PERF-SPIKE</b><br>
+      REV. <b>A</b> · <b>2026-09-11</b><br>
+      대상 <b>3_FMS/sim_engine</b> (복사본)<br>
+      팀 레포 <b>변경 0</b>
+    </div>
+  </div>
+</header>
+
+<nav aria-label="문서 내 탐색">
+  <div class="wrap">
+    <a class="nav-home" href="../../index.html">⌂ INDEX</a>
+    <a href="#s0">00 결론</a>
+    <a href="#s1">01 실험 설계</a>
+    <a href="#s2">02 병목</a>
+    <a href="#s3">03 PyPy 기각</a>
+    <a href="#s4">04 Cython 이식</a>
+    <a href="#s5">05 무료 최적화</a>
+    <a href="#s6">06 자료 모델 기각</a>
+    <a href="#s7">07 함정 3</a>
+    <a href="#s8">08 운영·남은 레버</a>
+    <a class="nav-cross" href="../tech/current_architecture.html">현재 아키텍처 ↗</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="s0">
+  <div class="sec-head"><span class="sec-no">SEC 00 · 결론</span><h2>이식은 <code>pibt/</code>에서만 값이 났고, 커널 자료 모델은 손대지 말아야 한다</h2></div>
+  <div class="sec-body">
+    <p class="lead">견적 1건은 대수별 독립 런 여러 개다. 병렬화(워커 수)는 이미 했고, <b>런 하나를 줄이는</b> 방법을 12단계로 시험했다. 합격 기준은 속도가 아니라 <b><code>[SUMMARY]</code> 37키 비트 동일</b>이다 — 결과가 바뀌면 견적 KPI가 바뀌고 그러면 아무 의미가 없다.</p>
+
+    <div class="kcards">
+      <div class="kcard g"><b>채택 · 2.47x</b><span>Cython 이식 5파일 + PGO. 호출자 수정 0, import 경로 변경 0</span></div>
+      <div class="kcard r"><b>기각 · PyPy</b><span><b>3배 느리다</b> — numpy 가 cpyext 경계를 넘느라 JIT 이득을 삼킨다</span></div>
+      <div class="kcard r"><b>기각 · 자료 모델</b><span>dict → cdef class 전환 3벌 전부 이득 0~−7%. 전제가 틀렸다</span></div>
+      <div class="kcard"><b>남은 레버</b><span>런 간 캐시 ~6% · 조기 종료 5.6x(제품 결정)</span></div>
+    </div>
+
+    <h3>12단계 전부</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>#</th><th>무엇</th><th>24대 배속</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td class="n">PyPy</td><td>인터프리터 교체</td><td class="n">0.35x</td><td><span class="chip c-rust">기각</span></td></tr>
+        <tr><td class="n">cy1</td><td><code>hgraph.py</code> 무변경 cythonize</td><td class="n">1.16x</td><td><span class="chip c-slate">부분</span></td></tr>
+        <tr><td class="n">cy2</td><td><code>cdef class</code> + 스칼라 타입만</td><td class="n">1.10x</td><td><span class="chip c-rust">후퇴</span></td></tr>
+        <tr><td class="n">cy3</td><td><b>CSR 평탄 배열 + C 이진 힙</b></td><td class="n"><b>1.87x</b></td><td><span class="chip c-green">★ 전환점</span></td></tr>
+        <tr><td class="n">cy4</td><td><code>geometry.py</code> — <code>cdef inline</code> + 포인터</td><td class="n">2.07x</td><td><span class="chip c-green">채택</span></td></tr>
+        <tr><td class="n">cy5</td><td><code>heading</code> 메모리뷰 · <code>liveness</code> 집합 제거</td><td class="n">2.28x</td><td><span class="chip c-green">채택</span></td></tr>
+        <tr><td class="n">cy6</td><td><code>kernel/core.py</code> 이식 + <code>dmap_h</code> 조회 1회</td><td class="n">2.41x</td><td><span class="chip c-green">채택</span></td></tr>
+        <tr><td class="n">cy7</td><td><b>PGO</b> (코드 변경 0)</td><td class="n"><b>2.47x</b></td><td><span class="chip c-green">★ 권장</span></td></tr>
+        <tr><td class="n">cy8</td><td>sdiag 역인덱스 · frozenset 캐시</td><td class="n">2.43x</td><td><span class="chip c-rust">기각</span></td></tr>
+        <tr><td class="n">cy9</td><td><code>-march=native -ffp-contract=off</code></td><td class="n">2.47x</td><td><span class="chip c-rust">기각</span></td></tr>
+        <tr><td class="n">cy10</td><td>자료 모델 하이브리드 (5필드만)</td><td class="n">2.32x</td><td><span class="chip c-rust">기각</span></td></tr>
+        <tr><td class="n">cy11</td><td>자료 모델 전면 전환 (32필드)</td><td class="n">2.36x</td><td><span class="chip c-rust">기각</span></td></tr>
+        <tr><td class="n">cy12</td><td>+ <code>cdef Robot rb</code> 타입 선언</td><td class="n">2.35x</td><td><span class="chip c-rust">기각</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="plain"><span class="pl-tag">한 줄 요약</span><b>이득은 전부 <code>pibt/</code> 에서 났다</b> — 다익스트라·기하처럼 <b>순수 수치 루프</b>. <code>core.py</code> 처럼 분기와 상태 전이가 많은 코드는 CPython 3.11 이 이미 잘 처리하고 있어 손댈 여지가 없었다.</div>
+  </div>
+</section>
+
+<section id="s1">
+  <div class="sec-head"><span class="sec-no">SEC 01 · 실험 설계</span><h2>인터프리터 외 모든 변수를 고정한다</h2></div>
+  <div class="sec-body">
+    <p>성능 실험의 절반은 대조군 만들기다. 호스트에 <b>CPython 3.11.15</b> 가 있고 PyPy 도 3.11.15 라 언어 버전이 정확히 일치했다. PyPy 에 numpy 를 올렸더니 <b>2.4.6</b> — 프로덕션 워커 이미지(<code>python:3.11.9-slim</code> + <code>numpy==2.4.6</code>)와 같은 버전이 나왔다. <b>대조군이 곧 프로덕션</b>이다.</p>
+
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>고정한 것</th><th>값</th></tr></thead>
+      <tbody>
+        <tr><td>언어</td><td class="m">3.11.15 (양쪽)</td></tr>
+        <tr><td>numpy</td><td class="m">2.4.6 (양쪽)</td></tr>
+        <tr><td>소스</td><td>팀 레포 <code>develop</code> 복사본 — 팀 레포는 <b>읽기만</b></td></tr>
+        <tr><td>주문</td><td class="m">orders_seed101.json 336건 — 한 벌을 모든 변형이 공유</td></tr>
+        <tr><td>인자</td><td>견적 워커 실인자 (헤딩 PIBT · 충전 존 · 차선 2.0 · 양보 · θ · capacity 1 · tote_units 8)</td></tr>
+        <tr><td>지평선</td><td class="m">7200 틱</td></tr>
+        <tr><td>측정</td><td>대수 8·16·24 각 2회 중앙값, wall-clock</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="plain warn"><span class="pl-tag">합격 기준은 속도가 아니다</span><code>[SUMMARY]</code> 37키 <b>문자열 완전 일치</b>. 처리량·리드타임·가동률이 한 자리라도 다르면 그 최적화는 폐기다. 이 하네스가 뒤에서 실제로 버그 하나를 잡아냈다(SEC 07).</div>
+
+    <p class="soft">프로파일 %는 호출 수가 많은 함수를 과대평가한다 — cProfile 이 호출당 1~2 µs 를 더한다. 판단은 항상 벤치 wall-clock 으로 했고, 프로파일은 <b>어디를 볼지</b> 고르는 데만 썼다.</p>
+  </div>
+</section>
+
+<section id="s2">
+  <div class="sec-head"><span class="sec-no">SEC 02 · 병목</span><h2>거리장 계산이 70%, PIBT 결정이 17%</h2></div>
+  <div class="sec-body">
+    <p>12대·3600틱 프로파일(4.4초) 기준이다.</p>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>구간</th><th>비중</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><b>거리장 계산</b></td><td class="n"><b>70%</b></td><td><code>_relax_affected</code> · <code>_solve_full</code> — (칸, 방향) 3차원 상태 49,648개 다익스트라</td></tr>
+        <tr><td>PIBT 결정</td><td class="n">17%</td><td><code>step_h</code> · <code>candidates_h</code></td></tr>
+        <tr><td>배차·집계</td><td class="n">13%</td><td></td></tr>
+        <tr><td>프로세스 기동 + 맵·θ 준비</td><td class="n">1%</td><td>54 ms (파이썬+numpy 46 · 맵 5 · θ 3)</td></tr>
+      </tbody>
+    </table></div>
+
+    <p>거리장이 비싼 이유도 코드에 있다.</p>
+<pre><code>key = (goal, frozenset(blocked))     # blocked = 반경 안 이웃 로봇이 점유한 칸</code></pre>
+    <p><b>캐시 키에 이웃 로봇 위치가 들어간다.</b> 로봇이 매 틱 움직이니 키가 거의 안 겹쳐, 3600틱에서 402번이 실제 계산이었다(각 6.1 ms). 기본 거리장(<code>base</code>)은 잘 캐시된다(388 요청 → 53회 계산) — 비싼 쪽은 <b>정체 로봇용 재계획 거리장</b>이다.</p>
+  </div>
+</section>
+
+<section id="s3">
+  <div class="sec-head"><span class="sec-no">SEC 03 · PyPy</span><h2>원리는 맞았지만 numpy 가 막았다</h2></div>
+  <div class="sec-body">
+    <p class="lead">PyPy 는 추적 JIT 다. 같은 루프가 반복되면 그 경로를 한 줄기 기계어 트레이스로 기록하고 관측된 타입으로 특수화한다 — 박싱이 사라지고 프레임 생성이 인라인된다. 우리 병목(<code>heapq</code> + <code>dict</code> + <code>float</code> 순수 파이썬 루프)이 정확히 그 모양이라 기대가 컸다.</p>
+
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>대수</th><th>CPython</th><th>PyPy</th><th>배율</th><th>SUMMARY</th></tr></thead>
+      <tbody>
+        <tr><td class="n">8</td><td class="n">1.52 s</td><td class="n">4.92 s</td><td class="n"><b>3.23x 느림</b></td><td>비트 동일</td></tr>
+        <tr><td class="n">16</td><td class="n">4.73 s</td><td class="n">14.20 s</td><td class="n"><b>3.00x 느림</b></td><td>비트 동일</td></tr>
+        <tr><td class="n">24</td><td class="n">7.24 s</td><td class="n">20.78 s</td><td class="n"><b>2.87x 느림</b></td><td>비트 동일</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>원인 — 마이크로 벤치 400k 반복</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>작업</th><th>CPython</th><th>PyPy</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td>순수 파이썬 산술</td><td class="n">0.017 s</td><td class="n"><b>0.001 s</b></td><td>PyPy <b>17x 빠름</b> — 원리는 맞다</td></tr>
+        <tr><td>heapq 다익스트라 패턴</td><td class="n">0.051 s</td><td class="n">0.051 s</td><td>동률</td></tr>
+        <tr><td><b>numpy 스칼라 인덱싱</b></td><td class="n">0.034 s</td><td class="n"><b>0.285 s</b></td><td>PyPy <b>8.4x 느림</b> ← 범인</td></tr>
+        <tr><td>중첩 list 인덱싱 (평탄화안)</td><td class="n">0.027 s</td><td class="n">0.052 s</td><td>PyPy 1.9x 느림</td></tr>
+      </tbody>
+    </table></div>
+
+    <p>핫 루프가 간선 완화마다 <code>edge_cost[r,c,d]</code>·<code>free[r,c]</code>·<code>done[r,c,h]</code> 를 스칼라로 찍는다. PyPy 에서 numpy 는 <b><code>cpyext</code>(C 확장 호환 계층)</b> 를 통과하는데, 그 경계 비용이 JIT 이득을 삼킨다.</p>
+
+    <div class="plain bad"><span class="pl-tag">평탄화(2안)도 답이 아니다</span>numpy 를 중첩 list 로 바꾸면 PyPy 가 5.5배 빨라지지만(0.285 → 0.052), 그래도 <b>CPython 의 numpy 버전(0.034)보다 느리다</b>. 양쪽 다 막혀 있다.</div>
+  </div>
+</section>
+
+<section id="s4">
+  <div class="sec-head"><span class="sec-no">SEC 04 · Cython 이식</span><h2>자료구조를 바꾼 순간 값이 났다</h2></div>
+  <div class="sec-body">
+
+    <h3>cy1 — 그대로 컴파일 (코드 변경 0) · 1.16x</h3>
+    <p>바이트코드 디스패치만 사라지고 파이썬 객체 연산은 그대로라 이 정도가 한계다.</p>
+
+    <h3>cy2 — <code>cdef class</code> + 스칼라 타입 지정 · 1.10x <span class="chip c-rust">후퇴</span></h3>
+    <p><b>1단계보다 느려졌다.</b> <code>preds[i]</code> 가 여전히 튜플 리스트, <code>done</code> 이 <code>set</code>, <code>dm</code> 이 <code>dict</code> 인 채로 지역 변수에만 <code>cdef Py_ssize_t</code> 를 붙이면 경계마다 박싱·언박싱이 <b>추가돼</b> 손해다.</p>
+    <div class="plain warn"><span class="pl-tag">교훈 ①</span><b>자료구조를 안 바꾸면 타입 지정은 의미가 없다.</b> 어설프게 하면 오히려 느려진다.</div>
+
+    <h3>cy3 — CSR 평탄 배열 + C 이진 힙 · <b>1.87x</b> <span class="chip c-green">전환점</span></h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>기존</th><th>이후</th></tr></thead>
+      <tbody>
+        <tr><td><code>preds</code>/<code>succs</code> 튜플 리스트</td><td><b>CSR 평탄 배열</b> (<code>ptr</code> int32 · <code>j</code> int32 · <code>cost</code> float64 · <code>diag</code> int32)</td></tr>
+        <tr><td><code>done</code> <code>removed</code> <code>bcells</code> <code>set</code></td><td><code>uint8[n]</code> 배열</td></tr>
+        <tr><td><code>dm</code> <code>dict</code></td><td><code>float64[n]</code> + <code>uint8[n]</code> seen</td></tr>
+        <tr><td><code>heapq</code> 튜플 힙</td><td><b>C 이진 힙</b> (<code>double[]</code> + <code>int[]</code>)</td></tr>
+        <tr><td><code>_boundary_best</code> 파이썬 메서드 <b>210만 호출</b></td><td>C 루프에 인라인</td></tr>
+      </tbody>
+    </table></div>
+    <p><b>비트 동일성 근거</b>: 알고리즘과 부동소수 연산 순서(<code>dv + cost</code>)를 그대로 두고, C 힙의 비교를 파이썬 <code>heapq</code> 의 <code>(거리, 인덱스)</code> 사전식 비교와 동일하게 구현했다. 인덱스가 유일해 최소값이 항상 유일하므로 pop 순서가 결정적이다.</p>
+
+    <h3>cy4 — <code>geometry.py</code> · 2.07x</h3>
+    <p>77줄짜리 작은 함수 모음인데 호출 수가 수백만이라 남은 시간의 16%를 먹고 있었다(<code>_inb</code> 63.9만 · <code>rear_cell</code> 68.6만 · <code>valid_state</code> 24.4만).</p>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>원본</th><th>이후</th></tr></thead>
+      <tbody>
+        <tr><td><code>_inb</code> 가 매 호출 <code>H, W = free.shape</code> 언팩 + <code>free[rc]</code> 튜플 키 numpy 인덱싱</td><td><code>PyArray_GETPTR2</code> 로 바이트 직접 읽기</td></tr>
+        <tr><td><code>DIRS</code> 파이썬 리스트의 튜플</td><td>C 배열 <code>int _DR[4] / _DC[4]</code></td></tr>
+        <tr><td><code>rear_cell</code> → <code>valid_state</code> → <code>turn_ok</code> 파이썬 호출 사슬</td><td><code>cdef inline</code> 내부 호출</td></tr>
+      </tbody>
+    </table></div>
+    <p class="soft">공개 시그니처를 전부 유지해 호출자(<code>heading</code>·<code>hgraph</code>·<code>liveness</code>·<code>cell</code>) 수정이 <b>0</b>이다. 정수·불리언 연산뿐이라 부동소수가 없어 결과는 정의상 동일하다.</p>
+
+    <h3>cy5 — <code>heading</code>·<code>liveness</code> · 2.28x</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>대상</th><th>바꾼 것</th></tr></thead>
+      <tbody>
+        <tr><td><code>candidates_h</code> (5.8만 호출/런)</td><td>numpy 스칼라 인덱싱 8회 → <code>double[:, :, ::1]</code> 메모리뷰</td></tr>
+        <tr><td><code>liveness.dist</code></td><td>로봇마다 <code>set(occupied) | set(extra)</code> 집합 할당 → 집합 없이 직접 순회</td></tr>
+        <tr><td><code>core.dmap_h</code> (10.5만 호출/런)</td><td><code>if goal not in d: ... return d[goal]</code>(조회 2회) → <code>d.get(goal)</code>(1회). <b>Cython 아님</b></td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>cy6 — <code>kernel/core.py</code> · 2.41x (추가 1.06x뿐)</h3>
+    <p><code>pibt/</code> 에서 1.87배를 얻은 것과 대조적이다. <b>이유는 자료 모델이다</b> — <code>core.py</code> 의 비용은 바이트코드 디스패치가 아니라 <code>robots[rid]["state"]</code> 같은 접근에 있다고 봤고, 그래서 다음 단계로 자료 모델 교체를 시도했다(SEC 06).</p>
+
+    <div class="plain"><span class="pl-tag">이식 후 프로파일</span><code>run_ticks</code> 가 78.6%(호출 1회)로 뭉친다 — cProfile 이 컴파일된 경계 안을 못 보기 때문이고, 동시에 <b>파이썬 레벨에 남은 핫스팟이 없다</b>는 뜻이다.</div>
+  </div>
+</section>
+
+<section id="s5">
+  <div class="sec-head"><span class="sec-no">SEC 05 · 무료 최적화</span><h2>코드를 안 건드리는 수단 셋 중 하나만 값이 있었다</h2></div>
+  <div class="sec-body">
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>#</th><th>수단</th><th>추가 배속</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td class="n">cy7</td><td><b>PGO</b> — 계측 빌드 → 훈련 실행 1회 → 재빌드</td><td class="n"><b>1.024x</b></td><td><span class="chip c-green">채택</span> 코드 변경 0</td></tr>
+        <tr><td class="n">cy8</td><td><code>_affected_set</code> 의 <code>np.isin</code> 전수 스캔 → sdiag 역인덱스<br><code>candidates_h</code> 의 frozenset 할당 → 캐시</td><td class="n">1.009x</td><td><span class="chip c-rust">기각</span> 복잡도 대비 미미</td></tr>
+        <tr><td class="n">cy9</td><td><code>-march=native -ffp-contract=off</code></td><td class="n">1.002x</td><td><span class="chip c-rust">기각</span> 잡음 수준</td></tr>
+      </tbody>
+    </table></div>
+
+    <p>셋 다 비트 동일이었다 — <b>틀려서 기각한 게 아니라 값이 없어서</b> 기각이다.</p>
+    <ul>
+      <li><b>cy8 이 작았던 이유</b>: <code>np.isin</code> 은 <code>blocked</code> 가 비어 있지 않을 때만 도는데 그 비율이 낮았다. 작은 frozenset 은 생성 비용이 dict 조회와 큰 차이가 없다.</li>
+      <li><b>cy9 의 <code>-ffp-contract=off</code> 는 필수였다</b> — FMA 축약이 곱셈+덧셈의 반올림을 바꿔 비트 동일성을 깬다. 그걸 끄고 나니 벡터화 여지가 없어(핫 루프가 덧셈·비교·분기) 얻을 게 없었다.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="s6">
+  <div class="sec-head"><span class="sec-no">SEC 06 · 자료 모델</span><h2>세 번 시도해 세 번 다 느려졌다 — 전제가 틀렸다</h2></div>
+  <div class="sec-body">
+    <p class="lead">로봇 하나가 <b>파이썬 dict 하나</b>다(필드 32개). <code>rb["state"]</code> 한 줄이 해시 조회 + 참조 카운트 + PyObject 반환이고, 24대 × 21,600틱이면 <b>수천만 번</b>이다. "이걸 C 구조체로 바꾸면 1.5~2배"라고 봤는데 — <b>실측은 이득 0, 오히려 손해였다.</b></p>
+
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>#</th><th>시도</th><th>24대</th><th>결과</th></tr></thead>
+      <tbody>
+        <tr><td class="n">cy10</td><td><b>하이브리드</b> — 접근 상위 5필드(<code>state</code>·<code>busy</code>·<code>pos</code>)만 C 속성, 나머지 27개는 dict + <code>__getitem__</code> 호환 레이어</td><td class="n">2.32x</td><td><span class="chip c-rust">−7%</span></td></tr>
+        <tr><td class="n">cy11</td><td><b>전면 전환</b> — 32필드 전부 <code>cdef public</code> 속성, <code>rb["x"]</code> 191곳을 <code>rb.x</code> 로</td><td class="n">2.36x</td><td><span class="chip c-rust">−2%</span></td></tr>
+        <tr><td class="n">cy12</td><td>+ 핫 함수 4개에 <code>cdef Robot rb</code> 타입 선언 (진짜 C 오프셋 접근)</td><td class="n">2.35x</td><td><span class="chip c-rust">−2.5%</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>왜 실패했나</h3>
+    <p><b>cy10</b> — 부분 전환은 안 건드린 쪽에 세금을 물린다. 남은 62곳이 <code>__getitem__</code> 을 거치게 됐고, 특히 <code>rb["pos"]</code> 20곳이 <b>매번 튜플을 새로 할당</b>하게 됐다.</p>
+    <p><b>cy11</b> — 호환 레이어 세금은 사라졌지만 <code>rb</code> 가 타입이 안 붙은 파이썬 객체라 <code>rb.state</code> 가 C 오프셋이 아니라 <b>프로퍼티 디스크립터</b>를 거친다.</p>
+    <p><b>cy12</b> — 타입을 붙여 진짜 구조체 접근으로 만들었는데도 이득이 없다.</p>
+
+    <div class="plain bad"><span class="pl-tag">전제가 틀렸다 — CPython 3.11 을 과소평가했다</span>3.11 의 <b>적응형 바이트코드</b>는 <code>rb["state"]</code> 를 런타임에 특수화한다. 키가 인터닝된 문자열이고 dict 레이아웃이 반복되면 해시를 다시 계산하지 않고 슬롯을 직접 친다. 게다가 로봇 dict 들이 같은 키 집합이라 <b>key-sharing dict</b> 로 저장돼 메모리도 뭉쳐 있다. <b>이미 거의 구조체처럼 동작하고 있었다.</b> 거기에 <code>cdef class</code> 를 얹으니 얻는 건 없고 타입 체크·디스크립터 비용만 붙었다.</div>
+
+    <p class="soft">되짚어 보면 신호가 있었다 — <b>cy6 에서 <code>core.py</code> 를 통째로 컴파일했을 때도 1.03배뿐이었다.</b> 그 시간은 dict 조회가 아니라 <b>로직 자체</b>(배차 판정 · 존 재타겟 · 상태 전이 · 카운터 갱신)에 있었다. 프로파일의 <code>core.py</code> 비중을 "dict 접근 비용"으로 읽은 것이 오류였다.</p>
+  </div>
+</section>
+
+<section id="s7">
+  <div class="sec-head"><span class="sec-no">SEC 07 · 함정</span><h2>이번에 밟은 함정 셋</h2></div>
+  <div class="sec-body">
+
+    <h3>① 어설픈 타이핑은 손해다</h3>
+    <p>cy2(스칼라만 타입)가 cy1(그냥 컴파일)보다 <b>느렸다</b>. 자료구조가 파이썬 객체인 채로 지역 변수에만 C 타입을 붙이면 경계마다 박싱·언박싱이 추가된다. <b>타입은 자료구조와 함께 바꿔야 한다.</b></p>
+
+    <h3>② <code>cdivision=True</code> 와 음수 modulo</h3>
+    <p>cy5 에서 <code>h</code> 를 <code>Py_ssize_t</code> 로 타입한 순간 <code>(h - 1) % 4</code> 가 <b>C 시맨틱스</b>로 바뀌어 <code>h=0</code> 에서 <code>3</code> 이 아니라 <code>-1</code> 이 됐다. 로봇이 엉뚱한 방향으로 가 "시작 점유 겹침" AssertionError 가 났다.</p>
+<pre class="cli"><code>(h - 1) % 4    →    (h + 3) % 4     # 피연산자가 항상 비음수 → C·파이썬 동일</code></pre>
+    <p><b><code>cdivision=True</code> 는 C 정수로 타입한 변수에만 적용된다.</b> 1~4단계에서 같은 식이 멀쩡했던 이유는 그때 <code>h</code> 가 파이썬 객체라 파이썬 modulo 를 썼기 때문이다. <b>타입을 붙이는 순간 modulo 의미가 바뀐다.</b></p>
+    <div class="plain"><span class="pl-tag">하네스가 잡았다</span>이번엔 크래시로 드러났지만 조용히 다른 경로를 낼 수도 있었다. <code>[SUMMARY]</code> 비트 비교가 안전망 역할을 했다 — <b>이걸 CI 에 넣어야 하는 이유</b>가 실증됐다.</div>
+
+    <h3>③ 프로파일 %를 원인으로 읽지 말 것</h3>
+    <p>cProfile 은 호출당 1~2 µs 를 더해 <b>호출 수가 많은 함수를 과대평가</b>한다. <code>dmap_h</code> 가 16.7% 로 보였지만 실제 비중은 절반 이하였다. 그리고 <code>core.py</code> 의 큰 비중을 "dict 접근"으로 해석한 것이 SEC 06 의 헛발질로 이어졌다. <b>프로파일은 어디를 볼지 고르는 데 쓰고, 판단은 wall-clock 으로.</b></p>
+  </div>
+</section>
+
+<section id="s8">
+  <div class="sec-head"><span class="sec-no">SEC 08 · 운영</span><h2>배포·검증과 남은 레버</h2></div>
+  <div class="sec-body">
+    <h3>건드린 소스 5개</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>파일</th><th>무엇</th><th>기여</th></tr></thead>
+      <tbody>
+        <tr><td class="m">pibt/hgraph.pyx</td><td>CSR + C 이진 힙</td><td class="n">1.87x 까지</td></tr>
+        <tr><td class="m">pibt/geometry.pyx</td><td><code>cdef inline</code> + 포인터 접근</td><td class="n">1.10x</td></tr>
+        <tr><td class="m">pibt/heading.pyx</td><td>메모리뷰</td><td class="n" rowspan="2">합쳐 1.10x</td></tr>
+        <tr><td class="m">pibt/liveness.pyx</td><td>집합 할당 제거</td></tr>
+        <tr><td class="m">kernel/core.pyx</td><td>컴파일 + <code>dmap_h</code> 조회 1회</td><td class="n">1.06x</td></tr>
+      </tbody>
+    </table></div>
+    <p><b>호출자 수정 0, import 경로 변경 0</b> — <code>.so</code> 가 <code>.py</code> 보다 우선 로드된다.</p>
+
+    <h3>배포·검증</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>항목</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>빌드</td><td>워커 이미지에 <code>cythonize</code> + <code>build-essential</code> (멀티스테이지로 런타임에선 제외)</td></tr>
+        <tr><td>PGO</td><td>빌드 3단계 — <code>_build.py gen</code> → 훈련 1회 실행 → <code>_build.py use</code></td></tr>
+        <tr><td><b>위험</b></td><td><code>.pyx</code> 와 <code>.py</code> 가 갈라지면 조용히 어긋난다 → <b>원본 <code>.py</code> 를 지우고 <code>.pyx</code> 단일 소스</b></td></tr>
+        <tr><td><b>회귀 방지</b></td><td><code>[SUMMARY]</code> 비트 비교를 CI 에. 이번 하네스(<code>bench2.py</code>)가 그대로 쓰인다</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>효과</h3>
+    <div class="kcards">
+      <div class="kcard g"><b>28런 407초 → 약 165초</b><span>2.47x</span></div>
+      <div class="kcard g"><b>견적 1건 약 2분 → 50초 안팎</b><span>워커 2개 기준</span></div>
+    </div>
+
+    <h3>남은 레버</h3>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>방향</th><th>예상</th><th>성격</th><th>비트 동일</th></tr></thead>
+      <tbody>
+        <tr><td><b>런 간 캐시</b> — HGraph 구축(103 ms/프로세스) + base 거리장(240 ms/런)을 28런이 매번 다시 만든다. 워커가 한 번 만들고 <code>fork</code> 로 런을 띄우면 회수된다 (서브프로세스 타임아웃 격리는 유지)</td><td class="n">~6%</td><td>워커 구조 변경</td><td>✅</td></tr>
+        <tr><td><code>liveness</code> 재계획 캐시 키 재설계 (매 틱 바뀌어 적중률 낮음)</td><td class="n">미지수</td><td>알고리즘</td><td>⚠️</td></tr>
+        <tr><td><b>조기 종료 · 이분 탐색</b></td><td class="n">5.6x</td><td><b>제품 결정</b></td><td>❌ 대수–처리량 곡선을 잃는다</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="plain warn"><span class="pl-tag">성능 관점에서 남은 건 사실상 제품 결정 하나</span>407초를 165초로 줄였고, 그 이상은 <b>"고객에게 곡선 전체를 보여줄 것인가"</b> 를 물어야 한다. 조기 종료는 코드 몇 줄에 5.6배지만 그래프가 짧아진다.</div>
+  </div>
+</section>
+
+</main>
+
+<div class="wrap flow-nav">
+  <a class="prev" href="isaac_parallel_measure.html"><small>← 이전</small>WORKING · Isaac 병렬 실행 실측</a>
+  <a class="next" href="../tech/current_architecture.html"><small>다음 →</small>TECH 01 · 현재 아키텍처</a>
+</div>
+
+<footer>
+  <div class="wrap">WORKING · PERF-SPIKE · REV A — 2026-09-11 · 대상 <code>3_FMS/sim_engine</code>(복사본, 팀 레포 변경 0) · 실험 12단계 전부 <code>[SUMMARY]</code> 37키 비트 동일 · 원자료 <code>PJT-2/perf_spike/</code> · <a href="../../index.html">문서 인덱스로</a></div>
+</footer>
+
+</body>
+</html>
