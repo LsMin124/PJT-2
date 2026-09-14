@@ -1,11 +1,11 @@
 {
  "run": {
-  "id": "2026-09-14_0005_light",
-  "ts": "2026-09-14T00:05:01+0900",
+  "id": "2026-09-14_0905_light",
+  "ts": "2026-09-14T09:05:01+0900",
   "mode": "light",
   "ref": "origin/develop",
-  "sha": "f2e71b2428aea9b37fc6931b973d0702d21366f1",
-  "duration_s": 16.6,
+  "sha": "adf55609205e6786031fac429d941911aa03653e",
+  "duration_s": 17.0,
   "status": "ok",
   "prev_deep": "2026-09-11_1805_deep",
   "red_flags": [
@@ -14,8 +14,12 @@
     "msg": "시크릿 의심 1건"
    },
    {
+    "code": "COMP_UP",
+    "msg": "infra W 8→54 (D 9.0→15.7)"
+   },
+   {
     "code": "BRANCH_S2",
-    "msg": "feature/S15P21A106-203-fms-회전발자국마스크 변경 파일에 S2+ 3건 추가"
+    "msg": "feature/S15P21A106-203-fms-회전발자국마스크 변경 파일에 S2+ 4건 추가"
    },
    {
     "code": "REQ_DRIFT",
@@ -39,138 +43,17 @@
  },
  "components": [
   {
-   "id": "2_Simulation/t4_agent",
-   "label": "└ t4_agent (ROS2 pkg)",
-   "part": "시뮬",
-   "users": [
-    "LsMin124"
-   ],
-   "loc": 1872,
-   "counts": {
-    "S3": 0,
-    "S2": 20,
-    "S1": 37,
-    "S0": 0
-   },
-   "tools": [
-    "ruff",
-    "yamllint"
-   ],
-   "W": 97,
-   "D": 51.8,
-   "grade": "D",
-   "partial": false,
-   "top": [
-    {
-     "tool": "ruff",
-     "rule": "B008",
-     "sev": "S2",
-     "path": "2_Simulation/t4_agent/src/amr_agent/amr_agent/control/primitives.py",
-     "line": 50,
-     "msg": "Do not perform function call `Limits` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable",
-     "symbol": "",
-     "component": "2_Simulation/t4_agent",
-     "part": "시뮬",
-     "fp": "ccc767a6e69a9fd3"
-    },
-    {
-     "tool": "ruff",
-     "rule": "B008",
-     "sev": "S2",
-     "path": "2_Simulation/t4_agent/src/amr_agent/amr_agent/control/primitives.py",
-     "line": 51,
-     "msg": "Do not perform function call `Gains` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable",
-     "symbol": "",
-     "component": "2_Simulation/t4_agent",
-     "part": "시뮬",
-     "fp": "ba406ac920f979a8"
-    },
-    {
-     "tool": "ruff",
-     "rule": "B008",
-     "sev": "S2",
-     "path": "2_Simulation/t4_agent/src/amr_agent/amr_agent/control/primitives.py",
-     "line": 84,
-     "msg": "Do not perform function call `Limits` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable",
-     "symbol": "",
-     "component": "2_Simulation/t4_agent",
-     "part": "시뮬",
-     "fp": "dea7a58e8352100c"
-    },
-    {
-     "tool": "ruff",
-     "rule": "B008",
-     "sev": "S2",
-     "path": "2_Simulation/t4_agent/src/amr_agent/amr_agent/control/primitives.py",
-     "line": 84,
-     "msg": "Do not perform function call `Gains` in argument defaults; instead, perform the call within the function, or read the default from a module-level singleton variable",
-     "symbol": "",
-     "component": "2_Simulation/t4_agent",
-     "part": "시뮬",
-     "fp": "59d36f70896d0b5c"
-    },
-    {
-     "tool": "yamllint",
-     "rule": "braces",
-     "sev": "S2",
-     "path": "2_Simulation/t4_agent/src/amr_agent/config/models/iw_hub.yaml",
-     "line": 21,
-     "msg": "too many spaces inside braces",
-     "symbol": "",
-     "component": "2_Simulation/t4_agent",
-     "part": "시뮬",
-     "fp": "281dd1b82e46d6e6"
-    },
-    {
-     "tool": "yamllint",
-     "rule": "braces",
-     "sev": "S2",
-     "path": "2_Simulation/t4_agent/src/amr_agent/config/models/iw_hub.yaml",
-     "line": 21,
-     "msg": "too many spaces inside braces",
-     "symbol": "",
-     "component": "2_Simulation/t4_agent",
-     "part": "시뮬",
-     "fp": "281dd1b82e46d6e6"
-    },
-    {
-     "tool": "yamllint",
-     "rule": "braces",
-     "sev": "S2",
-     "path": "2_Simulation/t4_agent/src/amr_agent/config/models/iw_hub.yaml",
-     "line": 21,
-     "msg": "too many spaces inside braces",
-     "symbol": "",
-     "component": "2_Simulation/t4_agent",
-     "part": "시뮬",
-     "fp": "281dd1b82e46d6e6"
-    },
-    {
-     "tool": "yamllint",
-     "rule": "braces",
-     "sev": "S2",
-     "path": "2_Simulation/t4_agent/src/amr_agent/config/models/iw_hub.yaml",
-     "line": 21,
-     "msg": "too many spaces inside braces",
-     "symbol": "",
-     "component": "2_Simulation/t4_agent",
-     "part": "시뮬",
-     "fp": "281dd1b82e46d6e6"
-    }
-   ]
-  },
-  {
    "id": "2_Simulation",
    "label": "2_Simulation (Isaac·ROS2)",
    "part": "시뮬",
    "users": [
     "LsMin124"
    ],
-   "loc": 25257,
+   "loc": 25297,
    "counts": {
     "S3": 0,
     "S2": 43,
-    "S1": 309,
+    "S1": 313,
     "S0": 0
    },
    "tools": [
@@ -179,8 +62,8 @@
     "ruff",
     "shellcheck"
    ],
-   "W": 438,
-   "D": 17.3,
+   "W": 442,
+   "D": 17.5,
    "grade": "C",
    "partial": false,
    "top": [
@@ -657,12 +540,12 @@
    "users": [
     "choiao0"
    ],
-   "loc": 7249,
+   "loc": 7929,
    "counts": {
     "S3": 1,
-    "S2": 1,
-    "S1": 24,
-    "S0": 3
+    "S2": 2,
+    "S1": 30,
+    "S0": 5
    },
    "tools": [
     "check",
@@ -670,8 +553,8 @@
     "hadolint",
     "pmd"
    ],
-   "W": 37,
-   "D": 5.1,
+   "W": 46,
+   "D": 5.8,
    "grade": "B",
    "partial": false,
    "top": [
@@ -686,6 +569,18 @@
      "component": "4_Web/BE",
      "part": "웹",
      "fp": "2bb78000f9a634cf"
+    },
+    {
+     "tool": "pmd",
+     "rule": "ImplicitFunctionalInterface",
+     "sev": "S2",
+     "path": "4_Web/SantaFactoryBE/src/main/java/com/ssafy/santafactory/repository/ProductRepository.java",
+     "line": 9,
+     "msg": "Annotate this interface with @FunctionalInterface or with @SuppressWarnings(\"PMD.ImplicitFunctionalInterface\") to clarify your intent.",
+     "symbol": "",
+     "component": "4_Web/BE",
+     "part": "웹",
+     "fp": "0ee3798109d85dec"
     },
     {
      "tool": "pmd",
@@ -758,18 +653,6 @@
      "component": "4_Web/BE",
      "part": "웹",
      "fp": "4b5cc595d529f621"
-    },
-    {
-     "tool": "pmd",
-     "rule": "MissingStaticMethodInNonInstantiatableClass",
-     "sev": "S1",
-     "path": "4_Web/SantaFactoryBE/src/main/java/com/ssafy/santafactory/service/estimate/EstimateEvents.java",
-     "line": 15,
-     "msg": "Class cannot be instantiated and does not provide any static methods or fields",
-     "symbol": "",
-     "component": "4_Web/BE",
-     "part": "웹",
-     "fp": "eb2fa3f47aaf0955"
     }
    ]
   },
@@ -814,19 +697,20 @@
    "label": "infra (hooks·CI·Docker·compose)",
    "part": "공용",
    "users": [],
-   "loc": 925,
+   "loc": 3445,
    "counts": {
     "S3": 0,
-    "S2": 2,
+    "S2": 18,
     "S1": 0,
     "S0": 0
    },
    "tools": [
-    "check"
+    "check",
+    "yamllint"
    ],
-   "W": 6,
-   "D": 6.5,
-   "grade": "B",
+   "W": 54,
+   "D": 15.7,
+   "grade": "C",
    "partial": false,
    "top": [
     {
@@ -852,6 +736,78 @@
      "component": "infra",
      "part": "공용",
      "fp": "2b2113e98f91154f"
+    },
+    {
+     "tool": "yamllint",
+     "rule": "braces",
+     "sev": "S2",
+     "path": "1_Robot/amr_agent/src/amr_agent/config/models/iw_hub.yaml",
+     "line": 28,
+     "msg": "too many spaces inside braces",
+     "symbol": "",
+     "component": "infra",
+     "part": "공용",
+     "fp": "a882586d1d4fed43"
+    },
+    {
+     "tool": "yamllint",
+     "rule": "braces",
+     "sev": "S2",
+     "path": "1_Robot/amr_agent/src/amr_agent/config/models/iw_hub.yaml",
+     "line": 28,
+     "msg": "too many spaces inside braces",
+     "symbol": "",
+     "component": "infra",
+     "part": "공용",
+     "fp": "a882586d1d4fed43"
+    },
+    {
+     "tool": "yamllint",
+     "rule": "braces",
+     "sev": "S2",
+     "path": "1_Robot/amr_agent/src/amr_agent/config/models/iw_hub.yaml",
+     "line": 28,
+     "msg": "too many spaces inside braces",
+     "symbol": "",
+     "component": "infra",
+     "part": "공용",
+     "fp": "a882586d1d4fed43"
+    },
+    {
+     "tool": "yamllint",
+     "rule": "braces",
+     "sev": "S2",
+     "path": "1_Robot/amr_agent/src/amr_agent/config/models/iw_hub.yaml",
+     "line": 28,
+     "msg": "too many spaces inside braces",
+     "symbol": "",
+     "component": "infra",
+     "part": "공용",
+     "fp": "a882586d1d4fed43"
+    },
+    {
+     "tool": "yamllint",
+     "rule": "braces",
+     "sev": "S2",
+     "path": "1_Robot/amr_agent/src/amr_agent/config/models/iw_hub.yaml",
+     "line": 29,
+     "msg": "too many spaces inside braces",
+     "symbol": "",
+     "component": "infra",
+     "part": "공용",
+     "fp": "865f0e589923a6c7"
+    },
+    {
+     "tool": "yamllint",
+     "rule": "braces",
+     "sev": "S2",
+     "path": "1_Robot/amr_agent/src/amr_agent/config/models/iw_hub.yaml",
+     "line": 29,
+     "msg": "too many spaces inside braces",
+     "symbol": "",
+     "component": "infra",
+     "part": "공용",
+     "fp": "865f0e589923a6c7"
     }
    ]
   }
@@ -860,37 +816,37 @@
   {
    "name": "develop",
    "slug": "develop",
-   "sha": "f2e71b2428aea9b37fc6931b973d0702d21366f1",
-   "committer_date": 1789311519,
-   "author": "김형수",
-   "loc": 54650,
+   "sha": "adf55609205e6786031fac429d941911aa03653e",
+   "committer_date": 1789343806,
+   "author": "신재령",
+   "loc": 56018,
    "counts": {
     "S3": 3,
-    "S2": 121,
-    "S1": 548,
-    "S0": 3
+    "S2": 118,
+    "S1": 521,
+    "S0": 5
    },
-   "W": 941,
+   "W": 905,
    "new_vs_prev": {
     "S3": 0,
-    "S2": 1,
-    "S1": 8,
-    "S0": 0
+    "S2": 17,
+    "S1": 10,
+    "S0": 2
    },
-   "fixed": 5,
-   "prev_run": "2026-09-13_2105_light",
+   "fixed": 44,
+   "prev_run": "2026-09-14_0005_light",
    "tools": [
     {
      "id": "ruff",
      "status": "ok",
      "rc": 0,
-     "secs": 0.0,
+     "secs": 0.1,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
       "S3": 0,
-      "S2": 43,
-      "S1": 510,
+      "S2": 39,
+      "S1": 477,
       "S0": 0
      }
     },
@@ -914,7 +870,7 @@
      "id": "bandit",
      "status": "ok",
      "rc": 0,
-     "secs": 1.6,
+     "secs": 1.5,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -956,7 +912,7 @@
      "id": "hadolint",
      "status": "ok",
      "rc": 1,
-     "secs": 0.0,
+     "secs": 0.1,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -970,7 +926,7 @@
      "id": "gitleaks",
      "status": "ok",
      "rc": 0,
-     "secs": 0.5,
+     "secs": 0.6,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -998,16 +954,16 @@
      "id": "pmd",
      "status": "ok",
      "rc": 4,
-     "secs": 1.0,
-     "stderr_tail": "[INFO] Found 24 violations.",
+     "secs": 1.3,
+     "stderr_tail": "[INFO] Found 33 violations.",
      "metrics": {
       "processing_errors": 0
      },
      "counts": {
       "S3": 0,
-      "S2": 1,
-      "S1": 21,
-      "S0": 2
+      "S2": 2,
+      "S1": 27,
+      "S0": 4
      }
     }
    ],
@@ -1180,50 +1136,50 @@
      "id": "line-len",
      "title": "120자 초과 줄 (지표)",
      "status": "ok",
-     "msg": "194줄",
+     "msg": "205줄",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [],
-     "n": 194,
+     "n": 205,
      "sev": "S0"
     }
    ],
-   "duration_s": 4.5,
+   "duration_s": 4.9,
    "allow_dropped": 4,
    "new": {
     "S3": 0,
-    "S2": 1,
-    "S1": 8,
-    "S0": 0
+    "S2": 17,
+    "S1": 10,
+    "S0": 2
    },
    "convention": {},
    "ahead": 0,
    "behind": 0,
    "files_changed": 0,
-   "merge_base": "f2e71b2428aea9b37fc6931b973d0702d21366f1"
+   "merge_base": "adf55609205e6786031fac429d941911aa03653e"
   },
   {
    "name": "feature/S15P21A106-203-fms-회전발자국마스크",
    "slug": "feature__S15P21A106-203-fms-175437",
-   "sha": "b5aabfbdba8c427cf2323ee0d77379a4eceee7db",
-   "committer_date": 1789311225,
+   "sha": "957bbc59e9f7ef9206df17df6c5d37ad607d5eb9",
+   "committer_date": 1789343760,
    "author": "hwarange",
-   "loc": 52831,
+   "loc": 55683,
    "counts": {
     "S3": 3,
-    "S2": 126,
-    "S1": 542,
+    "S2": 121,
+    "S1": 515,
     "S0": 3
    },
-   "W": 950,
+   "W": 908,
    "new_vs_prev": {
-    "S3": 3,
-    "S2": 126,
-    "S1": 542,
-    "S0": 3
+    "S3": 0,
+    "S2": 19,
+    "S1": 12,
+    "S0": 0
    },
-   "fixed": 0,
-   "prev_run": null,
+   "fixed": 50,
+   "prev_run": "2026-09-14_0005_light",
    "tools": [
     {
      "id": "ruff",
@@ -1234,8 +1190,8 @@
      "metrics": {},
      "counts": {
       "S3": 0,
-      "S2": 48,
-      "S1": 505,
+      "S2": 41,
+      "S1": 477,
       "S0": 0
      }
     },
@@ -1287,13 +1243,13 @@
      "id": "shellcheck",
      "status": "ok",
      "rc": null,
-     "secs": 0.2,
+     "secs": 0.3,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
       "S3": 0,
       "S2": 0,
-      "S1": 8,
+      "S1": 9,
       "S0": 0
      }
     },
@@ -1343,7 +1299,7 @@
      "id": "pmd",
      "status": "ok",
      "rc": 4,
-     "secs": 1.3,
+     "secs": 0.9,
      "stderr_tail": "[INFO] Found 24 violations.",
      "metrics": {
       "processing_errors": 0
@@ -1393,7 +1349,7 @@
      "id": "size",
      "title": "파일 > 800줄 · 함수 > 80줄",
      "status": "warn",
-     "msg": "파일 5 · 함수 18 (50줄 초과 함수 57)",
+     "msg": "파일 6 · 함수 19 (50줄 초과 함수 60)",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [
@@ -1402,9 +1358,9 @@
       "2_Simulation/t3_amr/runners/live_pibt.py:0 파일 1060줄 (> 800)",
       "2_Simulation/t3_amr/tools/path_view.py:0 파일 1116줄 (> 800)",
       "2_Simulation/t3_amr/warehouse/scene/build_scene.py:0 파일 1048줄 (> 800)",
-      ".gitlab/scripts/sonar_mr_comment.py:387 함수 main 148줄 (> 80)"
+      "3_FMS/sim_engine/kernel/core.py:0 파일 829줄 (> 800)"
      ],
-     "n": 23,
+     "n": 25,
      "sev": "S2"
     },
     {
@@ -1525,23 +1481,23 @@
      "id": "line-len",
      "title": "120자 초과 줄 (지표)",
      "status": "ok",
-     "msg": "188줄",
+     "msg": "205줄",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [],
-     "n": 188,
+     "n": 205,
      "sev": "S0"
     }
    ],
-   "duration_s": 4.5,
+   "duration_s": 4.2,
    "allow_dropped": 4,
-   "merge_base": "7bf8cd682759204e884fa069e782d13606227f4a",
-   "files_changed": 4,
-   "ahead": 1,
-   "behind": 42,
+   "merge_base": "b728d810370463234dfac0448f1d3312217951b3",
+   "files_changed": 6,
+   "ahead": 3,
+   "behind": 10,
    "new_vs_develop": {
     "S3": 0,
-    "S2": 3,
+    "S2": 4,
     "S1": 0,
     "S0": 0
    },
@@ -1551,7 +1507,7 @@
      "rule": "PLW0603",
      "sev": "S2",
      "path": "3_FMS/sim_engine/pibt/geometry.py",
-     "line": 45,
+     "line": 48,
      "msg": "Using the global statement to update `_TURN_MASK` is discouraged",
      "symbol": "",
      "component": "3_FMS/sim_engine",
@@ -1563,7 +1519,7 @@
      "rule": "PLW0603",
      "sev": "S2",
      "path": "3_FMS/sim_engine/pibt/geometry.py",
-     "line": 45,
+     "line": 48,
      "msg": "Using the global statement to update `_FRONT_SWING` is discouraged",
      "symbol": "",
      "component": "3_FMS/sim_engine",
@@ -1575,23 +1531,35 @@
      "rule": "doc-link",
      "sev": "S2",
      "path": "3_FMS/sim_engine/pibt/geometry.py",
-     "line": 19,
+     "line": 20,
      "msg": "깨진 문서 참조: docs/2026-09-13_S15P21A106-203_회전발자국마스크_설계.md",
      "symbol": "",
      "component": "3_FMS/sim_engine",
      "part": "FMS·AI",
-     "fp": "fa418384ee2dd14e"
+     "fp": "9ab772a61c341a9f"
+    },
+    {
+     "tool": "check",
+     "rule": "file-800",
+     "sev": "S2",
+     "path": "3_FMS/sim_engine/kernel/core.py",
+     "line": 0,
+     "msg": "파일 829줄 (> 800)",
+     "symbol": "",
+     "component": "3_FMS/sim_engine",
+     "part": "FMS·AI",
+     "fp": "24bd8521f25017cc"
     }
    ],
    "convention": {
     "branch_ok": true,
-    "commits_ok": 1,
-    "commits_total": 1,
+    "commits_ok": 2,
+    "commits_total": 2,
     "offenders": []
    },
    "new": {
     "S3": 0,
-    "S2": 3,
+    "S2": 4,
     "S1": 0,
     "S0": 0
    }
@@ -1599,10 +1567,10 @@
   {
    "name": "feature/S15P21A106-200-fms-배차정책-정렬",
    "slug": "feature__S15P21A106-200-fms-886d01",
-   "sha": "c41ac283601550db459cf02973327b6812b25dcc",
-   "committer_date": 1789311205,
+   "sha": "98f70198acbca4a221fc4ed075eee9c91398cd20",
+   "committer_date": 1789343611,
    "author": "kimHySoo",
-   "loc": 54444,
+   "loc": 54525,
    "counts": {
     "S3": 3,
     "S2": 124,
@@ -1611,13 +1579,13 @@
    },
    "W": 950,
    "new_vs_prev": {
-    "S3": 1,
+    "S3": 0,
     "S2": 0,
-    "S1": 8,
+    "S1": 0,
     "S0": 0
    },
-   "fixed": 1,
-   "prev_run": "2026-09-13_1805_light",
+   "fixed": 0,
+   "prev_run": "2026-09-14_0005_light",
    "tools": [
     {
      "id": "ruff",
@@ -1737,7 +1705,7 @@
      "id": "pmd",
      "status": "ok",
      "rc": 4,
-     "secs": 1.3,
+     "secs": 0.9,
      "stderr_tail": "[INFO] Found 24 violations.",
      "metrics": {
       "processing_errors": 0
@@ -1787,12 +1755,12 @@
      "id": "size",
      "title": "파일 > 800줄 · 함수 > 80줄",
      "status": "warn",
-     "msg": "파일 5 · 함수 19 (50줄 초과 함수 61)",
+     "msg": "파일 5 · 함수 19 (50줄 초과 함수 60)",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [
       "2_Simulation/t3_amr/path/_pibt_core_vendor.py:0 파일 840줄 (> 800)",
-      "2_Simulation/t3_amr/path/isaac_drive.py:0 파일 1717줄 (> 800)",
+      "2_Simulation/t3_amr/path/isaac_drive.py:0 파일 1798줄 (> 800)",
       "2_Simulation/t3_amr/runners/live_pibt.py:0 파일 1082줄 (> 800)",
       "2_Simulation/t3_amr/tools/path_view.py:0 파일 1116줄 (> 800)",
       "2_Simulation/t3_amr/warehouse/scene/build_scene.py:0 파일 1048줄 (> 800)",
@@ -1927,12 +1895,12 @@
      "sev": "S0"
     }
    ],
-   "duration_s": 4.6,
+   "duration_s": 4.3,
    "allow_dropped": 4,
    "merge_base": "93f93c2b4c5548208b3e5ab78e526e51e351b43b",
-   "files_changed": 2,
-   "ahead": 1,
-   "behind": 6,
+   "files_changed": 4,
+   "ahead": 3,
+   "behind": 20,
    "new_vs_develop": {
     "S3": 0,
     "S2": 0,
@@ -1955,8 +1923,8 @@
    ],
    "convention": {
     "branch_ok": true,
-    "commits_ok": 1,
-    "commits_total": 1,
+    "commits_ok": 3,
+    "commits_total": 3,
     "offenders": []
    },
    "new": {
@@ -1972,13 +1940,13 @@
    "id": "ruff",
    "status": "ok",
    "rc": 0,
-   "secs": 0.0,
+   "secs": 0.1,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
     "S3": 0,
-    "S2": 43,
-    "S1": 510,
+    "S2": 39,
+    "S1": 477,
     "S0": 0
    }
   },
@@ -2002,7 +1970,7 @@
    "id": "bandit",
    "status": "ok",
    "rc": 0,
-   "secs": 1.6,
+   "secs": 1.5,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -2044,7 +2012,7 @@
    "id": "hadolint",
    "status": "ok",
    "rc": 1,
-   "secs": 0.0,
+   "secs": 0.1,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -2058,7 +2026,7 @@
    "id": "gitleaks",
    "status": "ok",
    "rc": 0,
-   "secs": 0.5,
+   "secs": 0.6,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -2086,16 +2054,16 @@
    "id": "pmd",
    "status": "ok",
    "rc": 4,
-   "secs": 1.0,
-   "stderr_tail": "[INFO] Found 24 violations.",
+   "secs": 1.3,
+   "stderr_tail": "[INFO] Found 33 violations.",
    "metrics": {
     "processing_errors": 0
    },
    "counts": {
     "S3": 0,
-    "S2": 1,
-    "S1": 21,
-    "S0": 2
+    "S2": 2,
+    "S1": 27,
+    "S0": 4
    }
   }
  ],
@@ -2268,20 +2236,20 @@
    "id": "line-len",
    "title": "120자 초과 줄 (지표)",
    "status": "ok",
-   "msg": "194줄",
+   "msg": "205줄",
    "component": "infra",
    "needs_agreement": false,
    "evidence": [],
-   "n": 194,
+   "n": 205,
    "sev": "S0"
   }
  ],
  "tests": {},
  "totals": {
-  "findings": 675,
-  "W": 941,
-  "new": 9,
-  "fixed": 5
+  "findings": 647,
+  "W": 905,
+  "new": 29,
+  "fixed": 44
  },
  "narrative": {
   "status": "skipped"
