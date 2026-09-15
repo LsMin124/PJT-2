@@ -1,11 +1,11 @@
 {
  "run": {
-  "id": "2026-09-15_1205_light",
-  "ts": "2026-09-15T12:05:01+0900",
+  "id": "2026-09-15_1405_light",
+  "ts": "2026-09-15T14:05:01+0900",
   "mode": "light",
   "ref": "origin/develop",
-  "sha": "ac10c7678c6b8a4a4a3985947deb09d0cecac003",
-  "duration_s": 12.1,
+  "sha": "7e7ffc3924b706f2c019d52734da188bf46314d5",
+  "duration_s": 11.7,
   "status": "ok",
   "prev_deep": "2026-09-14_1805_deep",
   "red_flags": [
@@ -41,11 +41,11 @@
    "users": [
     "LsMin124"
    ],
-   "loc": 28858,
+   "loc": 20813,
    "counts": {
     "S3": 0,
-    "S2": 49,
-    "S1": 350,
+    "S2": 43,
+    "S1": 200,
     "S0": 0
    },
    "tools": [
@@ -54,83 +54,11 @@
     "ruff",
     "shellcheck"
    ],
-   "W": 497,
-   "D": 17.2,
+   "W": 329,
+   "D": 15.8,
    "grade": "C",
    "partial": false,
    "top": [
-    {
-     "tool": "ruff",
-     "rule": "B023",
-     "sev": "S2",
-     "path": "2_Simulation/scene_builder/roof.py",
-     "line": 132,
-     "msg": "Function definition does not bind loop variable `x`",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "5bc2a3da52407aad"
-    },
-    {
-     "tool": "ruff",
-     "rule": "B023",
-     "sev": "S2",
-     "path": "2_Simulation/scene_builder/roof.py",
-     "line": 132,
-     "msg": "Function definition does not bind loop variable `y_e`",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "d13f27d9c8cb20b6"
-    },
-    {
-     "tool": "ruff",
-     "rule": "B023",
-     "sev": "S2",
-     "path": "2_Simulation/scene_builder/roof.py",
-     "line": 132,
-     "msg": "Function definition does not bind loop variable `s`",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "dd01baa489f2e9aa"
-    },
-    {
-     "tool": "check",
-     "rule": "func-80",
-     "sev": "S2",
-     "path": "2_Simulation/scene_builder/roof.py",
-     "line": 61,
-     "msg": "함수 build_roof 122줄 (> 80)",
-     "symbol": "build_roof",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "f4f083ddc6c4c8eb"
-    },
-    {
-     "tool": "ruff",
-     "rule": "RET504",
-     "sev": "S2",
-     "path": "2_Simulation/scene_builder/stations.py",
-     "line": 108,
-     "msg": "Unnecessary assignment to `stations` before `return` statement",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "a43d29465c7c1e92"
-    },
-    {
-     "tool": "bandit",
-     "rule": "B104",
-     "sev": "S2",
-     "path": "2_Simulation/sil_isaac/viewer/http_stream.py",
-     "line": 114,
-     "msg": "Possible binding to all interfaces.",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "d90774158b6eefcc"
-    },
     {
      "tool": "check",
      "rule": "func-80",
@@ -154,6 +82,78 @@
      "component": "2_Simulation",
      "part": "시뮬",
      "fp": "5ebca8b83062a22f"
+    },
+    {
+     "tool": "check",
+     "rule": "doc-link",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/path/_pibt_core_vendor.py",
+     "line": 27,
+     "msg": "깨진 문서 참조: Docs/AI/AI입출력명세서.md",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "c046458b834121fd"
+    },
+    {
+     "tool": "check",
+     "rule": "doc-link",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/path/_pibt_core_vendor.py",
+     "line": 33,
+     "msg": "깨진 문서 참조: docs/2026-09-02_Isaac회전충돌_격자유지_PIBT확장_결정.md",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "348e092cdb2e2bab"
+    },
+    {
+     "tool": "check",
+     "rule": "file-800",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/path/_pibt_core_vendor.py",
+     "line": 0,
+     "msg": "파일 840줄 (> 800)",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "820266a532e95233"
+    },
+    {
+     "tool": "ruff",
+     "rule": "F841",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/path/isaac_drive.py",
+     "line": 452,
+     "msg": "Local variable `poly` is assigned to but never used",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "4220937262159e0c"
+    },
+    {
+     "tool": "ruff",
+     "rule": "F841",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/path/isaac_drive.py",
+     "line": 1093,
+     "msg": "Local variable `NM` is assigned to but never used",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "8cc308d1f97cf1f0"
+    },
+    {
+     "tool": "check",
+     "rule": "file-800",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/path/isaac_drive.py",
+     "line": 0,
+     "msg": "파일 2437줄 (> 800)",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "08190800e47b3b0c"
     }
    ]
   },
@@ -165,10 +165,10 @@
     "hwarange",
     "Jaeryeong Shin"
    ],
-   "loc": 7423,
+   "loc": 7445,
    "counts": {
     "S3": 1,
-    "S2": 34,
+    "S2": 33,
     "S1": 46,
     "S0": 0
    },
@@ -176,8 +176,8 @@
     "check",
     "ruff"
    ],
-   "W": 158,
-   "D": 21.3,
+   "W": 155,
+   "D": 20.8,
    "grade": "C",
    "partial": false,
    "top": [
@@ -223,7 +223,7 @@
      "sev": "S2",
      "path": "3_FMS/sim_engine/cli/report.py",
      "line": 133,
-     "msg": "함수 report 82줄 (> 80)",
+     "msg": "함수 report 84줄 (> 80)",
      "symbol": "report",
      "component": "3_FMS/sim_engine",
      "part": "FMS·AI",
@@ -409,7 +409,7 @@
     "hwarange",
     "Jaeryeong Shin"
    ],
-   "loc": 8323,
+   "loc": 8324,
    "counts": {
     "S3": 1,
     "S2": 31,
@@ -808,25 +808,25 @@
   {
    "name": "develop",
    "slug": "develop",
-   "sha": "ac10c7678c6b8a4a4a3985947deb09d0cecac003",
-   "committer_date": 1789441197,
-   "author": "이승민",
-   "loc": 62409,
+   "sha": "7e7ffc3924b706f2c019d52734da188bf46314d5",
+   "committer_date": 1789448472,
+   "author": "김형수",
+   "loc": 54387,
    "counts": {
     "S3": 5,
-    "S2": 136,
-    "S1": 584,
+    "S2": 129,
+    "S1": 434,
     "S0": 7
    },
-   "W": 1042,
+   "W": 871,
    "new_vs_prev": {
     "S3": 0,
     "S2": 0,
-    "S1": 0,
+    "S1": 11,
     "S0": 0
    },
-   "fixed": 0,
-   "prev_run": "2026-09-15_1105_light",
+   "fixed": 155,
+   "prev_run": "2026-09-15_1205_light",
    "tools": [
     {
      "id": "ruff",
@@ -837,8 +837,8 @@
      "metrics": {},
      "counts": {
       "S3": 1,
-      "S2": 48,
-      "S1": 531,
+      "S2": 43,
+      "S1": 382,
       "S0": 0
      }
     },
@@ -862,12 +862,12 @@
      "id": "bandit",
      "status": "ok",
      "rc": 0,
-     "secs": 1.6,
+     "secs": 1.4,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
       "S3": 0,
-      "S2": 8,
+      "S2": 7,
       "S1": 0,
       "S0": 0
      }
@@ -890,13 +890,13 @@
      "id": "shellcheck",
      "status": "ok",
      "rc": null,
-     "secs": 0.3,
+     "secs": 0.2,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
       "S3": 0,
       "S2": 0,
-      "S1": 9,
+      "S1": 8,
       "S0": 0
      }
     },
@@ -918,7 +918,7 @@
      "id": "gitleaks",
      "status": "ok",
      "rc": 0,
-     "secs": 0.6,
+     "secs": 0.5,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -946,7 +946,7 @@
      "id": "pmd",
      "status": "ok",
      "rc": 4,
-     "secs": 1.2,
+     "secs": 0.9,
      "stderr_tail": "[INFO] Found 44 violations.",
      "metrics": {
       "processing_errors": 0
@@ -996,7 +996,7 @@
      "id": "size",
      "title": "파일 > 800줄 · 함수 > 80줄",
      "status": "warn",
-     "msg": "파일 6 · 함수 23 (50줄 초과 함수 63)",
+     "msg": "파일 6 · 함수 22 (50줄 초과 함수 57)",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [
@@ -1004,10 +1004,10 @@
       "2_Simulation/t3_amr/path/isaac_drive.py:0 파일 2437줄 (> 800)",
       "2_Simulation/t3_amr/runners/live_pibt.py:0 파일 1107줄 (> 800)",
       "2_Simulation/t3_amr/tools/path_view.py:0 파일 1116줄 (> 800)",
-      "2_Simulation/t3_amr/warehouse/scene/build_scene.py:0 파일 1048줄 (> 800)",
-      "3_FMS/sim_engine/kernel/core.py:0 파일 1018줄 (> 800)"
+      "2_Simulation/t3_amr/warehouse/scene/build_scene.py:0 파일 1045줄 (> 800)",
+      "3_FMS/sim_engine/kernel/core.py:0 파일 1019줄 (> 800)"
      ],
-     "n": 29,
+     "n": 28,
      "sev": "S2"
     },
     {
@@ -1042,16 +1042,14 @@
      "id": "claims.isaac-1-instance",
      "title": "README '동시 1인스턴스' 주장 vs 2026-09-05 실측(경량 6 동시)",
      "status": "warn",
-     "msg": "'동시 1인스턴스' 문구 4곳 — 실측(64GB, lean 6 동시)과 불일치. 결정 필요: 문구 갱신 여부",
+     "msg": "'동시 1인스턴스' 문구 2곳 — 실측(64GB, lean 6 동시)과 불일치. 결정 필요: 문구 갱신 여부",
      "component": "2_Simulation",
      "needs_agreement": true,
      "evidence": [
-      "2_Simulation/t1_teleop/README.md:29",
-      "2_Simulation/t3_amr/warehouse/scene/README.md:26",
-      "2_Simulation/t3_warehouse/README.md:27",
+      "2_Simulation/t3_amr/warehouse/scene/README.md:24",
       "2_Simulation/t3_amr/warehouse/scene/view_scene.py:8"
      ],
-     "n": 4,
+     "n": 2,
      "sev": "S0"
     },
     {
@@ -1128,50 +1126,50 @@
      "id": "line-len",
      "title": "120자 초과 줄 (지표)",
      "status": "ok",
-     "msg": "232줄",
+     "msg": "216줄",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [],
-     "n": 232,
+     "n": 216,
      "sev": "S0"
     }
    ],
-   "duration_s": 4.8,
+   "duration_s": 4.0,
    "allow_dropped": 4,
    "new": {
     "S3": 0,
     "S2": 0,
-    "S1": 0,
+    "S1": 11,
     "S0": 0
    },
    "convention": {},
    "ahead": 0,
    "behind": 0,
    "files_changed": 0,
-   "merge_base": "ac10c7678c6b8a4a4a3985947deb09d0cecac003"
+   "merge_base": "7e7ffc3924b706f2c019d52734da188bf46314d5"
   },
   {
    "name": "feature/S15P21A106-211-이어달리기-연속주행",
    "slug": "feature__S15P21A106-211-9658a9",
-   "sha": "ca625d8d97401fa8b713d6d66bcb934a8fbf0682",
-   "committer_date": 1789441301,
+   "sha": "439b0bfdafc440c6b3e4fa8e6699033dd0f22724",
+   "committer_date": 1789447945,
    "author": "kimHySoo",
-   "loc": 62450,
+   "loc": 62969,
    "counts": {
     "S3": 5,
     "S2": 137,
-    "S1": 581,
+    "S1": 583,
     "S0": 7
    },
-   "W": 1042,
+   "W": 1044,
    "new_vs_prev": {
     "S3": 0,
     "S2": 1,
-    "S1": 0,
+    "S1": 3,
     "S0": 0
    },
-   "fixed": 0,
-   "prev_run": "2026-09-15_1105_light",
+   "fixed": 2,
+   "prev_run": "2026-09-15_1305_light",
    "tools": [
     {
      "id": "ruff",
@@ -1182,8 +1180,8 @@
      "metrics": {},
      "counts": {
       "S3": 1,
-      "S2": 48,
-      "S1": 531,
+      "S2": 47,
+      "S1": 530,
       "S0": 0
      }
     },
@@ -1291,15 +1289,15 @@
      "id": "pmd",
      "status": "ok",
      "rc": 4,
-     "secs": 0.9,
-     "stderr_tail": "[INFO] Found 41 violations.",
+     "secs": 1.2,
+     "stderr_tail": "[INFO] Found 44 violations.",
      "metrics": {
       "processing_errors": 0
      },
      "counts": {
       "S3": 0,
       "S2": 2,
-      "S1": 33,
+      "S1": 36,
       "S0": 6
      }
     }
@@ -1341,18 +1339,18 @@
      "id": "size",
      "title": "파일 > 800줄 · 함수 > 80줄",
      "status": "warn",
-     "msg": "파일 7 · 함수 23 (50줄 초과 함수 64)",
+     "msg": "파일 7 · 함수 24 (50줄 초과 함수 66)",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [
       "2_Simulation/t3_amr/path/_pibt_core_vendor.py:0 파일 840줄 (> 800)",
-      "2_Simulation/t3_amr/path/isaac_drive.py:0 파일 2437줄 (> 800)",
-      "2_Simulation/t3_amr/path/pibt_scene.py:0 파일 819줄 (> 800)",
-      "2_Simulation/t3_amr/runners/live_pibt.py:0 파일 1107줄 (> 800)",
+      "2_Simulation/t3_amr/path/isaac_drive.py:0 파일 2486줄 (> 800)",
+      "2_Simulation/t3_amr/path/pibt_scene.py:0 파일 820줄 (> 800)",
+      "2_Simulation/t3_amr/runners/live_pibt.py:0 파일 1108줄 (> 800)",
       "2_Simulation/t3_amr/tools/path_view.py:0 파일 1116줄 (> 800)",
       "2_Simulation/t3_amr/warehouse/scene/build_scene.py:0 파일 1048줄 (> 800)"
      ],
-     "n": 30,
+     "n": 31,
      "sev": "S2"
     },
     {
@@ -1473,23 +1471,23 @@
      "id": "line-len",
      "title": "120자 초과 줄 (지표)",
      "status": "ok",
-     "msg": "227줄",
+     "msg": "239줄",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [],
-     "n": 227,
+     "n": 239,
      "sev": "S0"
     }
    ],
-   "duration_s": 4.5,
+   "duration_s": 4.7,
    "allow_dropped": 4,
-   "merge_base": "f13fcd61150f575d35ba6c18ed78c1fe1840099c",
-   "files_changed": 5,
-   "ahead": 6,
-   "behind": 7,
+   "merge_base": "9a30fc91c7d3f1ad98829ef915a8ffed60016a76",
+   "files_changed": 15,
+   "ahead": 17,
+   "behind": 12,
    "new_vs_develop": {
     "S3": 0,
-    "S2": 1,
+    "S2": 2,
     "S1": 0,
     "S0": 0
    },
@@ -1500,22 +1498,34 @@
      "sev": "S2",
      "path": "2_Simulation/t3_amr/path/pibt_scene.py",
      "line": 0,
-     "msg": "파일 819줄 (> 800)",
+     "msg": "파일 820줄 (> 800)",
      "symbol": "",
      "component": "2_Simulation",
      "part": "시뮬",
      "fp": "e8692b9523eede47"
+    },
+    {
+     "tool": "check",
+     "rule": "func-80",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/tools/tail_yaw.py",
+     "line": 89,
+     "msg": "함수 main 102줄 (> 80)",
+     "symbol": "main",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "3234dad3bd9274e2"
     }
    ],
    "convention": {
     "branch_ok": true,
-    "commits_ok": 6,
-    "commits_total": 6,
+    "commits_ok": 16,
+    "commits_total": 16,
     "offenders": []
    },
    "new": {
     "S3": 0,
-    "S2": 1,
+    "S2": 2,
     "S1": 0,
     "S0": 0
    }
@@ -1531,8 +1541,8 @@
    "metrics": {},
    "counts": {
     "S3": 1,
-    "S2": 48,
-    "S1": 531,
+    "S2": 43,
+    "S1": 382,
     "S0": 0
    }
   },
@@ -1556,12 +1566,12 @@
    "id": "bandit",
    "status": "ok",
    "rc": 0,
-   "secs": 1.6,
+   "secs": 1.4,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
     "S3": 0,
-    "S2": 8,
+    "S2": 7,
     "S1": 0,
     "S0": 0
    }
@@ -1584,13 +1594,13 @@
    "id": "shellcheck",
    "status": "ok",
    "rc": null,
-   "secs": 0.3,
+   "secs": 0.2,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
     "S3": 0,
     "S2": 0,
-    "S1": 9,
+    "S1": 8,
     "S0": 0
    }
   },
@@ -1612,7 +1622,7 @@
    "id": "gitleaks",
    "status": "ok",
    "rc": 0,
-   "secs": 0.6,
+   "secs": 0.5,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -1640,7 +1650,7 @@
    "id": "pmd",
    "status": "ok",
    "rc": 4,
-   "secs": 1.2,
+   "secs": 0.9,
    "stderr_tail": "[INFO] Found 44 violations.",
    "metrics": {
     "processing_errors": 0
@@ -1690,7 +1700,7 @@
    "id": "size",
    "title": "파일 > 800줄 · 함수 > 80줄",
    "status": "warn",
-   "msg": "파일 6 · 함수 23 (50줄 초과 함수 63)",
+   "msg": "파일 6 · 함수 22 (50줄 초과 함수 57)",
    "component": "infra",
    "needs_agreement": false,
    "evidence": [
@@ -1698,10 +1708,10 @@
     "2_Simulation/t3_amr/path/isaac_drive.py:0 파일 2437줄 (> 800)",
     "2_Simulation/t3_amr/runners/live_pibt.py:0 파일 1107줄 (> 800)",
     "2_Simulation/t3_amr/tools/path_view.py:0 파일 1116줄 (> 800)",
-    "2_Simulation/t3_amr/warehouse/scene/build_scene.py:0 파일 1048줄 (> 800)",
-    "3_FMS/sim_engine/kernel/core.py:0 파일 1018줄 (> 800)"
+    "2_Simulation/t3_amr/warehouse/scene/build_scene.py:0 파일 1045줄 (> 800)",
+    "3_FMS/sim_engine/kernel/core.py:0 파일 1019줄 (> 800)"
    ],
-   "n": 29,
+   "n": 28,
    "sev": "S2"
   },
   {
@@ -1736,16 +1746,14 @@
    "id": "claims.isaac-1-instance",
    "title": "README '동시 1인스턴스' 주장 vs 2026-09-05 실측(경량 6 동시)",
    "status": "warn",
-   "msg": "'동시 1인스턴스' 문구 4곳 — 실측(64GB, lean 6 동시)과 불일치. 결정 필요: 문구 갱신 여부",
+   "msg": "'동시 1인스턴스' 문구 2곳 — 실측(64GB, lean 6 동시)과 불일치. 결정 필요: 문구 갱신 여부",
    "component": "2_Simulation",
    "needs_agreement": true,
    "evidence": [
-    "2_Simulation/t1_teleop/README.md:29",
-    "2_Simulation/t3_amr/warehouse/scene/README.md:26",
-    "2_Simulation/t3_warehouse/README.md:27",
+    "2_Simulation/t3_amr/warehouse/scene/README.md:24",
     "2_Simulation/t3_amr/warehouse/scene/view_scene.py:8"
    ],
-   "n": 4,
+   "n": 2,
    "sev": "S0"
   },
   {
@@ -1822,20 +1830,20 @@
    "id": "line-len",
    "title": "120자 초과 줄 (지표)",
    "status": "ok",
-   "msg": "232줄",
+   "msg": "216줄",
    "component": "infra",
    "needs_agreement": false,
    "evidence": [],
-   "n": 232,
+   "n": 216,
    "sev": "S0"
   }
  ],
  "tests": {},
  "totals": {
-  "findings": 732,
-  "W": 1042,
-  "new": 0,
-  "fixed": 0
+  "findings": 575,
+  "W": 871,
+  "new": 11,
+  "fixed": 155
  },
  "narrative": {
   "status": "skipped"
