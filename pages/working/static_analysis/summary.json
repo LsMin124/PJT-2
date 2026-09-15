@@ -1,10 +1,10 @@
 {
  "run": {
-  "id": "2026-09-15_1105_light",
-  "ts": "2026-09-15T11:05:01+0900",
+  "id": "2026-09-15_1205_light",
+  "ts": "2026-09-15T12:05:01+0900",
   "mode": "light",
   "ref": "origin/develop",
-  "sha": "e0cbf2417214a1d8de2f3158fb00c23165a6ee97",
+  "sha": "ac10c7678c6b8a4a4a3985947deb09d0cecac003",
   "duration_s": 12.1,
   "status": "ok",
   "prev_deep": "2026-09-14_1805_deep",
@@ -532,7 +532,7 @@
    "users": [
     "choiao0"
    ],
-   "loc": 8494,
+   "loc": 8504,
    "counts": {
     "S3": 2,
     "S2": 2,
@@ -546,7 +546,7 @@
     "pmd"
    ],
    "W": 65,
-   "D": 7.7,
+   "D": 7.6,
    "grade": "B",
    "partial": false,
    "top": [
@@ -808,10 +808,10 @@
   {
    "name": "develop",
    "slug": "develop",
-   "sha": "e0cbf2417214a1d8de2f3158fb00c23165a6ee97",
-   "committer_date": 1789436876,
-   "author": "박화랑",
-   "loc": 62399,
+   "sha": "ac10c7678c6b8a4a4a3985947deb09d0cecac003",
+   "committer_date": 1789441197,
+   "author": "이승민",
+   "loc": 62409,
    "counts": {
     "S3": 5,
     "S2": 136,
@@ -822,11 +822,11 @@
    "new_vs_prev": {
     "S3": 0,
     "S2": 0,
-    "S1": 3,
+    "S1": 0,
     "S0": 0
    },
    "fixed": 0,
-   "prev_run": "2026-09-15_1005_light",
+   "prev_run": "2026-09-15_1105_light",
    "tools": [
     {
      "id": "ruff",
@@ -862,7 +862,7 @@
      "id": "bandit",
      "status": "ok",
      "rc": 0,
-     "secs": 1.7,
+     "secs": 1.6,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -890,7 +890,7 @@
      "id": "shellcheck",
      "status": "ok",
      "rc": null,
-     "secs": 0.2,
+     "secs": 0.3,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -918,7 +918,7 @@
      "id": "gitleaks",
      "status": "ok",
      "rc": 0,
-     "secs": 0.5,
+     "secs": 0.6,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -1136,42 +1136,42 @@
      "sev": "S0"
     }
    ],
-   "duration_s": 4.7,
+   "duration_s": 4.8,
    "allow_dropped": 4,
    "new": {
     "S3": 0,
     "S2": 0,
-    "S1": 3,
+    "S1": 0,
     "S0": 0
    },
    "convention": {},
    "ahead": 0,
    "behind": 0,
    "files_changed": 0,
-   "merge_base": "e0cbf2417214a1d8de2f3158fb00c23165a6ee97"
+   "merge_base": "ac10c7678c6b8a4a4a3985947deb09d0cecac003"
   },
   {
    "name": "feature/S15P21A106-211-이어달리기-연속주행",
    "slug": "feature__S15P21A106-211-9658a9",
-   "sha": "2a47647c9171d0edba9248d3524ea45ea2d87d69",
-   "committer_date": 1789436457,
+   "sha": "ca625d8d97401fa8b713d6d66bcb934a8fbf0682",
+   "committer_date": 1789441301,
    "author": "kimHySoo",
-   "loc": 62399,
+   "loc": 62450,
    "counts": {
     "S3": 5,
-    "S2": 136,
+    "S2": 137,
     "S1": 581,
     "S0": 7
    },
-   "W": 1039,
+   "W": 1042,
    "new_vs_prev": {
-    "S3": 1,
-    "S2": 4,
-    "S1": 7,
+    "S3": 0,
+    "S2": 1,
+    "S1": 0,
     "S0": 0
    },
-   "fixed": 192,
-   "prev_run": "2026-09-14_1805_deep",
+   "fixed": 0,
+   "prev_run": "2026-09-15_1105_light",
    "tools": [
     {
      "id": "ruff",
@@ -1207,7 +1207,7 @@
      "id": "bandit",
      "status": "ok",
      "rc": 0,
-     "secs": 1.6,
+     "secs": 1.7,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -1235,7 +1235,7 @@
      "id": "shellcheck",
      "status": "ok",
      "rc": null,
-     "secs": 0.3,
+     "secs": 0.2,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -1291,7 +1291,7 @@
      "id": "pmd",
      "status": "ok",
      "rc": 4,
-     "secs": 1.0,
+     "secs": 0.9,
      "stderr_tail": "[INFO] Found 41 violations.",
      "metrics": {
       "processing_errors": 0
@@ -1341,18 +1341,18 @@
      "id": "size",
      "title": "파일 > 800줄 · 함수 > 80줄",
      "status": "warn",
-     "msg": "파일 6 · 함수 23 (50줄 초과 함수 63)",
+     "msg": "파일 7 · 함수 23 (50줄 초과 함수 64)",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [
       "2_Simulation/t3_amr/path/_pibt_core_vendor.py:0 파일 840줄 (> 800)",
       "2_Simulation/t3_amr/path/isaac_drive.py:0 파일 2437줄 (> 800)",
+      "2_Simulation/t3_amr/path/pibt_scene.py:0 파일 819줄 (> 800)",
       "2_Simulation/t3_amr/runners/live_pibt.py:0 파일 1107줄 (> 800)",
       "2_Simulation/t3_amr/tools/path_view.py:0 파일 1116줄 (> 800)",
-      "2_Simulation/t3_amr/warehouse/scene/build_scene.py:0 파일 1048줄 (> 800)",
-      "3_FMS/sim_engine/kernel/core.py:0 파일 1018줄 (> 800)"
+      "2_Simulation/t3_amr/warehouse/scene/build_scene.py:0 파일 1048줄 (> 800)"
      ],
-     "n": 29,
+     "n": 30,
      "sev": "S2"
     },
     {
@@ -1481,28 +1481,41 @@
      "sev": "S0"
     }
    ],
-   "duration_s": 4.4,
+   "duration_s": 4.5,
    "allow_dropped": 4,
    "merge_base": "f13fcd61150f575d35ba6c18ed78c1fe1840099c",
    "files_changed": 5,
-   "ahead": 3,
-   "behind": 4,
+   "ahead": 6,
+   "behind": 7,
    "new_vs_develop": {
     "S3": 0,
-    "S2": 0,
+    "S2": 1,
     "S1": 0,
     "S0": 0
    },
-   "new_vs_develop_top": [],
+   "new_vs_develop_top": [
+    {
+     "tool": "check",
+     "rule": "file-800",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/path/pibt_scene.py",
+     "line": 0,
+     "msg": "파일 819줄 (> 800)",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "e8692b9523eede47"
+    }
+   ],
    "convention": {
     "branch_ok": true,
-    "commits_ok": 3,
-    "commits_total": 3,
+    "commits_ok": 6,
+    "commits_total": 6,
     "offenders": []
    },
    "new": {
     "S3": 0,
-    "S2": 0,
+    "S2": 1,
     "S1": 0,
     "S0": 0
    }
@@ -1543,7 +1556,7 @@
    "id": "bandit",
    "status": "ok",
    "rc": 0,
-   "secs": 1.7,
+   "secs": 1.6,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -1571,7 +1584,7 @@
    "id": "shellcheck",
    "status": "ok",
    "rc": null,
-   "secs": 0.2,
+   "secs": 0.3,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -1599,7 +1612,7 @@
    "id": "gitleaks",
    "status": "ok",
    "rc": 0,
-   "secs": 0.5,
+   "secs": 0.6,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -1821,7 +1834,7 @@
  "totals": {
   "findings": 732,
   "W": 1042,
-  "new": 3,
+  "new": 0,
   "fixed": 0
  },
  "narrative": {
