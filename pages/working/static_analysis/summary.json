@@ -1,17 +1,21 @@
 {
  "run": {
-  "id": "2026-09-16_1005_light",
-  "ts": "2026-09-16T10:05:01+0900",
+  "id": "2026-09-16_1105_light",
+  "ts": "2026-09-16T11:05:01+0900",
   "mode": "light",
   "ref": "origin/develop",
-  "sha": "9b6499d02683e1cb00eed1d817b3f8f6be03a45c",
-  "duration_s": 17.1,
+  "sha": "02a56044d5a5f35c6e63f93a31137ac95ba164fb",
+  "duration_s": 17.0,
   "status": "ok",
   "prev_deep": "2026-09-15_1805_deep",
   "red_flags": [
    {
     "code": "SECRET",
     "msg": "시크릿 의심 1건"
+   },
+   {
+    "code": "BRANCH_S2",
+    "msg": "feature/S15P21A106-224-soft-hold-전달 변경 파일에 S2+ 3건 추가"
    },
    {
     "code": "REQ_DRIFT",
@@ -167,7 +171,7 @@
     "hwarange",
     "Jaeryeong Shin"
    ],
-   "loc": 7590,
+   "loc": 7654,
    "counts": {
     "S3": 1,
     "S2": 36,
@@ -179,7 +183,7 @@
     "ruff"
    ],
    "W": 164,
-   "D": 21.6,
+   "D": 21.4,
    "grade": "C",
    "partial": false,
    "top": [
@@ -411,7 +415,7 @@
     "hwarange",
     "Jaeryeong Shin"
    ],
-   "loc": 8360,
+   "loc": 8361,
    "counts": {
     "S3": 1,
     "S2": 31,
@@ -810,10 +814,10 @@
   {
    "name": "develop",
    "slug": "develop",
-   "sha": "9b6499d02683e1cb00eed1d817b3f8f6be03a45c",
-   "committer_date": 1789517508,
+   "sha": "02a56044d5a5f35c6e63f93a31137ac95ba164fb",
+   "committer_date": 1789522141,
    "author": "김형수",
-   "loc": 57686,
+   "loc": 57751,
    "counts": {
     "S3": 4,
     "S2": 168,
@@ -828,7 +832,7 @@
     "S0": 0
    },
    "fixed": 0,
-   "prev_run": "2026-09-15_2105_light",
+   "prev_run": "2026-09-16_1005_light",
    "tools": [
     {
      "id": "ruff",
@@ -906,7 +910,7 @@
      "id": "hadolint",
      "status": "ok",
      "rc": 1,
-     "secs": 0.0,
+     "secs": 0.1,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -1128,11 +1132,11 @@
      "id": "line-len",
      "title": "120자 초과 줄 (지표)",
      "status": "ok",
-     "msg": "224줄",
+     "msg": "225줄",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [],
-     "n": 224,
+     "n": 225,
      "sev": "S0"
     }
    ],
@@ -1148,26 +1152,26 @@
    "ahead": 0,
    "behind": 0,
    "files_changed": 0,
-   "merge_base": "9b6499d02683e1cb00eed1d817b3f8f6be03a45c"
+   "merge_base": "02a56044d5a5f35c6e63f93a31137ac95ba164fb"
   },
   {
-   "name": "feature/S15P21A106-160-fms-대기열헛회전하한",
-   "slug": "feature__S15P21A106-160-fms-1bd597",
-   "sha": "de9b70b0071cee014c9132f3eb3aef3221af5876",
-   "committer_date": 1789519742,
+   "name": "feature/S15P21A106-222-fms-des워커-mq스레드분리",
+   "slug": "feature__S15P21A106-222-fms-des--mq-f8b6be",
+   "sha": "c40902f0603c629fb6bb7bc78b1353b1d56da5f6",
+   "committer_date": 1789524161,
    "author": "hwarange",
-   "loc": 57700,
+   "loc": 57853,
    "counts": {
     "S3": 4,
     "S2": 168,
-    "S1": 447,
+    "S1": 448,
     "S0": 9
    },
-   "W": 991,
+   "W": 992,
    "new_vs_prev": {
     "S3": 4,
     "S2": 168,
-    "S1": 447,
+    "S1": 448,
     "S0": 9
    },
    "fixed": 0,
@@ -1183,7 +1187,7 @@
      "counts": {
       "S3": 1,
       "S2": 44,
-      "S1": 393,
+      "S1": 394,
       "S0": 0
      }
     },
@@ -1207,7 +1211,7 @@
      "id": "bandit",
      "status": "ok",
      "rc": 0,
-     "secs": 1.6,
+     "secs": 1.5,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -1471,62 +1475,111 @@
      "id": "line-len",
      "title": "120자 초과 줄 (지표)",
      "status": "ok",
-     "msg": "225줄",
+     "msg": "227줄",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [],
-     "n": 225,
+     "n": 227,
      "sev": "S0"
     }
    ],
-   "duration_s": 4.8,
+   "duration_s": 4.7,
    "allow_dropped": 4,
-   "merge_base": "9b6499d02683e1cb00eed1d817b3f8f6be03a45c",
-   "files_changed": 18,
-   "ahead": 3,
+   "merge_base": "02a56044d5a5f35c6e63f93a31137ac95ba164fb",
+   "files_changed": 3,
+   "ahead": 1,
    "behind": 0,
    "new_vs_develop": {
     "S3": 0,
-    "S2": 0,
-    "S1": 0,
+    "S2": 1,
+    "S1": 3,
     "S0": 0
    },
-   "new_vs_develop_top": [],
+   "new_vs_develop_top": [
+    {
+     "tool": "ruff",
+     "rule": "PLW0108",
+     "sev": "S2",
+     "path": "3_FMS/infra/worker/test_estimate_worker.py",
+     "line": 136,
+     "msg": "Lambda may be unnecessary; consider inlining inner function",
+     "symbol": "",
+     "component": "3_FMS/infra+etc",
+     "part": "FMS·AI",
+     "fp": "b2e547a83fad57b7"
+    },
+    {
+     "tool": "ruff",
+     "rule": "SIM105",
+     "sev": "S1",
+     "path": "3_FMS/infra/worker/estimate_worker.py",
+     "line": 343,
+     "msg": "Use `contextlib.suppress(Exception)` instead of `try`-`except`-`pass`",
+     "symbol": "",
+     "component": "3_FMS/infra+etc",
+     "part": "FMS·AI",
+     "fp": "1879f1896d7e72ab"
+    },
+    {
+     "tool": "ruff",
+     "rule": "SIM105",
+     "sev": "S1",
+     "path": "3_FMS/infra/worker/estimate_worker.py",
+     "line": 382,
+     "msg": "Use `contextlib.suppress(Exception)` instead of `try`-`except`-`pass`",
+     "symbol": "",
+     "component": "3_FMS/infra+etc",
+     "part": "FMS·AI",
+     "fp": "1879f1896d7e72ab"
+    },
+    {
+     "tool": "ruff",
+     "rule": "UP031",
+     "sev": "S1",
+     "path": "3_FMS/infra/worker/test_estimate_worker.py",
+     "line": 189,
+     "msg": "Use format specifiers instead of percent format",
+     "symbol": "",
+     "component": "3_FMS/infra+etc",
+     "part": "FMS·AI",
+     "fp": "ef4f57b77e6a641c"
+    }
+   ],
    "convention": {
     "branch_ok": true,
-    "commits_ok": 3,
-    "commits_total": 3,
+    "commits_ok": 1,
+    "commits_total": 1,
     "offenders": []
    },
    "new": {
     "S3": 0,
-    "S2": 0,
-    "S1": 0,
+    "S2": 1,
+    "S1": 3,
     "S0": 0
    }
   },
   {
-   "name": "feature/S15P21A106-211-회전꼬리-원인분석",
-   "slug": "feature__S15P21A106-211-20da53",
-   "sha": "74d4d3f5ebda66c4f15c40c36c3de2d8aeec7026",
-   "committer_date": 1789518518,
+   "name": "feature/S15P21A106-224-soft-hold-전달",
+   "slug": "feature__S15P21A106-224-soft-hold-008ae8",
+   "sha": "6521d40637dcfd04f41adc15598fed7327255f34",
+   "committer_date": 1789523006,
    "author": "kimHySoo",
-   "loc": 56800,
+   "loc": 60128,
    "counts": {
-    "S3": 5,
-    "S2": 133,
-    "S1": 439,
-    "S0": 7
+    "S3": 4,
+    "S2": 171,
+    "S1": 460,
+    "S0": 9
    },
-   "W": 888,
+   "W": 1013,
    "new_vs_prev": {
-    "S3": 0,
-    "S2": 0,
-    "S1": 1,
-    "S0": 0
+    "S3": 4,
+    "S2": 171,
+    "S1": 460,
+    "S0": 9
    },
    "fixed": 0,
-   "prev_run": "2026-09-16_0905_light",
+   "prev_run": null,
    "tools": [
     {
      "id": "ruff",
@@ -1538,7 +1591,7 @@
      "counts": {
       "S3": 1,
       "S2": 45,
-      "S1": 387,
+      "S1": 406,
       "S0": 0
      }
     },
@@ -1562,7 +1615,7 @@
      "id": "bandit",
      "status": "ok",
      "rc": 0,
-     "secs": 1.5,
+     "secs": 1.6,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -1581,7 +1634,7 @@
      "metrics": {},
      "counts": {
       "S3": 0,
-      "S2": 16,
+      "S2": 50,
       "S1": 3,
       "S0": 0
      }
@@ -1604,14 +1657,14 @@
      "id": "hadolint",
      "status": "ok",
      "rc": 1,
-     "secs": 0.0,
+     "secs": 0.1,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
       "S3": 0,
       "S2": 0,
-      "S1": 1,
-      "S0": 1
+      "S1": 3,
+      "S0": 3
      }
     },
     {
@@ -1622,7 +1675,7 @@
      "stderr_tail": "",
      "metrics": {},
      "counts": {
-      "S3": 2,
+      "S3": 1,
       "S2": 0,
       "S1": 0,
       "S0": 0
@@ -1646,7 +1699,7 @@
      "id": "pmd",
      "status": "ok",
      "rc": 4,
-     "secs": 0.9,
+     "secs": 1.3,
      "stderr_tail": "[INFO] Found 44 violations.",
      "metrics": {
       "processing_errors": 0
@@ -1696,7 +1749,7 @@
      "id": "size",
      "title": "파일 > 800줄 · 함수 > 80줄",
      "status": "warn",
-     "msg": "파일 7 · 함수 23 (50줄 초과 함수 69)",
+     "msg": "파일 7 · 함수 27 (50줄 초과 함수 74)",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [
@@ -1707,7 +1760,7 @@
       "2_Simulation/t3_amr/tools/path_view.py:0 파일 1116줄 (> 800)",
       "2_Simulation/t3_amr/warehouse/scene/build_scene.py:0 파일 1045줄 (> 800)"
      ],
-     "n": 30,
+     "n": 34,
      "sev": "S2"
     },
     {
@@ -1777,7 +1830,7 @@
      "component": "3_FMS/infra+etc",
      "needs_agreement": true,
      "evidence": [
-      "3_FMS/infra/requirements.txt:9"
+      "3_FMS/infra/requirements.txt:13"
      ],
      "n": 1,
      "sev": "S0"
@@ -1825,24 +1878,24 @@
      "id": "line-len",
      "title": "120자 초과 줄 (지표)",
      "status": "ok",
-     "msg": "217줄",
+     "msg": "225줄",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [],
-     "n": 217,
+     "n": 225,
      "sev": "S0"
     }
    ],
-   "duration_s": 4.3,
+   "duration_s": 4.8,
    "allow_dropped": 4,
-   "merge_base": "ad1917503b4daceb1eafedaae96842abe8c9afde",
-   "files_changed": 17,
-   "ahead": 27,
-   "behind": 36,
+   "merge_base": "02a56044d5a5f35c6e63f93a31137ac95ba164fb",
+   "files_changed": 21,
+   "ahead": 35,
+   "behind": 0,
    "new_vs_develop": {
     "S3": 0,
-    "S2": 1,
-    "S1": 6,
+    "S2": 3,
+    "S1": 13,
     "S0": 0
    },
    "new_vs_develop_top": [
@@ -1859,16 +1912,88 @@
      "fp": "123ec28c1e9e7a13"
     },
     {
+     "tool": "check",
+     "rule": "func-80",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/path/test_soft_hold.py",
+     "line": 334,
+     "msg": "함수 test_E 90줄 (> 80)",
+     "symbol": "test_E",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "e4913b1e84b16ca8"
+    },
+    {
+     "tool": "check",
+     "rule": "func-80",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/tools/reverse_sweep.py",
+     "line": 105,
+     "msg": "함수 child 84줄 (> 80)",
+     "symbol": "child",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "f0d3c3421f9ed0e0"
+    },
+    {
      "tool": "ruff",
      "rule": "UP031",
      "sev": "S1",
      "path": "2_Simulation/t3_amr/path/pibt_core_v2.py",
-     "line": 168,
+     "line": 177,
      "msg": "Use format specifiers instead of percent format",
      "symbol": "",
      "component": "2_Simulation",
      "part": "시뮬",
      "fp": "928d5e2c46c5d91d"
+    },
+    {
+     "tool": "ruff",
+     "rule": "RUF059",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/path/test_soft_hold.py",
+     "line": 143,
+     "msg": "Unpacked variable `r` is never used",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "3c245ce2c9d1fb25"
+    },
+    {
+     "tool": "ruff",
+     "rule": "RUF059",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/path/test_soft_hold.py",
+     "line": 143,
+     "msg": "Unpacked variable `c` is never used",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "90282261713952b8"
+    },
+    {
+     "tool": "ruff",
+     "rule": "RUF059",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/path/test_soft_hold.py",
+     "line": 143,
+     "msg": "Unpacked variable `h0` is never used",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "498cb3b6c69a2693"
+    },
+    {
+     "tool": "ruff",
+     "rule": "C420",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/path/test_soft_hold.py",
+     "line": 173,
+     "msg": "Unnecessary dict comprehension for iterable; use `dict.fromkeys` instead",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "ac33077bf5356d51"
     },
     {
      "tool": "ruff",
@@ -1887,12 +2012,48 @@
      "rule": "PLW1510",
      "sev": "S1",
      "path": "2_Simulation/t3_amr/tools/reverse_sweep.py",
-     "line": 186,
+     "line": 205,
      "msg": "`subprocess.run` without explicit `check` argument",
      "symbol": "",
      "component": "2_Simulation",
      "part": "시뮬",
      "fp": "c0767556443c2187"
+    },
+    {
+     "tool": "ruff",
+     "rule": "RUF010",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/tools/soft_probe.py",
+     "line": 60,
+     "msg": "Use explicit conversion flag",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "c9779ae780eb68f6"
+    },
+    {
+     "tool": "ruff",
+     "rule": "RUF010",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/tools/soft_probe.py",
+     "line": 61,
+     "msg": "Use explicit conversion flag",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "0a330008e628c3ea"
+    },
+    {
+     "tool": "ruff",
+     "rule": "RUF010",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/tools/soft_probe.py",
+     "line": 63,
+     "msg": "Use explicit conversion flag",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "86cdb09ac9e5a565"
     },
     {
      "tool": "ruff",
@@ -1933,14 +2094,14 @@
    ],
    "convention": {
     "branch_ok": true,
-    "commits_ok": 26,
-    "commits_total": 26,
+    "commits_ok": 33,
+    "commits_total": 33,
     "offenders": []
    },
    "new": {
     "S3": 0,
-    "S2": 1,
-    "S1": 6,
+    "S2": 3,
+    "S1": 13,
     "S0": 0
    }
   }
@@ -2022,7 +2183,7 @@
    "id": "hadolint",
    "status": "ok",
    "rc": 1,
-   "secs": 0.0,
+   "secs": 0.1,
    "stderr_tail": "",
    "metrics": {},
    "counts": {
@@ -2244,11 +2405,11 @@
    "id": "line-len",
    "title": "120자 초과 줄 (지표)",
    "status": "ok",
-   "msg": "224줄",
+   "msg": "225줄",
    "component": "infra",
    "needs_agreement": false,
    "evidence": [],
-   "n": 224,
+   "n": 225,
    "sev": "S0"
   }
  ],
