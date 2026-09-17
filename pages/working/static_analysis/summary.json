@@ -1,25 +1,33 @@
 {
  "run": {
-  "id": "2026-09-17_1605_light",
-  "ts": "2026-09-17T16:05:01+0900",
-  "mode": "light",
+  "id": "2026-09-17_1805_deep",
+  "ts": "2026-09-17T18:05:01+0900",
+  "mode": "deep",
   "ref": "origin/develop",
   "sha": "a84376b50dd242f9077e8cc0e76eb1883af9102a",
-  "duration_s": 13.1,
-  "status": "ok",
+  "duration_s": 213.5,
+  "status": "partial",
   "prev_deep": "2026-09-16_1805_deep",
   "red_flags": [
    {
+    "code": "NEW_S3",
+    "msg": "develop 신규 S3 6건"
+   },
+   {
     "code": "SECRET",
-    "msg": "시크릿 의심 6건"
+    "msg": "시크릿 의심 7건"
    },
    {
     "code": "COMP_UP",
-    "msg": "4_Web/BE W 69→151 (D 7.7→12.8)"
+    "msg": "4_Web/BE W 69→167 (D 7.7→14.2)"
    },
    {
     "code": "BRANCH_S2",
-    "msg": "feature/S15P21A106-240-바닥마찰-교착복구 변경 파일에 S2+ 9건 추가"
+    "msg": "feature/S15P21A106-240-바닥마찰-교착복구 변경 파일에 S2+ 22건 추가"
+   },
+   {
+    "code": "BRANCH_S2",
+    "msg": "feature/S15P21A106-206-fms-θ학습 변경 파일에 S2+ 6건 추가"
    },
    {
     "code": "REQ_DRIFT",
@@ -52,23 +60,49 @@
    "loc": 29578,
    "counts": {
     "S3": 0,
-    "S2": 100,
-    "S1": 403,
-    "S0": 3
+    "S2": 127,
+    "S1": 475,
+    "S0": 5
    },
    "tools": [
     "bandit",
     "check",
     "hadolint",
+    "radon",
     "ruff",
     "shellcheck",
+    "vulture",
     "yamllint"
    ],
-   "W": 703,
-   "D": 23.8,
+   "W": 856,
+   "D": 28.9,
    "grade": "C",
-   "partial": false,
+   "partial": true,
    "top": [
+    {
+     "tool": "radon",
+     "rule": "CC-D",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/amr/make_path/fms_import.py",
+     "line": 59,
+     "msg": "순환 복잡도 30 (D) function convert",
+     "symbol": "convert",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "4147db816eb0eb91"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-D",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/amr/make_path/generate.py",
+     "line": 74,
+     "msg": "순환 복잡도 21 (D) function gen_fleet",
+     "symbol": "gen_fleet",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "9574c99b0fddede3"
+    },
     {
      "tool": "check",
      "rule": "func-80",
@@ -80,6 +114,18 @@
      "component": "2_Simulation",
      "part": "시뮬",
      "fp": "25b6543d86225f4f"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-D",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/amr/make_path/planner.py",
+     "line": 77,
+     "msg": "순환 복잡도 25 (D) function astar_time",
+     "symbol": "astar_time",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "b221c370d3b1bcfd"
     },
     {
      "tool": "ruff",
@@ -128,42 +174,6 @@
      "component": "2_Simulation",
      "part": "시뮬",
      "fp": "c53c37e08f9be6f2"
-    },
-    {
-     "tool": "yamllint",
-     "rule": "braces",
-     "sev": "S2",
-     "path": "2_Simulation/t3_amr/deploy/k8s/deployment.yaml",
-     "line": 11,
-     "msg": "too many spaces inside braces",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "8616dd07985bab8a"
-    },
-    {
-     "tool": "yamllint",
-     "rule": "braces",
-     "sev": "S2",
-     "path": "2_Simulation/t3_amr/deploy/k8s/deployment.yaml",
-     "line": 11,
-     "msg": "too many spaces inside braces",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "8616dd07985bab8a"
-    },
-    {
-     "tool": "yamllint",
-     "rule": "braces",
-     "sev": "S2",
-     "path": "2_Simulation/t3_amr/deploy/k8s/deployment.yaml",
-     "line": 11,
-     "msg": "too many spaces inside braces",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "8616dd07985bab8a"
     }
    ]
   },
@@ -178,18 +188,19 @@
    "loc": 7761,
    "counts": {
     "S3": 1,
-    "S2": 37,
-    "S1": 49,
+    "S2": 45,
+    "S1": 78,
     "S0": 0
    },
    "tools": [
     "check",
+    "radon",
     "ruff"
    ],
-   "W": 170,
-   "D": 21.9,
+   "W": 223,
+   "D": 28.7,
    "grade": "C",
-   "partial": false,
+   "partial": true,
    "top": [
     {
      "tool": "ruff",
@@ -216,6 +227,18 @@
      "fp": "20be493bd9d60d4a"
     },
     {
+     "tool": "radon",
+     "rule": "CC-D",
+     "sev": "S2",
+     "path": "3_FMS/sim_engine/checks/from_theta_demo.py",
+     "line": 57,
+     "msg": "순환 복잡도 28 (D) function main",
+     "symbol": "main",
+     "component": "3_FMS/sim_engine",
+     "part": "FMS·AI",
+     "fp": "d8d242aacc27f271"
+    },
+    {
      "tool": "check",
      "rule": "func-80",
      "sev": "S2",
@@ -226,6 +249,18 @@
      "component": "3_FMS/sim_engine",
      "part": "FMS·AI",
      "fp": "918f48f91ca717a8"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-D",
+     "sev": "S2",
+     "path": "3_FMS/sim_engine/cli/report.py",
+     "line": 148,
+     "msg": "순환 복잡도 21 (D) function report",
+     "symbol": "report",
+     "component": "3_FMS/sim_engine",
+     "part": "FMS·AI",
+     "fp": "476e1fcdb6063f2f"
     },
     {
      "tool": "check",
@@ -262,30 +297,6 @@
      "component": "3_FMS/sim_engine",
      "part": "FMS·AI",
      "fp": "4924b111718c3c39"
-    },
-    {
-     "tool": "check",
-     "rule": "func-80",
-     "sev": "S2",
-     "path": "3_FMS/sim_engine/from_theta.py",
-     "line": 97,
-     "msg": "함수 extract_topology 82줄 (> 80)",
-     "symbol": "extract_topology",
-     "component": "3_FMS/sim_engine",
-     "part": "FMS·AI",
-     "fp": "fbc06ef5828a2677"
-    },
-    {
-     "tool": "ruff",
-     "rule": "F401",
-     "sev": "S2",
-     "path": "3_FMS/sim_engine/kernel/core.py",
-     "line": 23,
-     "msg": "`map_loader.front_swing` imported but unused",
-     "symbol": "",
-     "component": "3_FMS/sim_engine",
-     "part": "FMS·AI",
-     "fp": "2cb720d5e754ef83"
     }
    ]
   },
@@ -300,18 +311,19 @@
    "loc": 3149,
    "counts": {
     "S3": 1,
-    "S2": 2,
-    "S1": 16,
+    "S2": 3,
+    "S1": 20,
     "S0": 0
    },
    "tools": [
     "check",
+    "radon",
     "ruff"
    ],
-   "W": 32,
-   "D": 10.2,
+   "W": 39,
+   "D": 12.4,
    "grade": "B",
-   "partial": false,
+   "partial": true,
    "top": [
     {
      "tool": "check",
@@ -348,6 +360,18 @@
      "component": "3_FMS/ai_theta+contracts",
      "part": "FMS·AI",
      "fp": "151872f41895af06"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-D",
+     "sev": "S2",
+     "path": "3_FMS/ai_theta/experiments/eval_fleet.py",
+     "line": 64,
+     "msg": "순환 복잡도 22 (D) function main",
+     "symbol": "main",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "c5f8f64232291644"
     },
     {
      "tool": "ruff",
@@ -396,18 +420,6 @@
      "component": "3_FMS/ai_theta+contracts",
      "part": "FMS·AI",
      "fp": "ca0ce1c7526dc53e"
-    },
-    {
-     "tool": "ruff",
-     "rule": "RUF059",
-     "sev": "S1",
-     "path": "3_FMS/ai_theta/tests/test_synth_warehouse.py",
-     "line": 191,
-     "msg": "Unpacked variable `blocked` is never used",
-     "symbol": "",
-     "component": "3_FMS/ai_theta+contracts",
-     "part": "FMS·AI",
-     "fp": "85b4c04ccc9d9d2e"
     }
    ]
   },
@@ -422,20 +434,22 @@
    "loc": 8668,
    "counts": {
     "S3": 1,
-    "S2": 31,
-    "S1": 136,
-    "S0": 0
+    "S2": 36,
+    "S1": 162,
+    "S0": 3
    },
    "tools": [
     "check",
+    "radon",
     "ruff",
     "shellcheck",
+    "vulture",
     "yamllint"
    ],
-   "W": 239,
-   "D": 27.6,
+   "W": 280,
+   "D": 32.3,
    "grade": "C",
-   "partial": false,
+   "partial": true,
    "top": [
     {
      "tool": "check",
@@ -544,21 +558,23 @@
    ],
    "loc": 11785,
    "counts": {
-    "S3": 6,
+    "S3": 7,
     "S2": 3,
-    "S1": 82,
+    "S1": 88,
     "S0": 13
    },
    "tools": [
     "check",
     "gitleaks",
+    "gitleaks-git",
     "hadolint",
-    "pmd"
+    "pmd",
+    "spotbugs"
    ],
-   "W": 151,
-   "D": 12.8,
+   "W": 167,
+   "D": 14.2,
    "grade": "B",
-   "partial": false,
+   "partial": true,
    "top": [
     {
      "tool": "gitleaks",
@@ -570,7 +586,7 @@
      "symbol": "",
      "component": "4_Web/BE",
      "part": "웹",
-     "fp": "e8beaf347792ec1f"
+     "fp": "b0796e8dceb80d70"
     },
     {
      "tool": "gitleaks",
@@ -582,7 +598,7 @@
      "symbol": "",
      "component": "4_Web/BE",
      "part": "웹",
-     "fp": "283aa4f53045ec2c"
+     "fp": "27e5759874349d78"
     },
     {
      "tool": "gitleaks",
@@ -594,7 +610,7 @@
      "symbol": "",
      "component": "4_Web/BE",
      "part": "웹",
-     "fp": "f351f734f3aafc37"
+     "fp": "46511b24624ca0cd"
     },
     {
      "tool": "gitleaks",
@@ -606,7 +622,7 @@
      "symbol": "",
      "component": "4_Web/BE",
      "part": "웹",
-     "fp": "7391fd4954e37d83"
+     "fp": "1ec370f3ea32745c"
     },
     {
      "tool": "gitleaks",
@@ -618,7 +634,7 @@
      "symbol": "",
      "component": "4_Web/BE",
      "part": "웹",
-     "fp": "477d3b6087a9195e"
+     "fp": "e168def5e182e40f"
     },
     {
      "tool": "gitleaks",
@@ -633,6 +649,18 @@
      "fp": "2bb78000f9a634cf"
     },
     {
+     "tool": "gitleaks-git",
+     "rule": "generic-api-key",
+     "sev": "S3",
+     "path": "4_Web/SantaFactoryBE/src/test/java/com/ssafy/santafactory/service/auth/AuthServiceTest.java",
+     "line": 43,
+     "msg": "시크릿 의심: Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+     "symbol": "",
+     "component": "4_Web/BE",
+     "part": "웹",
+     "fp": "fd92856d0409fcf9"
+    },
+    {
      "tool": "pmd",
      "rule": "ImplicitFunctionalInterface",
      "sev": "S2",
@@ -643,18 +671,6 @@
      "component": "4_Web/BE",
      "part": "웹",
      "fp": "0ee3798109d85dec"
-    },
-    {
-     "tool": "pmd",
-     "rule": "ImplicitFunctionalInterface",
-     "sev": "S2",
-     "path": "4_Web/SantaFactoryBE/src/main/java/com/ssafy/santafactory/repository/RobotRepository.java",
-     "line": 8,
-     "msg": "Annotate this interface with @FunctionalInterface or with @SuppressWarnings(\"PMD.ImplicitFunctionalInterface\") to clarify your intent.",
-     "symbol": "",
-     "component": "4_Web/BE",
-     "part": "웹",
-     "fp": "d32e8b6f1d53cd10"
     }
    ]
   },
@@ -678,7 +694,7 @@
    "W": 1,
    "D": 0.3,
    "grade": "A",
-   "partial": false,
+   "partial": true,
    "top": [
     {
      "tool": "hadolint",
@@ -703,18 +719,19 @@
    "counts": {
     "S3": 0,
     "S2": 18,
-    "S1": 0,
+    "S1": 2,
     "S0": 2
    },
    "tools": [
     "check",
     "hadolint",
+    "radon",
     "yamllint"
    ],
-   "W": 54,
-   "D": 15.3,
+   "W": 56,
+   "D": 15.8,
    "grade": "C",
-   "partial": false,
+   "partial": true,
    "top": [
     {
      "tool": "check",
@@ -824,20 +841,20 @@
    "author": "최아영",
    "loc": 67534,
    "counts": {
-    "S3": 9,
-    "S2": 191,
-    "S1": 687,
-    "S0": 18
+    "S3": 10,
+    "S2": 232,
+    "S1": 826,
+    "S0": 23
    },
-   "W": 1350,
+   "W": 1622,
    "new_vs_prev": {
-    "S3": 0,
-    "S2": 1,
-    "S1": 36,
-    "S0": 6
+    "S3": 6,
+    "S2": 41,
+    "S1": 139,
+    "S0": 5
    },
-   "fixed": 0,
-   "prev_run": "2026-09-17_1505_light",
+   "fixed": 5,
+   "prev_run": "2026-09-17_1605_light",
    "tools": [
     {
      "id": "ruff",
@@ -957,7 +974,7 @@
      "id": "pmd",
      "status": "ok",
      "rc": 4,
-     "secs": 1.3,
+     "secs": 0.9,
      "stderr_tail": "[INFO] Found 93 violations.",
      "metrics": {
       "processing_errors": 0
@@ -967,6 +984,158 @@
       "S2": 2,
       "S1": 79,
       "S0": 12
+     }
+    },
+    {
+     "id": "mypy",
+     "status": "error",
+     "rc": 2,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "radon",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.5,
+     "stderr_tail": "",
+     "metrics": {
+      "ranks": {
+       "C": 133,
+       "D": 25,
+       "E": 11,
+       "F": 5
+      }
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 41,
+      "S1": 133,
+      "S0": 0
+     }
+    },
+    {
+     "id": "vulture",
+     "status": "ok",
+     "rc": 3,
+     "secs": 0.6,
+     "stderr_tail": "",
+     "metrics": {
+      "candidates": 5
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 5
+     }
+    },
+    {
+     "id": "cpd-python",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.6,
+     "stderr_tail": "",
+     "metrics": {
+      "duplications": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "cpd-java",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.5,
+     "stderr_tail": "",
+     "metrics": {
+      "duplications": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "pytest",
+     "status": "ok",
+     "rc": 0,
+     "secs": 7.9,
+     "stderr_tail": "",
+     "metrics": {
+      "run": 175,
+      "passed": 125,
+      "failed": 0,
+      "skipped": 50,
+      "cov_pct": 41.9,
+      "venv": "ok"
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "gradle",
+     "status": "ok",
+     "rc": 0,
+     "secs": 21.4,
+     "stderr_tail": "OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended",
+     "metrics": {
+      "run": 184,
+      "passed": 183,
+      "failed": 0,
+      "skipped": 1,
+      "cov_pct": 83.2
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "spotbugs",
+     "status": "ok",
+     "rc": 0,
+     "secs": 3.0,
+     "stderr_tail": "The following classes needed for analysis were missing:\n  lombok.Generated",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 6,
+      "S0": 0
+     }
+    },
+    {
+     "id": "gitleaks-git",
+     "status": "ok",
+     "rc": 0,
+     "secs": 1.6,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 1,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
      }
     }
    ],
@@ -1144,13 +1313,13 @@
      "sev": "S0"
     }
    ],
-   "duration_s": 5.1,
+   "duration_s": 46.7,
    "allow_dropped": 4,
    "new": {
-    "S3": 0,
-    "S2": 1,
-    "S1": 36,
-    "S0": 6
+    "S3": 6,
+    "S2": 41,
+    "S1": 139,
+    "S0": 5
    },
    "convention": {},
    "ahead": 0,
@@ -1161,25 +1330,25 @@
   {
    "name": "feature/S15P21A106-240-바닥마찰-교착복구",
    "slug": "feature__S15P21A106-240-557c7d",
-   "sha": "bbc6e4431507aaa65656b9517ed171be3455ab95",
-   "committer_date": 1789625160,
+   "sha": "ee36a3ec497d945ff37f554f663e5e78e54b2aa9",
+   "committer_date": 1789634817,
    "author": "kimHySoo",
-   "loc": 67308,
+   "loc": 68400,
    "counts": {
-    "S3": 4,
-    "S2": 197,
-    "S1": 747,
-    "S0": 12
+    "S3": 5,
+    "S2": 252,
+    "S1": 908,
+    "S0": 17
    },
-   "W": 1378,
+   "W": 1714,
    "new_vs_prev": {
-    "S3": 0,
-    "S2": 0,
-    "S1": 0,
-    "S0": 0
+    "S3": 1,
+    "S2": 48,
+    "S1": 151,
+    "S0": 5
    },
    "fixed": 0,
-   "prev_run": "2026-09-17_1405_light",
+   "prev_run": "2026-09-17_1705_light",
    "tools": [
     {
      "id": "ruff",
@@ -1190,8 +1359,8 @@
      "metrics": {},
      "counts": {
       "S3": 1,
-      "S2": 49,
-      "S1": 682,
+      "S2": 52,
+      "S1": 693,
       "S0": 0
      }
     },
@@ -1215,7 +1384,7 @@
      "id": "bandit",
      "status": "ok",
      "rc": 0,
-     "secs": 1.8,
+     "secs": 1.9,
      "stderr_tail": "",
      "metrics": {},
      "counts": {
@@ -1234,7 +1403,7 @@
      "metrics": {},
      "counts": {
       "S3": 0,
-      "S2": 50,
+      "S2": 52,
       "S1": 4,
       "S0": 0
      }
@@ -1249,7 +1418,7 @@
      "counts": {
       "S3": 0,
       "S2": 0,
-      "S1": 8,
+      "S1": 9,
       "S0": 0
      }
     },
@@ -1310,6 +1479,158 @@
       "S1": 43,
       "S0": 8
      }
+    },
+    {
+     "id": "mypy",
+     "status": "error",
+     "rc": 2,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "radon",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.5,
+     "stderr_tail": "",
+     "metrics": {
+      "ranks": {
+       "C": 144,
+       "D": 28,
+       "E": 13,
+       "F": 7
+      }
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 48,
+      "S1": 144,
+      "S0": 0
+     }
+    },
+    {
+     "id": "vulture",
+     "status": "ok",
+     "rc": 3,
+     "secs": 0.6,
+     "stderr_tail": "",
+     "metrics": {
+      "candidates": 5
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 5
+     }
+    },
+    {
+     "id": "cpd-python",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.6,
+     "stderr_tail": "",
+     "metrics": {
+      "duplications": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "cpd-java",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.5,
+     "stderr_tail": "",
+     "metrics": {
+      "duplications": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "pytest",
+     "status": "ok",
+     "rc": 0,
+     "secs": 9.4,
+     "stderr_tail": "",
+     "metrics": {
+      "run": 175,
+      "passed": 125,
+      "failed": 0,
+      "skipped": 50,
+      "cov_pct": 41.9,
+      "venv": "ok"
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "gradle",
+     "status": "ok",
+     "rc": 0,
+     "secs": 19.5,
+     "stderr_tail": "OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended",
+     "metrics": {
+      "run": 146,
+      "passed": 145,
+      "failed": 0,
+      "skipped": 1,
+      "cov_pct": 83.9
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "spotbugs",
+     "status": "ok",
+     "rc": 0,
+     "secs": 2.8,
+     "stderr_tail": "The following classes needed for analysis were missing:\n  lombok.Generated",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 5,
+      "S0": 0
+     }
+    },
+    {
+     "id": "gitleaks-git",
+     "status": "ok",
+     "rc": 0,
+     "secs": 1.6,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 1,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
     }
    ],
    "custom_checks": [
@@ -1349,18 +1670,18 @@
      "id": "size",
      "title": "파일 > 800줄 · 함수 > 80줄",
      "status": "warn",
-     "msg": "파일 7 · 함수 47 (50줄 초과 함수 100)",
+     "msg": "파일 7 · 함수 49 (50줄 초과 함수 102)",
      "component": "infra",
      "needs_agreement": false,
      "evidence": [
       "2_Simulation/t3_amr/path/_pibt_core_vendor.py:0 파일 840줄 (> 800)",
-      "2_Simulation/t3_amr/path/isaac_drive.py:0 파일 3180줄 (> 800)",
+      "2_Simulation/t3_amr/path/isaac_drive.py:0 파일 3364줄 (> 800)",
       "2_Simulation/t3_amr/path/pibt_scene.py:0 파일 890줄 (> 800)",
-      "2_Simulation/t3_amr/runners/live_pibt.py:0 파일 1195줄 (> 800)",
+      "2_Simulation/t3_amr/runners/live_pibt.py:0 파일 1222줄 (> 800)",
       "2_Simulation/t3_amr/tools/path_view.py:0 파일 1116줄 (> 800)",
       "2_Simulation/t3_amr/warehouse/scene/build_scene.py:0 파일 1113줄 (> 800)"
      ],
-     "n": 54,
+     "n": 56,
      "sev": "S2"
     },
     {
@@ -1486,16 +1807,16 @@
      "sev": "S0"
     }
    ],
-   "duration_s": 4.8,
+   "duration_s": 43.2,
    "allow_dropped": 4,
-   "merge_base": "74300c2158ce44bd9321b6b389b8d32e6175f50f",
-   "files_changed": 14,
-   "ahead": 30,
-   "behind": 15,
+   "merge_base": "6848a69322027bd87590ebcb2174c1d318a3497b",
+   "files_changed": 21,
+   "ahead": 10,
+   "behind": 10,
    "new_vs_develop": {
     "S3": 0,
-    "S2": 9,
-    "S1": 97,
+    "S2": 22,
+    "S1": 121,
     "S0": 0
    },
    "new_vs_develop_top": [
@@ -1512,6 +1833,42 @@
      "fp": "8f1fe43263e94e1b"
     },
     {
+     "tool": "ruff",
+     "rule": "PLW0603",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/tools/recover_design.py",
+     "line": 167,
+     "msg": "Using the global statement to update `SPILL_COLS` is discouraged",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "885a59b4770561e7"
+    },
+    {
+     "tool": "ruff",
+     "rule": "F841",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/tools/recover_design.py",
+     "line": 193,
+     "msg": "Local variable `far_side` is assigned to but never used",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "86753fc96fbb9c99"
+    },
+    {
+     "tool": "ruff",
+     "rule": "PLW0603",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/tools/recover_design.py",
+     "line": 257,
+     "msg": "Using the global statement to update `SPILL_COLS` is discouraged",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "885a59b4770561e7"
+    },
+    {
      "tool": "bandit",
      "rule": "B307",
      "sev": "S2",
@@ -1522,6 +1879,126 @@
      "component": "2_Simulation",
      "part": "시뮬",
      "fp": "e36f5f30f2edb514"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-D",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/tools/map_parity.py",
+     "line": 131,
+     "msg": "순환 복잡도 26 (D) function main",
+     "symbol": "main",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "721e9d7f996eba6e"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-D",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/tools/turn_hist_merge.py",
+     "line": 89,
+     "msg": "순환 복잡도 27 (D) function main",
+     "symbol": "main",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "6270d56a060c650e"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-E",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/tools/ground_material.py",
+     "line": 67,
+     "msg": "순환 복잡도 39 (E) function main",
+     "symbol": "main",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "ada9e1a0bc133510"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-F",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/tools/usd_map_parity.py",
+     "line": 71,
+     "msg": "순환 복잡도 63 (F) function main",
+     "symbol": "main",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "c83afa6179a5abdb"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-D",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/tools/replan_latch.py",
+     "line": 104,
+     "msg": "순환 복잡도 22 (D) function main",
+     "symbol": "main",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "3c2c83cb07d05d1c"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-E",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/tools/soft_release_safety.py",
+     "line": 152,
+     "msg": "순환 복잡도 38 (E) function main",
+     "symbol": "main",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "af5da2a217319063"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-F",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/path/isaac_drive.py",
+     "line": 1092,
+     "msg": "순환 복잡도 42 (F) function build_adg",
+     "symbol": "build_adg",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "cd7179462a6ea122"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-D",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/path/isaac_drive.py",
+     "line": 2588,
+     "msg": "순환 복잡도 23 (D) method step",
+     "symbol": "step",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "31732e18258114df"
+    },
+    {
+     "tool": "check",
+     "rule": "func-80",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/path/isaac_drive.py",
+     "line": 1899,
+     "msg": "함수 update 92줄 (> 80)",
+     "symbol": "update",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "738dc0c676938ca0"
+    },
+    {
+     "tool": "check",
+     "rule": "func-80",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/path/isaac_drive.py",
+     "line": 2430,
+     "msg": "함수 _why_stuck 95줄 (> 80)",
+     "symbol": "_why_stuck",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "e1497d4e2123a72f"
     },
     {
      "tool": "check",
@@ -1582,174 +2059,1880 @@
      "component": "2_Simulation",
      "part": "시뮬",
      "fp": "b1183df109aefc0f"
-    },
-    {
-     "tool": "check",
-     "rule": "func-80",
-     "sev": "S2",
-     "path": "2_Simulation/t3_amr/tools/turn_hist_merge.py",
-     "line": 89,
-     "msg": "함수 main 90줄 (> 80)",
-     "symbol": "main",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "3c7b4a105d7bfe51"
-    },
-    {
-     "tool": "check",
-     "rule": "func-80",
-     "sev": "S2",
-     "path": "2_Simulation/t3_amr/tools/usd_map_parity.py",
-     "line": 71,
-     "msg": "함수 main 229줄 (> 80)",
-     "symbol": "main",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "58c57bb9801b3870"
-    },
-    {
-     "tool": "ruff",
-     "rule": "RUF059",
-     "sev": "S1",
-     "path": "2_Simulation/t3_amr/path/diag_reach.py",
-     "line": 82,
-     "msg": "Unpacked variable `k` is never used",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "d40ef61a07050532"
-    },
-    {
-     "tool": "ruff",
-     "rule": "UP037",
-     "sev": "S1",
-     "path": "2_Simulation/t3_amr/path/isaac_drive.py",
-     "line": 885,
-     "msg": "Remove quotes from type annotation",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "6734defb70fb3d4f"
-    },
-    {
-     "tool": "ruff",
-     "rule": "SIM102",
-     "sev": "S1",
-     "path": "2_Simulation/t3_amr/path/isaac_drive.py",
-     "line": 2437,
-     "msg": "Use a single `if` statement instead of nested `if` statements",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "01823b4469042c6c"
-    },
-    {
-     "tool": "ruff",
-     "rule": "F541",
-     "sev": "S1",
-     "path": "2_Simulation/t3_amr/tools/crab_gain.py",
-     "line": 145,
-     "msg": "f-string without any placeholders",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "772b3be6c14d183c"
-    },
-    {
-     "tool": "ruff",
-     "rule": "RUF010",
-     "sev": "S1",
-     "path": "2_Simulation/t3_amr/tools/force_complete_safety.py",
-     "line": 129,
-     "msg": "Use explicit conversion flag",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "6542c6c8c16542d6"
-    },
-    {
-     "tool": "ruff",
-     "rule": "F541",
-     "sev": "S1",
-     "path": "2_Simulation/t3_amr/tools/force_complete_safety.py",
-     "line": 131,
-     "msg": "f-string without any placeholders",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "6276ece451d63a0d"
-    },
-    {
-     "tool": "ruff",
-     "rule": "F541",
-     "sev": "S1",
-     "path": "2_Simulation/t3_amr/tools/force_complete_safety.py",
-     "line": 163,
-     "msg": "f-string without any placeholders",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "438312fa6a3bbbf8"
-    },
-    {
-     "tool": "ruff",
-     "rule": "F541",
-     "sev": "S1",
-     "path": "2_Simulation/t3_amr/tools/force_complete_safety.py",
-     "line": 165,
-     "msg": "f-string without any placeholders",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "4ea06e10eeb7fac5"
-    },
-    {
-     "tool": "ruff",
-     "rule": "F541",
-     "sev": "S1",
-     "path": "2_Simulation/t3_amr/tools/force_complete_safety.py",
-     "line": 177,
-     "msg": "f-string without any placeholders",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "ab16a7bc7539dc77"
-    },
-    {
-     "tool": "ruff",
-     "rule": "F541",
-     "sev": "S1",
-     "path": "2_Simulation/t3_amr/tools/force_complete_safety.py",
-     "line": 179,
-     "msg": "f-string without any placeholders",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "781edfec7fc6f89d"
-    },
-    {
-     "tool": "ruff",
-     "rule": "F541",
-     "sev": "S1",
-     "path": "2_Simulation/t3_amr/tools/ground_material.py",
-     "line": 77,
-     "msg": "f-string without any placeholders",
-     "symbol": "",
-     "component": "2_Simulation",
-     "part": "시뮬",
-     "fp": "3d1ce453a3ab3a9c"
     }
    ],
    "convention": {
     "branch_ok": true,
-    "commits_ok": 30,
-    "commits_total": 30,
+    "commits_ok": 9,
+    "commits_total": 10,
+    "offenders": [
+     "🚧 wip(sim): A 복구 기동 — 검출은 섰고 **대처는 두 번 틀렸다.** 지배식을 찾았다 (S15P21A106-240)"
+    ]
+   },
+   "new": {
+    "S3": 0,
+    "S2": 22,
+    "S1": 121,
+    "S0": 0
+   }
+  },
+  {
+   "name": "feature/S15P21A106-200-주문파일-임포터",
+   "slug": "feature__S15P21A106-200-b927ea",
+   "sha": "761419d2f3547c89357c976e75ef07e9ce4370ad",
+   "committer_date": 1789625058,
+   "author": "kimHySoo",
+   "loc": 65477,
+   "counts": {
+    "S3": 5,
+    "S2": 232,
+    "S1": 791,
+    "S0": 17
+   },
+   "W": 1537,
+   "new_vs_prev": {
+    "S3": 1,
+    "S2": 41,
+    "S1": 140,
+    "S0": 5
+   },
+   "fixed": 0,
+   "prev_run": "2026-09-17_1505_light",
+   "tools": [
+    {
+     "id": "ruff",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.0,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 1,
+      "S2": 48,
+      "S1": 586,
+      "S0": 0
+     }
+    },
+    {
+     "id": "ruff-format",
+     "status": "ok",
+     "rc": 1,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {
+      "unformatted": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "bandit",
+     "status": "ok",
+     "rc": 0,
+     "secs": 1.8,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 7,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "yamllint",
+     "status": "ok",
+     "rc": 1,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 52,
+      "S1": 4,
+      "S0": 0
+     }
+    },
+    {
+     "id": "shellcheck",
+     "status": "ok",
+     "rc": null,
+     "secs": 0.2,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 8,
+      "S0": 0
+     }
+    },
+    {
+     "id": "hadolint",
+     "status": "ok",
+     "rc": 1,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 6,
+      "S0": 4
+     }
+    },
+    {
+     "id": "gitleaks",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.5,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 1,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "oxlint",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "pmd",
+     "status": "ok",
+     "rc": 4,
+     "secs": 0.9,
+     "stderr_tail": "[INFO] Found 53 violations.",
+     "metrics": {
+      "processing_errors": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 2,
+      "S1": 43,
+      "S0": 8
+     }
+    },
+    {
+     "id": "mypy",
+     "status": "error",
+     "rc": 2,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "radon",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.5,
+     "stderr_tail": "",
+     "metrics": {
+      "ranks": {
+       "C": 135,
+       "D": 25,
+       "E": 11,
+       "F": 5
+      }
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 41,
+      "S1": 135,
+      "S0": 0
+     }
+    },
+    {
+     "id": "vulture",
+     "status": "ok",
+     "rc": 3,
+     "secs": 0.6,
+     "stderr_tail": "",
+     "metrics": {
+      "candidates": 5
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 5
+     }
+    },
+    {
+     "id": "cpd-python",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.6,
+     "stderr_tail": "",
+     "metrics": {
+      "duplications": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "cpd-java",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.6,
+     "stderr_tail": "",
+     "metrics": {
+      "duplications": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "pytest",
+     "status": "ok",
+     "rc": 0,
+     "secs": 9.4,
+     "stderr_tail": "",
+     "metrics": {
+      "run": 175,
+      "passed": 125,
+      "failed": 0,
+      "skipped": 50,
+      "cov_pct": 41.9,
+      "venv": "ok"
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "gradle",
+     "status": "ok",
+     "rc": 0,
+     "secs": 19.5,
+     "stderr_tail": "OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended",
+     "metrics": {
+      "run": 146,
+      "passed": 145,
+      "failed": 0,
+      "skipped": 1,
+      "cov_pct": 83.9
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "spotbugs",
+     "status": "ok",
+     "rc": 0,
+     "secs": 2.7,
+     "stderr_tail": "The following classes needed for analysis were missing:\n  lombok.Generated",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 5,
+      "S0": 0
+     }
+    },
+    {
+     "id": "gitleaks-git",
+     "status": "ok",
+     "rc": 0,
+     "secs": 1.6,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 1,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    }
+   ],
+   "custom_checks": [
+    {
+     "id": "req-drift",
+     "title": "3_FMS import ⊆ requirements.txt",
+     "status": "fail",
+     "msg": "requirements 누락 2개: google, pytest (allow: simpy)",
+     "component": "3_FMS/infra+etc",
+     "needs_agreement": false,
+     "evidence": [
+      "3_FMS/fms_core/sparkplug_b_pb2.py: import google",
+      "3_FMS/contracts/tests/test_acl_matrix.py: import pytest"
+     ],
+     "n": 2,
+     "sev": "S3"
+    },
+    {
+     "id": "doc-links",
+     "title": "문서 상대링크·코드 헤더 docs 참조 존재",
+     "status": "warn",
+     "msg": "깨진 참조 34건",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [
+      ".githooks/README.md:5 → ../Docs/GIT_CONVENTION.md",
+      "2_Simulation/t3_amr/path/_pibt_core_vendor.py:27 → Docs/AI/AI입출력명세서.md",
+      "2_Simulation/t3_amr/path/_pibt_core_vendor.py:33 → docs/2026-09-02_Isaac회전충돌_격자유지_PIBT확장_결정.md",
+      "2_Simulation/t3_amr/tools/adg_fingerprint.py:4 → docs/2026-09-14_ADG_축규칙_구조변경_설계.md",
+      "2_Simulation/t3_amr/tools/remeasure_adg_basis.py:4 → docs/2026-09-13_격자_1.2m_근거.md",
+      "3_FMS/ai_theta/data/build_input.py:5 → Docs/AI/AI입출력명세서.md"
+     ],
+     "n": 34,
+     "sev": "S2"
+    },
+    {
+     "id": "size",
+     "title": "파일 > 800줄 · 함수 > 80줄",
+     "status": "warn",
+     "msg": "파일 7 · 함수 41 (50줄 초과 함수 92)",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [
+      "2_Simulation/t3_amr/path/_pibt_core_vendor.py:0 파일 840줄 (> 800)",
+      "2_Simulation/t3_amr/path/isaac_drive.py:0 파일 2729줄 (> 800)",
+      "2_Simulation/t3_amr/path/pibt_scene.py:0 파일 903줄 (> 800)",
+      "2_Simulation/t3_amr/runners/live_pibt.py:0 파일 1195줄 (> 800)",
+      "2_Simulation/t3_amr/tools/path_view.py:0 파일 1116줄 (> 800)",
+      "2_Simulation/t3_amr/warehouse/scene/build_scene.py:0 파일 1113줄 (> 800)"
+     ],
+     "n": 48,
+     "sev": "S2"
+    },
+    {
+     "id": "print-in-lib",
+     "title": "라이브러리 모듈 내 print()",
+     "status": "warn",
+     "msg": "1건",
+     "component": "3_FMS/sim_engine",
+     "needs_agreement": false,
+     "evidence": [
+      "3_FMS/sim_engine/from_theta.py:147"
+     ],
+     "n": 1,
+     "sev": "S1"
+    },
+    {
+     "id": "spring-config",
+     "title": "Spring main application.yml 운영 안전 설정",
+     "status": "warn",
+     "msg": "3건",
+     "component": "4_Web/BE",
+     "needs_agreement": false,
+     "evidence": [
+      "4_Web/SantaFactoryBE/src/main/resources/application.yml:7 자격증명 환경변수에 기본값 fallback",
+      "4_Web/SantaFactoryBE/src/main/resources/application.yml:23 show-sql=true: 운영 로그에 SQL 노출",
+      "4_Web/SantaFactoryBE/src/main/resources/application.yml:36 자격증명 환경변수에 기본값 fallback"
+     ],
+     "n": 3,
+     "sev": "S1"
+    },
+    {
+     "id": "claims.isaac-1-instance",
+     "title": "README '동시 1인스턴스' 주장 vs 2026-09-05 실측(경량 6 동시)",
+     "status": "warn",
+     "msg": "'동시 1인스턴스' 문구 1곳 — 실측(64GB, lean 6 동시)과 불일치. 결정 필요: 문구 갱신 여부",
+     "component": "2_Simulation",
+     "needs_agreement": true,
+     "evidence": [
+      "2_Simulation/t3_amr/warehouse/scene/view_scene.py:8"
+     ],
+     "n": 1,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.tick-500ms",
+     "title": "아키텍처 문서 '500ms 틱' vs FMS 문서 '커널 틱 1 s'",
+     "status": "warn",
+     "msg": "아키텍처 문서 '500ms' 4곳 / FMS 문서 '1 s 틱' 3곳. 결정 필요: 틱 주기 단일화",
+     "component": "3_FMS/sim_engine",
+     "needs_agreement": true,
+     "evidence": [
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:246",
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:280",
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:441",
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:448",
+      "3_FMS/docs/2026-09-04_시스템아키텍처_검토_B트랙관점.md:25",
+      "3_FMS/docs/2026-09-04_시스템아키텍처_검토_B트랙관점.md:95"
+     ],
+     "n": 4,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.optuna-status",
+     "title": "기획 기준선 'Optuna 후속' vs 3_FMS 워커 optuna 의존",
+     "status": "warn",
+     "msg": "requirements에 optuna 핀 존재(1). 기준선 v3는 Optuna를 후속으로 분류. 결정 필요: 기준선 갱신 또는 워커 범위 조정",
+     "component": "3_FMS/infra+etc",
+     "needs_agreement": true,
+     "evidence": [
+      "3_FMS/infra/requirements.txt:26"
+     ],
+     "n": 1,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.two-stacks",
+     "title": "기준선 v3 '두 Spring 스택(상시 견적 + 런 스코프)' vs 앱 1개",
+     "status": "warn",
+     "msg": "@SpringBootApplication 1개 (기준선은 2 스택). 결정 필요: 분리 시점 또는 기준선 수정",
+     "component": "4_Web/BE",
+     "needs_agreement": true,
+     "evidence": [
+      "4_Web/SantaFactoryBE/src/main/java/com/ssafy/santafactory/SantaFactoryApplication.java:14"
+     ],
+     "n": 1,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.git-convention-doc",
+     "title": "참조되는 Docs/GIT_CONVENTION.md 부재",
+     "status": "warn",
+     "msg": "3곳에서 참조하지만 파일 없음. 조치: 문서 커밋 또는 참조 제거",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [
+      ".githooks/README.md:5",
+      ".gitlab/merge_request_templates/Default.md:15",
+      ".githooks/commit-convention.sh:3"
+     ],
+     "n": 3,
+     "sev": "S0"
+    },
+    {
+     "id": "todo",
+     "title": "주석 TODO·FIXME·HACK",
+     "status": "ok",
+     "msg": "0건",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [],
+     "n": 0,
+     "sev": "S0"
+    },
+    {
+     "id": "line-len",
+     "title": "120자 초과 줄 (지표)",
+     "status": "ok",
+     "msg": "230줄",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [],
+     "n": 230,
+     "sev": "S0"
+    }
+   ],
+   "duration_s": 42.8,
+   "allow_dropped": 4,
+   "merge_base": "6848a69322027bd87590ebcb2174c1d318a3497b",
+   "files_changed": 3,
+   "ahead": 6,
+   "behind": 10,
+   "new_vs_develop": {
+    "S3": 0,
+    "S2": 1,
+    "S1": 2,
+    "S0": 0
+   },
+   "new_vs_develop_top": [
+    {
+     "tool": "check",
+     "rule": "func-80",
+     "sev": "S2",
+     "path": "2_Simulation/t3_amr/path/fms_stream.py",
+     "line": 275,
+     "msg": "함수 check 97줄 (> 80)",
+     "symbol": "check",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "4f121b9f2771c142"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-C",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/path/fms_stream.py",
+     "line": 275,
+     "msg": "순환 복잡도 18 (C) method check",
+     "symbol": "check",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "614772c8c60629dd"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-C",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/path/fms_stream.py",
+     "line": 147,
+     "msg": "순환 복잡도 12 (C) method __init__",
+     "symbol": "__init__",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "3f51bb017842ca48"
+    }
+   ],
+   "convention": {
+    "branch_ok": true,
+    "commits_ok": 5,
+    "commits_total": 5,
     "offenders": []
    },
    "new": {
     "S3": 0,
-    "S2": 9,
-    "S1": 97,
+    "S2": 1,
+    "S1": 2,
+    "S0": 0
+   }
+  },
+  {
+   "name": "feature/S15P21A106-243-지연예산-emqx-ros2",
+   "slug": "feature__S15P21A106-243---emqx-ros2-b97a0c",
+   "sha": "7ebd645ef0d34fb6c4c19d76a3f2da16304716d9",
+   "committer_date": 1789623116,
+   "author": "kimHySoo",
+   "loc": 65324,
+   "counts": {
+    "S3": 5,
+    "S2": 230,
+    "S1": 793,
+    "S0": 17
+   },
+   "W": 1533,
+   "new_vs_prev": {
+    "S3": 1,
+    "S2": 41,
+    "S1": 138,
+    "S0": 5
+   },
+   "fixed": 0,
+   "prev_run": "2026-09-17_1505_light",
+   "tools": [
+    {
+     "id": "ruff",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.0,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 1,
+      "S2": 48,
+      "S1": 590,
+      "S0": 0
+     }
+    },
+    {
+     "id": "ruff-format",
+     "status": "ok",
+     "rc": 1,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {
+      "unformatted": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "bandit",
+     "status": "ok",
+     "rc": 0,
+     "secs": 1.8,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 7,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "yamllint",
+     "status": "ok",
+     "rc": 1,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 52,
+      "S1": 4,
+      "S0": 0
+     }
+    },
+    {
+     "id": "shellcheck",
+     "status": "ok",
+     "rc": null,
+     "secs": 0.2,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 8,
+      "S0": 0
+     }
+    },
+    {
+     "id": "hadolint",
+     "status": "ok",
+     "rc": 1,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 6,
+      "S0": 4
+     }
+    },
+    {
+     "id": "gitleaks",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.5,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 1,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "oxlint",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "pmd",
+     "status": "ok",
+     "rc": 4,
+     "secs": 0.9,
+     "stderr_tail": "[INFO] Found 53 violations.",
+     "metrics": {
+      "processing_errors": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 2,
+      "S1": 43,
+      "S0": 8
+     }
+    },
+    {
+     "id": "mypy",
+     "status": "error",
+     "rc": 2,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "radon",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.5,
+     "stderr_tail": "",
+     "metrics": {
+      "ranks": {
+       "C": 133,
+       "D": 25,
+       "E": 11,
+       "F": 5
+      }
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 41,
+      "S1": 133,
+      "S0": 0
+     }
+    },
+    {
+     "id": "vulture",
+     "status": "ok",
+     "rc": 3,
+     "secs": 0.6,
+     "stderr_tail": "",
+     "metrics": {
+      "candidates": 5
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 5
+     }
+    },
+    {
+     "id": "cpd-python",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.6,
+     "stderr_tail": "",
+     "metrics": {
+      "duplications": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "cpd-java",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.5,
+     "stderr_tail": "",
+     "metrics": {
+      "duplications": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "pytest",
+     "status": "ok",
+     "rc": 0,
+     "secs": 9.5,
+     "stderr_tail": "",
+     "metrics": {
+      "run": 175,
+      "passed": 125,
+      "failed": 0,
+      "skipped": 50,
+      "cov_pct": 41.9,
+      "venv": "ok"
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "gradle",
+     "status": "ok",
+     "rc": 0,
+     "secs": 19.6,
+     "stderr_tail": "OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended",
+     "metrics": {
+      "run": 146,
+      "passed": 145,
+      "failed": 0,
+      "skipped": 1,
+      "cov_pct": 83.9
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "spotbugs",
+     "status": "ok",
+     "rc": 0,
+     "secs": 2.8,
+     "stderr_tail": "The following classes needed for analysis were missing:\n  lombok.Generated",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 5,
+      "S0": 0
+     }
+    },
+    {
+     "id": "gitleaks-git",
+     "status": "ok",
+     "rc": 0,
+     "secs": 1.6,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 1,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    }
+   ],
+   "custom_checks": [
+    {
+     "id": "req-drift",
+     "title": "3_FMS import ⊆ requirements.txt",
+     "status": "fail",
+     "msg": "requirements 누락 2개: google, pytest (allow: simpy)",
+     "component": "3_FMS/infra+etc",
+     "needs_agreement": false,
+     "evidence": [
+      "3_FMS/fms_core/sparkplug_b_pb2.py: import google",
+      "3_FMS/contracts/tests/test_acl_matrix.py: import pytest"
+     ],
+     "n": 2,
+     "sev": "S3"
+    },
+    {
+     "id": "doc-links",
+     "title": "문서 상대링크·코드 헤더 docs 참조 존재",
+     "status": "warn",
+     "msg": "깨진 참조 34건",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [
+      ".githooks/README.md:5 → ../Docs/GIT_CONVENTION.md",
+      "2_Simulation/t3_amr/path/_pibt_core_vendor.py:27 → Docs/AI/AI입출력명세서.md",
+      "2_Simulation/t3_amr/path/_pibt_core_vendor.py:33 → docs/2026-09-02_Isaac회전충돌_격자유지_PIBT확장_결정.md",
+      "2_Simulation/t3_amr/tools/adg_fingerprint.py:4 → docs/2026-09-14_ADG_축규칙_구조변경_설계.md",
+      "2_Simulation/t3_amr/tools/remeasure_adg_basis.py:4 → docs/2026-09-13_격자_1.2m_근거.md",
+      "3_FMS/ai_theta/data/build_input.py:5 → Docs/AI/AI입출력명세서.md"
+     ],
+     "n": 34,
+     "sev": "S2"
+    },
+    {
+     "id": "size",
+     "title": "파일 > 800줄 · 함수 > 80줄",
+     "status": "warn",
+     "msg": "파일 7 · 함수 39 (50줄 초과 함수 89)",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [
+      "2_Simulation/t3_amr/path/_pibt_core_vendor.py:0 파일 840줄 (> 800)",
+      "2_Simulation/t3_amr/path/isaac_drive.py:0 파일 2729줄 (> 800)",
+      "2_Simulation/t3_amr/path/pibt_scene.py:0 파일 872줄 (> 800)",
+      "2_Simulation/t3_amr/runners/live_pibt.py:0 파일 1195줄 (> 800)",
+      "2_Simulation/t3_amr/tools/path_view.py:0 파일 1116줄 (> 800)",
+      "2_Simulation/t3_amr/warehouse/scene/build_scene.py:0 파일 1113줄 (> 800)"
+     ],
+     "n": 46,
+     "sev": "S2"
+    },
+    {
+     "id": "print-in-lib",
+     "title": "라이브러리 모듈 내 print()",
+     "status": "warn",
+     "msg": "1건",
+     "component": "3_FMS/sim_engine",
+     "needs_agreement": false,
+     "evidence": [
+      "3_FMS/sim_engine/from_theta.py:147"
+     ],
+     "n": 1,
+     "sev": "S1"
+    },
+    {
+     "id": "spring-config",
+     "title": "Spring main application.yml 운영 안전 설정",
+     "status": "warn",
+     "msg": "3건",
+     "component": "4_Web/BE",
+     "needs_agreement": false,
+     "evidence": [
+      "4_Web/SantaFactoryBE/src/main/resources/application.yml:7 자격증명 환경변수에 기본값 fallback",
+      "4_Web/SantaFactoryBE/src/main/resources/application.yml:23 show-sql=true: 운영 로그에 SQL 노출",
+      "4_Web/SantaFactoryBE/src/main/resources/application.yml:36 자격증명 환경변수에 기본값 fallback"
+     ],
+     "n": 3,
+     "sev": "S1"
+    },
+    {
+     "id": "claims.isaac-1-instance",
+     "title": "README '동시 1인스턴스' 주장 vs 2026-09-05 실측(경량 6 동시)",
+     "status": "warn",
+     "msg": "'동시 1인스턴스' 문구 1곳 — 실측(64GB, lean 6 동시)과 불일치. 결정 필요: 문구 갱신 여부",
+     "component": "2_Simulation",
+     "needs_agreement": true,
+     "evidence": [
+      "2_Simulation/t3_amr/warehouse/scene/view_scene.py:8"
+     ],
+     "n": 1,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.tick-500ms",
+     "title": "아키텍처 문서 '500ms 틱' vs FMS 문서 '커널 틱 1 s'",
+     "status": "warn",
+     "msg": "아키텍처 문서 '500ms' 4곳 / FMS 문서 '1 s 틱' 3곳. 결정 필요: 틱 주기 단일화",
+     "component": "3_FMS/sim_engine",
+     "needs_agreement": true,
+     "evidence": [
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:246",
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:280",
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:441",
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:448",
+      "3_FMS/docs/2026-09-04_시스템아키텍처_검토_B트랙관점.md:25",
+      "3_FMS/docs/2026-09-04_시스템아키텍처_검토_B트랙관점.md:95"
+     ],
+     "n": 4,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.optuna-status",
+     "title": "기획 기준선 'Optuna 후속' vs 3_FMS 워커 optuna 의존",
+     "status": "warn",
+     "msg": "requirements에 optuna 핀 존재(1). 기준선 v3는 Optuna를 후속으로 분류. 결정 필요: 기준선 갱신 또는 워커 범위 조정",
+     "component": "3_FMS/infra+etc",
+     "needs_agreement": true,
+     "evidence": [
+      "3_FMS/infra/requirements.txt:26"
+     ],
+     "n": 1,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.two-stacks",
+     "title": "기준선 v3 '두 Spring 스택(상시 견적 + 런 스코프)' vs 앱 1개",
+     "status": "warn",
+     "msg": "@SpringBootApplication 1개 (기준선은 2 스택). 결정 필요: 분리 시점 또는 기준선 수정",
+     "component": "4_Web/BE",
+     "needs_agreement": true,
+     "evidence": [
+      "4_Web/SantaFactoryBE/src/main/java/com/ssafy/santafactory/SantaFactoryApplication.java:14"
+     ],
+     "n": 1,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.git-convention-doc",
+     "title": "참조되는 Docs/GIT_CONVENTION.md 부재",
+     "status": "warn",
+     "msg": "3곳에서 참조하지만 파일 없음. 조치: 문서 커밋 또는 참조 제거",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [
+      ".githooks/README.md:5",
+      ".gitlab/merge_request_templates/Default.md:15",
+      ".githooks/commit-convention.sh:3"
+     ],
+     "n": 3,
+     "sev": "S0"
+    },
+    {
+     "id": "todo",
+     "title": "주석 TODO·FIXME·HACK",
+     "status": "ok",
+     "msg": "0건",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [],
+     "n": 0,
+     "sev": "S0"
+    },
+    {
+     "id": "line-len",
+     "title": "120자 초과 줄 (지표)",
+     "status": "ok",
+     "msg": "230줄",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [],
+     "n": 230,
+     "sev": "S0"
+    }
+   ],
+   "duration_s": 42.9,
+   "allow_dropped": 4,
+   "merge_base": "b51e392d610f7155c7688920323fd594fd92e927",
+   "files_changed": 2,
+   "ahead": 3,
+   "behind": 15,
+   "new_vs_develop": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 5,
+    "S0": 0
+   },
+   "new_vs_develop_top": [
+    {
+     "tool": "ruff",
+     "rule": "RUF010",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/tools/pose_lag_budget.py",
+     "line": 152,
+     "msg": "Use explicit conversion flag",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "7f2e25bc19167fc5"
+    },
+    {
+     "tool": "ruff",
+     "rule": "F541",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/tools/pose_lag_budget.py",
+     "line": 181,
+     "msg": "f-string without any placeholders",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "dcdcfef480c6cc0c"
+    },
+    {
+     "tool": "ruff",
+     "rule": "F541",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/tools/pose_lag_budget.py",
+     "line": 182,
+     "msg": "f-string without any placeholders",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "76e7b305a9f6a773"
+    },
+    {
+     "tool": "ruff",
+     "rule": "B904",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/tools/vda_state_size.py",
+     "line": 48,
+     "msg": "Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling",
+     "symbol": "",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "bdd4869c6004acdf"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-C",
+     "sev": "S1",
+     "path": "2_Simulation/t3_amr/tools/pose_lag_budget.py",
+     "line": 111,
+     "msg": "순환 복잡도 18 (C) function main",
+     "symbol": "main",
+     "component": "2_Simulation",
+     "part": "시뮬",
+     "fp": "4ec8528378220e21"
+    }
+   ],
+   "convention": {
+    "branch_ok": true,
+    "commits_ok": 3,
+    "commits_total": 3,
+    "offenders": []
+   },
+   "new": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 5,
+    "S0": 0
+   }
+  },
+  {
+   "name": "feature/S15P21A106-206-fms-θ학습",
+   "slug": "feature__S15P21A106-206-fms-daac2a",
+   "sha": "0ea88ddf8c8070a36c04bedb6123901c5677b78a",
+   "committer_date": 1789457114,
+   "author": "Jaeryeong Shin",
+   "loc": 59021,
+   "counts": {
+    "S3": 30,
+    "S2": 161,
+    "S1": 744,
+    "S0": 12
+   },
+   "W": 1527,
+   "new_vs_prev": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
+   },
+   "fixed": 0,
+   "prev_run": "2026-09-16_1805_deep",
+   "tools": [
+    {
+     "id": "ruff",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.0,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 1,
+      "S2": 46,
+      "S1": 579,
+      "S0": 0
+     }
+    },
+    {
+     "id": "ruff-format",
+     "status": "ok",
+     "rc": 1,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {
+      "unformatted": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "bandit",
+     "status": "ok",
+     "rc": 0,
+     "secs": 1.5,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 8,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "yamllint",
+     "status": "ok",
+     "rc": 1,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 16,
+      "S1": 3,
+      "S0": 0
+     }
+    },
+    {
+     "id": "shellcheck",
+     "status": "ok",
+     "rc": null,
+     "secs": 0.3,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 9,
+      "S0": 0
+     }
+    },
+    {
+     "id": "hadolint",
+     "status": "ok",
+     "rc": 1,
+     "secs": 0.0,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 1,
+      "S0": 1
+     }
+    },
+    {
+     "id": "gitleaks",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.5,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 2,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "oxlint",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "pmd",
+     "status": "ok",
+     "rc": 4,
+     "secs": 0.9,
+     "stderr_tail": "[INFO] Found 41 violations.",
+     "metrics": {
+      "processing_errors": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 2,
+      "S1": 33,
+      "S0": 6
+     }
+    },
+    {
+     "id": "mypy",
+     "status": "error",
+     "rc": 2,
+     "secs": 0.1,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "radon",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.4,
+     "stderr_tail": "",
+     "metrics": {
+      "ranks": {
+       "C": 111,
+       "D": 22,
+       "E": 6,
+       "F": 3
+      }
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 31,
+      "S1": 111,
+      "S0": 0
+     }
+    },
+    {
+     "id": "vulture",
+     "status": "ok",
+     "rc": 3,
+     "secs": 0.6,
+     "stderr_tail": "",
+     "metrics": {
+      "candidates": 5
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 5
+     }
+    },
+    {
+     "id": "cpd-python",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.6,
+     "stderr_tail": "",
+     "metrics": {
+      "duplications": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "cpd-java",
+     "status": "ok",
+     "rc": 0,
+     "secs": 0.5,
+     "stderr_tail": "",
+     "metrics": {
+      "duplications": 0
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "pytest",
+     "status": "ok",
+     "rc": 0,
+     "secs": 7.3,
+     "stderr_tail": "",
+     "metrics": {
+      "run": 175,
+      "passed": 125,
+      "failed": 0,
+      "skipped": 50,
+      "cov_pct": 41.9,
+      "venv": "ok"
+     },
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "gradle",
+     "status": "ok",
+     "rc": 0,
+     "secs": 2.9,
+     "stderr_tail": "",
+     "metrics": {
+      "run": 118,
+      "passed": 93,
+      "failed": 24,
+      "skipped": 1,
+      "cov_pct": 62.9
+     },
+     "counts": {
+      "S3": 24,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    },
+    {
+     "id": "spotbugs",
+     "status": "ok",
+     "rc": 0,
+     "secs": 2.5,
+     "stderr_tail": "The following classes needed for analysis were missing:\n  lombok.Generated",
+     "metrics": {},
+     "counts": {
+      "S3": 0,
+      "S2": 0,
+      "S1": 4,
+      "S0": 0
+     }
+    },
+    {
+     "id": "gitleaks-git",
+     "status": "ok",
+     "rc": 0,
+     "secs": 1.6,
+     "stderr_tail": "",
+     "metrics": {},
+     "counts": {
+      "S3": 1,
+      "S2": 0,
+      "S1": 0,
+      "S0": 0
+     }
+    }
+   ],
+   "custom_checks": [
+    {
+     "id": "req-drift",
+     "title": "3_FMS import ⊆ requirements.txt",
+     "status": "fail",
+     "msg": "requirements 누락 2개: google, pytest (allow: simpy)",
+     "component": "3_FMS/infra+etc",
+     "needs_agreement": false,
+     "evidence": [
+      "3_FMS/fms_core/sparkplug_b_pb2.py: import google",
+      "3_FMS/contracts/tests/test_acl_matrix.py: import pytest"
+     ],
+     "n": 2,
+     "sev": "S3"
+    },
+    {
+     "id": "doc-links",
+     "title": "문서 상대링크·코드 헤더 docs 참조 존재",
+     "status": "warn",
+     "msg": "깨진 참조 31건",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [
+      ".githooks/README.md:5 → ../Docs/GIT_CONVENTION.md",
+      "2_Simulation/t3_amr/path/_pibt_core_vendor.py:27 → Docs/AI/AI입출력명세서.md",
+      "2_Simulation/t3_amr/path/_pibt_core_vendor.py:33 → docs/2026-09-02_Isaac회전충돌_격자유지_PIBT확장_결정.md",
+      "3_FMS/ai_theta/data/build_input.py:5 → Docs/AI/AI입출력명세서.md",
+      "3_FMS/docs/2026-09-04_θ_실험_로드맵_AB공동.md:4 → 2026-09-04_고부하_무릎_판정.md",
+      "3_FMS/docs/2026-09-04_θ_실험_로드맵_AB공동.md:43 → 2026-09-07_B5_θ적용_FleetSweep_결과.md"
+     ],
+     "n": 31,
+     "sev": "S2"
+    },
+    {
+     "id": "size",
+     "title": "파일 > 800줄 · 함수 > 80줄",
+     "status": "warn",
+     "msg": "파일 6 · 함수 21 (50줄 초과 함수 64)",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [
+      "2_Simulation/t3_amr/path/_pibt_core_vendor.py:0 파일 840줄 (> 800)",
+      "2_Simulation/t3_amr/path/isaac_drive.py:0 파일 1717줄 (> 800)",
+      "2_Simulation/t3_amr/runners/live_pibt.py:0 파일 1060줄 (> 800)",
+      "2_Simulation/t3_amr/tools/path_view.py:0 파일 1116줄 (> 800)",
+      "2_Simulation/t3_amr/warehouse/scene/build_scene.py:0 파일 1048줄 (> 800)",
+      "3_FMS/sim_engine/kernel/core.py:0 파일 986줄 (> 800)"
+     ],
+     "n": 27,
+     "sev": "S2"
+    },
+    {
+     "id": "print-in-lib",
+     "title": "라이브러리 모듈 내 print()",
+     "status": "warn",
+     "msg": "1건",
+     "component": "3_FMS/sim_engine",
+     "needs_agreement": false,
+     "evidence": [
+      "3_FMS/sim_engine/from_theta.py:147"
+     ],
+     "n": 1,
+     "sev": "S1"
+    },
+    {
+     "id": "spring-config",
+     "title": "Spring main application.yml 운영 안전 설정",
+     "status": "warn",
+     "msg": "3건",
+     "component": "4_Web/BE",
+     "needs_agreement": false,
+     "evidence": [
+      "4_Web/SantaFactoryBE/src/main/resources/application.yml:7 자격증명 환경변수에 기본값 fallback",
+      "4_Web/SantaFactoryBE/src/main/resources/application.yml:23 show-sql=true: 운영 로그에 SQL 노출",
+      "4_Web/SantaFactoryBE/src/main/resources/application.yml:36 자격증명 환경변수에 기본값 fallback"
+     ],
+     "n": 3,
+     "sev": "S1"
+    },
+    {
+     "id": "claims.isaac-1-instance",
+     "title": "README '동시 1인스턴스' 주장 vs 2026-09-05 실측(경량 6 동시)",
+     "status": "warn",
+     "msg": "'동시 1인스턴스' 문구 4곳 — 실측(64GB, lean 6 동시)과 불일치. 결정 필요: 문구 갱신 여부",
+     "component": "2_Simulation",
+     "needs_agreement": true,
+     "evidence": [
+      "2_Simulation/t1_teleop/README.md:29",
+      "2_Simulation/t3_amr/warehouse/scene/README.md:26",
+      "2_Simulation/t3_warehouse/README.md:27",
+      "2_Simulation/t3_amr/warehouse/scene/view_scene.py:8"
+     ],
+     "n": 4,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.tick-500ms",
+     "title": "아키텍처 문서 '500ms 틱' vs FMS 문서 '커널 틱 1 s'",
+     "status": "warn",
+     "msg": "아키텍처 문서 '500ms' 4곳 / FMS 문서 '1 s 틱' 3곳. 결정 필요: 틱 주기 단일화",
+     "component": "3_FMS/sim_engine",
+     "needs_agreement": true,
+     "evidence": [
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:246",
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:280",
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:441",
+      "5_Docs/소프트웨어 아키텍처/FMS-WMS_통합_아키텍처.html:448",
+      "3_FMS/docs/2026-09-04_시스템아키텍처_검토_B트랙관점.md:25",
+      "3_FMS/docs/2026-09-04_시스템아키텍처_검토_B트랙관점.md:95"
+     ],
+     "n": 4,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.optuna-status",
+     "title": "기획 기준선 'Optuna 후속' vs 3_FMS 워커 optuna 의존",
+     "status": "warn",
+     "msg": "requirements에 optuna 핀 존재(1). 기준선 v3는 Optuna를 후속으로 분류. 결정 필요: 기준선 갱신 또는 워커 범위 조정",
+     "component": "3_FMS/infra+etc",
+     "needs_agreement": true,
+     "evidence": [
+      "3_FMS/infra/requirements.txt:9"
+     ],
+     "n": 1,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.two-stacks",
+     "title": "기준선 v3 '두 Spring 스택(상시 견적 + 런 스코프)' vs 앱 1개",
+     "status": "warn",
+     "msg": "@SpringBootApplication 1개 (기준선은 2 스택). 결정 필요: 분리 시점 또는 기준선 수정",
+     "component": "4_Web/BE",
+     "needs_agreement": true,
+     "evidence": [
+      "4_Web/SantaFactoryBE/src/main/java/com/ssafy/santafactory/SantaFactoryApplication.java:9"
+     ],
+     "n": 1,
+     "sev": "S0"
+    },
+    {
+     "id": "claims.git-convention-doc",
+     "title": "참조되는 Docs/GIT_CONVENTION.md 부재",
+     "status": "warn",
+     "msg": "3곳에서 참조하지만 파일 없음. 조치: 문서 커밋 또는 참조 제거",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [
+      ".githooks/README.md:5",
+      ".gitlab/merge_request_templates/Default.md:15",
+      ".githooks/commit-convention.sh:3"
+     ],
+     "n": 3,
+     "sev": "S0"
+    },
+    {
+     "id": "todo",
+     "title": "주석 TODO·FIXME·HACK",
+     "status": "ok",
+     "msg": "0건",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [],
+     "n": 0,
+     "sev": "S0"
+    },
+    {
+     "id": "line-len",
+     "title": "120자 초과 줄 (지표)",
+     "status": "ok",
+     "msg": "216줄",
+     "component": "infra",
+     "needs_agreement": false,
+     "evidence": [],
+     "n": 216,
+     "sev": "S0"
+    }
+   ],
+   "duration_s": 23.7,
+   "allow_dropped": 4,
+   "merge_base": "7e0c59d3fcea3fcb8b77b4b0859e25a67a92ae11",
+   "files_changed": 9,
+   "ahead": 2,
+   "behind": 311,
+   "new_vs_develop": {
+    "S3": 0,
+    "S2": 6,
+    "S1": 91,
+    "S0": 0
+   },
+   "new_vs_develop_top": [
+    {
+     "tool": "radon",
+     "rule": "CC-D",
+     "sev": "S2",
+     "path": "3_FMS/ai_theta/experiments/theta_fleet_value.py",
+     "line": 90,
+     "msg": "순환 복잡도 28 (D) function main",
+     "symbol": "main",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "00c21d247de124db"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-E",
+     "sev": "S2",
+     "path": "3_FMS/ai_theta/experiments/theta_grid.py",
+     "line": 78,
+     "msg": "순환 복잡도 35 (E) function main",
+     "symbol": "main",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "c5d8d58578c7e4ee"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-D",
+     "sev": "S2",
+     "path": "3_FMS/ai_theta/experiments/theta_repeat.py",
+     "line": 108,
+     "msg": "순환 복잡도 28 (D) function main",
+     "symbol": "main",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "aeb4a5929e9db957"
+    },
+    {
+     "tool": "radon",
+     "rule": "CC-F",
+     "sev": "S2",
+     "path": "3_FMS/ai_theta/experiments/sweep_v2.py",
+     "line": 123,
+     "msg": "순환 복잡도 51 (F) function main",
+     "symbol": "main",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "ca5298f68fbb7f4b"
+    },
+    {
+     "tool": "check",
+     "rule": "func-80",
+     "sev": "S2",
+     "path": "3_FMS/ai_theta/experiments/sweep_v2.py",
+     "line": 123,
+     "msg": "함수 main 100줄 (> 80)",
+     "symbol": "main",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "cfa4bef734dfb3b6"
+    },
+    {
+     "tool": "check",
+     "rule": "func-80",
+     "sev": "S2",
+     "path": "3_FMS/ai_theta/experiments/theta_grid.py",
+     "line": 78,
+     "msg": "함수 main 98줄 (> 80)",
+     "symbol": "main",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "72f444da2be8d10a"
+    },
+    {
+     "tool": "ruff",
+     "rule": "UP031",
+     "sev": "S1",
+     "path": "3_FMS/ai_theta/experiments/sweep_v2.py",
+     "line": 82,
+     "msg": "Use format specifiers instead of percent format",
+     "symbol": "",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "7829830529b13571"
+    },
+    {
+     "tool": "ruff",
+     "rule": "UP031",
+     "sev": "S1",
+     "path": "3_FMS/ai_theta/experiments/sweep_v2.py",
+     "line": 82,
+     "msg": "Use format specifiers instead of percent format",
+     "symbol": "",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "7829830529b13571"
+    },
+    {
+     "tool": "ruff",
+     "rule": "UP031",
+     "sev": "S1",
+     "path": "3_FMS/ai_theta/experiments/sweep_v2.py",
+     "line": 83,
+     "msg": "Use format specifiers instead of percent format",
+     "symbol": "",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "3d2c19c3b78fab0d"
+    },
+    {
+     "tool": "ruff",
+     "rule": "PLW1510",
+     "sev": "S1",
+     "path": "3_FMS/ai_theta/experiments/sweep_v2.py",
+     "line": 88,
+     "msg": "`subprocess.run` without explicit `check` argument",
+     "symbol": "",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "951b0c57ee518881"
+    },
+    {
+     "tool": "ruff",
+     "rule": "UP031",
+     "sev": "S1",
+     "path": "3_FMS/ai_theta/experiments/sweep_v2.py",
+     "line": 112,
+     "msg": "Use format specifiers instead of percent format",
+     "symbol": "",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "f0b6ecec4d3548b2"
+    },
+    {
+     "tool": "ruff",
+     "rule": "UP031",
+     "sev": "S1",
+     "path": "3_FMS/ai_theta/experiments/sweep_v2.py",
+     "line": 113,
+     "msg": "Use format specifiers instead of percent format",
+     "symbol": "",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "6d363e2282d54577"
+    },
+    {
+     "tool": "ruff",
+     "rule": "UP031",
+     "sev": "S1",
+     "path": "3_FMS/ai_theta/experiments/sweep_v2.py",
+     "line": 117,
+     "msg": "Use format specifiers instead of percent format",
+     "symbol": "",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "3cdd0252cf848f94"
+    },
+    {
+     "tool": "ruff",
+     "rule": "UP031",
+     "sev": "S1",
+     "path": "3_FMS/ai_theta/experiments/sweep_v2.py",
+     "line": 144,
+     "msg": "Use format specifiers instead of percent format",
+     "symbol": "",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "e99e56fb49b7fcbf"
+    },
+    {
+     "tool": "ruff",
+     "rule": "UP031",
+     "sev": "S1",
+     "path": "3_FMS/ai_theta/experiments/sweep_v2.py",
+     "line": 155,
+     "msg": "Use format specifiers instead of percent format",
+     "symbol": "",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "80b15ba61cf87891"
+    },
+    {
+     "tool": "ruff",
+     "rule": "UP031",
+     "sev": "S1",
+     "path": "3_FMS/ai_theta/experiments/sweep_v2.py",
+     "line": 190,
+     "msg": "Use format specifiers instead of percent format",
+     "symbol": "",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "135affa27af278c7"
+    },
+    {
+     "tool": "ruff",
+     "rule": "UP031",
+     "sev": "S1",
+     "path": "3_FMS/ai_theta/experiments/sweep_v2.py",
+     "line": 196,
+     "msg": "Use format specifiers instead of percent format",
+     "symbol": "",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "fc5dd34098ec46c1"
+    },
+    {
+     "tool": "ruff",
+     "rule": "UP031",
+     "sev": "S1",
+     "path": "3_FMS/ai_theta/experiments/sweep_v2.py",
+     "line": 197,
+     "msg": "Use format specifiers instead of percent format",
+     "symbol": "",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "60ed0e9b978a83ba"
+    },
+    {
+     "tool": "ruff",
+     "rule": "UP031",
+     "sev": "S1",
+     "path": "3_FMS/ai_theta/experiments/sweep_v2.py",
+     "line": 200,
+     "msg": "Use format specifiers instead of percent format",
+     "symbol": "",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "45b625061061dd96"
+    },
+    {
+     "tool": "ruff",
+     "rule": "UP031",
+     "sev": "S1",
+     "path": "3_FMS/ai_theta/experiments/sweep_v2.py",
+     "line": 203,
+     "msg": "Use format specifiers instead of percent format",
+     "symbol": "",
+     "component": "3_FMS/ai_theta+contracts",
+     "part": "FMS·AI",
+     "fp": "64fd3db25e9a6222"
+    }
+   ],
+   "convention": {
+    "branch_ok": true,
+    "commits_ok": 2,
+    "commits_total": 2,
+    "offenders": []
+   },
+   "new": {
+    "S3": 0,
+    "S2": 6,
+    "S1": 91,
     "S0": 0
    }
   }
@@ -1873,7 +4056,7 @@
    "id": "pmd",
    "status": "ok",
    "rc": 4,
-   "secs": 1.3,
+   "secs": 0.9,
    "stderr_tail": "[INFO] Found 93 violations.",
    "metrics": {
     "processing_errors": 0
@@ -1883,6 +4066,158 @@
     "S2": 2,
     "S1": 79,
     "S0": 12
+   }
+  },
+  {
+   "id": "mypy",
+   "status": "error",
+   "rc": 2,
+   "secs": 0.1,
+   "stderr_tail": "",
+   "metrics": {},
+   "counts": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
+   }
+  },
+  {
+   "id": "radon",
+   "status": "ok",
+   "rc": 0,
+   "secs": 0.5,
+   "stderr_tail": "",
+   "metrics": {
+    "ranks": {
+     "C": 133,
+     "D": 25,
+     "E": 11,
+     "F": 5
+    }
+   },
+   "counts": {
+    "S3": 0,
+    "S2": 41,
+    "S1": 133,
+    "S0": 0
+   }
+  },
+  {
+   "id": "vulture",
+   "status": "ok",
+   "rc": 3,
+   "secs": 0.6,
+   "stderr_tail": "",
+   "metrics": {
+    "candidates": 5
+   },
+   "counts": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 5
+   }
+  },
+  {
+   "id": "cpd-python",
+   "status": "ok",
+   "rc": 0,
+   "secs": 0.6,
+   "stderr_tail": "",
+   "metrics": {
+    "duplications": 0
+   },
+   "counts": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
+   }
+  },
+  {
+   "id": "cpd-java",
+   "status": "ok",
+   "rc": 0,
+   "secs": 0.5,
+   "stderr_tail": "",
+   "metrics": {
+    "duplications": 0
+   },
+   "counts": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
+   }
+  },
+  {
+   "id": "pytest",
+   "status": "ok",
+   "rc": 0,
+   "secs": 7.9,
+   "stderr_tail": "",
+   "metrics": {
+    "run": 175,
+    "passed": 125,
+    "failed": 0,
+    "skipped": 50,
+    "cov_pct": 41.9,
+    "venv": "ok"
+   },
+   "counts": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
+   }
+  },
+  {
+   "id": "gradle",
+   "status": "ok",
+   "rc": 0,
+   "secs": 21.4,
+   "stderr_tail": "OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended",
+   "metrics": {
+    "run": 184,
+    "passed": 183,
+    "failed": 0,
+    "skipped": 1,
+    "cov_pct": 83.2
+   },
+   "counts": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
+   }
+  },
+  {
+   "id": "spotbugs",
+   "status": "ok",
+   "rc": 0,
+   "secs": 3.0,
+   "stderr_tail": "The following classes needed for analysis were missing:\n  lombok.Generated",
+   "metrics": {},
+   "counts": {
+    "S3": 0,
+    "S2": 0,
+    "S1": 6,
+    "S0": 0
+   }
+  },
+  {
+   "id": "gitleaks-git",
+   "status": "ok",
+   "rc": 0,
+   "secs": 1.6,
+   "stderr_tail": "",
+   "metrics": {},
+   "counts": {
+    "S3": 1,
+    "S2": 0,
+    "S1": 0,
+    "S0": 0
    }
   }
  ],
@@ -2060,14 +4395,62 @@
    "sev": "S0"
   }
  ],
- "tests": {},
+ "tests": {
+  "pytest": {
+   "run": 175,
+   "passed": 125,
+   "failed": 0,
+   "skipped": 50,
+   "cov_pct": 41.9,
+   "venv": "ok",
+   "status": "ok"
+  },
+  "gradle": {
+   "run": 184,
+   "passed": 183,
+   "failed": 0,
+   "skipped": 1,
+   "cov_pct": 83.2,
+   "status": "ok"
+  }
+ },
  "totals": {
-  "findings": 905,
-  "W": 1350,
-  "new": 43,
-  "fixed": 0
+  "findings": 1091,
+  "W": 1622,
+  "new": 191,
+  "fixed": 5
  },
  "narrative": {
-  "status": "skipped"
+  "status": "ok",
+  "cost_usd": 0.1677678,
+  "turns": 3,
+  "text": {
+   "verdict": "빨간 깃발 6건(신규S3, 시크릿의심, W상승, 브랜치S2 2건, req-drift). develop W 1622(전일 대비 비교 불가, prev_deep null 아님이나 수치 미제공)",
+   "parts": [
+    {
+     "part": "시뮬",
+     "line": "2_Simulation/t3_amr/amr/make_path/fms_import.py:59 순환복잡도30(D) convert"
+    },
+    {
+     "part": "FMS·AI",
+     "line": "3_FMS/sim_engine/checks/from_theta_demo.py:57 순환복잡도28(D) main"
+    },
+    {
+     "part": "웹",
+     "line": "4_Web/SantaFactoryBE/.../ProductRepository.java:9 ImplicitFunctionalInterface(S2)"
+    },
+    {
+     "part": "공용",
+     "line": ".gitlab/scripts/sonar_mr_comment.py:387 함수 main 148줄(>80)"
+    }
+   ],
+   "branches": "feature/S15P21A106-240-바닥마찰-교착복구 S2+ 22건, feature/S15P21A106-206-fms-θ학습 S2+ 6건 추가",
+   "agreement": [
+    "결정 필요: 아키텍처 문서 '500ms 틱' vs FMS 문서 '1s 틱' 단일화",
+    "결정 필요: Optuna 기준선(후속 분류) 갱신 또는 워커 범위 조정",
+    "결정 필요: '두 Spring 스택' 기준선 vs 앱 1개, 분리 시점/기준선 수정"
+   ],
+   "tool_issues": "mypy status error(rc2), pmd 버전 마스킹 표시, run.status partial"
+  }
  }
 }
